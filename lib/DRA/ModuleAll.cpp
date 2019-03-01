@@ -95,12 +95,5 @@ namespace dra {
 		}
 	}
 
-	void ModuleAll::setLine(std::vector<InformationOfSourceCode*> &IS) {
-		for (auto it = AllFunctionbc.begin(), ie = AllFunctionbc.end(); it != ie; it++) {
-			for (auto iit = (*it).second.begin(), iie = (*it).second.end(); iit != iie; iit++) {
-				(*iit).second->setLine(IS);
-			}
-		}
-	}
 
 } /* namespace dra */

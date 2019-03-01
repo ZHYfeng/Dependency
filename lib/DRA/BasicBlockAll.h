@@ -30,7 +30,6 @@ namespace dra {
 			virtual ~BasicBlockAll();
 
 			void set(llvm::BasicBlock *b);
-			void setLine(std::vector<InformationOfSourceCode*> &IS);
 			void setState(Kind kind);
 			void update(Kind kind);
 

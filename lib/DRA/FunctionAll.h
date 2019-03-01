@@ -31,7 +31,6 @@ namespace dra {
 			FunctionAll();
 			virtual ~FunctionAll();
 			void set(llvm::Function *f);
-			void setLine(std::vector<InformationOfSourceCode*> &IS);
 			void setState(Kind kind);
 			void update(Kind kind);
 

@@ -30,7 +30,6 @@ namespace dra {
 			virtual ~ModuleAll();
 			void initializeModule(std::string InputFilename);
 			void set(llvm::Module* m);
-			void setLine(std::vector<InformationOfSourceCode*> &IS);
 
 		public:
 			std::unique_ptr<llvm::Module> modules;

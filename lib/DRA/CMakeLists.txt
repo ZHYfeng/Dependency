@@ -3,8 +3,6 @@ set(SOURCES
 	DataASM.cpp
 	DataManagement.cpp
 	FunctionAll.cpp
-	InformationOfLine.cpp
-	InformationOfSourceCode.cpp
 	InstructionASM.cpp
 	InstructionLLVM.cpp
 	ModuleAll.cpp

@@ -44,14 +44,6 @@ namespace dra {
 		}
 	}
 
-	void FunctionAll::setLine(
-			std::vector<InformationOfSourceCode*> &IS) {
-		for (std::vector<BasicBlockAll *>::iterator it =
-				BasicBlockVector.begin(); it != BasicBlockVector.end(); it++) {
-			(*it)->setLine(IS);
-		}
-	}
-
 	void FunctionAll::setState(Kind kind) {
 		if(state == Kind::cover && kind == Kind::uncover){
 			std::cerr << "error BasicBlock kind" << "\n";
