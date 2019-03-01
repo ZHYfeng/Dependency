@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "BasicBlockAll.h"
-#include "InformationOfSourceCode.h"
 #include "InstructionASM.h"
 #include "InstructionLLVM.h"
 

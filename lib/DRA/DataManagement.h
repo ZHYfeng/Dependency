@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "FunctionAll.h"
-#include "InformationOfSourceCode.h"
 #include "ModuleAll.h"
 
 namespace dra {
@@ -33,13 +32,11 @@ namespace dra {
 
 			int GetInformationFromCoverFile(std::string CoverFileName);
 			void initializeModule(std::string InputFilename);
-			void setState();
 			void MapBBfromStoBC();
 
 		public:
 			dra::ModuleAll *Modules;
 
-			std::vector<InformationOfSourceCode*> allSourceCode;
 			dra::DataASM *DataASM;
 	};
 

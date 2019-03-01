@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "FunctionAll.h"
-#include "InformationOfSourceCode.h"
 
 namespace llvm {
 	class Module;

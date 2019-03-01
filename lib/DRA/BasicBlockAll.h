@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "InformationOfSourceCode.h"
 #include "InstructionASM.h"
 #include "InstructionLLVM.h"
 

@@ -13,7 +13,6 @@
 #include <iterator>
 #include <vector>
 
-#include "InformationOfSourceCode.h"
 #include "InstructionLLVM.h"
 
 namespace dra {
