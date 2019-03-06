@@ -1,11 +1,10 @@
 set(SOURCES
-	BasicBlockAll.cpp
-	DataASM.cpp
-	DataManagement.cpp
-	FunctionAll.cpp
-	InstructionASM.cpp
-	InstructionLLVM.cpp
-	ModuleAll.cpp
+		DBasicBlock.cpp
+        DataManagement.cpp
+		DFunction.cpp
+		DAInstruction.cpp
+		DLInstruction.cpp
+		DModule.cpp
 )
 
 add_llvm_loadable_module(DRA ${SOURCES})

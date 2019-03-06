@@ -12,33 +12,32 @@
 #include <string>
 #include <vector>
 
-#include "FunctionAll.h"
-#include "ModuleAll.h"
+#include "DModule.h"
 
-namespace dra {
-	class DataASM;
-} /* namespace dra */
-namespace llvm {
-	class Module;
-} /* namespace llvm */
 
 namespace dra {
 
 
-	class DataManagement {
-		public:
-			DataManagement();
-			virtual ~DataManagement();
+    class DataManagement {
+    public:
+        DataManagement();
 
-			int GetInformationFromCoverFile(std::string CoverFileName);
-			void initializeModule(std::string InputFilename);
-			void MapBBfromStoBC();
+        virtual ~DataManagement();
 
-		public:
-			dra::ModuleAll *Modules;
+        int GetInformationFromCoverFile(std::string CoverFileName);
 
-			dra::DataASM *DataASM;
-	};
+        void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
+
+        void Statistics();
+
+    public:
+        dra::DModule *Modules;
+
+        unsigned int FindNum;
+        unsigned int UnFindNum;
+        unsigned int SameNum;
+        unsigned int DiffNum;
+    };
 
 } /* namespace dra */
 
