@@ -9,71 +9,71 @@
 #define LIB_DRA_FUNCTION_H_
 
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
-#include "DBasicBlock.h"
 #include "DAInstruction.h"
+#include "DBasicBlock.h"
 #include "DLInstruction.h"
 
 namespace dra {
-    class DModule;
+	class DModule;
 } /* namespace dra */
 
 namespace llvm {
-    class Function;
+	class Function;
 } /* namespace llvm */
 
 namespace dra {
 
-    class DFunction {
-    public:
-        DFunction();
+	class DFunction {
+		public:
+			DFunction();
 
-        virtual ~DFunction();
+			virtual ~DFunction();
 
-        void InitIRFunction(llvm::Function *f);
+			void InitIRFunction(llvm::Function *f);
 
-        void setState(Kind kind);
+			void setState(Kind kind);
 
-        void update(Kind kind);
+			void update(Kind kind);
 
-        bool isObjudump() const;
+			bool isObjudump() const;
 
-        void setObjudump(bool Objudump);
+			void setObjudump(bool Objudump);
 
-        bool isAsmSourceCode() const;
+			bool isAsmSourceCode() const;
 
-        void setAsmSourceCode(bool AsmSourceCode);
+			void setAsmSourceCode(bool AsmSourceCode);
 
-        bool isIR() const;
+			bool isIR() const;
 
-        void setIR(bool IR);
+			void setIR(bool IR);
 
-        bool isMap();
+			bool isMap();
 
-    public:
-        bool Objudump;
-        bool AsmSourceCode;
-        bool IR;
+		public:
+			bool Objudump;
+			bool AsmSourceCode;
+			bool IR;
 
-        llvm::Function *function;
-        DModule *parent;
-        Kind state;
+			llvm::Function *function;
+			DModule *parent;
+			Kind state;
 
+			std::string Name;
+			std::string Path;
 
-        std::string Name;
-        std::string Path;
+			std::string Address;
+			unsigned int InstNum;
+			unsigned int CallInstNum;
+			unsigned int JumpInstNum;
+			std::vector<DAInstruction *> InstASM;
 
-        std::string Address;
-        unsigned int InstNum;
-        unsigned int CallInstNum;
-        unsigned int JumpInstNum;
-        std::vector<DAInstruction *> InstASM;
+			unsigned int BasicBlockNum;
+			std::unordered_map<std::string, DBasicBlock *> BasicBlock;
 
-        unsigned int BasicBlockNum;
-        std::unordered_map<std::string, DBasicBlock *> BasicBlock;
-    };
+	};
 
 } /* namespace dra */
 

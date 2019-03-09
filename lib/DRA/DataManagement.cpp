@@ -29,8 +29,8 @@ namespace dra {
 			std::string InputFilename) {
 
 		Modules->ReadBC(std::move(InputFilename));
-        Modules->ReadObjdump(std::move(objdump));
-        Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
+		Modules->ReadObjdump(std::move(objdump));
+		Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
 
 	}
 
@@ -50,12 +50,12 @@ namespace dra {
 							std::cout << "Num of s :" << Function[(*it).first][(*iit).first]->InstNum << std::endl;
 							for (auto iiit = Function[(*it).first][(*iit).first]->InstASM.begin(), iiie =
 									Function[(*it).first][(*iit).first]->InstASM.end(); iiit != iiie; iiit++) {
-								std::cout << (*iiit)->Inst << std::endl;
+								std::cout << (*iiit)->SInst << std::endl;
 							}
 							std::cout << "Num of o :" << Function[(*it).first][(*iit).first]->InstNum << std::endl;
 							for (auto iiit = Function[(*it).first][(*iit).first]->InstASM.begin(), iiie =
 									Function[(*it).first][(*iit).first]->InstASM.end(); iiit != iiie; iiit++) {
-								std::cout << (*iiit)->Inst << std::endl;
+								std::cout << (*iiit)->SInst << std::endl;
 							}
 						}
 

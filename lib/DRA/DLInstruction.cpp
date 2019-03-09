@@ -16,7 +16,6 @@ namespace dra {
 
     DLInstruction::DLInstruction() :
             i(nullptr), parent(nullptr), Line(0) {
-        // TODO Auto-generated constructor stub
         state = Kind::other;
 
     }

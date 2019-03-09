@@ -12,63 +12,80 @@
 
 namespace dra {
 
+	DFunction::DFunction() {
+		Objudump = false;
+		AsmSourceCode = false;
+		IR = false;
 
-    DFunction::DFunction() {
+		function = nullptr;
+		parent = nullptr;
 
-    }
+		state = Kind::other;
 
-    DFunction::~DFunction() = default;
+		InstNum = 0;
+		CallInstNum = 0;
+		JumpInstNum = 0;
+		BasicBlockNum = 0;
+	}
 
-    void DFunction::InitIRFunction(llvm::Function *f) {
-        DFunction::function = f;
-        for (auto &it : *function) {
+	DFunction::~DFunction() = default;
 
-            std::string Name = it.getName().str();
-            DBasicBlock *b;
-            b = new DBasicBlock();
-            BasicBlock[Name] = b;
+	void DFunction::InitIRFunction(llvm::Function *f) {
+		DFunction::function = f;
+		for (auto &it : *function) {
+			BasicBlockNum++;
 
-            b->InitIRBasicBlock(&it);
-        }
-    }
+			std::string Name = it.getName().str();
+			DBasicBlock *b;
+			if (BasicBlock.find(Name) == BasicBlock.end()) {
 
-    void DFunction::setState(Kind kind) {
-        if (state == Kind::cover && kind == Kind::uncover) {
-            std::cerr << "error BasicBlock kind" << "\n";
-        }
-        state = kind;
-    }
+				b = new DBasicBlock();
+				BasicBlock[Name] = b;
+			}
 
-    void DFunction::update(Kind kind) {
-        setState(kind);
-    }
+			BasicBlock[Name]->setIr(true);
+			BasicBlock[Name]->parent = this;
+			BasicBlock[Name]->InitIRBasicBlock(&it);
+		}
+	}
 
-    bool DFunction::isObjudump() const {
-        return Objudump;
-    }
+	void DFunction::setState(Kind kind) {
+		if (state == Kind::cover && kind == Kind::uncover) {
+			std::cerr << "error BasicBlock kind" << "\n";
+		}
+		state = kind;
+	}
 
-    void DFunction::setObjudump(bool Objudump) {
-        DFunction::Objudump = Objudump;
-    }
+	void DFunction::update(Kind kind) {
+		setState(kind);
+	}
 
-    bool DFunction::isAsmSourceCode() const {
-        return AsmSourceCode;
-    }
+	bool DFunction::isObjudump() const {
+		return Objudump;
+	}
 
-    void DFunction::setAsmSourceCode(bool AsmSourceCode) {
-        DFunction::AsmSourceCode = AsmSourceCode;
-    }
+	void DFunction::setObjudump(bool Objudump) {
+		DFunction::Objudump = Objudump;
+	}
 
-    bool DFunction::isIR() const {
-        return IR;
-    }
+	bool DFunction::isAsmSourceCode() const {
+		return AsmSourceCode;
+	}
 
-    void DFunction::setIR(bool IR) {
-        DFunction::IR = IR;
-    }
+	void DFunction::setAsmSourceCode(bool AsmSourceCode) {
+		DFunction::AsmSourceCode = AsmSourceCode;
+	}
 
-    bool DFunction::isMap() {
-        return DFunction::Objudump && DFunction::AsmSourceCode && DFunction::IR;
-    }
+	bool DFunction::isIR() const {
+		return IR;
+	}
+
+	void DFunction::setIR(bool IR) {
+		DFunction::IR = IR;
+	}
+
+	bool DFunction::isMap() {
+		return DFunction::Objudump && DFunction::AsmSourceCode && DFunction::IR;
+	}
 
 } /* namespace dra */

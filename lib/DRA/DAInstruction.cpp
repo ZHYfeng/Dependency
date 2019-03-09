@@ -9,11 +9,13 @@
 
 namespace dra {
 
-    DAInstruction::DAInstruction() {
-        // TODO Auto-generated constructor stub
+	DAInstruction::DAInstruction() {
+		state = Kind::other;
 
-    }
+		parent = nullptr;
 
-    DAInstruction::~DAInstruction() = default;
+	}
+
+	DAInstruction::~DAInstruction() = default;
 
 } /* namespace dra */

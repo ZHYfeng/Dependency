@@ -15,37 +15,43 @@
 #include "DLInstruction.h"
 
 namespace dra {
-    class DFunction;
+	class DFunction;
 } /* namespace dra */
 
 namespace llvm {
-    class BasicBlock;
+	class BasicBlock;
 } /* namespace llvm */
 
 namespace dra {
-    class DBasicBlock {
-    public:
-        DBasicBlock();
+	class DBasicBlock {
+		public:
+			DBasicBlock();
 
-        virtual ~DBasicBlock();
+			virtual ~DBasicBlock();
 
-        void InitIRBasicBlock(llvm::BasicBlock *b);
+			void InitIRBasicBlock(llvm::BasicBlock *b);
 
-        void setState(Kind kind);
+			void setState(Kind kind);
 
-        void update(Kind kind);
+			void update(Kind kind);
+			bool isAsmSourceCode() const;
+			void setAsmSourceCode(bool asmSourceCode);
+			bool isIr() const;
+			void setIr(bool ir);
 
-    public:
+		public:
+			bool IR;
+			bool AsmSourceCode;
 
-        llvm::BasicBlock *basicBlock;
-        DFunction *parent;
-        Kind state;
-        std::string name;
-        unsigned int COVNum;
+			llvm::BasicBlock *basicBlock;
+			DFunction *parent;
+			Kind state;
+			std::string name;
+			unsigned int COVNum;
 
-        std::vector<DAInstruction *> InstASM;
-        std::vector<DLInstruction *> InstIR;
-    };
+			std::vector<DAInstruction *> InstASM;
+			std::vector<DLInstruction *> InstIR;
+	};
 
 } /* namespace dra */
 

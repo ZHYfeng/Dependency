@@ -15,17 +15,24 @@
 
 namespace dra {
 
-	DBasicBlock::DBasicBlock() = default;
+	DBasicBlock::DBasicBlock() {
+		basicBlock = nullptr;
+		parent = nullptr;
+		state = Kind::other;
+		COVNum = 0;
+	}
 
-	DBasicBlock::~DBasicBlock() =default;
+	DBasicBlock::~DBasicBlock() = default;
 
 	void DBasicBlock::InitIRBasicBlock(llvm::BasicBlock *b) {
 		DBasicBlock::basicBlock = b;
 		for (auto &it : *basicBlock) {
 			DLInstruction *i;
+
 			i = new DLInstruction();
 			InstIR.push_back(i);
 
+			i->parent = this;
 			i->i = (&it);
 		}
 	}
@@ -39,8 +46,7 @@ namespace dra {
 
 	void DBasicBlock::update(Kind kind) {
 		setState(kind);
-		for (std::vector<DLInstruction *>::iterator it = InstIR.begin(); it != InstIR.end();
-				it++) {
+		for (std::vector<DLInstruction *>::iterator it = InstIR.begin(); it != InstIR.end(); it++) {
 			(*it)->setState(kind);
 		}
 		if (kind == Kind::cover) {
@@ -49,3 +55,19 @@ namespace dra {
 	}
 
 } /* namespace dra */
+
+bool dra::DBasicBlock::isAsmSourceCode() const {
+	return AsmSourceCode;
+}
+
+void dra::DBasicBlock::setAsmSourceCode(bool asmSourceCode) {
+	AsmSourceCode = asmSourceCode;
+}
+
+bool dra::DBasicBlock::isIr() const {
+	return IR;
+}
+
+void dra::DBasicBlock::setIr(bool ir) {
+	IR = ir;
+}

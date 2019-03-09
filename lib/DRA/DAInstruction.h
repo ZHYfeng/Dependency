@@ -24,9 +24,12 @@ namespace dra {
 
     public:
         Kind state;
-        std::string Inst;
+
+        std::string SInst;
         std::string BasicBlockName;
         DBasicBlock *parent;
+
+        std::string OInst;
         std::string Address;
     };
 

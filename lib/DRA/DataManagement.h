@@ -24,8 +24,6 @@ namespace dra {
 
         virtual ~DataManagement();
 
-        int GetInformationFromCoverFile(std::string CoverFileName);
-
         void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
 
         void Statistics();
