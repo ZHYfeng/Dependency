@@ -12,6 +12,7 @@
 #include <unordered_map>
 
 #include "DAInstruction.h"
+#include "DFunction.h"
 
 namespace dra {
 	class DModule;
@@ -29,10 +30,10 @@ namespace dra {
 
         void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
 
-        void initMap();
+        void BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function);
     public:
         dra::DModule *Modules;
-        std::unordered_map<std::string, DAInstruction *> Map;
+        std::unordered_map<std::string, DAInstruction *> Address2BB;
 
         unsigned int FindNum;
         unsigned int UnFindNum;

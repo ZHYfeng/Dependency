@@ -7,15 +7,31 @@
 
 #include "DAInstruction.h"
 
+#include <iostream>
+
+#include "DBasicBlock.h"
+
 namespace dra {
 
 	DAInstruction::DAInstruction() {
-		state = Kind::other;
+		state = CoverKind::untest;
 
 		parent = nullptr;
 
 	}
 
 	DAInstruction::~DAInstruction() = default;
+
+	void DAInstruction::setState(CoverKind kind) {
+        if (state == CoverKind::cover && kind == CoverKind::uncover) {
+            std::cerr << "error InstIR kind" << "\n";
+        }
+        state = kind;
+	}
+
+	void DAInstruction::update(CoverKind kind) {
+        setState(kind);
+        parent->update(kind);
+	}
 
 } /* namespace dra */

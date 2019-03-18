@@ -16,11 +16,12 @@ namespace dra {
 		Objudump = false;
 		AsmSourceCode = false;
 		IR = false;
+		repeat = false;
 
 		function = nullptr;
 		parent = nullptr;
 
-		state = Kind::other;
+		state = CoverKind::untest;
 
 		InstNum = 0;
 		CallInstNum = 0;
@@ -49,14 +50,14 @@ namespace dra {
 		}
 	}
 
-	void DFunction::setState(Kind kind) {
-		if (state == Kind::cover && kind == Kind::uncover) {
+	void DFunction::setState(CoverKind kind) {
+		if (state == CoverKind::cover && kind == CoverKind::uncover) {
 			std::cerr << "error BasicBlock kind" << "\n";
 		}
 		state = kind;
 	}
 
-	void DFunction::update(Kind kind) {
+	void DFunction::update(CoverKind kind) {
 		setState(kind);
 	}
 
@@ -86,6 +87,60 @@ namespace dra {
 
 	bool DFunction::isMap() {
 		return DFunction::Objudump && DFunction::AsmSourceCode && DFunction::IR;
+	}
+
+	bool DFunction::isRepeat() const {
+		return repeat;
+	}
+
+	static DFunction DFunction::MargeDFunction(DFunction *one, DFunction *two) {
+		DFunction *f = new DFunction();
+		return f;
+	}
+
+	void DFunction::setRepeat(bool repeat) {
+		this->repeat = repeat;
+	}
+
+	void DFunction::setKind(FunctionKind kind) {
+		switch (kind) {
+			case dra::FunctionKind::IR: {
+				setIR(true);
+				break;
+			}
+			case dra::FunctionKind::O: {
+				setObjudump(true);
+				break;
+			}
+			case dra::FunctionKind::S: {
+				setAsmSourceCode(true);
+				break;
+			}
+			default: {
+
+			}
+		}
+	}
+
+	void DFunction::dump() {
+
+		std::cout << "--------------------------------------------" << std::endl;
+		std::cout << "Path :" << Path << std::endl;
+		std::cout << "FunctionName :" << FunctionName << std::endl;
+
+		std::cout << "Objudump :" << Objudump << std::endl;
+		std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
+		std::cout << "IR :" << IR << std::endl;
+		std::cout << "repeat :" << repeat << std::endl;
+		std::cout << "CoverKind :" << state << std::endl;
+		std::cout << "IRName :" << IRName << std::endl;
+		std::cout << "Address :" << Address << std::endl;
+		std::cout << "InstNum :" << InstNum << std::endl;
+		std::cout << "CallInstNum :" << CallInstNum << std::endl;
+		std::cout << "JumpInstNum :" << JumpInstNum << std::endl;
+		std::cout << "BasicBlockNum :" << BasicBlockNum << std::endl;
+		std::cout << "--------------------------------------------" << std::endl;
+
 	}
 
 } /* namespace dra */

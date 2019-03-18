@@ -16,9 +16,11 @@
 namespace dra {
 
 	DBasicBlock::DBasicBlock() {
+		IR = false;
+		AsmSourceCode = false;
 		basicBlock = nullptr;
 		parent = nullptr;
-		state = Kind::other;
+		state = CoverKind::untest;
 		COVNum = 0;
 	}
 
@@ -37,19 +39,22 @@ namespace dra {
 		}
 	}
 
-	void DBasicBlock::setState(Kind kind) {
-		if (state == Kind::cover && kind == Kind::uncover) {
+	void DBasicBlock::setState(CoverKind kind) {
+		if (state == CoverKind::cover && kind == CoverKind::uncover) {
 			std::cerr << "error BasicBlock kind" << "\n";
 		}
 		state = kind;
 	}
 
-	void DBasicBlock::update(Kind kind) {
+	void DBasicBlock::update(CoverKind kind) {
 		setState(kind);
-		for (std::vector<DLInstruction *>::iterator it = InstIR.begin(); it != InstIR.end(); it++) {
-			(*it)->setState(kind);
+		for (auto it : InstIR) {
+			it->setState(kind);
 		}
-		if (kind == Kind::cover) {
+		for (auto it : InstASM) {
+			it->setState(kind);
+		}
+		if (kind == CoverKind::cover) {
 			parent->update(kind);
 		}
 	}

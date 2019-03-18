@@ -21,13 +21,12 @@ namespace dra {
 		SameNum = 0;
 		DiffNum = 0;
 		Modules = new dra::DModule();
-		Map.reserve(1000000);
+		Address2BB.reserve(1000000);
 	}
 
 	DataManagement::~DataManagement() = default;
 
-	void DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode,
-			std::string InputFilename) {
+	void DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename) {
 
 		Modules->ReadBC(std::move(InputFilename));
 		Modules->ReadObjdump(std::move(objdump));
@@ -35,14 +34,17 @@ namespace dra {
 
 	}
 
-	void DataManagement::initMap() {
-		for(auto file : Modules->Function){
-			for(auto function : file.second){
-				for(auto inst : function.second->InstASM){
-					Map[inst->Address] = inst;
+	void DataManagement::BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function) {
+		for (auto file : Modules->Function) {
+			for (auto function : file.second) {
+				if (function.second->isRepeat()) {
+
+				} else {
+					for (auto inst : function.second->InstASM) {
+						Address2BB[inst->Address] = inst;
+					}
 				}
 			}
-
 		}
 	}
 

@@ -12,7 +12,7 @@
 #include <llvm/IR/Instruction.h>
 
 namespace dra {
-    enum Kind {
+    enum CoverKind {
         other, untest, cover, uncover,
     };
 
@@ -21,16 +21,14 @@ namespace dra {
     class DLInstruction {
     public:
         DLInstruction();
-
         virtual ~DLInstruction();
 
-        void setState(Kind kind);
-
-        void update(Kind kind);
+        void setState(CoverKind kind);
+        void update(CoverKind kind);
 
     public:
         llvm::Instruction *i;
-        Kind state;
+        CoverKind state;
         DBasicBlock *parent;
 
         std::string FileName;

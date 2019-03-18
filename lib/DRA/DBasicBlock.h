@@ -31,9 +31,9 @@ namespace dra {
 
 			void InitIRBasicBlock(llvm::BasicBlock *b);
 
-			void setState(Kind kind);
+			void setState(CoverKind kind);
+			void update(CoverKind kind);
 
-			void update(Kind kind);
 			bool isAsmSourceCode() const;
 			void setAsmSourceCode(bool asmSourceCode);
 			bool isIr() const;
@@ -45,7 +45,7 @@ namespace dra {
 
 			llvm::BasicBlock *basicBlock;
 			DFunction *parent;
-			Kind state;
+			CoverKind state;
 			std::string name;
 			unsigned int COVNum;
 

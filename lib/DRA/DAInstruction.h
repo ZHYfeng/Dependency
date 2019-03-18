@@ -19,11 +19,13 @@ namespace dra {
     class DAInstruction {
     public:
         DAInstruction();
-
         virtual ~DAInstruction();
 
+        void setState(CoverKind kind);
+        void update(CoverKind kind);
+
     public:
-        Kind state;
+        CoverKind state;
 
         std::string SInst;
         std::string BasicBlockName;

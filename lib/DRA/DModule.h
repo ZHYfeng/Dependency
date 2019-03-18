@@ -11,6 +11,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "DAInstruction.h"
 #include "DFunction.h"
 
 #define TEST 0
@@ -20,34 +21,40 @@
 #define DEBUGASM 0
 
 namespace llvm {
-    class Module;
+	class Module;
 } /* namespace llvm */
 
 namespace dra {
 
-    class DModule {
-    public:
-        DModule();
+	enum FunctionKind {
+		IR, O, S, other,
+	};
 
-        virtual ~DModule();
+	class DModule {
+		public:
+			DModule();
+
+			virtual ~DModule();
+
+			std::string exec(std::string cmd);
+			void ReadObjdump(std::string objdump);
+			void ReadAsmSourceCode(std::string AssemblySourceCode);
+			void ReadBC(std::string InputFilename);
+			void BuildLLVMFunction(llvm::Module* Module);
+			void AddRepeatFunction(DFunction *function, FunctionKind kind);
+			DFunction* CheckRepeatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
+			DFunction* CreatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
+
+		public:
+
+			std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
+
+			std::unordered_map<std::string, DFunction*> RepeatBCFunction;
+			std::unordered_map<std::string, DFunction*> RepeatOFunction;
+			std::unordered_map<std::string, std::unordered_map<std::string, DFunction*>> RepeatSFunction;
 
 
-
-        std::string exec(std::string cmd);
-
-        void ReadObjdump(std::string objdump);
-
-        void ReadAsmSourceCode(std::string AssemblySourceCode);
-
-        void ReadBC(std::string InputFilename);
-
-        void BuildLLVMFunction(llvm::Module *Module);
-
-    public:
-
-        std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
-
-    };
+	};
 
 } /* namespace dra */
 

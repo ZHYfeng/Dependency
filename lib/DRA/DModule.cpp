@@ -37,7 +37,7 @@ namespace dra {
 
 	void DModule::ReadBC(std::string InputFilename) {
 		std::cout << "*************************************************" << std::endl;
-		std::cout << "****************ReadBC***************************" << std::endl;
+		std::cout << "****************ReadIR***************************" << std::endl;
 		std::unique_ptr<llvm::Module> module;
 		llvm::LLVMContext *cxts;
 		llvm::SMDiagnostic Err;
@@ -58,7 +58,7 @@ namespace dra {
 	}
 
 	void DModule::BuildLLVMFunction(llvm::Module *Module) {
-
+		DFunction *function;
 		for (auto &it : *Module) {
 			llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
 			it.getAllMetadata(MDs);
@@ -77,32 +77,12 @@ namespace dra {
 						} else {
 							FunctionName = name;
 						}
+						function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
 
-						if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
-							if (Function[Path][FunctionName]->isObjudump()) {
-
-							} else if (Function[Path][FunctionName]->isIR()) {
-								std::cout << "--------------------------------------------" << std::endl;
-								std::cout << "ir repeat function : " << std::endl;
-								std::cout << "Path : " << Path << std::endl;
-								std::cout << "last name : " << Function[Path][FunctionName]->BCName << std::endl;
-								std::cout << "name : " << name << std::endl;
-								std::cout << "FunctionName : " << FunctionName << std::endl;
-							} else if (Function[Path][FunctionName]->isAsmSourceCode()) {
-
-							}
-
-						} else {
-							Function[Path].insert(std::pair<std::string, DFunction *>(FunctionName, new DFunction()));
-							Function[Path][FunctionName]->FunctionName = FunctionName;
-							Function[Path][FunctionName]->Path = Path;
-						}
-						Function[Path][FunctionName]->BCName = name;
-						Function[Path][FunctionName]->setIR(true);
-						Function[Path][FunctionName]->InitIRFunction(&it);
-						Function[Path][FunctionName]->parent = this;
+						function->IRName = name;
+						function->InitIRFunction(&it);
+						function->parent = this;
 					}
-
 				}
 			}
 
@@ -139,6 +119,8 @@ namespace dra {
 		unsigned int InsNum;
 		unsigned long end;
 		unsigned long start;
+
+		DFunction *function;
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "****************ReadObjdump**********************" << std::endl;
 #if DEBUGOBJDUMP
@@ -157,6 +139,7 @@ namespace dra {
 					std::cout << "Line :" << Line << std::endl;
 #endif
 					if (Line.find(">:") < Line.size()) {
+						//deal with function
 #if DEBUGOBJDUMP
 						std::cout << ">: :" << std::endl;
 #endif
@@ -210,29 +193,10 @@ namespace dra {
 #if DEBUGOBJDUMP
 						std::cout << "o Path :" << Path << std::endl;
 #endif
-						if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
 
-							if (Function[Path][FunctionName]->isObjudump()) {
-								std::cout << "--------------------------------------------" << std::endl;
-								std::cout << "o repeat function : " << std::endl;
-								std::cout << "Path :" << Path << std::endl;
-								std::cout << "FunctionName :" << FunctionName << std::endl;
-								std::cout << "last Address :" << Function[Path][FunctionName]->Address << std::endl;
-								std::cout << "Address :" << Addr << std::endl;
-							} else if (Function[Path][FunctionName]->isIR()) {
+						function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
 
-							} else if (Function[Path][FunctionName]->isAsmSourceCode()) {
-
-							}
-
-						} else {
-							Function[Path].insert(std::pair<std::string, DFunction *>(FunctionName, new DFunction()));
-							Function[Path][FunctionName]->FunctionName = FunctionName;
-							Function[Path][FunctionName]->Path = Path;
-						}
-
-						Function[Path][FunctionName]->Address = Addr;
-						Function[Path][FunctionName]->setObjudump(true);
+						function->Address = Addr;
 
 					} else {
 						//asm instruction
@@ -365,6 +329,8 @@ namespace dra {
 		unsigned int InstNum = 0;
 		unsigned int CallInstNum = 0;
 		unsigned int COVNum;
+
+		DFunction *function;
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "****************ReadAsmSourceCode****************" << std::endl;
 
@@ -492,27 +458,8 @@ namespace dra {
 #if DEBUGASM
 									std::cout << "s Path :" << Path << std::endl;
 #endif
-									if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
 
-										if (Function[Path][FunctionName]->isObjudump()) {
-
-										} else if (Function[Path][FunctionName]->isIR()) {
-
-										} else if (Function[Path][FunctionName]->isAsmSourceCode()) {
-											std::cout << "--------------------------------------------" << std::endl;
-											std::cout << "s repeat Path :" << Path << std::endl;
-											std::cout << "s repeat FunctionName :" << FunctionName << std::endl;
-
-										}
-
-									} else {
-										Function[Path].insert(std::pair<std::string, DFunction *>(FunctionName, new DFunction()));
-										Function[Path][FunctionName]->FunctionName = FunctionName;
-										Function[Path][FunctionName]->Path = Path;
-
-									}
-
-									Function[Path][FunctionName]->setAsmSourceCode(true);
+									function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
 								}
 							} else if (line.at(1) == '#') {
 
@@ -587,6 +534,93 @@ namespace dra {
 			std::cerr << "Unable to open AssemblySourceCodeFile " << AssemblySourceCode << ">\n";
 		}
 		std::cout << "****************ReadAsmSourceCode****************" << std::endl;
+	}
+
+	void DModule::AddRepeatFunction(DFunction* function, FunctionKind kind) {
+
+		if (function->isRepeat()) {
+
+		} else {
+			function->setRepeat(true);
+			switch (kind) {
+				case dra::FunctionKind::IR: {
+					RepeatBCFunction[function->IRName] = function;
+					break;
+				}
+				case dra::FunctionKind::O: {
+					RepeatOFunction[function->Address] = function;
+					break;
+				}
+				case dra::FunctionKind::S: {
+					RepeatSFunction[function->Path][function->FunctionName] = function;
+					//maybe they are same
+					break;
+				}
+				default: {
+					std::cerr << "error AddRepeatFunction" << ">\n";
+				}
+			}
+		}
+
+	}
+
+	DFunction* DModule::CheckRepeatFunction(std::string Path, std::string FunctionName, FunctionKind kind) {
+		DFunction* function;
+		if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
+			function = Function[Path][FunctionName];
+			switch (kind) {
+				case dra::FunctionKind::IR: {
+					if (function->isIR()) {
+						AddRepeatFunction(function,kind);
+						std::cout << "ir repeat function : " << std::endl;
+						function->dump();
+
+						function = CreatFunction(Path, FunctionName, kind);
+						AddRepeatFunction(function,kind);
+					}
+					break;
+				}
+				case dra::FunctionKind::O: {
+					if (function->isObjudump()) {
+						AddRepeatFunction(function,kind);
+						std::cout << "o repeat function : " << std::endl;
+						function->dump();
+
+						function = CreatFunction(Path, FunctionName, kind);
+						AddRepeatFunction(function,kind);
+					}
+					break;
+				}
+				case dra::FunctionKind::S: {
+					if (function->isAsmSourceCode()) {
+						AddRepeatFunction(function,kind);
+						std::cout << "s repeat function : " << std::endl;
+						function->dump();
+
+						function = CreatFunction(Path, FunctionName, kind);
+						AddRepeatFunction(function,kind);
+					}
+					break;
+				}
+				default: {
+				}
+			}
+
+		} else {
+			function = CreatFunction(Path, FunctionName, kind);
+		}
+
+		return function;
+	}
+
+	DFunction* DModule::CreatFunction(std::string Path, std::string FunctionName, FunctionKind kind) {
+		DFunction* function;
+		function = new DFunction();
+		Function[Path].insert(std::pair<std::string, DFunction *>(FunctionName, function));
+		function->FunctionName = FunctionName;
+		function->Path = Path;
+		function->setKind(kind);
+		return function;
 	}
 
 } /* namespace dra */
