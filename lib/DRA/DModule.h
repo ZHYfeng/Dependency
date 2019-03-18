@@ -15,8 +15,9 @@
 
 #define TEST 0
 #define DEBUG 1
-#define DEBUGOBJDUMP 1
-#define DEBUGASM 1
+#define DEBUGBC 0
+#define DEBUGOBJDUMP 0
+#define DEBUGASM 0
 
 namespace llvm {
     class Module;

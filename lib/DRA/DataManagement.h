@@ -8,11 +8,14 @@
 #ifndef LIB_DRA_DATAMANAGEMENT_H_
 #define LIB_DRA_DATAMANAGEMENT_H_
 
-#include <memory>
 #include <string>
-#include <vector>
+#include <unordered_map>
 
-#include "DModule.h"
+#include "DAInstruction.h"
+
+namespace dra {
+	class DModule;
+} /* namespace dra */
 
 
 namespace dra {
@@ -26,10 +29,10 @@ namespace dra {
 
         void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
 
-        void Statistics();
-
+        void initMap();
     public:
         dra::DModule *Modules;
+        std::unordered_map<std::string, DAInstruction *> Map;
 
         unsigned int FindNum;
         unsigned int UnFindNum;

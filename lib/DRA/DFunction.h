@@ -61,7 +61,8 @@ namespace dra {
 			DModule *parent;
 			Kind state;
 
-			std::string Name;
+			std::string FunctionName;
+			std::string BCName;
 			std::string Path;
 
 			std::string Address;

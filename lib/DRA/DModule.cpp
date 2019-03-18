@@ -36,6 +36,8 @@ namespace dra {
 	DModule::~DModule() = default;
 
 	void DModule::ReadBC(std::string InputFilename) {
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "****************ReadBC***************************" << std::endl;
 		std::unique_ptr<llvm::Module> module;
 		llvm::LLVMContext *cxts;
 		llvm::SMDiagnostic Err;
@@ -61,7 +63,9 @@ namespace dra {
 			llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
 			it.getAllMetadata(MDs);
 			for (auto &MD : MDs) {
+#if DEBUGBC
 				MD.second->dump();
+#endif
 				if (llvm::MDNode *N = MD.second) {
 					if (auto *SP = llvm::dyn_cast<llvm::DISubprogram>(N)) {
 						std::string Path = SP->getFilename().str();
@@ -74,14 +78,14 @@ namespace dra {
 							FunctionName = name;
 						}
 
-						if ((Function.find(Path) != Function.end())
-								&& (Function[Path].find(FunctionName) != Function[Path].end())) {
+						if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
 							if (Function[Path][FunctionName]->isObjudump()) {
 
 							} else if (Function[Path][FunctionName]->isIR()) {
 								std::cout << "--------------------------------------------" << std::endl;
 								std::cout << "ir repeat function : " << std::endl;
 								std::cout << "Path : " << Path << std::endl;
+								std::cout << "last name : " << Function[Path][FunctionName]->BCName << std::endl;
 								std::cout << "name : " << name << std::endl;
 								std::cout << "FunctionName : " << FunctionName << std::endl;
 							} else if (Function[Path][FunctionName]->isAsmSourceCode()) {
@@ -90,8 +94,10 @@ namespace dra {
 
 						} else {
 							Function[Path].insert(std::pair<std::string, DFunction *>(FunctionName, new DFunction()));
+							Function[Path][FunctionName]->FunctionName = FunctionName;
+							Function[Path][FunctionName]->Path = Path;
 						}
-
+						Function[Path][FunctionName]->BCName = name;
 						Function[Path][FunctionName]->setIR(true);
 						Function[Path][FunctionName]->InitIRFunction(&it);
 						Function[Path][FunctionName]->parent = this;
@@ -133,7 +139,8 @@ namespace dra {
 		unsigned int InsNum;
 		unsigned long end;
 		unsigned long start;
-
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "****************ReadObjdump**********************" << std::endl;
 #if DEBUGOBJDUMP
 		std::cout << "objdump :" << objdump << std::endl;
 #endif
@@ -203,14 +210,15 @@ namespace dra {
 #if DEBUGOBJDUMP
 						std::cout << "o Path :" << Path << std::endl;
 #endif
-						if ((Function.find(Path) != Function.end())
-								&& (Function[Path].find(FunctionName) != Function[Path].end())) {
+						if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
 
 							if (Function[Path][FunctionName]->isObjudump()) {
 								std::cout << "--------------------------------------------" << std::endl;
-								std::cout << "o repeat Path :" << Path << std::endl;
-								std::cout << "o repeat FunctionName :" << FunctionName << std::endl;
-								std::cout << "o repeat Address :" << Addr << std::endl;
+								std::cout << "o repeat function : " << std::endl;
+								std::cout << "Path :" << Path << std::endl;
+								std::cout << "FunctionName :" << FunctionName << std::endl;
+								std::cout << "last Address :" << Function[Path][FunctionName]->Address << std::endl;
+								std::cout << "Address :" << Addr << std::endl;
 							} else if (Function[Path][FunctionName]->isIR()) {
 
 							} else if (Function[Path][FunctionName]->isAsmSourceCode()) {
@@ -219,10 +227,10 @@ namespace dra {
 
 						} else {
 							Function[Path].insert(std::pair<std::string, DFunction *>(FunctionName, new DFunction()));
+							Function[Path][FunctionName]->FunctionName = FunctionName;
+							Function[Path][FunctionName]->Path = Path;
 						}
 
-						Function[Path][FunctionName]->Name = FunctionName;
-						Function[Path][FunctionName]->Path = Path;
 						Function[Path][FunctionName]->Address = Addr;
 						Function[Path][FunctionName]->setObjudump(true);
 
@@ -236,7 +244,16 @@ namespace dra {
 #if DEBUGOBJDUMP
 							std::cout << "D :" << std::endl;
 #endif
-
+						} else if (Line.find("clflush") < Line.size()) {
+							// deal with clflush
+#if DEBUGOBJDUMP
+							std::cout << "clflush :" << std::endl;
+#endif
+						} else if (Line.find("btq ") < Line.size()) {
+							// deal with btq
+#if DEBUGOBJDUMP
+							std::cout << "btq :" << std::endl;
+#endif
 						} else if (Line.find("nop") < Line.size()) {
 							// deal with nop
 #if DEBUGOBJDUMP
@@ -252,6 +269,26 @@ namespace dra {
 #if DEBUGOBJDUMP
 							std::cout << "ud2 :" << std::endl;
 #endif
+						} else if (Line.find("bt  ") < Line.size()) {
+							// deal with bt
+#if DEBUGOBJDUMP
+							std::cout << "bt :" << std::endl;
+#endif
+						} else if (Line.find("btr") < Line.size() && !(Line.find("lock") < Line.size())) {
+							// deal with btr, but not lock;
+#if DEBUGOBJDUMP
+							std::cout << "btr :" << std::endl;
+#endif
+						} else if (Line.find("bts") < Line.size()) {
+							// deal with bts
+#if DEBUGOBJDUMP
+							std::cout << "bts :" << std::endl;
+#endif
+						} else if (Line.find("mov    %rsp,0x98(%rbx)") < Line.size()) {
+							// deal with mov    %rsp,0x98(%rbx)
+#if DEBUGOBJDUMP
+							std::cout << "mov    %rsp,0x98(%rbx) :" << std::endl;
+#endif
 						} else if (Line.size() - Line.find(':') <= 22) {
 							// deal with no asm
 						} else {
@@ -259,7 +296,7 @@ namespace dra {
 							std::cout << "inst :" << std::endl;
 #endif
 							InsNum++;
-							auto *inst = new DAInstruction();
+
 							ss.str("");
 							for (char i : Line) {
 								ss << i;
@@ -274,20 +311,24 @@ namespace dra {
 							for (char i = TempLine.at(TempStart); i != ':'; TempStart++, i = TempLine.at(TempStart)) {
 								Addr += i;
 							}
-							inst->Address = Addr;
 
-							Inst = TempLine.substr(Line.find(':') + 24, TempLine.size());
-							inst->OInst = Inst;
+							Inst = TempLine.substr(TempLine.find(':') + 24, TempLine.size());
 #if DEBUGOBJDUMP
 							std::cout << "o Addr :" << Addr << std::endl;
 							std::cout << "o Inst :" << Inst << std::endl;
 #endif
 
-							Function[Path][FunctionName]->InstASM.push_back(inst);
-							if (Inst.find("call") <= Inst.size()) {
+							if (Inst.at(0) == 'c' && Inst.find("call") < Inst.size()) {
+								if (Inst.find("__sanitizer_cov_trace_pc") < Inst.size()) {
+
+								}
+								auto *inst = new DAInstruction();
+								inst->Address = Addr;
+								inst->OInst = Inst;
+								Function[Path][FunctionName]->InstASM.push_back(inst);
 								Function[Path][FunctionName]->CallInstNum++;
 							}
-							if (Inst.find('j') <= Inst.size()) {
+							if (Inst.at(0) == 'j') {
 								Function[Path][FunctionName]->JumpInstNum++;
 							}
 						}
@@ -321,8 +362,11 @@ namespace dra {
 		std::string Inst;
 		std::stringstream ss;
 		unsigned int LineNum;
-		unsigned int InsNum = 0;
+		unsigned int InstNum = 0;
+		unsigned int CallInstNum = 0;
 		unsigned int COVNum;
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "****************ReadAsmSourceCode****************" << std::endl;
 
 #if DEBUGASM
 		std::cout << "AssemblySourceCode :" << AssemblySourceCode << std::endl;
@@ -345,37 +389,53 @@ namespace dra {
 							std::cout << "dot :" << std::endl;
 #endif
 							if (line.find(".Lfunc_end") < line.size()) {
-								Function[Path][FunctionName]->InstNum = InsNum;
-								if (InsNum != Function[Path][FunctionName]->InstASM.size()) {
+								Function[Path][FunctionName]->InstNum = InstNum;
+								if (CallInstNum != Function[Path][FunctionName]->InstASM.size()) {
+									std::cout << "--------------------------------------------" << std::endl;
+									std::cout << "different function : " << std::endl;
+									std::cout << "Path :" << Path << std::endl;
+									std::cout << "FunctionName :" << FunctionName << std::endl;
 									std::cout << "InstASM.size() :" << Function[Path][FunctionName]->InstASM.size() << std::endl;
-									std::cout << "InsNum :" << InsNum << std::endl;
-									exit(0);
+									std::cout << "CallInstNum :" << CallInstNum << std::endl;
+									std::cout << "COVNum :" << COVNum << std::endl;
+									for (auto i : Function[Path][FunctionName]->InstASM) {
+										std::cout << "OInst :" << i->OInst << std::endl;
+										std::cout << "SInst :" << i->SInst << std::endl;
+									}
+								} else {
+									std::cout << "--------------------------------------------" << std::endl;
+									std::cout << "same function : " << std::endl;
+									std::cout << "Path :" << Path << std::endl;
+									std::cout << "FunctionName :" << FunctionName << std::endl;
+									std::cout << "InstASM.size() :" << Function[Path][FunctionName]->InstASM.size() << std::endl;
+									std::cout << "CallInstNum :" << CallInstNum << std::endl;
+									std::cout << "COVNum :" << COVNum << std::endl;
+									for (auto i : Function[Path][FunctionName]->InstASM) {
+										std::cout << "OInst :" << i->OInst << std::endl;
+										std::cout << "SInst :" << i->SInst << std::endl;
+									}
 								}
 #if DEBUGASM
 								std::cout << "FunctionName :" << FunctionName << std::endl;
-								std::cout << "InsNum :" << InsNum << std::endl;
+								std::cout << "InstNum :" << InstNum << std::endl;
 #endif
-								InsNum = 0;
+								InstNum = 0;
+								CallInstNum = 0;
+								COVNum = 0;
 							} else if (line.find("# %") < line.size()) {
-								if (Function[Path][FunctionName]->BasicBlock.find(BasicBlockName)
-										!= Function[Path][FunctionName]->BasicBlock.end()) {
-									(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->COVNum = COVNum;
-								}
 
 								ss.str("");
 								for (unsigned long i = line.find('%') + 1; i < line.size(); i++) {
 									ss << line.at(i);
 								}
 								BasicBlockName = ss.str();
-								if (Function[Path][FunctionName]->BasicBlock.find(BasicBlockName)
-										!= Function[Path][FunctionName]->BasicBlock.end()) {
+								if (Function[Path][FunctionName]->BasicBlock.find(BasicBlockName) != Function[Path][FunctionName]->BasicBlock.end()) {
 								} else {
 									Function[Path][FunctionName]->BasicBlock[BasicBlockName] = new DBasicBlock();
+									(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->name = BasicBlockName;
 								}
 
 								(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->setAsmSourceCode(true);
-								(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->name = BasicBlockName;
-								COVNum = 0;
 
 #if DEBUGASM
 								std::cout << ". bb name :" << ss.str() << std::endl;
@@ -390,11 +450,6 @@ namespace dra {
 #endif
 							if (line.find("# %") < line.size()) {
 
-								if (Function[Path][FunctionName]->BasicBlock.find(BasicBlockName)
-										!= Function[Path][FunctionName]->BasicBlock.end()) {
-									(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->COVNum = COVNum;
-								}
-
 								ss.str("");
 								for (unsigned long i = line.find('%') + 1; i < line.size(); i++) {
 									if (line.at(i) == '%') {
@@ -403,16 +458,12 @@ namespace dra {
 										}
 										BasicBlockName = ss.str();
 
-										if (Function[Path][FunctionName]->BasicBlock.find(BasicBlockName)
-												!= Function[Path][FunctionName]->BasicBlock.end()) {
+										if (Function[Path][FunctionName]->BasicBlock.find(BasicBlockName) != Function[Path][FunctionName]->BasicBlock.end()) {
 										} else {
-											Function[Path][FunctionName]->BasicBlock[BasicBlockName] =
-													new DBasicBlock();
+											Function[Path][FunctionName]->BasicBlock[BasicBlockName] = new DBasicBlock();
+											(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->name = BasicBlockName;
 										}
-										(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->name =
-												BasicBlockName;
-										COVNum = 0;
-
+										(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->setAsmSourceCode(true);
 										break;
 									}
 								}
@@ -441,8 +492,7 @@ namespace dra {
 #if DEBUGASM
 									std::cout << "s Path :" << Path << std::endl;
 #endif
-									if ((Function.find(Path) != Function.end())
-											&& (Function[Path].find(FunctionName) != Function[Path].end())) {
+									if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
 
 										if (Function[Path][FunctionName]->isObjudump()) {
 
@@ -456,9 +506,8 @@ namespace dra {
 										}
 
 									} else {
-										Function[Path].insert(
-												std::pair<std::string, DFunction *>(FunctionName, new DFunction()));
-										Function[Path][FunctionName]->Name = FunctionName;
+										Function[Path].insert(std::pair<std::string, DFunction *>(FunctionName, new DFunction()));
+										Function[Path][FunctionName]->FunctionName = FunctionName;
 										Function[Path][FunctionName]->Path = Path;
 
 									}
@@ -481,24 +530,27 @@ namespace dra {
 #if DEBUGASM
 									std::cout << "s Inst :" << Inst << std::endl;
 #endif
-
-									auto *inst = Function[Path][FunctionName]->InstASM.at(InsNum);
-									InsNum++;
-									inst->SInst = Inst;
-									inst->BasicBlockName = BasicBlockName;
-									Function[Path][FunctionName]->BasicBlock[BasicBlockName]->InstASM.push_back(inst);
+									if (CallInstNum >= Function[Path][FunctionName]->InstASM.size()) {
+									} else {
+										if (Inst.at(0) == 'c' && Inst.find("call") <= Inst.size()) {
+											auto *inst = Function[Path][FunctionName]->InstASM.at(CallInstNum);
+											inst->SInst = Inst;
+											inst->BasicBlockName = BasicBlockName;
+											inst->parent = Function[Path][FunctionName]->BasicBlock[BasicBlockName];
+											Function[Path][FunctionName]->BasicBlock[BasicBlockName]->InstASM.push_back(inst);
+											if (Inst.find("__sanitizer_cov_trace_pc") <= Inst.size()) {
+												(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->COVNum++;
+												COVNum++;
 #if DEBUGASM
-									std::cout << "o inst :" << inst->OInst << std::endl;
+												std::cout << "o inst :" << inst->OInst << std::endl;
 #endif
-									if (Inst.find("call") <= Inst.size()) {
-										Function[Path][FunctionName]->CallInstNum++;
-										if (Inst.find("__sanitizer_cov_trace_pc") <= Inst.size()) {
-											(Function[Path][FunctionName]->BasicBlock[BasicBlockName])->COVNum++;
-											COVNum++;
+											}
+											CallInstNum++;
+										} else if (Inst.find('j') <= Inst.size()) {
+											Function[Path][FunctionName]->JumpInstNum++;
 										}
-									} else if (Inst.find('j') <= Inst.size()) {
-										Function[Path][FunctionName]->JumpInstNum++;
 									}
+									InstNum++;
 								}
 
 							}
@@ -534,6 +586,7 @@ namespace dra {
 		} else {
 			std::cerr << "Unable to open AssemblySourceCodeFile " << AssemblySourceCode << ">\n";
 		}
+		std::cout << "****************ReadAsmSourceCode****************" << std::endl;
 	}
 
 } /* namespace dra */
