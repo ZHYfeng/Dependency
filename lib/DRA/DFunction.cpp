@@ -12,6 +12,11 @@
 
 namespace dra {
 
+	static DFunction *MargeDFunction(DFunction *one, DFunction *two) {
+		auto *f = new DFunction();
+		return f;
+	}
+
 	DFunction::DFunction() {
 		Objudump = false;
 		AsmSourceCode = false;
@@ -52,7 +57,7 @@ namespace dra {
 
 	void DFunction::setState(CoverKind kind) {
 		if (state == CoverKind::cover && kind == CoverKind::uncover) {
-			std::cerr << "error BasicBlock kind" << "\n";
+			std::cerr << "error DFunction kind" << "\n";
 		}
 		state = kind;
 	}
@@ -91,11 +96,6 @@ namespace dra {
 
 	bool DFunction::isRepeat() const {
 		return repeat;
-	}
-
-	static DFunction DFunction::MargeDFunction(DFunction *one, DFunction *two) {
-		DFunction *f = new DFunction();
-		return f;
 	}
 
 	void DFunction::setRepeat(bool repeat) {
@@ -139,6 +139,7 @@ namespace dra {
 		std::cout << "CallInstNum :" << CallInstNum << std::endl;
 		std::cout << "JumpInstNum :" << JumpInstNum << std::endl;
 		std::cout << "BasicBlockNum :" << BasicBlockNum << std::endl;
+		function->dump();
 		std::cout << "--------------------------------------------" << std::endl;
 
 	}

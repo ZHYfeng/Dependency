@@ -1,0 +1,39 @@
+/*
+ * DInput.h
+ *
+ *  Created on: Mar 22, 2019
+ *      Author: yhao
+ */
+
+#ifndef LIB_DRA_DINPUT_H_
+#define LIB_DRA_DINPUT_H_
+
+#include <set>
+#include <string>
+
+#define DEBUGINPUT 1
+
+namespace dra {
+
+    class DInput {
+    public:
+        DInput();
+
+        virtual ~DInput();
+
+        void setCover(const std::string &cover, unsigned long long int vmOffsets);
+
+        void setProg(const std::string &prog);
+
+        void setSig(const std::string &sig);
+
+    public:
+        std::string sig;
+        std::string prog;
+        std::set<unsigned long long int> cover;
+
+    };
+
+} /* namespace dra */
+
+#endif /* LIB_DRA_DINPUT_H_ */

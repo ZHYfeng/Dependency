@@ -15,7 +15,6 @@
 #include "DAInstruction.h"
 #include "DBasicBlock.h"
 #include "DLInstruction.h"
-#include "DModule.h"
 
 namespace dra {
 	class DModule;
@@ -26,6 +25,12 @@ namespace llvm {
 } /* namespace llvm */
 
 namespace dra {
+
+	enum FunctionKind {
+		IR, O, S,
+	};
+
+	static DFunction *MargeDFunction(DFunction *one, DFunction *two);
 
 	class DFunction {
 		public:
@@ -47,9 +52,8 @@ namespace dra {
 
 			bool isMap();
 
-			static DFunction MargeDFunction(DFunction *one, DFunction *two);
 
-			bool isRepeat() const;
+		bool isRepeat() const;
 			void setRepeat(bool repeat);
 
 			void dump();

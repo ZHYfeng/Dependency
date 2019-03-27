@@ -7,7 +7,8 @@
 
 #include "DataManagement.h"
 
-#include <algorithm>
+#include <fstream>
+#include <iostream>
 
 #include "DModule.h"
 
@@ -16,6 +17,7 @@
 namespace dra {
 
 	DataManagement::DataManagement() {
+        vmOffsets = 0;
 		FindNum = 0;
 		UnFindNum = 0;
 		SameNum = 0;
@@ -49,3 +51,58 @@ namespace dra {
 	}
 
 } /* namespace dra */
+
+void dra::DataManagement::getInput(std::string coverfile) {
+
+    std::string Line;
+    std::ifstream coverFile(coverfile);
+    if (coverFile.is_open()) {
+        while (getline(coverFile, Line)) {
+
+            DInput *input;
+            if (Inputs.find(Line) != Inputs.end()) {
+                input = Inputs[Line];
+
+#if DEBUGINPUT
+                std::cout << "repeat sig : " << Line << std::endl;
+#endif
+                getline(coverFile, Line);
+            } else {
+                input = new DInput;
+                Inputs[Line] = input;
+                input->setSig(Line);
+                getline(coverFile, Line);
+                input->setProg(Line);
+            }
+            getline(coverFile, Line);
+            input->setCover(Line, vmOffsets);
+        }
+    } else {
+        std::cerr << "Unable to open coverfile file " << coverfile << "\n";
+    }
+
+    for (auto i : Inputs) {
+        for (auto ii : i.second->cover) {
+            cover.insert(ii);
+        }
+    }
+#if 0 && DEBUGINPUT
+    std::cout << "all cover: " << std::endl;
+    for(auto i : cover){
+        std::cout << std::hex << i << "\n";
+    }
+#endif
+}
+
+void dra::DataManagement::getVmOffsets(std::string vmOffsets) {
+    std::string Line;
+    std::ifstream VmOffsets(vmOffsets);
+    if (VmOffsets.is_open()) {
+        while (getline(VmOffsets, Line)) {
+            this->vmOffsets = std::stoul(Line, nullptr, 10);
+            this->vmOffsets = (this->vmOffsets << 32);
+        }
+    } else {
+        std::cerr << "Unable to open vmOffsets file " << vmOffsets << "\n";
+    }
+}

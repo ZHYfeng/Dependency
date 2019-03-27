@@ -13,6 +13,7 @@
 
 #include "DAInstruction.h"
 #include "DFunction.h"
+#include "DInput.h"
 
 namespace dra {
 	class DModule;
@@ -25,15 +26,21 @@ namespace dra {
     class DataManagement {
     public:
         DataManagement();
-
         virtual ~DataManagement();
 
         void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
-
         void BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function);
+
+        void getVmOffsets(std::string vmOffsets);
+
+        void getInput(std::string coverfile);
+
     public:
         dra::DModule *Modules;
         std::unordered_map<std::string, DAInstruction *> Address2BB;
+        std::unordered_map<std::string, DInput *> Inputs;
+        std::set<unsigned long long int> cover;
+        unsigned long long int vmOffsets;
 
         unsigned int FindNum;
         unsigned int UnFindNum;

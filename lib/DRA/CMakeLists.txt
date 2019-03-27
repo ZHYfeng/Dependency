@@ -5,6 +5,7 @@ set(SOURCES
 		DAInstruction.cpp
 		DLInstruction.cpp
 		DModule.cpp
+        DInput.cpp
 )
 
 add_llvm_loadable_module(DRA ${SOURCES})

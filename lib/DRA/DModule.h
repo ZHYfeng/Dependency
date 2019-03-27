@@ -11,7 +11,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "DAInstruction.h"
 #include "DFunction.h"
 
 #define TEST 0
@@ -25,10 +24,6 @@ namespace llvm {
 } /* namespace llvm */
 
 namespace dra {
-
-	enum FunctionKind {
-		IR, O, S, other,
-	};
 
 	class DModule {
 		public:

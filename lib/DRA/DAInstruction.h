@@ -8,14 +8,14 @@
 #ifndef LIB_DRA_INSTRUCTIONASM_H_
 #define LIB_DRA_INSTRUCTIONASM_H_
 
-class DBasicBlock;
+
 
 #include <string>
 
 #include "DLInstruction.h"
 
 namespace dra {
-
+    class DBasicBlock;
     class DAInstruction {
     public:
         DAInstruction();
@@ -23,6 +23,8 @@ namespace dra {
 
         void setState(CoverKind kind);
         void update(CoverKind kind);
+
+        void setAddr(std::string addr);
 
     public:
         CoverKind state;
@@ -33,6 +35,7 @@ namespace dra {
 
         std::string OInst;
         std::string Address;
+        unsigned long long int address;
     };
 
 } /* namespace dra */

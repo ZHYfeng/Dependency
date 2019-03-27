@@ -34,6 +34,8 @@ namespace dra {
 			void setState(CoverKind kind);
 			void update(CoverKind kind);
 
+		void infer(llvm::BasicBlock *b, CoverKind kind);
+
 			bool isAsmSourceCode() const;
 			void setAsmSourceCode(bool asmSourceCode);
 			bool isIr() const;
