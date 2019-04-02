@@ -8,6 +8,7 @@
 #ifndef LIB_DRA_FUNCTION_H_
 #define LIB_DRA_FUNCTION_H_
 
+#include <llvm/IR/BasicBlock.h>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -39,24 +40,30 @@ namespace dra {
 			virtual ~DFunction();
 
 			void InitIRFunction(llvm::Function *f);
+
 			void setState(CoverKind kind);
+
 			void update(CoverKind kind);
 
 			bool isObjudump() const;
+
 			void setObjudump(bool Objudump);
+
 			bool isAsmSourceCode() const;
+
 			void setAsmSourceCode(bool AsmSourceCode);
+
 			bool isIR() const;
+
 			void setIR(bool IR);
+
 			void setKind(FunctionKind kind);
-
 			bool isMap();
-
-
-		bool isRepeat() const;
+			bool isRepeat() const;
 			void setRepeat(bool repeat);
-
 			void dump();
+			void inferUseLessPred(llvm::BasicBlock *b);
+			void inferUseLessPred();
 
 		public:
 			bool Objudump;
@@ -81,6 +88,9 @@ namespace dra {
 
 			unsigned int BasicBlockNum;
 			std::unordered_map<std::string, DBasicBlock *> BasicBlock;
+
+			std::vector<llvm::BasicBlock *> path;
+			std::set<llvm::BasicBlock *> order;
 
 	};
 

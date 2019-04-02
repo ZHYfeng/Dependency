@@ -9,19 +9,21 @@
 #define LIB_DRA_INSTRUCTIONASM_H_
 
 
-
 #include <string>
 
 #include "DLInstruction.h"
 
 namespace dra {
     class DBasicBlock;
+
     class DAInstruction {
     public:
         DAInstruction();
+
         virtual ~DAInstruction();
 
         void setState(CoverKind kind);
+
         void update(CoverKind kind);
 
         void setAddr(std::string addr);

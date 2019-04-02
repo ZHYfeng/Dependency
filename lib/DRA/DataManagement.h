@@ -16,7 +16,7 @@
 #include "DInput.h"
 
 namespace dra {
-	class DModule;
+    class DModule;
 } /* namespace dra */
 
 
@@ -26,9 +26,11 @@ namespace dra {
     class DataManagement {
     public:
         DataManagement();
+
         virtual ~DataManagement();
 
         void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
+
         void BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function);
 
         void getVmOffsets(std::string vmOffsets);

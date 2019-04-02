@@ -16,39 +16,41 @@
 
 namespace dra {
 
-	DataManagement::DataManagement() {
+    DataManagement::DataManagement() {
         vmOffsets = 0;
-		FindNum = 0;
-		UnFindNum = 0;
-		SameNum = 0;
-		DiffNum = 0;
-		Modules = new dra::DModule();
-		Address2BB.reserve(1000000);
-	}
+        FindNum = 0;
+        UnFindNum = 0;
+        SameNum = 0;
+        DiffNum = 0;
+        Modules = new dra::DModule();
+        Address2BB.reserve(1000000);
+    }
 
-	DataManagement::~DataManagement() = default;
+    DataManagement::~DataManagement() = default;
 
-	void DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename) {
+    void
+    DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename) {
 
-		Modules->ReadBC(std::move(InputFilename));
-		Modules->ReadObjdump(std::move(objdump));
-		Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
+        Modules->ReadBC(std::move(InputFilename));
+        Modules->ReadObjdump(std::move(objdump));
+        Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
 
-	}
+    }
 
-	void DataManagement::BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function) {
-		for (auto file : Modules->Function) {
-			for (auto function : file.second) {
-				if (function.second->isRepeat()) {
+    void DataManagement::BuildAddress2BB(
+            std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function) {
+        for (auto file : Modules->Function) {
+            for (auto function : file.second) {
+                if (function.second->isRepeat()) {
 
-				} else {
-					for (auto inst : function.second->InstASM) {
-						Address2BB[inst->Address] = inst;
-					}
-				}
-			}
-		}
-	}
+                } else {
+                    for (auto inst : function.second->InstASM) {
+                        Address2BB[inst->Address] = inst;
+                    }
+                }
+            }
+        }
+    }
 
 } /* namespace dra */
 
@@ -74,6 +76,7 @@ void dra::DataManagement::getInput(std::string coverfile) {
                 getline(coverFile, Line);
                 input->setProg(Line);
             }
+            input->Number++;
             getline(coverFile, Line);
             input->setCover(Line, vmOffsets);
         }
@@ -82,7 +85,7 @@ void dra::DataManagement::getInput(std::string coverfile) {
     }
 
     for (auto i : Inputs) {
-        for (auto ii : i.second->cover) {
+        for (auto ii : i.second->MaxCover) {
             cover.insert(ii);
         }
     }

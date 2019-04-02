@@ -13,17 +13,17 @@
 namespace dra {
 
     DInput::DInput() {
-
+        Number = 0;
     }
 
-    DInput::~DInput() {
-
-    }
+    DInput::~DInput() = default;
 
     void DInput::setCover(const std::string &cover, unsigned long long int vmOffsets) {
         std::string temp = cover.substr(1, cover.size() - 2) + ' ';
         unsigned long long int addr = 0;
-
+        auto *thisCover = new std::set<unsigned long long int>;
+        auto *tempCover = new std::set<unsigned long long int>;
+        this->AllCover.push_back(thisCover);
 #if DEBUGINPUT
         std::cout << cover << std::endl;
 #endif
@@ -31,13 +31,35 @@ namespace dra {
             if (cc != ' ') {
                 addr = addr * 10 + cc - '0';
             } else {
-                this->cover.insert(addr + vmOffsets - 5);
+                auto FinalAddr = addr + vmOffsets - 5;
+                this->MaxCover.insert(FinalAddr);
+                thisCover->insert(FinalAddr);
                 addr = 0;
             }
         }
+        if (this->MiniCover.empty()) {
+            this->MiniCover = *thisCover;
+        } else {
+            for (auto cc : this->MiniCover) {
+                if (thisCover->find(cc) != thisCover->end()) {
+                    tempCover->insert(cc);
+                } else {
+
+                }
+            }
+            MiniCover = *tempCover;
+        }
+
+
 #if DEBUGINPUT
-        for (auto addr : this->cover) {
-            std::cout << std::hex << addr << " ";
+        std::cout << "MiniCover:\n";
+        for (auto i : this->MiniCover) {
+            std::cout << std::hex << i << " ";
+        }
+        std::cout << "\n";
+        std::cout << "MaxCover:\n";
+        for (auto i : this->MaxCover) {
+            std::cout << std::hex << i << " ";
         }
         std::cout << "\n";
 #endif
@@ -47,14 +69,14 @@ namespace dra {
 
         std::stringstream ss;
         std::string temp = prog.substr(1, prog.size() - 2) + ' ';
-        char c;
+        char c = 0;
 
 #if DEBUGINPUT
         std::cout << prog << std::endl;
 #endif
         for (auto cc : temp) {
             if (cc != ' ') {
-                c = c * 10 + cc - '0';
+                c = static_cast<char>(c * 10 + cc - '0');
             } else {
                 ss.str("");
                 ss << c;
