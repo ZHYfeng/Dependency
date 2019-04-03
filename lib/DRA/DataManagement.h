@@ -16,39 +16,31 @@
 #include "DInput.h"
 
 namespace dra {
-    class DModule;
+class DModule;
 } /* namespace dra */
-
 
 namespace dra {
 
+class DataManagement {
+public:
+	DataManagement();
+	virtual ~DataManagement();
 
-    class DataManagement {
-    public:
-        DataManagement();
+	void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
+	void BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function);
 
-        virtual ~DataManagement();
+	void getVmOffsets(std::string vmOffsets);
+	void getInput(std::string coverfile);
+	void setInput();
 
-        void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
+public:
+	dra::DModule *Modules;
+	std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
+	std::unordered_map<std::string, DInput *> Inputs;
+	std::set<unsigned long long int> cover;
+	unsigned long long int vmOffsets;
 
-        void BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function);
-
-        void getVmOffsets(std::string vmOffsets);
-
-        void getInput(std::string coverfile);
-
-    public:
-        dra::DModule *Modules;
-        std::unordered_map<std::string, DAInstruction *> Address2BB;
-        std::unordered_map<std::string, DInput *> Inputs;
-        std::set<unsigned long long int> cover;
-        unsigned long long int vmOffsets;
-
-        unsigned int FindNum;
-        unsigned int UnFindNum;
-        unsigned int SameNum;
-        unsigned int DiffNum;
-    };
+};
 
 } /* namespace dra */
 

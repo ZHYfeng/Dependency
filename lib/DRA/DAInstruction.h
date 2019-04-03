@@ -8,37 +8,38 @@
 #ifndef LIB_DRA_INSTRUCTIONASM_H_
 #define LIB_DRA_INSTRUCTIONASM_H_
 
-
 #include <string>
 
 #include "DLInstruction.h"
 
 namespace dra {
-    class DBasicBlock;
+class DInput;
+} /* namespace dra */
 
-    class DAInstruction {
-    public:
-        DAInstruction();
+namespace dra {
+class DBasicBlock;
 
-        virtual ~DAInstruction();
+class DAInstruction {
+public:
+	DAInstruction();
 
-        void setState(CoverKind kind);
+	virtual ~DAInstruction();
 
-        void update(CoverKind kind);
+	void setState(CoverKind kind);
+	void update(CoverKind kind, DInput * input);
+	void setAddr(std::string addr);
 
-        void setAddr(std::string addr);
+public:
+	CoverKind state;
 
-    public:
-        CoverKind state;
+	std::string SInst;
+	std::string BasicBlockName;
+	DBasicBlock *parent;
 
-        std::string SInst;
-        std::string BasicBlockName;
-        DBasicBlock *parent;
-
-        std::string OInst;
-        std::string Address;
-        unsigned long long int address;
-    };
+	std::string OInst;
+	std::string Address;
+	unsigned long long int address;
+};
 
 } /* namespace dra */
 

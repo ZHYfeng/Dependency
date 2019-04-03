@@ -15,119 +15,85 @@
 
 namespace dra {
 
-	DBasicBlock::DBasicBlock() {
-		IR = false;
-		AsmSourceCode = false;
-		basicBlock = nullptr;
-		parent = nullptr;
-		state = CoverKind::untest;
-		COVNum = 0;
+DBasicBlock::DBasicBlock() {
+	IR = false;
+	AsmSourceCode = false;
+	basicBlock = nullptr;
+	parent = nullptr;
+	state = CoverKind::untest;
+	COVNum = 0;
+}
+
+DBasicBlock::~DBasicBlock() = default;
+
+void DBasicBlock::InitIRBasicBlock(llvm::BasicBlock *b) {
+	DBasicBlock::basicBlock = b;
+	for (auto &it : *basicBlock) {
+		DLInstruction *i;
+
+		i = new DLInstruction();
+		InstIR.push_back(i);
+
+		i->parent = this;
+		i->i = (&it);
 	}
+}
 
-	DBasicBlock::~DBasicBlock() = default;
+void DBasicBlock::setState(CoverKind kind) {
 
-	void DBasicBlock::InitIRBasicBlock(llvm::BasicBlock *b) {
-		DBasicBlock::basicBlock = b;
-		for (auto &it : *basicBlock) {
-			DLInstruction *i;
-
-			i = new DLInstruction();
-			InstIR.push_back(i);
-
-			i->parent = this;
-			i->i = (&it);
+	if (kind == CoverKind::cover) {
+		state = kind;
+	} else if (kind == CoverKind::uncover) {
+		if (state == CoverKind::cover) {
+			parent->dump();
+			std::cout << "cover to uncover basic block name : " << name << std::endl;
+			exit(0);
 		}
 	}
+}
 
-	void DBasicBlock::setState(CoverKind kind) {
-
-		if (kind == CoverKind::cover) {
-			state = kind;
-		} else if (kind == CoverKind::uncover) {
-			if (state == CoverKind::cover) {
-				parent->dump();
-				std::cout << "cover to uncover basic block name : " << name << std::endl;
-				exit(0);
-			}
-		}
+void DBasicBlock::update(CoverKind kind, DInput * input) {
+	setState(kind);
+	for (auto it : InstIR) {
+		it->setState(kind);
 	}
-
-	void DBasicBlock::update(CoverKind kind) {
-		setState(kind);
-		for (auto it : InstIR) {
-			it->setState(kind);
-		}
-		for (auto it : InstASM) {
-			it->setState(kind);
-		}
-		if (kind == CoverKind::cover) {
-			parent->update(kind);
-		}
-		infer();
+	for (auto it : InstASM) {
+		it->setState(kind);
 	}
+	if (kind == CoverKind::cover) {
+		parent->update(kind);
+	}
+	inferCoverBB(input, this->basicBlock);
+	infer();
+}
 
-} /* namespace dra */
-
-bool dra::DBasicBlock::isAsmSourceCode() const {
+bool DBasicBlock::isAsmSourceCode() const {
 	return AsmSourceCode;
 }
 
-void dra::DBasicBlock::setAsmSourceCode(bool asmSourceCode) {
+void DBasicBlock::setAsmSourceCode(bool asmSourceCode) {
 	AsmSourceCode = asmSourceCode;
 }
 
-bool dra::DBasicBlock::isIr() const {
+bool DBasicBlock::isIr() const {
 	return IR;
 }
 
-void dra::DBasicBlock::infer() {
-
-	if (this->state == CoverKind::cover) {
-		inferSuccessors(this->basicBlock);
-		inferPredecessors(this->basicBlock);
-	}
-
-}
-
-void dra::DBasicBlock::setIr(bool ir) {
+void DBasicBlock::setIr(bool ir) {
 	IR = ir;
 }
 
-void dra::DBasicBlock::inferSuccessors(llvm::BasicBlock *b) {
-	auto *inst = b->getTerminator();
-	if (inst->getNumSuccessors() == 1) {
-		setOtherBBState(inst->getSuccessor(0), CoverKind::cover);
-		inferSuccessors(inst->getSuccessor(0));
-	} else {
-		for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
-			std::string name = inst->getSuccessor(i)->getName().str();
-			if (inst->getSuccessor(i)->hasName()) {
-				setOtherBBState(inst->getSuccessor(i), CoverKind::uncover);
-			} else {
-				setOtherBBState(inst->getSuccessor(i), CoverKind::cover);
-				inferSuccessors(inst->getSuccessor(i));
-			}
-		}
-	}
-}
-
-void dra::DBasicBlock::setOtherBBState(llvm::BasicBlock *b, dra::CoverKind kind) {
+void DBasicBlock::inferCoverBB(DInput * input, llvm::BasicBlock *b) {
 	DBasicBlock *Db;
 	std::string name = b->getName().str();
 	if (parent->BasicBlock.find(name) != parent->BasicBlock.end()) {
-		Db = parent->BasicBlock[b->getName().str()];
-		if (Db->state == CoverKind::untest) {
-			Db->setState(kind);
-		} else if (Db->state == CoverKind::uncover) {
-			if (kind == CoverKind::cover) {
-				Db->setState(kind);
-			}
+		Db = parent->BasicBlock[name];
+		if (Db->state == CoverKind::untest || Db->state == CoverKind::uncover) {
+			Db->setState(CoverKind::cover);
+			Db->input.clear();
+			this->addNewInput(input);
 		} else if (Db->state == CoverKind::cover) {
-			if (kind == CoverKind::uncover) {
-				parent->dump();
-				std::cout << "cover to uncover basic block name : " << name << std::endl;
-				exit(0);
-			}
+			this->addNewInput(input);
 		}
 	} else {
 		parent->dump();
@@ -136,10 +102,52 @@ void dra::DBasicBlock::setOtherBBState(llvm::BasicBlock *b, dra::CoverKind kind)
 	}
 }
 
-void dra::DBasicBlock::inferPredecessors(llvm::BasicBlock *b) {
+void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b) {
+	DBasicBlock *Db;
+	std::string name = b->getName().str();
+	std::string pname = p->getName().str();
+	if (parent->BasicBlock.find(name) != parent->BasicBlock.end()) {
+		Db = parent->BasicBlock[name];
+		if (Db->state == CoverKind::untest) {
+			Db->setState(CoverKind::uncover);
+			Db->addNewInput(parent->BasicBlock[pname]->lastInput);
+		} else if (Db->state == CoverKind::uncover) {
+			Db->addNewInput(parent->BasicBlock[pname]->lastInput);
+		} else if (Db->state == CoverKind::cover) {
 
+		}
+	} else {
+		parent->dump();
+		std::cout << "not find basic block name : " << name << std::endl;
+		exit(0);
+	}
+}
+
+void DBasicBlock::inferSuccessors(llvm::BasicBlock *b) {
+	auto *inst = b->getTerminator();
+	std::string name = b->getName().str();
+	auto input = this->parent->BasicBlock[name]->lastInput;
+	if (inst->getNumSuccessors() == 1) {
+//		setOtherBBState(b, inst->getSuccessor(0), CoverKind::cover);
+//		inferSuccessors(inst->getSuccessor(0));
+	} else {
+		for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+			std::string name = inst->getSuccessor(i)->getName().str();
+			if (inst->getSuccessor(i)->hasName()) {
+				inferUncoverBB(b, inst->getSuccessor(i));
+			} else {
+				inferCoverBB(input, inst->getSuccessor(i));
+				inferSuccessors(inst->getSuccessor(i));
+			}
+		}
+	}
+}
+
+void DBasicBlock::inferPredecessors(llvm::BasicBlock *b) {
+	std::string name = b->getName().str();
+	auto input = this->parent->BasicBlock[name]->lastInput;
 	if (b->getSinglePredecessor()) {
-		setOtherBBState(b->getSinglePredecessor(), CoverKind::cover);
+		inferCoverBB(input, b->getSinglePredecessor());
 		inferPredecessors(b->getSinglePredecessor());
 		inferPredecessorsUncover(b, b->getSinglePredecessor());
 	} else if (useLessPred.size() > 0) {
@@ -152,31 +160,45 @@ void dra::DBasicBlock::inferPredecessors(llvm::BasicBlock *b) {
 			}
 		}
 		if (num == 1) {
-			setOtherBBState(pb, CoverKind::cover);
+			inferCoverBB(input, pb);
 			inferPredecessors(pb);
 			inferPredecessorsUncover(b, pb);
 		}
-	} else if(!b->hasName()){
+	} else if (!b->hasName()) {
 		for (auto *Pred : llvm::predecessors(b)) {
-			setOtherBBState(b->getSinglePredecessor(), CoverKind::cover);
+			inferCoverBB(input, b->getSinglePredecessor());
 			inferPredecessors(b->getSinglePredecessor());
 			inferPredecessorsUncover(b, b->getSinglePredecessor());
 		}
-	} else{
+	} else {
 
 	}
 
 }
 
-void dra::DBasicBlock::inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred) {
+void DBasicBlock::inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred) {
 	auto *inst = Pred->getTerminator();
 	if (inst->getNumSuccessors() == 1) {
 
 	} else {
 		for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
 			if (inst->getSuccessor(i) != b && inst->getSuccessor(i)->hasName()) {
-				setOtherBBState(inst->getSuccessor(i), CoverKind::uncover);
+				inferUncoverBB(b, inst->getSuccessor(i));
 			}
 		}
 	}
+}
+} /* namespace dra */
+
+void dra::DBasicBlock::infer() {
+	if (this->state == CoverKind::cover) {
+		inferSuccessors(this->basicBlock);
+//		inferPredecessors(this->basicBlock);
+	}
+
+}
+
+void dra::DBasicBlock::addNewInput(DInput* i) {
+	this->lastInput = i;
+	this->input.insert(i);
 }

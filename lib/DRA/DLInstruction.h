@@ -12,32 +12,31 @@
 #include <llvm/IR/Instruction.h>
 
 namespace dra {
-    enum CoverKind {
-        other, untest, cover, uncover,
-    };
+enum CoverKind {
+	other, untest, cover, uncover,
+};
 
-    class DBasicBlock;
+class DBasicBlock;
 
-    class DLInstruction {
-    public:
-        DLInstruction();
+class DLInstruction {
+public:
+	DLInstruction();
 
-        virtual ~DLInstruction();
+	virtual ~DLInstruction();
 
-        void setState(CoverKind kind);
+	void setState(CoverKind kind);
 
-        void update(CoverKind kind);
+	void update(CoverKind kind);
 
-    public:
-        llvm::Instruction *i;
-        CoverKind state;
-        DBasicBlock *parent;
+public:
+	llvm::Instruction *i;
+	CoverKind state;
+	DBasicBlock *parent;
 
-        std::string FileName;
-        unsigned int Line;
+	std::string FileName;
+	unsigned int Line;
 
-
-    };
+};
 
 } /* namespace dra */
 

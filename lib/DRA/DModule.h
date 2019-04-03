@@ -20,43 +20,42 @@
 #define DEBUGASM 0
 
 namespace llvm {
-    class Module;
+class Module;
 } /* namespace llvm */
 
 namespace dra {
 
-    class DModule {
-    public:
-        DModule();
+class DModule {
+public:
+	DModule();
 
-        virtual ~DModule();
+	virtual ~DModule();
 
-        std::string exec(std::string cmd);
+	std::string exec(std::string cmd);
 
-        void ReadObjdump(std::string objdump);
+	void ReadObjdump(std::string objdump);
 
-        void ReadAsmSourceCode(std::string AssemblySourceCode);
+	void ReadAsmSourceCode(std::string AssemblySourceCode);
 
-        void ReadBC(std::string InputFilename);
+	void ReadBC(std::string InputFilename);
 
-        void BuildLLVMFunction(llvm::Module *Module);
+	void BuildLLVMFunction(llvm::Module *Module);
 
-        void AddRepeatFunction(DFunction *function, FunctionKind kind);
+	void AddRepeatFunction(DFunction *function, FunctionKind kind);
 
-        DFunction *CheckRepeatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
+	DFunction *CheckRepeatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
 
-        DFunction *CreatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
+	DFunction *CreatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
 
-    public:
+public:
 
-        std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
+	std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
 
-        std::unordered_map<std::string, DFunction *> RepeatBCFunction;
-        std::unordered_map<std::string, DFunction *> RepeatOFunction;
-        std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> RepeatSFunction;
+	std::unordered_map<std::string, DFunction *> RepeatBCFunction;
+	std::unordered_map<std::string, DFunction *> RepeatOFunction;
+	std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> RepeatSFunction;
 
-
-    };
+};
 
 } /* namespace dra */
 

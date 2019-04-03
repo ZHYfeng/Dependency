@@ -18,81 +18,81 @@
 #include "DLInstruction.h"
 
 namespace dra {
-	class DModule;
+class DModule;
 } /* namespace dra */
 
 namespace llvm {
-	class Function;
+class Function;
 } /* namespace llvm */
 
 namespace dra {
 
-	enum FunctionKind {
-		IR, O, S,
-	};
+enum FunctionKind {
+	IR, O, S,
+};
 
-	static DFunction *MargeDFunction(DFunction *one, DFunction *two);
+static DFunction *MargeDFunction(DFunction *one, DFunction *two);
 
-	class DFunction {
-		public:
-			DFunction();
+class DFunction {
+public:
+	DFunction();
 
-			virtual ~DFunction();
+	virtual ~DFunction();
 
-			void InitIRFunction(llvm::Function *f);
+	void InitIRFunction(llvm::Function *f);
 
-			void setState(CoverKind kind);
+	void setState(CoverKind kind);
 
-			void update(CoverKind kind);
+	void update(CoverKind kind);
 
-			bool isObjudump() const;
+	bool isObjudump() const;
 
-			void setObjudump(bool Objudump);
+	void setObjudump(bool Objudump);
 
-			bool isAsmSourceCode() const;
+	bool isAsmSourceCode() const;
 
-			void setAsmSourceCode(bool AsmSourceCode);
+	void setAsmSourceCode(bool AsmSourceCode);
 
-			bool isIR() const;
+	bool isIR() const;
 
-			void setIR(bool IR);
+	void setIR(bool IR);
 
-			void setKind(FunctionKind kind);
-			bool isMap();
-			bool isRepeat() const;
-			void setRepeat(bool repeat);
-			void dump();
-			void inferUseLessPred(llvm::BasicBlock *b);
-			void inferUseLessPred();
+	void setKind(FunctionKind kind);
+	bool isMap();
+	bool isRepeat() const;
+	void setRepeat(bool repeat);
+	void dump();
+	void inferUseLessPred(llvm::BasicBlock *b);
+	void inferUseLessPred();
 
-		public:
-			bool Objudump;
-			bool AsmSourceCode;
-			bool IR;
+public:
+	bool Objudump;
+	bool AsmSourceCode;
+	bool IR;
 
-			bool repeat;
+	bool repeat;
 
-			llvm::Function *function;
-			DModule *parent;
-			CoverKind state;
+	llvm::Function *function;
+	DModule *parent;
+	CoverKind state;
 
-			std::string FunctionName;
-			std::string IRName;
-			std::string Path;
+	std::string FunctionName;
+	std::string IRName;
+	std::string Path;
 
-			std::string Address;
-			unsigned int InstNum;
-			unsigned int CallInstNum;
-			unsigned int JumpInstNum;
-			std::vector<DAInstruction *> InstASM;
+	std::string Address;
+	unsigned int InstNum;
+	unsigned int CallInstNum;
+	unsigned int JumpInstNum;
+	std::vector<DAInstruction *> InstASM;
 
-			unsigned int BasicBlockNum;
-			std::unordered_map<std::string, DBasicBlock *> BasicBlock;
+	unsigned int BasicBlockNum;
+	std::unordered_map<std::string, DBasicBlock *> BasicBlock;
 
-			std::vector<llvm::BasicBlock *> path;
-			std::set<llvm::BasicBlock *> order;
+	std::vector<llvm::BasicBlock *> path;
+	std::set<llvm::BasicBlock *> order;
 
-	};
+};
 
 } /* namespace dra */
 
