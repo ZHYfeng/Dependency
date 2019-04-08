@@ -32,6 +32,6 @@ int main(int argc, char **argv) {
 	auto *MI = new dra::DataManagement();
 	MI->initializeModule(objdump, AssemblySourceCode, InputFilename);
 	MI->getVmOffsets(vmOffsets);
-//    MI->getInput(coverfile);
+    MI->getInput(coverfile);
 	return 0;
 }
