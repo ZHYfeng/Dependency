@@ -22,6 +22,7 @@ DBasicBlock::DBasicBlock() {
 	parent = nullptr;
 	state = CoverKind::untest;
 	COVNum = 0;
+	this->lastInput = nullptr;
 }
 
 DBasicBlock::~DBasicBlock() = default;

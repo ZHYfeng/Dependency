@@ -166,9 +166,9 @@ void dra::DModule::ReadObjdump(std::string objdump) {
 
 					ss.str("");
 #if TEST
-					start = Result.find("c_f/");
+					start = Result.find("-np/");
 #else
-                        start = Result.find("_bc/");
+                        start = Result.find("p-f/");
 #endif
 					end = Result.find(':');
 					for (unsigned long i = start + 4; i < end; i++) {

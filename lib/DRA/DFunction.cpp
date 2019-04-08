@@ -38,6 +38,7 @@ DFunction::DFunction() {
 	CallInstNum = 0;
 	JumpInstNum = 0;
 	BasicBlockNum = 0;
+	MargeDFunction(this, this);
 }
 
 DFunction::~DFunction() = default;

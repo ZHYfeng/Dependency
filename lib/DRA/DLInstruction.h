@@ -21,11 +21,9 @@ class DBasicBlock;
 class DLInstruction {
 public:
 	DLInstruction();
-
 	virtual ~DLInstruction();
 
 	void setState(CoverKind kind);
-
 	void update(CoverKind kind);
 
 public:

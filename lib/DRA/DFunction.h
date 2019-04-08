@@ -36,25 +36,18 @@ static DFunction *MargeDFunction(DFunction *one, DFunction *two);
 class DFunction {
 public:
 	DFunction();
-
 	virtual ~DFunction();
 
 	void InitIRFunction(llvm::Function *f);
 
 	void setState(CoverKind kind);
-
 	void update(CoverKind kind);
 
 	bool isObjudump() const;
-
 	void setObjudump(bool Objudump);
-
 	bool isAsmSourceCode() const;
-
 	void setAsmSourceCode(bool AsmSourceCode);
-
 	bool isIR() const;
-
 	void setIR(bool IR);
 
 	void setKind(FunctionKind kind);
