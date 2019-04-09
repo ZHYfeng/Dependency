@@ -150,9 +150,9 @@ void dra::DModule::ReadObjdump(std::string objdump) {
 					// get path
 #if TEST
 					std::string obj = objdump.substr(0, objdump.find(".objdump"));
-					Cmd = "addr2line -a -i -f -e " + obj + ".o " + Addr;
+					Cmd = "addr2line -afi -e " + obj + ".o " + Addr;
 #else
-                        Cmd = "addr2line -a -i -f -e vmlinux " + Addr;
+                        Cmd = "addr2line -afi -e vmlinux " + Addr;
 #endif
 
 #if DEBUGOBJDUMP
@@ -166,9 +166,9 @@ void dra::DModule::ReadObjdump(std::string objdump) {
 
 					ss.str("");
 #if TEST
-					start = Result.find("-np/");
+					start = Result.find("p-f/");
 #else
-                        start = Result.find("p-f/");
+                        start = Result.find("-np/");
 #endif
 					end = Result.find(':');
 					for (unsigned long i = start + 4; i < end; i++) {

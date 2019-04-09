@@ -13,7 +13,7 @@
 
 #include "DFunction.h"
 
-#define TEST 1
+#define TEST 0
 #define DEBUG 1
 #define DEBUGBC 0
 #define DEBUGOBJDUMP 0

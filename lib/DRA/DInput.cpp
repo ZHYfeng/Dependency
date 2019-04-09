@@ -63,6 +63,13 @@ void DInput::setCover(const std::string &cover, unsigned long long int vmOffsets
 			addr = addr * 10 + cc - '0';
 		} else {
 			auto FinalAddr = addr + vmOffsets - 5;
+#if DEBUGINPUT
+			if(this->MaxCover.find(FinalAddr) == this->MaxCover.end()){
+				std::cout << "new : " << std::hex << FinalAddr << std::endl;
+			}else {
+				std::cout << "old : " << std::hex << FinalAddr << std::endl;
+			}
+#endif
 			this->MaxCover.insert(FinalAddr);
 			thisCover->insert(FinalAddr);
 			addr = 0;

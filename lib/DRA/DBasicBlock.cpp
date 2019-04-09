@@ -23,6 +23,7 @@ DBasicBlock::DBasicBlock() {
 	state = CoverKind::untest;
 	COVNum = 0;
 	this->lastInput = nullptr;
+	this->realPred = nullptr;
 }
 
 DBasicBlock::~DBasicBlock() = default;
@@ -112,11 +113,19 @@ void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b) {
 		if (Db->state == CoverKind::untest) {
 			Db->setState(CoverKind::uncover);
 			Db->addNewInput(parent->BasicBlock[pname]->lastInput);
+			Db->realPred = parent->BasicBlock[pname];
 		} else if (Db->state == CoverKind::uncover) {
 			Db->addNewInput(parent->BasicBlock[pname]->lastInput);
+			Db->realPred = parent->BasicBlock[pname];
 		} else if (Db->state == CoverKind::cover) {
 
 		}
+#if DEBUGINPUT
+		if (Db->state == CoverKind::uncover) {
+			std::cout << "-------uncover basic block-----------------" << std::endl;
+			Db->dump();
+		}
+#endif
 	} else {
 		parent->dump();
 		std::cout << "not find basic block name : " << name << std::endl;
@@ -189,9 +198,8 @@ void DBasicBlock::inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock
 		}
 	}
 }
-} /* namespace dra */
 
-void dra::DBasicBlock::infer() {
+void DBasicBlock::infer() {
 	if (this->state == CoverKind::cover) {
 		inferSuccessors(this->basicBlock);
 //		inferPredecessors(this->basicBlock);
@@ -199,7 +207,28 @@ void dra::DBasicBlock::infer() {
 
 }
 
-void dra::DBasicBlock::addNewInput(DInput* i) {
+void DBasicBlock::addNewInput(DInput* i) {
 	this->lastInput = i;
 	this->input.insert(i);
 }
+
+void DBasicBlock::dump() {
+
+	std::cout << "--------------------------------------------" << std::endl;
+	std::cout << "Path :" << parent->Path << std::endl;
+	std::cout << "FunctionName :" << parent->FunctionName << std::endl;
+	std::cout << "name :" << name << std::endl;
+
+	std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
+	std::cout << "IR :" << IR << std::endl;
+	std::cout << "CoverKind :" << state << std::endl;
+	basicBlock->dump();
+	if (realPred != nullptr) {
+		std::cout << "realPred :" << realPred->name << std::endl;
+		std::cout << "lastInput :" << lastInput->sig << std::endl;
+	}
+	std::cout << "--------------------------------------------" << std::endl;
+
+}
+
+} /* namespace dra */

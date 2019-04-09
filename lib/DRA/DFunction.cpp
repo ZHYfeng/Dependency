@@ -38,7 +38,6 @@ DFunction::DFunction() {
 	CallInstNum = 0;
 	JumpInstNum = 0;
 	BasicBlockNum = 0;
-	MargeDFunction(this, this);
 }
 
 DFunction::~DFunction() = default;
@@ -60,8 +59,8 @@ void DFunction::InitIRFunction(llvm::Function *f) {
 		}
 		BasicBlock[Name]->InitIRBasicBlock(&it);
 	}
-	inferUseLessPred();
-//		inferUseLessPred(&f->getEntryBlock());
+//	inferUseLessPred();
+//	inferUseLessPred(&f->getEntryBlock());
 }
 
 void DFunction::setState(CoverKind kind) {
@@ -148,7 +147,9 @@ void DFunction::dump() {
 	std::cout << "CallInstNum :" << CallInstNum << std::endl;
 	std::cout << "JumpInstNum :" << JumpInstNum << std::endl;
 	std::cout << "BasicBlockNum :" << BasicBlockNum << std::endl;
-	function->dump();
+	if(this->function != nullptr){
+		function->dump();
+	}
 	std::cout << "--------------------------------------------" << std::endl;
 
 }

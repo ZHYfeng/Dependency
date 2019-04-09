@@ -81,6 +81,9 @@ void DataManagement::getInput(std::string coverfile) {
 			cover.insert(ii);
 		}
 	}
+
+//	setInput();
+
 #if 0 && DEBUGINPUT
     std::cout << "all cover: " << std::endl;
     for(auto i : cover){

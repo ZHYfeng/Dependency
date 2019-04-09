@@ -43,12 +43,14 @@ public:
 	void inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred);
 	void infer();
 
-	void addNewInput(DInput *i);
+	void addNewInput(DInput * i);
 
 	bool isAsmSourceCode() const;
 	void setAsmSourceCode(bool asmSourceCode);
 	bool isIr() const;
 	void setIr(bool ir);
+
+	void dump();
 
 public:
 	bool IR;
@@ -66,6 +68,7 @@ public:
 
 	std::set<DInput *> input;
 	DInput * lastInput;
+	DBasicBlock * realPred;
 };
 
 } /* namespace dra */
