@@ -82,7 +82,7 @@ void DataManagement::getInput(std::string coverfile) {
 		}
 	}
 
-//	setInput();
+	setInput();
 
 #if 0 && DEBUGINPUT
     std::cout << "all cover: " << std::endl;
@@ -108,7 +108,12 @@ void DataManagement::setInput() {
 	for (auto it : this->Inputs) {
 		std::string sig = it.first;
 		for (auto addr : it.second->MaxCover) {
-			this->Address2BB[addr]->update(CoverKind::cover, it.second);
+			if(this->Address2BB.find(addr) != this->Address2BB.end()){
+				this->Address2BB[addr]->update(CoverKind::cover, it.second);
+			}else {
+				std::cerr << "un find address " << std::hex << addr << "\n";
+			}
+
 		}
 	}
 }
