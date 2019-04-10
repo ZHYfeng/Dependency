@@ -47,8 +47,8 @@ void DBasicBlock::setState(CoverKind kind) {
 		state = kind;
 	} else if (kind == CoverKind::uncover) {
 		if (state == CoverKind::cover) {
-			parent->dump();
 			std::cout << "cover to uncover basic block name : " << name << std::endl;
+			parent->dump();
 			exit(0);
 		}
 	}
@@ -98,8 +98,8 @@ void DBasicBlock::inferCoverBB(DInput * input, llvm::BasicBlock *b) {
 			this->addNewInput(input);
 		}
 	} else {
+		std::cout << "inferCoverBB not find basic block name : " << name << std::endl;
 		parent->dump();
-		std::cout << "not find basic block name : " << name << std::endl;
 		exit(0);
 	}
 }
@@ -127,8 +127,8 @@ void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b) {
 		}
 #endif
 	} else {
+		std::cout << "inferUncoverBB not find basic block name : " << name << std::endl;
 		parent->dump();
-		std::cout << "not find basic block name : " << name << std::endl;
 		exit(0);
 	}
 }

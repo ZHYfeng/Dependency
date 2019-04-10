@@ -152,7 +152,7 @@ void dra::DModule::ReadObjdump(std::string objdump) {
 #if TEST
 					Cmd = "addr2line -afi -e " + obj + ".o " + Addr;
 #else
-					Cmd = "addr2line -afi -e " + obj + Addr;
+					Cmd = "addr2line -afi -e " + obj + " " + Addr;
 #endif
 
 #if DEBUGOBJDUMP
@@ -564,6 +564,8 @@ DFunction *DModule::CheckRepeatFunction(std::string Path, std::string FunctionNa
 
 				function = CreatFunction(Path, FunctionName, kind);
 				AddRepeatFunction(function, kind);
+			}else {
+				function->setKind(kind);
 			}
 			break;
 		}
@@ -575,6 +577,8 @@ DFunction *DModule::CheckRepeatFunction(std::string Path, std::string FunctionNa
 
 				function = CreatFunction(Path, FunctionName, kind);
 				AddRepeatFunction(function, kind);
+			}else {
+				function->setKind(kind);
 			}
 			break;
 		}
@@ -586,6 +590,8 @@ DFunction *DModule::CheckRepeatFunction(std::string Path, std::string FunctionNa
 
 				function = CreatFunction(Path, FunctionName, kind);
 				AddRepeatFunction(function, kind);
+			}else {
+				function->setKind(kind);
 			}
 			break;
 		}

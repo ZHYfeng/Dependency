@@ -25,14 +25,19 @@ DataManagement::DataManagement() {
 DataManagement::~DataManagement() = default;
 
 void DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename) {
-
+#if DEBUGOBJDUMP
+	std::string obj = objdump.substr(0, objdump.find(".objdump"));
+	std::string Cmd = "addr2line -afi -e " + obj;
+	std::cout << "o Cmd :" << Cmd << std::endl;
+#endif
 	Modules->ReadBC(std::move(InputFilename));
 	Modules->ReadObjdump(std::move(objdump));
 	Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
+	BuildAddress2BB();
 
 }
 
-void DataManagement::BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function) {
+void DataManagement::BuildAddress2BB() {
 	for (auto file : Modules->Function) {
 		for (auto function : file.second) {
 			if (function.second->isRepeat()) {

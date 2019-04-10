@@ -27,7 +27,7 @@ public:
 	virtual ~DataManagement();
 
 	void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
-	void BuildAddress2BB(std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function);
+	void BuildAddress2BB();
 
 	void getVmOffsets(std::string vmOffsets);
 	void getInput(std::string coverfile);
