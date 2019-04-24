@@ -13,24 +13,24 @@
 
 namespace dra {
 
-DLInstruction::DLInstruction() :
-		i(nullptr), parent(nullptr), Line(0) {
-	state = CoverKind::untest;
+    DLInstruction::DLInstruction() :
+            i(nullptr), parent(nullptr), Line(0) {
+        state = CoverKind::untest;
 
-}
+    }
 
-DLInstruction::~DLInstruction() = default;
+    DLInstruction::~DLInstruction() = default;
 
-void DLInstruction::setState(CoverKind kind) {
-	if (state == CoverKind::cover && kind == CoverKind::uncover) {
-		std::cerr << "error InstIR kind" << "\n";
-	}
-	state = kind;
-}
+    void DLInstruction::setState(CoverKind kind) {
+        if (state == CoverKind::cover && kind == CoverKind::uncover) {
+            std::cerr << "error InstIR kind" << "\n";
+        }
+        state = kind;
+    }
 
-void DLInstruction::update(CoverKind kind) {
-	setState(kind);
-	parent->update(kind, nullptr);
-}
+    void DLInstruction::update(CoverKind kind) {
+        setState(kind);
+        parent->update(kind, nullptr);
+    }
 
 } /* namespace dra */

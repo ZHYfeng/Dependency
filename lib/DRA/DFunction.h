@@ -18,74 +18,87 @@
 #include "DLInstruction.h"
 
 namespace dra {
-class DModule;
+    class DModule;
 } /* namespace dra */
 
 namespace llvm {
-class Function;
+    class Function;
 } /* namespace llvm */
 
 namespace dra {
 
-enum FunctionKind {
-	IR, O, S,
-};
+    enum FunctionKind {
+        IR, O, S,
+    };
 
-static DFunction *MargeDFunction(DFunction *one, DFunction *two);
+    static DFunction *MargeDFunction(DFunction *one, DFunction *two);
 
-class DFunction {
-public:
-	DFunction();
-	virtual ~DFunction();
+    class DFunction {
+    public:
+        DFunction();
 
-	void InitIRFunction(llvm::Function *f);
+        virtual ~DFunction();
 
-	void setState(CoverKind kind);
-	void update(CoverKind kind);
+        void InitIRFunction(llvm::Function *f);
 
-	bool isObjudump() const;
-	void setObjudump(bool Objudump);
-	bool isAsmSourceCode() const;
-	void setAsmSourceCode(bool AsmSourceCode);
-	bool isIR() const;
-	void setIR(bool IR);
+        void setState(CoverKind kind);
 
-	void setKind(FunctionKind kind);
-	bool isMap();
-	bool isRepeat() const;
-	void setRepeat(bool repeat);
-	void dump();
-	void inferUseLessPred(llvm::BasicBlock *b);
-	void inferUseLessPred();
+        void update(CoverKind kind);
 
-public:
-	bool Objudump;
-	bool AsmSourceCode;
-	bool IR;
+        bool isObjudump() const;
 
-	bool repeat;
+        void setObjudump(bool Objudump);
 
-	llvm::Function *function;
-	DModule *parent;
-	CoverKind state;
+        bool isAsmSourceCode() const;
 
-	std::string FunctionName;
-	std::string IRName;
-	std::string Path;
+        void setAsmSourceCode(bool AsmSourceCode);
 
-	std::string Address;
-	unsigned int InstNum;
-	unsigned int CallInstNum;
-	unsigned int JumpInstNum;
-	std::vector<DAInstruction *> InstASM;
+        bool isIR() const;
 
-	unsigned int BasicBlockNum;
-	std::unordered_map<std::string, DBasicBlock *> BasicBlock;
+        void setIR(bool IR);
 
-	std::vector<llvm::BasicBlock *> path;
-	std::set<llvm::BasicBlock *> order;
+        void setKind(FunctionKind kind);
 
-};
+        bool isMap();
+
+        bool isRepeat() const;
+
+        void setRepeat(bool repeat);
+
+        void dump();
+
+        void inferUseLessPred(llvm::BasicBlock *b);
+
+        void inferUseLessPred();
+
+    public:
+        bool Objudump;
+        bool AsmSourceCode;
+        bool IR;
+
+        bool repeat;
+
+        llvm::Function *function;
+        DModule *parent;
+        CoverKind state;
+
+        std::string FunctionName;
+        std::string IRName;
+        std::string Path;
+
+        std::string Address;
+        unsigned int InstNum;
+        unsigned int CallInstNum;
+        unsigned int JumpInstNum;
+        std::vector<DAInstruction *> InstASM;
+
+        unsigned int BasicBlockNum;
+        std::unordered_map<std::string, DBasicBlock *> BasicBlock;
+
+        std::vector<llvm::BasicBlock *> path;
+        std::set<llvm::BasicBlock *> order;
+
+    };
 
 } /* namespace dra */
 

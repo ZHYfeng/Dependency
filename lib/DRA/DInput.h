@@ -16,24 +16,27 @@
 
 namespace dra {
 
-class DInput {
-public:
-	DInput();
-	virtual ~DInput();
+    class DInput {
+    public:
+        DInput();
 
-	void setSig(const std::string &sig);
-	void setProg(const std::string &prog);
-	void setCover(const std::string &cover, unsigned long long int vmOffsets);
+        virtual ~DInput();
 
-public:
-	std::string sig;
-	std::string prog;
-	unsigned long long int Number;
-	std::vector<std::set<unsigned long long int> *> AllCover;
-	std::set<unsigned long long int> MaxCover;
-	std::set<unsigned long long int> MiniCover;
+        void setSig(const std::string &sig);
 
-};
+        void setProg(const std::string &prog);
+
+        void setCover(const std::string &cover, unsigned long long int vmOffsets);
+
+    public:
+        std::string sig;
+        std::string prog;
+        unsigned long long int Number;
+        std::vector<std::set<unsigned long long int> *> AllCover;
+        std::set<unsigned long long int> MaxCover;
+        std::set<unsigned long long int> MiniCover;
+
+    };
 
 } /* namespace dra */
 

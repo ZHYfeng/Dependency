@@ -18,58 +18,68 @@
 #include "DLInstruction.h"
 
 namespace dra {
-class DFunction;
+    class DFunction;
 } /* namespace dra */
 
 namespace llvm {
-class BasicBlock;
+    class BasicBlock;
 } /* namespace llvm */
 
 namespace dra {
-class DBasicBlock {
-public:
-	DBasicBlock();
-	virtual ~DBasicBlock();
+    class DBasicBlock {
+    public:
+        DBasicBlock();
 
-	void InitIRBasicBlock(llvm::BasicBlock *b);
+        virtual ~DBasicBlock();
 
-	void setState(CoverKind kind);
-	void update(CoverKind kind, DInput * input);
-	void inferCoverBB(DInput * input, llvm::BasicBlock *b);
-	void inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b);
+        void InitIRBasicBlock(llvm::BasicBlock *b);
 
-	void inferSuccessors(llvm::BasicBlock *b);
-	void inferPredecessors(llvm::BasicBlock *b);
-	void inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred);
-	void infer();
+        void setState(CoverKind kind);
 
-	void addNewInput(DInput * i);
+        void update(CoverKind kind, DInput *input);
 
-	bool isAsmSourceCode() const;
-	void setAsmSourceCode(bool asmSourceCode);
-	bool isIr() const;
-	void setIr(bool ir);
+        void inferCoverBB(DInput *input, llvm::BasicBlock *b);
 
-	void dump();
+        void inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b);
 
-public:
-	bool IR;
-	bool AsmSourceCode;
+        void inferSuccessors(llvm::BasicBlock *b);
 
-	llvm::BasicBlock *basicBlock;
-	std::set<llvm::BasicBlock *> useLessPred;
-	DFunction *parent;
-	CoverKind state;
-	std::string name;
-	unsigned int COVNum;
+        void inferPredecessors(llvm::BasicBlock *b);
 
-	std::vector<DAInstruction *> InstASM;
-	std::vector<DLInstruction *> InstIR;
+        void inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred);
 
-	std::set<DInput *> input;
-	DInput * lastInput;
-	DBasicBlock * realPred;
-};
+        void infer();
+
+        void addNewInput(DInput *i);
+
+        bool isAsmSourceCode() const;
+
+        void setAsmSourceCode(bool asmSourceCode);
+
+        bool isIr() const;
+
+        void setIr(bool ir);
+
+        void dump();
+
+    public:
+        bool IR;
+        bool AsmSourceCode;
+
+        llvm::BasicBlock *basicBlock;
+        std::set<llvm::BasicBlock *> useLessPred;
+        DFunction *parent;
+        CoverKind state;
+        std::string name;
+        unsigned int COVNum;
+
+        std::vector<DAInstruction *> InstASM;
+        std::vector<DLInstruction *> InstIR;
+
+        std::set<DInput *> input;
+        DInput *lastInput;
+        DBasicBlock *realPred;
+    };
 
 } /* namespace dra */
 

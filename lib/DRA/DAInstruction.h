@@ -13,33 +13,35 @@
 #include "DLInstruction.h"
 
 namespace dra {
-class DInput;
+    class DInput;
 } /* namespace dra */
 
 namespace dra {
-class DBasicBlock;
+    class DBasicBlock;
 
-class DAInstruction {
-public:
-	DAInstruction();
+    class DAInstruction {
+    public:
+        DAInstruction();
 
-	virtual ~DAInstruction();
+        virtual ~DAInstruction();
 
-	void setState(CoverKind kind);
-	void update(CoverKind kind, DInput * input);
-	void setAddr(std::string addr);
+        void setState(CoverKind kind);
 
-public:
-	CoverKind state;
+        void update(CoverKind kind, DInput *input);
 
-	std::string SInst;
-	std::string BasicBlockName;
-	DBasicBlock *parent;
+        void setAddr(std::string addr);
 
-	std::string OInst;
-	std::string Address;
-	unsigned long long int address;
-};
+    public:
+        CoverKind state;
+
+        std::string SInst;
+        std::string BasicBlockName;
+        DBasicBlock *parent;
+
+        std::string OInst;
+        std::string Address;
+        unsigned long long int address;
+    };
 
 } /* namespace dra */
 

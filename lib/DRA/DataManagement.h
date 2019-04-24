@@ -16,31 +16,35 @@
 #include "DInput.h"
 
 namespace dra {
-class DModule;
+    class DModule;
 } /* namespace dra */
 
 namespace dra {
 
-class DataManagement {
-public:
-	DataManagement();
-	virtual ~DataManagement();
+    class DataManagement {
+    public:
+        DataManagement();
 
-	void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
-	void BuildAddress2BB();
+        virtual ~DataManagement();
 
-	void getVmOffsets(std::string vmOffsets);
-	void getInput(std::string coverfile);
-	void setInput();
+        void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
 
-public:
-	dra::DModule *Modules;
-	std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
-	std::unordered_map<std::string, DInput *> Inputs;
-	std::set<unsigned long long int> cover;
-	unsigned long long int vmOffsets;
+        void BuildAddress2BB();
 
-};
+        void getVmOffsets(std::string vmOffsets);
+
+        void getInput(std::string coverfile);
+
+        void setInput();
+
+    public:
+        dra::DModule *Modules;
+        std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
+        std::unordered_map<std::string, DInput *> Inputs;
+        std::set<unsigned long long int> cover;
+        unsigned long long int vmOffsets;
+
+    };
 
 } /* namespace dra */
 
