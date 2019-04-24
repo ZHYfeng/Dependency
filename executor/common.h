@@ -9,7 +9,7 @@
 // - NORETURN/PRINTF/debug are removed
 // - exitf/fail are replaced with exit
 // - uintN types are replaced with uintN_t
-// - [[FOO]] placeholders are replaced by actual values
+// - /*FOO*/ placeholders are replaced by actual values
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
@@ -41,7 +41,7 @@ NORETURN void doexit(int status)
 
 #if SYZ_EXECUTOR || SYZ_PROCS || SYZ_REPEAT && SYZ_ENABLE_CGROUPS ||         \
     SYZ_ENABLE_NETDEV || __NR_syz_mount_image || __NR_syz_read_part_table || \
-    (GOOS_openbsd || GOOS_freebsd) && SYZ_TUN_ENABLE
+    __NR_syz_usb_connect || (GOOS_openbsd || GOOS_freebsd) && SYZ_TUN_ENABLE
 unsigned long long procid;
 #endif
 
@@ -137,7 +137,8 @@ static void kill_and_wait(int pid, int* status)
 #endif
 
 #if !GOOS_windows
-#if SYZ_EXECUTOR || SYZ_THREADED || SYZ_REPEAT && SYZ_EXECUTOR_USES_FORK_SERVER
+#if SYZ_EXECUTOR || SYZ_THREADED || SYZ_REPEAT && SYZ_EXECUTOR_USES_FORK_SERVER || \
+    __NR_syz_usb_connect
 static void sleep_ms(uint64 ms)
 {
 	usleep(ms * 1000);
@@ -457,7 +458,7 @@ static void loop(void)
 	int collide = 0;
 again:
 #endif
-	for (call = 0; call < [[NUM_CALLS]]; call++) {
+	for (call = 0; call < /*NUM_CALLS*/; call++) {
 		for (thread = 0; thread < (int)(sizeof(threads) / sizeof(threads[0])); thread++) {
 			struct thread_t* th = &threads[thread];
 			if (!th->created) {
@@ -483,6 +484,9 @@ again:
 	}
 	for (i = 0; i < 100 && __atomic_load_n(&running, __ATOMIC_RELAXED); i++)
 		sleep_ms(1);
+#if SYZ_HAVE_CLOSE_FDS
+	close_fds();
+#endif
 #if SYZ_COLLIDE
 	if (!collide) {
 		collide = 1;
@@ -527,7 +531,7 @@ static void loop(void)
 #endif
 	int iter;
 #if SYZ_REPEAT_TIMES
-	for (iter = 0; iter < [[REPEAT_TIMES]]; iter++) {
+	for (iter = 0; iter < /*REPEAT_TIMES*/; iter++) {
 #else
 	for (iter = 0;; iter++) {
 #endif
@@ -571,8 +575,8 @@ static void loop(void)
 			close(kOutPipeFd);
 #endif
 			execute_one();
-#if SYZ_HAVE_RESET_TEST
-			reset_test();
+#if SYZ_HAVE_CLOSE_FDS && !SYZ_THREADED
+			close_fds();
 #endif
 			doexit(0);
 #endif
@@ -644,12 +648,10 @@ static void loop(void)
 #endif
 #endif
 
-// clang-format off
-// clang-format badly mishandles this part, moreover different versions mishandle it differently.
 #if !SYZ_EXECUTOR
-[[SYSCALL_DEFINES]]
+/*SYSCALL_DEFINES*/
 
-[[RESULTS]]
+/*RESULTS*/
 
 #if SYZ_THREADED || SYZ_REPEAT || SYZ_SANDBOX_NONE || SYZ_SANDBOX_SETUID || SYZ_SANDBOX_NAMESPACE || SYZ_SANDBOX_ANDROID_UNTRUSTED_APP
 #if SYZ_THREADED
@@ -660,7 +662,10 @@ void execute_one(void)
 void loop(void)
 #endif
 {
-	[[SYSCALLS]]
+	/*SYSCALLS*/
+#if SYZ_HAVE_CLOSE_FDS && !SYZ_THREADED && !SYZ_REPEAT
+	close_fds();
+#endif
 }
 #endif
 
@@ -670,7 +675,7 @@ void loop(void)
 
 int main(int argc, char** argv)
 {
-	[[MMAP_DATA]]
+	/*MMAP_DATA*/
 
 	program_name = argv[0];
 	if (argc == 2 && strcmp(argv[1], "child") == 0)
@@ -678,21 +683,24 @@ int main(int argc, char** argv)
 #else
 int main(void)
 {
-	[[MMAP_DATA]]
+	/*MMAP_DATA*/
 #endif
-		// clang-format on
 
 #if SYZ_HANDLE_SEGV
 	install_segv_handler();
 #endif
 #if SYZ_PROCS
-	for (procid = 0; procid < [[PROCS]]; procid++) {
+	for (procid = 0; procid < /*PROCS*/; procid++) {
 		if (fork() == 0) {
 #endif
 #if SYZ_USE_TMP_DIR || SYZ_SANDBOX_ANDROID_UNTRUSTED_APP
 			use_temporary_dir();
 #endif
-			[[SANDBOX_FUNC]]
+			/*SANDBOX_FUNC*/
+#if SYZ_HAVE_CLOSE_FDS && !SYZ_THREADED && !SYZ_REPEAT && !SYZ_SANDBOX_NONE && \
+    !SYZ_SANDBOX_SETUID && !SYZ_SANDBOX_NAMESPACE && !SYZ_SANDBOX_ANDROID_UNTRUSTED_APP
+			close_fds();
+#endif
 #if SYZ_PROCS
 		}
 	}

@@ -2,9 +2,11 @@
 
 Most latest bugs are reported by [syzbot](/docs/syzbot.md) to
 [syzkaller-openbsd-bugs](https://groups.google.com/forum/#!forum/syzkaller-openbsd-bugs)
-mailing list and are listed on the [dashboard](https://syzkaller.appspot.com/#openbsd).
+mailing list and are listed on the [dashboard](https://syzkaller.appspot.com/openbsd).
 
 Newer bugs comes first.
+
+- [vmm(4): `printf()` called from IPI-context](https://marc.info/?l=openbsd-cvs&m=155590526807190&w=2)
 
 - [bpf(4): negative input accepted in `bpfioctl()`](https://marc.info/?l=openbsd-cvs&m=155430843501793&w=2)
 

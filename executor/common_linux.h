@@ -798,6 +798,21 @@ static long syz_extract_tcp_res(volatile long a0, volatile long a1, volatile lon
 }
 #endif
 
+#if SYZ_EXECUTOR || __NR_syz_usb_connect
+#include <errno.h>
+#include <fcntl.h>
+#include <linux/usb/ch9.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <sys/mount.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include "common_usb.h"
+#endif
+
 #if SYZ_EXECUTOR || __NR_syz_open_dev
 #include <fcntl.h>
 #include <string.h>
@@ -2612,12 +2627,20 @@ static void setup_test()
 	flush_tun();
 #endif
 }
+#endif
 
-#define SYZ_HAVE_RESET_TEST 1
-static void reset_test()
+#if SYZ_EXECUTOR || SYZ_ENABLE_CLOSE_FDS
+#define SYZ_HAVE_CLOSE_FDS 1
+static void close_fds()
 {
+#if SYZ_EXECUTOR
+	if (!flag_enable_close_fds)
+		return;
+#endif
 	// Keeping a 9p transport pipe open will hang the proccess dead,
 	// so close all opened file descriptors.
+	// Also close all USB emulation descriptors to trigger exit from USB
+	// event loop to collect coverage.
 	int fd;
 	for (fd = 3; fd < 30; fd++)
 		close(fd);

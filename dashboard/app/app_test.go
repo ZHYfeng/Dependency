@@ -7,12 +7,14 @@ package dash
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/google/syzkaller/dashboard/dashapi"
+	"google.golang.org/appengine/user"
 )
 
 func init() {
@@ -30,6 +32,7 @@ var testConfig = &GlobalConfig{
 	EmailBlacklist: []string{
 		"\"Bar\" <BlackListed@Domain.com>",
 	},
+	DefaultNamespace: "test1",
 	Namespaces: map[string]*Config{
 		"test1": {
 			AccessLevel: AccessAdmin,
@@ -288,7 +291,7 @@ func TestApp(t *testing.T) {
 	c := NewCtx(t)
 	defer c.Close()
 
-	c.expectOK(c.GET("/"))
+	c.expectOK(c.GET("/test1"))
 
 	apiClient1 := c.makeClient(client1, key1, false)
 	apiClient2 := c.makeClient(client2, key2, false)
@@ -335,6 +338,35 @@ func TestApp(t *testing.T) {
 		Status:     dashapi.BugStatusOpen,
 		ReproLevel: dashapi.ReproLevelC,
 	})
+}
+
+func TestRedirects(t *testing.T) {
+	c := NewCtx(t)
+	defer c.Close()
+
+	checkRedirect(c, AccessUser, "/", "/test1", http.StatusFound) // redirect to default namespace
+	checkRedirect(c, AccessAdmin, "/", "/admin", http.StatusFound)
+	checkLoginRedirect(c, AccessPublic, "/access-user") // not accessible namespace
+
+	_, err := c.httpRequest("GET", "/access-user", "", AccessUser)
+	c.expectOK(err)
+}
+
+func checkLoginRedirect(c *Ctx, accessLevel AccessLevel, url string) {
+	to, err := user.LoginURL(c.ctx, url)
+	if err != nil {
+		c.t.Fatal(err)
+	}
+	checkRedirect(c, accessLevel, url, to, http.StatusTemporaryRedirect)
+}
+
+func checkRedirect(c *Ctx, accessLevel AccessLevel, from, to string, status int) {
+	_, err := c.httpRequest("GET", from, "", accessLevel)
+	c.expectNE(err, nil)
+	httpErr, ok := err.(HttpError)
+	c.expectTrue(ok)
+	c.expectEQ(httpErr.Code, status)
+	c.expectEQ(httpErr.Headers["Location"], []string{to})
 }
 
 // Test purging of old crashes for bugs with lots of crashes.

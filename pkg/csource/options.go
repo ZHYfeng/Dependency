@@ -34,6 +34,7 @@ type Options struct {
 	EnableNetReset   bool `json:"resetnet,omitempty"`
 	EnableCgroups    bool `json:"cgroups,omitempty"`
 	EnableBinfmtMisc bool `json:"binfmt_misc,omitempty"`
+	EnableCloseFds   bool `json:"close_fds"`
 
 	UseTmpDir  bool `json:"tmpdir,omitempty"`
 	HandleSegv bool `json:"segv,omitempty"`
@@ -55,45 +56,45 @@ func (opts Options) Check(OS string) error {
 	}
 	if !opts.Threaded && opts.Collide {
 		// Collide requires threaded.
-		return errors.New("Collide without Threaded")
+		return errors.New("option Collide without Threaded")
 	}
 	if !opts.Repeat {
 		if opts.Procs > 1 {
 			// This does not affect generated code.
-			return errors.New("Procs>1 without Repeat")
+			return errors.New("option Procs>1 without Repeat")
 		}
 		if opts.EnableNetReset {
-			return errors.New("EnableNetReset without Repeat")
+			return errors.New("option EnableNetReset without Repeat")
 		}
 		if opts.RepeatTimes > 1 {
-			return errors.New("RepeatTimes without Repeat")
+			return errors.New("option RepeatTimes without Repeat")
 		}
 	}
 	if opts.Sandbox == "" {
 		if opts.EnableTun {
-			return errors.New("EnableTun without sandbox")
+			return errors.New("option EnableTun without sandbox")
 		}
 		if opts.EnableNetDev {
-			return errors.New("EnableNetDev without sandbox")
+			return errors.New("option EnableNetDev without sandbox")
 		}
 		if opts.EnableCgroups {
-			return errors.New("EnableCgroups without sandbox")
+			return errors.New("option EnableCgroups without sandbox")
 		}
 		if opts.EnableBinfmtMisc {
-			return errors.New("EnableBinfmtMisc without sandbox")
+			return errors.New("option EnableBinfmtMisc without sandbox")
 		}
 	}
 	if opts.Sandbox == sandboxNamespace && !opts.UseTmpDir {
 		// This is borken and never worked.
 		// This tries to create syz-tmp dir in cwd,
 		// which will fail if procs>1 and on second run of the program.
-		return errors.New("Sandbox=namespace without UseTmpDir")
+		return errors.New("option Sandbox=namespace without UseTmpDir")
 	}
 	if opts.EnableNetReset && (opts.Sandbox == "" || opts.Sandbox == sandboxSetuid) {
-		return errors.New("EnableNetReset without sandbox")
+		return errors.New("option EnableNetReset without sandbox")
 	}
 	if opts.EnableCgroups && !opts.UseTmpDir {
-		return errors.New("EnableCgroups without UseTmpDir")
+		return errors.New("option EnableCgroups without UseTmpDir")
 	}
 	return opts.checkLinuxOnly(OS)
 }
@@ -103,27 +104,30 @@ func (opts Options) checkLinuxOnly(OS string) error {
 		return nil
 	}
 	if opts.EnableTun && !(OS == openbsd || OS == freebsd) {
-		return fmt.Errorf("EnableTun is not supported on %v", OS)
+		return fmt.Errorf("option EnableTun is not supported on %v", OS)
 	}
 	if opts.EnableNetDev {
-		return fmt.Errorf("EnableNetDev is not supported on %v", OS)
+		return fmt.Errorf("option EnableNetDev is not supported on %v", OS)
 	}
 	if opts.EnableNetReset {
-		return fmt.Errorf("EnableNetReset is not supported on %v", OS)
+		return fmt.Errorf("option EnableNetReset is not supported on %v", OS)
 	}
 	if opts.EnableCgroups {
-		return fmt.Errorf("EnableCgroups is not supported on %v", OS)
+		return fmt.Errorf("option EnableCgroups is not supported on %v", OS)
 	}
 	if opts.EnableBinfmtMisc {
-		return fmt.Errorf("EnableBinfmtMisc is not supported on %v", OS)
+		return fmt.Errorf("option EnableBinfmtMisc is not supported on %v", OS)
+	}
+	if opts.EnableCloseFds {
+		return fmt.Errorf("EnableCloseFds is not supported on %v", OS)
 	}
 	if opts.Sandbox == sandboxNamespace ||
 		(opts.Sandbox == sandboxSetuid && !(OS == openbsd || OS == freebsd)) ||
 		opts.Sandbox == sandboxAndroidUntrustedApp {
-		return fmt.Errorf("Sandbox=%v is not supported on %v", opts.Sandbox, OS)
+		return fmt.Errorf("option Sandbox=%v is not supported on %v", opts.Sandbox, OS)
 	}
 	if opts.Fault {
-		return fmt.Errorf("Fault is not supported on %v", OS)
+		return fmt.Errorf("option Fault is not supported on %v", OS)
 	}
 	return nil
 }
@@ -140,6 +144,7 @@ func DefaultOpts(cfg *mgrconfig.Config) Options {
 		EnableNetReset:   true,
 		EnableCgroups:    true,
 		EnableBinfmtMisc: true,
+		EnableCloseFds:   true,
 		UseTmpDir:        true,
 		HandleSegv:       true,
 		Repro:            true,
@@ -150,6 +155,7 @@ func DefaultOpts(cfg *mgrconfig.Config) Options {
 		opts.EnableNetReset = false
 		opts.EnableCgroups = false
 		opts.EnableBinfmtMisc = false
+		opts.EnableCloseFds = false
 	}
 	if cfg.Sandbox == "" || cfg.Sandbox == "setuid" {
 		opts.EnableNetReset = false
@@ -170,6 +176,9 @@ func (opts Options) Serialize() []byte {
 
 func DeserializeOptions(data []byte) (Options, error) {
 	var opts Options
+	// Before EnableCloseFds was added, close_fds() was always called,
+	// so default to true.
+	opts.EnableCloseFds = true
 	if err := json.Unmarshal(data, &opts); err == nil {
 		return opts, nil
 	}
@@ -225,6 +234,7 @@ func defaultFeatures(value bool) Features {
 		"net_reset":   {"reset network namespace between programs", value},
 		"cgroups":     {"setup cgroups for testing", value},
 		"binfmt_misc": {"setup binfmt_misc for testing", value},
+		"close_fds":   {"close fds after each program", value},
 	}
 }
 

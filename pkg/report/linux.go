@@ -637,8 +637,7 @@ var linuxStallAnchorFrames = []*regexp.Regexp{
 	compile("^sock_do_ioctl"),
 	compile("^sock_ioctl"),
 	compile("^compat_sock_ioctl"),
-	compile("^(compat_)?(SYSC|SyS|__sys|___sys|__do_sys|__se_sys|__x64_sys)_socketpair"),
-	compile("^(compat_)?(SYSC|SyS|__sys|___sys|__do_sys|__se_sys|__x64_sys)_connect"),
+	compile("^(compat_)?(SYSC|SyS|__sys|___sys|__do_sys|__se_sys|__x64_sys)_(socketpair|connect|ioctl)"),
 	// Page fault entry points:
 	compile("__do_fault"),
 	compile("handle_mm_fault"),
@@ -684,6 +683,7 @@ var linuxStackParams = &stackParams{
 		"__msan",
 		"kmsan",
 		"check_memory_region",
+		"read_word_at_a_time",
 		"print_address_description",
 		"panic",
 		"invalid_op",
@@ -710,6 +710,7 @@ var linuxStackParams = &stackParams{
 		"raw_read_trylock",
 		"raw_write_lock",
 		"raw_write_trylock",
+		"down",
 		"down_read",
 		"down_write",
 		"down_read_trylock",
@@ -719,6 +720,8 @@ var linuxStackParams = &stackParams{
 		"mutex_lock",
 		"mutex_trylock",
 		"mutex_unlock",
+		"osq_lock",
+		"osq_unlock",
 		"memcpy",
 		"memcmp",
 		"memset",
@@ -729,6 +732,7 @@ var linuxStackParams = &stackParams{
 		"strcpy",
 		"strlcpy",
 		"strncpy",
+		"strscpy",
 		"strlen",
 		"strnstr",
 		"strnlen",
@@ -866,6 +870,7 @@ var linuxOopses = []*oops{
 				fmt:   "BUG: soft lockup in %[1]v",
 				stack: &stackFmt{
 					parts: []*regexp.Regexp{
+						linuxRipFrame,
 						compile("Call Trace:"),
 						parseStackTrace,
 					},
@@ -1130,6 +1135,11 @@ var linuxOopses = []*oops{
 				fmt:   "INFO: rcu detected stall in %[1]v",
 				stack: &stackFmt{
 					parts: []*regexp.Regexp{
+						compile("apic_timer_interrupt"),
+						linuxRipFrame,
+						parseStackTrace,
+					},
+					parts2: []*regexp.Regexp{
 						compile("apic_timer_interrupt"),
 						parseStackTrace,
 					},

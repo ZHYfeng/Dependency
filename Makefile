@@ -168,6 +168,9 @@ upgrade:
 trace2syz:
 	GOOS=$(HOSTOS) GOARCH=$(HOSTARCH) $(HOSTGO) build $(GOHOSTFLAGS) -o ./bin/syz-trace2syz github.com/google/syzkaller/tools/syz-trace2syz
 
+usbgen:
+	GOOS=$(HOSTOS) GOARCH=$(HOSTARCH) $(HOSTGO) build $(GOHOSTFLAGS) -o ./bin/syz-usbgen github.com/google/syzkaller/tools/syz-usbgen
+
 # `extract` extracts const files from various kernel sources, and may only
 # re-generate parts of files.
 extract: bin/syz-extract
@@ -235,6 +238,12 @@ else
 	# otherwise this gets OOM-killed on travis.
 	env CGO_ENABLED=1 GOMAXPROCS=1 GOGC=50 gometalinter.v2 ./...
 endif
+
+lint:
+	# To install run:
+	# go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+	# Currently it consumes too much memory to run on Travis (see #977).
+	golangci-lint run ./...
 
 arch: arch_darwin_amd64_host arch_linux_amd64_host arch_freebsd_amd64_host \
 	arch_netbsd_amd64_host arch_openbsd_amd64_host \
@@ -335,10 +344,10 @@ install_prerequisites:
 	uname -a
 	sudo apt-get update
 	sudo apt-get install -y -q libc6-dev-i386 linux-libc-dev \
-		gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-powerpc64le-linux-gnu || true
+		gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi gcc-powerpc64le-linux-gnu || true
 	sudo apt-get install -y -q g++-aarch64-linux-gnu || true
 	sudo apt-get install -y -q g++-powerpc64le-linux-gnu || true
-	sudo apt-get install -y -q g++-arm-linux-gnueabihf || true
+	sudo apt-get install -y -q g++-arm-linux-gnueabi || true
 	sudo apt-get install -y -q ragel
 	go get -u golang.org/x/tools/cmd/goyacc
 	go get -u gopkg.in/alecthomas/gometalinter.v2

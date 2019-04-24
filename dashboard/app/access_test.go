@@ -8,10 +8,12 @@ package dash
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"strconv"
 	"testing"
 
 	"github.com/google/syzkaller/dashboard/dashapi"
+	"google.golang.org/appengine/user"
 )
 
 // TestAccessConfig checks that access level were properly assigned throughout the config.
@@ -53,10 +55,34 @@ func TestAccess(t *testing.T) {
 		url   string      // url at which this entity can be requested.
 	}
 	entities := []entity{
+		// Main pages.
 		{
-			// Main page.
-			level: config.AccessLevel,
-			url:   "/",
+			level: AccessAdmin,
+			url:   "/admin",
+		},
+		{
+			level: AccessPublic,
+			url:   "/access-public",
+		},
+		{
+			level: AccessPublic,
+			url:   "/access-public/fixed",
+		},
+		{
+			level: AccessUser,
+			url:   "/access-user",
+		},
+		{
+			level: AccessUser,
+			url:   "/access-user/fixed",
+		},
+		{
+			level: AccessAdmin,
+			url:   "/access-admin",
+		},
+		{
+			level: AccessAdmin,
+			url:   "/access-admin/fixed",
 		},
 		{
 			// Any references to namespace, reporting, links, etc.
@@ -282,6 +308,16 @@ func TestAccess(t *testing.T) {
 		reply, err := c.AuthGET(requestLevel, url)
 		if requestLevel >= pageLevel {
 			c.expectOK(err)
+		} else if requestLevel == AccessPublic {
+			loginURL, err1 := user.LoginURL(c.ctx, url)
+			if err1 != nil {
+				t.Fatal(err1)
+			}
+			c.expectNE(err, nil)
+			httpErr, ok := err.(HttpError)
+			c.expectTrue(ok)
+			c.expectEQ(httpErr.Code, http.StatusTemporaryRedirect)
+			c.expectEQ(httpErr.Headers["Location"], []string{loginURL})
 		} else {
 			c.expectForbidden(err)
 		}
