@@ -1,9 +1,3 @@
-#include <utility>
-
-#include <utility>
-
-#include <utility>
-
 /*
  * DependencyControlCenter.cpp
  *
@@ -13,6 +7,7 @@
 
 #include "DependencyControlCenter.h"
 
+#include <utility>
 #include <grpcpp/grpcpp.h>
 
 namespace dra {
@@ -51,15 +46,22 @@ namespace dra {
                         // TODO(hang): GetGlobalWriteBB
                         auto allbb = GetGlobalWriteBB(b);
                         for (auto bb : allbb) {
-                            unsigned long long int writeAddress = DM.Modules->Function[bb.path][bb.name].address;
+                            auto db = DM.Modules->Function[bb.path][bb.name];
+                            unsigned long long int writeAddress = db.address;
+
                             // TODO(hang): GetGlobalWriteBB
                             auto relatedsyscall = GetRelatedSyscall(bb);
                             RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
                             relatedSyscall->set_address(writeAddress);
                             relatedSyscall->set_name(relatedsyscall);
+
+                            RelatedInput *relatedInput = uncoveredAddress->add_related_input();
+                            relatedInput->set_address(writeAddress);
+                            for(auto i : db->input){
+                                relatedInput->set_sig(i->sig);
+                            }
                         }
                     }
-                    // TODO(Yu): set dependencyInput
                     client.SendDependencyInput(dependencyInput);
                 }
             }
