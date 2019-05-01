@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package dra;
+
+// The DependencyManger service definition.
+service DependencyManger {
+
+    rpc GetDependencyInput (Empty) returns (DependencyInput) {
+    }
+    rpc GetInputCoverage (Empty) returns (Input) {
+    }
+
+    rpc SendDependencyInput (DependencyInput) returns (Empty) {
+    }
+    rpc SendInputCoverage (Input) returns (Empty) {
+    }
+}
+
+message Empty {
+
+}
+
+message RelatedInput {
+    string sig = 1; // hash value for each input from syzkaller
+    uint32 address = 2;
+}
+
+message RelatedSyscall {
+    string name = 1;
+    uint32 address = 2;
+}
+
+message UncoveredAddress {
+    uint32 address = 1;
+    uint32 condition_address = 2;
+    repeated RelatedInput related_input = 3;
+    repeated RelatedSyscall related_syscall = 4;
+}
+
+message DependencyInput {
+    string sig = 1; // hash value for each input from syzkaller
+    repeated UncoveredAddress uncovered_address = 2;
+}
+
+message Call {
+    string name = 1;
+    repeated uint32 address = 2;
+}
+
+message Input {
+    string sig = 1;
+    repeated Call call = 2;
+}
