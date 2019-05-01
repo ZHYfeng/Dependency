@@ -2,10 +2,10 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="2018_dependency" targetName="intrinsics_gen" />
-      <config projectName="2018_dependency" targetName="RPC" />
-      <config projectName="2018_dependency" targetName="DCC" />
       <config projectName="2018_dependency" targetName="DRA" />
+      <config projectName="2018_dependency" targetName="intrinsics_gen" />
+      <config projectName="2018_dependency" targetName="DCC" />
+      <config projectName="2018_dependency" targetName="RPC" />
       <config projectName="2018_dependency" targetName="dra" />
     </generated>
   </component>
@@ -15,22 +15,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a56c0797-d237-40ea-b667-8fe2edef1eb7" name="Default Changelist" comment="">
+    <list default="true" id="a56c0797-d237-40ea-b667-8fe2edef1eb7" name="Default Changelist" comment="refactor: change the file name">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lib/DCC/CMakeLists.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.autotools" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cproject" beforeDir="false" afterPath="$PROJECT_DIR$/.cproject" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.settings/language.settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.settings/language.settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lib/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RPC/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyManager.grpc.pb.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyManager.grpc.pb.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyManager.pb.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyManager.pb.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyManager.proto" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/RPC/build-protoc.sh" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/build-protoc.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tools/DRA/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/tools/DRA/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tools/DRA/dra.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tools/DRA/dra.cpp" afterDir="false" />
     </list>
@@ -45,10 +40,88 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="19" column="26" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="334">
+              <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="24" selection-start-line="24" selection-end-line="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/DCC/DependencyControlCenter.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tools/DRA/dra.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="30" column="30" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.proto">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="219">
+              <caret line="102" column="41" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp" />
+        <option value="$PROJECT_DIR$/tools/DRA/dra.cpp" />
+        <option value="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.h" />
+        <option value="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp" />
+        <option value="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" />
+      </list>
+    </option>
+  </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="1974" />
     <option name="y" value="24" />
@@ -60,7 +133,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -71,12 +143,42 @@
             <path>
               <item name="2018_dependency" type="b2602c69:ProjectViewProjectNode" />
               <item name="2018_dependency" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2018_dependency" type="b2602c69:ProjectViewProjectNode" />
+              <item name="2018_dependency" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="DCC" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2018_dependency" type="b2602c69:ProjectViewProjectNode" />
+              <item name="2018_dependency" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="DRA" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2018_dependency" type="b2602c69:ProjectViewProjectNode" />
+              <item name="2018_dependency" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="RPC" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2018_dependency" type="b2602c69:ProjectViewProjectNode" />
+              <item name="2018_dependency" type="462c0819:PsiDirectoryNode" />
               <item name="tools" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="2018_dependency" type="b2602c69:ProjectViewProjectNode" />
+              <item name="2018_dependency" type="462c0819:PsiDirectoryNode" />
+              <item name="tools" type="462c0819:PsiDirectoryNode" />
+              <item name="DRA" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -85,7 +187,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/build" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Protobuf" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -99,7 +201,18 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.dra">
+  <component name="RunManager" selected="Bash.build-protoc.sh">
+    <configuration name="build-protoc.sh" type="BashConfigurationType" factoryName="Bash" temporary="true">
+      <module name="2018_dependency" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="PROJECT_INTERPRETER" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lib/RPC" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/RPC/build-protoc.sh" />
+      <option name="PARAMETERS" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="DCC" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="2018_dependency" TARGET_NAME="DCC" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -131,7 +244,13 @@
       <item itemvalue="CMake Application.DRA" />
       <item itemvalue="CMake Application.RPC" />
       <item itemvalue="CMake Application.dra" />
+      <item itemvalue="Bash.build-protoc.sh" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Bash.build-protoc.sh" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -144,38 +263,137 @@
       <option name="presentableId" value="Default" />
       <updated>1556740400183</updated>
       <workItem from="1556740402825" duration="64000" />
+      <workItem from="1556740673831" duration="1513000" />
     </task>
+    <task id="LOCAL-00001" summary="chore: delete eclipse project files">
+      <created>1556740747583</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1556740747583</updated>
+    </task>
+    <task id="LOCAL-00002" summary="refactor: change the file name">
+      <created>1556740880521</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1556740880521</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64000" />
+    <option name="totallyTimeSpent" value="1577000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="1974" y="24" width="1866" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25330397" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info active="true" anchor="bottom" id="Messages" visible="true" weight="0.32897604" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="CMake" weight="0.32897604" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32897604" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32897604" />
+      <window_info anchor="bottom" id="Database Changes" order="7" />
+      <window_info anchor="bottom" id="Messages" order="8" weight="0.32897604" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32897604" />
+      <window_info anchor="bottom" id="CMake" order="12" weight="0.32897604" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="chore: delete eclipse project files" />
+    <MESSAGE value="refactor: change the file name" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: change the file name" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="19" column="26" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="96" column="11" selection-start-line="96" selection-start-column="11" selection-end-line="96" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/DRA/dra.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="30" column="30" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.cc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="377" column="37" selection-start-line="377" selection-start-column="37" selection-end-line="377" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DCC/DependencyControlCenter.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="102" column="41" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.proto">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
