@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package dra;
 
-// The DependencyManger service definition.
-service DependencyManger {
+// The DependencyRPC service definition.
+service DependencyRPC {
 
     rpc GetDependencyInput (Empty) returns (DependencyInput) {
     }
