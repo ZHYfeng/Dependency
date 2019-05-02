@@ -47,7 +47,7 @@ struct TableStruct_DependencyRPC_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
+    static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[8]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -67,6 +67,12 @@ extern EmptyDefaultTypeInternal _Empty_default_instance_;
 class Input;
 class InputDefaultTypeInternal;
 extern InputDefaultTypeInternal _Input_default_instance_;
+
+    class NewInput;
+
+    class NewInputDefaultTypeInternal;
+
+    extern NewInputDefaultTypeInternal _NewInput_default_instance_;
 class RelatedInput;
 class RelatedInputDefaultTypeInternal;
 extern RelatedInputDefaultTypeInternal _RelatedInput_default_instance_;
@@ -82,6 +88,9 @@ template<> ::dra::Call* Arena::CreateMaybeMessage<::dra::Call>(Arena*);
 template<> ::dra::DependencyInput* Arena::CreateMaybeMessage<::dra::DependencyInput>(Arena*);
 template<> ::dra::Empty* Arena::CreateMaybeMessage<::dra::Empty>(Arena*);
 template<> ::dra::Input* Arena::CreateMaybeMessage<::dra::Input>(Arena*);
+
+        template<>
+        ::dra::NewInput *Arena::CreateMaybeMessage<::dra::NewInput>(Arena *);
 template<> ::dra::RelatedInput* Arena::CreateMaybeMessage<::dra::RelatedInput>(Arena*);
 template<> ::dra::RelatedSyscall* Arena::CreateMaybeMessage<::dra::RelatedSyscall>(Arena*);
 template<> ::dra::UncoveredAddress* Arena::CreateMaybeMessage<::dra::UncoveredAddress>(Arena*);
@@ -199,11 +208,21 @@ class Empty :
 
   // accessors -------------------------------------------------------
 
+        // uint32 address = 1;
+        void clear_address();
+
+        static const int kAddressFieldNumber = 1;
+
+        ::PROTOBUF_NAMESPACE_ID::uint32 address() const;
+
+        void set_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
+
   // @@protoc_insertion_point(class_scope:dra.Empty)
  private:
   class HasBitSetters;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+        ::PROTOBUF_NAMESPACE_ID::uint32 address_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -596,10 +615,11 @@ class UncoveredAddress :
 
   // accessors -------------------------------------------------------
 
-  // repeated .dra.RelatedInput related_input = 3;
+        // repeated .dra.RelatedInput related_input = 4;
   int related_input_size() const;
   void clear_related_input();
-  static const int kRelatedInputFieldNumber = 3;
+
+        static const int kRelatedInputFieldNumber = 4;
   ::dra::RelatedInput* mutable_related_input(int index);
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::RelatedInput >*
       mutable_related_input();
@@ -608,10 +628,11 @@ class UncoveredAddress :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::RelatedInput >&
       related_input() const;
 
-  // repeated .dra.RelatedSyscall related_syscall = 4;
+        // repeated .dra.RelatedSyscall related_syscall = 5;
   int related_syscall_size() const;
   void clear_related_syscall();
-  static const int kRelatedSyscallFieldNumber = 4;
+
+        static const int kRelatedSyscallFieldNumber = 5;
   ::dra::RelatedSyscall* mutable_related_syscall(int index);
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::RelatedSyscall >*
       mutable_related_syscall();
@@ -626,9 +647,19 @@ class UncoveredAddress :
   ::PROTOBUF_NAMESPACE_ID::uint32 address() const;
   void set_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
 
-  // uint32 condition_address = 2;
+        // uint32 idx = 2;
+        void clear_idx();
+
+        static const int kIdxFieldNumber = 2;
+
+        ::PROTOBUF_NAMESPACE_ID::uint32 idx() const;
+
+        void set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
+
+        // uint32 condition_address = 3;
   void clear_condition_address();
-  static const int kConditionAddressFieldNumber = 2;
+
+        static const int kConditionAddressFieldNumber = 3;
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address() const;
   void set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
 
@@ -640,6 +671,7 @@ class UncoveredAddress :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::RelatedInput > related_input_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::RelatedSyscall > related_syscall_;
   ::PROTOBUF_NAMESPACE_ID::uint32 address_;
+        ::PROTOBUF_NAMESPACE_ID::uint32 idx_;
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
@@ -912,17 +944,14 @@ class Call :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 >*
       mutable_address();
 
-  // string name = 1;
-  void clear_name();
-  static const int kNameFieldNumber = 1;
-  const std::string& name() const;
-  void set_name(const std::string& value);
-  void set_name(std::string&& value);
-  void set_name(const char* value);
-  void set_name(const char* value, size_t size);
-  std::string* mutable_name();
-  std::string* release_name();
-  void set_allocated_name(std::string* name);
+        // uint32 idx = 1;
+        void clear_idx();
+
+        static const int kIdxFieldNumber = 1;
+
+        ::PROTOBUF_NAMESPACE_ID::uint32 idx() const;
+
+        void set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
 
   // @@protoc_insertion_point(class_scope:dra.Call)
  private:
@@ -931,7 +960,7 @@ class Call :
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 > address_;
   mutable std::atomic<int> _address_cached_byte_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+        ::PROTOBUF_NAMESPACE_ID::uint32 idx_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -1079,6 +1108,174 @@ class Input :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
+    };
+// -------------------------------------------------------------------
+
+    class NewInput :
+            public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.NewInput) */ {
+    public:
+        NewInput();
+
+        virtual ~NewInput();
+
+        NewInput(const NewInput &from);
+
+        NewInput(NewInput &&from) noexcept
+                : NewInput() {
+            *this = ::std::move(from);
+        }
+
+        inline NewInput &operator=(const NewInput &from) {
+            CopyFrom(from);
+            return *this;
+        }
+
+        inline NewInput &operator=(NewInput &&from) noexcept {
+            if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+                if (this != &from) InternalSwap(&from);
+            } else {
+                CopyFrom(from);
+            }
+            return *this;
+        }
+
+        static const ::PROTOBUF_NAMESPACE_ID::Descriptor *descriptor() {
+            return GetDescriptor();
+        }
+
+        static const ::PROTOBUF_NAMESPACE_ID::Descriptor *GetDescriptor() {
+            return GetMetadataStatic().descriptor;
+        }
+
+        static const ::PROTOBUF_NAMESPACE_ID::Reflection *GetReflection() {
+            return GetMetadataStatic().reflection;
+        }
+
+        static const NewInput &default_instance();
+
+        static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+        static inline const NewInput *internal_default_instance() {
+            return reinterpret_cast<const NewInput *>(
+                    &_NewInput_default_instance_);
+        }
+
+        static constexpr int kIndexInFileMessages =
+                7;
+
+        void Swap(NewInput *other);
+
+        friend void swap(NewInput &a, NewInput &b) {
+            a.Swap(&b);
+        }
+
+        // implements Message ----------------------------------------------
+
+        inline NewInput *New() const final {
+            return CreateMaybeMessage<NewInput>(nullptr);
+        }
+
+        NewInput *New(::PROTOBUF_NAMESPACE_ID::Arena *arena) const final {
+            return CreateMaybeMessage<NewInput>(arena);
+        }
+
+        void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+
+        void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message &from) final;
+
+        void CopyFrom(const NewInput &from);
+
+        void MergeFrom(const NewInput &from);
+
+        PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+
+        bool IsInitialized() const final;
+
+        size_t ByteSizeLong() const final;
+
+#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+        const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+#else
+
+        bool MergePartialFromCodedStream(
+                ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream *input) final;
+
+#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+
+        void SerializeWithCachedSizes(
+                ::PROTOBUF_NAMESPACE_ID::io::CodedOutputStream *output) const final;
+
+        ::PROTOBUF_NAMESPACE_ID::uint8 *InternalSerializeWithCachedSizesToArray(
+                ::PROTOBUF_NAMESPACE_ID::uint8 *target) const final;
+
+        int GetCachedSize() const final { return _cached_size_.Get(); }
+
+    private:
+        inline void SharedCtor();
+
+        inline void SharedDtor();
+
+        void SetCachedSize(int size) const final;
+
+        void InternalSwap(NewInput *other);
+
+        friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+
+        static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+            return "dra.NewInput";
+        }
+
+    private:
+        inline ::PROTOBUF_NAMESPACE_ID::Arena *GetArenaNoVirtual() const {
+            return nullptr;
+        }
+
+        inline void *MaybeArenaPtr() const {
+            return nullptr;
+        }
+
+    public:
+
+        ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+    private:
+        static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+            ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+            return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
+        }
+
+    public:
+
+        // nested types ----------------------------------------------------
+
+        // accessors -------------------------------------------------------
+
+        // repeated .dra.Input input = 1;
+        int input_size() const;
+
+        void clear_input();
+
+        static const int kInputFieldNumber = 1;
+
+        ::dra::Input *mutable_input(int index);
+
+        ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::dra::Input> *
+        mutable_input();
+
+        const ::dra::Input &input(int index) const;
+
+        ::dra::Input *add_input();
+
+        const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::dra::Input> &
+        input() const;
+
+        // @@protoc_insertion_point(class_scope:dra.NewInput)
+    private:
+        class HasBitSetters;
+
+        ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+        ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::dra::Input> input_;
+        mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+        friend struct ::TableStruct_DependencyRPC_2eproto;
 };
 // ===================================================================
 
@@ -1090,6 +1287,22 @@ class Input :
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
 // Empty
+
+// uint32 address = 1;
+    inline void Empty::clear_address() {
+        address_ = 0u;
+    }
+
+    inline ::PROTOBUF_NAMESPACE_ID::uint32 Empty::address() const {
+        // @@protoc_insertion_point(field_get:dra.Empty.address)
+        return address_;
+    }
+
+    inline void Empty::set_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+
+        address_ = value;
+        // @@protoc_insertion_point(field_set:dra.Empty.address)
+    }
 
 // -------------------------------------------------------------------
 
@@ -1247,7 +1460,23 @@ inline void UncoveredAddress::set_address(::PROTOBUF_NAMESPACE_ID::uint32 value)
   // @@protoc_insertion_point(field_set:dra.UncoveredAddress.address)
 }
 
-// uint32 condition_address = 2;
+// uint32 idx = 2;
+    inline void UncoveredAddress::clear_idx() {
+        idx_ = 0u;
+    }
+
+    inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::idx() const {
+        // @@protoc_insertion_point(field_get:dra.UncoveredAddress.idx)
+        return idx_;
+    }
+
+    inline void UncoveredAddress::set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+
+        idx_ = value;
+        // @@protoc_insertion_point(field_set:dra.UncoveredAddress.idx)
+    }
+
+// uint32 condition_address = 3;
 inline void UncoveredAddress::clear_condition_address() {
   condition_address_ = 0u;
 }
@@ -1261,7 +1490,7 @@ inline void UncoveredAddress::set_condition_address(::PROTOBUF_NAMESPACE_ID::uin
   // @@protoc_insertion_point(field_set:dra.UncoveredAddress.condition_address)
 }
 
-// repeated .dra.RelatedInput related_input = 3;
+// repeated .dra.RelatedInput related_input = 4;
 inline int UncoveredAddress::related_input_size() const {
   return related_input_.size();
 }
@@ -1291,7 +1520,7 @@ UncoveredAddress::related_input() const {
   return related_input_;
 }
 
-// repeated .dra.RelatedSyscall related_syscall = 4;
+// repeated .dra.RelatedSyscall related_syscall = 5;
 inline int UncoveredAddress::related_syscall_size() const {
   return related_syscall_.size();
 }
@@ -1410,55 +1639,20 @@ DependencyInput::uncovered_address() const {
 
 // Call
 
-// string name = 1;
-inline void Call::clear_name() {
-  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline const std::string& Call::name() const {
-  // @@protoc_insertion_point(field_get:dra.Call.name)
-  return name_.GetNoArena();
-}
-inline void Call::set_name(const std::string& value) {
-  
-  name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:dra.Call.name)
-}
-inline void Call::set_name(std::string&& value) {
-  
-  name_.SetNoArena(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:dra.Call.name)
-}
-inline void Call::set_name(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:dra.Call.name)
-}
-inline void Call::set_name(const char* value, size_t size) {
-  
-  name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:dra.Call.name)
-}
-inline std::string* Call::mutable_name() {
-  
-  // @@protoc_insertion_point(field_mutable:dra.Call.name)
-  return name_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline std::string* Call::release_name() {
-  // @@protoc_insertion_point(field_release:dra.Call.name)
-  
-  return name_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline void Call::set_allocated_name(std::string* name) {
-  if (name != nullptr) {
-    
-  } else {
-    
-  }
-  name_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:dra.Call.name)
+// uint32 idx = 1;
+    inline void Call::clear_idx() {
+        idx_ = 0u;
+    }
+
+    inline ::PROTOBUF_NAMESPACE_ID::uint32 Call::idx() const {
+        // @@protoc_insertion_point(field_get:dra.Call.idx)
+        return idx_;
+    }
+
+    inline void Call::set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+
+        idx_ = value;
+        // @@protoc_insertion_point(field_set:dra.Call.idx)
 }
 
 // repeated uint32 address = 2;
@@ -1576,9 +1770,51 @@ Input::call() const {
   return call_;
 }
 
+// -------------------------------------------------------------------
+
+// NewInput
+
+// repeated .dra.Input input = 1;
+    inline int NewInput::input_size() const {
+        return input_.size();
+    }
+
+    inline void NewInput::clear_input() {
+        input_.Clear();
+    }
+
+    inline ::dra::Input *NewInput::mutable_input(int index) {
+        // @@protoc_insertion_point(field_mutable:dra.NewInput.input)
+        return input_.Mutable(index);
+    }
+
+    inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::dra::Input> *
+    NewInput::mutable_input() {
+        // @@protoc_insertion_point(field_mutable_list:dra.NewInput.input)
+        return &input_;
+    }
+
+    inline const ::dra::Input &NewInput::input(int index) const {
+        // @@protoc_insertion_point(field_get:dra.NewInput.input)
+        return input_.Get(index);
+    }
+
+    inline ::dra::Input *NewInput::add_input() {
+        // @@protoc_insertion_point(field_add:dra.NewInput.input)
+        return input_.Add();
+    }
+
+    inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::dra::Input> &
+    NewInput::input() const {
+        // @@protoc_insertion_point(field_list:dra.NewInput.input)
+        return input_;
+    }
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
