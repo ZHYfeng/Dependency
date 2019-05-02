@@ -48,7 +48,7 @@ namespace dra {
         DFunction *CreatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
 
     public:
-
+        std::unique_ptr<llvm::Module> module;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
 
         std::unordered_map<std::string, DFunction *> RepeatBCFunction;

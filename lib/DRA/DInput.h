@@ -16,6 +16,13 @@
 
 namespace dra {
 
+    class DUncoveredAddress {
+    public:
+        unsigned long long int address;
+        unsigned long long int idx;
+        unsigned long long int condition_address;
+    };
+
     class DInput {
     public:
         DInput();
@@ -28,14 +35,18 @@ namespace dra {
 
         void setCover(const std::string &cover, unsigned long long int vmOffsets);
 
+        void addUncoveredAddress(unsigned long long int address, unsigned long long int condition_address);
+
     public:
         std::string sig;
-        std::string prog;
+        std::string progam;
         unsigned long long int Number;
         std::vector<std::set<unsigned long long int> *> AllCover;
         std::set<unsigned long long int> MaxCover;
         std::set<unsigned long long int> MiniCover;
 
+        unsigned long long int idx;
+        std::vector<DUncoveredAddress *> dUncoveredAddress;
     };
 
 } /* namespace dra */

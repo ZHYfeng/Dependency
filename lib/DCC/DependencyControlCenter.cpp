@@ -31,15 +31,16 @@ namespace dra {
             if (newInput != nullptr) {
                 for (int j = 0; j < newInput->input_size(); j++) {
                     const Input &input = newInput->input(j);
-                    DInput *dInput = new DInput();
+                    DInput *dInput = DM.getInput(input);
                     // TODO(Yu): set input coverage and get uncover address
                     DependencyInput dependencyInput;
                     for (auto u : dInput->dUncoveredAddress) {
-                        unsigned long long int address = u.address;
-                        unsigned long long int condition_address = u.condition_address;
+                        unsigned long long int address = DM.getSyzkallerAddress(u->address);
+                        unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
 
                         UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
                         uncoveredAddress->set_address(address);
+                        uncoveredAddress->set_idx(u->idx);
                         uncoveredAddress->set_condition_address(condition_address);
 
                         llvm::BasicBlock *b = DM.Address2BB[condition_address]->parent->basicBlock;

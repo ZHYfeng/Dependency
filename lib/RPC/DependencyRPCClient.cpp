@@ -13,32 +13,48 @@
 
 namespace dra {
 
-DependencyRPCClient::DependencyRPCClient(std::shared_ptr<grpc::Channel> channel) :
-		stub_(DependencyRPC::NewStub(channel)) {
-	// TODO Auto-generated constructor stub
-}
+    DependencyRPCClient::DependencyRPCClient(const std::shared_ptr<grpc::Channel> &channel) :
+            stub_(DependencyRPC::NewStub(channel)) {
+    }
 
-DependencyRPCClient::~DependencyRPCClient() {
-	// TODO Auto-generated destructor stub
-}
+    DependencyRPCClient::~DependencyRPCClient() = default;
 
-std::string DependencyRPCClient::SendDependencyInput(const DependencyInput dependencyInput) {
-	// Data we are sending to the server.
-	DependencyInput request;
-	// Container for the data we expect from the server.
-	Empty reply;
-	// Context for the client. It could be used to convey extra information to
-	// the server and/or tweak certain RPC behaviors.
-	grpc::ClientContext context;
-	// The actual RPC.
-	grpc::Status status = stub_->SendDependencyInput(&context, request, &reply);
-	// Act upon its status.
-	if (status.ok()) {
-		return reply.SerializeAsString();
-	} else {
-		std::cout << status.error_code() << ": " << status.error_message() << std::endl;
-		return "RPC failed";
-	}
-}
+
+    unsigned long long int DependencyRPCClient::GetVmOffsets() {
+        Empty request;
+        Empty reply;
+        grpc::ClientContext context;
+        grpc::Status status = stub_->GetVmOffsets(&context, request, &reply);
+        if (status.ok()) {
+            return reply.address();
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+            return 0;
+        }
+    }
+
+    NewInput *DependencyRPCClient::GetNewInput() {
+        Empty request;
+        auto *reply = new NewInput();
+        grpc::ClientContext context;
+        grpc::Status status = stub_->GetNewInput(&context, request, reply);
+        if (status.ok()) {
+            return reply;
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+            return nullptr;
+        }
+    }
+
+    void DependencyRPCClient::SendDependencyInput(const DependencyInput &request) {
+        Empty reply;
+        grpc::ClientContext context;
+        grpc::Status status = stub_->SendDependencyInput(&context, request, &reply);
+        if (status.ok()) {
+
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+        }
+    }
 
 } /* namespace dra */

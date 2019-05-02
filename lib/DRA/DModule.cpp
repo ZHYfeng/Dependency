@@ -23,7 +23,6 @@ namespace dra {
     void DModule::ReadBC(std::string InputFilename) {
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadIR***************************" << std::endl;
-        std::unique_ptr<llvm::Module> module;
         llvm::LLVMContext *cxts;
         llvm::SMDiagnostic Err;
         cxts = new llvm::LLVMContext[1];
@@ -474,6 +473,7 @@ namespace dra {
                                             function->BasicBlock[BasicBlockName]->InstASM.push_back(inst);
                                             if (Inst.find("__sanitizer_cov_trace_pc") <= Inst.size()) {
                                                 (function->BasicBlock[BasicBlockName])->COVNum++;
+                                                (function->BasicBlock[BasicBlockName])->address = inst->address;
                                                 COVNum++;
 #if DEBUGASM
                                                 std::cout << "o inst :" << inst->OInst << std::endl;

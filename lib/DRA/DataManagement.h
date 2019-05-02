@@ -14,10 +14,8 @@
 #include "DAInstruction.h"
 #include "DFunction.h"
 #include "DInput.h"
-
-namespace dra {
-    class DModule;
-} /* namespace dra */
+#include "DModule.h"
+#include "../RPC/DependencyRPCClient.h"
 
 namespace dra {
 
@@ -33,9 +31,17 @@ namespace dra {
 
         void getVmOffsets(std::string vmOffsets);
 
+        void setVmOffsets(unsigned long long int vmOffsets);
+
         void getInput(std::string coverfile);
 
+        DInput *getInput(Input input);
+
         void setInput();
+
+        unsigned long long int getRealAddress(unsigned long long int address);
+
+        unsigned long long int getSyzkallerAddress(unsigned long long int address);
 
     public:
         dra::DModule *Modules;

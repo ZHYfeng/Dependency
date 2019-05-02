@@ -4,20 +4,22 @@ package dra;
 
 // The DependencyRPC service definition.
 service DependencyRPC {
-
+    
     rpc GetDependencyInput (Empty) returns (DependencyInput) {
     }
-    rpc GetInputCoverage (Empty) returns (Input) {
+    rpc GetNewInput (Empty) returns (NewInput) {
     }
-
+    rpc GetVmOffsets (Empty) returns (Empty) {
+    }
+    
     rpc SendDependencyInput (DependencyInput) returns (Empty) {
     }
-    rpc SendInputCoverage (Input) returns (Empty) {
+    rpc SendInput (Input) returns (Empty) {
     }
 }
 
 message Empty {
-
+    uint32 address = 1;
 }
 
 message RelatedInput {
@@ -32,9 +34,10 @@ message RelatedSyscall {
 
 message UncoveredAddress {
     uint32 address = 1;
-    uint32 condition_address = 2;
-    repeated RelatedInput related_input = 3;
-    repeated RelatedSyscall related_syscall = 4;
+    uint32 idx = 2;
+    uint32 condition_address = 3;
+    repeated RelatedInput related_input = 4;
+    repeated RelatedSyscall related_syscall = 5;
 }
 
 message DependencyInput {
@@ -43,11 +46,15 @@ message DependencyInput {
 }
 
 message Call {
-    string name = 1;
+    uint32 idx = 1;
     repeated uint32 address = 2;
 }
 
 message Input {
     string sig = 1;
     repeated Call call = 2;
+}
+
+message NewInput {
+    repeated Input input = 1;
 }

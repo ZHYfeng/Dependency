@@ -41,11 +41,11 @@ namespace dra {
                 ss.str("");
                 ss << c;
                 c = 0;
-                this->prog += ss.str();
+                this->progam += ss.str();
             }
         }
 #if DEBUGINPUT
-        std::cout << this->prog << std::endl;
+        std::cout << this->progam << std::endl;
 #endif
     }
 
@@ -100,6 +100,14 @@ namespace dra {
         }
         std::cout << "\n";
 #endif
+    }
+
+    void DInput::addUncoveredAddress(unsigned long long int address, unsigned long long int condition_address) {
+        DUncoveredAddress *d = new DUncoveredAddress();
+        d->address = address;
+        d->idx = this->idx;
+        d->condition_address = condition_address;
+        dUncoveredAddress.push_back(d);
     }
 
 } /* namespace dra */

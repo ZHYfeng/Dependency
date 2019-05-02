@@ -10,8 +10,6 @@
 #include <fstream>
 #include <iostream>
 
-#include "DModule.h"
-
 #define PATH_SIZE 1000000
 
 namespace dra {
@@ -123,6 +121,49 @@ namespace dra {
 
             }
         }
+    }
+
+    void DataManagement::setVmOffsets(unsigned long long int vmOffsets) {
+        this->vmOffsets = vmOffsets;
+
+    }
+
+    DInput *DataManagement::getInput(Input input) {
+        std::string sig = input.sig();
+        DInput *dInput;
+        if (Inputs.find(sig) != Inputs.end()) {
+            dInput = Inputs[sig];
+#if DEBUGINPUT
+            std::cout << "repeat sig : " << sig << std::endl;
+#endif
+        } else {
+            dInput = new DInput;
+            Inputs[sig] = dInput;
+            dInput->setSig(sig);
+        }
+        dInput->Number++;
+        for (int j = 0; j < input.call_size(); j++) {
+            const Call &call = input.call(j);
+            dInput->idx = call.idx();
+            for (int k = 0; k < call.address_size(); k++) {
+                unsigned long long int address = call.address(k);
+                auto final_address = getRealAddress(address);
+                if (this->Address2BB.find(final_address) != this->Address2BB.end()) {
+                    this->Address2BB[final_address]->update(CoverKind::cover, dInput);
+                } else {
+                    std::cerr << "un find address " << std::hex << final_address << "\n";
+                }
+            }
+        }
+        return dInput;
+    }
+
+    unsigned long long int DataManagement::getRealAddress(unsigned long long int address) {
+        return address + this->vmOffsets - 5;
+    }
+
+    unsigned long long int DataManagement::getSyzkallerAddress(unsigned long long int address) {
+        return address - this->vmOffsets + 5;
     }
 
 } /* namespace dra */

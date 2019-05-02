@@ -38,7 +38,7 @@ namespace dra {
 
         void update(CoverKind kind, DInput *input);
 
-        void inferCoverBB(DInput *input, llvm::BasicBlock *b);
+        bool inferCoverBB(DInput *input, llvm::BasicBlock *b);
 
         void inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b);
 
@@ -72,6 +72,7 @@ namespace dra {
         CoverKind state;
         std::string name;
         unsigned int COVNum;
+        unsigned long long int address;
 
         std::vector<DAInstruction *> InstASM;
         std::vector<DLInstruction *> InstIR;
