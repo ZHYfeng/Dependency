@@ -10,6 +10,7 @@
 
 #include "../DRA/DataManagement.h"
 #include "../RPC/DependencyRPCClient.h"
+#include "../JSON/json.hpp"
 
 namespace dra {
 
@@ -19,13 +20,16 @@ namespace dra {
 
         virtual ~DependencyControlCenter();
 
-        void init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
+        void init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, std::string staticRes);
 
         void run();
 
     private:
         DependencyRPCClient client;
         DataManagement DM;
+
+        json j_taintedBrs ,j_analysisCtxMap ,j_tagMap ,j_modInstCtxMap;
+        int initStaticRes(std::string staticRes);
     };
 
 } /* namespace dra */

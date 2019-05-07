@@ -9,6 +9,7 @@
 
 #include <utility>
 #include <grpcpp/grpcpp.h>
+#include <fstream>
 
 namespace dra {
 
@@ -19,10 +20,25 @@ namespace dra {
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
-    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename) {
+    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, std::string staticRes) {
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         unsigned long long int vmOffsets = client.GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
+        //Deserialize the static analysis results.
+        this->initStaticRes(staticRes);
+    }
+
+    int DependencyControlCenter::initStaticRes(std::string staticRes) {
+        try{
+            std::ifstream infile;
+            infile.open(staticRes);
+            infile >> this->j_taintedBrs >> this->j_analysisCtxMap >> this->j_tagMap >> this->j_modInstCtxMap;
+            infile.close();
+            return 0;
+        }catch(){
+            std::cout << "Fail to deserialize the static analysis results!\n";
+        }
+        return 1;
     }
 
     void DependencyControlCenter::run() {
