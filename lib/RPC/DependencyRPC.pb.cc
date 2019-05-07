@@ -234,100 +234,101 @@ static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_DependencyRPC_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Empty, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Empty, address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Empty, name_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::RelatedInput, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::RelatedInput, sig_),
-  PROTOBUF_FIELD_OFFSET(::dra::RelatedInput, address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::RelatedInput, address_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::RelatedSyscall, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::RelatedSyscall, name_),
-  PROTOBUF_FIELD_OFFSET(::dra::RelatedSyscall, address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::RelatedSyscall, address_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, address_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, condition_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, related_input_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, related_syscall_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, condition_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, related_input_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, related_syscall_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::DependencyInput, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::DependencyInput, sig_),
-  PROTOBUF_FIELD_OFFSET(::dra::DependencyInput, uncovered_address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::DependencyInput, uncovered_address_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::NewDependencyInput, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::NewDependencyInput, dependencyinput_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Call, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Call, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call, address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Call, address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Input, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Input, sig_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, call_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Input, call_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::NewInput, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::NewInput, input_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::dra::Empty)},
-  { 6, -1, sizeof(::dra::RelatedInput)},
-  { 13, -1, sizeof(::dra::RelatedSyscall)},
-  { 20, -1, sizeof(::dra::UncoveredAddress)},
-  { 30, -1, sizeof(::dra::DependencyInput)},
-  { 37, -1, sizeof(::dra::NewDependencyInput)},
-  { 43, 50, sizeof(::dra::Call_AddressEntry_DoNotUse)},
-  { 52, -1, sizeof(::dra::Call)},
-  { 59, 66, sizeof(::dra::Input_CallEntry_DoNotUse)},
-  { 68, -1, sizeof(::dra::Input)},
-  { 75, -1, sizeof(::dra::NewInput)},
+        {0,  -1, sizeof(::dra::Empty)},
+        {7,  -1, sizeof(::dra::RelatedInput)},
+        {14, -1, sizeof(::dra::RelatedSyscall)},
+        {21, -1, sizeof(::dra::UncoveredAddress)},
+        {31, -1, sizeof(::dra::DependencyInput)},
+        {38, -1, sizeof(::dra::NewDependencyInput)},
+        {44, 51, sizeof(::dra::Call_AddressEntry_DoNotUse)},
+        {53, -1, sizeof(::dra::Call)},
+        {60, 67, sizeof(::dra::Input_CallEntry_DoNotUse)},
+        {69, -1, sizeof(::dra::Input)},
+        {76, -1, sizeof(::dra::NewInput)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -345,31 +346,32 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_DependencyRPC_2eproto[] =
-  "\n\023DependencyRPC.proto\022\003dra\"\030\n\005Empty\022\017\n\007a"
-  "ddress\030\001 \001(\r\",\n\014RelatedInput\022\013\n\003sig\030\001 \001("
-  "\t\022\017\n\007address\030\002 \001(\r\"/\n\016RelatedSyscall\022\014\n\004"
-  "name\030\001 \001(\t\022\017\n\007address\030\002 \001(\r\"\243\001\n\020Uncovere"
-  "dAddress\022\017\n\007address\030\001 \001(\r\022\013\n\003idx\030\002 \001(\r\022\031"
-  "\n\021condition_address\030\003 \001(\r\022(\n\rrelated_inp"
-  "ut\030\004 \003(\0132\021.dra.RelatedInput\022,\n\017related_s"
-  "yscall\030\005 \003(\0132\023.dra.RelatedSyscall\"P\n\017Dep"
-  "endencyInput\022\013\n\003sig\030\001 \001(\t\0220\n\021uncovered_a"
-  "ddress\030\002 \003(\0132\025.dra.UncoveredAddress\"C\n\022N"
-  "ewDependencyInput\022-\n\017dependencyInput\030\001 \003"
-  "(\0132\024.dra.DependencyInput\"l\n\004Call\022\013\n\003idx\030"
-  "\001 \001(\r\022\'\n\007address\030\002 \003(\0132\026.dra.Call.Addres"
-  "sEntry\032.\n\014AddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005v"
-  "alue\030\002 \001(\r:\0028\001\"p\n\005Input\022\013\n\003sig\030\001 \001(\t\022\"\n\004"
-  "call\030\002 \003(\0132\024.dra.Input.CallEntry\0326\n\tCall"
-  "Entry\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra."
-  "Call:\0028\001\"%\n\010NewInput\022\031\n\005input\030\001 \003(\0132\n.dr"
-  "a.Input2\204\002\n\rDependencyRPC\022(\n\014GetVmOffset"
-  "s\022\n.dra.Empty\032\n.dra.Empty\"\000\022*\n\013GetNewInp"
-  "ut\022\n.dra.Empty\032\r.dra.NewInput\"\000\0229\n\023SendD"
-  "ependencyInput\022\024.dra.DependencyInput\032\n.d"
-  "ra.Empty\"\000\022;\n\022GetDependencyInput\022\n.dra.E"
-  "mpty\032\027.dra.NewDependencyInput\"\000\022%\n\tSendI"
-  "nput\022\n.dra.Input\032\n.dra.Empty\"\000b\006proto3"
+        "\n\023DependencyRPC.proto\022\003dra\"&\n\005Empty\022\017\n\007a"
+        "ddress\030\001 \001(\r\022\014\n\004name\030\002 \001(\t\",\n\014RelatedInp"
+        "ut\022\013\n\003sig\030\001 \001(\t\022\017\n\007address\030\002 \001(\r\"/\n\016Rela"
+        "tedSyscall\022\014\n\004name\030\001 \001(\t\022\017\n\007address\030\002 \001("
+        "\r\"\243\001\n\020UncoveredAddress\022\017\n\007address\030\001 \001(\r\022"
+        "\013\n\003idx\030\002 \001(\r\022\031\n\021condition_address\030\003 \001(\r\022"
+        "(\n\rrelated_input\030\004 \003(\0132\021.dra.RelatedInpu"
+        "t\022,\n\017related_syscall\030\005 \003(\0132\023.dra.Related"
+        "Syscall\"P\n\017DependencyInput\022\013\n\003sig\030\001 \001(\t\022"
+        "0\n\021uncovered_address\030\002 \003(\0132\025.dra.Uncover"
+        "edAddress\"C\n\022NewDependencyInput\022-\n\017depen"
+        "dencyInput\030\001 \003(\0132\024.dra.DependencyInput\"l"
+        "\n\004Call\022\013\n\003idx\030\001 \001(\r\022\'\n\007address\030\002 \003(\0132\026.d"
+        "ra.Call.AddressEntry\032.\n\014AddressEntry\022\013\n\003"
+        "key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"p\n\005Input\022\013\n"
+        "\003sig\030\001 \001(\t\022\"\n\004call\030\002 \003(\0132\024.dra.Input.Cal"
+        "lEntry\0326\n\tCallEntry\022\013\n\003key\030\001 \001(\r\022\030\n\005valu"
+        "e\030\002 \001(\0132\t.dra.Call:\0028\001\"%\n\010NewInput\022\031\n\005in"
+        "put\030\001 \003(\0132\n.dra.Input2\204\002\n\rDependencyRPC\022"
+        "(\n\014GetVmOffsets\022\n.dra.Empty\032\n.dra.Empty\""
+        "\000\022*\n\013GetNewInput\022\n.dra.Empty\032\r.dra.NewIn"
+        "put\"\000\0229\n\023SendDependencyInput\022\024.dra.Depen"
+        "dencyInput\032\n.dra.Empty\"\000\022;\n\022GetDependenc"
+        "yInput\022\n.dra.Empty\032\027.dra.NewDependencyIn"
+        "put\"\000\022%\n\tSendInput\022\n.dra.Input\032\n.dra.Emp"
+        "ty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -389,10 +391,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 998,
-  &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 11, 0,
-  schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
-  file_level_metadata_DependencyRPC_2eproto, 11, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
+        &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1012,
+        &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 11, 0,
+        schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
+        file_level_metadata_DependencyRPC_2eproto, 11, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -409,6 +411,7 @@ class Empty::HasBitSetters {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Empty::kAddressFieldNumber;
+    const int Empty::kNameFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Empty::Empty()
@@ -420,11 +423,17 @@ Empty::Empty(const Empty& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+    name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    if (from.name().size() > 0) {
+        name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    }
   address_ = from.address_;
   // @@protoc_insertion_point(copy_constructor:dra.Empty)
 }
 
 void Empty::SharedCtor() {
+    ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Empty_DependencyRPC_2eproto.base);
+    name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   address_ = 0u;
 }
 
@@ -434,6 +443,7 @@ Empty::~Empty() {
 }
 
 void Empty::SharedDtor() {
+    name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Empty::SetCachedSize(int size) const {
@@ -451,6 +461,7 @@ void Empty::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+    name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   address_ = 0u;
   _internal_metadata_.Clear();
 }
@@ -467,6 +478,13 @@ const char* Empty::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string name = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(mutable_name(), ptr, ctx, "dra.Empty.name");
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -513,6 +531,21 @@ bool Empty::MergePartialFromCodedStream(
         break;
       }
 
+            // string name = 2;
+        case 2: {
+            if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+                DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                        input, this->mutable_name()));
+                DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+                        this->name().data(), static_cast<int>(this->name().length()),
+                        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
+                        "dra.Empty.name"));
+            } else {
+                goto handle_unusual;
+            }
+            break;
+        }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -545,6 +578,16 @@ void Empty::SerializeWithCachedSizes(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32(1, this->address(), output);
   }
 
+    // string name = 2;
+    if (this->name().size() > 0) {
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+                this->name().data(), static_cast<int>(this->name().length()),
+                ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+                "dra.Empty.name");
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteStringMaybeAliased(
+                2, this->name(), output);
+    }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -562,6 +605,17 @@ void Empty::SerializeWithCachedSizes(
   if (this->address() != 0) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->address(), target);
   }
+
+    // string name = 2;
+    if (this->name().size() > 0) {
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+                this->name().data(), static_cast<int>(this->name().length()),
+                ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+                "dra.Empty.name");
+        target =
+                ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteStringToArray(
+                        2, this->name(), target);
+    }
 
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -583,6 +637,13 @@ size_t Empty::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+    // string name = 2;
+    if (this->name().size() > 0) {
+        total_size += 1 +
+                      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                              this->name());
+    }
 
   // uint32 address = 1;
   if (this->address() != 0) {
@@ -618,6 +679,10 @@ void Empty::MergeFrom(const Empty& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+    if (from.name().size() > 0) {
+
+        name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    }
   if (from.address() != 0) {
     set_address(from.address());
   }
@@ -648,6 +713,8 @@ void Empty::Swap(Empty* other) {
 void Empty::InternalSwap(Empty* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
+    name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+               GetArenaNoVirtual());
   swap(address_, other->address_);
 }
 
@@ -2579,15 +2646,14 @@ void Call::SerializeWithCachedSizes(
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        Call_AddressEntry_DoNotUse::MapEntryWrapper entry(nullptr, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second);
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteMessageMaybeToArray(2, entry, output);
+          Call_AddressEntry_DoNotUse::Funcs::SerializeToCodedStream(2, items[static_cast<ptrdiff_t>(i)].second->first,
+                                                                    items[static_cast<ptrdiff_t>(i)].second->second, output);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_iterator
           it = this->address().begin();
           it != this->address().end(); ++it) {
-        Call_AddressEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteMessageMaybeToArray(2, entry, output);
+          Call_AddressEntry_DoNotUse::Funcs::SerializeToCodedStream(2, it->first, it->second, output);
       }
     }
   }
@@ -2630,15 +2696,14 @@ void Call::SerializeWithCachedSizes(
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        Call_AddressEntry_DoNotUse::MapEntryWrapper entry(nullptr, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second);
-        target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::InternalWriteMessageNoVirtualToArray(2, entry, target);
+          target = Call_AddressEntry_DoNotUse::Funcs::SerializeToArray(2, items[static_cast<ptrdiff_t>(i)].second->first,
+                                                                       items[static_cast<ptrdiff_t>(i)].second->second, target);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_iterator
           it = this->address().begin();
           it != this->address().end(); ++it) {
-        Call_AddressEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
-        target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::InternalWriteMessageNoVirtualToArray(2, entry, target);
+          target = Call_AddressEntry_DoNotUse::Funcs::SerializeToArray(2, it->first, it->second, target);
       }
     }
   }
@@ -2670,9 +2735,7 @@ size_t Call::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_iterator
       it = this->address().begin();
       it != this->address().end(); ++it) {
-    Call_AddressEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        MessageSizeNoVirtual(entry);
+      total_size += Call_AddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // uint32 idx = 1;
@@ -2977,15 +3040,14 @@ void Input::SerializeWithCachedSizes(
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        Input_CallEntry_DoNotUse::MapEntryWrapper entry(nullptr, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second);
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteMessageMaybeToArray(2, entry, output);
+          Input_CallEntry_DoNotUse::Funcs::SerializeToCodedStream(2, items[static_cast<ptrdiff_t>(i)].second->first,
+                                                                  items[static_cast<ptrdiff_t>(i)].second->second, output);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >::const_iterator
           it = this->call().begin();
           it != this->call().end(); ++it) {
-        Input_CallEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteMessageMaybeToArray(2, entry, output);
+          Input_CallEntry_DoNotUse::Funcs::SerializeToCodedStream(2, it->first, it->second, output);
       }
     }
   }
@@ -3034,15 +3096,14 @@ void Input::SerializeWithCachedSizes(
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        Input_CallEntry_DoNotUse::MapEntryWrapper entry(nullptr, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second);
-        target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::InternalWriteMessageNoVirtualToArray(2, entry, target);
+          target = Input_CallEntry_DoNotUse::Funcs::SerializeToArray(2, items[static_cast<ptrdiff_t>(i)].second->first,
+                                                                     items[static_cast<ptrdiff_t>(i)].second->second, target);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >::const_iterator
           it = this->call().begin();
           it != this->call().end(); ++it) {
-        Input_CallEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
-        target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::InternalWriteMessageNoVirtualToArray(2, entry, target);
+          target = Input_CallEntry_DoNotUse::Funcs::SerializeToArray(2, it->first, it->second, target);
       }
     }
   }
@@ -3074,9 +3135,7 @@ size_t Input::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >::const_iterator
       it = this->call().begin();
       it != this->call().end(); ++it) {
-    Input_CallEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        MessageSizeNoVirtual(entry);
+      total_size += Input_CallEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // string sig = 1;

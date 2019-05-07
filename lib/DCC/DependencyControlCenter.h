@@ -10,7 +10,7 @@
 
 #include "../DRA/DataManagement.h"
 #include "../RPC/DependencyRPCClient.h"
-#include "../JSON/json.hpp"
+#include "../JSON/json.cpp"
 
 typedef std::vector<std::string> LOC_INF;
 

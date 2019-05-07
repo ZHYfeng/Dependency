@@ -9,6 +9,9 @@
 
 #include "DependencyControlCenter.h"
 
+#include <llvm/IR/Module.h>
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Instruction.h>
 #include <utility>
 #include <grpcpp/grpcpp.h>
 #include <fstream>
@@ -37,7 +40,7 @@ namespace dra {
             infile >> this->j_taintedBrs >> this->j_analysisCtxMap >> this->j_tagMap >> this->j_modInstCtxMap;
             infile.close();
             return 0;
-        }catch(){
+        } catch (...) {
             std::cout << "Fail to deserialize the static analysis results!\n";
         }
         return 1;
@@ -73,7 +76,7 @@ namespace dra {
         if(!B){
             return nullptr;
         }
-        return this->getLocInf(B->begin());
+        return this->getLocInf(&*(B->begin()));
     }
 
     void DependencyControlCenter::run() {
@@ -94,24 +97,24 @@ namespace dra {
                         uncoveredAddress->set_condition_address(condition_address);
 
                         llvm::BasicBlock *b = DM.Address2BB[condition_address]->parent->basicBlock;
-                        // TODO(hang): GetGlobalWriteBB
-                        auto allbb = GetGlobalWriteBB(b);
-                        for (auto bb : allbb) {
-                            auto db = DM.Modules->Function[bb.path][bb.name];
-                            unsigned long long int writeAddress = db.address;
-
-                            // TODO(hang): GetGlobalWriteBB
-                            auto relatedsyscall = GetRelatedSyscall(bb);
-                            RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
-                            relatedSyscall->set_address(writeAddress);
-                            relatedSyscall->set_name(relatedsyscall);
-
-                            RelatedInput *relatedInput = uncoveredAddress->add_related_input();
-                            relatedInput->set_address(writeAddress);
-                            for(auto i : db->input){
-                                relatedInput->set_sig(i->sig);
-                            }
-                        }
+//                        // TODO(hang): GetGlobalWriteBB
+//                        auto allbb = GetGlobalWriteBB(b);
+//                        for (auto bb : allbb) {
+//                            auto db = DM.Modules->Function[bb.path][bb.name];
+//                            unsigned long long int writeAddress = db.address;
+//
+//                            // TODO(hang): GetGlobalWriteBB
+//                            auto relatedsyscall = GetRelatedSyscall(bb);
+//                            RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
+//                            relatedSyscall->set_address(writeAddress);
+//                            relatedSyscall->set_name(relatedsyscall);
+//
+//                            RelatedInput *relatedInput = uncoveredAddress->add_related_input();
+//                            relatedInput->set_address(writeAddress);
+//                            for(auto i : db->input){
+//                                relatedInput->set_sig(i->sig);
+//                            }
+//                        }
                     }
                     client.SendDependencyInput(dependencyInput);
                 }

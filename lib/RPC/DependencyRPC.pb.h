@@ -218,6 +218,27 @@ class Empty :
 
   // accessors -------------------------------------------------------
 
+        // string name = 2;
+        void clear_name();
+
+        static const int kNameFieldNumber = 2;
+
+        const std::string &name() const;
+
+        void set_name(const std::string &value);
+
+        void set_name(std::string &&value);
+
+        void set_name(const char *value);
+
+        void set_name(const char *value, size_t size);
+
+        std::string *mutable_name();
+
+        std::string *release_name();
+
+        void set_allocated_name(std::string *name);
+
   // uint32 address = 1;
   void clear_address();
   static const int kAddressFieldNumber = 1;
@@ -229,6 +250,7 @@ class Empty :
   class HasBitSetters;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+        ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   ::PROTOBUF_NAMESPACE_ID::uint32 address_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
@@ -1460,6 +1482,65 @@ inline void Empty::set_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   address_ = value;
   // @@protoc_insertion_point(field_set:dra.Empty.address)
 }
+
+// string name = 2;
+    inline void Empty::clear_name() {
+        name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    }
+
+    inline const std::string &Empty::name() const {
+        // @@protoc_insertion_point(field_get:dra.Empty.name)
+        return name_.GetNoArena();
+    }
+
+    inline void Empty::set_name(const std::string &value) {
+
+        name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+        // @@protoc_insertion_point(field_set:dra.Empty.name)
+    }
+
+    inline void Empty::set_name(std::string &&value) {
+
+        name_.SetNoArena(
+                &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+        // @@protoc_insertion_point(field_set_rvalue:dra.Empty.name)
+    }
+
+    inline void Empty::set_name(const char *value) {
+                GOOGLE_DCHECK(value != nullptr);
+
+        name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+        // @@protoc_insertion_point(field_set_char:dra.Empty.name)
+    }
+
+    inline void Empty::set_name(const char *value, size_t size) {
+
+        name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+                         ::std::string(reinterpret_cast<const char *>(value), size));
+        // @@protoc_insertion_point(field_set_pointer:dra.Empty.name)
+    }
+
+    inline std::string *Empty::mutable_name() {
+
+        // @@protoc_insertion_point(field_mutable:dra.Empty.name)
+        return name_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    }
+
+    inline std::string *Empty::release_name() {
+        // @@protoc_insertion_point(field_release:dra.Empty.name)
+
+        return name_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+    }
+
+    inline void Empty::set_allocated_name(std::string *name) {
+        if (name != nullptr) {
+
+        } else {
+
+        }
+        name_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name);
+        // @@protoc_insertion_point(field_set_allocated:dra.Empty.name)
+    }
 
 // -------------------------------------------------------------------
 
