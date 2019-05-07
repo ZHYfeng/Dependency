@@ -143,10 +143,10 @@ namespace dra {
         }
         dInput->Number++;
         for (int j = 0; j < input.call_size(); j++) {
-            const Call &call = input.call(j);
+            const Call &call = input.call().at(j);
             dInput->idx = call.idx();
             for (int k = 0; k < call.address_size(); k++) {
-                unsigned long long int address = call.address(k);
+                unsigned long long int address = call.address().at(k);
                 auto final_address = getRealAddress(address);
                 if (this->Address2BB.find(final_address) != this->Address2BB.end()) {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);

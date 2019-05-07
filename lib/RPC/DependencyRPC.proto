@@ -5,14 +5,16 @@ package dra;
 // The DependencyRPC service definition.
 service DependencyRPC {
     
-    rpc GetDependencyInput (Empty) returns (DependencyInput) {
+    // C++ and syz-manager
+    rpc GetVmOffsets (Empty) returns (Empty) {
     }
     rpc GetNewInput (Empty) returns (NewInput) {
     }
-    rpc GetVmOffsets (Empty) returns (Empty) {
+    rpc SendDependencyInput (DependencyInput) returns (Empty) {
     }
     
-    rpc SendDependencyInput (DependencyInput) returns (Empty) {
+    //syz-fuzzer and syz-manager
+    rpc GetDependencyInput (Empty) returns (NewDependencyInput) {
     }
     rpc SendInput (Input) returns (Empty) {
     }
@@ -20,6 +22,7 @@ service DependencyRPC {
 
 message Empty {
     uint32 address = 1;
+    string name = 2;
 }
 
 message RelatedInput {
@@ -45,14 +48,18 @@ message DependencyInput {
     repeated UncoveredAddress uncovered_address = 2;
 }
 
+message NewDependencyInput {
+    repeated DependencyInput dependencyInput = 1;
+}
+
 message Call {
     uint32 idx = 1;
-    repeated uint32 address = 2;
+    map<uint32, uint32> address = 2;
 }
 
 message Input {
     string sig = 1;
-    repeated Call call = 2;
+    map<uint32, Call> call = 2;
 }
 
 message NewInput {

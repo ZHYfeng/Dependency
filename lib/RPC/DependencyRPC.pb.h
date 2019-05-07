@@ -31,6 +31,9 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/map.h>  // IWYU pragma: export
+#include <google/protobuf/map_entry.h>
+#include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
@@ -47,7 +50,7 @@ struct TableStruct_DependencyRPC_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[8]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[11]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -58,6 +61,9 @@ namespace dra {
 class Call;
 class CallDefaultTypeInternal;
 extern CallDefaultTypeInternal _Call_default_instance_;
+class Call_AddressEntry_DoNotUse;
+class Call_AddressEntry_DoNotUseDefaultTypeInternal;
+extern Call_AddressEntry_DoNotUseDefaultTypeInternal _Call_AddressEntry_DoNotUse_default_instance_;
 class DependencyInput;
 class DependencyInputDefaultTypeInternal;
 extern DependencyInputDefaultTypeInternal _DependencyInput_default_instance_;
@@ -67,6 +73,12 @@ extern EmptyDefaultTypeInternal _Empty_default_instance_;
 class Input;
 class InputDefaultTypeInternal;
 extern InputDefaultTypeInternal _Input_default_instance_;
+class Input_CallEntry_DoNotUse;
+class Input_CallEntry_DoNotUseDefaultTypeInternal;
+extern Input_CallEntry_DoNotUseDefaultTypeInternal _Input_CallEntry_DoNotUse_default_instance_;
+class NewDependencyInput;
+class NewDependencyInputDefaultTypeInternal;
+extern NewDependencyInputDefaultTypeInternal _NewDependencyInput_default_instance_;
 class NewInput;
 class NewInputDefaultTypeInternal;
 extern NewInputDefaultTypeInternal _NewInput_default_instance_;
@@ -82,9 +94,12 @@ extern UncoveredAddressDefaultTypeInternal _UncoveredAddress_default_instance_;
 }  // namespace dra
 PROTOBUF_NAMESPACE_OPEN
 template<> ::dra::Call* Arena::CreateMaybeMessage<::dra::Call>(Arena*);
+template<> ::dra::Call_AddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Call_AddressEntry_DoNotUse>(Arena*);
 template<> ::dra::DependencyInput* Arena::CreateMaybeMessage<::dra::DependencyInput>(Arena*);
 template<> ::dra::Empty* Arena::CreateMaybeMessage<::dra::Empty>(Arena*);
 template<> ::dra::Input* Arena::CreateMaybeMessage<::dra::Input>(Arena*);
+template<> ::dra::Input_CallEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Input_CallEntry_DoNotUse>(Arena*);
+template<> ::dra::NewDependencyInput* Arena::CreateMaybeMessage<::dra::NewDependencyInput>(Arena*);
 template<> ::dra::NewInput* Arena::CreateMaybeMessage<::dra::NewInput>(Arena*);
 template<> ::dra::RelatedInput* Arena::CreateMaybeMessage<::dra::RelatedInput>(Arena*);
 template<> ::dra::RelatedSyscall* Arena::CreateMaybeMessage<::dra::RelatedSyscall>(Arena*);
@@ -809,6 +824,168 @@ class DependencyInput :
 };
 // -------------------------------------------------------------------
 
+class NewDependencyInput :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.NewDependencyInput) */ {
+ public:
+  NewDependencyInput();
+  virtual ~NewDependencyInput();
+
+  NewDependencyInput(const NewDependencyInput& from);
+  NewDependencyInput(NewDependencyInput&& from) noexcept
+    : NewDependencyInput() {
+    *this = ::std::move(from);
+  }
+
+  inline NewDependencyInput& operator=(const NewDependencyInput& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline NewDependencyInput& operator=(NewDependencyInput&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const NewDependencyInput& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const NewDependencyInput* internal_default_instance() {
+    return reinterpret_cast<const NewDependencyInput*>(
+               &_NewDependencyInput_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  void Swap(NewDependencyInput* other);
+  friend void swap(NewDependencyInput& a, NewDependencyInput& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline NewDependencyInput* New() const final {
+    return CreateMaybeMessage<NewDependencyInput>(nullptr);
+  }
+
+  NewDependencyInput* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<NewDependencyInput>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const NewDependencyInput& from);
+  void MergeFrom(const NewDependencyInput& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  #else
+  bool MergePartialFromCodedStream(
+      ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::PROTOBUF_NAMESPACE_ID::io::CodedOutputStream* output) const final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(NewDependencyInput* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dra.NewDependencyInput";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .dra.DependencyInput dependencyInput = 1;
+  int dependencyinput_size() const;
+  void clear_dependencyinput();
+  static const int kDependencyInputFieldNumber = 1;
+  ::dra::DependencyInput* mutable_dependencyinput(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::DependencyInput >*
+      mutable_dependencyinput();
+  const ::dra::DependencyInput& dependencyinput(int index) const;
+  ::dra::DependencyInput* add_dependencyinput();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::DependencyInput >&
+      dependencyinput() const;
+
+  // @@protoc_insertion_point(class_scope:dra.NewDependencyInput)
+ private:
+  class HasBitSetters;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::DependencyInput > dependencyinput_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_DependencyRPC_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Call_AddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Call_AddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Call_AddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    0 > SuperType;
+  Call_AddressEntry_DoNotUse();
+  Call_AddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const Call_AddressEntry_DoNotUse& other);
+  static const Call_AddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Call_AddressEntry_DoNotUse*>(&_Call_AddressEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[6];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
 class Call :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.Call) */ {
  public:
@@ -851,7 +1028,7 @@ class Call :
                &_Call_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   void Swap(Call* other);
   friend void swap(Call& a, Call& b) {
@@ -916,18 +1093,16 @@ class Call :
 
   // nested types ----------------------------------------------------
 
+
   // accessors -------------------------------------------------------
 
-  // repeated uint32 address = 2;
+  // map<uint32, uint32> address = 2;
   int address_size() const;
   void clear_address();
   static const int kAddressFieldNumber = 2;
-  ::PROTOBUF_NAMESPACE_ID::uint32 address(int index) const;
-  void set_address(int index, ::PROTOBUF_NAMESPACE_ID::uint32 value);
-  void add_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 >&
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
       address() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 >*
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
       mutable_address();
 
   // uint32 idx = 1;
@@ -941,12 +1116,46 @@ class Call :
   class HasBitSetters;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 > address_;
-  mutable std::atomic<int> _address_cached_byte_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      Call_AddressEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      0 > address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 idx_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
+// -------------------------------------------------------------------
+
+class Input_CallEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Input_CallEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Input_CallEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  Input_CallEntry_DoNotUse();
+  Input_CallEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const Input_CallEntry_DoNotUse& other);
+  static const Input_CallEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Input_CallEntry_DoNotUse*>(&_Input_CallEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[8];
+  }
+
+  public:
+};
+
 // -------------------------------------------------------------------
 
 class Input :
@@ -991,7 +1200,7 @@ class Input :
                &_Input_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    9;
 
   void Swap(Input* other);
   friend void swap(Input& a, Input& b) {
@@ -1056,19 +1265,17 @@ class Input :
 
   // nested types ----------------------------------------------------
 
+
   // accessors -------------------------------------------------------
 
-  // repeated .dra.Call call = 2;
+  // map<uint32, .dra.Call> call = 2;
   int call_size() const;
   void clear_call();
   static const int kCallFieldNumber = 2;
-  ::dra::Call* mutable_call(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Call >*
-      mutable_call();
-  const ::dra::Call& call(int index) const;
-  ::dra::Call* add_call();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Call >&
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >&
       call() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >*
+      mutable_call();
 
   // string sig = 1;
   void clear_sig();
@@ -1087,7 +1294,12 @@ class Input :
   class HasBitSetters;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Call > call_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      Input_CallEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > call_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
@@ -1136,7 +1348,7 @@ class NewInput :
                &_NewInput_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    10;
 
   void Swap(NewInput* other);
   friend void swap(NewInput& a, NewInput& b) {
@@ -1580,6 +1792,42 @@ DependencyInput::uncovered_address() const {
 
 // -------------------------------------------------------------------
 
+// NewDependencyInput
+
+// repeated .dra.DependencyInput dependencyInput = 1;
+inline int NewDependencyInput::dependencyinput_size() const {
+  return dependencyinput_.size();
+}
+inline void NewDependencyInput::clear_dependencyinput() {
+  dependencyinput_.Clear();
+}
+inline ::dra::DependencyInput* NewDependencyInput::mutable_dependencyinput(int index) {
+  // @@protoc_insertion_point(field_mutable:dra.NewDependencyInput.dependencyInput)
+  return dependencyinput_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::DependencyInput >*
+NewDependencyInput::mutable_dependencyinput() {
+  // @@protoc_insertion_point(field_mutable_list:dra.NewDependencyInput.dependencyInput)
+  return &dependencyinput_;
+}
+inline const ::dra::DependencyInput& NewDependencyInput::dependencyinput(int index) const {
+  // @@protoc_insertion_point(field_get:dra.NewDependencyInput.dependencyInput)
+  return dependencyinput_.Get(index);
+}
+inline ::dra::DependencyInput* NewDependencyInput::add_dependencyinput() {
+  // @@protoc_insertion_point(field_add:dra.NewDependencyInput.dependencyInput)
+  return dependencyinput_.Add();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::DependencyInput >&
+NewDependencyInput::dependencyinput() const {
+  // @@protoc_insertion_point(field_list:dra.NewDependencyInput.dependencyInput)
+  return dependencyinput_;
+}
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // Call
 
 // uint32 idx = 1;
@@ -1596,35 +1844,25 @@ inline void Call::set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   // @@protoc_insertion_point(field_set:dra.Call.idx)
 }
 
-// repeated uint32 address = 2;
+// map<uint32, uint32> address = 2;
 inline int Call::address_size() const {
   return address_.size();
 }
 inline void Call::clear_address() {
   address_.Clear();
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Call::address(int index) const {
-  // @@protoc_insertion_point(field_get:dra.Call.address)
-  return address_.Get(index);
-}
-inline void Call::set_address(int index, ::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  address_.Set(index, value);
-  // @@protoc_insertion_point(field_set:dra.Call.address)
-}
-inline void Call::add_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  address_.Add(value);
-  // @@protoc_insertion_point(field_add:dra.Call.address)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 >&
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
 Call::address() const {
-  // @@protoc_insertion_point(field_list:dra.Call.address)
-  return address_;
+  // @@protoc_insertion_point(field_map:dra.Call.address)
+  return address_.GetMap();
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 >*
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
 Call::mutable_address() {
-  // @@protoc_insertion_point(field_mutable_list:dra.Call.address)
-  return &address_;
+  // @@protoc_insertion_point(field_mutable_map:dra.Call.address)
+  return address_.MutableMap();
 }
+
+// -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
 
@@ -1681,34 +1919,22 @@ inline void Input::set_allocated_sig(std::string* sig) {
   // @@protoc_insertion_point(field_set_allocated:dra.Input.sig)
 }
 
-// repeated .dra.Call call = 2;
+// map<uint32, .dra.Call> call = 2;
 inline int Input::call_size() const {
   return call_.size();
 }
 inline void Input::clear_call() {
   call_.Clear();
 }
-inline ::dra::Call* Input::mutable_call(int index) {
-  // @@protoc_insertion_point(field_mutable:dra.Input.call)
-  return call_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Call >*
-Input::mutable_call() {
-  // @@protoc_insertion_point(field_mutable_list:dra.Input.call)
-  return &call_;
-}
-inline const ::dra::Call& Input::call(int index) const {
-  // @@protoc_insertion_point(field_get:dra.Input.call)
-  return call_.Get(index);
-}
-inline ::dra::Call* Input::add_call() {
-  // @@protoc_insertion_point(field_add:dra.Input.call)
-  return call_.Add();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Call >&
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >&
 Input::call() const {
-  // @@protoc_insertion_point(field_list:dra.Input.call)
-  return call_;
+  // @@protoc_insertion_point(field_map:dra.Input.call)
+  return call_.GetMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >*
+Input::mutable_call() {
+  // @@protoc_insertion_point(field_mutable_map:dra.Input.call)
+  return call_.MutableMap();
 }
 
 // -------------------------------------------------------------------
@@ -1748,6 +1974,12 @@ NewInput::input() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
