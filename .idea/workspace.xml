@@ -2,10 +2,10 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="2018_dependency" targetName="DRA" />
       <config projectName="2018_dependency" targetName="intrinsics_gen" />
-      <config projectName="2018_dependency" targetName="DCC" />
       <config projectName="2018_dependency" targetName="RPC" />
+      <config projectName="2018_dependency" targetName="DCC" />
+      <config projectName="2018_dependency" targetName="DRA" />
       <config projectName="2018_dependency" targetName="dra" />
     </generated>
   </component>
@@ -15,13 +15,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a56c0797-d237-40ea-b667-8fe2edef1eb7" name="Default Changelist" comment="refactor: change the file name">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="a56c0797-d237-40ea-b667-8fe2edef1eb7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/yhao.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/DRA/DataManagement.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lib/DRA/DataManagement.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPC.grpc.pb.cc" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPC.grpc.pb.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPC.grpc.pb.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPC.grpc.pb.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.cc" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" beforeDir="false" afterPath="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -56,8 +59,8 @@
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.proto">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="467">
-                    <caret line="37" column="33" lean-forward="true" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
+                  <state relative-caret-position="756">
+                    <caret line="61" column="26" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="26" />
                   </state>
                 </provider>
               </entry>
@@ -68,57 +71,48 @@
     </window>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="53" column="41" selection-start-line="53" selection-start-column="41" selection-end-line="53" selection-end-column="41" />
+            <state relative-caret-position="269">
+              <caret line="63" column="27" selection-start-line="47" selection-start-column="26" selection-end-line="63" selection-end-column="27" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/DRA/DModule.cpp">
+        <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="455" lean-forward="true" selection-start-line="455" selection-end-line="455" />
+            <state relative-caret-position="330">
+              <caret line="31" column="43" selection-start-line="31" selection-start-column="43" selection-end-line="31" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/DRA/DAInstruction.h">
+        <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="42" column="31" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="149" column="61" selection-start-line="149" selection-start-column="61" selection-end-line="149" selection-end-column="61" />
+            <state relative-caret-position="629">
+              <caret line="37" column="31" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.h">
+        <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
+            <state relative-caret-position="367">
+              <caret line="148" column="63" selection-start-line="148" selection-start-column="63" selection-end-line="148" selection-end-column="63" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/DRA/DFunction.h">
+        <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="674">
-              <caret line="95" column="46" selection-start-line="95" selection-start-column="46" selection-end-line="95" selection-end-column="46" />
+            <state relative-caret-position="221">
+              <caret line="13" selection-start-line="13" selection-end-line="13" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -126,17 +120,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/DRA/DAInstruction.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
+            <state relative-caret-position="646">
               <caret line="38" column="21" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/DRA/DBasicBlock.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="122" column="54" selection-start-line="122" selection-start-column="48" selection-end-line="122" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -144,8 +129,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/DRA/DInput.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="606">
-              <caret line="109" column="39" lean-forward="true" selection-start-line="109" selection-start-column="39" selection-end-line="109" selection-end-column="39" />
+            <state relative-caret-position="1853">
+              <caret line="109" column="39" selection-start-line="109" selection-start-column="39" selection-end-line="109" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -169,15 +154,15 @@
         <option value="$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h" />
         <option value="$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp" />
         <option value="$PROJECT_DIR$/lib/DRA/DModule.h" />
-        <option value="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" />
         <option value="$PROJECT_DIR$/lib/DRA/DBasicBlock.h" />
         <option value="$PROJECT_DIR$/lib/DRA/DInput.h" />
         <option value="$PROJECT_DIR$/lib/DRA/DBasicBlock.cpp" />
         <option value="$PROJECT_DIR$/lib/DRA/DInput.cpp" />
         <option value="$PROJECT_DIR$/lib/DRA/DModule.cpp" />
-        <option value="$PROJECT_DIR$/lib/DRA/DataManagement.cpp" />
-        <option value="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp" />
         <option value="$PROJECT_DIR$/lib/DRA/DataManagement.h" />
+        <option value="$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp" />
+        <option value="$PROJECT_DIR$/lib/DRA/DataManagement.cpp" />
+        <option value="$PROJECT_DIR$/lib/RPC/DependencyRPC.proto" />
       </list>
     </option>
   </component>
@@ -193,6 +178,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -238,13 +224,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/build" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../2018_klee_confirm_path" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -300,12 +285,12 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Bash.build-protoc.sh" />
       <item itemvalue="CMake Application.intrinsics_gen" />
       <item itemvalue="CMake Application.DCC" />
       <item itemvalue="CMake Application.DRA" />
       <item itemvalue="CMake Application.RPC" />
       <item itemvalue="CMake Application.dra" />
-      <item itemvalue="Bash.build-protoc.sh" />
     </list>
     <recent_temporary>
       <list>
@@ -324,7 +309,8 @@
       <option name="presentableId" value="Default" />
       <updated>1556740400183</updated>
       <workItem from="1556740402825" duration="64000" />
-      <workItem from="1556740673831" duration="15247000" />
+      <workItem from="1556740673831" duration="16528000" />
+      <workItem from="1556921426977" duration="16974000" />
     </task>
     <task id="LOCAL-00001" summary="chore: delete eclipse project files">
       <created>1556740747583</created>
@@ -375,11 +361,25 @@
       <option name="project" value="LOCAL" />
       <updated>1556758296631</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat: add idx for coverage">
+      <created>1556758334849</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1556758334849</updated>
+    </task>
+    <task id="LOCAL-00009" summary="chore: for clion">
+      <created>1556758355557</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1556758355557</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15311000" />
+    <option name="totallyTimeSpent" value="33566000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -393,7 +393,7 @@
   <component name="ToolWindowManager">
     <frame x="1974" y="24" width="1866" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14757709" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14922908" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -406,13 +406,13 @@
       <window_info anchor="bottom" id="Messages" order="7" weight="0.32897604" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49944934" weight="0.32897604" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5005507" side_tool="true" weight="0.32897604" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="10" visible="true" weight="0.32897604" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="10" visible="true" weight="0.3278867" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.32897604" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" weight="0.32984582" />
-      <window_info anchor="right" id="Find" order="4" weight="0.20759912" />
+      <window_info anchor="right" id="Find" order="4" visible="true" weight="0.29515418" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -427,7 +427,8 @@
     <MESSAGE value="test: use for hang" />
     <MESSAGE value="feat: use gRPC to transfer information from syzkaller" />
     <MESSAGE value="feat: add idx for coverage" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add idx for coverage" />
+    <MESSAGE value="chore: for clion" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: for clion" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.cc">
@@ -467,45 +468,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="39" column="54" lean-forward="true" selection-start-line="39" selection-start-column="54" selection-end-line="39" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="13" selection-start-line="13" selection-end-line="13" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/lib/RPC/DependencyRPC.pb.cc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="2316" column="7" selection-start-line="2316" selection-start-column="7" selection-end-line="2316" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/DRA/DModule.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="453">
           <caret line="50" column="45" selection-start-line="50" selection-start-column="45" selection-end-line="50" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="419" column="68" lean-forward="true" selection-start-line="419" selection-start-column="68" selection-end-line="419" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.proto">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="37" column="33" lean-forward="true" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -516,38 +482,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DRA/DInput.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="109" column="39" lean-forward="true" selection-start-line="109" selection-start-column="39" selection-end-line="109" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DRA/DAInstruction.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="38" column="21" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DRA/DFunction.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="674">
-          <caret line="95" column="46" selection-start-line="95" selection-start-column="46" selection-end-line="95" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/DRA/DBasicBlock.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="28" column="10" selection-start-line="28" selection-start-column="10" selection-end-line="28" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DRA/DBasicBlock.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="122" column="54" selection-start-line="122" selection-start-column="48" selection-end-line="122" selection-end-column="55" />
         </state>
       </provider>
     </entry>
@@ -558,38 +496,108 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="53" column="41" selection-start-line="53" selection-start-column="41" selection-end-line="53" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/DRA/DModule.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="455" lean-forward="true" selection-start-line="455" selection-end-line="455" />
+        <state relative-caret-position="7735">
+          <caret line="455" selection-start-line="455" selection-end-line="455" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/DRA/DAInstruction.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
+        <state relative-caret-position="714">
           <caret line="42" column="31" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.cpp">
+    <entry file="file://$PROJECT_DIR$/lib/DRA/DAInstruction.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="149" column="61" selection-start-line="149" selection-start-column="61" selection-end-line="149" selection-end-column="61" />
+        <state relative-caret-position="646">
+          <caret line="38" column="21" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DRA/DBasicBlock.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2074">
+          <caret line="122" column="54" selection-start-line="122" selection-start-column="48" selection-end-line="122" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DRA/DInput.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1853">
+          <caret line="109" column="39" selection-start-line="109" selection-start-column="39" selection-end-line="109" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/build-protoc.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="44" selection-start-line="2" selection-start-column="44" selection-end-line="2" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.pb.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="1096" column="6" selection-start-line="1096" selection-start-column="6" selection-end-line="1096" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DRA/DFunction.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="95" column="46" selection-start-line="95" selection-start-column="46" selection-end-line="95" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" selection-start-line="13" selection-end-line="13" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
+        <state relative-caret-position="330">
+          <caret line="31" column="43" selection-start-line="31" selection-start-column="43" selection-end-line="31" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPCClient.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="37" column="31" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DCC/DependencyControlCenter.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="63" column="27" selection-start-line="47" selection-start-column="26" selection-end-line="63" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/lib/RPC/DependencyRPC.pb.cc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="2399" column="6" selection-start-line="2399" selection-start-column="6" selection-end-line="2399" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/RPC/DependencyRPC.proto">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="61" column="26" selection-start-line="61" selection-start-column="22" selection-end-line="61" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/DRA/DataManagement.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="148" column="63" selection-start-line="148" selection-start-column="63" selection-end-line="148" selection-end-column="63" />
         </state>
       </provider>
     </entry>
