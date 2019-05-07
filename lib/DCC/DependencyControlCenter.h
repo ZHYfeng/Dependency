@@ -12,6 +12,8 @@
 #include "../RPC/DependencyRPCClient.h"
 #include "../JSON/json.hpp"
 
+typedef std::vector<std::string> LOC_INF;
+
 namespace dra {
 
     class DependencyControlCenter {
@@ -30,6 +32,9 @@ namespace dra {
 
         json j_taintedBrs ,j_analysisCtxMap ,j_tagMap ,j_modInstCtxMap;
         int initStaticRes(std::string staticRes);
+
+        LOC_INF *getLocInf(llvm::Instruction*);
+        LOC_INF *getLocInf(llvm::BasicBlock*);
     };
 
 } /* namespace dra */

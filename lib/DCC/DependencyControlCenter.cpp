@@ -41,6 +41,39 @@ namespace dra {
         return 1;
     }
 
+    LOC_INF *DependencyControlCenter::getLocInf(llvm::Instruction* I) {
+        if(!I){
+            return nullptr;
+        }
+        std::string inst,bb,func,mod;
+        std::string str;
+        llvm::raw_string_ostream ss(str);
+        ss << *I;
+        inst = ss.str();
+        if(I->getParent()){
+            bb = I->getParent()->getName().str();
+        }
+        if(I->getFunction()){
+            func = I->getFunction()->getName().str();
+        }
+        if(I->getModule()){
+            mod = I->getModule()->getName().str();
+        }
+        LOC_INF *loc_inf = new LOC_INF;
+        loc_inf->push_back(inst);
+        loc_inf->push_back(bb);
+        loc_inf->push_back(func);
+        loc_inf->push_back(mod);
+        return loc_inf;
+    }
+
+    LOC_INF *DependencyControlCenter::getLocInf(llvm::BasicBlock* B) {
+        if(!B){
+            return nullptr;
+        }
+        return this->getLocInf(B->begin());
+    }
+
     void DependencyControlCenter::run() {
         while (true) {
             NewInput *newInput = client.GetNewInput();
