@@ -572,6 +572,7 @@ func linuxStallFrameExtractor(frames []string) (string, string) {
 				"SyS_",
 				"compat_SYSC_",
 				"compat_SyS_",
+				"__ia32_sys_",
 			} {
 				prev = strings.TrimPrefix(prev, prefix)
 			}
@@ -651,7 +652,7 @@ var linuxStallAnchorFrames = []*regexp.Regexp{
 
 var (
 	linuxSymbolizeRe = regexp.MustCompile(`(?:\[\<(?:[0-9a-f]+)\>\])?[ \t]+(?:[0-9]+:)?([a-zA-Z0-9_.]+)\+0x([0-9a-f]+)/0x([0-9a-f]+)`)
-	stackFrameRe     = regexp.MustCompile(`^ *(?:\[\<(?:[0-9a-f]+)\>\])?[ \t]+(?:[0-9]+:)?([a-zA-Z0-9_.]+)\+0x([0-9a-f]+)/0x([0-9a-f]+)`)
+	stackFrameRe     = regexp.MustCompile(`^ *(?:\[\<?(?:[0-9a-f]+)\>?\] ?){0,2}[ \t]+(?:[0-9]+:)?([a-zA-Z0-9_.]+)\+0x([0-9a-f]+)/0x([0-9a-f]+)`)
 	linuxRcuStall    = compile("INFO: rcu_(?:preempt|sched|bh) (?:self-)?detected(?: expedited)? stall")
 	linuxRipFrame    = compile(`IP: (?:(?:[0-9]+:)?(?:{{PC}} +){0,2}{{FUNC}}|[0-9]+:0x[0-9a-f]+|(?:[0-9]+:)?{{PC}} +\[< *\(null\)>\] +\(null\)|[0-9]+: +\(null\))`)
 )
@@ -674,7 +675,7 @@ var linuxStackKeywords = []*regexp.Regexp{
 var linuxStackParams = &stackParams{
 	stackStartRes: linuxStackKeywords,
 	frameRes: []*regexp.Regexp{
-		compile("^ +(?:{{PC}} )?{{FUNC}}"),
+		compile("^ *(?:{{PC}} ){0,2}{{FUNC}}"),
 	},
 	skipPatterns: []string{
 		"__sanitizer",
@@ -749,6 +750,22 @@ var linuxStackParams = &stackParams{
 		"list_move",
 		"list_splice",
 		"_indirect_thunk_", // retpolines
+		"string",
+		"pointer",
+		"snprintf",
+		"scnprintf",
+		"kasprintf",
+		"kvasprintf",
+		"printk",
+		"dev_info",
+		"dev_notice",
+		"dev_warn",
+		"dev_err",
+		"dev_alert",
+		"dev_crit",
+		"dev_emerg",
+		"program_check_exception",
+		"program_check_common",
 	},
 	corruptedLines: []*regexp.Regexp{
 		// Fault injection stacks are frequently intermixed with crash reports.
@@ -764,7 +781,9 @@ func warningStackFmt(skip ...string) *stackFmt {
 		// In newer kernels WARNING traps and actual stack starts after invalid_op frame,
 		// older kernels just print stack.
 		parts: []*regexp.Regexp{
-			linuxRipFrame,
+			// x86_64 warning stack starts with "RIP:" line,
+			// while powerpc64 starts with "--- interrupt:".
+			compile("(?:" + linuxRipFrame.String() + "|--- interrupt: [0-9]+ at {{FUNC}})"),
 			parseStackTrace,
 		},
 		parts2: []*regexp.Regexp{
@@ -931,8 +950,14 @@ var linuxOopses = []*oops{
 				noStackTrace: true,
 			},
 			{
-				title: compile("BUG: sleeping function called from invalid context (.*)"),
-				fmt:   "BUG: sleeping function called from invalid context %[1]v",
+				title: compile("BUG: sleeping function called from invalid context at (.*)"),
+				fmt:   "BUG: sleeping function called from invalid context in %[2]v",
+				stack: &stackFmt{
+					parts: []*regexp.Regexp{
+						compile("Call Trace:"),
+						parseStackTrace,
+					},
+				},
 			},
 			{
 				title: compile("BUG: using __this_cpu_([a-z_]+)\\(\\) in preemptible"),
@@ -1027,7 +1052,8 @@ var linuxOopses = []*oops{
 			},
 			{
 				title: compile("WARNING: .* at {{SRC}} {{FUNC}}"),
-				fmt:   "WARNING in %[2]v",
+				fmt:   "WARNING in %[3]v",
+				stack: warningStackFmt(),
 			},
 			{
 				title:  compile("WARNING: possible circular locking dependency detected"),

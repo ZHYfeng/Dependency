@@ -25,16 +25,17 @@ type linux struct{}
 
 func (linux linux) build(targetArch, vmType, kernelDir, outputDir, compiler, userspaceDir,
 	cmdlineFile, sysctlFile string, config []byte) error {
-	if err := linux.buildKernel(kernelDir, outputDir, compiler, config); err != nil {
+	if err := linux.buildKernel(targetArch, kernelDir, outputDir, compiler, config); err != nil {
 		return err
 	}
-	if err := linux.createImage(vmType, kernelDir, outputDir, userspaceDir, cmdlineFile, sysctlFile); err != nil {
+	if err := linux.createImage(targetArch, vmType, kernelDir, outputDir, userspaceDir, cmdlineFile,
+		sysctlFile); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (linux) buildKernel(kernelDir, outputDir, compiler string, config []byte) error {
+func (linux) buildKernel(targetArch, kernelDir, outputDir, compiler string, config []byte) error {
 	configFile := filepath.Join(kernelDir, ".config")
 	if err := osutil.WriteFile(configFile, config); err != nil {
 		return fmt.Errorf("failed to write config file: %v", err)
@@ -58,9 +59,18 @@ func (linux) buildKernel(kernelDir, outputDir, compiler string, config []byte) e
 	if err := osutil.CopyFile(configFile, outputConfig); err != nil {
 		return err
 	}
-	// We build only bzImage as we currently don't use modules.
+	// We build only zImage/bzImage as we currently don't use modules.
 	cpu := strconv.Itoa(runtime.NumCPU())
-	cmd = osutil.Command("make", "bzImage", "-j", cpu, "CC="+compiler)
+
+	var target string
+	switch targetArch {
+	case "386", "amd64":
+		target = "bzImage"
+	case "ppc64le":
+		target = "zImage"
+	}
+	cmd = osutil.Command("make", target, "-j", cpu, "CC="+compiler)
+
 	if err := osutil.Sandbox(cmd, true, true); err != nil {
 		return err
 	}
@@ -76,7 +86,7 @@ func (linux) buildKernel(kernelDir, outputDir, compiler string, config []byte) e
 	return nil
 }
 
-func (linux) createImage(vmType, kernelDir, outputDir, userspaceDir, cmdlineFile, sysctlFile string) error {
+func (linux) createImage(targetArch, vmType, kernelDir, outputDir, userspaceDir, cmdlineFile, sysctlFile string) error {
 	tempDir, err := ioutil.TempDir("", "syz-build")
 	if err != nil {
 		return err
@@ -86,8 +96,16 @@ func (linux) createImage(vmType, kernelDir, outputDir, userspaceDir, cmdlineFile
 	if err := osutil.WriteExecFile(scriptFile, []byte(createImageScript)); err != nil {
 		return fmt.Errorf("failed to write script file: %v", err)
 	}
-	bzImage := filepath.Join(kernelDir, filepath.FromSlash("arch/x86/boot/bzImage"))
-	cmd := osutil.Command(scriptFile, userspaceDir, bzImage)
+
+	var kernelImage string
+	switch targetArch {
+	case "386", "amd64":
+		kernelImage = "arch/x86/boot/bzImage"
+	case "ppc64le":
+		kernelImage = "arch/powerpc/boot/zImage.pseries"
+	}
+	kernelImagePath := filepath.Join(kernelDir, filepath.FromSlash(kernelImage))
+	cmd := osutil.Command(scriptFile, userspaceDir, kernelImagePath, targetArch)
 	cmd.Dir = tempDir
 	cmd.Env = append([]string{}, os.Environ()...)
 	cmd.Env = append(cmd.Env,

@@ -258,7 +258,7 @@ var parseStackTrace *regexp.Regexp
 
 func compile(re string) *regexp.Regexp {
 	re = strings.Replace(re, "{{ADDR}}", "0x[0-9a-f]+", -1)
-	re = strings.Replace(re, "{{PC}}", "\\[\\<(?:0x)?[0-9a-f]+\\>\\]", -1)
+	re = strings.Replace(re, "{{PC}}", "\\[\\<?(?:0x)?[0-9a-f]+\\>?\\]", -1)
 	re = strings.Replace(re, "{{FUNC}}", "([a-zA-Z0-9_]+)(?:\\.|\\+)", -1)
 	re = strings.Replace(re, "{{SRC}}", "([a-zA-Z0-9-_/.]+\\.[a-z]+:[0-9]+)", -1)
 	return regexp.MustCompile(re)
@@ -411,20 +411,14 @@ nextPart:
 				if matchesAny(ln, params.stackStartRes) {
 					continue nextPart
 				}
-				var match []int
+				var match [][]byte
 				for _, re := range params.frameRes {
-					match = re.FindSubmatchIndex(ln)
+					match = re.FindSubmatch(ln)
 					if match != nil {
 						break
 					}
 				}
-				if match == nil {
-					continue
-				}
-				frame := ln[match[2]:match[3]]
-				if skipRe == nil || !skipRe.Match(frame) {
-					frames = append(frames, string(frame))
-				}
+				frames = appendStackFrame(frames, match, skipRe)
 			}
 		} else {
 			for s.Scan() {
@@ -432,16 +426,11 @@ nextPart:
 				if matchesAny(ln, params.corruptedLines) {
 					break nextPart
 				}
-				match := part.FindSubmatchIndex(ln)
+				match := part.FindSubmatch(ln)
 				if match == nil {
 					continue
 				}
-				if len(match) == 4 && match[2] != -1 {
-					frame := ln[match[2]:match[3]]
-					if skipRe == nil || !skipRe.Match(frame) {
-						frames = append(frames, string(frame))
-					}
-				}
+				frames = appendStackFrame(frames, match, skipRe)
 				break
 			}
 		}
@@ -450,6 +439,19 @@ nextPart:
 		return "", "extracted no frames"
 	}
 	return extractor(frames)
+}
+
+func appendStackFrame(frames []string, match [][]byte, skipRe *regexp.Regexp) []string {
+	if len(match) < 2 {
+		return frames
+	}
+	for _, frame := range match[1:] {
+		if frame != nil && (skipRe == nil || !skipRe.Match(frame)) {
+			frames = append(frames, string(frame))
+			break
+		}
+	}
+	return frames
 }
 
 func simpleLineParser(output []byte, oopses []*oops, params *stackParams, ignores []*regexp.Regexp) *Report {
