@@ -1,3 +1,5 @@
+#include <utility>
+
 /*
  * DependencyControlCenter.cpp
  *
@@ -20,7 +22,7 @@ namespace dra {
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
-    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, std::string staticRes) {
+    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes) {
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         unsigned long long int vmOffsets = client.GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
@@ -28,7 +30,7 @@ namespace dra {
         this->initStaticRes(staticRes);
     }
 
-    int DependencyControlCenter::initStaticRes(std::string staticRes) {
+    int DependencyControlCenter::initStaticRes(const std::string &staticRes) {
         try{
             std::ifstream infile;
             infile.open(staticRes);
@@ -81,7 +83,6 @@ namespace dra {
                 for (int j = 0; j < newInput->input_size(); j++) {
                     const Input &input = newInput->input(j);
                     DInput *dInput = DM.getInput(input);
-                    // TODO(Yu): set input coverage and get uncover address
                     DependencyInput dependencyInput;
                     for (auto u : dInput->dUncoveredAddress) {
                         unsigned long long int address = DM.getSyzkallerAddress(u->address);

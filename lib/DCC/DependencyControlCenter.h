@@ -22,7 +22,7 @@ namespace dra {
 
         virtual ~DependencyControlCenter();
 
-        void init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, std::string staticRes);
+        void init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes);
 
         void run();
 
@@ -30,11 +30,14 @@ namespace dra {
         DependencyRPCClient client;
         DataManagement DM;
 
-        json j_taintedBrs ,j_analysisCtxMap ,j_tagMap ,j_modInstCtxMap;
-        int initStaticRes(std::string staticRes);
+        nlohmann::json j_taintedBrs, j_analysisCtxMap, j_tagMap, j_modInstCtxMap;
 
-        LOC_INF *getLocInf(llvm::Instruction*);
-        LOC_INF *getLocInf(llvm::BasicBlock*);
+    public:
+        int initStaticRes(const std::string &staticRes);
+
+        LOC_INF *getLocInf(llvm::Instruction *);
+
+        LOC_INF *getLocInf(llvm::BasicBlock *);
     };
 
 } /* namespace dra */
