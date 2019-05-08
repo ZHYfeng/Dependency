@@ -1,5 +1,3 @@
-#include <utility>
-
 /*
  * DependencyControlCenter.cpp
  *
@@ -9,12 +7,8 @@
 
 #include "DependencyControlCenter.h"
 
-#include <llvm/IR/Module.h>
-#include <llvm/IR/BasicBlock.h>
-#include <llvm/IR/Instruction.h>
 #include <utility>
 #include <grpcpp/grpcpp.h>
-#include <fstream>
 
 namespace dra {
 
@@ -30,53 +24,8 @@ namespace dra {
         unsigned long long int vmOffsets = client.GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
         //Deserialize the static analysis results.
-        this->initStaticRes(staticRes);
-    }
-
-    int DependencyControlCenter::initStaticRes(const std::string &staticRes) {
-        try{
-            std::ifstream infile;
-            infile.open(staticRes);
-            infile >> this->j_taintedBrs >> this->j_analysisCtxMap >> this->j_tagMap >> this->j_modInstCtxMap;
-            infile.close();
-            return 0;
-        } catch (...) {
-            std::cout << "Fail to deserialize the static analysis results!\n";
-        }
-        return 1;
-    }
-
-    LOC_INF *DependencyControlCenter::getLocInf(llvm::Instruction* I) {
-        if(!I){
-            return nullptr;
-        }
-        std::string inst,bb,func,mod;
-        std::string str;
-        llvm::raw_string_ostream ss(str);
-        ss << *I;
-        inst = ss.str();
-        if(I->getParent()){
-            bb = I->getParent()->getName().str();
-        }
-        if(I->getFunction()){
-            func = I->getFunction()->getName().str();
-        }
-        if(I->getModule()){
-            mod = I->getModule()->getName().str();
-        }
-        LOC_INF *loc_inf = new LOC_INF;
-        loc_inf->push_back(inst);
-        loc_inf->push_back(bb);
-        loc_inf->push_back(func);
-        loc_inf->push_back(mod);
-        return loc_inf;
-    }
-
-    LOC_INF *DependencyControlCenter::getLocInf(llvm::BasicBlock* B) {
-        if(!B){
-            return nullptr;
-        }
-        return this->getLocInf(&*(B->begin()));
+        //TODO: Yu, is the way to get "llvm::Module*" right?
+        this->STA.initStaticRes(staticRes, (DM.Modules->module).get());
     }
 
     void DependencyControlCenter::run() {
@@ -98,8 +47,13 @@ namespace dra {
 
                         llvm::BasicBlock *b = DM.Address2BB[condition_address]->parent->basicBlock;
 //                        // TODO(hang): GetGlobalWriteBB
-//                        auto allbb = GetGlobalWriteBB(b);
-//                        for (auto bb : allbb) {
+//                        MOD_BBS *allbb = this->STA.GetAllGlobalWriteBBs(b);
+//                        for (auto& x : *allbb) {
+//                            llvm::BasicBlock *bb = x.first;
+//                            MOD_INF& mod_inf = x.second;
+//                            //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
+//                            //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
+//                            std::set<uint64_t> *cmds = this->STA.getIoctlCmdSet(&mod_inf);
 //                            auto db = DM.Modules->Function[bb.path][bb.name];
 //                            unsigned long long int writeAddress = db.address;
 //
@@ -115,6 +69,7 @@ namespace dra {
 //                                relatedInput->set_sig(i->sig);
 //                            }
 //                        }
+//                        //TODO: need to free "allbb" and "cmds" to avoid memory leak, or we can also set up a cache to avoid repeated query to STA. 
                     }
                     client.SendDependencyInput(dependencyInput);
                 }

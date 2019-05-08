@@ -10,9 +10,7 @@
 
 #include "../DRA/DataManagement.h"
 #include "../RPC/DependencyRPCClient.h"
-#include "../JSON/json.cpp"
-
-typedef std::vector<std::string> LOC_INF;
+#include "../STA/StaticAnalysisResult.h"
 
 namespace dra {
 
@@ -29,15 +27,7 @@ namespace dra {
     private:
         DependencyRPCClient client;
         DataManagement DM;
-
-        nlohmann::json j_taintedBrs, j_analysisCtxMap, j_tagMap, j_modInstCtxMap;
-
-    public:
-        int initStaticRes(const std::string &staticRes);
-
-        LOC_INF *getLocInf(llvm::Instruction *);
-
-        LOC_INF *getLocInf(llvm::BasicBlock *);
+        StaticAnalysisResult STA;
     };
 
 } /* namespace dra */
