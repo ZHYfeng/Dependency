@@ -25,6 +25,47 @@ func (p *Prog) Clone() *Prog {
 	return p1
 }
 
+func (p *Prog) CloneWithUncover() *Prog {
+	p1 := &Prog{
+		Target:       p.Target,
+		Calls:        make([]*Call, len(p.Calls)),
+		Uncover:      make([]*Uncover, len(p.Uncover)),
+		UncoverIdx:   p.UncoverIdx,
+		WriteAddress: p.WriteAddress,
+	}
+	newargs := make(map[*ResultArg]*ResultArg)
+	for ci, c := range p.Calls {
+		c1 := new(Call)
+		c1.Meta = c.Meta
+		if c.Ret != nil {
+			c1.Ret = clone(c.Ret, newargs).(*ResultArg)
+		}
+		c1.Args = make([]Arg, len(c.Args))
+		for ai, arg := range c.Args {
+			c1.Args[ai] = clone(arg, newargs)
+		}
+		p1.Calls[ci] = c1
+	}
+	p1.debugValidate()
+
+	for ui, u := range p.Uncover {
+		u1 := new(Uncover)
+		u1.UncoveredAddress = u.UncoveredAddress
+		u1.HappenedCalls = u.HappenedCalls
+
+		u1.RelatedProgs = make([]*RelatedProgs, len(u.RelatedProgs))
+		for pi, prog := range u.RelatedProgs {
+			u1.RelatedProgs[pi] = &RelatedProgs{
+				RelatedProg:    prog.RelatedProg.Clone(),
+				RelatedAddress: prog.RelatedAddress,
+			}
+		}
+		p1.Uncover[ui] = u1
+	}
+
+	return p1
+}
+
 func clone(arg Arg, newargs map[*ResultArg]*ResultArg) Arg {
 	var arg1 Arg
 	switch a := arg.(type) {

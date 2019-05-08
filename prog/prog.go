@@ -8,9 +8,23 @@ import (
 )
 
 type Prog struct {
-	Target   *Target
-	Calls    []*Call
-	Comments []string
+	Target       *Target
+	Calls        []*Call
+	Comments     []string
+	Uncover      []*Uncover
+	UncoverIdx   uint32
+	WriteAddress []uint32
+}
+
+type RelatedProgs struct {
+	RelatedProg    *Prog
+	RelatedAddress uint32
+}
+
+type Uncover struct {
+	UncoveredAddress uint32
+	HappenedCalls    *Call
+	RelatedProgs     []*RelatedProgs
 }
 
 type Call struct {
@@ -388,4 +402,20 @@ func (p *Prog) removeCall(idx int) {
 	}
 	copy(p.Calls[idx:], p.Calls[idx+1:])
 	p.Calls = p.Calls[:len(p.Calls)-1]
+}
+
+func (p *Prog) replaceAt(c *Call, calls []*Call) {
+	idx := 0
+	for ; idx < len(p.Calls); idx++ {
+		if p.Calls[idx] == c {
+			break
+		}
+	}
+	var newCalls []*Call
+	newCalls = append(newCalls, p.Calls[:idx]...)
+	newCalls = append(newCalls, calls...)
+	if idx < len(p.Calls) {
+		newCalls = append(newCalls, p.Calls[idx+1:]...)
+	}
+	p.Calls = newCalls
 }

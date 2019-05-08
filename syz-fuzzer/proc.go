@@ -20,6 +20,8 @@ import (
 	"github.com/google/syzkaller/pkg/rpctype"
 	"github.com/google/syzkaller/pkg/signal"
 	"github.com/google/syzkaller/prog"
+
+	pb "github.com/google/syzkaller/pkg/dra"
 )
 
 const (
@@ -96,15 +98,25 @@ func (proc *Proc) loop() {
 		} else {
 			// Mutate an existing prog.
 			p := corpus[proc.rnd.Intn(len(corpus))].Clone()
-			p.Mutate(proc.rnd, programLength, ct, corpus)
-			log.Logf(1, "#%v: mutated", proc.pid)
-			proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+			if p.IsUseDependencyMutate(proc.rnd) {
+				p.DependencyMutate(proc.rnd, programLength, ct, corpus)
+				log.Logf(1, "#%v: dependency mutated", proc.pid)
+				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+			} else {
+				p.Mutate(proc.rnd, programLength, ct, corpus)
+				log.Logf(1, "#%v: mutated", proc.pid)
+				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+			}
 		}
 	}
 }
 
 func (proc *Proc) triageInput(item *WorkTriage) {
 	log.Logf(1, "#%v: triaging type=%x", proc.pid, item.flags)
+
+	input := pb.Input{
+		Call: make(map[uint32]*pb.Call),
+	}
 
 	prio := signalPrio(item.p, &item.info, item.call)
 	inputSignal := signal.FromRaw(item.info.Signal, prio)
@@ -144,6 +156,19 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			return
 		}
 		inputCover.Merge(thisCover)
+
+		for i, c := range info.Calls {
+			ii := uint32(i)
+			cc := input.Call[ii]
+			if cc == nil {
+				cc = &pb.Call{}
+				input.Call[ii] = cc
+			}
+			for _, a := range c.Cover {
+				cc.Address[a] = 0
+			}
+
+		}
 	}
 	if item.flags&ProgMinimized == 0 {
 		item.p, item.call = prog.Minimize(item.p, item.call, false,
@@ -179,6 +204,10 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	if item.flags&ProgSmashed == 0 {
 		proc.fuzzer.workQueue.enqueue(&WorkSmash{item.p, item.call})
 	}
+
+	proc.checkCoverage(item.p, inputCover)
+	input.Sig = sig.String()
+	proc.fuzzer.dManager.SendInput(&input)
 }
 
 func reexecutionSuccess(info *ipc.ProgInfo, oldInfo *ipc.CallInfo, call int) bool {

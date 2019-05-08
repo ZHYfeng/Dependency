@@ -24,6 +24,8 @@ import (
 	"github.com/google/syzkaller/pkg/signal"
 	"github.com/google/syzkaller/prog"
 	_ "github.com/google/syzkaller/sys"
+
+	pb "github.com/google/syzkaller/pkg/dra"
 )
 
 type Fuzzer struct {
@@ -53,6 +55,10 @@ type Fuzzer struct {
 	newSignal    signal.Signal // diff of maxSignal since last sync with master
 
 	logMu sync.Mutex
+
+	dManager         *pb.DRPCClient
+	corpusDMu        sync.RWMutex
+	corpusDependency map[string]*prog.Prog
 }
 
 type Stat int
@@ -93,15 +99,17 @@ func main() {
 	debug.SetGCPercent(50)
 
 	var (
-		flagName    = flag.String("name", "test", "unique name for manager")
-		flagOS      = flag.String("os", runtime.GOOS, "target OS")
-		flagArch    = flag.String("arch", runtime.GOARCH, "target arch")
-		flagManager = flag.String("manager", "", "manager rpc address")
-		flagProcs   = flag.Int("procs", 1, "number of parallel test processes")
-		flagOutput  = flag.String("output", "stdout", "write programs to none/stdout/dmesg/file")
-		flagPprof   = flag.String("pprof", "", "address to serve pprof profiles")
-		flagTest    = flag.Bool("test", false, "enable image testing mode")      // used by syz-ci
-		flagRunTest = flag.Bool("runtest", false, "enable program testing mode") // used by pkg/runtest
+		flagName     = flag.String("name", "test", "unique name for manager")
+		flagOS       = flag.String("os", runtime.GOOS, "target OS")
+		flagArch     = flag.String("arch", runtime.GOARCH, "target arch")
+		flagManager  = flag.String("manager", "", "manager rpc address")
+		flagDManager = flag.String("dManager", "", "dependency manager rpc address")
+		flagProcs    = flag.Int("procs", 1, "number of parallel test processes")
+		flagOutput   = flag.String("output", "stdout", "write programs to none/stdout/dmesg/file")
+		flagPprof    = flag.String("pprof", "", "address to serve pprof profiles")
+		flagTest     = flag.Bool("test", false, "enable image testing mode")      // used by syz-ci
+		flagRunTest  = flag.Bool("runtest", false, "enable program testing mode") // used by pkg/runtest
+
 	)
 	flag.Parse()
 	outputType := parseOutputType(*flagOutput)
@@ -210,6 +218,9 @@ func main() {
 		return
 	}
 
+	dManager := &pb.DRPCClient{}
+	dManager.RunDependencyRPCClient(flagDManager)
+
 	needPoll := make(chan struct{}, 1)
 	needPoll <- struct{}{}
 	fuzzer := &Fuzzer{
@@ -225,6 +236,7 @@ func main() {
 		faultInjectionEnabled:    r.CheckResult.Features[host.FeatureFaultInjection].Enabled,
 		comparisonTracingEnabled: r.CheckResult.Features[host.FeatureComparisons].Enabled,
 		corpusHashes:             make(map[hash.Sig]struct{}),
+		dManager:                 dManager,
 	}
 	for i := 0; fuzzer.poll(i == 0, nil); i++ {
 	}
@@ -282,6 +294,10 @@ func (fuzzer *Fuzzer) pollLoop() {
 			if !fuzzer.poll(needCandidates, stats) {
 				lastPoll = time.Now()
 			}
+		}
+		newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
+		for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
+			fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
 		}
 	}
 }
@@ -358,6 +374,57 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 		fuzzer.maxSignal.Merge(sign)
 		fuzzer.signalMu.Unlock()
 	}
+}
+
+func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
+	sig := dependencyInput.GetSig()
+	inp := &rpctype.RPCInput{}
+	if err := fuzzer.manager.Call("Manager.GetInput", sig, inp); err != nil {
+		panic(err)
+	}
+	p, err := fuzzer.target.Deserialize(inp.Prog, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("failed to deserialize prog from another fuzzer: %v", err)
+	}
+
+	for _, u := range dependencyInput.GetUncoveredAddress() {
+		u1 := new(prog.Uncover)
+		u1.UncoveredAddress = u.GetAddress()
+		for _, i := range u.GetRelatedInput() {
+			rsig := i.GetSig()
+			rinp := &rpctype.RPCInput{}
+			if err := fuzzer.manager.Call("Manager.GetInput", rsig, rinp); err != nil {
+				panic(err)
+			}
+			rp, err := fuzzer.target.Deserialize(inp.Prog, prog.NonStrict)
+			if err != nil {
+				panic(err)
+			}
+			u1.RelatedProgs = append(u1.RelatedProgs, &prog.RelatedProgs{
+				RelatedProg:    rp,
+				RelatedAddress: i.GetAddress(),
+			})
+		}
+
+		for _, i := range u.GetRelatedSyscall() {
+			u1.RelatedProgs = append(u1.RelatedProgs, &prog.RelatedProgs{
+				RelatedProg:    nil,
+				RelatedAddress: i.GetAddress(),
+			})
+		}
+
+		p.Uncover = append(p.Uncover, u1)
+	}
+	fuzzer.addDInputToCorpus(p, sig)
+
+}
+
+func (fuzzer *Fuzzer) addDInputToCorpus(p *prog.Prog, sig string) {
+	fuzzer.corpusDMu.Lock()
+	if _, ok := fuzzer.corpusDependency[sig]; !ok {
+		fuzzer.corpusDependency[sig] = p.CloneWithUncover()
+	}
+	fuzzer.corpusDMu.Unlock()
 }
 
 func (fuzzer *Fuzzer) corpusSnapshot() []*prog.Prog {

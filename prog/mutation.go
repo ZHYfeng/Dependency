@@ -639,3 +639,103 @@ func storeInt(data []byte, v uint64, size int) {
 		panic(fmt.Sprintf("storeInt: bad size %v", size))
 	}
 }
+
+func (p *Prog) IsUseDependencyMutate(rs rand.Source) (result bool) {
+	if p.Uncover != nil {
+		r := newRand(p.Target, rs)
+		result = r.nOutOf(9, 10)
+	} else {
+		result = false
+	}
+	return
+}
+
+func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, corpus []*Prog) {
+	r := newRand(p.Target, rs)
+
+	retry := false
+	//select a uncover address random
+	uncover := p.Uncover[r.Intn(len(p.Uncover))]
+	happenedCall := uncover.HappenedCalls
+	p.WriteAddress = nil
+	//select a insert place random
+	idx := 0
+	for ; idx < len(p.Calls); idx++ {
+		if p.Calls[idx] == happenedCall {
+			break
+		}
+	}
+	// insert related progs for expectation = 3 times
+	for stop := false; !stop || retry; stop = r.oneOf(3) {
+		retry = false
+
+		if len(corpus) == 0 || len(p.Calls) == 0 {
+			retry = true
+			continue
+		}
+
+		//select a insert place random
+		var insertIdx = r.Intn(idx)
+
+		//select a related progs random
+		syscallIdx := r.Intn(len(uncover.RelatedProgs))
+		p0 := uncover.RelatedProgs[syscallIdx].RelatedProg
+		p.WriteAddress = append(p.WriteAddress, uncover.RelatedProgs[syscallIdx].RelatedAddress)
+		p0c := p0.Clone()
+		p.Calls = append(p.Calls[:insertIdx], append(p0c.Calls, p.Calls[insertIdx:]...)...)
+		for i := len(p.Calls) - 1; i >= ncalls; i-- {
+			p.removeCall(i)
+		}
+		for _, c := range p0c.Calls {
+			// Change args of a call.
+			if len(p.Calls) == 0 {
+				retry = true
+				continue
+			}
+			if len(c.Args) == 0 {
+				retry = true
+				continue
+			}
+			retry = p.mutateArgForCall(r, ct, c)
+		}
+	}
+
+	for _, c := range p.Calls {
+		p.Target.SanitizeCall(c)
+	}
+	if debug {
+		if err := p.validate(); err != nil {
+			panic(err)
+		}
+	}
+}
+
+func (p *Prog) mutateArgForCall(r *randGen, ct *ChoiceTable, c *Call) bool {
+
+	// Change args of a call.
+	s := analyze(ct, p, c)
+	updateSizes := true
+	retryArg := false
+	for stop := false; !stop || retryArg; stop = r.oneOf(3) {
+		retryArg = false
+		ma := &mutationArgs{target: p.Target}
+		ForeachArg(c, ma.collectArg)
+		if len(ma.args) == 0 {
+			return true
+		}
+		idx := r.Intn(len(ma.args))
+		arg, ctx := ma.args[idx], ma.ctxes[idx]
+		calls, ok := p.Target.mutateArg(r, s, arg, ctx, &updateSizes)
+		if !ok {
+			retryArg = true
+			continue
+		}
+		p.insertBefore(c, calls)
+		//p.replaceAt(c, calls)
+		if updateSizes {
+			p.Target.assignSizesCall(c)
+		}
+		p.Target.SanitizeCall(c)
+	}
+	return false
+}

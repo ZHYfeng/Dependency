@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/google/syzkaller/pkg/dra"
 	"math/rand"
 	"net"
 	"os"
@@ -84,6 +85,7 @@ type Manager struct {
 	// For checking that files that we are using are not changing under us.
 	// Maps file name to modification time.
 	usedFiles map[string]time.Time
+	dprot     int
 }
 
 const (
@@ -192,6 +194,10 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	if err != nil {
 		log.Fatalf("failed to create rpc server: %v", err)
 	}
+
+	ss := &dra.Server{}
+	go ss.RunDependencyRPCServer()
+	mgr.dprot = ss.Dport
 
 	if cfg.DashboardAddr != "" {
 		mgr.dash = dashapi.New(cfg.DashboardClient, cfg.DashboardAddr, cfg.DashboardKey)
@@ -514,6 +520,7 @@ func (mgr *Manager) runInstance(index int) (*Crash, error) {
 	defer inst.Close()
 
 	fwdAddr, err := inst.Forward(mgr.port)
+	fwddAddr, err := inst.Forward(mgr.dprot)
 	if err != nil {
 		return nil, fmt.Errorf("failed to setup port forwarding: %v", err)
 	}
@@ -538,7 +545,7 @@ func (mgr *Manager) runInstance(index int) (*Crash, error) {
 	atomic.AddUint32(&mgr.numFuzzing, 1)
 	defer atomic.AddUint32(&mgr.numFuzzing, ^uint32(0))
 	cmd := instance.FuzzerCmd(fuzzerBin, executorBin, fmt.Sprintf("vm-%v", index),
-		mgr.cfg.TargetOS, mgr.cfg.TargetArch, fwdAddr, mgr.cfg.Sandbox, procs, fuzzerV,
+		mgr.cfg.TargetOS, mgr.cfg.TargetArch, fwdAddr, fwddAddr, mgr.cfg.Sandbox, procs, fuzzerV,
 		mgr.cfg.Cover, *flagDebug, false, false)
 	outc, errc, err := inst.Run(time.Hour, mgr.vmStop, cmd)
 	if err != nil {
@@ -1069,4 +1076,14 @@ func publicWebAddr(addr string) string {
 		}
 	}
 	return "http://" + addr
+}
+
+func (mgr *Manager) GetInput(sig string, inp *rpctype.RPCInput) error {
+	if i, ok := mgr.corpus[sig]; ok {
+		inp.Call = i.Call
+		inp.Cover = i.Cover
+		inp.Prog = i.Prog
+		inp.Signal = i.Signal
+	}
+	return nil
 }

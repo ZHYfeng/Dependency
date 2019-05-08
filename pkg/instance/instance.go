@@ -366,7 +366,7 @@ func (inst *inst) testProgram(command string, testTime time.Duration) error {
 	return &CrashError{Report: rep}
 }
 
-func FuzzerCmd(fuzzer, executor, name, OS, arch, fwdAddr, sandbox string, procs, verbosity int,
+func FuzzerCmd(fuzzer, executor, name, OS, arch, fwdAddr, fwddAddr, sandbox string, procs, verbosity int,
 	cover, debug, test, runtest bool) string {
 	osArg := ""
 	if OS == "akaros" {
@@ -379,9 +379,9 @@ func FuzzerCmd(fuzzer, executor, name, OS, arch, fwdAddr, sandbox string, procs,
 	if runtest {
 		runtestArg = " -runtest"
 	}
-	return fmt.Sprintf("%v -executor=%v -name=%v -arch=%v%v -manager=%v -sandbox=%v"+
+	return fmt.Sprintf("%v -executor=%v -name=%v -arch=%v%v -manager=%v -dmanager=%v -sandbox=%v"+
 		" -procs=%v -v=%d -cover=%v -debug=%v -test=%v%v",
-		fuzzer, executor, name, arch, osArg, fwdAddr, sandbox,
+		fuzzer, executor, name, arch, osArg, fwdAddr, fwddAddr, sandbox,
 		procs, verbosity, cover, debug, test, runtestArg)
 }
 
