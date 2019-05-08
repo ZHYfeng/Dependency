@@ -103,7 +103,7 @@ func main() {
 		flagOS       = flag.String("os", runtime.GOOS, "target OS")
 		flagArch     = flag.String("arch", runtime.GOARCH, "target arch")
 		flagManager  = flag.String("manager", "", "manager rpc address")
-		flagDManager = flag.String("dManager", "", "dependency manager rpc address")
+		flagDManager = flag.String("dmanager", "", "dependency manager rpc address")
 		flagProcs    = flag.Int("procs", 1, "number of parallel test processes")
 		flagOutput   = flag.String("output", "stdout", "write programs to none/stdout/dmesg/file")
 		flagPprof    = flag.String("pprof", "", "address to serve pprof profiles")
