@@ -210,6 +210,43 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	proc.fuzzer.dManager.SendInput(&input)
 }
 
+func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
+	res = false
+	if proc.checkUncoveredAddress(p, inputCover) {
+
+	} else {
+		if proc.checkWriteAddress(p, inputCover) {
+
+		}
+	}
+	return
+}
+
+func (proc *Proc) checkUncoveredAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
+	res = false
+	var uncover = p.Uncover[p.UncoverIdx].UncoveredAddress
+	for pc := range inputCover {
+		if uncover == pc {
+			res = true
+			return
+		}
+	}
+	return
+}
+
+func (proc *Proc) checkWriteAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
+	res = false
+	for _, address := range p.WriteAddress {
+		for pc := range inputCover {
+			if address == pc {
+				res = true
+				return
+			}
+		}
+	}
+	return
+}
+
 func reexecutionSuccess(info *ipc.ProgInfo, oldInfo *ipc.CallInfo, call int) bool {
 	if info == nil || len(info.Calls) == 0 {
 		return false
