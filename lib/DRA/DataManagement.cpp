@@ -30,9 +30,9 @@ namespace dra {
         std::cout << "o Cmd :" << Cmd << std::endl;
 #endif
         Modules->ReadBC(std::move(InputFilename));
-        Modules->ReadObjdump(std::move(objdump));
-        Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
-        BuildAddress2BB();
+//        Modules->ReadObjdump(std::move(objdump));
+//        Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
+//        BuildAddress2BB();
 
     }
 

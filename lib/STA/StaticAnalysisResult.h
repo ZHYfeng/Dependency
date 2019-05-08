@@ -11,13 +11,14 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Instruction.h>
 #include <fstream>
+#include <set>
 #include "../JSON/json.cpp"
 
 typedef std::vector<std::string> LOC_INF;
 //ctx_id -> arg_no -> value set
 typedef std::map<unsigned long,std::map<unsigned, std::set<uint64_t>>> MOD_INF;
-typedef std::set<llvm::Instruction*,MOD_INF> MOD_IRS;
-typedef std::set<llvm::BasicBlock*,MOD_INF> MOD_BBS;
+typedef std::map<llvm::Instruction*,MOD_INF> MOD_IRS;
+typedef std::map<llvm::BasicBlock*,MOD_INF> MOD_BBS;
 
 namespace sta {
 
@@ -70,7 +71,7 @@ namespace sta {
         MOD_IRS *j2ModIrs(nlohmann::json *pj_mod_irs);
 
         MOD_BBS *j2ModBbs(nlohmann::json *pj_mod_irs);
-    }
+    };
 
 } /* namespace sta */
 

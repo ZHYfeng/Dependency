@@ -32,11 +32,6 @@ int main(int argc, char **argv) {
 
     dra::DependencyControlCenter dcc;
 
-    auto *MI = new dra::DataManagement();
-    MI->initializeModule(objdump, AssemblySourceCode, InputFilename);
-    MI->getVmOffsets(vmOffsets);
-    MI->getInput(coverfile);
-
     dcc.init(objdump, AssemblySourceCode, InputFilename, staticRes);
     dcc.run();
     return 0;

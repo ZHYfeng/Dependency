@@ -27,7 +27,7 @@ namespace dra {
     private:
         DependencyRPCClient client;
         DataManagement DM;
-        StaticAnalysisResult STA;
+        sta::StaticAnalysisResult STA;
     };
 
 } /* namespace dra */

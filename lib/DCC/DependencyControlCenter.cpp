@@ -21,10 +21,9 @@ namespace dra {
 
     void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes) {
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
-        unsigned long long int vmOffsets = client.GetVmOffsets();
-        DM.setVmOffsets(vmOffsets);
+//        unsigned long long int vmOffsets = client.GetVmOffsets();
+//        DM.setVmOffsets(vmOffsets);
         //Deserialize the static analysis results.
-        //TODO: Yu, is the way to get "llvm::Module*" right?
         this->STA.initStaticRes(staticRes, (DM.Modules->module).get());
     }
 

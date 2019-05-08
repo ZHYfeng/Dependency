@@ -6,7 +6,9 @@
 
 #include "StaticAnalysisResult.h"
 
-namespace STA {
+#include <iostream>
+
+namespace sta {
 
     StaticAnalysisResult::~StaticAnalysisResult() = default;
 
@@ -82,9 +84,9 @@ namespace STA {
         if (!p_loc){
             return nullptr;
         }
-        nlohmann::json *pj_taint_inf = this->findLocInJson(p_loc,1,this->j_taintedBrs);
+        nlohmann::json *pj_taint_inf = this->findLocInJson(p_loc,1,&this->j_taintedBrs);
         if(!pj_taint_inf){
-            //This means the br instruction of this bb is not tainted by global states. 
+            //This means the br instruction of this bb is not tainted by global states.
             return nullptr;
         }
         return pj_taint_inf;
@@ -99,7 +101,7 @@ namespace STA {
         if (!pj_taint_inf){
             return nullptr;
         }
-        MOD_IRS *p_mod_irs new MOD_IRS();
+        MOD_IRS *p_mod_irs = new MOD_IRS();
         for (auto& el : pj_taint_inf->items()) {
             //Analysis context id under which this br is tainted.
             nlohmann::json j_actx_id = el.key();
@@ -133,7 +135,7 @@ namespace STA {
         if (!pj_taint_inf){
             return nullptr;
         }
-        MOD_BBS *p_mod_bbs new MOD_BBS();
+        MOD_BBS *p_mod_bbs = new MOD_BBS();
         for (auto& el : pj_taint_inf->items()) {
             //Analysis context id under which this br is tainted.
             nlohmann::json j_actx_id = el.key();
