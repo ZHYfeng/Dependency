@@ -97,12 +97,15 @@ func (proc *Proc) loop() {
 			proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
 		} else {
 			// Mutate an existing prog.
-			p := corpus[proc.rnd.Intn(len(corpus))].Clone()
-			if p.IsUseDependencyMutate(proc.rnd) {
+			if proc.IsUseDependencyMutate() {
+				corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
+				corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
+				p := corpusDependencySnapshot[corpusSigSnapshot[proc.rnd.Intn(len(corpusSigSnapshot))]].CloneWithUncover()
 				p.DependencyMutate(proc.rnd, programLength, ct, corpus)
 				log.Logf(1, "#%v: dependency mutated", proc.pid)
 				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 			} else {
+				p := corpus[proc.rnd.Intn(len(corpus))].Clone()
 				p.Mutate(proc.rnd, programLength, ct, corpus)
 				log.Logf(1, "#%v: mutated", proc.pid)
 				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
@@ -159,11 +162,11 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 
 		for i, c := range info.Calls {
 			ii := uint32(i)
-			cc := input.Call[ii]
-			if cc == nil {
+			if cc, ok := input.Call[ii]; !ok {
 				cc = &pb.Call{}
 				input.Call[ii] = cc
 			}
+			cc := input.Call[ii]
 			for _, a := range c.Cover {
 				cc.Address[a] = 0
 			}
@@ -219,6 +222,13 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 
 		}
 	}
+	return
+}
+
+func (proc *Proc) IsUseDependencyMutate() (result bool) {
+	v := proc.rnd.Intn(10)
+	result = v < 5
+	result = false
 	return
 }
 

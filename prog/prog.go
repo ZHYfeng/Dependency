@@ -23,7 +23,7 @@ type RelatedProgs struct {
 
 type Uncover struct {
 	UncoveredAddress uint32
-	HappenedCalls    *Call
+	Idx              uint32
 	RelatedProgs     []*RelatedProgs
 }
 

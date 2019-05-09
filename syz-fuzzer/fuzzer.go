@@ -58,6 +58,7 @@ type Fuzzer struct {
 
 	dManager         *pb.DRPCClient
 	corpusDMu        sync.RWMutex
+	corpusSig        []string
 	corpusDependency map[string]*prog.Prog
 }
 
@@ -390,6 +391,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 	for _, u := range dependencyInput.GetUncoveredAddress() {
 		u1 := new(prog.Uncover)
 		u1.UncoveredAddress = u.GetAddress()
+		u1.Idx = u.GetIdx()
 		for _, i := range u.GetRelatedInput() {
 			rsig := i.GetSig()
 			rinp := &rpctype.RPCInput{}
@@ -422,9 +424,22 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 func (fuzzer *Fuzzer) addDInputToCorpus(p *prog.Prog, sig string) {
 	fuzzer.corpusDMu.Lock()
 	if _, ok := fuzzer.corpusDependency[sig]; !ok {
+		fuzzer.corpusSig = append(fuzzer.corpusSig, sig)
 		fuzzer.corpusDependency[sig] = p.CloneWithUncover()
 	}
 	fuzzer.corpusDMu.Unlock()
+}
+
+func (fuzzer *Fuzzer) corpusSigSnapshot() []string {
+	fuzzer.corpusMu.RLock()
+	defer fuzzer.corpusMu.RUnlock()
+	return fuzzer.corpusSig
+}
+
+func (fuzzer *Fuzzer) corpusDependencySnapshot() map[string]*prog.Prog {
+	fuzzer.corpusMu.RLock()
+	defer fuzzer.corpusMu.RUnlock()
+	return fuzzer.corpusDependency
 }
 
 func (fuzzer *Fuzzer) corpusSnapshot() []*prog.Prog {

@@ -640,31 +640,15 @@ func storeInt(data []byte, v uint64, size int) {
 	}
 }
 
-func (p *Prog) IsUseDependencyMutate(rs rand.Source) (result bool) {
-	if p.Uncover != nil {
-		r := newRand(p.Target, rs)
-		result = r.nOutOf(9, 10)
-	} else {
-		result = false
-	}
-	return
-}
-
 func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, corpus []*Prog) {
 	r := newRand(p.Target, rs)
 
 	retry := false
 	//select a uncover address random
 	uncover := p.Uncover[r.Intn(len(p.Uncover))]
-	happenedCall := uncover.HappenedCalls
+	idx := uncover.Idx
 	p.WriteAddress = nil
-	//select a insert place random
-	idx := 0
-	for ; idx < len(p.Calls); idx++ {
-		if p.Calls[idx] == happenedCall {
-			break
-		}
-	}
+
 	// insert related progs for expectation = 3 times
 	for stop := false; !stop || retry; stop = r.oneOf(3) {
 		retry = false
@@ -675,7 +659,7 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 		}
 
 		//select a insert place random
-		var insertIdx = r.Intn(idx)
+		var insertIdx = r.Intn(int(idx))
 
 		//select a related progs random
 		syscallIdx := r.Intn(len(uncover.RelatedProgs))
