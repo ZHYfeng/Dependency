@@ -1,6 +1,11 @@
 #ifndef _H_RESTYPE
 #define _H_RESTYPE
 
+#include <set>
+#include <map>
+#include <vector>
+#include <string>
+
 //Here some types used for static analysis result data exchange.
 //They are defined like some SQL DB tables, some primary keys (e.g. taint tag id) are shared acorss tables.
 
