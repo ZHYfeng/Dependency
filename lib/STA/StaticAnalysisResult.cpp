@@ -17,8 +17,13 @@ namespace sta {
         try{
             std::ifstream infile;
             infile.open(staticRes);
-            infile >> this->j_taintedBrs >> this->j_analysisCtxMap >> this->j_tagMap >> this->j_modInstCtxMap;
+            infile >> this->j_taintedBrs >> this->j_analysisCtxMap >> this->j_tagModMap >> this->j_tagInfo >> this->j_modInstCtxMap;
             infile.close();
+            this->taintedBrs = this->j_taintedBrs.get<TAINTED_BR_TY>();
+            this->analysisCtxMap = this->j_analysisCtxMap.get<ANALYSIS_CTX_MAP_TY>();
+            this->tagModMap = this->j_tagModMap.get<TAG_MOD_MAP_TY>();
+            this->tagInfo = this->j_tagInfo.get<TAG_INFO_TY>();
+            this->modInstCtxMap = this->j_modInstCtxMap.get<MOD_INST_CTX_MAP_TY>();
             return 0;
         } catch (...) {
             std::cout << "Fail to deserialize the static analysis results!\n";
@@ -59,24 +64,9 @@ namespace sta {
         return this->getLocInf(&*(B->begin()));
     }
 
-    nlohmann::json *StaticAnalysisResult::findLocInJson(LOC_INF *p_loc, unsigned int e, nlohmann::json *data) {
-        if ((!p_loc) || p_loc->size() < e || !data){
-            return nullptr;
-        }
-        nlohmann::json *res = data;
-        for (unsigned int i = 3; i >= e; --i){
-            std::string k = (*p_loc)[i];
-            if (res->find(k) == res->end()){
-                return nullptr;
-            }
-            res = &((*res)[k]);
-        }
-        return res;
-    }
-
     //Given a bb, return the taint information regarding its last br inst.
     //The returned info is a map from the context id to the taint tag id set.
-    nlohmann::json *StaticAnalysisResult::QueryBranchTaint(llvm::BasicBlock* B) {
+    ACTX_TAG_MAP *StaticAnalysisResult::QueryBranchTaint(llvm::BasicBlock* B) {
         if (!B) {
             return nullptr;
         }
@@ -84,12 +74,17 @@ namespace sta {
         if (!p_loc){
             return nullptr;
         }
-        nlohmann::json *pj_taint_inf = this->findLocInJson(p_loc,1,&this->j_taintedBrs);
-        if(!pj_taint_inf){
-            //This means the br instruction of this bb is not tainted by global states.
-            return nullptr;
+        auto& res3 = this->taintedBrs;
+        if(res3.find((*p_loc)[3]) != res3.end()){
+            auto& res2 = res3[(*p_loc)[3]];
+            if(res2.find((*p_loc)[2]) != res2.end()){
+                auto& res1 = res2[(*p_loc)[2]];
+                if(res1.find((*p_loc)[1]) != res1.end()){
+                    return &(res1[(*p_loc)[1]]);
+                }
+            }
         }
-        return pj_taint_inf;
+        return nullptr;
     }
 
     MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock* B) {
@@ -97,23 +92,20 @@ namespace sta {
     }
 
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
-    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(nlohmann::json *pj_taint_inf) {
-        if (!pj_taint_inf){
+    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf) {
+        if (!p_taint_inf){
             return nullptr;
         }
         MOD_IRS *p_mod_irs = new MOD_IRS();
-        for (auto& el : pj_taint_inf->items()) {
-            //Analysis context id under which this br is tainted.
-            nlohmann::json j_actx_id = el.key();
-            //A set of taint tag ids for this tainted br.
-            nlohmann::json j_tag_ids = el.value();
-            for (auto& tid : j_tag_ids) {
-                nlohmann::json *pj_mod_irs = this->QueryModIRsFromTagID(tid.get<unsigned long>());
-                if (!pj_mod_irs){
+        for (auto& x : *p_taint_inf) {
+            auto& actx_id = x.first;
+            auto& tag_ids = x.second;
+            for (ID_TY tid : tag_ids) {
+                if (this->tagModMap.find(tid) == this->tagModMap.end()){
                     continue;
                 }
-                //Get the mod insts for current taint tag, note that we may have multiple tags for one tainted br...
-                MOD_IRS *p_cur_mod_irs = this->j2ModIrs(pj_mod_irs);
+                MOD_IR_TY *ps_mod_irs = &(this->tagModMap[tid]);
+                MOD_IRS *p_cur_mod_irs = this->GetRealModIrs(ps_mod_irs);
                 //Merge.
                 for (auto const& x : *p_cur_mod_irs) {
                     if (p_mod_irs->find(x.first) != p_mod_irs->end()) {
@@ -131,23 +123,20 @@ namespace sta {
         return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B));
     }
 
-    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(nlohmann::json *pj_taint_inf) {
-        if (!pj_taint_inf){
+    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(ACTX_TAG_MAP *p_taint_inf) {
+        if (!p_taint_inf){
             return nullptr;
         }
         MOD_BBS *p_mod_bbs = new MOD_BBS();
-        for (auto& el : pj_taint_inf->items()) {
-            //Analysis context id under which this br is tainted.
-            nlohmann::json j_actx_id = el.key();
-            //A set of taint tag ids for this tainted br.
-            nlohmann::json j_tag_ids = el.value();
-            for (auto& tid : j_tag_ids) {
-                nlohmann::json *pj_mod_irs = this->QueryModIRsFromTagID(tid.get<unsigned long>());
-                if (!pj_mod_irs){
+        for (auto& x : *p_taint_inf) {
+            auto& actx_id = x.first;
+            auto& tag_ids = x.second;
+            for (ID_TY tid : tag_ids) {
+                if (this->tagModMap.find(tid) == this->tagModMap.end()){
                     continue;
                 }
-                //Get the mod insts for current taint tag, note that we may have multiple tags for one tainted br...
-                MOD_BBS *p_cur_mod_bbs = this->j2ModBbs(pj_mod_irs);
+                MOD_IR_TY *ps_mod_irs = &(this->tagModMap[tid]);
+                MOD_BBS *p_cur_mod_bbs = this->GetRealModBbs(ps_mod_irs);
                 //Merge.
                 for (auto const& x : *p_cur_mod_bbs) {
                     if (p_mod_bbs->find(x.first) != p_mod_bbs->end()) {
@@ -161,25 +150,25 @@ namespace sta {
         return p_mod_bbs;
     }
 
-    MOD_IRS *StaticAnalysisResult::j2ModIrs(nlohmann::json *pj_mod_irs) {
-        if(!pj_mod_irs) {
+    MOD_IRS *StaticAnalysisResult::GetRealModIrs(MOD_IR_TY *p_mod_irs) {
+        if(!p_mod_irs) {
             return nullptr;
         }
         MOD_IRS *mod_irs = new MOD_IRS();
-        for (auto& el0 : pj_mod_irs->items()) {
-            std::string module = el0.key().get<std::string>();
-            for (auto& el1 : (*pj_mod_irs)[module].items()) {
-                std::string func = el1.key().get<std::string>();
-                for (auto& el2 : (*pj_mod_irs)[module][func].items()) {
-                    std::string bb = el2.key().get<std::string>();
-                    for (auto& el3 : (*pj_mod_irs)[module][func][bb].items()) {
-                        std::string inst = el3.key().get<std::string>();
+        for (auto& el0 : *p_mod_irs) {
+            const std::string& module = el0.first;
+            for (auto& el1 : (*p_mod_irs)[module]) {
+                const std::string& func = el1.first;
+                for (auto& el2 : (*p_mod_irs)[module][func]) {
+                    const std::string& bb = el2.first;
+                    for (auto& el3 : (*p_mod_irs)[module][func][bb]) {
+                        const std::string& inst = el3.first;
                         //Get the actual Instruction* according to these string info
                         llvm::Instruction *pinst = this->getInstFromStr(module,func,bb,inst);
                         if (!pinst) {
                             continue;
                         }
-                        (*mod_irs)[pinst] = el3.value().get<MOD_INF>();
+                        (*mod_irs)[pinst] = el3.second;
                     }//inst
                 }//bb
             }//func
@@ -187,23 +176,23 @@ namespace sta {
         return mod_irs;
     }
 
-    MOD_BBS *StaticAnalysisResult::j2ModBbs(nlohmann::json *pj_mod_irs) {
-        if(!pj_mod_irs) {
+    MOD_BBS *StaticAnalysisResult::GetRealModBbs(MOD_IR_TY *p_mod_irs) {
+        if(!p_mod_irs) {
             return nullptr;
         }
         MOD_BBS *mod_bbs = new MOD_BBS();
-        for (auto& el0 : pj_mod_irs->items()) {
-            std::string module = el0.key().get<std::string>();
-            for (auto& el1 : (*pj_mod_irs)[module].items()) {
-                std::string func = el1.key().get<std::string>();
-                for (auto& el2 : (*pj_mod_irs)[module][func].items()) {
-                    std::string bb = el2.key().get<std::string>();
+        for (auto& el0 : *p_mod_irs) {
+            const std::string& module = el0.first;
+            for (auto& el1 : (*p_mod_irs)[module]) {
+                const std::string& func = el1.first;
+                for (auto& el2 : (*p_mod_irs)[module][func]) {
+                    const std::string& bb = el2.first;
                     llvm::BasicBlock *pbb = this->getBBFromStr(module,func,bb);
                     if (!pbb) {
                         continue;
                     }
-                    for (auto& el3 : (*pj_mod_irs)[module][func][bb].items()) {
-                        MOD_INF& mod_inf = el3.value().get<MOD_INF>();
+                    for (auto& el3 : (*p_mod_irs)[module][func][bb]) {
+                        const MOD_INF& mod_inf = el3.second;
                         (*mod_bbs)[pbb].insert(mod_inf.begin(),mod_inf.end());
                     }//inst
                 }//bb
@@ -225,6 +214,7 @@ namespace sta {
                 for (llvm::Instruction& curInst : curBB) {
                     //TODO: This might be unreliable as "dbg xxxxx" might be different!
                     //TODO: This can be *slow* since dump llvm::Instruction is time-consuming!
+                    std::string str;
                     llvm::raw_string_ostream ss(str);
                     ss << curInst;
                     if (ss.str() == inst) {
@@ -251,33 +241,9 @@ namespace sta {
         return nullptr;
     }
 
-    nlohmann::json *StaticAnalysisResult::QueryModIRsFromTagID(unsigned long tid) {
-        if (!this->j_tagMap){
-            return nullptr;
-        }
-        if (this->j_tagMap.find(tid) == this->j_tagMap.end()) {
-            //No taint tag with the specified id.
-            return nullptr;
-        }
-        for (auto& el : this->j_tagMap[tid].items()) {
-            return &(el.value());
-        }
-        return nullptr;
-    }
-
     //TODO:
-    nlohmann::json *StaticAnalysisResult::QueryModIRsFromTagTy(std::string ty) {
-        if (!this->j_tagMap){
-            return nullptr;
-        }
-        for (auto& el : this->j_tagMap.items()) {
-            nlohmann::json *pj = &(el.value());
-            if (pj->find(ty) != pj->end()){
-                //TODO: merge from multiple tags w/ the same type.
-                //return &((*pj)[ty]);
-            }
-        }
-        return nullptr;
+    void StaticAnalysisResult::QueryModIRsFromTagTy(std::string ty) {
+        return;
     }
 
     std::set<uint64_t> *StaticAnalysisResult::getIoctlCmdSet(MOD_INF* p_mod_inf) {
@@ -292,4 +258,4 @@ namespace sta {
         return s;
     }
 
-} /* namespace STA */
+} /* namespace sta */

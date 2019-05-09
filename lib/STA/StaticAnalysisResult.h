@@ -13,10 +13,8 @@
 #include <fstream>
 #include <set>
 #include "../JSON/json.cpp"
+#include "ResType.h"
 
-typedef std::vector<std::string> LOC_INF;
-//ctx_id -> arg_no -> value set
-typedef std::map<unsigned long,std::map<unsigned, std::set<uint64_t>>> MOD_INF;
 typedef std::map<llvm::Instruction*,MOD_INF> MOD_IRS;
 typedef std::map<llvm::BasicBlock*,MOD_INF> MOD_BBS;
 
@@ -48,32 +46,33 @@ namespace sta {
 
         MOD_IRS *GetAllGlobalWriteInsts(llvm::BasicBlock* B);
 
-        MOD_IRS *GetAllGlobalWriteInsts(nlohmann::json *pj_taint_inf);
+        MOD_IRS *GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf);
 
         MOD_BBS *GetAllGlobalWriteBBs(llvm::BasicBlock* B);
 
-        MOD_BBS *GetAllGlobalWriteBBs(nlohmann::json *pj_taint_inf);
+        MOD_BBS *GetAllGlobalWriteBBs(ACTX_TAG_MAP *p_taint_inf);
 
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF*);
 
     private:
-        nlohmann::json j_taintedBrs, j_analysisCtxMap, j_tagMap, j_modInstCtxMap;
+        nlohmann::json j_taintedBrs, j_analysisCtxMap, j_tagModMap, j_tagInfo, j_modInstCtxMap;
 
-        nlohmann::json *findLocInJson(LOC_INF *p_loc, unsigned int e, nlohmann::json *data);
+        TAINTED_BR_TY taintedBrs;
+        ANALYSIS_CTX_MAP_TY analysisCtxMap;
+        TAG_MOD_MAP_TY tagModMap;
+        TAG_INFO_TY tagInfo;
+        MOD_INST_CTX_MAP_TY modInstCtxMap;
 
-        nlohmann::json *QueryBranchTaint(llvm::BasicBlock* B);
+        ACTX_TAG_MAP *QueryBranchTaint(llvm::BasicBlock* B);
 
-        nlohmann::json *QueryModIRsFromTagID(unsigned long tid);
+        void QueryModIRsFromTagTy(std::string ty);
 
-        nlohmann::json *QueryModIRsFromTagTy(std::string ty);
+        MOD_IRS *GetRealModIrs(MOD_IR_TY *p_mod_irs);
 
-        MOD_IRS *j2ModIrs(nlohmann::json *pj_mod_irs);
-
-        MOD_BBS *j2ModBbs(nlohmann::json *pj_mod_irs);
+        MOD_BBS *GetRealModBbs(MOD_IR_TY *p_mod_irs);
     };
 
 } /* namespace sta */
 
 #endif /* LIB_STA_STATICANALYSISRESULT_H_ */
-
