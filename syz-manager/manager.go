@@ -192,7 +192,6 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	ss := &dra.Server{}
 	ss.RunDependencyRPCServer()
 	mgr.dprot = ss.Dport
-	log.Fatalf("mgr.dprot: %v", mgr.dprot)
 
 	// Create RPC server for fuzzers.
 	mgr.port, err = startRPCServer(mgr)
