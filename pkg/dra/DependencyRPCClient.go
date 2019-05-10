@@ -2,8 +2,8 @@ package dra
 
 import (
 	"context"
+	"github.com/google/syzkaller/pkg/log"
 	"google.golang.org/grpc"
-	"log"
 	"time"
 )
 
@@ -15,9 +15,9 @@ func (d *DRPCClient) RunDependencyRPCClient(address *string) {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(*address, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Fatalf("Dependency gRPC did not connect: %v", err)
 	}
-	defer conn.Close()
+	log.Logf(0, "Dependency gRPC did not connect: %v", err)
 	d.c = NewDependencyRPCClient(conn)
 }
 
