@@ -211,9 +211,11 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		proc.fuzzer.workQueue.enqueue(&WorkSmash{item.p, item.call})
 	}
 
-	proc.checkCoverage(item.p, inputCover)
-	input.Sig = sig.String()
-	proc.fuzzer.dManager.SendInput(&input)
+	if item.p.Uncover != nil {
+		proc.checkCoverage(item.p, inputCover)
+		input.Sig = sig.String()
+		proc.fuzzer.dManager.SendInput(&input)
+	}
 }
 
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
