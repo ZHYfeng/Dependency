@@ -221,7 +221,7 @@ func main() {
 
 	log.Logf(0, "dialing dManager at %v", *flagDManager)
 	dManager := &pb.DRPCClient{}
-	dManager.RunDependencyRPCClient(flagDManager)
+	dManager.RunDependencyRPCClient(flagDManager, flagName)
 
 	needPoll := make(chan struct{}, 1)
 	needPoll <- struct{}{}

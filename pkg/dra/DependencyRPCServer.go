@@ -134,6 +134,11 @@ func (ss *Server) SetAddress(address uint32) {
 
 // RunDependencyRPCServer
 func (ss *Server) RunDependencyRPCServer() {
+
+	ss.corpusDC = make(map[string]Input)
+	ss.corpusDI = make(map[string]DependencyInput)
+	ss.fuzzers = make(map[string]*fuzzer)
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
