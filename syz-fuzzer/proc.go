@@ -164,6 +164,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			ii := uint32(i)
 			if cc, ok := input.Call[ii]; !ok {
 				cc = &pb.Call{
+					Idx:     ii,
 					Address: make(map[uint32]uint32),
 				}
 				input.Call[ii] = cc
