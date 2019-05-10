@@ -190,7 +190,7 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	mgr.collectUsedFiles()
 
 	ss := &dra.Server{}
-	go ss.RunDependencyRPCServer()
+	ss.RunDependencyRPCServer()
 	mgr.dprot = ss.Dport
 	log.Fatalf("mgr.dprot: %v", mgr.dprot)
 
