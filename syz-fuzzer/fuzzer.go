@@ -219,6 +219,7 @@ func main() {
 		return
 	}
 
+	log.Logf(0, "dialing dManager at %v", *flagDManager)
 	dManager := &pb.DRPCClient{}
 	dManager.RunDependencyRPCClient(flagDManager)
 
