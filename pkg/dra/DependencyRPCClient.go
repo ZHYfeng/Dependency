@@ -17,7 +17,6 @@ func (d *DRPCClient) RunDependencyRPCClient(address *string) {
 	if err != nil {
 		log.Fatalf("Dependency gRPC did not connect: %v", err)
 	}
-	log.Logf(0, "Dependency gRPC did not connect: %v", err)
 	d.c = NewDependencyRPCClient(conn)
 }
 
