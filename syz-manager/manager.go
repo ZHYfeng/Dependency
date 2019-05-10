@@ -189,15 +189,16 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	mgr.initHTTP()
 	mgr.collectUsedFiles()
 
+	ss := &dra.Server{}
+	go ss.RunDependencyRPCServer()
+	mgr.dprot = ss.Dport
+	log.Fatalf("mgr.dprot: %v", mgr.dprot)
+
 	// Create RPC server for fuzzers.
 	mgr.port, err = startRPCServer(mgr)
 	if err != nil {
 		log.Fatalf("failed to create rpc server: %v", err)
 	}
-
-	ss := &dra.Server{}
-	go ss.RunDependencyRPCServer()
-	mgr.dprot = ss.Dport
 
 	if cfg.DashboardAddr != "" {
 		mgr.dash = dashapi.New(cfg.DashboardClient, cfg.DashboardAddr, cfg.DashboardKey)
