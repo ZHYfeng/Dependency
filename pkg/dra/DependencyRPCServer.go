@@ -141,8 +141,9 @@ func (ss *Server) RunDependencyRPCServer() {
 	ss.Dport = lis.Addr().(*net.TCPAddr).Port
 	s := grpc.NewServer()
 	RegisterDependencyRPCServer(s, ss)
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-
+	go func() {
+		if err := s.Serve(lis); err != nil {
+			log.Fatalf("failed to serve: %v", err)
+		}
+	}()
 }
