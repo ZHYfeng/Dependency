@@ -24,6 +24,11 @@ type Server struct {
 	fuzzers  map[string]*fuzzer
 }
 
+func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
+	ss.fuzzers[request.Name] = &fuzzer{}
+	return &Empty{}, nil
+}
+
 func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 	reply := &Empty{}
 	reply.Address = ss.address
