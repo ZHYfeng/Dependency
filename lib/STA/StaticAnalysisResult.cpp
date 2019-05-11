@@ -235,6 +235,7 @@ namespace sta {
                 continue;
             }
             for (llvm::BasicBlock& curBB : curFunc) {
+                //TODO: this function call can be *SLOW*, consider to set up a cache from BB instance to str names!
                 if (this->getBBStrID(&curBB) == bb) {
                 //if (curBB.getName().str() == bb) {
                     return &curBB;
