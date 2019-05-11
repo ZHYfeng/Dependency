@@ -41,7 +41,7 @@ namespace sta {
         ss << *I;
         inst = ss.str();
         if(I->getParent()){
-            bb = I->getParent()->getName().str();
+            bb = this->getBBStrID(I->getParent());
         }
         if(I->getFunction()){
             func = I->getFunction()->getName().str();
@@ -208,7 +208,9 @@ namespace sta {
                 continue;
             }
             for (llvm::BasicBlock& curBB : curFunc) {
-                if (curBB.getName().str() != bb) {
+                //TODO: may have performance issues.
+                if (this->getBBStrID(&curBB) != bb) {
+                //if (curBB.getName().str() != bb) {
                     continue;
                 }
                 for (llvm::Instruction& curInst : curBB) {
@@ -233,7 +235,8 @@ namespace sta {
                 continue;
             }
             for (llvm::BasicBlock& curBB : curFunc) {
-                if (curBB.getName().str() == bb) {
+                if (this->getBBStrID(&curBB) == bb) {
+                //if (curBB.getName().str() == bb) {
                     return &curBB;
                 }
             }//BB
@@ -256,6 +259,20 @@ namespace sta {
             s->insert(cs.begin(),cs.end());
         }
         return s;
+    }
+
+    std::string StaticAnalysisResult::getBBStrID(llvm::BasicBlock* B) {
+        if (!B) {
+            return "";
+        }
+        if (!B->getName().empty())
+        	return B->getName().str();
+
+    	std::string Str;
+    	llvm::raw_string_ostream OS(Str);
+
+    	B->printAsOperand(OS, false);
+    	return OS.str();
     }
 
 } /* namespace sta */
