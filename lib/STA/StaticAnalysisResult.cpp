@@ -263,17 +263,22 @@ namespace sta {
     }
 
     std::string StaticAnalysisResult::getBBStrID(llvm::BasicBlock* B) {
+        static std::map<llvm::BasicBlock*,std::string> BBNameMap;
         if (!B) {
             return "";
         }
         if (!B->getName().empty())
         	return B->getName().str();
 
-    	std::string Str;
-    	llvm::raw_string_ostream OS(Str);
-
-    	B->printAsOperand(OS, false);
-    	return OS.str();
+        //NOTE: "printAsOperand" is very expensive, so we set up the cache "BBNameMap" here.
+        if (BBNameMap.find(B) == BBNameMap.end()) {
+    	    std::string Str;
+    	    llvm::raw_string_ostream OS(Str);
+    	    B->printAsOperand(OS, false);
+            BBNameMap[B] = OS.str();
+    	    return OS.str();
+        }
+        return BBNameMap[B];
     }
 
 } /* namespace sta */
