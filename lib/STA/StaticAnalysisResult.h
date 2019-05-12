@@ -52,7 +52,11 @@ namespace sta {
 
         MOD_BBS *GetAllGlobalWriteBBs(ACTX_TAG_MAP *p_taint_inf);
 
-        std::string getBBStrID(llvm::BasicBlock* B);
+        std::string& getBBStrID(llvm::BasicBlock* B);
+
+        std::string& getValueStr(llvm::Value *v);
+
+        std::string& getTypeStr(llvm::Type*);
 
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF*);

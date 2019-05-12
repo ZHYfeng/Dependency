@@ -208,18 +208,14 @@ namespace sta {
                 continue;
             }
             for (llvm::BasicBlock& curBB : curFunc) {
-                //TODO: may have performance issues.
                 if (this->getBBStrID(&curBB) != bb) {
                 //if (curBB.getName().str() != bb) {
                     continue;
                 }
                 for (llvm::Instruction& curInst : curBB) {
                     //TODO: This might be unreliable as "dbg xxxxx" might be different!
-                    //TODO: This can be *slow* since dump llvm::Instruction is time-consuming!
-                    std::string str;
-                    llvm::raw_string_ostream ss(str);
-                    ss << curInst;
-                    if (ss.str() == inst) {
+                    //TODO: Although we set up a cache now, this can still be *slow* depending on cache hit/miss.
+                    if (this->getValueStr(llvm::dyn_cast<llvm::Value>(&curInst)) == inst) {
                         return &curInst;
                     }
                 }//Inst
@@ -235,7 +231,6 @@ namespace sta {
                 continue;
             }
             for (llvm::BasicBlock& curBB : curFunc) {
-                //TODO: this function call can be *SLOW*, consider to set up a cache from BB instance to str names!
                 if (this->getBBStrID(&curBB) == bb) {
                 //if (curBB.getName().str() == bb) {
                     return &curBB;
@@ -262,23 +257,55 @@ namespace sta {
         return s;
     }
 
-    std::string StaticAnalysisResult::getBBStrID(llvm::BasicBlock* B) {
+    std::string& StaticAnalysisResult::getBBStrID(llvm::BasicBlock* B) {
         static std::map<llvm::BasicBlock*,std::string> BBNameMap;
-        if (!B) {
-            return "";
-        }
-        if (!B->getName().empty())
-        	return B->getName().str();
-
-        //NOTE: "printAsOperand" is very expensive, so we set up the cache "BBNameMap" here.
         if (BBNameMap.find(B) == BBNameMap.end()) {
-    	    std::string Str;
-    	    llvm::raw_string_ostream OS(Str);
-    	    B->printAsOperand(OS, false);
-            BBNameMap[B] = OS.str();
-    	    return OS.str();
+            if (B) {
+                if (!B->getName().empty()){
+                    BBNameMap[B] = B->getName().str();
+                }else{
+    	            std::string Str;
+    	            llvm::raw_string_ostream OS(Str);
+    	            B->printAsOperand(OS, false);
+                    BBNameMap[B] = OS.str();
+                }
+            }else{
+                BBNameMap[B] = "";
+            }
         }
         return BBNameMap[B];
+    }
+
+    //Set up a cache for the expensive "print" operation.
+    std::string& StaticAnalysisResult::getValueStr(llvm::Value *v) {
+        static std::map<llvm::Value*,std::string> ValueNameMap;
+        if (ValueNameMap.find(v) == ValueNameMap.end()) {
+            if(v){
+                std::string str;
+                llvm::raw_string_ostream ss(str);
+                ss << *v;
+                ValueNameMap[v] = ss.str();
+            }else{
+                ValueNameMap[v] = "";
+            }
+        }
+        return ValueNameMap[v];
+    }
+
+    //Set up a cache for the expensive "print" operation specifically for Type.
+    std::string& StaticAnalysisResult::getTypeStr(llvm::Type *v) {
+        static std::map<llvm::Type*,std::string> TypeNameMap;
+        if (TypeNameMap.find(v) == TypeNameMap.end()) {
+            if(v){
+                std::string str;
+                llvm::raw_string_ostream ss(str);
+                ss << *v;
+                TypeNameMap[v] = ss.str();
+            }else{
+                TypeNameMap[v] = "";
+            }
+        }
+        return TypeNameMap[v];
     }
 
 } /* namespace sta */
