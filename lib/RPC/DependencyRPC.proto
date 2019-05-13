@@ -14,6 +14,8 @@ service DependencyRPC {
     }
     
     //syz-fuzzer and syz-manager
+    rpc Connect (Empty) returns (Empty) {
+    }
     rpc GetDependencyInput (Empty) returns (NewDependencyInput) {
     }
     rpc SendInput (Input) returns (Empty) {
@@ -33,6 +35,7 @@ message RelatedInput {
 message RelatedSyscall {
     string name = 1;
     uint32 address = 2;
+    uint64 number =3;
 }
 
 message UncoveredAddress {
