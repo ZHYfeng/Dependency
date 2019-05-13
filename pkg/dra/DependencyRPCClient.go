@@ -51,4 +51,5 @@ func (d *DRPCClient) SendInput(input *Input) {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 	}
+	log.Logf(1, "gRPC DRPCClient SendInput : %v", input)
 }

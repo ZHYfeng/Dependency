@@ -83,7 +83,7 @@ func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) 
 		}
 	}
 	ss.corpusDC[request.Sig] = input
-	log.Logf(1, "gRPC SendInput : %v", input)
+	log.Logf(1, "gRPC Server SendInput : %v", input)
 	return reply, nil
 }
 
