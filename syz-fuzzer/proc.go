@@ -213,9 +213,10 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 
 	if item.p.Uncover != nil {
 		proc.checkCoverage(item.p, inputCover)
-		input.Sig = sig.String()
-		proc.fuzzer.dManager.SendInput(&input)
 	}
+
+	input.Sig = sig.String()
+	proc.fuzzer.dManager.SendInput(&input)
 }
 
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {

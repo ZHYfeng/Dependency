@@ -2,8 +2,8 @@ package dra
 
 import (
 	"context"
+	"github.com/google/syzkaller/pkg/log"
 	"google.golang.org/grpc"
-	"log"
 	"net"
 )
 
@@ -83,6 +83,7 @@ func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) 
 		}
 	}
 	ss.corpusDC[request.Sig] = input
+	log.Logf(1, "gRPC SendInput : %v", input)
 	return reply, nil
 }
 

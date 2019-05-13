@@ -49,6 +49,6 @@ func (d *DRPCClient) SendInput(input *Input) {
 	defer cancel()
 	_, err := d.c.SendInput(ctx, input)
 	if err != nil {
-		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
+		log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 	}
 }

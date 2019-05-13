@@ -189,9 +189,14 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	mgr.initHTTP()
 	mgr.collectUsedFiles()
 
+	// Create gRPC server.
 	ss := &dra.Server{}
 	ss.RunDependencyRPCServer()
 	mgr.dprot = ss.Dport
+
+	vmlinux := filepath.Join(mgr.cfg.KernelObj, mgr.sysTarget.KernelObject)
+	VMOFFset, _ := getVMOffset(vmlinux, mgr.cfg.TargetOS)
+	ss.SetAddress(VMOFFset)
 
 	// Create RPC server for fuzzers.
 	mgr.port, err = startRPCServer(mgr)
