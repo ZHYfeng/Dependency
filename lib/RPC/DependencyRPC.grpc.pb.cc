@@ -22,6 +22,7 @@ static const char* DependencyRPC_method_names[] = {
   "/dra.DependencyRPC/GetVmOffsets",
   "/dra.DependencyRPC/GetNewInput",
   "/dra.DependencyRPC/SendDependencyInput",
+  "/dra.DependencyRPC/Connect",
   "/dra.DependencyRPC/GetDependencyInput",
   "/dra.DependencyRPC/SendInput",
 };
@@ -36,8 +37,9 @@ DependencyRPC::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   : channel_(channel), rpcmethod_GetVmOffsets_(DependencyRPC_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetNewInput_(DependencyRPC_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SendDependencyInput_(DependencyRPC_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetDependencyInput_(DependencyRPC_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SendInput_(DependencyRPC_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Connect_(DependencyRPC_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetDependencyInput_(DependencyRPC_method_names[4], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SendInput_(DependencyRPC_method_names[5], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status DependencyRPC::Stub::GetVmOffsets(::grpc::ClientContext* context, const ::dra::Empty& request, ::dra::Empty* response) {
@@ -100,6 +102,26 @@ void DependencyRPC::Stub::experimental_async::SendDependencyInput(::grpc::Client
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::dra::Empty>::Create(channel_.get(), cq, rpcmethod_SendDependencyInput_, context, request, false);
 }
 
+::grpc::Status DependencyRPC::Stub::Connect(::grpc::ClientContext* context, const ::dra::Empty& request, ::dra::Empty* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_Connect_, context, request, response);
+}
+
+void DependencyRPC::Stub::experimental_async::Connect(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Connect_, context, request, response, std::move(f));
+}
+
+void DependencyRPC::Stub::experimental_async::Connect(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Connect_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::dra::Empty>* DependencyRPC::Stub::AsyncConnectRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::dra::Empty>::Create(channel_.get(), cq, rpcmethod_Connect_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::dra::Empty>* DependencyRPC::Stub::PrepareAsyncConnectRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::dra::Empty>::Create(channel_.get(), cq, rpcmethod_Connect_, context, request, false);
+}
+
 ::grpc::Status DependencyRPC::Stub::GetDependencyInput(::grpc::ClientContext* context, const ::dra::Empty& request, ::dra::NewDependencyInput* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_GetDependencyInput_, context, request, response);
 }
@@ -159,10 +181,15 @@ DependencyRPC::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       DependencyRPC_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< DependencyRPC::Service, ::dra::Empty, ::dra::Empty>(
+          std::mem_fn(&DependencyRPC::Service::Connect), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      DependencyRPC_method_names[4],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< DependencyRPC::Service, ::dra::Empty, ::dra::NewDependencyInput>(
           std::mem_fn(&DependencyRPC::Service::GetDependencyInput), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      DependencyRPC_method_names[4],
+      DependencyRPC_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< DependencyRPC::Service, ::dra::Input, ::dra::Empty>(
           std::mem_fn(&DependencyRPC::Service::SendInput), this)));
@@ -186,6 +213,13 @@ DependencyRPC::Service::~Service() {
 }
 
 ::grpc::Status DependencyRPC::Service::SendDependencyInput(::grpc::ServerContext* context, const ::dra::DependencyInput* request, ::dra::Empty* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status DependencyRPC::Service::Connect(::grpc::ServerContext* context, const ::dra::Empty* request, ::dra::Empty* response) {
   (void) context;
   (void) request;
   (void) response;
