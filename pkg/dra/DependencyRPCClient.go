@@ -47,9 +47,10 @@ func (d *DRPCClient) SendInput(input *Input) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	_, err := d.c.SendInput(ctx, input)
+	reply, err := d.c.SendInput(ctx, input)
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 	}
+	log.Logf(1, "reply.Name : %v", reply.Name)
 	log.Logf(1, "gRPC DRPCClient SendInput : %v", input)
 }
