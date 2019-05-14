@@ -56,7 +56,7 @@ func (d *DRPCClient) SendInput(input *Input) {
 	for _, c := range input.Call {
 		log.Logf(1, "gRPC DRPCClient SendInput idx : %x", c.Idx)
 		for a, _ := range c.Address {
-			log.Logf(1, "gRPC DRPCClient SendInput address : %x", 0xffffffff00000000+a)
+			log.Logf(1, "gRPC DRPCClient SendInput address : %x", 0xffffffff00000000+uint64(a))
 		}
 	}
 }
