@@ -21,10 +21,16 @@ type RelatedProgs struct {
 	RelatedAddress uint32
 }
 
+type RelatedCalls struct {
+	RelatedCall    *Call
+	RelatedAddress uint32
+}
+
 type Uncover struct {
 	UncoveredAddress uint32
 	Idx              uint32
 	RelatedProgs     []*RelatedProgs
+	RelatedCalls     []*RelatedCalls
 }
 
 type Call struct {

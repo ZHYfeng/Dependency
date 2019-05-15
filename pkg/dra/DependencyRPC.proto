@@ -4,7 +4,7 @@ package dra;
 
 // The DependencyRPC service definition.
 service DependencyRPC {
-    
+
     // C++ and syz-manager
     rpc GetVmOffsets (Empty) returns (Empty) {
     }
@@ -12,7 +12,7 @@ service DependencyRPC {
     }
     rpc SendDependencyInput (DependencyInput) returns (Empty) {
     }
-    
+
     //syz-fuzzer and syz-manager
     rpc Connect (Empty) returns (Empty) {
     }
@@ -35,6 +35,7 @@ message RelatedInput {
 message RelatedSyscall {
     string name = 1;
     uint32 address = 2;
+    uint64 number =3;
 }
 
 message UncoveredAddress {

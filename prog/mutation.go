@@ -646,11 +646,11 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 	retry := false
 	//select a uncover address random
 	uncover := p.Uncover[r.Intn(len(p.Uncover))]
-	idx := uncover.Idx
+	idx := int(uncover.Idx)
 	p.WriteAddress = nil
 
-	// insert related progs for expectation = 3 times
-	for stop := false; !stop || retry; stop = r.oneOf(3) {
+	// insert related progs for expectation = 2 times
+	for stop := false; !stop || retry; stop = r.oneOf(2) {
 		retry = false
 
 		if len(corpus) == 0 || len(p.Calls) == 0 {
@@ -659,29 +659,69 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 		}
 
 		//select a insert place random
-		var insertIdx = r.Intn(int(idx))
+		//var insertIdx = r.Intn(int(idx))
+		var insertIdx = idx
 
-		//select a related progs random
-		syscallIdx := r.Intn(len(uncover.RelatedProgs))
-		p0 := uncover.RelatedProgs[syscallIdx].RelatedProg
-		p.WriteAddress = append(p.WriteAddress, uncover.RelatedProgs[syscallIdx].RelatedAddress)
-		p0c := p0.Clone()
-		p.Calls = append(p.Calls[:insertIdx], append(p0c.Calls, p.Calls[insertIdx:]...)...)
-		for i := len(p.Calls) - 1; i >= ncalls; i-- {
-			p.removeCall(i)
-		}
-		for _, c := range p0c.Calls {
+		if r.oneOf(2) {
+
+			//select a related call random
+			syscallIdx := r.Intn(len(uncover.RelatedCalls))
+			c0 := uncover.RelatedCalls[syscallIdx].RelatedCall
+			p.WriteAddress = append(p.WriteAddress, uncover.RelatedCalls[syscallIdx].RelatedAddress)
+
+			c0c := new(Call)
+			c0c.Meta = c0.Meta
+			newargs := make(map[*ResultArg]*ResultArg)
+			if c0.Ret != nil {
+				c0c.Ret = clone(c0.Ret, newargs).(*ResultArg)
+			}
+			c0c.Args = make([]Arg, len(c0.Args))
+			for ai, arg := range c0.Args {
+				c0c.Args[ai] = clone(arg, newargs)
+			}
+
 			// Change args of a call.
-			if len(p.Calls) == 0 {
+			s := analyze(ct, p, c0c)
+			updateSizes := true
+			ma := &mutationArgs{target: p.Target}
+			ForeachArg(c0c, ma.collectArg)
+			aidx := 2
+			arg, ctx := ma.args[aidx], ma.ctxes[aidx]
+			calls, ok := p.Target.mutateArg(r, s, arg, ctx, &updateSizes)
+			if !ok {
 				retry = true
-				continue
 			}
-			if len(c.Args) == 0 {
-				retry = true
-				continue
+			var newCalls []*Call
+			newCalls = append(newCalls, p.Calls[:insertIdx]...)
+			newCalls = append(newCalls, calls...)
+			newCalls = append(newCalls, c0c)
+			if insertIdx < len(p.Calls) {
+				newCalls = append(newCalls, p.Calls[insertIdx])
+				newCalls = append(newCalls, p.Calls[insertIdx+1:]...)
 			}
-			retry = p.mutateArgForCall(r, ct, c)
+			p.Calls = newCalls
+
+			if updateSizes {
+				p.Target.assignSizesCall(c0c)
+			}
+			p.Target.SanitizeCall(c0c)
+
+			for i := len(p.Calls) - 1; i >= ncalls; i-- {
+				p.removeCall(i)
+			}
+
+		} else {
+			//select a related prog random
+			syscallIdx := r.Intn(len(uncover.RelatedProgs))
+			p0 := uncover.RelatedProgs[syscallIdx].RelatedProg
+			p.WriteAddress = append(p.WriteAddress, uncover.RelatedProgs[syscallIdx].RelatedAddress)
+			p0c := p0.Clone()
+			p.Calls = append(p.Calls[:insertIdx], append(p0c.Calls, p.Calls[insertIdx:]...)...)
+			for i := len(p.Calls) - 1; i >= ncalls; i-- {
+				p.removeCall(i)
+			}
 		}
+
 	}
 
 	for _, c := range p.Calls {

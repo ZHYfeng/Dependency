@@ -10,6 +10,7 @@ import (
 	"os"
 	"runtime"
 	"runtime/debug"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -410,10 +411,42 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		}
 
 		for _, i := range u.GetRelatedSyscall() {
-			u1.RelatedProgs = append(u1.RelatedProgs, &prog.RelatedProgs{
-				RelatedProg:    nil,
+			c1 := &prog.RelatedCalls{
+				RelatedCall:    nil,
 				RelatedAddress: i.GetAddress(),
-			})
+			}
+
+			c1.RelatedCall = &prog.Call{
+				Meta:    nil,
+				Ret:     nil,
+				Comment: "dependency",
+			}
+
+			// only work for ioctl
+			for n, c := range fuzzer.target.SyscallMap {
+				if strings.HasPrefix(n, i.Name) {
+					for _, a := range c.Args {
+						if a.FieldName() == "cmd" {
+							switch t := a.DefaultArg().(type) {
+							case *prog.ConstArg:
+								val, _ := t.Value()
+								if val == i.Number {
+									c1.RelatedCall.Meta = c
+									c1.RelatedCall.Ret = prog.MakeReturnArg(c.Ret)
+									for _, typ := range c.Args {
+										arg := typ.DefaultArg()
+										c1.RelatedCall.Args = append(c1.RelatedCall.Args, arg)
+									}
+								}
+							default:
+
+							}
+						}
+					}
+				}
+			}
+
+			u1.RelatedCalls = append(u1.RelatedCalls, c1)
 		}
 
 		p.Uncover = append(p.Uncover, u1)

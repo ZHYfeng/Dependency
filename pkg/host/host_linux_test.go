@@ -33,9 +33,23 @@ func TestSupportedSyscalls(t *testing.T) {
 		"read",
 		"write",
 		"stat",
+		"ioctl",
+		"ioctl$BLKTRACESETUP",
+		"ioctl$BLKTRACESTART",
 	}
 	for _, name := range safe {
 		c := target.SyscallMap[name]
+		t.Logf("%v", c)
+		for _, a := range c.Args {
+			t.Logf("%v", a.String())
+			switch tt := a.DefaultArg().(type) {
+			case *prog.ConstArg:
+				val, pidStride := tt.Value()
+				t.Logf("%v", val)
+				t.Logf("%v", pidStride)
+			}
+			t.Logf("%v", a.FieldName())
+		}
 		if c == nil {
 			t.Fatalf("can't find syscall '%v'", name)
 		}
