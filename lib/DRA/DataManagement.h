@@ -19,6 +19,12 @@
 
 namespace dra {
 
+    class coverage {
+    public:
+        std::time_t time;
+        unsigned long long int address;
+    };
+
     class DataManagement {
     public:
         DataManagement();
@@ -47,7 +53,8 @@ namespace dra {
         dra::DModule *Modules;
         std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
         std::unordered_map<std::string, DInput *> Inputs;
-        std::set<unsigned long long int> cover;
+        std::map<unsigned long long int, std::time_t> cover;
+        std::vector<coverage *> time;
         unsigned long long int vmOffsets;
 
     };

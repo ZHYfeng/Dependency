@@ -1,6 +1,11 @@
-set(PROTO DependencyRPC.proto)
-set(PROTOC DependencyRPC.grpc.pb.cc
-        DependencyRPC.pb.cc)
+set(PROTO
+        DependencyRPC.proto
+        a2l.proto)
+set(PROTOC
+        DependencyRPC.grpc.pb.cc
+        DependencyRPC.pb.cc
+        a2l.grpc.pb.cc
+        a2l.pb.cc)
 
 set(SOURCES
         ${PROTOC}

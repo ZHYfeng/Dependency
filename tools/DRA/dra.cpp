@@ -7,7 +7,6 @@
 
 #include <llvm/Support/CommandLine.h>
 #include <iostream>
-#include <grpcpp/grpcpp.h>
 
 #include "../../lib/DCC/DependencyControlCenter.h"
 #include "../../lib/DRA/DataManagement.h"

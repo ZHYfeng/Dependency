@@ -51,7 +51,7 @@ namespace dra {
                             llvm::BasicBlock *b = DM.Address2BB[condition_address]->parent->basicBlock;
 
                             MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
-                            if (allBasicblock != nullptr) {
+                            if (allBasicblock != nullptr && allBasicblock->size() != 0) {
                                 for (auto &x : *allBasicblock) {
                                     llvm::BasicBlock *bb = x.first;
                                     MOD_INF &mod_inf = x.second;
@@ -94,6 +94,11 @@ namespace dra {
                                     }
                                     //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak, or we can also set up a cache to avoid repeated query to STA.
                                 }
+                            } else if (allBasicblock == nullptr) {
+                                // no taint or out side
+
+                            } else if (allBasicblock->size() == 0) {
+
                             }
                         }
                         client.SendDependencyInput(dependencyInput);

@@ -82,7 +82,7 @@ namespace dra {
 
         for (auto i : Inputs) {
             for (auto ii : i.second->MaxCover) {
-                cover.insert(ii);
+                cover[ii] = std::time(NULL);
             }
         }
 
@@ -152,6 +152,15 @@ namespace dra {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
                 } else {
                     std::cerr << "un find address " << std::hex << final_address << "\n";
+                }
+
+                if(this->cover.find(final_address) != this->cover.end()){
+                    std::time_t t = std::time(NULL);
+                    coverage *c = new coverage();
+                    c->time = t;
+                    c->address = final_address;
+                    this->cover[final_address] = t;
+                    this->time.push_back(c);
                 }
             }
         }
