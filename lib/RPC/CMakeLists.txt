@@ -5,9 +5,15 @@ set(PROTOC
         DependencyRPC.pb.cc
         )
 
+set(APROTO
+        a2l.proto)
+set(APROTOC
+        a2l.pb.cc
+        )
+
 set(SOURCES
         ${PROTOC}
-        a2l.pb.cc
+        ${APROTOC}
         DependencyRPCClient.cpp)
 
 add_custom_command(
@@ -17,9 +23,9 @@ add_custom_command(
 )
 
 add_custom_command(
-        OUTPUT a2l.pb.cc
-        COMMAND protoc -I ${CMAKE_CURRENT_SOURCE_DIR} --cpp_out=. ${CMAKE_CURRENT_SOURCE_DIR}/${PROTO}
-        DEPENDS a2l.proto
+        OUTPUT ${APROTOC}
+        COMMAND protoc -I ${CMAKE_CURRENT_SOURCE_DIR} --cpp_out=. ${CMAKE_CURRENT_SOURCE_DIR}/${APROTO}
+        DEPENDS ${APROTO}
 )
 
 add_library(RPC ${SOURCES})
