@@ -11,12 +11,12 @@ if (DEFINED ENV{LLVM_DIR})
     include(AddLLVM)
     add_definitions(${LLVM_DEFINITIONS})
     include_directories(${LLVM_INCLUDE_DIRS})
-else()
+else ()
     message(FATAL_ERROR "\
 WARNING: The LLVM_DIR var was not set (required for an out-of-source build)!\n\
 Please set this to environment variable to point to the LLVM build directory\
 (e.g. on linux: export LLVM_DIR=/path/to/llvm/build/dir)")
-endif()
+endif ()
 
 add_subdirectory(lib)
 add_subdirectory(tools)

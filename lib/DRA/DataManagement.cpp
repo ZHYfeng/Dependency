@@ -154,7 +154,7 @@ namespace dra {
                     std::cerr << "un find address " << std::hex << final_address << "\n";
                 }
 
-                if(this->cover.find(final_address) != this->cover.end()){
+                if (this->cover.find(final_address) != this->cover.end()) {
                     std::time_t t = std::time(NULL);
                     coverage *c = new coverage();
                     c->time = t;

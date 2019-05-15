@@ -14,7 +14,7 @@ llvm::cl::opt<std::string> objdump("objdump", llvm::cl::desc("The path of objdum
 
 int main(int argc, char **argv) {
 
-    llvm::cl::ParseCommandLineOptions(argc, argv, "a2l\n");
+    llvm::cl::ParseCommandLineOptions(argc, argv, "A2L\n");
     std::unique_ptr<dra::address> a(new dra::address());
 
     std::string Line;
@@ -108,24 +108,13 @@ int main(int argc, char **argv) {
     }
 
     // Write back to disk.
-    std::fstream output("./a2l.bin", std::ios::out | std::ios::trunc | std::ios::binary);
+    std::string output_file = obj + ".bin";
+    std::fstream output(output_file, std::ios::out | std::ios::trunc | std::ios::binary);
     if (!a->SerializeToOstream(&output)) {
         std::cerr << "Failed to write map." << std::endl;
         return -1;
     }
-
-    // Read.
-    std::unique_ptr<dra::address> b(new dra::address());
-    std::fstream input("./a2l.bin", std::ios::in | std::ios::binary);
-    if (!b->ParseFromIstream(&input)) {
-        std::cerr << "Failed to parse map." << std::endl;
-        return -1;
-    }
-
-    std::cout << "b" << b->name() << std::endl;
-    for (auto c : b->addr()){
-        std::cout << c.first << " " << c.second << std::endl;
-    }
+    output.close();
 
     return 0;
 }

@@ -8,10 +8,15 @@
 #ifndef LIB_DRA_MODULEALL_H_
 #define LIB_DRA_MODULEALL_H_
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 
 #include "DFunction.h"
+
+namespace dra {
+    class address;
+} /* namespace dra */
 
 #define TEST 0
 #define DEBUG 1
@@ -50,6 +55,7 @@ namespace dra {
     public:
         std::unique_ptr<llvm::Module> module;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
+        std::unique_ptr<dra::address> addr2line;
 
         std::unordered_map<std::string, DFunction *> RepeatBCFunction;
         std::unordered_map<std::string, DFunction *> RepeatOFunction;

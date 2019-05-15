@@ -9,11 +9,13 @@
 #include <iostream>
 #include <sstream>
 
+#include "../RPC/a2l.pb.h"
+
 #define PATH_SIZE 10000
 
 namespace dra {
 
-    DModule::DModule() {
+    DModule::DModule() : addr2line(new dra::address()) {
         Function.reserve(PATH_SIZE);
 
     }
@@ -111,6 +113,12 @@ namespace dra {
         std::cout << "objdump :" << objdump << std::endl;
 #endif
 
+        std::fstream input("./A2L.bin", std::ios::in | std::ios::binary);
+        if (!this->addr2line->ParseFromIstream(&input)) {
+            std::cerr << "Failed to parse addr2line." << std::endl;
+        }
+        input.close();
+
         std::ifstream objdumpFile(objdump);
         InsNum = 0;
         LineNum = 0;
@@ -147,33 +155,12 @@ namespace dra {
                         std::cout << "o FunctionName :" << FunctionName << std::endl;
 #endif
                         // get path
-                        std::string obj = objdump.substr(0, objdump.find(".objdump"));
-#if TEST
-                        Cmd = "addr2line -afi -e " + obj + ".o " + Addr;
-#else
-                        Cmd = "addr2line -afi -e " + obj + " " + Addr;
-#endif
-
-#if DEBUGOBJDUMP
-                        std::cout << "o Cmd :" << Cmd << std::endl;
-#endif
-                        Result = exec(Cmd);
-
-#if DEBUGOBJDUMP
-                        std::cout << "o Result :" << Result << std::endl;
-#endif
-
-                        ss.str("");
-#if TEST
-                        start = Result.find("p-f/");
-#else
-                        start = Result.find("-np/");
-#endif
-                        end = Result.find(':');
-                        for (unsigned long i = start + 4; i < end; i++) {
-                            ss << Result.at(i);
+                        if (this->addr2line->mutable_addr()->find(Addr) != this->addr2line->mutable_addr()->end()) {
+                            Path = (*this->addr2line->mutable_addr())[Addr];
+                        } else {
+                            std::cerr << "Failed to get addr2line." << std::endl;
                         }
-                        Path = ss.str();
+
 #if DEBUGOBJDUMP
                         std::cout << "o Path :" << Path << std::endl;
 #endif

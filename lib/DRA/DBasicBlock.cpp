@@ -145,7 +145,7 @@ namespace dra {
         std::string name = b->getName().str();
         auto input = this->parent->BasicBlock[name]->lastInput;
         if (inst->getNumSuccessors() == 1) {
-//		setOtherBBState(b, inst->getSuccessor(0), CoverKind::cover);
+//		setOtherBBState(addr2line, inst->getSuccessor(0), CoverKind::cover);
 //		inferSuccessors(inst->getSuccessor(0));
         } else {
             for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {

@@ -5985,7 +5985,7 @@ class lexer
 
                 case 0x08:
                 {
-                    error_message = "invalid string: control character U+0008 (BS) must be escaped to \\u0008 or \\b";
+                    error_message = "invalid string: control character U+0008 (BS) must be escaped to \\u0008 or \\addr2line";
                     return token_type::parse_error;
                 }
 

@@ -8,6 +8,8 @@
 #ifndef LIB_DCC_DEPENDENCYCONTROLCENTER_H_
 #define LIB_DCC_DEPENDENCYCONTROLCENTER_H_
 
+#include <string>
+
 #include "../DRA/DataManagement.h"
 #include "../RPC/DependencyRPCClient.h"
 #include "../STA/StaticAnalysisResult.h"

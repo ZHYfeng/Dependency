@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include "../../lib/DCC/DependencyControlCenter.h"
-#include "../../lib/DRA/DataManagement.h"
 
 llvm::cl::opt<std::string> objdump("objdump", llvm::cl::desc("The path of objdump."), llvm::cl::init("./vmlinux.objdump"));
 llvm::cl::opt<std::string> AssemblySourceCode("asm", llvm::cl::desc("The path of assembly source code."), llvm::cl::init("./build-in.s"));

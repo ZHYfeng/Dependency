@@ -35,7 +35,7 @@ message RelatedInput {
 message RelatedSyscall {
     string name = 1;
     uint32 address = 2;
-    uint64 number =3;
+    uint64 number = 3;
 }
 
 message UncoveredAddress {
