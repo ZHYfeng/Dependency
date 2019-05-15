@@ -17,17 +17,22 @@ namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() :
             client(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials())) {
-
+        this->start_time = std::time(NULL);
+        std::cout << this->start_time << std::endl;
     }
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
     void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes) {
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
-        unsigned long long int vmOffsets = client.GetVmOffsets();
-        DM.setVmOffsets(vmOffsets);
+
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, (DM.Modules->module).get());
+
+        unsigned long long int vmOffsets = client.GetVmOffsets();
+        DM.setVmOffsets(vmOffsets);
+
+        this->finish_init_time = std::time(NULL);
     }
 
     void DependencyControlCenter::run() {

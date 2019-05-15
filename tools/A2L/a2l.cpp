@@ -7,8 +7,8 @@
 #include <fstream>
 #include "../../lib/RPC/a2l.pb.cc"
 
-#define TEST 1
-#define DEBUGOBJDUMP 1
+#define TEST 0
+#define DEBUGOBJDUMP 0
 
 llvm::cl::opt<std::string> objdump("objdump", llvm::cl::desc("The path of objdump."), llvm::cl::init("./vmlinux.objdump"));
 
@@ -98,13 +98,6 @@ int main(int argc, char **argv) {
         objdumpFile.close();
     } else {
         std::cerr << "Unable to open objdump file " << objdump << "\n";
-    }
-
-
-    a->set_name("asd");
-    std::cout << "a" << std::endl;
-    for (auto c : *a->mutable_addr()){
-        std::cout << c.first << " " << c.second << std::endl;
     }
 
     // Write back to disk.

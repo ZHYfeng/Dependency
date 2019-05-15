@@ -30,6 +30,10 @@ namespace dra {
         DependencyRPCClient client;
         DataManagement DM;
         sta::StaticAnalysisResult STA;
+
+        std::time_t start_time;
+        std::time_t finish_init_time;
+        std::time_t report_time;
     };
 
 } /* namespace dra */
