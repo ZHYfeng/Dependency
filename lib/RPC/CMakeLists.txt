@@ -17,9 +17,9 @@ add_custom_command(
 )
 
 add_custom_command(
-        OUTPUT a2l.proto
+        OUTPUT a2l.pb.cc
         COMMAND protoc -I ${CMAKE_CURRENT_SOURCE_DIR} --cpp_out=. ${CMAKE_CURRENT_SOURCE_DIR}/${PROTO}
-        DEPENDS a2l.pb.cc
+        DEPENDS a2l.proto
 )
 
 add_library(RPC ${SOURCES})
