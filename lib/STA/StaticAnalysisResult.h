@@ -7,6 +7,7 @@
 #ifndef LIB_STA_STATICANALYSISRESULT_H_
 #define LIB_STA_STATICANALYSISRESULT_H_
 
+#include "../DRA/DBasicBlock.h"
 #include <llvm/IR/Module.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Instruction.h>
@@ -34,9 +35,9 @@ namespace sta {
 
         int initStaticRes(const std::string &staticRes, llvm::Module *p_module);
 
-        LOC_INF *getLocInf(llvm::Instruction *);
+        LOC_INF *getLocInf(dra::DLInstruction *);
 
-        LOC_INF *getLocInf(llvm::BasicBlock *);
+        LOC_INF *getLocInf(dra::DBasicBlock *);
 
         llvm::Instruction *getInstFromStr(std::string mod, std::string func, std::string bb, std::string inst);
 
@@ -44,11 +45,11 @@ namespace sta {
 
         llvm::Module *p_module;
 
-        MOD_IRS *GetAllGlobalWriteInsts(llvm::BasicBlock* B);
+        MOD_IRS *GetAllGlobalWriteInsts(dra::DBasicBlock *B);
 
         MOD_IRS *GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf);
 
-        MOD_BBS *GetAllGlobalWriteBBs(llvm::BasicBlock* B);
+        MOD_BBS *GetAllGlobalWriteBBs(dra::DBasicBlock* B);
 
         MOD_BBS *GetAllGlobalWriteBBs(ACTX_TAG_MAP *p_taint_inf);
 
@@ -70,7 +71,7 @@ namespace sta {
         TAG_INFO_TY tagInfo;
         MOD_INST_CTX_MAP_TY modInstCtxMap;
 
-        ACTX_TAG_MAP *QueryBranchTaint(llvm::BasicBlock* B);
+        ACTX_TAG_MAP *QueryBranchTaint(dra::DBasicBlock* B);
 
         void QueryModIRsFromTagTy(std::string ty);
 

@@ -30,9 +30,9 @@ namespace dra {
         std::cout << "o Cmd :" << Cmd << std::endl;
 #endif
         Modules->ReadBC(std::move(InputFilename));
-//        Modules->ReadObjdump(std::move(objdump));
-//        Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
-//        BuildAddress2BB();
+        Modules->ReadObjdump(std::move(objdump));
+        Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
+        BuildAddress2BB();
 
     }
 
@@ -173,6 +173,14 @@ namespace dra {
 
     unsigned long long int DataManagement::getSyzkallerAddress(unsigned long long int address) {
         return address - this->vmOffsets + 5;
+    }
+
+    bool DataManagement::isDriver(unsigned long long int address) {
+        if(this->Address2BB[address]->parent->parent->Path.find("block/") == 0){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 } /* namespace dra */

@@ -148,7 +148,7 @@ namespace dra {
         std::cout << "JumpInstNum :" << JumpInstNum << std::endl;
         std::cout << "BasicBlockNum :" << BasicBlockNum << std::endl;
         if (this->function != nullptr) {
-            function->dump();
+//            function->dump();
         }
         std::cout << "--------------------------------------------" << std::endl;
 

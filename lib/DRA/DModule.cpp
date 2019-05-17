@@ -113,7 +113,9 @@ namespace dra {
         std::cout << "objdump :" << objdump << std::endl;
 #endif
 
-        std::fstream input("./A2L.bin", std::ios::in | std::ios::binary);
+        std::string obj = objdump.substr(0, objdump.find(".objdump"));
+        std::string output_file = obj + ".bin";
+        std::fstream input(output_file, std::ios::in | std::ios::binary);
         if (!this->addr2line->ParseFromIstream(&input)) {
             std::cerr << "Failed to parse addr2line." << std::endl;
         }
@@ -160,13 +162,10 @@ namespace dra {
                         } else {
                             std::cerr << "Failed to get addr2line." << std::endl;
                         }
-
 #if DEBUGOBJDUMP
                         std::cout << "o Path :" << Path << std::endl;
 #endif
-
                         function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::O);
-
                         function->Address = Addr;
 
                     } else {
@@ -179,52 +178,52 @@ namespace dra {
 #if DEBUGOBJDUMP
                             std::cout << "D :" << std::endl;
 #endif
-                        } else if (Line.find("clflush") < Line.size()) {
-                            // deal with clflush
-#if DEBUGOBJDUMP
-                            std::cout << "clflush :" << std::endl;
-#endif
-                        } else if (Line.find("btq ") < Line.size()) {
-                            // deal with btq
-#if DEBUGOBJDUMP
-                            std::cout << "btq :" << std::endl;
-#endif
-                        } else if (Line.find("nop") < Line.size()) {
-                            // deal with nop
-#if DEBUGOBJDUMP
-                            std::cout << "nop :" << std::endl;
-#endif
-                        } else if (Line.find("xchg") < Line.size() && !(Line.find("lock") < Line.size())) {
-                            // deal with xchg, but not lock; cmpxchg
-#if DEBUGOBJDUMP
-                            std::cout << "xchg :" << std::endl;
-#endif
-                        } else if (Line.find("ud2") < Line.size()) {
-                            // deal with ud2
-#if DEBUGOBJDUMP
-                            std::cout << "ud2 :" << std::endl;
-#endif
-                        } else if (Line.find("bt  ") < Line.size()) {
-                            // deal with bt
-#if DEBUGOBJDUMP
-                            std::cout << "bt :" << std::endl;
-#endif
-                        } else if (Line.find("btr") < Line.size() && !(Line.find("lock") < Line.size())) {
-                            // deal with btr, but not lock;
-#if DEBUGOBJDUMP
-                            std::cout << "btr :" << std::endl;
-#endif
-                        } else if (Line.find("bts") < Line.size()) {
-                            // deal with bts
-#if DEBUGOBJDUMP
-                            std::cout << "bts :" << std::endl;
-#endif
-                        } else if (Line.find("mov    %rsp,0x98(%rbx)") < Line.size()) {
-                            // deal with mov    %rsp,0x98(%rbx)
-#if DEBUGOBJDUMP
-                            std::cout << "mov    %rsp,0x98(%rbx) :" << std::endl;
-#endif
-                        } else if (Line.size() - Line.find(':') <= 22) {
+//                        } else if (Line.find("clflush") < Line.size()) {
+//                            // deal with clflush
+//#if DEBUGOBJDUMP
+//                            std::cout << "clflush :" << std::endl;
+//#endif
+//                        } else if (Line.find("btq ") < Line.size()) {
+//                            // deal with btq
+//#if DEBUGOBJDUMP
+//                            std::cout << "btq :" << std::endl;
+//#endif
+//                        } else if (Line.find("nop") < Line.size()) {
+//                            // deal with nop
+//#if DEBUGOBJDUMP
+//                            std::cout << "nop :" << std::endl;
+//#endif
+//                        } else if (Line.find("xchg") < Line.size() && !(Line.find("lock") < Line.size())) {
+//                            // deal with xchg, but not lock; cmpxchg
+//#if DEBUGOBJDUMP
+//                            std::cout << "xchg :" << std::endl;
+//#endif
+//                        } else if (Line.find("ud2") < Line.size()) {
+//                            // deal with ud2
+//#if DEBUGOBJDUMP
+//                            std::cout << "ud2 :" << std::endl;
+//#endif
+//                        } else if (Line.find("bt  ") < Line.size()) {
+//                            // deal with bt
+//#if DEBUGOBJDUMP
+//                            std::cout << "bt :" << std::endl;
+//#endif
+//                        } else if (Line.find("btr") < Line.size() && !(Line.find("lock") < Line.size())) {
+//                            // deal with btr, but not lock;
+//#if DEBUGOBJDUMP
+//                            std::cout << "btr :" << std::endl;
+//#endif
+//                        } else if (Line.find("bts") < Line.size()) {
+//                            // deal with bts
+//#if DEBUGOBJDUMP
+//                            std::cout << "bts :" << std::endl;
+//#endif
+//                        } else if (Line.find("mov    %rsp,0x98(%rbx)") < Line.size()) {
+//                            // deal with mov    %rsp,0x98(%rbx)
+//#if DEBUGOBJDUMP
+//                            std::cout << "mov    %rsp,0x98(%rbx) :" << std::endl;
+//#endif
+                        } else if (Line.size() - Line.find(':') <= 23) {
                             // deal with no asm
                         } else {
 #if DEBUGOBJDUMP
@@ -374,7 +373,7 @@ namespace dra {
                                     (function->BasicBlock[BasicBlockName])->name = BasicBlockName;
                                 }
 
-                                (Function[Path][FunctionName]->BasicBlock[BasicBlockName])->setAsmSourceCode(true);
+                                (function->BasicBlock[BasicBlockName])->setAsmSourceCode(true);
 
 #if DEBUGASM
                                 std::cout << ". bb name :" << ss.str() << std::endl;
@@ -421,6 +420,7 @@ namespace dra {
                             if (line.size() == 1) {
 
                             } else if (line.at(1) == '.') {
+                                //get path
                                 if (Path.empty() && !FunctionName.empty() && line.find('#') < line.size()) {
 
                                     ss.str("");
@@ -526,7 +526,7 @@ namespace dra {
                     break;
                 }
                 case dra::FunctionKind::S: {
-                    RepeatSFunction[function->Path][function->FunctionName] = function;
+                    RepeatSFunction[function->Path].insert(std::pair<std::string, DFunction *>(function->FunctionName, function));
                     //maybe they are same
                     break;
                 }

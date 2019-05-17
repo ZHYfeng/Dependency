@@ -48,6 +48,10 @@ int main(int argc, char **argv) {
                         ss << Line.at(i);
                     }
                     Addr = ss.str();
+#if DEBUGOBJDUMP
+                    std::cout << "o Addr :" << Addr << std::endl;
+#endif
+
 
                     // get function name
                     ss.str("");
@@ -76,13 +80,18 @@ int main(int argc, char **argv) {
                     if (stream) {
                         while (!feof(stream))
                             if (fgets(buffer, max_buffer, stream) != nullptr)
-                                Result.append(buffer);
+                                Result = buffer;
                         pclose(stream);
                     }
-
+#if DEBUGOBJDUMP
+                    std::cout << "Result :" << Result << std::endl;
+#endif
                     ss.str("");
+#if TEST
+                    start = Result.find("c-f/");
+#else
                     start = Result.find("-np/");
-
+#endif
                     end = Result.find(':');
                     for (unsigned long i = start + 4; i < end; i++) {
                         ss << Result.at(i);
