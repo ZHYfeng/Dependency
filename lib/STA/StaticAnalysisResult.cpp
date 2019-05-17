@@ -119,7 +119,7 @@ namespace sta {
         return instrLoc;
     }
 
-    LOC_INF *StaticAnalysisResult::getLocInf(llvm::Instruction* I, bool skip_inst = false) {
+    LOC_INF *StaticAnalysisResult::getLocInf(llvm::Instruction* I, bool skip_inst) {
         if(!I){
             return nullptr;
         }

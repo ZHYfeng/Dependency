@@ -37,9 +37,9 @@ namespace sta {
 
         int initStaticRes(const std::string &staticRes, llvm::Module *p_module);
 
-        LOC_INF *getLocInf(llvm::Instruction *);
+        LOC_INF *getLocInf(llvm::Instruction *,bool);
 
-        LOC_INF *getLocInf(llvm::BasicBlock*,bool = false);
+        LOC_INF *getLocInf(llvm::BasicBlock*);
 
         llvm::Instruction *getInstFromStr(std::string mod, std::string func, std::string bb, std::string inst);
 
