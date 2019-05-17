@@ -10,6 +10,9 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Instruction.h>
+#include <llvm/IR/DebugInfoMetadata.h>
+#include <llvm/IR/DebugInfo.h>
+#include <llvm/IR/CFG.h>
 #include <fstream>
 #include <set>
 #include "../JSON/json.cpp"
@@ -57,6 +60,10 @@ namespace sta {
         std::string& getValueStr(llvm::Value *v);
 
         std::string& getTypeStr(llvm::Type*);
+
+        static void stripFuncNameSuffix(std::string *fn);
+
+        static llvm::DILocation* getCorrectInstrLocation(llvm::Instruction *I);
 
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF*);
