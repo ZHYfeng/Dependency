@@ -16,6 +16,7 @@
 #include "DInput.h"
 #include "DModule.h"
 #include "../RPC/DependencyRPCClient.h"
+//#include "../RPC/Data.pb.h"
 
 namespace dra {
 
@@ -49,10 +50,13 @@ namespace dra {
 
         unsigned long long int getSyzkallerAddress(unsigned long long int address);
 
+        bool isDriver(unsigned long long int address);
+
     public:
         dra::DModule *Modules;
         std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
         std::unordered_map<std::string, DInput *> Inputs;
+//        dra::all_data Add_Data;
         std::map<unsigned long long int, std::time_t> cover;
         std::vector<coverage *> time;
         unsigned long long int vmOffsets;

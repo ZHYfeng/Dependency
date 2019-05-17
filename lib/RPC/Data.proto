@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dra;
+
+message data {
+    uint64 time = 1;
+    string date = 2;
+    
+    uint64 uncovered =3;
+}
+
+message all_data {
+    string name = 1;
+    map<uint64, uint64> address_time = 2;
+    repeated data data = 3;
+}

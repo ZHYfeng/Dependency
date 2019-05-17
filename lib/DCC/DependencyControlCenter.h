@@ -26,14 +26,20 @@ namespace dra {
 
         void run();
 
+        static void record();
+
     private:
-        DependencyRPCClient client;
+        DependencyRPCClient *client;
         DataManagement DM;
         sta::StaticAnalysisResult STA;
 
         std::time_t start_time;
-        std::time_t finish_init_time;
+        std::time_t current_time;
         std::time_t report_time;
+
+        long long int uncovered_address_number;
+        long long int uncovered_address_number_driver;
+        long long int uncovered_address_number_gv_driver;
     };
 
 } /* namespace dra */
