@@ -36,13 +36,12 @@ namespace dra {
             std::cerr << "load module: " << InputFilename << " failed\n";
             exit(0);
         } else {
-
+#if DEBUGBC
             std::cerr << "size : " << module->getNamedMDList().size() << "\n";
             for (auto &i : module->getNamedMDList()) {
-#if DEBUGBC
                 i.dump();
-#endif
             }
+#endif
             BuildLLVMFunction(module.get());
         }
     }

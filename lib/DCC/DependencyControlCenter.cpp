@@ -152,20 +152,25 @@ namespace dra {
     }
 
     void DependencyControlCenter::test_sta() {
-        auto f = this->DM.Modules->Function["block/blk-core.c"]["blk_start_queue_async"];
-        auto b = f->BasicBlock["entry.if.end_crit_edge"]->basicBlock;
-        b->dump();
-        MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
-        if (allBasicblock == nullptr) {
-            // no taint or out side
-            std::cout << "*allBasicblock == nullptr" << std::endl;
-        } else if (allBasicblock->size() == 0) {
-            // unrelated to gv
-            std::cout << "allBasicblock->size() == 0" << std::endl;
-        } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
-            std::cout << "allBasicblock != nullptr && allBasicblock->size() != 0" << std::endl;
-            for (auto &x : *allBasicblock) {
-                x.first->dump();
+        auto f = this->DM.Modules->Function["block/blk-core.c"]["blk_flush_plug_list"];
+        for (auto B : f->BasicBlock){
+            auto b = B.second->basicBlock;
+            std::cout << "b name : " << B.second->name << std::endl;
+//            if(b != nullptr) {
+//                b->dump();
+//            }
+            MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
+            if (allBasicblock == nullptr) {
+                // no taint or out side
+                std::cout << "allBasicblock == nullptr" << std::endl;
+            } else if (allBasicblock->size() == 0) {
+                // unrelated to gv
+                std::cout << "allBasicblock->size() == 0" << std::endl;
+            } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
+                std::cout << "allBasicblock != nullptr && allBasicblock->size() != 0" << std::endl;
+                for (auto &x : *allBasicblock) {
+                    x.first->dump();
+                }
             }
         }
 

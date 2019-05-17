@@ -53,6 +53,7 @@ namespace dra {
                 if (BasicBlock.find(Name) == BasicBlock.end()) {
                     b = new DBasicBlock();
                     BasicBlock[Name] = b;
+                    b->name = Name;
                 }
                 BasicBlock[Name]->setIr(true);
                 BasicBlock[Name]->parent = this;

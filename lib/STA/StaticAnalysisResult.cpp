@@ -126,6 +126,7 @@ namespace sta {
         }
         std::string inst(""), bb, func, file;
         if (!skip_inst) {
+            std::cout << "getLocInf : !skip_inst" << std::endl;
             inst = this->getValueStr(llvm::dyn_cast<llvm::Value>(I));
         }
         llvm::DILocation *instrLoc = StaticAnalysisResult::getCorrectInstrLocation(I);
@@ -157,6 +158,7 @@ namespace sta {
 
     LOC_INF *StaticAnalysisResult::getLocInf(llvm::BasicBlock *B) {
         if (!B) {
+            std::cout << "getLocInf : b = nullptr" << std::endl;
             return nullptr;
         }
         return this->getLocInf(&*(B->begin()), true);
@@ -171,7 +173,7 @@ namespace sta {
         }
         LOC_INF *p_loc = this->getLocInf(B);
         if (!p_loc) {
-            std::cout << "QueryBranchTaint : p_loc = bullptr" << std::endl;
+            std::cout << "QueryBranchTaint : p_loc = nullptr" << std::endl;
             return nullptr;
         }
         auto &res3 = this->taintedBrs;
@@ -184,6 +186,7 @@ namespace sta {
                 }
             }
         }
+        std::cout << "QueryBranchTaint : return = nullptr : out side analysis" << std::endl;
         return nullptr;
     }
 
@@ -194,6 +197,7 @@ namespace sta {
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
     MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf) {
         if (!p_taint_inf) {
+            std::cout << "GetAllGlobalWriteInsts : p_taint_inf = bullptr" << std::endl;
             return nullptr;
         }
         MOD_IRS *p_mod_irs = new MOD_IRS();
