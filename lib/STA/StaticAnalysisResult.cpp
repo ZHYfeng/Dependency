@@ -119,12 +119,14 @@ namespace sta {
         return instrLoc;
     }
 
-    LOC_INF *StaticAnalysisResult::getLocInf(llvm::Instruction* I) {
+    LOC_INF *StaticAnalysisResult::getLocInf(llvm::Instruction* I, bool skip_inst = false) {
         if(!I){
             return nullptr;
         }
-        std::string inst,bb,func,file;
-        inst = this->getValueStr(llvm::dyn_cast<llvm::Value>(I));
+        std::string inst(""),bb,func,file;
+        if (!skip_inst) {
+            inst = this->getValueStr(llvm::dyn_cast<llvm::Value>(I));
+        }
         llvm::DILocation *instrLoc = StaticAnalysisResult::getCorrectInstrLocation(I);
         if(I->getParent()){
 			bb = this->getBBStrID(I->getParent());
@@ -156,7 +158,7 @@ namespace sta {
         if(!B){
             return nullptr;
         }
-        return this->getLocInf(&*(B->begin()));
+        return this->getLocInf(&*(B->begin()),true);
     }
 
     //Given a bb, return the taint information regarding its last br inst.

@@ -39,7 +39,7 @@ namespace sta {
 
         LOC_INF *getLocInf(llvm::Instruction *);
 
-        LOC_INF *getLocInf(llvm::BasicBlock *);
+        LOC_INF *getLocInf(llvm::BasicBlock*,bool = false);
 
         llvm::Instruction *getInstFromStr(std::string mod, std::string func, std::string bb, std::string inst);
 
