@@ -36,10 +36,12 @@ namespace dra {
         std::cout << std::ctime(&this->current_time) << "*time : initializeModule" << std::endl;
 
         //Deserialize the static analysis results.
-        this->STA.initStaticRes(staticRes, (DM.Modules->module).get());
+        this->STA.initStaticRes(staticRes, &this->DM);
         this->current_time = std::time(NULL);
 //        this->current_time
         std::cout << std::ctime(&this->current_time) << "*time : initStaticRes" << std::endl;
+
+        this->test_sta();
 
         this->client = new dra::DependencyRPCClient(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
@@ -147,6 +149,27 @@ namespace dra {
             std::this_thread::sleep_for(timespan);
 
         }
+    }
+
+    void DependencyControlCenter::test_sta() {
+        auto f = this->DM.Modules->Function["block/blk-core.c"]["blk_start_queue_async"];
+        auto b = f->BasicBlock["entry.if.end_crit_edge"]->basicBlock;
+        b->dump();
+        MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
+        if (allBasicblock == nullptr) {
+            // no taint or out side
+            std::cout << "*allBasicblock == nullptr" << std::endl;
+        } else if (allBasicblock->size() == 0) {
+            // unrelated to gv
+            std::cout << "allBasicblock->size() == 0" << std::endl;
+        } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
+            std::cout << "allBasicblock != nullptr && allBasicblock->size() != 0" << std::endl;
+            for (auto &x : *allBasicblock) {
+                x.first->dump();
+            }
+        }
+
+        exit(0);
     }
 
 } /* namespace dra */

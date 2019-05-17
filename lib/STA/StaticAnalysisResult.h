@@ -17,6 +17,7 @@
 #include <set>
 #include "../JSON/json.cpp"
 #include "ResType.h"
+#include "../DRA/DataManagement.h"
 
 typedef std::map<llvm::Instruction*,MOD_INF> MOD_IRS;
 typedef std::map<llvm::BasicBlock*,MOD_INF> MOD_BBS;
@@ -25,8 +26,8 @@ namespace sta {
 
     class StaticAnalysisResult {
     public:
-        StaticAnalysisResult(const std::string &staticRes, llvm::Module *p_module) {
-            this->initStaticRes(staticRes, p_module);
+        StaticAnalysisResult(const std::string &staticRes, dra::DataManagement *DM) {
+            this->initStaticRes(staticRes, DM);
         }
 
         StaticAnalysisResult() {
@@ -35,17 +36,19 @@ namespace sta {
 
         virtual ~StaticAnalysisResult();
 
-        int initStaticRes(const std::string &staticRes, llvm::Module *p_module);
+        int initStaticRes(const std::string &staticRes, dra::DataManagement *DM);
 
         LOC_INF *getLocInf(llvm::Instruction *,bool);
 
         LOC_INF *getLocInf(llvm::BasicBlock*);
 
-        llvm::Instruction *getInstFromStr(std::string mod, std::string func, std::string bb, std::string inst);
+        llvm::Instruction *getInstFromStr(std::string path, std::string func, std::string bb, std::string inst);
 
-        llvm::BasicBlock *getBBFromStr(std::string mod, std::string func, std::string bb);
+        llvm::BasicBlock *getBBFromStr(std::string path, std::string func, std::string bb);
 
         llvm::Module *p_module;
+
+        dra::DataManagement *dm;
 
         MOD_IRS *GetAllGlobalWriteInsts(llvm::BasicBlock* B);
 

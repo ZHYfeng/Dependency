@@ -28,6 +28,8 @@ namespace dra {
 
         static void record();
 
+        void test_sta();
+
     private:
         DependencyRPCClient *client;
         DataManagement DM;

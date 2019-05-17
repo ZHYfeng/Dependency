@@ -12,8 +12,9 @@ namespace sta {
 
     StaticAnalysisResult::~StaticAnalysisResult() = default;
 
-    int StaticAnalysisResult::initStaticRes(const std::string &staticRes, llvm::Module *p_module) {
-        this->p_module = p_module;
+    int StaticAnalysisResult::initStaticRes(const std::string &staticRes, dra::DataManagement *DM) {
+        this->dm = DM;
+        this->p_module = DM->Modules->module.get();
         try {
             std::ifstream infile;
             infile.open(staticRes);
@@ -165,10 +166,12 @@ namespace sta {
     //The returned info is a map from the context id to the taint tag id set.
     ACTX_TAG_MAP *StaticAnalysisResult::QueryBranchTaint(llvm::BasicBlock *B) {
         if (!B) {
+            std::cout << "QueryBranchTaint : b = bullptr" << std::endl;
             return nullptr;
         }
         LOC_INF *p_loc = this->getLocInf(B);
         if (!p_loc) {
+            std::cout << "QueryBranchTaint : p_loc = bullptr" << std::endl;
             return nullptr;
         }
         auto &res3 = this->taintedBrs;
@@ -279,16 +282,16 @@ namespace sta {
         }
         MOD_BBS *mod_bbs = new MOD_BBS();
         for (auto &el0 : *p_mod_irs) {
-            const std::string &module = el0.first;
-            for (auto &el1 : (*p_mod_irs)[module]) {
+            const std::string &path = el0.first;
+            for (auto &el1 : (*p_mod_irs)[path]) {
                 const std::string &func = el1.first;
-                for (auto &el2 : (*p_mod_irs)[module][func]) {
+                for (auto &el2 : (*p_mod_irs)[path][func]) {
                     const std::string &bb = el2.first;
-                    llvm::BasicBlock *pbb = this->getBBFromStr(module, func, bb);
+                    llvm::BasicBlock *pbb = this->getBBFromStr(path, func, bb);
                     if (!pbb) {
                         continue;
                     }
-                    for (auto &el3 : (*p_mod_irs)[module][func][bb]) {
+                    for (auto &el3 : (*p_mod_irs)[path][func][bb]) {
                         const MOD_INF &mod_inf = el3.second;
                         (*mod_bbs)[pbb].insert(mod_inf.begin(), mod_inf.end());
                     }//inst
@@ -298,7 +301,7 @@ namespace sta {
         return mod_bbs;
     }
 
-    llvm::Instruction *StaticAnalysisResult::getInstFromStr(std::string mod, std::string func, std::string bb, std::string inst) {
+    llvm::Instruction *StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
         //NOTE: Since now we only have one module, skip the module name match..
         for (llvm::Function &curFunc : *(this->p_module)) {
             if (curFunc.getName().str() != func) {
@@ -321,20 +324,20 @@ namespace sta {
         return nullptr;
     }
 
-    llvm::BasicBlock *StaticAnalysisResult::getBBFromStr(std::string mod, std::string func, std::string bb) {
-        //NOTE: Since now we only have one module, skip the module name match..
-        for (llvm::Function &curFunc : *(this->p_module)) {
-            if (curFunc.getName().str() != func) {
-                continue;
-            }
-            for (llvm::BasicBlock &curBB : curFunc) {
-                if (this->getBBStrID(&curBB) == bb) {
-                    //if (curBB.getName().str() == bb) {
-                    return &curBB;
+    llvm::BasicBlock *StaticAnalysisResult::getBBFromStr(std::string path, std::string func, std::string bb) {
+
+        llvm::BasicBlock *bbb = nullptr;
+        auto function = this->dm->Modules->Function;
+        if(function.find(path)!= function.end()){
+            auto file= function[path];
+            if(file.find(func)!= file.end()){
+                auto f = file[func];
+                if(f->BasicBlock.find(bb)!= f->BasicBlock.end()){
+                    bbb = f->BasicBlock[bb]->basicBlock;
                 }
-            }//BB
-        }//Func
-        return nullptr;
+            }
+        }
+        return bbb;
     }
 
     //TODO:

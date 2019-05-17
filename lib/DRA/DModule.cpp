@@ -23,8 +23,10 @@ namespace dra {
     DModule::~DModule() = default;
 
     void DModule::ReadBC(std::string InputFilename) {
+#if DEBUG
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadIR***************************" << std::endl;
+#endif
         llvm::LLVMContext *cxts;
         llvm::SMDiagnostic Err;
         cxts = new llvm::LLVMContext[1];
@@ -37,7 +39,9 @@ namespace dra {
 
             std::cerr << "size : " << module->getNamedMDList().size() << "\n";
             for (auto &i : module->getNamedMDList()) {
+#if DEBUGBC
                 i.dump();
+#endif
             }
             BuildLLVMFunction(module.get());
         }
@@ -107,8 +111,10 @@ namespace dra {
         unsigned long start;
 
         DFunction *function;
+#if DEBUG
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadObjdump**********************" << std::endl;
+#endif
 #if DEBUGOBJDUMP
         std::cout << "objdump :" << objdump << std::endl;
 #endif
@@ -178,51 +184,6 @@ namespace dra {
 #if DEBUGOBJDUMP
                             std::cout << "D :" << std::endl;
 #endif
-//                        } else if (Line.find("clflush") < Line.size()) {
-//                            // deal with clflush
-//#if DEBUGOBJDUMP
-//                            std::cout << "clflush :" << std::endl;
-//#endif
-//                        } else if (Line.find("btq ") < Line.size()) {
-//                            // deal with btq
-//#if DEBUGOBJDUMP
-//                            std::cout << "btq :" << std::endl;
-//#endif
-//                        } else if (Line.find("nop") < Line.size()) {
-//                            // deal with nop
-//#if DEBUGOBJDUMP
-//                            std::cout << "nop :" << std::endl;
-//#endif
-//                        } else if (Line.find("xchg") < Line.size() && !(Line.find("lock") < Line.size())) {
-//                            // deal with xchg, but not lock; cmpxchg
-//#if DEBUGOBJDUMP
-//                            std::cout << "xchg :" << std::endl;
-//#endif
-//                        } else if (Line.find("ud2") < Line.size()) {
-//                            // deal with ud2
-//#if DEBUGOBJDUMP
-//                            std::cout << "ud2 :" << std::endl;
-//#endif
-//                        } else if (Line.find("bt  ") < Line.size()) {
-//                            // deal with bt
-//#if DEBUGOBJDUMP
-//                            std::cout << "bt :" << std::endl;
-//#endif
-//                        } else if (Line.find("btr") < Line.size() && !(Line.find("lock") < Line.size())) {
-//                            // deal with btr, but not lock;
-//#if DEBUGOBJDUMP
-//                            std::cout << "btr :" << std::endl;
-//#endif
-//                        } else if (Line.find("bts") < Line.size()) {
-//                            // deal with bts
-//#if DEBUGOBJDUMP
-//                            std::cout << "bts :" << std::endl;
-//#endif
-//                        } else if (Line.find("mov    %rsp,0x98(%rbx)") < Line.size()) {
-//                            // deal with mov    %rsp,0x98(%rbx)
-//#if DEBUGOBJDUMP
-//                            std::cout << "mov    %rsp,0x98(%rbx) :" << std::endl;
-//#endif
                         } else if (Line.size() - Line.find(':') <= 23) {
                             // deal with no asm
                         } else {
@@ -303,8 +264,10 @@ namespace dra {
         unsigned int COVNum;
 
         DFunction *function;
+#if DEBUG
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadAsmSourceCode****************" << std::endl;
+#endif
 
 #if DEBUGASM
         std::cout << "AssemblySourceCode :" << AssemblySourceCode << std::endl;
@@ -328,6 +291,7 @@ namespace dra {
 #endif
                             if (line.find(".Lfunc_end") < line.size()) {
                                 function->InstNum = InstNum;
+#if DEBUG
                                 if (CallInstNum != function->InstASM.size()) {
                                     std::cout << "--------------------------------------------" << std::endl;
                                     std::cout << "different function : " << std::endl;
@@ -353,6 +317,7 @@ namespace dra {
                                         std::cout << "SInst :" << i->SInst << std::endl;
                                     }
                                 }
+#endif
 #if DEBUGASM
                                 std::cout << "FunctionName :" << FunctionName << std::endl;
                                 std::cout << "InstNum :" << InstNum << std::endl;
@@ -507,7 +472,9 @@ namespace dra {
         } else {
             std::cerr << "Unable to open AssemblySourceCodeFile " << AssemblySourceCode << ">\n";
         }
+#if DEBUG
         std::cout << "****************ReadAsmSourceCode****************" << std::endl;
+#endif
     }
 
     void DModule::AddRepeatFunction(DFunction *function, FunctionKind kind) {
@@ -546,9 +513,10 @@ namespace dra {
                 case dra::FunctionKind::IR: {
                     if (function->isIR()) {
                         AddRepeatFunction(function, kind);
+#if DEBUG
                         std::cout << "ir repeat function : " << std::endl;
                         function->dump();
-
+#endif
                         function = CreatFunction(Path, FunctionName, kind);
                         AddRepeatFunction(function, kind);
                     } else {
@@ -559,9 +527,10 @@ namespace dra {
                 case dra::FunctionKind::O: {
                     if (function->isObjudump()) {
                         AddRepeatFunction(function, kind);
+#if DEBUG
                         std::cout << "o repeat function : " << std::endl;
                         function->dump();
-
+#endif
                         function = CreatFunction(Path, FunctionName, kind);
                         AddRepeatFunction(function, kind);
                     } else {
@@ -572,9 +541,10 @@ namespace dra {
                 case dra::FunctionKind::S: {
                     if (function->isAsmSourceCode()) {
                         AddRepeatFunction(function, kind);
+#if DEBUG
                         std::cout << "s repeat function : " << std::endl;
                         function->dump();
-
+#endif
                         function = CreatFunction(Path, FunctionName, kind);
                         AddRepeatFunction(function, kind);
                     } else {
