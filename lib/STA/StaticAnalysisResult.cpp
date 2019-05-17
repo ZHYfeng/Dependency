@@ -302,25 +302,24 @@ namespace sta {
     }
 
     llvm::Instruction *StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
-        //NOTE: Since now we only have one module, skip the module name match..
-        for (llvm::Function &curFunc : *(this->p_module)) {
-            if (curFunc.getName().str() != func) {
-                continue;
-            }
-            for (llvm::BasicBlock &curBB : curFunc) {
-                if (this->getBBStrID(&curBB) != bb) {
-                    //if (curBB.getName().str() != bb) {
-                    continue;
+
+        auto function = this->dm->Modules->Function;
+        if(function.find(path)!= function.end()){
+            auto file= function[path];
+            if(file.find(func)!= file.end()){
+                auto f = file[func];
+                if(f->BasicBlock.find(bb)!= f->BasicBlock.end()){
+                    auto bbb = f->BasicBlock[bb]->basicBlock;
+                    for (llvm::Instruction &curInst : *bbb) {
+                        //TODO: This might be unreliable as "dbg xxxxx" might be different!
+                        //TODO: Although we set up a cache now, this can still be *slow* depending on cache hit/miss.
+                        if (this->getValueStr(llvm::dyn_cast<llvm::Value>(&curInst)) == inst) {
+                            return &curInst;
+                        }
+                    }//Inst
                 }
-                for (llvm::Instruction &curInst : curBB) {
-                    //TODO: This might be unreliable as "dbg xxxxx" might be different!
-                    //TODO: Although we set up a cache now, this can still be *slow* depending on cache hit/miss.
-                    if (this->getValueStr(llvm::dyn_cast<llvm::Value>(&curInst)) == inst) {
-                        return &curInst;
-                    }
-                }//Inst
-            }//BB
-        }//Func
+            }
+        }
         return nullptr;
     }
 
@@ -334,6 +333,7 @@ namespace sta {
                 auto f = file[func];
                 if(f->BasicBlock.find(bb)!= f->BasicBlock.end()){
                     bbb = f->BasicBlock[bb]->basicBlock;
+                    return bbb;
                 }
             }
         }
