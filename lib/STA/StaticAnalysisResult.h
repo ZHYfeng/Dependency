@@ -7,10 +7,12 @@
 #ifndef LIB_STA_STATICANALYSISRESULT_H_
 #define LIB_STA_STATICANALYSISRESULT_H_
 
-#include "../DRA/DBasicBlock.h"
 #include <llvm/IR/Module.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Instruction.h>
+#include <llvm/IR/DebugInfoMetadata.h>
+#include <llvm/IR/DebugInfo.h>
+#include <llvm/IR/CFG.h>
 #include <fstream>
 #include <set>
 #include "../JSON/json.cpp"
@@ -35,9 +37,9 @@ namespace sta {
 
         int initStaticRes(const std::string &staticRes, llvm::Module *p_module);
 
-        LOC_INF *getLocInf(dra::DLInstruction *);
+        LOC_INF *getLocInf(llvm::Instruction *,bool);
 
-        LOC_INF *getLocInf(dra::DBasicBlock *);
+        LOC_INF *getLocInf(llvm::BasicBlock*);
 
         llvm::Instruction *getInstFromStr(std::string mod, std::string func, std::string bb, std::string inst);
 
@@ -45,11 +47,11 @@ namespace sta {
 
         llvm::Module *p_module;
 
-        MOD_IRS *GetAllGlobalWriteInsts(dra::DBasicBlock *B);
+        MOD_IRS *GetAllGlobalWriteInsts(llvm::BasicBlock* B);
 
         MOD_IRS *GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf);
 
-        MOD_BBS *GetAllGlobalWriteBBs(dra::DBasicBlock* B);
+        MOD_BBS *GetAllGlobalWriteBBs(llvm::BasicBlock* B);
 
         MOD_BBS *GetAllGlobalWriteBBs(ACTX_TAG_MAP *p_taint_inf);
 
@@ -58,6 +60,10 @@ namespace sta {
         std::string& getValueStr(llvm::Value *v);
 
         std::string& getTypeStr(llvm::Type*);
+
+        static void stripFuncNameSuffix(std::string *fn);
+
+        static llvm::DILocation* getCorrectInstrLocation(llvm::Instruction *I);
 
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF*);
@@ -71,7 +77,7 @@ namespace sta {
         TAG_INFO_TY tagInfo;
         MOD_INST_CTX_MAP_TY modInstCtxMap;
 
-        ACTX_TAG_MAP *QueryBranchTaint(dra::DBasicBlock* B);
+        ACTX_TAG_MAP *QueryBranchTaint(llvm::BasicBlock* B);
 
         void QueryModIRsFromTagTy(std::string ty);
 

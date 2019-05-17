@@ -5,7 +5,7 @@
 */
 
 #include "StaticAnalysisResult.h"
-#include "../DRA/DFunction.h"
+
 #include <iostream>
 
 namespace sta {
@@ -31,44 +31,139 @@ namespace sta {
         return 1;
     }
 
-    LOC_INF *StaticAnalysisResult::getLocInf(dra::DLInstruction *I) {
-        if (!I) {
+    void StaticAnalysisResult::stripFuncNameSuffix(std::string *fn) {
+        if (!fn) {
+            return;
+        }
+        std::size_t n = fn->rfind(".");
+        if (n != std::string::npos) {
+            fn->erase(n);
+        }
+        return;
+    }
+
+    std::string getFunctionFileName(llvm::Function *F) {
+        llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
+        F->getAllMetadata(MDs);
+        for (auto &MD : MDs) {
+            if (llvm::MDNode *N = MD.second) {
+                if (auto *subProgram = llvm::dyn_cast<llvm::DISubprogram>(N)) {
+                    return subProgram->getFilename();
+                }
+            }
+        }
+        return "";
+    }
+
+    llvm::DILocation *getRecursiveDILoc(llvm::Instruction *currInst, std::string &funcFileName, std::set<llvm::BasicBlock *> &visitedBBs) {
+        llvm::DILocation *currIL = currInst->getDebugLoc().get();
+        if (funcFileName.length() == 0) {
+            return currIL;
+        }
+        if (currIL != nullptr && currIL->getFilename().equals(funcFileName)) {
+            return currIL;
+        }
+
+        llvm::BasicBlock *currBB = currInst->getParent();
+        if (visitedBBs.find(currBB) != visitedBBs.end()) {
             return nullptr;
         }
-        std::string inst, bb, func, file;
-        std::string str;
-        llvm::raw_string_ostream ss(str);
-        ss << *I->i;
-        inst = ss.str();
-
-        auto B = I->parent;
-        if (B != nullptr) {
-            bb = B->name;
-            auto F = B->parent;
-            if(F != nullptr){
-                func = F->FunctionName;
-                file = F->Path;
+        for (auto &iu :currBB->getInstList()) {
+            llvm::Instruction *currIterI = &iu;
+            llvm::DILocation *currIteDL = currIterI->getDebugLoc();
+            if (currIteDL != nullptr && currIteDL->getFilename().equals(funcFileName)) {
+                return currIteDL;
+            }
+            if (currIterI == currInst) {
+                break;
             }
         }
 
-        LOC_INF *loc_inf = new LOC_INF;
-        loc_inf->push_back(inst);
-        loc_inf->push_back(bb);
-        loc_inf->push_back(func);
-        loc_inf->push_back(file);
-        return loc_inf;
+        visitedBBs.insert(currBB);
+
+
+        for (auto it = llvm::pred_begin(currBB), et = llvm::pred_end(currBB); it != et; ++it) {
+            llvm::BasicBlock *predecessor = *it;
+            llvm::DILocation *currBBLoc = getRecursiveDILoc(predecessor->getTerminator(), funcFileName, visitedBBs);
+            if (currBBLoc != nullptr) {
+                return currBBLoc;
+            }
+        }
+        return nullptr;
     }
 
-    LOC_INF *StaticAnalysisResult::getLocInf(dra::DBasicBlock *B) {
+    llvm::DILocation *StaticAnalysisResult::getCorrectInstrLocation(llvm::Instruction *I) {
+        llvm::DILocation *instrLoc = I->getDebugLoc().get();
+        //BasicBlock *firstBB = &(I->getFunction()->getEntryBlock());
+        //Instruction *firstInstr = firstBB->getFirstNonPHIOrDbg();
+
+        //DILocation *firstIL = firstInstr->getDebugLoc().get();
+        std::set<llvm::BasicBlock *> visitedBBs;
+        std::string funcFileName = getFunctionFileName(I->getFunction());
+
+
+        if (instrLoc != nullptr && instrLoc->getFilename().endswith(".c")) {
+            return instrLoc;
+        }
+
+        if (instrLoc == nullptr || (funcFileName.length() > 0 && !instrLoc->getFilename().equals(funcFileName))) {
+            // OK, the instruction is from the inlined function.
+            visitedBBs.clear();
+            llvm::DILocation *actualLoc = getRecursiveDILoc(I, funcFileName, visitedBBs);
+            if (actualLoc != nullptr) {
+
+                return actualLoc;
+            }
+        }
+
+        return instrLoc;
+    }
+
+    LOC_INF *StaticAnalysisResult::getLocInf(llvm::Instruction *I, bool skip_inst) {
+        if (!I) {
+            return nullptr;
+        }
+        std::string inst(""), bb, func, file;
+        if (!skip_inst) {
+            inst = this->getValueStr(llvm::dyn_cast<llvm::Value>(I));
+        }
+        llvm::DILocation *instrLoc = StaticAnalysisResult::getCorrectInstrLocation(I);
+        if (I->getParent()) {
+            bb = this->getBBStrID(I->getParent());
+        }
+        if (I->getFunction()) {
+            func = I->getFunction()->getName().str();
+            this->stripFuncNameSuffix(&func);
+        }
+        //Put the file name.
+        if (instrLoc != nullptr) {
+            file = instrLoc->getFilename();
+        } else {
+            //TODO: not sure what to do here..
+            if (I->getModule()) {
+                file = I->getModule()->getName().str();
+            } else {
+                //Is this possible?
+            }
+        }
+        LOC_INF *str_inst = new LOC_INF;
+        str_inst->push_back(inst);
+        str_inst->push_back(bb);
+        str_inst->push_back(func);
+        str_inst->push_back(file);
+        return str_inst;
+    }
+
+    LOC_INF *StaticAnalysisResult::getLocInf(llvm::BasicBlock *B) {
         if (!B) {
             return nullptr;
         }
-        return this->getLocInf(*(B->InstIR.begin()));
+        return this->getLocInf(&*(B->begin()), true);
     }
 
     //Given a bb, return the taint information regarding its last br inst.
     //The returned info is a map from the context id to the taint tag id set.
-    ACTX_TAG_MAP *StaticAnalysisResult::QueryBranchTaint(dra::DBasicBlock *B) {
+    ACTX_TAG_MAP *StaticAnalysisResult::QueryBranchTaint(llvm::BasicBlock *B) {
         if (!B) {
             return nullptr;
         }
@@ -89,7 +184,7 @@ namespace sta {
         return nullptr;
     }
 
-    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(dra::DBasicBlock *B) {
+    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B) {
         return this->GetAllGlobalWriteInsts(this->QueryBranchTaint(B));
     }
 
@@ -121,7 +216,7 @@ namespace sta {
         return p_mod_irs;
     }
 
-    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(dra::DBasicBlock *B) {
+    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B) {
         return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B));
     }
 

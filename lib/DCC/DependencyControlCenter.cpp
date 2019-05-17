@@ -74,9 +74,9 @@ namespace dra {
                             uncoveredAddress->set_condition_address(condition_address);
 
                             if (DM.Address2BB.find(condition_address) != DM.Address2BB.end()) {
-                                auto *db = DM.Address2BB[condition_address]->parent;
+                                auto *b = DM.Address2BB[condition_address]->parent->basicBlock;
 
-                                MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(db);
+                                MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
 
