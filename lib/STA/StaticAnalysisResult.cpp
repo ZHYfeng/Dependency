@@ -361,6 +361,7 @@ namespace sta {
         return s;
     }
 
+    /*
     std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock *B) {
         static std::map<llvm::BasicBlock *, std::string> BBNameMap;
         if (BBNameMap.find(B) == BBNameMap.end()) {
@@ -374,6 +375,33 @@ namespace sta {
                     BBNameMap[B] = OS.str();
                 }
             } else {
+                BBNameMap[B] = "";
+            }
+        }
+        return BBNameMap[B];
+    }
+    */
+
+    std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock* B) {
+        static std::map<llvm::BasicBlock*,std::string> BBNameMap;
+        if (BBNameMap.find(B) == BBNameMap.end()) {
+            if (B) {
+                if (!B->getName().empty()){
+                    BBNameMap[B] = B->getName().str();
+                }else if (B->getParent()){
+                    int no = 0;
+                    for (llvm::BasicBlock& bb : *(B->getParent())) {
+                        if (&bb == B) {
+                            BBNameMap[B] = std::to_string(no);
+                            break;
+                        }
+                        ++no;
+                    }
+                }else{
+                    //Seems impossible..
+                    BBNameMap[B] = "";
+                }
+            }else{
                 BBNameMap[B] = "";
             }
         }
