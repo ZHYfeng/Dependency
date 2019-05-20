@@ -6,7 +6,7 @@
  */
 
 #include "DataManagement.h"
-
+#include "llvm/IR/CFG.h"
 #include <fstream>
 #include <iostream>
 
@@ -124,8 +124,8 @@ namespace dra {
     }
 
     void DataManagement::setVmOffsets(unsigned long long int vmOffsets) {
-        this->vmOffsets = vmOffsets;
-
+        this->vmOffsets = (vmOffsets << 32);
+        std::cout << "GetVmOffsets : " << std::hex << this->vmOffsets << std::endl;
     }
 
     DInput *DataManagement::getInput(Input input) {
@@ -134,7 +134,7 @@ namespace dra {
         if (Inputs.find(sig) != Inputs.end()) {
             dInput = Inputs[sig];
 #if DEBUGINPUT
-            std::cout << "repeat sig : " << sig << std::endl;
+            std::cout << "sig : " << sig << std::endl;
 #endif
         } else {
             dInput = new DInput;
@@ -147,7 +147,9 @@ namespace dra {
             dInput->idx = call.idx();
             for (int k = 0; k < call.address_size(); k++) {
                 unsigned long long int address = call.address().at(k);
+                std::cerr << "getInput address " << std::hex << address << "\n";
                 auto final_address = getRealAddress(address);
+                std::cerr << "getInput final_address " << std::hex << final_address << "\n";
                 if (this->Address2BB.find(final_address) != this->Address2BB.end()) {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
                 } else {
@@ -176,11 +178,33 @@ namespace dra {
     }
 
     bool DataManagement::isDriver(unsigned long long int address) {
-        if(this->Address2BB[address]->parent->parent->Path.find("block/") == 0){
+        if (this->Address2BB[address]->parent->parent->Path.find("block/") == 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
+    }
+
+    llvm::BasicBlock *DataManagement::getRealBB(llvm::BasicBlock *b) {
+        if (b->hasName()) {
+            return b;
+        } else {
+            for (auto *Pred : llvm::predecessors(b)) {
+                return getRealBB(Pred);
+            }
+        }
+    }
+
+    llvm::BasicBlock *DataManagement::getFinalBB(llvm::BasicBlock *b) {
+        auto *inst = b->getTerminator();
+        for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+            std::string name = inst->getSuccessor(i)->getName().str();
+            if (inst->getSuccessor(i)->hasName()) {
+            } else {
+                return getFinalBB(inst->getSuccessor(i));
+            }
+        }
+        return b;
     }
 
 } /* namespace dra */

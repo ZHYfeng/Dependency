@@ -54,9 +54,12 @@ namespace dra {
                     b = new DBasicBlock();
                     BasicBlock[Name] = b;
                     b->name = Name;
+                    b->basicBlock = &it;
+                    BasicBlock[Name]->setIr(true);
+                    BasicBlock[Name]->parent = this;
+                } else {
+                    std::cerr << "error same basic block name" << "\n";
                 }
-                BasicBlock[Name]->setIr(true);
-                BasicBlock[Name]->parent = this;
             }
             BasicBlock[Name]->InitIRBasicBlock(&it);
         }

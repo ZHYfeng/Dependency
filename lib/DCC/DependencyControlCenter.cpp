@@ -30,7 +30,6 @@ namespace dra {
     void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes) {
 
 
-
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         this->current_time = std::time(NULL);
         std::cout << std::ctime(&this->current_time) << "*time : initializeModule" << std::endl;
@@ -77,8 +76,8 @@ namespace dra {
 
                             if (DM.Address2BB.find(condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[condition_address]->parent->basicBlock;
-
-                                MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
+                                b.
+                                MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
 
@@ -89,7 +88,7 @@ namespace dra {
                                     this->uncovered_address_number_gv_driver++;
 
                                     for (auto &x : *allBasicblock) {
-                                        llvm::BasicBlock *bb = x.first;
+                                        llvm::BasicBlock *bb = DM.getRealBB(x.first);
                                         MOD_INF &mod_inf = x.second;
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
@@ -153,12 +152,10 @@ namespace dra {
 
     void DependencyControlCenter::test_sta() {
         auto f = this->DM.Modules->Function["block/blk-core.c"]["blk_flush_plug_list"];
-        for (auto B : f->BasicBlock){
+        for (auto B : f->BasicBlock) {
             auto b = B.second->basicBlock;
             std::cout << "b name : " << B.second->name << std::endl;
-//            if(b != nullptr) {
-//                b->dump();
-//            }
+
             MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
             if (allBasicblock == nullptr) {
                 // no taint or out side
@@ -168,9 +165,7 @@ namespace dra {
                 std::cout << "allBasicblock->size() == 0" << std::endl;
             } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
                 std::cout << "allBasicblock != nullptr && allBasicblock->size() != 0" << std::endl;
-                for (auto &x : *allBasicblock) {
-                    x.first->dump();
-                }
+
             }
         }
 

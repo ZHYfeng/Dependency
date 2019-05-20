@@ -6,7 +6,7 @@ message data {
     uint64 time = 1;
     string date = 2;
     
-    uint64 uncovered =3;
+    uint64 uncovered = 3;
 }
 
 message all_data {

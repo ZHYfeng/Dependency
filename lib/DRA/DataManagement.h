@@ -50,6 +50,10 @@ namespace dra {
 
         unsigned long long int getSyzkallerAddress(unsigned long long int address);
 
+        llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
+
+        llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
+
         bool isDriver(unsigned long long int address);
 
     public:

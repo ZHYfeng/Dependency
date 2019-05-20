@@ -178,10 +178,13 @@ namespace sta {
         }
         auto &res3 = this->taintedBrs;
         if (res3.find((*p_loc)[3]) != res3.end()) {
+            std::cout << "QueryBranchTaint : find path : " << (*p_loc)[3] << std::endl;
             auto &res2 = res3[(*p_loc)[3]];
             if (res2.find((*p_loc)[2]) != res2.end()) {
+                std::cout << "QueryBranchTaint : find function : " << (*p_loc)[2] << std::endl;
                 auto &res1 = res2[(*p_loc)[2]];
                 if (res1.find((*p_loc)[1]) != res1.end()) {
+                    std::cout << "QueryBranchTaint : find bb : " << (*p_loc)[1] << std::endl;
                     return &(res1[(*p_loc)[1]]);
                 }
             }
@@ -308,11 +311,11 @@ namespace sta {
     llvm::Instruction *StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
 
         auto function = this->dm->Modules->Function;
-        if(function.find(path)!= function.end()){
-            auto file= function[path];
-            if(file.find(func)!= file.end()){
+        if (function.find(path) != function.end()) {
+            auto file = function[path];
+            if (file.find(func) != file.end()) {
                 auto f = file[func];
-                if(f->BasicBlock.find(bb)!= f->BasicBlock.end()){
+                if (f->BasicBlock.find(bb) != f->BasicBlock.end()) {
                     auto bbb = f->BasicBlock[bb]->basicBlock;
                     for (llvm::Instruction &curInst : *bbb) {
                         //TODO: This might be unreliable as "dbg xxxxx" might be different!
@@ -321,6 +324,19 @@ namespace sta {
                             return &curInst;
                         }
                     }//Inst
+                } else {
+                    for (auto &it : *f->function) {
+                        auto name = getBBStrID(&it);
+                        if (name == bb) {
+                            for (llvm::Instruction &curInst : it) {
+                                //TODO: This might be unreliable as "dbg xxxxx" might be different!
+                                //TODO: Although we set up a cache now, this can still be *slow* depending on cache hit/miss.
+                                if (this->getValueStr(llvm::dyn_cast<llvm::Value>(&curInst)) == inst) {
+                                    return &curInst;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -329,15 +345,35 @@ namespace sta {
 
     llvm::BasicBlock *StaticAnalysisResult::getBBFromStr(std::string path, std::string func, std::string bb) {
 
+        std::time_t current_time = std::time(NULL);
+        std::cout << std::ctime(&current_time) << "*time : getBBFromStr" << std::endl;
+
         llvm::BasicBlock *bbb = nullptr;
         auto function = this->dm->Modules->Function;
-        if(function.find(path)!= function.end()){
-            auto file= function[path];
-            if(file.find(func)!= file.end()){
+        if (function.find(path) != function.end()) {
+            auto file = function[path];
+            if (file.find(func) != file.end()) {
+                current_time = std::time(NULL);
+                std::cout << std::ctime(&current_time) << "*time : getBBFromStr function" << std::endl;
                 auto f = file[func];
-                if(f->BasicBlock.find(bb)!= f->BasicBlock.end()){
+                if (f->BasicBlock.find(bb) != f->BasicBlock.end()) {
                     bbb = f->BasicBlock[bb]->basicBlock;
+                    current_time = std::time(NULL);
+                    std::cout << std::ctime(&current_time) << "*time : getBBFromStr basicBlock" << std::endl;
                     return bbb;
+                } else {
+                    current_time = std::time(NULL);
+                    std::cout << std::ctime(&current_time) << "*time : getBBFromStr for (auto &it : *f->function) {" << std::endl;
+                    for (auto &it : *f->function) {
+                        auto name = getBBStrID(&it);
+                        if (name == bb) {
+                            bbb = &it;
+                            std::cout << "getBBFromStr : success " << std::endl;
+                            return bbb;
+                        }
+                    }
+                    current_time = std::time(NULL);
+                    std::cout << std::ctime(&current_time) << "*time : getBBFromStr finish for (auto &it : *f->function) {" << std::endl;
                 }
             }
         }
@@ -362,6 +398,9 @@ namespace sta {
     }
 
     std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock *B) {
+        std::time_t current_time = std::time(NULL);
+        std::cout << std::ctime(&current_time) << "*time : start getBBStrID" << std::endl;
+
         static std::map<llvm::BasicBlock *, std::string> BBNameMap;
         if (BBNameMap.find(B) == BBNameMap.end()) {
             if (B) {
@@ -370,13 +409,19 @@ namespace sta {
                 } else {
                     std::string Str;
                     llvm::raw_string_ostream OS(Str);
+                    current_time = std::time(NULL);
+                    std::cout << std::ctime(&current_time) << "*time : start printAsOperand" << std::endl;
                     B->printAsOperand(OS, false);
+                    current_time = std::time(NULL);
+                    std::cout << std::ctime(&current_time) << "*time : finish printAsOperand" << std::endl;
                     BBNameMap[B] = OS.str();
                 }
             } else {
                 BBNameMap[B] = "";
             }
         }
+        current_time = std::time(NULL);
+        std::cout << std::ctime(&current_time) << "*time : finish getBBStrID" << BBNameMap[B] << std::endl;
         return BBNameMap[B];
     }
 
