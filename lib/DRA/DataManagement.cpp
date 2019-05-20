@@ -142,16 +142,14 @@ namespace dra {
             dInput->setSig(sig);
         }
         dInput->Number++;
-        for (int j = 0; j < input.call_size(); j++) {
-            const Call &call = input.call().at(j);
-            dInput->idx = call.idx();
-            for (int k = 0; k < call.address_size(); k++) {
-                unsigned long long int address = call.address().at(k);
-                std::cerr << "getInput address " << std::hex << address << "\n";
+        for (auto c : input.call()) {
+            dInput->idx = c.second.idx();
+            for (auto a : c.second.address()) {
+                unsigned long long int address = a.first;
                 auto final_address = getRealAddress(address);
-                std::cerr << "getInput final_address " << std::hex << final_address << "\n";
                 if (this->Address2BB.find(final_address) != this->Address2BB.end()) {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
+                    isDriver(final_address);
                 } else {
                     std::cerr << "un find address " << std::hex << final_address << "\n";
                 }
@@ -178,6 +176,7 @@ namespace dra {
     }
 
     bool DataManagement::isDriver(unsigned long long int address) {
+        std::cout << "isDriver : " << this->Address2BB[address]->parent->parent->Path << std::endl;
         if (this->Address2BB[address]->parent->parent->Path.find("block/") == 0) {
             return true;
         } else {

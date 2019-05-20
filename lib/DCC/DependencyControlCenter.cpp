@@ -11,7 +11,7 @@
 #include <utility>
 #include <grpcpp/grpcpp.h>
 #include <llvm/IR/DebugInfoMetadata.h>
-
+#include "../DRA/DModule.h"
 #include "../DRA/DFunction.h"
 
 namespace dra {
@@ -40,8 +40,6 @@ namespace dra {
 //        this->current_time
         std::cout << std::ctime(&this->current_time) << "*time : initStaticRes" << std::endl;
 
-        this->test_sta();
-
         this->client = new dra::DependencyRPCClient(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
@@ -64,6 +62,9 @@ namespace dra {
 
                         this->uncovered_address_number++;
                         if (this->DM.isDriver(u->address)) {
+
+                            std::cout << "u->address is a driver : " << std::hex << u->address << std::endl;
+
                             this->uncovered_address_number_driver++;
 
                             unsigned long long int address = DM.getSyzkallerAddress(u->address);
@@ -76,7 +77,6 @@ namespace dra {
 
                             if (DM.Address2BB.find(condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[condition_address]->parent->basicBlock;
-                                b.
                                 MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
@@ -87,54 +87,43 @@ namespace dra {
                                 } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
                                     this->uncovered_address_number_gv_driver++;
 
+                                    std::cout << "get useful static analysis result" << std::endl;
+
                                     for (auto &x : *allBasicblock) {
                                         llvm::BasicBlock *bb = DM.getRealBB(x.first);
                                         MOD_INF &mod_inf = x.second;
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
                                         std::set<uint64_t> *cmds = this->STA.getIoctlCmdSet(&mod_inf);
+                                        std::string Path = dra::DModule::getFileName(bb->getParent());
+                                        std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
+                                        std::string bbname = bb->getName().str();
+                                        auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
+                                        unsigned long long int writeAddress = db->address;
 
-                                        llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
-                                        bb->getParent()->getAllMetadata(MDs);
-                                        for (auto &MD : MDs) {
-                                            if (llvm::MDNode *N = MD.second) {
-                                                if (auto *SP = llvm::dyn_cast<llvm::DISubprogram>(N)) {
-                                                    std::string Path = SP->getFilename().str();
-                                                    std::string name = bb->getParent()->getName().str();
-                                                    std::string FunctionName;
-                                                    if (name.find('.') < name.size()) {
-                                                        FunctionName = name.substr(0, name.find('.'));
-                                                    } else {
-                                                        FunctionName = name;
-                                                    }
-                                                    std::string bbname = bb->getName().str();
-                                                    auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
-                                                    unsigned long long int writeAddress = db->address;
-
-                                                    for (auto c : *cmds) {
-                                                        auto function_name = "ioctl";
-                                                        RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
-                                                        relatedSyscall->set_address(writeAddress);
-                                                        relatedSyscall->set_name(function_name);
-                                                        relatedSyscall->set_number(c);
-                                                    }
-
-                                                    for (auto i : db->input) {
-                                                        RelatedInput *relatedInput = uncoveredAddress->add_related_input();
-                                                        relatedInput->set_address(writeAddress);
-                                                        relatedInput->set_sig(i->sig);
-                                                    }
-
-                                                    client->SendDependencyInput(dependencyInput);
-                                                }
-                                            }
+                                        for (auto c : *cmds) {
+                                            auto function_name = "ioctl";
+                                            RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
+                                            relatedSyscall->set_address(writeAddress);
+                                            relatedSyscall->set_name(function_name);
+                                            relatedSyscall->set_number(c);
                                         }
+
+                                        for (auto i : db->input) {
+                                            RelatedInput *relatedInput = uncoveredAddress->add_related_input();
+                                            relatedInput->set_address(writeAddress);
+                                            relatedInput->set_sig(i->sig);
+                                        }
+
+                                        client->SendDependencyInput(dependencyInput);
                                         //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak, or we can also set up a cache to avoid repeated query to STA.
                                     }
                                 }
+                            } else {
+                                std::cout << "can not find condition_address : " << std::hex << condition_address << std::endl;
                             }
                         } else {
-
+                            std::cout << "u->address is not a driver : " << std::hex << u->address << std::endl;
                         }
                     }
                 }

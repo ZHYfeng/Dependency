@@ -49,30 +49,16 @@ namespace dra {
     void DModule::BuildLLVMFunction(llvm::Module *Module) {
         DFunction *function;
         for (auto &it : *Module) {
-            llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
-            it.getAllMetadata(MDs);
-            for (auto &MD : MDs) {
-#if DEBUGBC
-                MD.second->dump();
-#endif
-                if (llvm::MDNode *N = MD.second) {
-                    if (auto *SP = llvm::dyn_cast<llvm::DISubprogram>(N)) {
-                        std::string Path = SP->getFilename().str();
-                        std::string Line = std::to_string(SP->getLine());
-                        std::string name = it.getName().str();
-                        std::string FunctionName;
-                        if (name.find('.') < name.size()) {
-                            FunctionName = name.substr(0, name.find('.'));
-                        } else {
-                            FunctionName = name;
-                        }
-                        function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
+            std::string Path = getFileName(&it);
+            if(Path != ""){
+                std::string name = it.getName().str();
+                std::string FunctionName = getFunctionName(&it);
+                function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
+                function->IRName = name;
+                function->InitIRFunction(&it);
+                function->parent = this;
+            } else {
 
-                        function->IRName = name;
-                        function->InitIRFunction(&it);
-                        function->parent = this;
-                    }
-                }
             }
 
         }
@@ -570,6 +556,31 @@ namespace dra {
         function->Path = Path;
         function->setKind(kind);
         return function;
+    }
+
+    std::string DModule::getFileName(llvm::Function *f) {
+        llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
+        f->getAllMetadata(MDs);
+        for (auto &MD : MDs) {
+            if (llvm::MDNode *N = MD.second) {
+                if (auto *SP = llvm::dyn_cast<llvm::DISubprogram>(N)) {
+                    std::string Path = SP->getFilename().str();
+                    return Path;
+                }
+            }
+        }
+        return "";
+    }
+
+    std::string DModule::getFunctionName(llvm::Function *f) {
+        std::string name = f->getName().str();
+        std::string FunctionName;
+        if (name.find('.') < name.size()) {
+            FunctionName = name.substr(0, name.find('.'));
+        } else {
+            FunctionName = name;
+        }
+        return FunctionName;
     }
 
 } /* namespace dra */

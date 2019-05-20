@@ -26,7 +26,6 @@ namespace dra {
         grpc::ClientContext context;
         grpc::Status status = stub_->GetVmOffsets(&context, request, &reply);
         if (status.ok()) {
-            std::cout << "GetVmOffsets : " << std::hex << reply.address() << std::endl;
             return reply.address();
         } else {
             std::cout << status.error_code() << ": " << status.error_message() << std::endl;

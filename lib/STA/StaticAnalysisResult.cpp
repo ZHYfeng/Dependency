@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#define DEBUG_TIME 0
+
 namespace sta {
 
     StaticAnalysisResult::~StaticAnalysisResult() = default;
@@ -178,18 +180,18 @@ namespace sta {
         }
         auto &res3 = this->taintedBrs;
         if (res3.find((*p_loc)[3]) != res3.end()) {
-            std::cout << "QueryBranchTaint : find path : " << (*p_loc)[3] << std::endl;
+//            std::cout << "QueryBranchTaint : find path : " << (*p_loc)[3] << std::endl;
             auto &res2 = res3[(*p_loc)[3]];
             if (res2.find((*p_loc)[2]) != res2.end()) {
-                std::cout << "QueryBranchTaint : find function : " << (*p_loc)[2] << std::endl;
+//                std::cout << "QueryBranchTaint : find function : " << (*p_loc)[2] << std::endl;
                 auto &res1 = res2[(*p_loc)[2]];
                 if (res1.find((*p_loc)[1]) != res1.end()) {
-                    std::cout << "QueryBranchTaint : find bb : " << (*p_loc)[1] << std::endl;
+//                    std::cout << "QueryBranchTaint : find bb : " << (*p_loc)[1] << std::endl;
                     return &(res1[(*p_loc)[1]]);
                 }
             }
         }
-        std::cout << "QueryBranchTaint : return = nullptr : out side analysis" << std::endl;
+//        std::cout << "QueryBranchTaint : return = nullptr : out side analysis" << std::endl;
         return nullptr;
     }
 
@@ -200,7 +202,7 @@ namespace sta {
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
     MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf) {
         if (!p_taint_inf) {
-            std::cout << "GetAllGlobalWriteInsts : p_taint_inf = bullptr" << std::endl;
+            std::cout << "GetAllGlobalWriteInsts : p_taint_inf = nullptr" << std::endl;
             return nullptr;
         }
         MOD_IRS *p_mod_irs = new MOD_IRS();
@@ -244,6 +246,7 @@ namespace sta {
                 }
                 MOD_IR_TY *ps_mod_irs = &(this->tagModMap[tid]);
                 MOD_BBS *p_cur_mod_bbs = this->GetRealModBbs(ps_mod_irs);
+
                 //Merge.
                 for (auto const &x : *p_cur_mod_bbs) {
                     if (p_mod_bbs->find(x.first) != p_mod_bbs->end()) {
@@ -344,38 +347,52 @@ namespace sta {
     }
 
     llvm::BasicBlock *StaticAnalysisResult::getBBFromStr(std::string path, std::string func, std::string bb) {
-
+#if DEBUG_TIME
         std::time_t current_time = std::time(NULL);
         std::cout << std::ctime(&current_time) << "*time : getBBFromStr" << std::endl;
+#endif
 
         llvm::BasicBlock *bbb = nullptr;
         auto function = this->dm->Modules->Function;
         if (function.find(path) != function.end()) {
             auto file = function[path];
             if (file.find(func) != file.end()) {
+#if DEBUG_TIME
                 current_time = std::time(NULL);
                 std::cout << std::ctime(&current_time) << "*time : getBBFromStr function" << std::endl;
+#endif
                 auto f = file[func];
                 if (f->BasicBlock.find(bb) != f->BasicBlock.end()) {
                     bbb = f->BasicBlock[bb]->basicBlock;
+#if DEBUG_TIME
                     current_time = std::time(NULL);
                     std::cout << std::ctime(&current_time) << "*time : getBBFromStr basicBlock" << std::endl;
+#endif
                     return bbb;
                 } else {
+#if DEBUG_TIME
+
                     current_time = std::time(NULL);
                     std::cout << std::ctime(&current_time) << "*time : getBBFromStr for (auto &it : *f->function) {" << std::endl;
+#endif
                     for (auto &it : *f->function) {
                         auto name = getBBStrID(&it);
                         if (name == bb) {
                             bbb = &it;
-                            std::cout << "getBBFromStr : success " << std::endl;
                             return bbb;
                         }
                     }
+#if DEBUG_TIME
+
                     current_time = std::time(NULL);
                     std::cout << std::ctime(&current_time) << "*time : getBBFromStr finish for (auto &it : *f->function) {" << std::endl;
+#endif
                 }
+            } else {
+                std::cout << "not find function" << std::endl;
             }
+        } else {
+            std::cout << "not find file" << std::endl;
         }
         return bbb;
     }
@@ -427,26 +444,26 @@ namespace sta {
     }
     */
 
-    std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock* B) {
-        static std::map<llvm::BasicBlock*,std::string> BBNameMap;
+    std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock *B) {
+        static std::map<llvm::BasicBlock *, std::string> BBNameMap;
         if (BBNameMap.find(B) == BBNameMap.end()) {
             if (B) {
-                if (!B->getName().empty()){
+                if (!B->getName().empty()) {
                     BBNameMap[B] = B->getName().str();
-                }else if (B->getParent()){
+                } else if (B->getParent()) {
                     int no = 0;
-                    for (llvm::BasicBlock& bb : *(B->getParent())) {
+                    for (llvm::BasicBlock &bb : *(B->getParent())) {
                         if (&bb == B) {
                             BBNameMap[B] = std::to_string(no);
                             break;
                         }
                         ++no;
                     }
-                }else{
+                } else {
                     //Seems impossible..
                     BBNameMap[B] = "";
                 }
-            }else{
+            } else {
                 BBNameMap[B] = "";
             }
         }
