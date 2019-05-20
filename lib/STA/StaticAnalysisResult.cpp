@@ -397,6 +397,7 @@ namespace sta {
         return s;
     }
 
+    /*
     std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock *B) {
         std::time_t current_time = std::time(NULL);
         std::cout << std::ctime(&current_time) << "*time : start getBBStrID" << std::endl;
@@ -422,6 +423,33 @@ namespace sta {
         }
         current_time = std::time(NULL);
         std::cout << std::ctime(&current_time) << "*time : finish getBBStrID" << BBNameMap[B] << std::endl;
+        return BBNameMap[B];
+    }
+    */
+
+    std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock* B) {
+        static std::map<llvm::BasicBlock*,std::string> BBNameMap;
+        if (BBNameMap.find(B) == BBNameMap.end()) {
+            if (B) {
+                if (!B->getName().empty()){
+                    BBNameMap[B] = B->getName().str();
+                }else if (B->getParent()){
+                    int no = 0;
+                    for (llvm::BasicBlock& bb : *(B->getParent())) {
+                        if (&bb == B) {
+                            BBNameMap[B] = std::to_string(no);
+                            break;
+                        }
+                        ++no;
+                    }
+                }else{
+                    //Seems impossible..
+                    BBNameMap[B] = "";
+                }
+            }else{
+                BBNameMap[B] = "";
+            }
+        }
         return BBNameMap[B];
     }
 
