@@ -52,11 +52,11 @@ namespace sta {
 
         MOD_IRS *GetAllGlobalWriteInsts(llvm::BasicBlock *B);
 
-        MOD_IRS *GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf);
+        MOD_IRS *GetAllGlobalWriteInsts(BR_INF *p_taint_inf);
 
         MOD_BBS *GetAllGlobalWriteBBs(llvm::BasicBlock *B);
 
-        MOD_BBS *GetAllGlobalWriteBBs(ACTX_TAG_MAP *p_taint_inf);
+        MOD_BBS *GetAllGlobalWriteBBs(BR_INF *p_taint_inf);
 
         std::string &getBBStrID(llvm::BasicBlock *B);
 
@@ -72,15 +72,16 @@ namespace sta {
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF *);
 
     private:
-        nlohmann::json j_taintedBrs, j_analysisCtxMap, j_tagModMap, j_tagInfo, j_modInstCtxMap;
+        nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagInfo, j_calleeMap;
 
         TAINTED_BR_TY taintedBrs;
-        ANALYSIS_CTX_MAP_TY analysisCtxMap;
+        CTX_MAP_TY ctxMap;
+        INST_TRAIT_MAP traitMap;
         TAG_MOD_MAP_TY tagModMap;
         TAG_INFO_TY tagInfo;
-        MOD_INST_CTX_MAP_TY modInstCtxMap;
+        CALLEE_MAP_TY calleeMap;
 
-        ACTX_TAG_MAP *QueryBranchTaint(llvm::BasicBlock *B);
+        BR_INF *QueryBranchTaint(llvm::BasicBlock *B);
 
         void QueryModIRsFromTagTy(std::string ty);
 
