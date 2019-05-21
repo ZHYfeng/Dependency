@@ -5,6 +5,7 @@ import (
 	"github.com/google/syzkaller/pkg/log"
 	"google.golang.org/grpc"
 	"net"
+	"sync"
 )
 
 const (
@@ -19,32 +20,41 @@ type fuzzer struct {
 type Server struct {
 	address  uint32
 	Dport    int
-	corpusDC map[string]Input
-	corpusDI map[string]DependencyInput
+	corpusDC map[string]*Input
+	corpusDI map[string]*DependencyInput
 	fuzzers  map[string]*fuzzer
+	mu       sync.Mutex
 }
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	ss.fuzzers[request.Name] = &fuzzer{}
 	return &Empty{}, nil
 }
 
 func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	reply := &Empty{}
 	reply.Address = ss.address
 	return reply, nil
 }
 
 func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	reply := &NewInput{}
 	for _, c := range ss.corpusDC {
-		reply.Input = append(reply.Input, cloneInput(&c))
+		reply.Input = append(reply.Input, cloneInput(c))
 	}
 	ss.corpusDI = nil
 	return reply, nil
 }
 
 func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInput) (*Empty, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	for _, f := range ss.fuzzers {
 		f.corpusDI = append(f.corpusDI, *cloneDependencyInput(request))
 	}
@@ -52,6 +62,8 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 }
 
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDependencyInput, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	f := ss.fuzzers[request.Name]
 	if f == nil {
 		log.Fatalf("fuzzer %v is not connected", request.Name)
@@ -70,18 +82,21 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 }
 
 func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	reply := &Empty{}
-	input := Input{
+	input := &Input{
 		Sig:  request.Sig,
 		Call: make(map[uint32]*Call),
 	}
 	for i, c := range request.Call {
 		cc := &Call{Idx: c.Idx, Address: make(map[uint32]uint32)}
 		input.Call[i] = cc
-		for _, a := range c.Address {
+		for a, _ := range c.Address {
 			cc.Address[a] = 0
 		}
 	}
+
 	ss.corpusDC[request.Sig] = input
 	return reply, nil
 }
@@ -125,8 +140,11 @@ func cloneInput(d *Input) *Input {
 	}
 	for i, u := range d.Call {
 		u1 := &Call{
-			Address: u.Address,
+			Address: make(map[uint32]uint32),
 			Idx:     u.Idx,
+		}
+		for aa, _ := range u.Address {
+			u1.Address[aa] = 0
 		}
 		ci.Call[i] = u1
 	}
@@ -140,8 +158,8 @@ func (ss *Server) SetAddress(address uint32) {
 // RunDependencyRPCServer
 func (ss *Server) RunDependencyRPCServer() {
 
-	ss.corpusDC = make(map[string]Input)
-	ss.corpusDI = make(map[string]DependencyInput)
+	ss.corpusDC = make(map[string]*Input)
+	ss.corpusDI = make(map[string]*DependencyInput)
 	ss.fuzzers = make(map[string]*fuzzer)
 
 	lis, err := net.Listen("tcp", port)

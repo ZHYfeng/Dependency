@@ -61,6 +61,9 @@ type Fuzzer struct {
 	corpusDMu        sync.RWMutex
 	corpusSig        []string
 	corpusDependency map[string]*prog.Prog
+
+	coverMu sync.RWMutex
+	cover   map[int]*pb.Call
 }
 
 type Stat int
@@ -561,4 +564,50 @@ func parseOutputType(str string) OutputType {
 		log.Fatalf("-output flag must be one of none/stdout/dmesg/file")
 		return OutputNone
 	}
+}
+
+func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls []int) {
+	fuzzer.coverMu.RLock()
+	defer fuzzer.coverMu.RUnlock()
+
+	input := &pb.Input{
+		Call: make(map[uint32]*pb.Call),
+	}
+	data := p.Serialize()
+	sig := hash.Hash(data)
+	input.Sig = sig.String()
+
+	for i, inf := range info.Calls {
+
+		input.Call[uint32(i)] = &pb.Call{
+			Idx:     uint32(i),
+			Address: map[uint32]uint32{},
+		}
+		newCall := input.Call[uint32(i)]
+
+		id := p.Calls[i].Meta.ID
+		if _, ok := fuzzer.cover[id]; !ok {
+			fuzzer.cover[id] = &pb.Call{
+				Idx:     0,
+				Address: make(map[uint32]uint32),
+			}
+		}
+		call := fuzzer.cover[id].Address
+
+		flags := false
+		for _, address := range inf.Cover {
+			if _, ok := call[address]; !ok {
+				call[address] = 0
+				flags = true
+				newCall.Address[address] = 0
+			}
+		}
+		if flags == true {
+			calls = append(calls, i)
+		}
+	}
+
+	fuzzer.dManager.SendInput(input)
+
+	return
 }

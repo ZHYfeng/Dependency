@@ -20,8 +20,6 @@ import (
 	"github.com/google/syzkaller/pkg/rpctype"
 	"github.com/google/syzkaller/pkg/signal"
 	"github.com/google/syzkaller/prog"
-
-	pb "github.com/google/syzkaller/pkg/dra"
 )
 
 const (
@@ -115,12 +113,11 @@ func (proc *Proc) loop() {
 }
 
 func (proc *Proc) triageInput(item *WorkTriage) {
+	ddata := item.p.Serialize()
+	sigg := hash.Hash(ddata)
+	log.Logf(1, "siggggggg %v :", sigg.String())
+
 	log.Logf(1, "#%v: triaging type=%x", proc.pid, item.flags)
-
-	input := pb.Input{
-		Call: make(map[uint32]*pb.Call),
-	}
-
 	prio := signalPrio(item.p, &item.info, item.call)
 	inputSignal := signal.FromRaw(item.info.Signal, prio)
 	newSignal := proc.fuzzer.corpusSignalDiff(inputSignal)
@@ -139,6 +136,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		signalRuns       = 3
 		minimizeAttempts = 3
 	)
+
 	// Compute input coverage and non-flaky signal for minimization.
 	notexecuted := 0
 	for i := 0; i < signalRuns; i++ {
@@ -147,34 +145,26 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			// The call was not executed or failed.
 			notexecuted++
 			if notexecuted > signalRuns/2+1 {
+				log.Logf(3, "if happens too often, give up")
 				return // if happens too often, give up
 			}
 			continue
 		}
 		thisSignal, thisCover := getSignalAndCover(item.p, info, item.call)
-		newSignal = newSignal.Intersection(thisSignal)
+
+		log.Logf(3, "newSignal v%", newSignal)
+		log.Logf(3, "thisSignal v%", thisSignal)
+
+		//newSignal = newSignal.Intersection(thisSignal)
+
+		log.Logf(3, "newSignal v%", newSignal)
 		// Without !minimized check manager starts losing some considerable amount
 		// of coverage after each restart. Mechanics of this are not completely clear.
 		if newSignal.Empty() && item.flags&ProgMinimized == 0 {
+			log.Logf(3, "newSignal.Empty() && item.flags&ProgMinimized == 0")
 			return
 		}
 		inputCover.Merge(thisCover)
-
-		for i, c := range info.Calls {
-			ii := uint32(i)
-			if cc, ok := input.Call[ii]; !ok {
-				cc = &pb.Call{
-					Idx:     ii,
-					Address: make(map[uint32]uint32),
-				}
-				input.Call[ii] = cc
-			}
-			cc := input.Call[ii]
-			for _, a := range c.Cover {
-				cc.Address[a] = 0
-			}
-
-		}
 	}
 	if item.flags&ProgMinimized == 0 {
 		item.p, item.call = prog.Minimize(item.p, item.call, false,
@@ -214,9 +204,6 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	if item.p.Uncover != nil {
 		proc.checkCoverage(item.p, inputCover)
 	}
-
-	input.Sig = sig.String()
-	proc.fuzzer.dManager.SendInput(&input)
 }
 
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
@@ -337,11 +324,18 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	info := proc.executeRaw(execOpts, p, stat)
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
+		log.Logf(0, "Proc execute new p : %v", p)
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}
 	if extra {
 		proc.enqueueCallTriage(p, flags, -1, info.Extra)
 	}
+	//
+	//ccalls := proc.fuzzer.checkNewCoverage(p, info)
+	//for _, callIndex := range ccalls {
+	//	proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
+	//}
+
 	return info
 }
 

@@ -5,6 +5,7 @@ package ipc
 
 import (
 	"fmt"
+	"github.com/google/syzkaller/pkg/log"
 	"io"
 	"io/ioutil"
 	"os"
@@ -322,6 +323,7 @@ func addFallbackSignal(p *prog.Prog, info *ProgInfo) {
 }
 
 func (env *Env) parseOutput(p *prog.Prog) (*ProgInfo, error) {
+	log.Logf(0, "parseOutput p: %v", p)
 	out := env.out
 	ncmd, ok := readUint32(&out)
 	if !ok {
@@ -357,10 +359,12 @@ func (env *Env) parseOutput(p *prog.Prog) (*ProgInfo, error) {
 			return nil, fmt.Errorf("call %v/%v/%v: signal overflow: %v/%v",
 				i, reply.index, reply.num, reply.signalSize, len(out))
 		}
+		log.Logf(0, "inf.Signal: v%, %x", reply.signalSize, inf.Signal)
 		if inf.Cover, ok = readUint32Array(&out, reply.coverSize); !ok {
 			return nil, fmt.Errorf("call %v/%v/%v: cover overflow: %v/%v",
 				i, reply.index, reply.num, reply.coverSize, len(out))
 		}
+		log.Logf(0, "inf.Cover: v%, %x", reply.coverSize, inf.Cover)
 		comps, err := readComps(&out, reply.compsSize)
 		if err != nil {
 			return nil, err
