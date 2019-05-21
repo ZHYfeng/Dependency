@@ -130,12 +130,12 @@ namespace dra {
 
     DInput *DataManagement::getInput(Input input) {
         std::string sig = input.sig();
+#if DEBUGINPUT
+        std::cout << "sig : " << sig << std::endl;
+#endif
         DInput *dInput;
         if (Inputs.find(sig) != Inputs.end()) {
             dInput = Inputs[sig];
-#if DEBUGINPUT
-            std::cout << "sig : " << sig << std::endl;
-#endif
         } else {
             dInput = new DInput;
             Inputs[sig] = dInput;
@@ -176,12 +176,18 @@ namespace dra {
     }
 
     bool DataManagement::isDriver(unsigned long long int address) {
-        std::cout << "isDriver : " << this->Address2BB[address]->parent->parent->Path << std::endl;
-        if (this->Address2BB[address]->parent->parent->Path.find("block/") == 0) {
-            return true;
-        } else {
-            return false;
+        if(this->Address2BB[address]->parent != nullptr ){
+            auto b = this->Address2BB[address]->parent;
+            if (b->parent!= nullptr){
+                auto f = b->parent;
+                if (this->Address2BB[address]->parent->parent->Path.find("block/") == 0) {
+                    return true;
+                } else {
+
+                }
+            }
         }
+        return false;
     }
 
     llvm::BasicBlock *DataManagement::getRealBB(llvm::BasicBlock *b) {

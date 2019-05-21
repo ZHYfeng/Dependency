@@ -60,11 +60,22 @@ namespace dra {
         for (auto it : InstASM) {
             it->setState(kind);
         }
-        parent->update(kind);
-        if (inferCoverBB(input, this->basicBlock)) {
-
+        if (this->parent != nullptr) {
+            parent->update(kind);
+        } else {
+//            std::cerr << "DBasicBlock update parent == nullptr" << "\n";
+//            this->dump();
         }
-        infer();
+
+        if (this->basicBlock != nullptr) {
+            if (inferCoverBB(input, this->basicBlock)) {
+
+            }
+            infer();
+        } else {
+//            std::cerr << "DBasicBlock update basicBlock == nullptr" << "\n";
+        }
+
     }
 
     bool DBasicBlock::isAsmSourceCode() const {
@@ -219,10 +230,11 @@ namespace dra {
     void DBasicBlock::dump() {
 
         std::cout << "--------------------------------------------" << std::endl;
-        std::cout << "Path :" << parent->Path << std::endl;
-        std::cout << "FunctionName :" << parent->FunctionName << std::endl;
+        if (parent != nullptr) {
+            std::cout << "Path :" << parent->Path << std::endl;
+            std::cout << "FunctionName :" << parent->FunctionName << std::endl;
+        }
         std::cout << "name :" << name << std::endl;
-
         std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
         std::cout << "IR :" << IR << std::endl;
         std::cout << "CoverKind :" << state << std::endl;

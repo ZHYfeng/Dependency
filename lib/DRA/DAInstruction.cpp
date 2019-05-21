@@ -31,7 +31,11 @@ namespace dra {
 
     void DAInstruction::update(CoverKind kind, DInput *input) {
         setState(kind);
-        parent->update(kind, input);
+        if (parent != nullptr) {
+            parent->update(kind, input);
+        } else {
+            std::cerr << "DAInstruction update parent == nullptr address : " << this->Address << "\n";
+        }
     }
 
     void DAInstruction::setAddr(std::string addr) {

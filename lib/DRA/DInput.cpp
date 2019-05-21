@@ -109,8 +109,8 @@ namespace dra {
         d->condition_address = condition_address;
         dUncoveredAddress.push_back(d);
 
-        std::cout << "address : " << std::hex << address << std::endl;
-        std::cout << "condition_address : " << std::hex << condition_address << std::endl;
+//        std::cout << "address : " << std::hex << address << std::endl;
+//        std::cout << "condition_address : " << std::hex << condition_address << std::endl;
     }
 
 } /* namespace dra */
