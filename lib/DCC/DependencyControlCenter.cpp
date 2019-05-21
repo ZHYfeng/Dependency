@@ -55,7 +55,7 @@ namespace dra {
             std::cout << "wait for get newInput" << std::endl;
             NewInput *newInput = client->GetNewInput();
             if (newInput != nullptr) {
-                std::cout << "get newInput" << std::endl;
+                std::cout << "get newInput size : " << newInput->input_size() << std::endl;
                 for (int j = 0; j < newInput->input_size(); j++) {
                     const Input &input = newInput->input(j);
                     DInput *dInput = DM.getInput(input);
