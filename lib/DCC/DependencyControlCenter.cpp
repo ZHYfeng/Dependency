@@ -6,7 +6,7 @@
  */
 
 #include "DependencyControlCenter.h"
-
+#include <chrono>
 #include <thread>
 #include <utility>
 #include <grpcpp/grpcpp.h>
@@ -52,12 +52,15 @@ namespace dra {
 
     void DependencyControlCenter::run() {
         while (true) {
+            std::cout << "wait for get newInput" << std::endl;
             NewInput *newInput = client->GetNewInput();
             if (newInput != nullptr) {
+                std::cout << "get newInput" << std::endl;
                 for (int j = 0; j < newInput->input_size(); j++) {
                     const Input &input = newInput->input(j);
                     DInput *dInput = DM.getInput(input);
                     DependencyInput dependencyInput;
+                    std::cout << "dUncoveredAddress size : " << dInput->dUncoveredAddress.size() << std::endl;
                     for (auto u : dInput->dUncoveredAddress) {
 
                         this->uncovered_address_number++;
@@ -123,10 +126,14 @@ namespace dra {
                                 std::cout << "can not find condition_address : " << std::hex << condition_address << std::endl;
                             }
                         } else {
-//                            std::cout << "u->address is not a driver : " << std::hex << u->address << std::endl;
+                            std::cout << "u->address is not a driver : " << std::hex << u->address << std::endl;
                         }
                     }
                 }
+                newInput->Clear();
+            } else {
+                std::cout << "sleep_for 60s." << std::endl;
+                std::this_thread::sleep_for(std::chrono::seconds(60));
             }
         }
     }
