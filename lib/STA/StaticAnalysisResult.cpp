@@ -20,13 +20,14 @@ namespace sta {
         try {
             std::ifstream infile;
             infile.open(staticRes);
-            infile >> this->j_taintedBrs >> this->j_analysisCtxMap >> this->j_tagModMap >> this->j_tagInfo >> this->j_modInstCtxMap;
+            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap >> this->j_tagInfo >> this->j_calleeMap;
             infile.close();
             this->taintedBrs = this->j_taintedBrs.get<TAINTED_BR_TY>();
-            this->analysisCtxMap = this->j_analysisCtxMap.get<ANALYSIS_CTX_MAP_TY>();
+            this->ctxMap = this->j_ctxMap.get<CTX_MAP_TY>();
+            this->traitMap = this->j_traitMap.get<INST_TRAIT_MAP>();
             this->tagModMap = this->j_tagModMap.get<TAG_MOD_MAP_TY>();
             this->tagInfo = this->j_tagInfo.get<TAG_INFO_TY>();
-            this->modInstCtxMap = this->j_modInstCtxMap.get<MOD_INST_CTX_MAP_TY>();
+            this->calleeMap = this->j_calleeMap.get<CALLEE_MAP_TY>();
             return 0;
         } catch (...) {
             std::cout << "Fail to deserialize the static analysis results!\n";
@@ -168,7 +169,7 @@ namespace sta {
 
     //Given a bb, return the taint information regarding its last br inst.
     //The returned info is a map from the context id to the taint tag id set.
-    ACTX_TAG_MAP *StaticAnalysisResult::QueryBranchTaint(llvm::BasicBlock *B) {
+    BR_INF *StaticAnalysisResult::QueryBranchTaint(llvm::BasicBlock *B) {
         if (!B) {
             std::cout << "QueryBranchTaint : b = bullptr" << std::endl;
             return nullptr;
@@ -200,7 +201,7 @@ namespace sta {
     }
 
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
-    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(ACTX_TAG_MAP *p_taint_inf) {
+    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf) {
         if (!p_taint_inf) {
             std::cout << "GetAllGlobalWriteInsts : p_taint_inf = nullptr" << std::endl;
             return nullptr;
@@ -208,7 +209,8 @@ namespace sta {
         MOD_IRS *p_mod_irs = new MOD_IRS();
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
-            auto &tag_ids = x.second;
+            auto &trait_id = std::get<0>(x.second);
+            auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
@@ -232,14 +234,15 @@ namespace sta {
         return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B));
     }
 
-    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(ACTX_TAG_MAP *p_taint_inf) {
+    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf) {
         if (!p_taint_inf) {
             return nullptr;
         }
         MOD_BBS *p_mod_bbs = new MOD_BBS();
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
-            auto &tag_ids = x.second;
+            auto &trait_id = std::get<0>(x.second);
+            auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
