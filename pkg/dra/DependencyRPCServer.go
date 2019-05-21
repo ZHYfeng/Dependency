@@ -20,10 +20,10 @@ type fuzzer struct {
 type Server struct {
 	address  uint32
 	Dport    int
-	corpusDC map[string]*Input
+	corpusDC []*Input
 	corpusDI map[string]*DependencyInput
 	fuzzers  map[string]*fuzzer
-	mu       sync.Mutex
+	mu       *sync.Mutex
 }
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
@@ -45,10 +45,16 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 	reply := &NewInput{}
-	for _, c := range ss.corpusDC {
-		reply.Input = append(reply.Input, cloneInput(c))
+
+	for i := 0; i < 10 && len(ss.corpusDC) > 0; i++ {
+		last := len(ss.corpusDC) - 1
+		reply.Input = append(reply.Input, cloneInput(ss.corpusDC[last]))
+		ss.corpusDC[last] = &Input{}
+		ss.corpusDC = ss.corpusDC[:last]
 	}
-	ss.corpusDI = nil
+	if len(ss.corpusDC) == 0 {
+		ss.corpusDC = nil
+	}
 	return reply, nil
 }
 
@@ -97,7 +103,7 @@ func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) 
 		}
 	}
 
-	ss.corpusDC[request.Sig] = input
+	ss.corpusDC = append(ss.corpusDC, input)
 	return reply, nil
 }
 
@@ -158,9 +164,10 @@ func (ss *Server) SetAddress(address uint32) {
 // RunDependencyRPCServer
 func (ss *Server) RunDependencyRPCServer() {
 
-	ss.corpusDC = make(map[string]*Input)
+	ss.corpusDC = []*Input{}
 	ss.corpusDI = make(map[string]*DependencyInput)
 	ss.fuzzers = make(map[string]*fuzzer)
+	ss.mu = &sync.Mutex{}
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
