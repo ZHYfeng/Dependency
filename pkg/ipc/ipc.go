@@ -5,7 +5,6 @@ package ipc
 
 import (
 	"fmt"
-	"github.com/google/syzkaller/pkg/log"
 	"io"
 	"io/ioutil"
 	"os"
@@ -323,7 +322,6 @@ func addFallbackSignal(p *prog.Prog, info *ProgInfo) {
 }
 
 func (env *Env) parseOutput(p *prog.Prog) (*ProgInfo, error) {
-	log.Logf(0, "parseOutput p: %v", p)
 	out := env.out
 	ncmd, ok := readUint32(&out)
 	if !ok {

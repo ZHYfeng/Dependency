@@ -46,7 +46,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 	defer ss.mu.Unlock()
 	reply := &NewInput{}
 
-	for i := 0; i < 10 && len(ss.corpusDC) > 0; i++ {
+	for i := 0; i < 100 && len(ss.corpusDC) > 0; i++ {
 		last := len(ss.corpusDC) - 1
 		reply.Input = append(reply.Input, cloneInput(ss.corpusDC[last]))
 		ss.corpusDC[last] = &Input{}
