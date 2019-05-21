@@ -180,7 +180,8 @@ namespace dra {
             auto b = this->Address2BB[address]->parent;
             if (b->parent!= nullptr){
                 auto f = b->parent;
-                if (this->Address2BB[address]->parent->parent->Path.find("block/") == 0) {
+                std::cout << "isDriver path : " << f->Path << "\n";
+                if (f->Path.find("block/") == 0) {
                     return true;
                 } else {
 
