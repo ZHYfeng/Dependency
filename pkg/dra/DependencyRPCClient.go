@@ -48,7 +48,7 @@ func (d *DRPCClient) SendInput(input *Input) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	d.i = append(d.i, input)
+	d.i = append(d.i, cloneInput(input))
 	if len(d.i) == 100 {
 		for _, ii := range d.i {
 			_, err := d.c.SendInput(ctx, ii)
