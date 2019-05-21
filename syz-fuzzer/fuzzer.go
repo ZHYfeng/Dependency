@@ -243,6 +243,9 @@ func main() {
 		comparisonTracingEnabled: r.CheckResult.Features[host.FeatureComparisons].Enabled,
 		corpusHashes:             make(map[hash.Sig]struct{}),
 		dManager:                 dManager,
+		corpusSig:        			[]string,
+		corpusDependency: 		  make(map[string]*prog.Prog),
+		cover: 					  make(map[int]*pb.Call),
 	}
 	for i := 0; fuzzer.poll(i == 0, nil); i++ {
 	}
