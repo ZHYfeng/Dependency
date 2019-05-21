@@ -113,10 +113,6 @@ func (proc *Proc) loop() {
 }
 
 func (proc *Proc) triageInput(item *WorkTriage) {
-	ddata := item.p.Serialize()
-	sigg := hash.Hash(ddata)
-	log.Logf(1, "siggggggg %v :", sigg.String())
-
 	log.Logf(1, "#%v: triaging type=%x", proc.pid, item.flags)
 	prio := signalPrio(item.p, &item.info, item.call)
 	inputSignal := signal.FromRaw(item.info.Signal, prio)
@@ -145,25 +141,17 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			// The call was not executed or failed.
 			notexecuted++
 			if notexecuted > signalRuns/2+1 {
-				log.Logf(3, "if happens too often, give up")
 				return // if happens too often, give up
 			}
 			continue
 		}
 		thisSignal, thisCover := getSignalAndCover(item.p, info, item.call)
-
-		log.Logf(3, "newSignal v%", newSignal)
-		log.Logf(3, "thisSignal v%", thisSignal)
-
-		//newSignal = newSignal.Intersection(thisSignal)
-
-		log.Logf(3, "newSignal v%", newSignal)
+		newSignal = newSignal.Intersection(thisSignal)
 		// Without !minimized check manager starts losing some considerable amount
 		// of coverage after each restart. Mechanics of this are not completely clear.
-		if newSignal.Empty() && item.flags&ProgMinimized == 0 {
-			log.Logf(3, "newSignal.Empty() && item.flags&ProgMinimized == 0")
-			return
-		}
+		//if newSignal.Empty() && item.flags&ProgMinimized == 0 {
+		//	return
+		//}
 		inputCover.Merge(thisCover)
 	}
 	if item.flags&ProgMinimized == 0 {
@@ -330,11 +318,11 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	if extra {
 		proc.enqueueCallTriage(p, flags, -1, info.Extra)
 	}
-	//
-	//ccalls := proc.fuzzer.checkNewCoverage(p, info)
-	//for _, callIndex := range ccalls {
-	//	proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
-	//}
+
+	ccalls := proc.fuzzer.checkNewCoverage(p, info)
+	for _, callIndex := range ccalls {
+		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
+	}
 
 	return info
 }
