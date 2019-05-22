@@ -107,8 +107,9 @@ func (proc *Proc) loop() {
 				p := corpus[proc.rnd.Intn(len(corpus))].Clone()
 				p.Mutate(proc.rnd, programLength, ct, corpus)
 				log.Logf(1, "#%v: mutated", proc.pid)
-				info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-				proc.fuzzer.checkNewCoverage(p, info)
+				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+				//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+				//proc.fuzzer.checkNewCoverage(p, info)
 			}
 		}
 	}
