@@ -50,7 +50,7 @@ func (d *DRPCClient) SendInput(input *Input) {
 	defer cancel()
 
 	d.I = append(d.I, cloneInput(input))
-	if len(d.I) == 10 {
+	if len(d.I) == 1 {
 		for _, ii := range d.I {
 			_, err := d.c.SendInput(ctx, ii)
 			if err != nil {
@@ -63,4 +63,12 @@ func (d *DRPCClient) SendInput(input *Input) {
 		}
 	}
 	d.I = nil
+	//n, _ := d.c.GetNewInput(ctx, &Empty{})
+	//log.Logf(1, "Dependency gRPC GetNewInput : %v", len(n.Input))
+	//for _, aa := range n.Input {
+	//	log.Logf(1, "Dependency gRPC GetNewInput sig : %v", aa.Sig)
+	//	for _, cc := range aa.Call {
+	//		log.Logf(1, "Dependency gRPC GetNewInput address : %x", cc.Address)
+	//	}
+	//}
 }
