@@ -46,18 +46,16 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 	reply := &NewInput{}
-	corpusDCtemp := make(map[string]*Input)
 	i := 0
 	for s, c := range ss.corpusDC {
 		if i < 200 {
 			reply.Input = append(reply.Input, cloneInput(c))
+			i++
+			delete(ss.corpusDC, s)
 		} else {
-			corpusDCtemp[s] = c
 		}
-		i++
+
 	}
-	ss.corpusDC = nil
-	ss.corpusDC = corpusDCtemp
 	return reply, nil
 }
 
