@@ -9,7 +9,7 @@ import (
 
 type DRPCClient struct {
 	c DependencyRPCClient
-	i []*Input
+	I []*Input
 }
 
 func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
@@ -48,9 +48,15 @@ func (d *DRPCClient) SendInput(input *Input) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	d.i = append(d.i, cloneInput(input))
-	if len(d.i) == 100 {
-		for _, ii := range d.i {
+
+	log.Logf(3, "Dependency gRPC SendInput sig : v%", input.Sig)
+	for _, cc := range input.Call {
+		log.Logf(3, "Dependency gRPC SendInput address : v%", cc.Address)
+	}
+
+	d.I = append(d.I, cloneInput(input))
+	if len(d.I) == 100 {
+		for _, ii := range d.I {
 			_, err := d.c.SendInput(ctx, ii)
 			if err != nil {
 				log.Fatalf("Dependency gRPC could not SendInput: %v", err)
@@ -60,6 +66,6 @@ func (d *DRPCClient) SendInput(input *Input) {
 				log.Logf(3, "Dependency gRPC SendInput address : v%", cc.Address)
 			}
 		}
-		d.i = nil
+		d.I = nil
 	}
 }

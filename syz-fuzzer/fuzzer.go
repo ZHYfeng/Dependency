@@ -224,7 +224,9 @@ func main() {
 	}
 
 	log.Logf(0, "dialing dManager at %v", *flagDManager)
-	dManager := &pb.DRPCClient{}
+	dManager := &pb.DRPCClient{
+		I: []*pb.Input{},
+	}
 	dManager.RunDependencyRPCClient(flagDManager, flagName)
 
 	needPoll := make(chan struct{}, 1)
@@ -579,7 +581,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	data := p.Serialize()
 	sig := hash.Hash(data)
 	input.Sig = sig.String()
-
+	tflags := false
 	for i, inf := range info.Calls {
 
 		input.Call[uint32(i)] = &pb.Call{
@@ -607,10 +609,17 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 		}
 		if flags == true {
 			calls = append(calls, i)
+			tflags = true
 		}
 	}
 
-	fuzzer.dManager.SendInput(input)
+	if tflags {
+		fuzzer.dManager.SendInput(input)
+	}
+
+	for _, cc := range info.Calls {
+		log.Logf(3, "Dependency gRPC checkNewCoverage address : v%", cc.Cover)
+	}
 
 	return
 }
