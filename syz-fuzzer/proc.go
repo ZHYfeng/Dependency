@@ -107,7 +107,7 @@ func (proc *Proc) loop() {
 				p := corpus[proc.rnd.Intn(len(corpus))].Clone()
 				p.Mutate(proc.rnd, programLength, ct, corpus)
 				log.Logf(1, "#%v: mutated", proc.pid)
-				info := proc.execute(proc.execOptsCover, p, ProgNormal, StatFuzz)
+				info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 				proc.fuzzer.checkNewCoverage(p, info)
 			}
 		}
@@ -338,7 +338,7 @@ func (proc *Proc) executeHintSeed(p *prog.Prog, call int) {
 
 func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes, stat Stat) *ipc.ProgInfo {
 	log.Logf(3, "execute")
-	info := proc.executeRaw(execOpts, p, stat)
+	info := proc.executeRaw(proc.execOptsCover, p, stat)
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
 		log.Logf(0, "Proc execute new p : %v", p)
