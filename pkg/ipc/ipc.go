@@ -363,7 +363,9 @@ func (env *Env) parseOutput(p *prog.Prog) (*ProgInfo, error) {
 			return nil, fmt.Errorf("call %v/%v/%v: cover overflow: %v/%v",
 				i, reply.index, reply.num, reply.coverSize, len(out))
 		}
-		log.Logf(3, "inf.Cover : x%", inf.Cover)
+		for a := range inf.Cover {
+			log.Logf(3, "inf.Cover : x%", uint64(a)+0xffffffff000000)
+		}
 		comps, err := readComps(&out, reply.compsSize)
 		if err != nil {
 			return nil, err
