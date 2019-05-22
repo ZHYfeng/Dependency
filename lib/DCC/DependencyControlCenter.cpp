@@ -129,8 +129,8 @@ namespace dra {
                 }
                 newInput->Clear();
                 this->current_time = std::time(NULL);
-                std::cout << std::ctime(&this->current_time) << "*time : sleep_for 1s." << std::endl;
-                std::this_thread::sleep_for(std::chrono::seconds(1));
+                std::cout << std::ctime(&this->current_time) << "*time : sleep_for 10s." << std::endl;
+                std::this_thread::sleep_for(std::chrono::seconds(10));
             } else {
                 this->current_time = std::time(NULL);
                 std::cout << std::ctime(&this->current_time) << "*time : sleep_for 60s." << std::endl;
