@@ -18,9 +18,10 @@ type fuzzer struct {
 
 // server is used to implement dra.DependencyServer.
 type Server struct {
-	address  uint32
-	Dport    int
-	corpusDC []*Input
+	address uint32
+	Dport   int
+	//corpusDC []*Input
+	corpusDC map[string]*Input
 	corpusDI map[string]*DependencyInput
 	fuzzers  map[string]*fuzzer
 	mu       *sync.Mutex
@@ -45,16 +46,18 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 	reply := &NewInput{}
-
-	for i := 0; i < 100 && len(ss.corpusDC) > 0; i++ {
-		last := len(ss.corpusDC) - 1
-		reply.Input = append(reply.Input, cloneInput(ss.corpusDC[last]))
-		ss.corpusDC[last] = &Input{}
-		ss.corpusDC = ss.corpusDC[:last]
+	corpusDCtemp := make(map[string]*Input)
+	i := 0
+	for s, c := range ss.corpusDC {
+		if i < 200 {
+			reply.Input = append(reply.Input, cloneInput(c))
+		} else {
+			corpusDCtemp[s] = c
+		}
+		i++
 	}
-	if len(ss.corpusDC) == 0 {
-		ss.corpusDC = nil
-	}
+	ss.corpusDC = nil
+	ss.corpusDC = corpusDCtemp
 	return reply, nil
 }
 
@@ -91,19 +94,10 @@ func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) 
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 	reply := &Empty{}
-	input := &Input{
-		Sig:  request.Sig,
-		Call: make(map[uint32]*Call),
-	}
-	for i, c := range request.Call {
-		cc := &Call{Idx: c.Idx, Address: make(map[uint32]uint32)}
-		input.Call[i] = cc
-		for a, _ := range c.Address {
-			cc.Address[a] = 0
-		}
-	}
+	input := cloneInput(request)
 
-	ss.corpusDC = append(ss.corpusDC, input)
+	//ss.corpusDC = append(ss.corpusDC, input)
+	ss.corpusDC[input.Sig] = input
 	return reply, nil
 }
 
@@ -164,7 +158,8 @@ func (ss *Server) SetAddress(address uint32) {
 // RunDependencyRPCServer
 func (ss *Server) RunDependencyRPCServer() {
 
-	ss.corpusDC = []*Input{}
+	//ss.corpusDC = []*Input{}
+	ss.corpusDC = make(map[string]*Input)
 	ss.corpusDI = make(map[string]*DependencyInput)
 	ss.fuzzers = make(map[string]*fuzzer)
 	ss.mu = &sync.Mutex{}

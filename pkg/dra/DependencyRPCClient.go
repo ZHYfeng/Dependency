@@ -49,13 +49,8 @@ func (d *DRPCClient) SendInput(input *Input) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	log.Logf(3, "Dependency gRPC SendInput sig : v%", input.Sig)
-	for _, cc := range input.Call {
-		log.Logf(3, "Dependency gRPC SendInput address : v%", cc.Address)
-	}
-
 	d.I = append(d.I, cloneInput(input))
-	if len(d.I) == 100 {
+	if len(d.I) == 10 {
 		for _, ii := range d.I {
 			_, err := d.c.SendInput(ctx, ii)
 			if err != nil {

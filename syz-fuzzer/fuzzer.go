@@ -573,7 +573,6 @@ func parseOutputType(str string) OutputType {
 
 func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls []int) {
 	fuzzer.coverMu.RLock()
-	defer fuzzer.coverMu.RUnlock()
 
 	input := &pb.Input{
 		Call: make(map[uint32]*pb.Call),
@@ -616,10 +615,10 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	if tflags {
 		fuzzer.dManager.SendInput(input)
 	}
-
 	for _, cc := range info.Calls {
 		log.Logf(3, "Dependency gRPC checkNewCoverage address : v%", cc.Cover)
 	}
 
+	fuzzer.coverMu.RUnlock()
 	return
 }
