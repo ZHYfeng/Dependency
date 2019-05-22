@@ -61,6 +61,15 @@ func (d *DRPCClient) SendInput(input *Input) {
 				log.Logf(3, "Dependency gRPC SendInput address : v%", cc.Address)
 			}
 		}
-		d.I = nil
+	}
+
+	d.I = nil
+	n, _ := d.c.GetNewInput(ctx, &Empty{})
+	log.Logf(3, "Dependency gRPC GetNewInput : v%", len(n.Input))
+	for _, aa := range n.Input {
+		log.Logf(3, "Dependency gRPC GetNewInput sig : v%", aa.Sig)
+		for _, cc := range aa.Call {
+			log.Logf(3, "Dependency gRPC GetNewInput address : v%", cc.Address)
+		}
 	}
 }
