@@ -56,20 +56,20 @@ func (d *DRPCClient) SendInput(input *Input) {
 			if err != nil {
 				log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 			}
-			log.Logf(3, "Dependency gRPC SendInput sig : v%", ii.Sig)
+			log.Logf(1, "Dependency gRPC SendInput sig : v%", ii.Sig)
 			for _, cc := range ii.Call {
-				log.Logf(3, "Dependency gRPC SendInput address : x%", cc.Address)
+				log.Logf(1, "Dependency gRPC SendInput address : x%", cc.Address)
 			}
 		}
 	}
 
 	d.I = nil
 	n, _ := d.c.GetNewInput(ctx, &Empty{})
-	log.Logf(3, "Dependency gRPC GetNewInput : v%", len(n.Input))
+	log.Logf(1, "Dependency gRPC GetNewInput : v%", len(n.Input))
 	for _, aa := range n.Input {
-		log.Logf(3, "Dependency gRPC GetNewInput sig : v%", aa.Sig)
+		log.Logf(1, "Dependency gRPC GetNewInput sig : v%", aa.Sig)
 		for _, cc := range aa.Call {
-			log.Logf(3, "Dependency gRPC GetNewInput address : x%", cc.Address)
+			log.Logf(1, "Dependency gRPC GetNewInput address : x%", cc.Address)
 		}
 	}
 }
