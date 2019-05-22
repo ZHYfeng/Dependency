@@ -616,7 +616,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 		fuzzer.dManager.SendInput(input)
 	}
 	for _, cc := range info.Calls {
-		log.Logf(3, "Dependency gRPC checkNewCoverage address : v%", cc.Cover)
+		log.Logf(3, "Dependency gRPC checkNewCoverage address : %v", cc.Cover)
 	}
 
 	fuzzer.coverMu.RUnlock()
