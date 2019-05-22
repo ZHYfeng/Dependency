@@ -364,7 +364,7 @@ func (env *Env) parseOutput(p *prog.Prog) (*ProgInfo, error) {
 				i, reply.index, reply.num, reply.coverSize, len(out))
 		}
 		for _, a := range inf.Cover {
-			log.Logf(1, "inf.Cover : x%", uint64(a)+0xffffffff000000)
+			log.Logf(1, "inf.Cover : x%", uint64(uint64(a)+0xffffffff00000000))
 		}
 		comps, err := readComps(&out, reply.compsSize)
 		if err != nil {
