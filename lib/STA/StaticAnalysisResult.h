@@ -144,6 +144,8 @@ namespace sta {
         MODS *GetRealModIrs(MOD_IR_TY *p_mod_irs);
 
         MODS *GetRealModBbs(MOD_IR_TY *p_mod_irs);
+
+        void tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, bool branch);
     };
 
 } /* namespace sta */

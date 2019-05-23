@@ -130,7 +130,7 @@ namespace sta {
         std::string inst(""), bb, func, file;
         if (!skip_inst) {
             std::cout << "getLocInf : !skip_inst" << std::endl;
-            inst = this->getValueStr(llvm::dyn_cast<llvm::Value>(I));
+            inst = this->getInstStrID(I);
         }
         llvm::DILocation *instrLoc = StaticAnalysisResult::getCorrectInstrLocation(I);
         if (I->getParent()) {
@@ -252,7 +252,34 @@ namespace sta {
             }//tags
         }
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
+        //Also do some function name pair NLP analysis here.
+        //TODO: the "bool" value indicating the taken branch.
+        tweakModsOnTraits(p_mod_bbs,trait_id,true);
         return p_mod_bbs;
+    }
+
+    void StaticAnalysisResult::tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, bool branch) {
+        if ((!pmods) || this->traitMap.find(br_trait_id) == this->traitMap.end()) {
+            return;
+        }
+        TRAIT& br_trait = this->traitMap[br_trait_id];
+        for (auto& x : br_trait) {
+            if (x.first == "==" || x.first == "!=") {
+                if ((x.first == "==") == branch) {
+                    //Need to take a certain value to reach the destination.
+                }else {
+                    //Need to not take a certain value to reach the destination.
+                }
+            }else if (x.first == ">=" || x.first == "<=") {
+                if ((x.first == ">=") == branch) {
+                    //Need to be larger than a certain value to reach the destination.
+                }else {
+                    //Need to be smaller than a certain value to reach the destination.
+                }
+            }else if (x.first.substr(0,3) == "RET") {
+                //The condition is related to a function return value, do some NLP analysis.
+            }
+        }
     }
 
     MODS *StaticAnalysisResult::GetRealModIrs(MOD_IR_TY *p_mod_irs) {
