@@ -154,13 +154,15 @@ namespace dra {
                     std::cerr << "un find address " << std::hex << final_address << "\n";
                 }
 
-                if (this->cover.find(final_address) != this->cover.end()) {
+                if (this->cover.find(final_address) == this->cover.end()) {
                     std::time_t t = std::time(NULL);
                     coverage *c = new coverage();
                     c->time = t;
                     c->address = final_address;
                     this->cover[final_address] = t;
                     this->time.push_back(c);
+                    std::cerr << "new cover address " << std::hex << final_address << "\n";
+                } else {
                 }
             }
         }
@@ -181,10 +183,11 @@ namespace dra {
             if (b->parent!= nullptr){
                 auto f = b->parent;
                 std::cout << "isDriver path : " << f->Path << "\n";
+                std::cout << "isDriver address : " << address << "\n";
                 if (f->Path.find("block/") == 0) {
                     return true;
-                } else {
-
+                } else if (f->Path.find("drivers/") == 0) {
+                    return true;
                 }
             }
         }

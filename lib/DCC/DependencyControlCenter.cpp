@@ -6,7 +6,7 @@
  */
 
 #include "DependencyControlCenter.h"
-
+#include <chrono>
 #include <thread>
 #include <utility>
 #include <grpcpp/grpcpp.h>
@@ -52,19 +52,20 @@ namespace dra {
 
     void DependencyControlCenter::run() {
         while (true) {
+            std::cout << "wait for get newInput" << std::endl;
             NewInput *newInput = client->GetNewInput();
             if (newInput != nullptr) {
+                std::cout << "get newInput size : " << newInput->input_size() << std::endl;
                 for (int j = 0; j < newInput->input_size(); j++) {
                     const Input &input = newInput->input(j);
+                    std::cout << "new input : " << input.sig() << std::endl;
                     DInput *dInput = DM.getInput(input);
                     DependencyInput dependencyInput;
+                    std::cout << "dUncoveredAddress size : " << dInput->dUncoveredAddress.size() << std::endl;
                     for (auto u : dInput->dUncoveredAddress) {
 
                         this->uncovered_address_number++;
                         if (this->DM.isDriver(u->address)) {
-
-                            std::cout << "u->address is a driver : " << std::hex << u->address << std::endl;
-
                             this->uncovered_address_number_driver++;
 
                             unsigned long long int address = DM.getSyzkallerAddress(u->address);
@@ -122,10 +123,17 @@ namespace dra {
                                 std::cout << "can not find condition_address : " << std::hex << condition_address << std::endl;
                             }
                         } else {
-//                            std::cout << "u->address is not a driver : " << std::hex << u->address << std::endl;
                         }
                     }
                 }
+                newInput->Clear();
+                this->current_time = std::time(NULL);
+                std::cout << std::ctime(&this->current_time) << "*time : sleep_for 10s." << std::endl;
+                std::this_thread::sleep_for(std::chrono::seconds(10));
+            } else {
+                this->current_time = std::time(NULL);
+                std::cout << std::ctime(&this->current_time) << "*time : sleep_for 60s." << std::endl;
+                std::this_thread::sleep_for(std::chrono::seconds(60));
             }
         }
     }
