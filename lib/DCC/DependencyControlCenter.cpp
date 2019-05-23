@@ -77,7 +77,7 @@ namespace dra {
 
                             if (DM.Address2BB.find(condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[condition_address]->parent->basicBlock;
-                                MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
+                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
 
@@ -90,11 +90,10 @@ namespace dra {
                                     std::cout << "get useful static analysis result" << std::endl;
 
                                     for (auto &x : *allBasicblock) {
-                                        llvm::BasicBlock *bb = DM.getRealBB(x.first);
-                                        MOD_INF &mod_inf = x.second;
+                                        llvm::BasicBlock *bb = DM.getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
-                                        std::set<uint64_t> *cmds = this->STA.getIoctlCmdSet(&mod_inf);
+                                        std::set<uint64_t> *cmds = x->getIoctlCmdSet();
                                         std::string Path = dra::DModule::getFileName(bb->getParent());
                                         std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
                                         std::string bbname = bb->getName().str();
@@ -145,7 +144,7 @@ namespace dra {
             auto b = B.second->basicBlock;
             std::cout << "b name : " << B.second->name << std::endl;
 
-            MOD_BBS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
+            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
             if (allBasicblock == nullptr) {
                 // no taint or out side
                 std::cout << "allBasicblock == nullptr" << std::endl;

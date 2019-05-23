@@ -196,17 +196,17 @@ namespace sta {
         return nullptr;
     }
 
-    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B) {
         return this->GetAllGlobalWriteInsts(this->QueryBranchTaint(B));
     }
 
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
-    MOD_IRS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf) {
         if (!p_taint_inf) {
             std::cout << "GetAllGlobalWriteInsts : p_taint_inf = nullptr" << std::endl;
             return nullptr;
         }
-        MOD_IRS *p_mod_irs = new MOD_IRS();
+        MODS *p_mod_irs = new MODS();
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
             auto &trait_id = std::get<0>(x.second);
@@ -216,58 +216,50 @@ namespace sta {
                     continue;
                 }
                 MOD_IR_TY *ps_mod_irs = &(this->tagModMap[tid]);
-                MOD_IRS *p_cur_mod_irs = this->GetRealModIrs(ps_mod_irs);
-                //Merge.
-                for (auto const &x : *p_cur_mod_irs) {
-                    if (p_mod_irs->find(x.first) != p_mod_irs->end()) {
-                        (*p_mod_irs)[x.first].insert(x.second.begin(), x.second.end());
-                    } else {
-                        (*p_mod_irs)[x.first] = x.second;
-                    }
-                }//merge
+                MODS *p_cur_mod_irs = this->GetRealModIrs(ps_mod_irs);
+
+                //Append the list.
+                p_mod_irs->insert(p_mod_irs->end(),p_cur_mod_irs->begin(),p_cur_mod_irs->end());
             }//tags
         }
         return p_mod_irs;
     }
 
-    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B) {
         return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B));
     }
 
-    MOD_BBS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf) {
         if (!p_taint_inf) {
             return nullptr;
         }
-        MOD_BBS *p_mod_bbs = new MOD_BBS();
+        MODS *p_mod_bbs = new MODS();
+        //TODO: we assume now the trait for the "br" remains the same even under different contexts.
+        ID_TY trait_id = 0;
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
-            auto &trait_id = std::get<0>(x.second);
+            trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
                 }
                 MOD_IR_TY *ps_mod_irs = &(this->tagModMap[tid]);
-                MOD_BBS *p_cur_mod_bbs = this->GetRealModBbs(ps_mod_irs);
+                MODS *p_cur_mod_bbs = this->GetRealModBbs(ps_mod_irs);
 
-                //Merge.
-                for (auto const &x : *p_cur_mod_bbs) {
-                    if (p_mod_bbs->find(x.first) != p_mod_bbs->end()) {
-                        (*p_mod_bbs)[x.first].insert(x.second.begin(), x.second.end());
-                    } else {
-                        (*p_mod_bbs)[x.first] = x.second;
-                    }
-                }//merge
+                //Append the list.
+                p_mod_bbs->insert(p_mod_bbs->end(),p_cur_mod_bbs->begin(),p_cur_mod_bbs->end());
             }//tags
         }
+        //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
         return p_mod_bbs;
     }
 
-    MOD_IRS *StaticAnalysisResult::GetRealModIrs(MOD_IR_TY *p_mod_irs) {
+    MODS *StaticAnalysisResult::GetRealModIrs(MOD_IR_TY *p_mod_irs) {
         if (!p_mod_irs) {
             return nullptr;
         }
-        MOD_IRS *mod_irs = new MOD_IRS();
+        MODS *mod_irs = new MODS();
         for (auto &el0 : *p_mod_irs) {
             const std::string &module = el0.first;
             for (auto &el1 : (*p_mod_irs)[module]) {
@@ -281,7 +273,8 @@ namespace sta {
                         if (!pinst) {
                             continue;
                         }
-                        (*mod_irs)[pinst] = el3.second;
+                        Mod *pmod = new Mod(pinst,&el3.second);
+                        mod_irs->push_back(pmod);
                     }//inst
                 }//bb
             }//func
@@ -289,11 +282,11 @@ namespace sta {
         return mod_irs;
     }
 
-    MOD_BBS *StaticAnalysisResult::GetRealModBbs(MOD_IR_TY *p_mod_irs) {
+    MODS *StaticAnalysisResult::GetRealModBbs(MOD_IR_TY *p_mod_irs) {
         if (!p_mod_irs) {
             return nullptr;
         }
-        MOD_BBS *mod_bbs = new MOD_BBS();
+        MODS *mod_bbs = new MODS();
         for (auto &el0 : *p_mod_irs) {
             const std::string &path = el0.first;
             for (auto &el1 : (*p_mod_irs)[path]) {
@@ -304,10 +297,20 @@ namespace sta {
                     if (!pbb) {
                         continue;
                     }
+                    //We should choose the last inst in the bb since it will overwrite the previous written value.
+                    //We can easily do this since we now use the inst's loop# within the parent BB to identify it.
+                    int k = -1;
+                    MOD_INF *p_mod_inf = nullptr;
                     for (auto &el3 : (*p_mod_irs)[path][func][bb]) {
-                        const MOD_INF &mod_inf = el3.second;
-                        (*mod_bbs)[pbb].insert(mod_inf.begin(), mod_inf.end());
-                    }//inst
+                        if (k < 0 || std::stoi(el3.first) > k) {
+                            k = std::stoi(el3.first);
+                            p_mod_inf = &el3.second;
+                        }
+                    }
+                    if (p_mod_inf) {
+                        Mod *pmod = new Mod(pbb,p_mod_inf);
+                        mod_bbs->push_back(pmod);
+                    }
                 }//bb
             }//func
         }//module
@@ -324,9 +327,7 @@ namespace sta {
                 if (f->BasicBlock.find(bb) != f->BasicBlock.end()) {
                     auto bbb = f->BasicBlock[bb]->basicBlock;
                     for (llvm::Instruction &curInst : *bbb) {
-                        //TODO: This might be unreliable as "dbg xxxxx" might be different!
-                        //TODO: Although we set up a cache now, this can still be *slow* depending on cache hit/miss.
-                        if (this->getValueStr(llvm::dyn_cast<llvm::Value>(&curInst)) == inst) {
+                        if (this->getInstStrID(&curInst) == inst) {
                             return &curInst;
                         }
                     }//Inst
@@ -335,9 +336,7 @@ namespace sta {
                         auto name = getBBStrID(&it);
                         if (name == bb) {
                             for (llvm::Instruction &curInst : it) {
-                                //TODO: This might be unreliable as "dbg xxxxx" might be different!
-                                //TODO: Although we set up a cache now, this can still be *slow* depending on cache hit/miss.
-                                if (this->getValueStr(llvm::dyn_cast<llvm::Value>(&curInst)) == inst) {
+                                if (this->getInstStrID(&curInst) == inst) {
                                     return &curInst;
                                 }
                             }
@@ -405,18 +404,6 @@ namespace sta {
         return;
     }
 
-    std::set<uint64_t> *StaticAnalysisResult::getIoctlCmdSet(MOD_INF *p_mod_inf) {
-        if (!p_mod_inf) {
-            return nullptr;
-        }
-        std::set<uint64_t> *s = new std::set<uint64_t>();
-        for (auto &x : *p_mod_inf) {
-            std::set<uint64_t> &cs = x.second[1];
-            s->insert(cs.begin(), cs.end());
-        }
-        return s;
-    }
-
     /*
     std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock *B) {
         std::time_t current_time = std::time(NULL);
@@ -471,6 +458,32 @@ namespace sta {
             }
         }
         return BBNameMap[B];
+    }
+
+    std::string& StaticAnalysisResult::getInstStrID(llvm::Instruction* I) {
+        static std::map<llvm::Instruction*,std::string> InstNameNoMap;
+        if (InstNameNoMap.find(I) == InstNameNoMap.end()) {
+            if (I) {
+                if (!I->getName().empty()){
+                    InstNameNoMap[I] = I->getName().str();
+                }else if (I->getParent()){
+                    int no = 0;
+                    for (llvm::Instruction& i : *(I->getParent())) {
+                        if (&i == I) {
+                            InstNameNoMap[I] = std::to_string(no);
+                            break;
+                        }
+                        ++no;
+                    }
+                }else{
+                    //Seems impossible..
+                    InstNameNoMap[I] = "";
+                }
+            }else{
+                InstNameNoMap[I] = "";
+            }
+        }
+        return InstNameNoMap[I];
     }
 
     //Set up a cache for the expensive "print" operation.
