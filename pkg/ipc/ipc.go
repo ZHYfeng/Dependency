@@ -257,6 +257,7 @@ func (env *Env) Exec(opts *ExecOpts, p *prog.Prog) (output []byte, info *ProgInf
 	var progData []byte
 	if env.config.Flags&FlagUseShmem == 0 {
 		progData = env.in[:progSize]
+		log.Logf(3, "progData : %v", progData)
 	}
 	// Zero out the first two words (ncmd and nsig), so that we don't have garbage there
 	// if executor crashes before writing non-garbage there.
@@ -277,6 +278,7 @@ func (env *Env) Exec(opts *ExecOpts, p *prog.Prog) (output []byte, info *ProgInf
 		}
 		atomic.AddUint64(&env.StatRestarts, 1)
 		env.cmd, err0 = makeCommand(env.pid, env.bin, env.config, env.inFile, env.outFile, env.out, tmpDirPath)
+		log.Logf(3, "env.cmd : %v", env.cmd)
 		if err0 != nil {
 			return
 		}
