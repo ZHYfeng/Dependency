@@ -278,7 +278,7 @@ func (env *Env) Exec(opts *ExecOpts, p *prog.Prog) (output []byte, info *ProgInf
 		}
 		atomic.AddUint64(&env.StatRestarts, 1)
 		env.cmd, err0 = makeCommand(env.pid, env.bin, env.config, env.inFile, env.outFile, env.out, tmpDirPath)
-		log.Logf(3, "env.cmd : %v", env.cmd)
+		//log.Logf(3, "env.cmd : %v", env.cmd)
 		if err0 != nil {
 			return
 		}
