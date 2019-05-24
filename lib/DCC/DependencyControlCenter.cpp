@@ -76,8 +76,8 @@ namespace dra {
                             uncoveredAddress->set_idx(u->idx);
                             uncoveredAddress->set_condition_address(condition_address);
 
-                            if (DM.Address2BB.find(condition_address) != DM.Address2BB.end()) {
-                                auto *b = DM.Address2BB[condition_address]->parent->basicBlock;
+                            if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
+                                auto *b = DM.Address2BB[u->condition_address]->parent->basicBlock;
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
@@ -164,6 +164,29 @@ namespace dra {
 
             }
         }
+
+        exit(0);
+    }
+
+    void DependencyControlCenter::test_rpc() {
+        DependencyInput dependencyInput;
+        UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
+        uncoveredAddress->set_address(0xfffffff1);
+        uncoveredAddress->set_idx(2);
+        uncoveredAddress->set_condition_address(0xfffffff2);
+
+        auto function_name = "ioctl";
+        RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
+        relatedSyscall->set_address(0xfffffff3);
+        relatedSyscall->set_name(function_name);
+        relatedSyscall->set_number(0xfffffff4);
+
+        RelatedInput *relatedInput = uncoveredAddress->add_related_input();
+        relatedInput->set_address(0xfffffff5);
+        relatedInput->set_sig("sig");
+
+        client->SendDependencyInput(dependencyInput);
+
 
         exit(0);
     }
