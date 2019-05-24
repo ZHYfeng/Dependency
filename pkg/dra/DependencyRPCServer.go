@@ -98,11 +98,21 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDependencyInput, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
-	f := ss.fuzzers[request.Name]
-	if f == nil {
+	reply := &NewDependencyInput{}
+	if f, ok := ss.fuzzers[request.Name]; ok {
+		i := 0
+		for s, c := range f.corpusDI {
+			if i < 50 {
+				reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(c))
+				i++
+				delete(f.corpusDI, s)
+			} else {
+			}
+
+		}
+	} else {
 		log.Fatalf("fuzzer %v is not connected", request.Name)
 	}
-	reply := &NewDependencyInput{}
 
 	//for i := 0; i < 50 && len(f.corpusDI) > 0; i++ {
 	//	last := len(f.corpusDI) - 1
@@ -113,16 +123,6 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 	//	f.corpusDI = nil
 	//}
 
-	i := 0
-	for s, c := range f.corpusDI {
-		if i < 50 {
-			reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(c))
-			i++
-			delete(f.corpusDI, s)
-		} else {
-		}
-
-	}
 	return reply, nil
 }
 
