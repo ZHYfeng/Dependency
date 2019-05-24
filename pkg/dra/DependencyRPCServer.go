@@ -90,8 +90,10 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 		}
 	}
 	for _, f := range ss.fuzzers {
-		f.corpusDI[sig] = cd
+		f.corpusDI[sig] = cloneDependencyInput(cd)
+		reply.Address = uint32(len(f.corpusDI))
 	}
+	reply.Name = "success"
 	return reply, nil
 }
 
@@ -138,21 +140,16 @@ func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) 
 }
 
 func cloneDependencyInput(d *DependencyInput) *DependencyInput {
-	cd := &DependencyInput{
-		Sig:              d.Sig,
-		UncoveredAddress: []*UncoveredAddress{},
-	}
+	cd := new(DependencyInput)
+	cd.Sig = d.Sig
 	for _, p := range d.Prog {
 		cd.Prog = append(cd.Prog, p)
 	}
 	for _, u := range d.UncoveredAddress {
-		u1 := &UncoveredAddress{
-			Address:          u.Address,
-			Idx:              u.Idx,
-			ConditionAddress: u.ConditionAddress,
-			RelatedInput:     []*RelatedInput{},
-			RelatedSyscall:   []*RelatedSyscall{},
-		}
+		u1 := new(UncoveredAddress)
+		u1.Address = u.Address
+		u1.Idx = u.Idx
+		u1.ConditionAddress = u.ConditionAddress
 		for _, i := range u.RelatedInput {
 			i1 := &RelatedInput{
 				Sig:     i.Sig,
