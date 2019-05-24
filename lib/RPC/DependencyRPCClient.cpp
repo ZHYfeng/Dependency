@@ -58,16 +58,17 @@ namespace dra {
         return reply;
     }
 
-    void DependencyRPCClient::GetDependencyInput() {
+    NewDependencyInput *DependencyRPCClient::GetDependencyInput() {
         Empty request;
-        NewDependencyInput reply;
+        NewDependencyInput *reply = new NewDependencyInput;
         grpc::ClientContext context;
-        grpc::Status status = stub_->GetDependencyInput(&context, request, &reply);
+        grpc::Status status = stub_->GetDependencyInput(&context, request, reply);
         if (status.ok()) {
 
         } else {
             std::cout << status.error_code() << ": " << status.error_message() << std::endl;
         }
+        return reply;
     }
 
 } /* namespace dra */
