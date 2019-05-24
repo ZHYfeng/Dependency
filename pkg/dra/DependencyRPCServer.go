@@ -48,7 +48,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 	reply := &NewInput{}
 	i := 0
 	for s, c := range ss.corpusDC {
-		if i < 200 {
+		if i < 50 {
 			reply.Input = append(reply.Input, cloneInput(c))
 			i++
 			delete(ss.corpusDC, s)

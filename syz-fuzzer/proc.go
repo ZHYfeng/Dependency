@@ -339,7 +339,7 @@ func (proc *Proc) executeHintSeed(p *prog.Prog, call int) {
 
 func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes, stat Stat) *ipc.ProgInfo {
 	log.Logf(3, "execute")
-	info := proc.executeRaw(proc.execOptsCover, p, stat)
+	info := proc.executeRaw(execOpts, p, stat)
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
 		log.Logf(0, "Proc execute new p : %v", p)
