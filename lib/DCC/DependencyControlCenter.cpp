@@ -119,7 +119,7 @@ namespace dra {
 
                                         std::cerr << "SendDependencyInput : " << std::endl;
                                         auto reply = client->SendDependencyInput(dependencyInput);
-                                        if (reply->name() != "") {
+                                        if (reply->name() == "") {
 
                                         } else {
                                             std::cerr << "SendDependencyInput error : " << reply->name() << std::endl;
