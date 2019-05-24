@@ -394,7 +394,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		log.Fatalf("failed to deserialize prog from another fuzzer: %v", err)
 	}
 
-	for _, u := range dependencyInput.GetUncoveredAddress() {
+	for idx, u := range dependencyInput.GetUncoveredAddress() {
 		u1 := new(prog.Uncover)
 		u1.UncoveredAddress = u.GetAddress()
 		u1.Idx = u.GetIdx()
@@ -448,7 +448,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 			u1.RelatedCalls = append(u1.RelatedCalls, c1)
 		}
 
-		p.Uncover = append(p.Uncover, u1)
+		p.Uncover[idx] = u1
 	}
 	fuzzer.addDInputToCorpus(p, sig)
 
@@ -460,6 +460,7 @@ func (fuzzer *Fuzzer) addDInputToCorpus(p *prog.Prog, sig string) {
 		fuzzer.corpusSig = append(fuzzer.corpusSig, sig)
 		fuzzer.corpusDependency[sig] = p.CloneWithUncover()
 	}
+	log.Logf(3, "fuzzer.corpusSig size : %v", len(fuzzer.corpusSig))
 	fuzzer.corpusDMu.Unlock()
 }
 

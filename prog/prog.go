@@ -11,9 +11,10 @@ type Prog struct {
 	Target       *Target
 	Calls        []*Call
 	Comments     []string
-	Uncover      []*Uncover
-	UncoverIdx   uint32
+	Uncover      map[int]*Uncover
+	UncoverIdx   int
 	WriteAddress []uint32
+	Sig          string
 }
 
 type RelatedProgs struct {

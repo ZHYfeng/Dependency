@@ -645,7 +645,9 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 
 	retry := false
 	//select a uncover address random
-	uncover := p.Uncover[r.Intn(len(p.Uncover))]
+	uidx := r.Intn(len(p.Uncover))
+	p.UncoverIdx = uidx
+	uncover := p.Uncover[uidx]
 	idx := int(uncover.Idx)
 	p.WriteAddress = nil
 

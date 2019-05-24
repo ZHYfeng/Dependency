@@ -216,7 +216,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		proc.fuzzer.workQueue.enqueue(&WorkSmash{item.p, item.call})
 	}
 
-	if item.p.Uncover != nil {
+	if len(item.p.Uncover) != 0 {
 		proc.checkCoverage(item.p, inputCover)
 	}
 
@@ -227,6 +227,8 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
 	res = false
 	if proc.checkUncoveredAddress(p, inputCover) {
+		corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
+		delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
 		log.Logf(1, "checkUncoveredAddress")
 		os.Exit(0)
 	} else if proc.checkWriteAddress(p, inputCover) {
@@ -343,11 +345,11 @@ func (proc *Proc) executeHintSeed(p *prog.Prog, call int) {
 }
 
 func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes, stat Stat) *ipc.ProgInfo {
-	log.Logf(3, "execute")
+	//log.Logf(3, "execute")
 	info := proc.executeRaw(execOpts, p, stat)
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
-		log.Logf(0, "Proc execute new p : %v", p)
+		//log.Logf(0, "Proc execute new p : %v", p)
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}
 	if extra {
@@ -369,7 +371,7 @@ func (proc *Proc) enqueueCallTriage(p *prog.Prog, flags ProgTypes, callIndex int
 	// Note: triage input uses executeRaw to get coverage.
 	info.Cover = nil
 	proc.fuzzer.workQueue.enqueue(&WorkTriage{
-		p:     p.Clone(),
+		p:     p.CloneWithUncover(),
 		call:  callIndex,
 		info:  info,
 		flags: flags,

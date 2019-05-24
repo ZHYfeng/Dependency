@@ -29,9 +29,10 @@ func (p *Prog) CloneWithUncover() *Prog {
 	p1 := &Prog{
 		Target:       p.Target,
 		Calls:        make([]*Call, len(p.Calls)),
-		Uncover:      make([]*Uncover, len(p.Uncover)),
+		Uncover:      make(map[int]*Uncover),
 		UncoverIdx:   p.UncoverIdx,
 		WriteAddress: p.WriteAddress,
+		Sig:          p.Sig,
 	}
 	newargs := make(map[*ResultArg]*ResultArg)
 	for ci, c := range p.Calls {
