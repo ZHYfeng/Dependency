@@ -191,8 +191,11 @@ namespace dra {
                     } else if (f->Path.find("drivers/") == 0) {
                         return true;
                     }
+                } else {
+                    std::cerr << "isDriver not have parent f" << std::hex << address << "\n";
                 }
-                std::cerr << "isDriver not have parent " << std::hex << address << "\n";
+            } else {
+                std::cerr << "isDriver not have parent bb" << std::hex << address << "\n";
             }
         }else {
             std::cerr << "isDriver not find address " << std::hex << address << "\n";
