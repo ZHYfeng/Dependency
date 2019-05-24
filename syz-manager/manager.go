@@ -191,7 +191,7 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 
 	// Create gRPC server.
 	ss := &dra.Server{}
-	ss.RunDependencyRPCServer()
+	ss.RunDependencyRPCServer(&mgr.corpus)
 	mgr.dprot = ss.Dport
 
 	vmlinux := filepath.Join(mgr.cfg.KernelObj, mgr.sysTarget.KernelObject)
@@ -1081,14 +1081,4 @@ func publicWebAddr(addr string) string {
 		}
 	}
 	return "http://" + addr
-}
-
-func (mgr *Manager) GetInput(sig string, inp *rpctype.RPCInput) error {
-	if i, ok := mgr.corpus[sig]; ok {
-		inp.Call = i.Call
-		inp.Cover = i.Cover
-		inp.Prog = i.Prog
-		inp.Signal = i.Signal
-	}
-	return nil
 }

@@ -680,7 +680,7 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 				c0c.Args[ai] = clone(arg, newargs)
 			}
 
-			// Change args of a call.
+			// Change 2rd args of a call.
 			s := analyze(ct, p, c0c)
 			updateSizes := true
 			ma := &mutationArgs{target: p.Target}

@@ -3,6 +3,7 @@ package dra
 import (
 	"context"
 	"github.com/google/syzkaller/pkg/log"
+	"github.com/google/syzkaller/pkg/rpctype"
 	"google.golang.org/grpc"
 	"net"
 	"sync"
@@ -25,6 +26,7 @@ type Server struct {
 	corpusDI map[string]*DependencyInput
 	fuzzers  map[string]*fuzzer
 	mu       *sync.Mutex
+	corpus   *map[string]rpctype.RPCInput
 }
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
@@ -62,10 +64,33 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInput) (*Empty, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
-	for _, f := range ss.fuzzers {
-		f.corpusDI = append(f.corpusDI, *cloneDependencyInput(request))
+	reply := &Empty{}
+	cd := cloneDependencyInput(request)
+	sig := cd.Sig
+	if inp, ok := (*ss.corpus)[sig]; ok {
+		for _, p := range inp.Prog {
+			cd.Prog = append(cd.Prog, p)
+		}
+	} else {
+		reply.Name = "dependency sig error : " + sig
+		return reply, nil
 	}
-	return &Empty{}, nil
+	for _, u := range cd.UncoveredAddress {
+		for _, r := range u.RelatedInput {
+			if rinp, ok := (*ss.corpus)[r.Sig]; ok {
+				for _, p := range rinp.Prog {
+					rinp.Prog = append(rinp.Prog, p)
+				}
+			} else {
+				reply.Name = "related input sig error : " + r.Sig
+				return reply, nil
+			}
+		}
+	}
+	for _, f := range ss.fuzzers {
+		f.corpusDI = append(f.corpusDI, *cd)
+	}
+	return reply, nil
 }
 
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDependencyInput, error) {
@@ -77,7 +102,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 	}
 	reply := &NewDependencyInput{}
 
-	for i := 0; i < 100 && len(f.corpusDI) > 0; i++ {
+	for i := 0; i < 50 && len(f.corpusDI) > 0; i++ {
 		last := len(f.corpusDI) - 1
 		reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(&f.corpusDI[last]))
 		f.corpusDI = f.corpusDI[:last]
@@ -104,6 +129,9 @@ func cloneDependencyInput(d *DependencyInput) *DependencyInput {
 		Sig:              d.Sig,
 		UncoveredAddress: []*UncoveredAddress{},
 	}
+	for _, p := range d.Prog {
+		cd.Prog = append(cd.Prog, p)
+	}
 	for _, u := range d.UncoveredAddress {
 		u1 := &UncoveredAddress{
 			Address:          u.Address,
@@ -116,6 +144,9 @@ func cloneDependencyInput(d *DependencyInput) *DependencyInput {
 			i1 := &RelatedInput{
 				Sig:     i.Sig,
 				Address: i.Address,
+			}
+			for _, p := range i.Prog {
+				i1.Prog = append(cd.Prog, p)
 			}
 			u1.RelatedInput = append(u1.RelatedInput, i1)
 		}
@@ -154,13 +185,14 @@ func (ss *Server) SetAddress(address uint32) {
 }
 
 // RunDependencyRPCServer
-func (ss *Server) RunDependencyRPCServer() {
+func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	//ss.corpusDC = []*Input{}
 	ss.corpusDC = make(map[string]*Input)
 	ss.corpusDI = make(map[string]*DependencyInput)
 	ss.fuzzers = make(map[string]*fuzzer)
 	ss.mu = &sync.Mutex{}
+	ss.corpus = corpus
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {

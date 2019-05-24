@@ -389,11 +389,7 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 
 func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
 	sig := dependencyInput.GetSig()
-	inp := &rpctype.RPCInput{}
-	if err := fuzzer.manager.Call("Manager.GetInput", sig, inp); err != nil {
-		panic(err)
-	}
-	p, err := fuzzer.target.Deserialize(inp.Prog, prog.NonStrict)
+	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
 	if err != nil {
 		log.Fatalf("failed to deserialize prog from another fuzzer: %v", err)
 	}
@@ -403,12 +399,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		u1.UncoveredAddress = u.GetAddress()
 		u1.Idx = u.GetIdx()
 		for _, i := range u.GetRelatedInput() {
-			rsig := i.GetSig()
-			rinp := &rpctype.RPCInput{}
-			if err := fuzzer.manager.Call("Manager.GetInput", rsig, rinp); err != nil {
-				panic(err)
-			}
-			rp, err := fuzzer.target.Deserialize(inp.Prog, prog.NonStrict)
+			rp, err := fuzzer.target.Deserialize(i.GetProg(), prog.NonStrict)
 			if err != nil {
 				panic(err)
 			}
