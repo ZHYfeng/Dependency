@@ -81,9 +81,11 @@ namespace dra {
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
+                                    std::cout << "allBasicblock == nullptr" << std::endl;
 
                                 } else if (allBasicblock->size() == 0) {
                                     // unrelated to gv
+                                    std::cout << "allBasicblock->size() == 0" << std::endl;
 
                                 } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
                                     this->uncovered_address_number_gv_driver++;
