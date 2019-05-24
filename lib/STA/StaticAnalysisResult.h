@@ -35,6 +35,7 @@ namespace sta {
             this->repeat = 0;
             this->mod_inf = *pm;
             this->pallcmds = nullptr;
+            this->prio = 0;
         }
 
         Mod(llvm::Instruction *i, MOD_INF *pm) {
@@ -46,10 +47,18 @@ namespace sta {
             this->repeat = 0;
             this->mod_inf = *pm;
             this->pallcmds = nullptr;
+            this->prio = 0;
         }
 
         ~Mod() {
             //
+        }
+
+        bool equal(const Mod *m) {
+            if (!m) {
+                return false;
+            }
+            return (this->B == m->B && this->I == m->I);
         }
 
         std::set<uint64_t> *getIoctlCmdSet() {
@@ -70,6 +79,7 @@ namespace sta {
         llvm::BasicBlock *B;
         llvm::Instruction *I;
         int64_t repeat;
+        int prio;
 
     private:
         MOD_INF mod_inf;

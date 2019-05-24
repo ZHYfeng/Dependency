@@ -219,7 +219,14 @@ namespace sta {
                 MODS *p_cur_mod_irs = this->GetRealModIrs(ps_mod_irs);
 
                 //Append the list.
-                p_mod_irs->insert(p_mod_irs->end(),p_cur_mod_irs->begin(),p_cur_mod_irs->end());
+                for (auto& x : *p_cur_mod_irs) {
+                    if (std::find_if(p_mod_irs->begin(), p_mod_irs->end(), [x](const Mod* m){
+                            return x->equal(m);
+                        }) == p_mod_irs->end()) 
+                    {
+                        p_mod_irs->push_back(x);
+                    }
+                }
             }//tags
         }
         return p_mod_irs;
@@ -236,6 +243,7 @@ namespace sta {
         MODS *p_mod_bbs = new MODS();
         //TODO: we assume now the trait for the "br" remains the same even under different contexts.
         ID_TY trait_id = 0;
+        //Iterate over different contexts of "br".
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
             trait_id = std::get<0>(x.second);
@@ -248,7 +256,16 @@ namespace sta {
                 MODS *p_cur_mod_bbs = this->GetRealModBbs(ps_mod_irs);
 
                 //Append the list.
-                p_mod_bbs->insert(p_mod_bbs->end(),p_cur_mod_bbs->begin(),p_cur_mod_bbs->end());
+                //TODO: this can be problematic, since one BB can contain two different insts that update different global states and have different traits.
+                //TODO: maybe we should deprecate GetAllGlobalWriteBBs and use GetAllGlobalWriteInsts instead.
+                for (auto& x : *p_cur_mod_bbs) {
+                    if (std::find_if(p_mod_bbs->begin(), p_mod_bbs->end(), [x](const Mod* m){
+                            return x->equal(m);
+                        }) == p_mod_bbs->end()) 
+                    {
+                        p_mod_bbs->push_back(x);
+                    }
+                }
             }//tags
         }
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
