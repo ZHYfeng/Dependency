@@ -99,7 +99,8 @@ func (proc *Proc) loop() {
 			if proc.IsUseDependencyMutate() {
 				corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
 				corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
-				p := corpusDependencySnapshot[corpusSigSnapshot[proc.rnd.Intn(len(corpusSigSnapshot))]].CloneWithUncover()
+				lens := len(corpusSigSnapshot)
+				p := corpusDependencySnapshot[corpusSigSnapshot[proc.rnd.Intn(lens)]].CloneWithUncover()
 				p.DependencyMutate(proc.rnd, programLength, ct, corpus)
 				log.Logf(1, "#%v: dependency mutated", proc.pid)
 				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
@@ -236,9 +237,13 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 }
 
 func (proc *Proc) IsUseDependencyMutate() (result bool) {
-	v := proc.rnd.Intn(10)
-	result = v < 5
-	result = true
+	if len(proc.fuzzer.corpusSig) != 0 {
+		v := proc.rnd.Intn(10)
+		result = v < 5
+		result = true
+	} else {
+		result = false
+	}
 	return
 }
 
