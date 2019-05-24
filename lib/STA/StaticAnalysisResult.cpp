@@ -207,9 +207,12 @@ namespace sta {
             return nullptr;
         }
         MODS *p_mod_irs = new MODS();
+        //TODO: we assume now the trait for the "br" remains the same even under different contexts.
+        ID_TY trait_id = 0;
+        //Iterate over different contexts of "br".
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
-            auto &trait_id = std::get<0>(x.second);
+            trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
@@ -229,6 +232,10 @@ namespace sta {
                 }
             }//tags
         }
+        //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
+        //Also do some function name pair NLP analysis here.
+        //TODO: the "bool" value indicating the taken branch.
+        //tweakModsOnTraits(p_mod_irs,trait_id,true);
         return p_mod_irs;
     }
 
@@ -271,7 +278,7 @@ namespace sta {
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
         //Also do some function name pair NLP analysis here.
         //TODO: the "bool" value indicating the taken branch.
-        tweakModsOnTraits(p_mod_bbs,trait_id,true);
+        //tweakModsOnTraits(p_mod_bbs,trait_id,true);
         return p_mod_bbs;
     }
 
