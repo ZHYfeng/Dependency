@@ -62,7 +62,7 @@ namespace dra {
         Empty request;
         NewDependencyInput *reply = new NewDependencyInput;
         grpc::ClientContext context;
-        request.set_name("0");
+        request.set_name("vm-0");
         grpc::Status status = stub_->GetDependencyInput(&context, request, reply);
         if (status.ok()) {
 
