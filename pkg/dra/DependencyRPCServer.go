@@ -14,7 +14,7 @@ const (
 )
 
 type fuzzer struct {
-	corpusDI []DependencyInput
+	corpusDI map[string]*DependencyInput
 }
 
 // server is used to implement dra.DependencyServer.
@@ -32,7 +32,9 @@ type Server struct {
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
-	ss.fuzzers[request.Name] = &fuzzer{}
+	ss.fuzzers[request.Name] = &fuzzer{
+		corpusDI: map[string]*DependencyInput{},
+	}
 	return &Empty{}, nil
 }
 
@@ -88,7 +90,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 		}
 	}
 	for _, f := range ss.fuzzers {
-		f.corpusDI = append(f.corpusDI, *cd)
+		f.corpusDI[sig] = cd
 	}
 	return reply, nil
 }
@@ -102,13 +104,24 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 	}
 	reply := &NewDependencyInput{}
 
-	for i := 0; i < 50 && len(f.corpusDI) > 0; i++ {
-		last := len(f.corpusDI) - 1
-		reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(&f.corpusDI[last]))
-		f.corpusDI = f.corpusDI[:last]
-	}
-	if len(f.corpusDI) == 0 {
-		f.corpusDI = nil
+	//for i := 0; i < 50 && len(f.corpusDI) > 0; i++ {
+	//	last := len(f.corpusDI) - 1
+	//	reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(&f.corpusDI[last]))
+	//	f.corpusDI = f.corpusDI[:last]
+	//}
+	//if len(f.corpusDI) == 0 {
+	//	f.corpusDI = nil
+	//}
+
+	i := 0
+	for s, c := range f.corpusDI {
+		if i < 50 {
+			reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(c))
+			i++
+			delete(f.corpusDI, s)
+		} else {
+		}
+
 	}
 	return reply, nil
 }
@@ -172,7 +185,7 @@ func cloneInput(d *Input) *Input {
 			Address: make(map[uint32]uint32),
 			Idx:     u.Idx,
 		}
-		for aa, _ := range u.Address {
+		for aa := range u.Address {
 			u1.Address[aa] = 0
 		}
 		ci.Call[i] = u1
