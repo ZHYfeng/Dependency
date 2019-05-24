@@ -30,12 +30,13 @@ message Empty {
 message RelatedInput {
     string sig = 1; // hash value for each input from syzkaller
     uint32 address = 2;
+    bytes prog = 3;
 }
 
 message RelatedSyscall {
     string name = 1;
     uint32 address = 2;
-    uint64 number = 3;
+    uint64 number =3;
 }
 
 message UncoveredAddress {
@@ -49,6 +50,7 @@ message UncoveredAddress {
 message DependencyInput {
     string sig = 1; // hash value for each input from syzkaller
     repeated UncoveredAddress uncovered_address = 2;
+    bytes prog = 3;
 }
 
 message NewDependencyInput {
@@ -63,6 +65,7 @@ message Call {
 message Input {
     string sig = 1;
     map<uint32, Call> call = 2;
+    bytes prog = 3;
 }
 
 message NewInput {

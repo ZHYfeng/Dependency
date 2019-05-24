@@ -369,6 +369,18 @@ class RelatedInput :
   std::string* release_sig();
   void set_allocated_sig(std::string* sig);
 
+  // bytes prog = 3;
+  void clear_prog();
+  static const int kProgFieldNumber = 3;
+  const std::string& prog() const;
+  void set_prog(const std::string& value);
+  void set_prog(std::string&& value);
+  void set_prog(const char* value);
+  void set_prog(const void* value, size_t size);
+  std::string* mutable_prog();
+  std::string* release_prog();
+  void set_allocated_prog(std::string* prog);
+
   // uint32 address = 2;
   void clear_address();
   static const int kAddressFieldNumber = 2;
@@ -381,6 +393,7 @@ class RelatedInput :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr prog_;
   ::PROTOBUF_NAMESPACE_ID::uint32 address_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
@@ -832,6 +845,18 @@ class DependencyInput :
   std::string* release_sig();
   void set_allocated_sig(std::string* sig);
 
+  // bytes prog = 3;
+  void clear_prog();
+  static const int kProgFieldNumber = 3;
+  const std::string& prog() const;
+  void set_prog(const std::string& value);
+  void set_prog(std::string&& value);
+  void set_prog(const char* value);
+  void set_prog(const void* value, size_t size);
+  std::string* mutable_prog();
+  std::string* release_prog();
+  void set_allocated_prog(std::string* prog);
+
   // @@protoc_insertion_point(class_scope:dra.DependencyInput)
  private:
   class HasBitSetters;
@@ -839,6 +864,7 @@ class DependencyInput :
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::UncoveredAddress > uncovered_address_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr prog_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -1309,6 +1335,18 @@ class Input :
   std::string* release_sig();
   void set_allocated_sig(std::string* sig);
 
+  // bytes prog = 3;
+  void clear_prog();
+  static const int kProgFieldNumber = 3;
+  const std::string& prog() const;
+  void set_prog(const std::string& value);
+  void set_prog(std::string&& value);
+  void set_prog(const char* value);
+  void set_prog(const void* value, size_t size);
+  std::string* mutable_prog();
+  std::string* release_prog();
+  void set_allocated_prog(std::string* prog);
+
   // @@protoc_insertion_point(class_scope:dra.Input)
  private:
   class HasBitSetters;
@@ -1321,6 +1359,7 @@ class Input :
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
       0 > call_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr prog_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -1601,6 +1640,57 @@ inline void RelatedInput::set_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   // @@protoc_insertion_point(field_set:dra.RelatedInput.address)
 }
 
+// bytes prog = 3;
+inline void RelatedInput::clear_prog() {
+  prog_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& RelatedInput::prog() const {
+  // @@protoc_insertion_point(field_get:dra.RelatedInput.prog)
+  return prog_.GetNoArena();
+}
+inline void RelatedInput::set_prog(const std::string& value) {
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:dra.RelatedInput.prog)
+}
+inline void RelatedInput::set_prog(std::string&& value) {
+  
+  prog_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:dra.RelatedInput.prog)
+}
+inline void RelatedInput::set_prog(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:dra.RelatedInput.prog)
+}
+inline void RelatedInput::set_prog(const void* value, size_t size) {
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:dra.RelatedInput.prog)
+}
+inline std::string* RelatedInput::mutable_prog() {
+  
+  // @@protoc_insertion_point(field_mutable:dra.RelatedInput.prog)
+  return prog_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* RelatedInput::release_prog() {
+  // @@protoc_insertion_point(field_release:dra.RelatedInput.prog)
+  
+  return prog_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void RelatedInput::set_allocated_prog(std::string* prog) {
+  if (prog != nullptr) {
+    
+  } else {
+    
+  }
+  prog_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), prog);
+  // @@protoc_insertion_point(field_set_allocated:dra.RelatedInput.prog)
+}
+
 // -------------------------------------------------------------------
 
 // RelatedSyscall
@@ -1875,6 +1965,57 @@ DependencyInput::uncovered_address() const {
   return uncovered_address_;
 }
 
+// bytes prog = 3;
+inline void DependencyInput::clear_prog() {
+  prog_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& DependencyInput::prog() const {
+  // @@protoc_insertion_point(field_get:dra.DependencyInput.prog)
+  return prog_.GetNoArena();
+}
+inline void DependencyInput::set_prog(const std::string& value) {
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:dra.DependencyInput.prog)
+}
+inline void DependencyInput::set_prog(std::string&& value) {
+  
+  prog_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:dra.DependencyInput.prog)
+}
+inline void DependencyInput::set_prog(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:dra.DependencyInput.prog)
+}
+inline void DependencyInput::set_prog(const void* value, size_t size) {
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:dra.DependencyInput.prog)
+}
+inline std::string* DependencyInput::mutable_prog() {
+  
+  // @@protoc_insertion_point(field_mutable:dra.DependencyInput.prog)
+  return prog_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* DependencyInput::release_prog() {
+  // @@protoc_insertion_point(field_release:dra.DependencyInput.prog)
+  
+  return prog_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void DependencyInput::set_allocated_prog(std::string* prog) {
+  if (prog != nullptr) {
+    
+  } else {
+    
+  }
+  prog_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), prog);
+  // @@protoc_insertion_point(field_set_allocated:dra.DependencyInput.prog)
+}
+
 // -------------------------------------------------------------------
 
 // NewDependencyInput
@@ -2020,6 +2161,57 @@ inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Cal
 Input::mutable_call() {
   // @@protoc_insertion_point(field_mutable_map:dra.Input.call)
   return call_.MutableMap();
+}
+
+// bytes prog = 3;
+inline void Input::clear_prog() {
+  prog_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& Input::prog() const {
+  // @@protoc_insertion_point(field_get:dra.Input.prog)
+  return prog_.GetNoArena();
+}
+inline void Input::set_prog(const std::string& value) {
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:dra.Input.prog)
+}
+inline void Input::set_prog(std::string&& value) {
+  
+  prog_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:dra.Input.prog)
+}
+inline void Input::set_prog(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:dra.Input.prog)
+}
+inline void Input::set_prog(const void* value, size_t size) {
+  
+  prog_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:dra.Input.prog)
+}
+inline std::string* Input::mutable_prog() {
+  
+  // @@protoc_insertion_point(field_mutable:dra.Input.prog)
+  return prog_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* Input::release_prog() {
+  // @@protoc_insertion_point(field_release:dra.Input.prog)
+  
+  return prog_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void Input::set_allocated_prog(std::string* prog) {
+  if (prog != nullptr) {
+    
+  } else {
+    
+  }
+  prog_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), prog);
+  // @@protoc_insertion_point(field_set_allocated:dra.Input.prog)
 }
 
 // -------------------------------------------------------------------

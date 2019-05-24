@@ -117,12 +117,17 @@ namespace dra {
                                             relatedInput->set_sig(i->sig);
                                         }
 
-                                        client->SendDependencyInput(dependencyInput);
+                                        auto reply= client->SendDependencyInput(dependencyInput);
+                                        if(reply->name() != ""){
+
+                                        }else {
+                                            std::cerr << "SendDependencyInput error : " << reply->name() << std::endl;
+                                        }
                                         //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak, or we can also set up a cache to avoid repeated query to STA.
                                     }
                                 }
                             } else {
-                                std::cout << "can not find condition_address : " << std::hex << condition_address << std::endl;
+                                std::cerr << "can not find condition_address : " << std::hex << condition_address << std::endl;
                             }
                         } else {
                         }

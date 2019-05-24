@@ -24,7 +24,7 @@ namespace dra {
 
         NewInput *GetNewInput();
 
-        void SendDependencyInput(const DependencyInput &request);
+        Empty *SendDependencyInput(const DependencyInput &request);
 
         void GetDependencyInput();
 
