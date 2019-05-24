@@ -97,17 +97,17 @@ func (proc *Proc) loop() {
 		} else {
 			// Mutate an existing prog.
 			if proc.IsUseDependencyMutate() {
+				log.Logf(1, "#%v: dependency mutated", proc.pid)
 				corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
 				corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
 				lens := len(corpusSigSnapshot)
 				p := corpusDependencySnapshot[corpusSigSnapshot[proc.rnd.Intn(lens)]].CloneWithUncover()
 				p.DependencyMutate(proc.rnd, programLength, ct, corpus)
-				log.Logf(1, "#%v: dependency mutated", proc.pid)
 				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 			} else {
+				log.Logf(1, "#%v: mutated", proc.pid)
 				p := corpus[proc.rnd.Intn(len(corpus))].Clone()
 				p.Mutate(proc.rnd, programLength, ct, corpus)
-				log.Logf(1, "#%v: mutated", proc.pid)
 				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 				//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 				//proc.fuzzer.checkNewCoverage(p, info)
