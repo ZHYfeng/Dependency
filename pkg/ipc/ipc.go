@@ -360,14 +360,12 @@ func (env *Env) parseOutput(p *prog.Prog) (*ProgInfo, error) {
 			return nil, fmt.Errorf("call %v/%v/%v: signal overflow: %v/%v",
 				i, reply.index, reply.num, reply.signalSize, len(out))
 		}
-		log.Logf(1, "inf.Signal : %x", inf.Signal)
+		//log.Logf(1, "inf.Signal : %x", inf.Signal)
 		if inf.Cover, ok = readUint32Array(&out, reply.coverSize); !ok {
 			return nil, fmt.Errorf("call %v/%v/%v: cover overflow: %v/%v",
 				i, reply.index, reply.num, reply.coverSize, len(out))
 		}
-		for _, a := range inf.Cover {
-			log.Logf(1, "inf.Cover : %x", uint64(uint64(a)+0xffffffff00000000))
-		}
+		//log.Logf(1, "inf.Cover : %x", inf.Cover)
 		comps, err := readComps(&out, reply.compsSize)
 		if err != nil {
 			return nil, err
