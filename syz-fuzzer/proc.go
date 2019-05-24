@@ -226,11 +226,11 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
 	res = false
 	if proc.checkUncoveredAddress(p, inputCover) {
-
-	} else {
-		if proc.checkWriteAddress(p, inputCover) {
-
-		}
+		log.Logf(1, "checkUncoveredAddress")
+		os.Exit(0)
+	} else if proc.checkWriteAddress(p, inputCover) {
+		log.Logf(1, "checkWriteAddress")
+		os.Exit(0)
 	}
 	return
 }
@@ -238,7 +238,7 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 func (proc *Proc) IsUseDependencyMutate() (result bool) {
 	v := proc.rnd.Intn(10)
 	result = v < 5
-	result = false
+	result = true
 	return
 }
 
