@@ -24,68 +24,8 @@
 
 namespace sta {
 
-    //A BB/Inst that can modify a global state.
-    class Mod {
-    public:
-        Mod() {}
 
-        Mod(llvm::BasicBlock *b, MOD_INF *pm) {
-            this->B = b;
-            this->I = nullptr;
-            this->repeat = 0;
-            this->mod_inf = *pm;
-            this->pallcmds = nullptr;
-            this->prio = 0;
-        }
-
-        Mod(llvm::Instruction *i, MOD_INF *pm) {
-            this->I = i;
-            this->B = nullptr;
-            if (i) {
-                this->B = i->getParent();
-            }
-            this->repeat = 0;
-            this->mod_inf = *pm;
-            this->pallcmds = nullptr;
-            this->prio = 0;
-        }
-
-        ~Mod() {
-            //
-        }
-
-        bool equal(const Mod *m) {
-            if (!m) {
-                return false;
-            }
-            return (this->B == m->B && this->I == m->I);
-        }
-
-        std::set<uint64_t> *getIoctlCmdSet() {
-            if (this->pallcmds) {
-                return this->pallcmds;
-            }
-            if (this->mod_inf.empty()) {
-                return nullptr;
-            }
-            this->pallcmds = new std::set<uint64_t>();
-            for (auto &x : this->mod_inf) {
-                std::set<uint64_t> &cs = x.second[1];
-                this->pallcmds->insert(cs.begin(), cs.end());
-            }
-            return this->pallcmds;
-        }
-
-        llvm::BasicBlock *B;
-        llvm::Instruction *I;
-        int64_t repeat;
-        int prio;
-
-    private:
-        MOD_INF mod_inf;
-        std::set<uint64_t> *pallcmds;
-    };
-
+    class Mod;
     typedef std::vector<Mod*> MODS;
 
     class StaticAnalysisResult {
@@ -156,6 +96,137 @@ namespace sta {
         MODS *GetRealModBbs(MOD_IR_TY *p_mod_irs);
 
         void tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, bool branch);
+    };
+
+    //A BB/Inst that can modify a global state.
+    class Mod {
+    public:
+        Mod() {}
+
+        Mod(llvm::BasicBlock *b, MOD_INF *pm, StaticAnalysisResult *sta) {
+            this->B = b;
+            this->I = nullptr;
+            this->mod_inf = *pm;
+            this->pallcmds = nullptr;
+            this->sta = sta;
+        }
+
+        Mod(llvm::Instruction *i, MOD_INF *pm, StaticAnalysisResult *sta) {
+            this->I = i;
+            this->B = nullptr;
+            if (i) {
+                this->B = i->getParent();
+            }
+            this->mod_inf = *pm;
+            this->pallcmds = nullptr;
+            this->sta = sta;
+        }
+
+        ~Mod() {
+            //
+        }
+
+        bool equal(const Mod *m) {
+            if (!m) {
+                return false;
+            }
+            return (this->B == m->B && this->I == m->I);
+        }
+
+        int calcPrio(std::string& cond, int64_t v) {
+            int p = 0;
+            if (cond == "==") {
+                p = calcPrio_E(v);
+            }else if (cond == "!=") {
+                p = calcPrio_NE(v);
+            }else if (cond == ">=") {
+                p = calcPrio_B(v);
+            }else if (cond == "<=") {
+                p = calcPrio_S(v);
+            }
+            this->prio = p;
+            return p;
+        }
+        
+        std::set<uint64_t> *getIoctlCmdSet() {
+            if (this->pallcmds) {
+                return this->pallcmds;
+            }
+            if (this->mod_inf.empty()) {
+                return nullptr;
+            }
+            this->pallcmds = new std::set<uint64_t>();
+            for (auto &x : this->mod_inf) {
+                std::set<uint64_t> &cs = x.second[1];
+                this->pallcmds->insert(cs.begin(), cs.end());
+            }
+            return this->pallcmds;
+        }
+
+        llvm::BasicBlock *B;
+        llvm::Instruction *I;
+        int64_t repeat = 0;
+        int prio = 0;
+
+    private:
+        StaticAnalysisResult *sta = nullptr;
+        MOD_INF mod_inf;
+        std::set<uint64_t> *pallcmds;
+        uint64_t single_trait_id = 0;
+        TRAIT single_trait;
+
+        //TODO: now we assume all traits are the same even under differnt contexts.
+        //So only return one trait id.
+        ID_TY getSingleTraitID() {
+            if (this->single_trait_id) {
+                return this->single_trait_id;
+            }
+            if (this->mod_inf.empty()) {
+                return 0;
+            }
+            for (auto& x : this->mod_inf) {
+                if (x.second.find(TRAIT_INDEX) == x.second.end()) {
+                    continue;
+                }
+                std::set<uint64_t> &tids = x.second[TRAIT_INDEX];
+                if (tids.empty()) {
+                    continue;
+                }
+                for (auto& y : tids) {
+                    this->single_trait_id = y;
+                    return y;
+                }
+            }
+            return 0;
+        }
+
+        TRAIT *getSingleTrait() {
+            if (!this->single_trait.empty()) {
+                return &(this->single_trait);
+            }
+            ID_TY stid = this->getSingleTraitID();
+            if ((!this->sta) || (!stid)) {
+                return nullptr;
+            }
+            //TODO
+        }
+
+        int calcPrio_E(int64_t v) {
+            //
+        }
+
+        int calcPrio_NE(int64_t v) {
+            //
+        }
+
+        int calcPrio_B(int64_t v) {
+            //
+        }
+
+        int calcPrio_S(int64_t v) {
+            //
+        }
+
     };
 
 } /* namespace sta */

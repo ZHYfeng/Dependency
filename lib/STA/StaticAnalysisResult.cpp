@@ -287,23 +287,40 @@ namespace sta {
             return;
         }
         TRAIT& br_trait = this->traitMap[br_trait_id];
+        std::string cond("");
+        int64_t v = 0;
         for (auto& x : br_trait) {
-            if (x.first == "==" || x.first == "!=") {
-                if ((x.first == "==") == branch) {
+            const std::string& s = x.first;
+            if (s == "==" || s == "!=") {
+                if ((s == "==") == branch) {
                     //Need to take a certain value to reach the destination.
+                    cond = "==";
                 }else {
                     //Need to not take a certain value to reach the destination.
+                    cond = "!=";
                 }
-            }else if (x.first == ">=" || x.first == "<=") {
-                if ((x.first == ">=") == branch) {
+                v = x.second;
+            }else if (s == ">=" || s == "<=") {
+                if ((s == ">=") == branch) {
                     //Need to be larger than a certain value to reach the destination.
+                    cond = ">=";
                 }else {
                     //Need to be smaller than a certain value to reach the destination.
+                    cond = "<=";
                 }
-            }else if (x.first.substr(0,3) == "RET") {
+                v = x.second;
+            }else if (s.substr(0,3) == "RET") {
                 //The condition is related to a function return value, do some NLP analysis.
+                //TODO: add some potential Mods based on NLP analysis on the function name.
             }
         }
+        //Calculate mod inst priorities based given the br's and mod inst's traits.
+        if (!cond.empty()) {
+            for (auto& x : *pmods) {
+                x->calcPrio(cond,v);
+            }
+        }
+        //Rank the mod insts.
     }
 
     MODS *StaticAnalysisResult::GetRealModIrs(MOD_IR_TY *p_mod_irs) {
@@ -324,7 +341,7 @@ namespace sta {
                         if (!pinst) {
                             continue;
                         }
-                        Mod *pmod = new Mod(pinst,&el3.second);
+                        Mod *pmod = new Mod(pinst,&el3.second,this);
                         mod_irs->push_back(pmod);
                     }//inst
                 }//bb
@@ -359,7 +376,7 @@ namespace sta {
                         }
                     }
                     if (p_mod_inf) {
-                        Mod *pmod = new Mod(pbb,p_mod_inf);
+                        Mod *pmod = new Mod(pbb,p_mod_inf,this);
                         mod_bbs->push_back(pmod);
                     }
                 }//bb
