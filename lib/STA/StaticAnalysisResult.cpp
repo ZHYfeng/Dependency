@@ -309,6 +309,15 @@ namespace sta {
                     cond = "<=";
                 }
                 v = x.second;
+            }else if (s == ">" || s == "<") {
+                if ((s == ">") == branch) {
+                    //Need to be larger than a certain value to reach the destination.
+                    cond = ">";
+                }else {
+                    //Need to be smaller than a certain value to reach the destination.
+                    cond = "<";
+                }
+                v = x.second;
             }else if (s.substr(0,3) == "RET") {
                 //The condition is related to a function return value, do some NLP analysis.
                 //TODO: add some potential Mods based on NLP analysis on the function name.
@@ -585,6 +594,13 @@ namespace sta {
             }
         }
         return TypeNameMap[v];
+    }
+
+    TRAIT *StaticAnalysisResult::getTrait(ID_TY id) {
+        if (this->traitMap.find(id) != this->traitMap.end()) {
+            return &(this->traitMap[id]);
+        }
+        return nullptr;
     }
 
 } /* namespace sta */

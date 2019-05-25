@@ -74,6 +74,8 @@ namespace sta {
 
         static llvm::DILocation *getCorrectInstrLocation(llvm::Instruction *I);
 
+        TRAIT *getTrait(ID_TY);
+
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF *);
 
@@ -135,14 +137,17 @@ namespace sta {
 
         int calcPrio(std::string& cond, int64_t v) {
             int p = 0;
-            if (cond == "==") {
+            TRAIT *pt = this->getSingleTrait();
+            if ((!pt) || pt->empty()) {
+                p = 0;
+            }else if (cond == "==") {
                 p = calcPrio_E(v);
             }else if (cond == "!=") {
                 p = calcPrio_NE(v);
-            }else if (cond == ">=") {
-                p = calcPrio_B(v);
-            }else if (cond == "<=") {
-                p = calcPrio_S(v);
+            }else if (cond == ">=" || cond == ">") {
+                p = calcPrio_B(v, cond == ">=");
+            }else if (cond == "<=" || cond == "<") {
+                p = calcPrio_S(v, cond == "<=");
             }
             this->prio = p;
             return p;
@@ -165,7 +170,8 @@ namespace sta {
 
         llvm::BasicBlock *B;
         llvm::Instruction *I;
-        int64_t repeat = 0;
+        //0: repeat but not sure about the times, >0: repeat at least for a certain time ("1" means no repeat).
+        int64_t repeat = 1;
         int prio = 0;
 
     private:
@@ -208,23 +214,143 @@ namespace sta {
             if ((!this->sta) || (!stid)) {
                 return nullptr;
             }
-            //TODO
+            TRAIT *pt = this->sta->getTrait(stid);
+            if (pt) {
+                this->single_trait = *pt;
+                return &(this->single_trait);
+            }
+            return pt;
         }
 
-        int calcPrio_E(int64_t v) {
-            //
+        int calcPrio_E(int64_t n) {
+            int p = 0;
+            for (auto& x : this->single_trait) {
+                std::string s = x.first;
+                int64_t v = x.second;
+                if (s == "CONST_INT") {
+                    if (v == n) {
+                        //This mod can (potentially) set the global state to the target value.
+                        p = 100;
+                    }else {
+                        //Trait analysis is just a simple (and maybe inaccurate) pattern matching, so even the destination value is different,
+                        //it's still possible to successfully set the global state, just give it a normal priority.
+                        p = 0;
+                    }
+                }else {
+                    //The modification is possibly accumulative, though we are not sure whether it will eventually set the global state as desired.
+                    p = 0;
+                    this->repeat = 0;
+                }
+                //Assume only one key exists in the trait.
+                break;
+            }
+            return p;
         }
 
-        int calcPrio_NE(int64_t v) {
-            //
+        int calcPrio_NE(int64_t n) {
+            int p = 0;
+            for (auto& x : this->single_trait) {
+                std::string s = x.first;
+                int64_t v = x.second;
+                if (s == "CONST_INT") {
+                    if (v != n) {
+                        //This mod can (potentially) set the global state to a different target value.
+                        p = 100;
+                    }else {
+                        //Trait analysis is just a simple (and maybe inaccurate) pattern matching, so even the destination value is the same,
+                        //it's still possible to successfully set the global state as needed, just give it a normal priority.
+                        p = 0;
+                    }
+                }else {
+                    //The modification is possibly accumulative, though we are not sure whether it will eventually set the global state as desired.
+                    //Since the condition is "!=", such a mod IR should be able to change the global state and satisfy the condition.
+                    if (s == "ADD" || s == "SUB" || s == "MUL" || s == "DIV") {
+                        p = 100;
+                    }else {
+                        p = 50;
+                    }
+                    this->repeat = 0;
+                }
+                //Assume only one key exists in the trait.
+                break;
+            }
+            return p;
         }
 
-        int calcPrio_B(int64_t v) {
-            //
+        int calcPrio_B(int64_t n, bool inclusive) {
+            int p = 0;
+            for (auto& x : this->single_trait) {
+                std::string s = x.first;
+                int64_t v = x.second;
+                if (s == "CONST_INT") {
+                    if (v > n) {
+                        //This mod can (potentially) set the global state to a bigger target value.
+                        p = 100;
+                    }else if (inclusive && v == n) {
+                        p = 100;
+                    }else {
+                        //Trait analysis is just a simple (and maybe inaccurate) pattern matching, so even the destination value is the same,
+                        //it's still possible to successfully set the global state as needed, just give it a normal priority.
+                        p = 0;
+                    }
+                }else {
+                    //The modification is possibly accumulative, though we are not sure whether it will eventually set the global state as desired.
+                    //Since the condition is ">/>=", we need to exclude those mod IRs that will decrease the global states.
+                    if (s == "ADD") {
+                        p = (v > 0 ? 100 : -100);
+                        //We are not sure how many times to repeat, though, since we don't know current value of the global state.
+                        this->repeat = 0;
+                    }else if (s == "SUB") {
+                        p = (v < 0 ? 100 : -100);
+                        //We are not sure how many times to repeat, though, since we don't know current value of the global state.
+                        this->repeat = 0;
+                    }else {
+                        p = 0;
+                        this->repeat = 0;
+                    }
+                }
+                //Assume only one key exists in the trait.
+                break;
+            }
+            return p;
         }
 
-        int calcPrio_S(int64_t v) {
-            //
+        int calcPrio_S(int64_t n, bool inclusive) {
+            int p = 0;
+            for (auto& x : this->single_trait) {
+                std::string s = x.first;
+                int64_t v = x.second;
+                if (s == "CONST_INT") {
+                    if (v < n) {
+                        //This mod can (potentially) set the global state to a smaller target value.
+                        p = 100;
+                    }else if (inclusive && v == n) {
+                        p = 100;
+                    }else {
+                        //Trait analysis is just a simple (and maybe inaccurate) pattern matching, so even the destination value is the same,
+                        //it's still possible to successfully set the global state as needed, just give it a normal priority.
+                        p = 0;
+                    }
+                }else {
+                    //The modification is possibly accumulative, though we are not sure whether it will eventually set the global state as desired.
+                    //Since the condition is ">/>=", we need to exclude those mod IRs that will decrease the global states.
+                    if (s == "ADD") {
+                        p = (v < 0 ? 100 : -100);
+                        //We are not sure how many times to repeat, though, since we don't know current value of the global state.
+                        this->repeat = 0;
+                    }else if (s == "SUB") {
+                        p = (v > 0 ? 100 : -100);
+                        //We are not sure how many times to repeat, though, since we don't know current value of the global state.
+                        this->repeat = 0;
+                    }else {
+                        p = 0;
+                        this->repeat = 0;
+                    }
+                }
+                //Assume only one key exists in the trait.
+                break;
+            }
+            return p;
         }
 
     };
