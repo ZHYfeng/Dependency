@@ -239,7 +239,10 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 }
 
 func (proc *Proc) IsUseDependencyMutate() (result bool) {
-	if len(proc.fuzzer.corpusSig) != 0 {
+	corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
+	log.Logf(3, "proc.fuzzer.corpus size : %v", len(proc.fuzzer.corpus))
+	log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
+	if len(corpusSigSnapshot) != 0 {
 		v := proc.rnd.Intn(10)
 		result = v < 5
 		result = true
