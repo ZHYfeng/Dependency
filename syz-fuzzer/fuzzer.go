@@ -395,6 +395,7 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
 	sig := dependencyInput.GetSig()
 	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
+	p.Uncover = make(map[int]*prog.Uncover)
 	if err != nil {
 		log.Fatalf("failed to deserialize prog from another fuzzer: %v", err)
 	}
