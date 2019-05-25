@@ -125,15 +125,15 @@ namespace dra {
                                         } else {
                                             std::cerr << "SendDependencyInput error : " << reply->name() << std::endl;
                                         }
-                                        std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
-
-                                        std::cerr << "test GetDependencyInput : " << std::endl;
-                                        auto neww = client->GetDependencyInput();
-                                        for (int ni = 0; ni < neww->dependencyinput_size(); ni++) {
-                                            const DependencyInput &nn = neww->dependencyinput(ni);
-                                            std::cerr << "GetDependencyInput sig : " << nn.sig() << std::endl;
-                                            std::cerr << "GetDependencyInput prog : " << nn.prog() << std::endl;
-                                        }
+//
+//                                        std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
+//                                        std::cerr << "test GetDependencyInput : " << std::endl;
+//                                        auto neww = client->GetDependencyInput();
+//                                        for (int ni = 0; ni < neww->dependencyinput_size(); ni++) {
+//                                            const DependencyInput &nn = neww->dependencyinput(ni);
+//                                            std::cerr << "GetDependencyInput sig : " << nn.sig() << std::endl;
+//                                            std::cerr << "GetDependencyInput prog : " << nn.prog() << std::endl;
+//                                        }
 
                                         //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak, or we can also set up a cache to avoid repeated query to STA.
                                     }
