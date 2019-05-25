@@ -35,13 +35,30 @@ func (d *DRPCClient) Connect(name *string) {
 
 func (d *DRPCClient) GetDependencyInput(name string) *NewDependencyInput {
 	// Contact the server and print out its response.
+	request := &Empty{
+		Name: name,
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	dInput, err := d.c.GetDependencyInput(ctx, &Empty{Name: name})
+	dInput, err := d.c.GetDependencyInput(ctx, request)
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
 	}
 	return dInput
+}
+
+func (d *DRPCClient) SendDependencyInput(sig string) (*Empty, error) {
+	request := &DependencyInput{
+		Sig: sig,
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	reply, err := d.c.SendDependencyInput(ctx, request)
+	if err != nil {
+		log.Fatalf("Dependency gRPC could not SendDependencyInput: %v", err)
+	}
+	log.Logf(1, "Dependency gRPC SendDependencyInput reply.Name : v%", reply.Name)
+	return reply, nil
 }
 
 func (d *DRPCClient) SendInput(input *Input) {
