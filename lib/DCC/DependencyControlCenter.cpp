@@ -61,6 +61,7 @@ namespace dra {
                     std::cout << "new input : " << input.sig() << std::endl;
                     DInput *dInput = DM.getInput(input);
                     DependencyInput dependencyInput;
+                    dependencyInput.set_sig(dInput->sig);
                     std::cout << "dUncoveredAddress size : " << dInput->dUncoveredAddress.size() << std::endl;
                     for (auto u : dInput->dUncoveredAddress) {
 
