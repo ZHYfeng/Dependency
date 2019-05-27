@@ -457,7 +457,9 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		p.Uncover[idx] = u1
 	}
 	fuzzer.addDInputToCorpus(p, sig)
-	log.Logf(1, "fuzzer.addDInputToCorpus : %v", p)
+	for _, u := range p.Uncover {
+		log.Logf(1, "fuzzer.addDInputToCorpus : %v", u)
+	}
 
 }
 
