@@ -63,19 +63,9 @@ namespace dra {
                     dependencyInput.set_sig(dInput->sig);
                     std::cout << "dUncoveredAddress size : " << dInput->dUncoveredAddress.size() << std::endl;
                     for (auto u : dInput->dUncoveredAddress) {
-
                         this->uncovered_address_number++;
                         if (this->DM.isDriver(u->address)) {
                             this->uncovered_address_number_driver++;
-
-                            unsigned long long int address = DM.getSyzkallerAddress(u->address);
-                            unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
-
-                            UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
-                            uncoveredAddress->set_address(address);
-                            uncoveredAddress->set_idx(u->idx);
-                            uncoveredAddress->set_condition_address(condition_address);
-
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[u->condition_address]->parent->basicBlock;
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
@@ -92,6 +82,13 @@ namespace dra {
 
                                     std::cout << "get useful static analysis result" << std::endl;
 
+                                    unsigned long long int address = DM.getSyzkallerAddress(u->address);
+                                    unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
+                                    UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
+                                    uncoveredAddress->set_address(address);
+                                    uncoveredAddress->set_idx(u->idx);
+                                    uncoveredAddress->set_condition_address(condition_address);
+
                                     for (auto &x : *allBasicblock) {
                                         llvm::BasicBlock *bb = DM.getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
@@ -103,6 +100,7 @@ namespace dra {
                                         auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
                                         unsigned long long int writeAddress = db->address;
 
+                                        std::cout << "cmds size : " << cmds->size() << std::endl;
                                         for (auto c : *cmds) {
                                             auto function_name = "ioctl";
                                             RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
