@@ -76,6 +76,9 @@ namespace sta {
 
         TRAIT *getTrait(ID_TY);
 
+        //Calculate the Levenshtein distance between two strings as a measure of fuzzy matching.
+        static int levDistance(const std::string& source, const std::string& target);
+
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF *);
 
@@ -140,6 +143,9 @@ namespace sta {
             TRAIT *pt = this->getSingleTrait();
             if ((!pt) || pt->empty()) {
                 p = 0;
+            }else if (this->from_nlp) {
+                //TODO: What priority should we set for the mod IR from callee name NLP analysis?
+                p = 0;
             }else if (cond == "==") {
                 p = calcPrio_E(v);
             }else if (cond == "!=") {
@@ -173,6 +179,7 @@ namespace sta {
         //0: repeat but not sure about the times, >0: repeat at least for a certain time ("1" means no repeat).
         int64_t repeat = 1;
         int prio = 0;
+        bool from_nlp = false;
 
     private:
         StaticAnalysisResult *sta = nullptr;

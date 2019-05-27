@@ -320,7 +320,30 @@ namespace sta {
                 v = x.second;
             }else if (s.substr(0,3) == "RET") {
                 //The condition is related to a function return value, do some NLP analysis.
-                //TODO: add some potential Mods based on NLP analysis on the function name.
+                std::string br_func = s.substr(4);
+                //E.g. if the condition is related to the return value "dequeue", then possibly to satisfy the condition we need call "enqueue" first.
+                //So we need to find the "antonym" function names.
+                //The heuristic is that antonym names are different but usually very similar to original names (e.g. de- and en-), so we can pick
+                //those callee names with low Levenshtein distances.
+                for (auto& x : this->calleeMap) {
+                    int dis = this->levDistance(br_func,x.first);
+                    //TODO: is "2" a proper threshold value?
+                    if (dis == 0 || dis > 2) {
+                        continue;
+                    }
+                    //Ok, we guess this is an antonym function that we should call.
+                    //Get the callee instruction and treat is as a potential "Mod IR".
+                    MODS *p_callee_mods = this->GetRealModBbs(&x.second);
+                    if (!p_callee_mods) {
+                        continue;
+                    }
+                    //Set proper priorities and properties of these MOD IRs.
+                    for (auto& x : *p_callee_mods) {
+                        x->from_nlp = true;
+                    }
+                    //Append these NLP Mod IRs to the original list.
+                    pmods->insert(pmods->end(),p_callee_mods->begin(),p_callee_mods->end());
+                }
             }
         }
         //Calculate mod inst priorities based given the br's and mod inst's traits.
@@ -601,6 +624,78 @@ namespace sta {
             return &(this->traitMap[id]);
         }
         return nullptr;
+    }
+
+    int StaticAnalysisResult::levDistance(const std::string& source, const std::string& target)
+    {
+        // Step 1
+        const int n = source.length();
+        const int m = target.length();
+        if (n == 0) {
+            return m;
+        }
+        if (m == 0) {
+            return n;
+        }
+
+        // Good form to declare a TYPEDEF
+        typedef std::vector<std::vector<int>> Tmatrix; 
+
+        Tmatrix matrix(n+1);
+        // Size the vectors in the 2.nd dimension. Unfortunately C++ doesn't
+        // allow for allocation on declaration of 2.nd dimension of vec of vec
+        for (int i = 0; i <= n; i++) {
+            matrix[i].resize(m+1);
+        }
+
+        // Step 2
+        for (int i = 0; i <= n; i++) {
+            matrix[i][0]=i;
+        }
+        for (int j = 0; j <= m; j++) {
+            matrix[0][j]=j;
+        }
+
+        // Step 3
+        for (int i = 1; i <= n; i++) {
+            const char s_i = source[i-1];
+
+            // Step 4
+            for (int j = 1; j <= m; j++) {
+                const char t_j = target[j-1];
+
+                // Step 5
+                int cost;
+                if (s_i == t_j) {
+                    cost = 0;
+                }
+                else {
+                    cost = 1;
+                }
+
+                // Step 6
+                const int above = matrix[i-1][j];
+                const int left = matrix[i][j-1];
+                const int diag = matrix[i-1][j-1];
+                int cell = std::min( above + 1, std::min(left + 1, diag + cost));
+
+                // Step 6A: Cover transposition, in addition to deletion,
+                // insertion and substitution. This step is taken from:
+                // Berghel, Hal ; Roach, David : "An Extension of Ukkonen's 
+                // Enhanced Dynamic Programming ASM Algorithm"
+                // (http://www.acm.org/~hlb/publications/asm/asm.html)
+                if (i>2 && j>2) {
+                    int trans=matrix[i-2][j-2]+1;
+                    if (source[i-2]!=t_j) trans++;
+                    if (s_i!=target[j-2]) trans++;
+                    if (cell>trans) cell=trans;
+                }
+                matrix[i][j]=cell;
+            }
+        }
+
+        // Step 7
+        return matrix[n][m];
     }
 
 } /* namespace sta */
