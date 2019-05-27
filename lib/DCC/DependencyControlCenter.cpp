@@ -29,7 +29,6 @@ namespace dra {
 
     void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes) {
 
-
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         this->current_time = std::time(NULL);
         std::cout << std::ctime(&this->current_time) << "*time : initializeModule" << std::endl;
@@ -188,7 +187,10 @@ namespace dra {
     }
 
     void DependencyControlCenter::test_rpc() {
+
+        std::cout << "test_rpc : " << std::endl;
         DependencyInput dependencyInput;
+        dependencyInput.set_sig("dependencyInput.set_sig");
         UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
         uncoveredAddress->set_address(0xfffffff1);
         uncoveredAddress->set_idx(2);
@@ -204,8 +206,45 @@ namespace dra {
         relatedInput->set_address(0xfffffff5);
         relatedInput->set_sig("sig");
 
-        client->SendDependencyInput(dependencyInput);
+        std::cout << "SendDependencyInput : " << std::endl;
+        auto r = client->SendDependencyInput(dependencyInput);
+        std::cout << "SendDependencyInput.r : " << r->name() << std::endl;
+        for (int j = 0; j < dependencyInput.uncovered_address_size(); j++) {
+            auto uu = dependencyInput.uncovered_address(j);
+            for (int k = 0; k < uu.related_input_size(); k++) {
+                auto ii = uu.related_input(k);
+                std::cout << "ii.sig : " << ii.sig() << std::endl;
+                std::cout << "ii.address : " << ii.address() << std::endl;
+            }
 
+            for (auto ss: uu.related_syscall()) {
+                std::cout << "ss.number : " << ss.number() << std::endl;
+                std::cout << "ss.name : " << ss.name() << std::endl;
+                std::cout << "ss.address : " << ss.address() << std::endl;
+            }
+        }
+
+        std::cout << "GetDependencyInput : " << std::endl;
+        auto newD = client->GetDependencyInput();
+        std::cout << "newD.dependencyinput_size : " << newD->dependencyinput_size() << std::endl;
+        for (int i = 0; i < newD->dependencyinput_size(); i++) {
+            auto dd = newD->dependencyinput(i);
+            std::cout << "dd.sig : " << dd.sig() << std::endl;
+            for (int j = 0; j < dd.uncovered_address_size(); j++) {
+                auto uu = dd.uncovered_address(j);
+                for (int k = 0; k < uu.related_input_size(); k++) {
+                    auto ii = uu.related_input(k);
+                    std::cout << "ii.sig : " << ii.sig() << std::endl;
+                    std::cout << "ii.address : " << std::hex << ii.address() << std::endl;
+                }
+
+                for (auto ss: uu.related_syscall()) {
+                    std::cout << "ss.number : " << ss.number() << std::endl;
+                    std::cout << "ss.name : " << ss.name() << std::endl;
+                    std::cout << "ss.address : " << ss.address() << std::endl;
+                }
+            }
+        }
 
         exit(0);
     }

@@ -51,7 +51,7 @@ namespace dra {
         grpc::ClientContext context;
         grpc::Status status = stub_->SendDependencyInput(&context, request, reply);
         if (status.ok()) {
-
+            std::cout << "SendDependencyInput : " << reply->name() << std::endl;
         } else {
             std::cout << status.error_code() << ": " << status.error_message() << std::endl;
         }
