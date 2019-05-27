@@ -457,6 +457,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		p.Uncover[idx] = u1
 	}
 	fuzzer.addDInputToCorpus(p, sig)
+	log.Logf(1, "fuzzer.addDInputToCorpus : %v", p)
 
 }
 
@@ -466,7 +467,7 @@ func (fuzzer *Fuzzer) addDInputToCorpus(p *prog.Prog, sig string) {
 		fuzzer.corpusSig = append(fuzzer.corpusSig, sig)
 		fuzzer.corpusDependency[sig] = p.CloneWithUncover()
 	}
-	log.Logf(3, "fuzzer.corpusSig size : %v", len(fuzzer.corpusSig))
+	log.Logf(1, "fuzzer.corpusSig size : %v", len(fuzzer.corpusSig))
 	fuzzer.corpusDMu.Unlock()
 }
 
