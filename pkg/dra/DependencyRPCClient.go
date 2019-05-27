@@ -44,7 +44,11 @@ func (d *DRPCClient) GetDependencyInput(name string) *NewDependencyInput {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
 	}
-	return dInput
+	reply := &NewDependencyInput{}
+	for _, d := range dInput.DependencyInput {
+		reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(d))
+	}
+	return reply
 }
 
 func (d *DRPCClient) SendDependencyInput(sig string) (*Empty, error) {
