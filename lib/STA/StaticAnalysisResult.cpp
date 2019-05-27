@@ -196,12 +196,12 @@ namespace sta {
         return nullptr;
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B) {
-        return this->GetAllGlobalWriteInsts(this->QueryBranchTaint(B));
+    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B, bool branch) {
+        return this->GetAllGlobalWriteInsts(this->QueryBranchTaint(B),branch);
     }
 
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
-    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf, bool branch) {
         if (!p_taint_inf) {
             std::cout << "GetAllGlobalWriteInsts : p_taint_inf = nullptr" << std::endl;
             return nullptr;
@@ -235,15 +235,15 @@ namespace sta {
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
         //Also do some function name pair NLP analysis here.
         //TODO: the "bool" value indicating the taken branch.
-        //tweakModsOnTraits(p_mod_irs,trait_id,true);
+        tweakModsOnTraits(p_mod_irs,trait_id,branch);
         return p_mod_irs;
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B) {
-        return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B));
+    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B, bool branch) {
+        return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B), branch);
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf, bool branch) {
         if (!p_taint_inf) {
             return nullptr;
         }
@@ -278,7 +278,7 @@ namespace sta {
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
         //Also do some function name pair NLP analysis here.
         //TODO: the "bool" value indicating the taken branch.
-        //tweakModsOnTraits(p_mod_bbs,trait_id,true);
+        tweakModsOnTraits(p_mod_bbs,trait_id,branch);
         return p_mod_bbs;
     }
 

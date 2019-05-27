@@ -54,13 +54,13 @@ namespace sta {
 
         dra::DataManagement *dm;
 
-        MODS *GetAllGlobalWriteInsts(llvm::BasicBlock *B);
+        MODS *GetAllGlobalWriteInsts(llvm::BasicBlock *B, bool branch);
 
-        MODS *GetAllGlobalWriteInsts(BR_INF *p_taint_inf);
+        MODS *GetAllGlobalWriteInsts(BR_INF *p_taint_inf, bool branch);
 
-        MODS *GetAllGlobalWriteBBs(llvm::BasicBlock *B);
+        MODS *GetAllGlobalWriteBBs(llvm::BasicBlock *B, bool branch);
 
-        MODS *GetAllGlobalWriteBBs(BR_INF *p_taint_inf);
+        MODS *GetAllGlobalWriteBBs(BR_INF *p_taint_inf, bool branch);
 
         std::string &getBBStrID(llvm::BasicBlock *B);
 

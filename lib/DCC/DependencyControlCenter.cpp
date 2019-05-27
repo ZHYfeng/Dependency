@@ -77,7 +77,7 @@ namespace dra {
 
                             if (DM.Address2BB.find(condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[condition_address]->parent->basicBlock;
-                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b));
+                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b),true);
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
 
@@ -144,7 +144,7 @@ namespace dra {
             auto b = B.second->basicBlock;
             std::cout << "b name : " << B.second->name << std::endl;
 
-            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b);
+            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b,true);
             if (allBasicblock == nullptr) {
                 // no taint or out side
                 std::cout << "allBasicblock == nullptr" << std::endl;
