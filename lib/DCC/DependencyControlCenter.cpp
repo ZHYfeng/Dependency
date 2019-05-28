@@ -99,7 +99,7 @@ namespace dra {
                                         std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
                                         std::string bbname = bb->getName().str();
                                         auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
-                                        unsigned long long int writeAddress = db->address;
+                                        unsigned int writeAddress = DM.getSyzkallerAddress(db->address);
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_related_address();
                                         related_address->set_address(writeAddress);
