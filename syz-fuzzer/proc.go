@@ -102,6 +102,7 @@ func (proc *Proc) loop() {
 				corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
 				lens := len(corpusSigSnapshot)
 				p := corpusDependencySnapshot[corpusSigSnapshot[proc.rnd.Intn(lens)]].CloneWithUncover()
+				proc.logProgram(proc.execOpts, p)
 				p.DependencyMutate(proc.rnd, programLength, ct, corpus)
 				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 			} else {
@@ -240,7 +241,6 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 
 func (proc *Proc) IsUseDependencyMutate() (result bool) {
 	corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
-	log.Logf(3, "proc.fuzzer.corpus size : %v", len(proc.fuzzer.corpus))
 	log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
 	if len(corpusSigSnapshot) != 0 {
 		v := proc.rnd.Intn(10)
@@ -348,11 +348,9 @@ func (proc *Proc) executeHintSeed(p *prog.Prog, call int) {
 }
 
 func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes, stat Stat) *ipc.ProgInfo {
-	//log.Logf(3, "execute")
 	info := proc.executeRaw(execOpts, p, stat)
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
-		//log.Logf(0, "Proc execute new p : %v", p)
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}
 	if extra {

@@ -5,6 +5,7 @@ package prog
 
 import (
 	"fmt"
+	"github.com/google/syzkaller/pkg/log"
 	"math/rand"
 	"unsafe"
 )
@@ -641,6 +642,8 @@ func storeInt(data []byte, v uint64, size int) {
 }
 
 func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, corpus []*Prog) {
+	log.Logf(1, "DependencyMutate")
+
 	r := newRand(p.Target, rs)
 	ctx := &mutator{
 		p:      p,
