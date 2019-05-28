@@ -231,6 +231,9 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 }
 
 func (proc *Proc) DependencyMutate(item *WorkDependency) (result bool) {
+
+	log.Logf(1, "DependencyMutate")
+
 	ct := proc.fuzzer.choiceTable
 	corpus := proc.fuzzer.corpusSnapshot()
 	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
