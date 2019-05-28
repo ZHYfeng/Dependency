@@ -92,7 +92,6 @@ func (wq *WorkQueue) enqueue(item interface{}) {
 		wq.smash = append(wq.smash, item)
 	case *WorkDependency:
 		wq.dependency = append(wq.dependency, item)
-
 	default:
 		panic("unknown work type")
 	}
@@ -100,7 +99,7 @@ func (wq *WorkQueue) enqueue(item interface{}) {
 
 func (wq *WorkQueue) dequeue() (item interface{}) {
 	wq.mu.RLock()
-	if len(wq.triageCandidate)+len(wq.candidate)+len(wq.triage)+len(wq.smash) == 0 {
+	if len(wq.triageCandidate)+len(wq.candidate)+len(wq.triage)+len(wq.smash)+len(wq.dependency) == 0 {
 		wq.mu.RUnlock()
 		return nil
 	}

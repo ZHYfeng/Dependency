@@ -463,10 +463,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 	})
 
 	for _, u := range p.Uncover {
-		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer uncover : %v", u.UncoveredAddress)
-		for _, ra := range u.RelatedAddress {
-			log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer RelatedAddress : %v", ra)
-		}
+		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer : %x", u)
 	}
 
 }
