@@ -669,7 +669,7 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 
 		if len(ra.RelatedProgs) != 0 {
 			//select a related prog random
-			progIdx := r.Intn(len(ra.RelatedCalls))
+			progIdx := r.Intn(len(ra.RelatedProgs))
 			p0 := ra.RelatedProgs[progIdx]
 			p0c := p0.Clone()
 			p.Calls = append(p.Calls[:insertIdx], append(p0c.Calls, p.Calls[insertIdx:]...)...)
