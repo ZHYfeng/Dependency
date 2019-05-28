@@ -68,6 +68,7 @@ type Fuzzer struct {
 
 type Stat int
 
+// 
 const (
 	StatGenerate Stat = iota
 	StatFuzz
@@ -309,9 +310,9 @@ func (fuzzer *Fuzzer) pollLoop() {
 			}
 		}
 
-		//data := fuzzer.corpus[0].Serialize()
-		//sig := hash.Hash(data)
-		//fuzzer.dManager.SendDependencyInput(sig.String())
+		data := fuzzer.corpus[0].Serialize()
+		sig := hash.Hash(data)
+		fuzzer.dManager.SendDependencyInput(sig.String())
 		newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
 		log.Logf(1, "newDependencyInput size : %v", len(newDependencyInput.DependencyInput))
 		for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
@@ -463,7 +464,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 	})
 
 	for _, u := range p.Uncover {
-		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer : %x", u)
+		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer : %v", u)
 	}
 
 }

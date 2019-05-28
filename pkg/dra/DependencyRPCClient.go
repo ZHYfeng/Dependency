@@ -51,6 +51,7 @@ func (d *DRPCClient) GetDependencyInput(name string) *NewDependencyInput {
 	return reply
 }
 
+// SendDependencyInput is 
 func (d *DRPCClient) SendDependencyInput(sig string) (*Empty, error) {
 	request := &DependencyInput{
 		Sig: sig,
@@ -61,10 +62,11 @@ func (d *DRPCClient) SendDependencyInput(sig string) (*Empty, error) {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not SendDependencyInput: %v", err)
 	}
-	log.Logf(1, "Dependency gRPC SendDependencyInput reply.Name : v%", reply.Name)
+	log.Logf(1, "Dependency gRPC SendDependencyInput reply.Name : %v", reply.Name)
 	return reply, nil
 }
 
+// SendInput ...
 func (d *DRPCClient) SendInput(input *Input) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)

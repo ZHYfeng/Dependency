@@ -82,7 +82,7 @@ func (proc *Proc) loop() {
 			case *WorkSmash:
 				proc.smashInput(item)
 			case *WorkDependency:
-				proc.DependencyMutate(item)
+				proc.dependencyMutate(item)
 			default:
 				log.Fatalf("unknown work type: %#v", item)
 			}
@@ -230,8 +230,8 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 	return
 }
 
-func (proc *Proc) DependencyMutate(item *WorkDependency) (result bool) {
-
+func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
+	
 	log.Logf(1, "DependencyMutate")
 
 	ct := proc.fuzzer.choiceTable
