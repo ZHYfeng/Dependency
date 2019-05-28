@@ -20,6 +20,7 @@ type WorkQueue struct {
 	candidate       []*WorkCandidate
 	triage          []*WorkTriage
 	smash           []*WorkSmash
+	dependency      []*WorkDependency
 
 	procs          int
 	needCandidates chan struct{}
@@ -89,6 +90,9 @@ func (wq *WorkQueue) enqueue(item interface{}) {
 		wq.candidate = append(wq.candidate, item)
 	case *WorkSmash:
 		wq.smash = append(wq.smash, item)
+	case *WorkDependency:
+		wq.dependency = append(wq.dependency, item)
+
 	default:
 		panic("unknown work type")
 	}
@@ -120,6 +124,10 @@ func (wq *WorkQueue) dequeue() (item interface{}) {
 		last := len(wq.smash) - 1
 		item = wq.smash[last]
 		wq.smash = wq.smash[:last]
+	} else if len(wq.dependency) != 0 {
+		last := len(wq.dependency) - 1
+		item = wq.dependency[last]
+		wq.dependency = wq.dependency[:last]
 	}
 	wq.mu.Unlock()
 	if wantCandidates {

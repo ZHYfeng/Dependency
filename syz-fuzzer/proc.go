@@ -81,6 +81,8 @@ func (proc *Proc) loop() {
 				proc.execute(proc.execOpts, item.p, item.flags, StatCandidate)
 			case *WorkSmash:
 				proc.smashInput(item)
+			case *WorkDependency:
+				proc.DependencyMutate(item)
 			default:
 				log.Fatalf("unknown work type: %#v", item)
 			}
@@ -96,23 +98,12 @@ func (proc *Proc) loop() {
 			proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
 		} else {
 			// Mutate an existing prog.
-			if proc.IsUseDependencyMutate() {
-				log.Logf(1, "#%v: dependency mutated", proc.pid)
-				corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
-				corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
-				lens := len(corpusSigSnapshot)
-				p := corpusDependencySnapshot[corpusSigSnapshot[proc.rnd.Intn(lens)]].CloneWithUncover()
-				proc.logProgram(proc.execOpts, p)
-				p.DependencyMutate(proc.rnd, programLength, ct, corpus)
-				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-			} else {
-				log.Logf(1, "#%v: mutated", proc.pid)
-				p := corpus[proc.rnd.Intn(len(corpus))].Clone()
-				p.Mutate(proc.rnd, programLength, ct, corpus)
-				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-				//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-				//proc.fuzzer.checkNewCoverage(p, info)
-			}
+			log.Logf(1, "#%v: mutated", proc.pid)
+			p := corpus[proc.rnd.Intn(len(corpus))].Clone()
+			p.Mutate(proc.rnd, programLength, ct, corpus)
+			proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+			//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+			//proc.fuzzer.checkNewCoverage(p, info)
 		}
 	}
 }
@@ -228,8 +219,8 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
 	res = false
 	if proc.checkUncoveredAddress(p, inputCover) {
-		corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
-		delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
+		//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
+		//delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
 		log.Logf(1, "checkUncoveredAddress")
 		os.Exit(0)
 	} else if proc.checkWriteAddress(p, inputCover) {
@@ -239,16 +230,19 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 	return
 }
 
-func (proc *Proc) IsUseDependencyMutate() (result bool) {
-	corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
-	log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
-	if len(corpusSigSnapshot) != 0 {
-		v := proc.rnd.Intn(10)
-		result = v < 5
-		result = true
-	} else {
-		result = false
-	}
+func (proc *Proc) DependencyMutate(item *WorkDependency) (result bool) {
+	ct := proc.fuzzer.choiceTable
+	corpus := proc.fuzzer.corpusSnapshot()
+	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
+	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
+	//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
+	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
+
+	p := item.p
+	proc.logProgram(proc.execOpts, p)
+	p.DependencyMutate(proc.rnd, programLength, ct, corpus)
+	proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
+
 	return
 }
 

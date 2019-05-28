@@ -57,10 +57,10 @@ type Fuzzer struct {
 
 	logMu sync.Mutex
 
-	dManager         *pb.DRPCClient
-	corpusDMu        sync.RWMutex
-	corpusSig        []string
-	corpusDependency map[string]*prog.Prog
+	dManager *pb.DRPCClient
+	//corpusDMu        sync.RWMutex
+	//corpusSig        []string
+	//corpusDependency map[string]*prog.Prog
 
 	coverMu sync.RWMutex
 	cover   map[int]*pb.Call
@@ -77,18 +77,20 @@ const (
 	StatSmash
 	StatHint
 	StatSeed
+	StatDependency
 	StatCount
 )
 
 var statNames = [StatCount]string{
-	StatGenerate:  "exec gen",
-	StatFuzz:      "exec fuzz",
-	StatCandidate: "exec candidate",
-	StatTriage:    "exec triage",
-	StatMinimize:  "exec minimize",
-	StatSmash:     "exec smash",
-	StatHint:      "exec hints",
-	StatSeed:      "exec seeds",
+	StatGenerate:   "exec gen",
+	StatFuzz:       "exec fuzz",
+	StatCandidate:  "exec candidate",
+	StatTriage:     "exec triage",
+	StatMinimize:   "exec minimize",
+	StatSmash:      "exec smash",
+	StatHint:       "exec hints",
+	StatSeed:       "exec seeds",
+	StatDependency: "exec dependency",
 }
 
 type OutputType int
@@ -245,9 +247,9 @@ func main() {
 		comparisonTracingEnabled: r.CheckResult.Features[host.FeatureComparisons].Enabled,
 		corpusHashes:             make(map[hash.Sig]struct{}),
 		dManager:                 dManager,
-		corpusSig:                []string{},
-		corpusDependency:         make(map[string]*prog.Prog),
-		cover:                    make(map[int]*pb.Call),
+		//corpusSig:                []string{},
+		//corpusDependency:         make(map[string]*prog.Prog),
+		cover: make(map[int]*pb.Call),
 	}
 	for i := 0; fuzzer.poll(i == 0, nil); i++ {
 	}
@@ -394,7 +396,7 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 }
 
 func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
-	sig := dependencyInput.GetSig()
+	//sig := dependencyInput.GetSig()
 	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
 	p.Uncover = make(map[int]*prog.Uncover)
 	if err != nil {
@@ -455,34 +457,28 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		}
 		p.Uncover[idx] = u1
 	}
-	fuzzer.addDInputToCorpus(p, sig)
+
+	fuzzer.workQueue.enqueue(&WorkDependency{
+		p: p.CloneWithUncover(),
+	})
+
 	for _, u := range p.Uncover {
-		log.Logf(1, "fuzzer.addDInputToCorpus : %x", u)
+		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer : %x", u)
 	}
 
 }
 
-func (fuzzer *Fuzzer) addDInputToCorpus(p *prog.Prog, sig string) {
-	fuzzer.corpusDMu.Lock()
-	if _, ok := fuzzer.corpusDependency[sig]; !ok {
-		fuzzer.corpusSig = append(fuzzer.corpusSig, sig)
-		fuzzer.corpusDependency[sig] = p.CloneWithUncover()
-	}
-	log.Logf(1, "fuzzer.corpusSig size : %v", len(fuzzer.corpusSig))
-	fuzzer.corpusDMu.Unlock()
-}
-
-func (fuzzer *Fuzzer) corpusSigSnapshot() []string {
-	fuzzer.corpusMu.RLock()
-	defer fuzzer.corpusMu.RUnlock()
-	return fuzzer.corpusSig
-}
-
-func (fuzzer *Fuzzer) corpusDependencySnapshot() map[string]*prog.Prog {
-	fuzzer.corpusMu.RLock()
-	defer fuzzer.corpusMu.RUnlock()
-	return fuzzer.corpusDependency
-}
+//func (fuzzer *Fuzzer) corpusSigSnapshot() []string {
+//	fuzzer.corpusDMu.RLock()
+//	defer fuzzer.corpusDMu.RUnlock()
+//	return fuzzer.corpusSig
+//}
+//
+//func (fuzzer *Fuzzer) corpusDependencySnapshot() map[string]*prog.Prog {
+//	fuzzer.corpusDMu.RLock()
+//	defer fuzzer.corpusDMu.RUnlock()
+//	return fuzzer.corpusDependency
+//}
 
 func (fuzzer *Fuzzer) corpusSnapshot() []*prog.Prog {
 	fuzzer.corpusMu.RLock()
