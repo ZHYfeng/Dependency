@@ -408,24 +408,21 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		u1.UncoveredAddress = u.GetAddress()
 		u1.Idx = u.GetIdx()
 		for _, a := range u.GetRelatedAddress() {
+
+			a1 := &prog.RelatedAddresses{
+				RelatedAddress: a.GetAddress(),
+			}
+
 			for _, i := range a.GetRelatedInput() {
 				rp, err := fuzzer.target.Deserialize(i.GetProg(), prog.NonStrict)
 				if err != nil {
 					panic(err)
 				}
-				u1.RelatedProgs = append(u1.RelatedProgs, &prog.RelatedProgs{
-					RelatedProg:    rp,
-					RelatedAddress: a.GetAddress(),
-				})
+				a1.RelatedProgs = append(a1.RelatedProgs, rp)
 			}
 
 			for _, i := range a.GetRelatedSyscall() {
-				c1 := &prog.RelatedCalls{
-					RelatedCall:    nil,
-					RelatedAddress: a.GetAddress(),
-				}
-
-				c1.RelatedCall = &prog.Call{
+				c1 := &prog.Call{
 					Meta:    nil,
 					Ret:     nil,
 					Comment: "dependency",
@@ -440,11 +437,11 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 								case *prog.ConstArg:
 									val, _ := t.Value()
 									if val == i.Number {
-										c1.RelatedCall.Meta = c
-										c1.RelatedCall.Ret = prog.MakeReturnArg(c.Ret)
+										c1.Meta = c
+										c1.Ret = prog.MakeReturnArg(c.Ret)
 										for _, typ := range c.Args {
 											arg := typ.DefaultArg()
-											c1.RelatedCall.Args = append(c1.RelatedCall.Args, arg)
+											c1.Args = append(c1.Args, arg)
 										}
 									}
 								default:
@@ -454,11 +451,10 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 						}
 					}
 				}
-
-				u1.RelatedCalls = append(u1.RelatedCalls, c1)
+				a1.RelatedCalls = append(a1.RelatedCalls, c1)
 			}
+			u1.RelatedAddress = append(u1.RelatedAddress, a1)
 		}
-
 		p.Uncover[idx] = u1
 	}
 	fuzzer.addDInputToCorpus(p, sig)

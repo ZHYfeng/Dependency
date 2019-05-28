@@ -17,21 +17,16 @@ type Prog struct {
 	Sig          string
 }
 
-type RelatedProgs struct {
-	RelatedProg    *Prog
+type RelatedAddresses struct {
 	RelatedAddress uint32
-}
-
-type RelatedCalls struct {
-	RelatedCall    *Call
-	RelatedAddress uint32
+	RelatedProgs   []*Prog
+	RelatedCalls   []*Call
 }
 
 type Uncover struct {
 	UncoveredAddress uint32
 	Idx              uint32
-	RelatedProgs     []*RelatedProgs
-	RelatedCalls     []*RelatedCalls
+	RelatedAddress   []*RelatedAddresses
 }
 
 type Call struct {

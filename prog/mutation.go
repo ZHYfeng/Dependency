@@ -667,9 +667,10 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 		if r.oneOf(2) {
 
 			//select a related call random
-			syscallIdx := r.Intn(len(uncover.RelatedCalls))
-			c0 := uncover.RelatedCalls[syscallIdx].RelatedCall
-			p.WriteAddress = append(p.WriteAddress, uncover.RelatedCalls[syscallIdx].RelatedAddress)
+			syscallIdx := r.Intn(len(uncover.RelatedAddress))
+			callIdx := r.Intn(len(uncover.RelatedAddress[syscallIdx].RelatedCalls))
+			c0 := uncover.RelatedAddress[syscallIdx].RelatedCalls[callIdx]
+			p.WriteAddress = append(p.WriteAddress, uncover.RelatedAddress[syscallIdx].RelatedAddress)
 
 			c0c := new(Call)
 			c0c.Meta = c0.Meta
@@ -714,9 +715,10 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 
 		} else {
 			//select a related prog random
-			syscallIdx := r.Intn(len(uncover.RelatedProgs))
-			p0 := uncover.RelatedProgs[syscallIdx].RelatedProg
-			p.WriteAddress = append(p.WriteAddress, uncover.RelatedProgs[syscallIdx].RelatedAddress)
+			syscallIdx := r.Intn(len(uncover.RelatedAddress))
+			progIdx := r.Intn(len(uncover.RelatedAddress[syscallIdx].RelatedCalls))
+			p0 := uncover.RelatedAddress[syscallIdx].RelatedProgs[progIdx]
+			p.WriteAddress = append(p.WriteAddress, uncover.RelatedAddress[syscallIdx].RelatedAddress)
 			p0c := p0.Clone()
 			p.Calls = append(p.Calls[:insertIdx], append(p0c.Calls, p.Calls[insertIdx:]...)...)
 			for i := len(p.Calls) - 1; i >= ncalls; i-- {

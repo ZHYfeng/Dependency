@@ -54,12 +54,18 @@ func (p *Prog) CloneWithUncover() *Prog {
 		u1.UncoveredAddress = u.UncoveredAddress
 		u1.Idx = u.Idx
 
-		u1.RelatedProgs = make([]*RelatedProgs, len(u.RelatedProgs))
-		for pi, prog := range u.RelatedProgs {
-			u1.RelatedProgs[pi] = &RelatedProgs{
-				RelatedProg:    prog.RelatedProg.Clone(),
-				RelatedAddress: prog.RelatedAddress,
+		u1.RelatedAddress = make([]*RelatedAddresses, len(u.RelatedAddress))
+		for ai, address := range u.RelatedAddress {
+			ra := &RelatedAddresses{
+				RelatedAddress: address.RelatedAddress,
 			}
+			for _, call := range address.RelatedCalls {
+				ra.RelatedCalls = append(ra.RelatedCalls, call)
+			}
+			for _, prog := range address.RelatedProgs {
+				ra.RelatedProgs = append(ra.RelatedProgs, prog.Clone())
+			}
+			u1.RelatedAddress[ai] = ra
 		}
 		p1.Uncover[ui] = u1
 	}
