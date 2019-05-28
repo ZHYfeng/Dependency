@@ -407,54 +407,56 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		u1 := new(prog.Uncover)
 		u1.UncoveredAddress = u.GetAddress()
 		u1.Idx = u.GetIdx()
-		for _, i := range u.GetRelatedInput() {
-			rp, err := fuzzer.target.Deserialize(i.GetProg(), prog.NonStrict)
-			if err != nil {
-				panic(err)
-			}
-			u1.RelatedProgs = append(u1.RelatedProgs, &prog.RelatedProgs{
-				RelatedProg:    rp,
-				RelatedAddress: i.GetAddress(),
-			})
-		}
-
-		for _, i := range u.GetRelatedSyscall() {
-			c1 := &prog.RelatedCalls{
-				RelatedCall:    nil,
-				RelatedAddress: i.GetAddress(),
+		for _, a := range u.GetRelatedAddress() {
+			for _, i := range a.GetRelatedInput() {
+				rp, err := fuzzer.target.Deserialize(i.GetProg(), prog.NonStrict)
+				if err != nil {
+					panic(err)
+				}
+				u1.RelatedProgs = append(u1.RelatedProgs, &prog.RelatedProgs{
+					RelatedProg:    rp,
+					RelatedAddress: a.GetAddress(),
+				})
 			}
 
-			c1.RelatedCall = &prog.Call{
-				Meta:    nil,
-				Ret:     nil,
-				Comment: "dependency",
-			}
+			for _, i := range a.GetRelatedSyscall() {
+				c1 := &prog.RelatedCalls{
+					RelatedCall:    nil,
+					RelatedAddress: a.GetAddress(),
+				}
 
-			// only work for ioctl
-			for n, c := range fuzzer.target.SyscallMap {
-				if strings.HasPrefix(n, i.Name) {
-					for _, a := range c.Args {
-						if a.FieldName() == "cmd" {
-							switch t := a.DefaultArg().(type) {
-							case *prog.ConstArg:
-								val, _ := t.Value()
-								if val == i.Number {
-									c1.RelatedCall.Meta = c
-									c1.RelatedCall.Ret = prog.MakeReturnArg(c.Ret)
-									for _, typ := range c.Args {
-										arg := typ.DefaultArg()
-										c1.RelatedCall.Args = append(c1.RelatedCall.Args, arg)
+				c1.RelatedCall = &prog.Call{
+					Meta:    nil,
+					Ret:     nil,
+					Comment: "dependency",
+				}
+
+				// only work for ioctl
+				for n, c := range fuzzer.target.SyscallMap {
+					if strings.HasPrefix(n, i.Name) {
+						for _, a := range c.Args {
+							if a.FieldName() == "cmd" {
+								switch t := a.DefaultArg().(type) {
+								case *prog.ConstArg:
+									val, _ := t.Value()
+									if val == i.Number {
+										c1.RelatedCall.Meta = c
+										c1.RelatedCall.Ret = prog.MakeReturnArg(c.Ret)
+										for _, typ := range c.Args {
+											arg := typ.DefaultArg()
+											c1.RelatedCall.Args = append(c1.RelatedCall.Args, arg)
+										}
 									}
-								}
-							default:
+								default:
 
+								}
 							}
 						}
 					}
 				}
-			}
 
-			u1.RelatedCalls = append(u1.RelatedCalls, c1)
+				u1.RelatedCalls = append(u1.RelatedCalls, c1)
+			}
 		}
 
 		p.Uncover[idx] = u1

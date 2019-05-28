@@ -78,14 +78,16 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 		return reply, nil
 	}
 	for _, u := range cd.UncoveredAddress {
-		for _, r := range u.RelatedInput {
-			if rinp, ok := (*ss.corpus)[r.Sig]; ok {
-				for _, p := range rinp.Prog {
-					rinp.Prog = append(rinp.Prog, p)
+		for _, a := range u.RelatedAddress {
+			for _, r := range a.RelatedInput {
+				if rinp, ok := (*ss.corpus)[r.Sig]; ok {
+					for _, p := range rinp.Prog {
+						rinp.Prog = append(rinp.Prog, p)
+					}
+				} else {
+					reply.Name = "related input sig error : " + r.Sig
+					return reply, nil
 				}
-			} else {
-				reply.Name = "related input sig error : " + r.Sig
-				return reply, nil
 			}
 		}
 	}
@@ -150,22 +152,28 @@ func cloneDependencyInput(d *DependencyInput) *DependencyInput {
 		u1.Address = u.Address
 		u1.Idx = u.Idx
 		u1.ConditionAddress = u.ConditionAddress
-		for _, i := range u.RelatedInput {
-			i1 := &RelatedInput{
-				Sig:     i.Sig,
-				Address: i.Address,
+		for _, a := range u.RelatedAddress {
+			a1 := &RelatedAddress{
+				Address: a.Address,
 			}
-			for _, p := range i.Prog {
-				i1.Prog = append(cd.Prog, p)
+
+			for _, i := range a.RelatedInput {
+				i1 := &RelatedInput{
+					Sig: i.Sig,
+				}
+				for _, p := range i.Prog {
+					i1.Prog = append(cd.Prog, p)
+				}
+				a1.RelatedInput = append(a1.RelatedInput, i1)
 			}
-			u1.RelatedInput = append(u1.RelatedInput, i1)
-		}
-		for _, s := range u.RelatedSyscall {
-			s1 := &RelatedSyscall{
-				Name:    s.Name,
-				Address: s.Address,
+
+			for _, s := range a.RelatedSyscall {
+				s1 := &RelatedSyscall{
+					Name: s.Name,
+				}
+				a1.RelatedSyscall = append(a1.RelatedSyscall, s1)
 			}
-			u1.RelatedSyscall = append(u1.RelatedSyscall, s1)
+			u1.RelatedAddress = append(u1.RelatedAddress, a1)
 		}
 		cd.UncoveredAddress = append(cd.UncoveredAddress, u1)
 	}
