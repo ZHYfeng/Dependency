@@ -394,8 +394,6 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 }
 
 func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
-	log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer : %v", dependencyInput)
-
 	sig := dependencyInput.GetSig()
 	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
 	p.Uncover = make(map[int]*prog.Uncover)
@@ -459,7 +457,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 	}
 	fuzzer.addDInputToCorpus(p, sig)
 	for _, u := range p.Uncover {
-		log.Logf(1, "fuzzer.addDInputToCorpus : %v", u)
+		log.Logf(1, "fuzzer.addDInputToCorpus : %x", u)
 	}
 
 }
