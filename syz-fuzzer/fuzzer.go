@@ -315,7 +315,7 @@ func (fuzzer *Fuzzer) pollLoop() {
 		newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
 		log.Logf(1, "newDependencyInput size : %v", len(newDependencyInput.DependencyInput))
 		for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
-			log.Logf(1, "for fuzzer.addDInputFromAnotherFuzzer : %v", dependencyInput)
+			log.Logf(1, "dependencyInput : %v", dependencyInput)
 			fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
 		}
 	}
@@ -463,7 +463,10 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 	})
 
 	for _, u := range p.Uncover {
-		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer : %x", u)
+		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer uncover : %v", u.UncoveredAddress)
+		for _, ra := range u.RelatedAddress {
+			log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer RelatedAddress : %v", ra)
+		}
 	}
 
 }
