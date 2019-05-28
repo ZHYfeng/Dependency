@@ -126,14 +126,8 @@ namespace dra {
                     }
 
                     if (sendFlag) {
-                        std::cerr << "SendDependencyInput : " << std::endl;
-
+                        std::cerr << "SendDependencyInput sig : " << dependencyInput.sig() << std::endl;
                         auto reply = client->SendDependencyInput(dependencyInput);
-                        if (reply->name() == "") {
-
-                        } else {
-                            std::cerr << "SendDependencyInput error : " << reply->name() << std::endl;
-                        }
 //                    std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
 //                    std::cerr << "test GetDependencyInput : " << std::endl;
 //                    auto neww = client->GetDependencyInput();
