@@ -60,6 +60,7 @@ namespace dra {
                     std::cout << "new input : " << input.sig() << std::endl;
                     DInput *dInput = DM.getInput(input);
                     DependencyInput dependencyInput;
+                    bool sendFlag = false;
                     dependencyInput.set_sig(dInput->sig);
                     std::cout << "dUncoveredAddress size : " << dInput->dUncoveredAddress.size() << std::endl;
                     for (auto u : dInput->dUncoveredAddress) {
@@ -79,7 +80,7 @@ namespace dra {
 
                                 } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
                                     this->uncovered_address_number_gv_driver++;
-
+                                    sendFlag = true;
                                     std::cout << "get useful static analysis result" << std::endl;
 
                                     unsigned long long int address = DM.getSyzkallerAddress(u->address);
@@ -99,40 +100,22 @@ namespace dra {
                                         std::string bbname = bb->getName().str();
                                         auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
                                         unsigned long long int writeAddress = db->address;
-
+                                        auto function_name = "ioctl";
+                                        auto related_address = uncoveredAddress->add_related_address();
+                                        related_address->set_address(writeAddress);
                                         std::cout << "cmds size : " << cmds->size() << std::endl;
                                         for (auto c : *cmds) {
-                                            auto function_name = "ioctl";
-                                            RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
-                                            relatedSyscall->set_address(writeAddress);
-                                            relatedSyscall->set_name(function_name);
-                                            relatedSyscall->set_number(c);
+                                            auto related_syscall = related_address->add_related_syscall();
+                                            related_syscall->set_name(function_name);
+                                            related_syscall->set_number(c);
                                         }
-
                                         for (auto i : db->input) {
-                                            RelatedInput *relatedInput = uncoveredAddress->add_related_input();
-                                            relatedInput->set_address(writeAddress);
-                                            relatedInput->set_sig(i->sig);
+                                            auto related_input = related_address->add_related_input();
+                                            related_input->set_sig(i->sig);
                                         }
 
-                                        std::cerr << "SendDependencyInput : " << std::endl;
-                                        auto reply = client->SendDependencyInput(dependencyInput);
-                                        if (reply->name() == "") {
-
-                                        } else {
-                                            std::cerr << "SendDependencyInput error : " << reply->name() << std::endl;
-                                        }
-//
-//                                        std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
-//                                        std::cerr << "test GetDependencyInput : " << std::endl;
-//                                        auto neww = client->GetDependencyInput();
-//                                        for (int ni = 0; ni < neww->dependencyinput_size(); ni++) {
-//                                            const DependencyInput &nn = neww->dependencyinput(ni);
-//                                            std::cerr << "GetDependencyInput sig : " << nn.sig() << std::endl;
-//                                            std::cerr << "GetDependencyInput prog : " << nn.prog() << std::endl;
-//                                        }
-
-                                        //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak, or we can also set up a cache to avoid repeated query to STA.
+                                        //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak,
+                                        // or we can also set up a cache to avoid repeated query to STA.
                                     }
                                 }
                             } else {
@@ -140,6 +123,25 @@ namespace dra {
                             }
                         } else {
                         }
+                    }
+
+                    if (sendFlag) {
+                        std::cerr << "SendDependencyInput : " << std::endl;
+
+                        auto reply = client->SendDependencyInput(dependencyInput);
+                        if (reply->name() == "") {
+
+                        } else {
+                            std::cerr << "SendDependencyInput error : " << reply->name() << std::endl;
+                        }
+//                    std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
+//                    std::cerr << "test GetDependencyInput : " << std::endl;
+//                    auto neww = client->GetDependencyInput();
+//                    for (int ni = 0; ni < neww->dependencyinput_size(); ni++) {
+//                        const DependencyInput &nn = neww->dependencyinput(ni);
+//                        std::cerr << "GetDependencyInput sig : " << nn.sig() << std::endl;
+//                        std::cerr << "GetDependencyInput prog : " << nn.prog() << std::endl;
+//                    }
                     }
                 }
                 newInput->Clear();
@@ -186,63 +188,63 @@ namespace dra {
 
     void DependencyControlCenter::test_rpc() {
 
-        std::cout << "test_rpc : " << std::endl;
-        DependencyInput dependencyInput;
-        dependencyInput.set_sig("dependencyInput.set_sig");
-        UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
-        uncoveredAddress->set_address(0xfffffff1);
-        uncoveredAddress->set_idx(2);
-        uncoveredAddress->set_condition_address(0xfffffff2);
-
-        auto function_name = "ioctl";
-        RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
-        relatedSyscall->set_address(0xfffffff3);
-        relatedSyscall->set_name(function_name);
-        relatedSyscall->set_number(0xfffffff4);
-
-        RelatedInput *relatedInput = uncoveredAddress->add_related_input();
-        relatedInput->set_address(0xfffffff5);
-        relatedInput->set_sig("sig");
-
-        std::cout << "SendDependencyInput : " << std::endl;
-        auto r = client->SendDependencyInput(dependencyInput);
-        std::cout << "SendDependencyInput.r : " << r->name() << std::endl;
-        for (int j = 0; j < dependencyInput.uncovered_address_size(); j++) {
-            auto uu = dependencyInput.uncovered_address(j);
-            for (int k = 0; k < uu.related_input_size(); k++) {
-                auto ii = uu.related_input(k);
-                std::cout << "ii.sig : " << ii.sig() << std::endl;
-                std::cout << "ii.address : " << ii.address() << std::endl;
-            }
-
-            for (auto ss: uu.related_syscall()) {
-                std::cout << "ss.number : " << ss.number() << std::endl;
-                std::cout << "ss.name : " << ss.name() << std::endl;
-                std::cout << "ss.address : " << ss.address() << std::endl;
-            }
-        }
-
-        std::cout << "GetDependencyInput : " << std::endl;
-        auto newD = client->GetDependencyInput();
-        std::cout << "newD.dependencyinput_size : " << newD->dependencyinput_size() << std::endl;
-        for (int i = 0; i < newD->dependencyinput_size(); i++) {
-            auto dd = newD->dependencyinput(i);
-            std::cout << "dd.sig : " << dd.sig() << std::endl;
-            for (int j = 0; j < dd.uncovered_address_size(); j++) {
-                auto uu = dd.uncovered_address(j);
-                for (int k = 0; k < uu.related_input_size(); k++) {
-                    auto ii = uu.related_input(k);
-                    std::cout << "ii.sig : " << ii.sig() << std::endl;
-                    std::cout << "ii.address : " << std::hex << ii.address() << std::endl;
-                }
-
-                for (auto ss: uu.related_syscall()) {
-                    std::cout << "ss.number : " << ss.number() << std::endl;
-                    std::cout << "ss.name : " << ss.name() << std::endl;
-                    std::cout << "ss.address : " << ss.address() << std::endl;
-                }
-            }
-        }
+//        std::cout << "test_rpc : " << std::endl;
+//        DependencyInput dependencyInput;
+//        dependencyInput.set_sig("dependencyInput.set_sig");
+//        UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
+//        uncoveredAddress->set_address(0xfffffff1);
+//        uncoveredAddress->set_idx(2);
+//        uncoveredAddress->set_condition_address(0xfffffff2);
+//
+//        auto function_name = "ioctl";
+//        RelatedSyscall *relatedSyscall = uncoveredAddress->add_related_syscall();
+//        relatedSyscall->set_address(0xfffffff3);
+//        relatedSyscall->set_name(function_name);
+//        relatedSyscall->set_number(0xfffffff4);
+//
+//        RelatedInput *relatedInput = uncoveredAddress->add_related_input();
+//        relatedInput->set_address(0xfffffff5);
+//        relatedInput->set_sig("sig");
+//
+//        std::cout << "SendDependencyInput : " << std::endl;
+//        auto r = client->SendDependencyInput(dependencyInput);
+//        std::cout << "SendDependencyInput.r : " << r->name() << std::endl;
+//        for (int j = 0; j < dependencyInput.uncovered_address_size(); j++) {
+//            auto uu = dependencyInput.uncovered_address(j);
+//            for (int k = 0; k < uu.related_input_size(); k++) {
+//                auto ii = uu.related_input(k);
+//                std::cout << "ii.sig : " << ii.sig() << std::endl;
+//                std::cout << "ii.address : " << ii.address() << std::endl;
+//            }
+//
+//            for (auto ss: uu.related_syscall()) {
+//                std::cout << "ss.number : " << ss.number() << std::endl;
+//                std::cout << "ss.name : " << ss.name() << std::endl;
+//                std::cout << "ss.address : " << ss.address() << std::endl;
+//            }
+//        }
+//
+//        std::cout << "GetDependencyInput : " << std::endl;
+//        auto newD = client->GetDependencyInput();
+//        std::cout << "newD.dependencyinput_size : " << newD->dependencyinput_size() << std::endl;
+//        for (int i = 0; i < newD->dependencyinput_size(); i++) {
+//            auto dd = newD->dependencyinput(i);
+//            std::cout << "dd.sig : " << dd.sig() << std::endl;
+//            for (int j = 0; j < dd.uncovered_address_size(); j++) {
+//                auto uu = dd.uncovered_address(j);
+//                for (int k = 0; k < uu.related_input_size(); k++) {
+//                    auto ii = uu.related_input(k);
+//                    std::cout << "ii.sig : " << ii.sig() << std::endl;
+//                    std::cout << "ii.address : " << std::hex << ii.address() << std::endl;
+//                }
+//
+//                for (auto ss: uu.related_syscall()) {
+//                    std::cout << "ss.number : " << ss.number() << std::endl;
+//                    std::cout << "ss.name : " << ss.name() << std::endl;
+//                    std::cout << "ss.address : " << ss.address() << std::endl;
+//                }
+//            }
+//        }
 
         exit(0);
     }
