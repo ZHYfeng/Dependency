@@ -40,7 +40,7 @@ namespace dra {
 
         bool inferCoverBB(DInput *input, llvm::BasicBlock *b);
 
-        void inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b);
+        void inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b, int i);
 
         void inferSuccessors(llvm::BasicBlock *s, llvm::BasicBlock *b);
 

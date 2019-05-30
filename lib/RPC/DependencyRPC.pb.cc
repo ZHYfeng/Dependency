@@ -280,6 +280,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::dra::RelatedAddress, repeat_),
+  PROTOBUF_FIELD_OFFSET(::dra::RelatedAddress, prio_),
   PROTOBUF_FIELD_OFFSET(::dra::RelatedAddress, address_),
   PROTOBUF_FIELD_OFFSET(::dra::RelatedAddress, related_input_),
   PROTOBUF_FIELD_OFFSET(::dra::RelatedAddress, related_syscall_),
@@ -351,14 +353,14 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 7, -1, sizeof(::dra::RelatedInput)},
   { 14, -1, sizeof(::dra::RelatedSyscall)},
   { 21, -1, sizeof(::dra::RelatedAddress)},
-  { 29, -1, sizeof(::dra::UncoveredAddress)},
-  { 38, -1, sizeof(::dra::DependencyInput)},
-  { 46, -1, sizeof(::dra::NewDependencyInput)},
-  { 52, 59, sizeof(::dra::Call_AddressEntry_DoNotUse)},
-  { 61, -1, sizeof(::dra::Call)},
-  { 68, 75, sizeof(::dra::Input_CallEntry_DoNotUse)},
-  { 77, -1, sizeof(::dra::Input)},
-  { 85, -1, sizeof(::dra::NewInput)},
+  { 31, -1, sizeof(::dra::UncoveredAddress)},
+  { 40, -1, sizeof(::dra::DependencyInput)},
+  { 48, -1, sizeof(::dra::NewDependencyInput)},
+  { 54, 61, sizeof(::dra::Call_AddressEntry_DoNotUse)},
+  { 63, -1, sizeof(::dra::Call)},
+  { 70, 77, sizeof(::dra::Input_CallEntry_DoNotUse)},
+  { 79, -1, sizeof(::dra::Input)},
+  { 87, -1, sizeof(::dra::NewInput)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -380,32 +382,33 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] =
   "\n\023DependencyRPC.proto\022\003dra\"&\n\005Empty\022\017\n\007a"
   "ddress\030\001 \001(\r\022\014\n\004name\030\002 \001(\t\")\n\014RelatedInp"
   "ut\022\013\n\003sig\030\001 \001(\t\022\014\n\004prog\030\003 \001(\014\".\n\016Related"
-  "Syscall\022\014\n\004name\030\001 \001(\t\022\016\n\006number\030\003 \001(\004\"y\n"
-  "\016RelatedAddress\022\017\n\007address\030\002 \001(\r\022(\n\rrela"
-  "ted_input\030\004 \003(\0132\021.dra.RelatedInput\022,\n\017re"
-  "lated_syscall\030\005 \003(\0132\023.dra.RelatedSyscall"
-  "\"y\n\020UncoveredAddress\022\017\n\007address\030\001 \001(\r\022\013\n"
-  "\003idx\030\002 \001(\r\022\031\n\021condition_address\030\003 \001(\r\022,\n"
-  "\017related_address\030\004 \003(\0132\023.dra.RelatedAddr"
-  "ess\"^\n\017DependencyInput\022\013\n\003sig\030\001 \001(\t\0220\n\021u"
-  "ncovered_address\030\002 \003(\0132\025.dra.UncoveredAd"
-  "dress\022\014\n\004prog\030\003 \001(\014\"C\n\022NewDependencyInpu"
-  "t\022-\n\017dependencyInput\030\001 \003(\0132\024.dra.Depende"
-  "ncyInput\"l\n\004Call\022\013\n\003idx\030\001 \001(\r\022\'\n\007address"
-  "\030\002 \003(\0132\026.dra.Call.AddressEntry\032.\n\014Addres"
-  "sEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"~"
-  "\n\005Input\022\013\n\003sig\030\001 \001(\t\022\"\n\004call\030\002 \003(\0132\024.dra"
-  ".Input.CallEntry\022\014\n\004prog\030\003 \001(\014\0326\n\tCallEn"
-  "try\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Ca"
-  "ll:\0028\001\"%\n\010NewInput\022\031\n\005input\030\001 \003(\0132\n.dra."
-  "Input2\251\002\n\rDependencyRPC\022(\n\014GetVmOffsets\022"
-  "\n.dra.Empty\032\n.dra.Empty\"\000\022*\n\013GetNewInput"
-  "\022\n.dra.Empty\032\r.dra.NewInput\"\000\0229\n\023SendDep"
-  "endencyInput\022\024.dra.DependencyInput\032\n.dra"
-  ".Empty\"\000\022#\n\007Connect\022\n.dra.Empty\032\n.dra.Em"
-  "pty\"\000\022;\n\022GetDependencyInput\022\n.dra.Empty\032"
-  "\027.dra.NewDependencyInput\"\000\022%\n\tSendInput\022"
-  "\n.dra.Input\032\n.dra.Empty\"\000b\006proto3"
+  "Syscall\022\014\n\004name\030\001 \001(\t\022\016\n\006number\030\003 \001(\004\"\227\001"
+  "\n\016RelatedAddress\022\016\n\006repeat\030\007 \001(\r\022\014\n\004prio"
+  "\030\006 \001(\r\022\017\n\007address\030\002 \001(\r\022(\n\rrelated_input"
+  "\030\004 \003(\0132\021.dra.RelatedInput\022,\n\017related_sys"
+  "call\030\005 \003(\0132\023.dra.RelatedSyscall\"y\n\020Uncov"
+  "eredAddress\022\017\n\007address\030\001 \001(\r\022\013\n\003idx\030\002 \001("
+  "\r\022\031\n\021condition_address\030\003 \001(\r\022,\n\017related_"
+  "address\030\004 \003(\0132\023.dra.RelatedAddress\"^\n\017De"
+  "pendencyInput\022\013\n\003sig\030\001 \001(\t\0220\n\021uncovered_"
+  "address\030\002 \003(\0132\025.dra.UncoveredAddress\022\014\n\004"
+  "prog\030\003 \001(\014\"C\n\022NewDependencyInput\022-\n\017depe"
+  "ndencyInput\030\001 \003(\0132\024.dra.DependencyInput\""
+  "l\n\004Call\022\013\n\003idx\030\001 \001(\r\022\'\n\007address\030\002 \003(\0132\026."
+  "dra.Call.AddressEntry\032.\n\014AddressEntry\022\013\n"
+  "\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"~\n\005Input\022\013"
+  "\n\003sig\030\001 \001(\t\022\"\n\004call\030\002 \003(\0132\024.dra.Input.Ca"
+  "llEntry\022\014\n\004prog\030\003 \001(\014\0326\n\tCallEntry\022\013\n\003ke"
+  "y\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:\0028\001\"%\n"
+  "\010NewInput\022\031\n\005input\030\001 \003(\0132\n.dra.Input2\251\002\n"
+  "\rDependencyRPC\022(\n\014GetVmOffsets\022\n.dra.Emp"
+  "ty\032\n.dra.Empty\"\000\022*\n\013GetNewInput\022\n.dra.Em"
+  "pty\032\r.dra.NewInput\"\000\0229\n\023SendDependencyIn"
+  "put\022\024.dra.DependencyInput\032\n.dra.Empty\"\000\022"
+  "#\n\007Connect\022\n.dra.Empty\032\n.dra.Empty\"\000\022;\n\022"
+  "GetDependencyInput\022\n.dra.Empty\032\027.dra.New"
+  "DependencyInput\"\000\022%\n\tSendInput\022\n.dra.Inp"
+  "ut\032\n.dra.Empty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -426,7 +429,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1153,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1184,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 12, 0,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 12, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
@@ -1418,6 +1421,8 @@ class RelatedAddress::HasBitSetters {
 };
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int RelatedAddress::kRepeatFieldNumber;
+const int RelatedAddress::kPrioFieldNumber;
 const int RelatedAddress::kAddressFieldNumber;
 const int RelatedAddress::kRelatedInputFieldNumber;
 const int RelatedAddress::kRelatedSyscallFieldNumber;
@@ -1434,13 +1439,17 @@ RelatedAddress::RelatedAddress(const RelatedAddress& from)
       related_input_(from.related_input_),
       related_syscall_(from.related_syscall_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  address_ = from.address_;
+  ::memcpy(&address_, &from.address_,
+    static_cast<size_t>(reinterpret_cast<char*>(&repeat_) -
+    reinterpret_cast<char*>(&address_)) + sizeof(repeat_));
   // @@protoc_insertion_point(copy_constructor:dra.RelatedAddress)
 }
 
 void RelatedAddress::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RelatedAddress_DependencyRPC_2eproto.base);
-  address_ = 0u;
+  ::memset(&address_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&repeat_) -
+      reinterpret_cast<char*>(&address_)) + sizeof(repeat_));
 }
 
 RelatedAddress::~RelatedAddress() {
@@ -1468,7 +1477,9 @@ void RelatedAddress::Clear() {
 
   related_input_.Clear();
   related_syscall_.Clear();
-  address_ = 0u;
+  ::memset(&address_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&repeat_) -
+      reinterpret_cast<char*>(&address_)) + sizeof(repeat_));
   _internal_metadata_.Clear();
 }
 
@@ -1509,6 +1520,20 @@ const char* RelatedAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<::PROTOBUF_NAMESPACE_ID::uint8>(ptr) == 42);
+        } else goto handle_unusual;
+        continue;
+      // uint32 prio = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          prio_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 repeat = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+          repeat_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -1576,6 +1601,32 @@ bool RelatedAddress::MergePartialFromCodedStream(
         break;
       }
 
+      // uint32 prio = 6;
+      case 6: {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (48 & 0xFF)) {
+
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &prio_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 repeat = 7;
+      case 7: {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (56 & 0xFF)) {
+
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &repeat_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -1626,6 +1677,16 @@ void RelatedAddress::SerializeWithCachedSizes(
       output);
   }
 
+  // uint32 prio = 6;
+  if (this->prio() != 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32(6, this->prio(), output);
+  }
+
+  // uint32 repeat = 7;
+  if (this->repeat() != 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32(7, this->repeat(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -1658,6 +1719,16 @@ void RelatedAddress::SerializeWithCachedSizes(
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
         5, this->related_syscall(static_cast<int>(i)), target);
+  }
+
+  // uint32 prio = 6;
+  if (this->prio() != 0) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->prio(), target);
+  }
+
+  // uint32 repeat = 7;
+  if (this->repeat() != 0) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(7, this->repeat(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1710,6 +1781,20 @@ size_t RelatedAddress::ByteSizeLong() const {
         this->address());
   }
 
+  // uint32 prio = 6;
+  if (this->prio() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->prio());
+  }
+
+  // uint32 repeat = 7;
+  if (this->repeat() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->repeat());
+  }
+
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -1742,6 +1827,12 @@ void RelatedAddress::MergeFrom(const RelatedAddress& from) {
   if (from.address() != 0) {
     set_address(from.address());
   }
+  if (from.prio() != 0) {
+    set_prio(from.prio());
+  }
+  if (from.repeat() != 0) {
+    set_repeat(from.repeat());
+  }
 }
 
 void RelatedAddress::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -1772,6 +1863,8 @@ void RelatedAddress::InternalSwap(RelatedAddress* other) {
   CastToBase(&related_input_)->InternalSwap(CastToBase(&other->related_input_));
   CastToBase(&related_syscall_)->InternalSwap(CastToBase(&other->related_syscall_));
   swap(address_, other->address_);
+  swap(prio_, other->prio_);
+  swap(repeat_, other->repeat_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RelatedAddress::GetMetadata() const {

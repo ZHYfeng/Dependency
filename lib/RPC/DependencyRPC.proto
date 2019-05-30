@@ -38,6 +38,8 @@ message RelatedSyscall {
 }
 
 message RelatedAddress {
+    uint32 repeat = 7;
+    uint32 prio = 6;
     uint32 address = 2;
     repeated RelatedInput related_input = 4;
     repeated RelatedSyscall related_syscall = 5;

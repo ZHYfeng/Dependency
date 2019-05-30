@@ -69,7 +69,13 @@ namespace dra {
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[u->condition_address]->parent->basicBlock;
-                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b),true);
+                                bool flag;
+                                if (u->successor_idx) {
+                                    flag = true;
+                                } else {
+                                    flag = false;
+                                }
+                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), flag);
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
                                     std::cout << "allBasicblock == nullptr" << std::endl;
@@ -103,6 +109,8 @@ namespace dra {
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_related_address();
                                         related_address->set_address(writeAddress);
+                                        related_address->set_repeat(x->repeat);
+                                        related_address->set_prio(x->prio);
                                         std::cout << "cmds size : " << cmds->size() << std::endl;
                                         for (auto c : *cmds) {
                                             auto related_syscall = related_address->add_related_syscall();
@@ -165,7 +173,7 @@ namespace dra {
             auto b = B.second->basicBlock;
             std::cout << "b name : " << B.second->name << std::endl;
 
-            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b,true);
+            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b, true);
             if (allBasicblock == nullptr) {
                 // no taint or out side
                 std::cout << "allBasicblock == nullptr" << std::endl;
