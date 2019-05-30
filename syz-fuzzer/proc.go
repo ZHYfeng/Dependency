@@ -208,12 +208,52 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		proc.fuzzer.workQueue.enqueue(&WorkSmash{item.p, item.call})
 	}
 
-	if len(item.p.Uncover) != 0 {
-		proc.checkCoverage(item.p, inputCover)
-	}
-
 	input.Sig = sig.String()
 	proc.fuzzer.dManager.SendInput(&input)
+}
+
+func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
+
+	log.Logf(1, "#%v: DependencyMutate", proc.pid)
+
+	ct := proc.fuzzer.choiceTable
+	corpus := proc.fuzzer.corpusSnapshot()
+	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
+	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
+	//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
+	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
+
+	p := item.p
+	proc.logProgram(proc.execOpts, p)
+
+	for iu, u := range p.Uncover {
+		p.UncoverIdx = iu
+		for _, ra := range u.RelatedAddress {
+			p.WriteAddress = nil
+			p.WriteAddress = append(p.WriteAddress, ra.RelatedAddress)
+			for _, rp := range ra.RelatedProgs {
+				p0 := p.Clone()
+				p0.Splice(rp, u.Idx, programLength)
+
+				proc.logProgram(proc.execOptsCover, p0)
+				info := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
+				var inputCover cover.Cover
+				for _, c := range info.Calls {
+					inputCover.Merge(c.Cover)
+				}
+				proc.checkCoverage(p, inputCover)
+
+			}
+			if len(ra.RelatedCalls) > 0 {
+
+			}
+		}
+	}
+
+	p.DependencyMutate(proc.rnd, programLength, ct, corpus)
+	proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
+
+	return
 }
 
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
@@ -230,33 +270,12 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 	return
 }
 
-func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
-	
-	log.Logf(1, "DependencyMutate")
-
-	ct := proc.fuzzer.choiceTable
-	corpus := proc.fuzzer.corpusSnapshot()
-	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
-	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
-	//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
-	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
-
-	p := item.p
-	proc.logProgram(proc.execOpts, p)
-	p.DependencyMutate(proc.rnd, programLength, ct, corpus)
-	proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
-
-	return
-}
-
 func (proc *Proc) checkUncoveredAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
 	res = false
 	var uncover = p.Uncover[p.UncoverIdx].UncoveredAddress
-	for pc := range inputCover {
-		if uncover == pc {
-			res = true
-			return
-		}
+	if _, ok := inputCover[uncover]; ok {
+		res = true
+		return
 	}
 	return
 }
@@ -264,11 +283,9 @@ func (proc *Proc) checkUncoveredAddress(p *prog.Prog, inputCover cover.Cover) (r
 func (proc *Proc) checkWriteAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
 	res = false
 	for _, address := range p.WriteAddress {
-		for pc := range inputCover {
-			if address == pc {
-				res = true
-				return
-			}
+		if _, ok := inputCover[address]; ok {
+			res = true
+			return
 		}
 	}
 	return

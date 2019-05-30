@@ -82,7 +82,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 			for _, r := range a.RelatedInput {
 				if rinp, ok := (*ss.corpus)[r.Sig]; ok {
 					for _, p := range rinp.Prog {
-						rinp.Prog = append(rinp.Prog, p)
+						r.Prog = append(r.Prog, p)
 					}
 				} else {
 					reply.Name = "related input sig error : " + r.Sig

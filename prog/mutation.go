@@ -717,6 +717,15 @@ func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, cor
 	}
 }
 
+func (p *Prog) Splice(rp *Prog, idx uint32, ncalls int) bool {
+	p0c := rp.Clone()
+	p.Calls = append(p.Calls[:idx], append(p0c.Calls, p.Calls[idx:]...)...)
+	for i := len(p.Calls) - 1; i >= ncalls; i-- {
+		p.removeCall(i)
+	}
+	return true
+}
+
 func (p *Prog) mutateArgForCall(r *randGen, ct *ChoiceTable, c *Call) bool {
 
 	// Change args of a call.
