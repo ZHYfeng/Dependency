@@ -196,20 +196,23 @@ namespace sta {
         return nullptr;
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B) {
-        return this->GetAllGlobalWriteInsts(this->QueryBranchTaint(B));
+    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B, bool branch) {
+        return this->GetAllGlobalWriteInsts(this->QueryBranchTaint(B),branch);
     }
 
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
-    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf, bool branch) {
         if (!p_taint_inf) {
             std::cout << "GetAllGlobalWriteInsts : p_taint_inf = nullptr" << std::endl;
             return nullptr;
         }
         MODS *p_mod_irs = new MODS();
+        //TODO: we assume now the trait for the "br" remains the same even under different contexts.
+        ID_TY trait_id = 0;
+        //Iterate over different contexts of "br".
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
-            auto &trait_id = std::get<0>(x.second);
+            trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
@@ -219,23 +222,35 @@ namespace sta {
                 MODS *p_cur_mod_irs = this->GetRealModIrs(ps_mod_irs);
 
                 //Append the list.
-                p_mod_irs->insert(p_mod_irs->end(),p_cur_mod_irs->begin(),p_cur_mod_irs->end());
+                for (auto& x : *p_cur_mod_irs) {
+                    if (std::find_if(p_mod_irs->begin(), p_mod_irs->end(), [x](const Mod* m){
+                            return x->equal(m);
+                        }) == p_mod_irs->end()) 
+                    {
+                        p_mod_irs->push_back(x);
+                    }
+                }
             }//tags
         }
+        //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
+        //Also do some function name pair NLP analysis here.
+        //TODO: the "bool" value indicating the taken branch.
+        tweakModsOnTraits(p_mod_irs,trait_id,branch);
         return p_mod_irs;
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B) {
-        return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B));
+    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B, bool branch) {
+        return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B), branch);
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf, bool branch) {
         if (!p_taint_inf) {
             return nullptr;
         }
         MODS *p_mod_bbs = new MODS();
         //TODO: we assume now the trait for the "br" remains the same even under different contexts.
         ID_TY trait_id = 0;
+        //Iterate over different contexts of "br".
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
             trait_id = std::get<0>(x.second);
@@ -248,13 +263,22 @@ namespace sta {
                 MODS *p_cur_mod_bbs = this->GetRealModBbs(ps_mod_irs);
 
                 //Append the list.
-                p_mod_bbs->insert(p_mod_bbs->end(),p_cur_mod_bbs->begin(),p_cur_mod_bbs->end());
+                //TODO: this can be problematic, since one BB can contain two different insts that update different global states and have different traits.
+                //TODO: maybe we should deprecate GetAllGlobalWriteBBs and use GetAllGlobalWriteInsts instead.
+                for (auto& x : *p_cur_mod_bbs) {
+                    if (std::find_if(p_mod_bbs->begin(), p_mod_bbs->end(), [x](const Mod* m){
+                            return x->equal(m);
+                        }) == p_mod_bbs->end()) 
+                    {
+                        p_mod_bbs->push_back(x);
+                    }
+                }
             }//tags
         }
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
         //Also do some function name pair NLP analysis here.
         //TODO: the "bool" value indicating the taken branch.
-        tweakModsOnTraits(p_mod_bbs,trait_id,true);
+        tweakModsOnTraits(p_mod_bbs,trait_id,branch);
         return p_mod_bbs;
     }
 
@@ -263,23 +287,72 @@ namespace sta {
             return;
         }
         TRAIT& br_trait = this->traitMap[br_trait_id];
+        std::string cond("");
+        int64_t v = 0;
         for (auto& x : br_trait) {
-            if (x.first == "==" || x.first == "!=") {
-                if ((x.first == "==") == branch) {
+            const std::string& s = x.first;
+            if (s == "==" || s == "!=") {
+                if ((s == "==") == branch) {
                     //Need to take a certain value to reach the destination.
+                    cond = "==";
                 }else {
                     //Need to not take a certain value to reach the destination.
+                    cond = "!=";
                 }
-            }else if (x.first == ">=" || x.first == "<=") {
-                if ((x.first == ">=") == branch) {
+                v = x.second;
+            }else if (s == ">=" || s == "<=") {
+                if ((s == ">=") == branch) {
                     //Need to be larger than a certain value to reach the destination.
+                    cond = ">=";
                 }else {
                     //Need to be smaller than a certain value to reach the destination.
+                    cond = "<=";
                 }
-            }else if (x.first.substr(0,3) == "RET") {
+                v = x.second;
+            }else if (s == ">" || s == "<") {
+                if ((s == ">") == branch) {
+                    //Need to be larger than a certain value to reach the destination.
+                    cond = ">";
+                }else {
+                    //Need to be smaller than a certain value to reach the destination.
+                    cond = "<";
+                }
+                v = x.second;
+            }else if (s.substr(0,3) == "RET") {
                 //The condition is related to a function return value, do some NLP analysis.
+                std::string br_func = s.substr(4);
+                //E.g. if the condition is related to the return value "dequeue", then possibly to satisfy the condition we need call "enqueue" first.
+                //So we need to find the "antonym" function names.
+                //The heuristic is that antonym names are different but usually very similar to original names (e.g. de- and en-), so we can pick
+                //those callee names with low Levenshtein distances.
+                for (auto& x : this->calleeMap) {
+                    int dis = this->levDistance(br_func,x.first);
+                    //TODO: is "2" a proper threshold value?
+                    if (dis == 0 || dis > 2) {
+                        continue;
+                    }
+                    //Ok, we guess this is an antonym function that we should call.
+                    //Get the callee instruction and treat is as a potential "Mod IR".
+                    MODS *p_callee_mods = this->GetRealModBbs(&x.second);
+                    if (!p_callee_mods) {
+                        continue;
+                    }
+                    //Set proper priorities and properties of these MOD IRs.
+                    for (auto& x : *p_callee_mods) {
+                        x->from_nlp = true;
+                    }
+                    //Append these NLP Mod IRs to the original list.
+                    pmods->insert(pmods->end(),p_callee_mods->begin(),p_callee_mods->end());
+                }
             }
         }
+        //Calculate mod inst priorities based given the br's and mod inst's traits.
+        if (!cond.empty()) {
+            for (auto& x : *pmods) {
+                x->calcPrio(cond,v);
+            }
+        }
+        //Rank the mod insts.
     }
 
     MODS *StaticAnalysisResult::GetRealModIrs(MOD_IR_TY *p_mod_irs) {
@@ -300,7 +373,7 @@ namespace sta {
                         if (!pinst) {
                             continue;
                         }
-                        Mod *pmod = new Mod(pinst,&el3.second);
+                        Mod *pmod = new Mod(pinst,&el3.second,this);
                         mod_irs->push_back(pmod);
                     }//inst
                 }//bb
@@ -335,7 +408,7 @@ namespace sta {
                         }
                     }
                     if (p_mod_inf) {
-                        Mod *pmod = new Mod(pbb,p_mod_inf);
+                        Mod *pmod = new Mod(pbb,p_mod_inf,this);
                         mod_bbs->push_back(pmod);
                     }
                 }//bb
@@ -544,6 +617,85 @@ namespace sta {
             }
         }
         return TypeNameMap[v];
+    }
+
+    TRAIT *StaticAnalysisResult::getTrait(ID_TY id) {
+        if (this->traitMap.find(id) != this->traitMap.end()) {
+            return &(this->traitMap[id]);
+        }
+        return nullptr;
+    }
+
+    int StaticAnalysisResult::levDistance(const std::string& source, const std::string& target)
+    {
+        // Step 1
+        const int n = source.length();
+        const int m = target.length();
+        if (n == 0) {
+            return m;
+        }
+        if (m == 0) {
+            return n;
+        }
+
+        // Good form to declare a TYPEDEF
+        typedef std::vector<std::vector<int>> Tmatrix; 
+
+        Tmatrix matrix(n+1);
+        // Size the vectors in the 2.nd dimension. Unfortunately C++ doesn't
+        // allow for allocation on declaration of 2.nd dimension of vec of vec
+        for (int i = 0; i <= n; i++) {
+            matrix[i].resize(m+1);
+        }
+
+        // Step 2
+        for (int i = 0; i <= n; i++) {
+            matrix[i][0]=i;
+        }
+        for (int j = 0; j <= m; j++) {
+            matrix[0][j]=j;
+        }
+
+        // Step 3
+        for (int i = 1; i <= n; i++) {
+            const char s_i = source[i-1];
+
+            // Step 4
+            for (int j = 1; j <= m; j++) {
+                const char t_j = target[j-1];
+
+                // Step 5
+                int cost;
+                if (s_i == t_j) {
+                    cost = 0;
+                }
+                else {
+                    cost = 1;
+                }
+
+                // Step 6
+                const int above = matrix[i-1][j];
+                const int left = matrix[i][j-1];
+                const int diag = matrix[i-1][j-1];
+                int cell = std::min( above + 1, std::min(left + 1, diag + cost));
+
+                // Step 6A: Cover transposition, in addition to deletion,
+                // insertion and substitution. This step is taken from:
+                // Berghel, Hal ; Roach, David : "An Extension of Ukkonen's 
+                // Enhanced Dynamic Programming ASM Algorithm"
+                // (http://www.acm.org/~hlb/publications/asm/asm.html)
+                if (i>2 && j>2) {
+                    int trans=matrix[i-2][j-2]+1;
+                    if (source[i-2]!=t_j) trans++;
+                    if (s_i!=target[j-2]) trans++;
+                    if (cell>trans) cell=trans;
+                }
+                matrix[i][j]=cell;
+            }
+        }
+
+        // Step 7
+        return matrix[n][m];
     }
 
 } /* namespace sta */
