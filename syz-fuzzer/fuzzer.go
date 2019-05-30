@@ -410,6 +410,8 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 
 			a1 := &prog.RelatedAddresses{
 				RelatedAddress: a.GetAddress(),
+				Prio:           a.GetPrio(),
+				Repeat:         a.GetRepeat(),
 			}
 
 			for _, i := range a.GetRelatedInput() {

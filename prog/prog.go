@@ -19,6 +19,8 @@ type Prog struct {
 
 type RelatedAddresses struct {
 	RelatedAddress uint32
+	Prio           uint32
+	Repeat         uint32
 	RelatedProgs   []*Prog
 	RelatedCalls   []*Call
 }

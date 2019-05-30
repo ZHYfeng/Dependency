@@ -58,6 +58,8 @@ func (p *Prog) CloneWithUncover() *Prog {
 		for ai, address := range u.RelatedAddress {
 			ra := &RelatedAddresses{
 				RelatedAddress: address.RelatedAddress,
+				Prio:           address.Prio,
+				Repeat:         address.Repeat,
 			}
 			for _, call := range address.RelatedCalls {
 				ra.RelatedCalls = append(ra.RelatedCalls, call)
