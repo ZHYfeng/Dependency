@@ -154,13 +154,15 @@ namespace dra {
                     std::cerr << "un find address " << std::hex << final_address << "\n";
                 }
 
-                if (this->cover.find(final_address) != this->cover.end()) {
+                if (this->cover.find(final_address) == this->cover.end()) {
                     std::time_t t = std::time(NULL);
                     coverage *c = new coverage();
                     c->time = t;
                     c->address = final_address;
                     this->cover[final_address] = t;
                     this->time.push_back(c);
+                    std::cout << "new cover address " << std::hex << final_address << "\n";
+                } else {
                 }
             }
         }
@@ -176,17 +178,27 @@ namespace dra {
     }
 
     bool DataManagement::isDriver(unsigned long long int address) {
-        if(this->Address2BB[address]->parent != nullptr ){
-            auto b = this->Address2BB[address]->parent;
-            if (b->parent!= nullptr){
-                auto f = b->parent;
-                std::cout << "isDriver path : " << f->Path << "\n";
-                if (f->Path.find("block/") == 0) {
-                    return true;
-                } else {
 
+        if(this->Address2BB.find(address)!= this->Address2BB.end()){
+            if(this->Address2BB[address]->parent != nullptr ){
+                auto b = this->Address2BB[address]->parent;
+                if (b->parent!= nullptr){
+                    auto f = b->parent;
+                    std::cout << "isDriver path : " << f->Path << "\n";
+                    std::cout << "isDriver address : " << address << "\n";
+                    if (f->Path.find("block/") == 0) {
+                        return true;
+                    } else if (f->Path.find("drivers/") == 0) {
+                        return true;
+                    }
+                } else {
+                    std::cerr << "isDriver not have parent f" << std::hex << address << "\n";
                 }
+            } else {
+                std::cerr << "isDriver not have parent bb" << std::hex << address << "\n";
             }
+        }else {
+            std::cerr << "isDriver not find address " << std::hex << address << "\n";
         }
         return false;
     }

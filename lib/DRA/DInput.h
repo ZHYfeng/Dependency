@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 
-#define DEBUGINPUT 1
+#define DEBUGINPUT 0
 
 namespace dra {
 

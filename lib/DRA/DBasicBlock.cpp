@@ -168,51 +168,51 @@ namespace dra {
         }
     }
 
-    void DBasicBlock::inferPredecessors(llvm::BasicBlock *b) {
-        std::string name = b->getName().str();
-        auto input = this->parent->BasicBlock[name]->lastInput;
-        if (b->getSinglePredecessor()) {
-            inferCoverBB(input, b->getSinglePredecessor());
-            inferPredecessors(b->getSinglePredecessor());
-            inferPredecessorsUncover(b, b->getSinglePredecessor());
-        } else if (useLessPred.size() > 0) {
-            int num = 0;
-            llvm::BasicBlock *pb;
-            for (auto *Pred : llvm::predecessors(b)) {
-                if (useLessPred.find(Pred) == useLessPred.end()) {
-                    pb = Pred;
-                    num++;
-                }
-            }
-            if (num == 1) {
-                inferCoverBB(input, pb);
-                inferPredecessors(pb);
-                inferPredecessorsUncover(b, pb);
-            }
-        } else if (!b->hasName()) {
-            for (auto *Pred : llvm::predecessors(b)) {
-                inferCoverBB(input, b->getSinglePredecessor());
-                inferPredecessors(b->getSinglePredecessor());
-                inferPredecessorsUncover(b, b->getSinglePredecessor());
-            }
-        } else {
+//    void DBasicBlock::inferPredecessors(llvm::BasicBlock *b) {
+//        std::string name = b->getName().str();
+//        auto input = this->parent->BasicBlock[name]->lastInput;
+//        if (b->getSinglePredecessor()) {
+//            inferCoverBB(input, b->getSinglePredecessor());
+//            inferPredecessors(b->getSinglePredecessor());
+//            inferPredecessorsUncover(b, b->getSinglePredecessor());
+//        } else if (useLessPred.size() > 0) {
+//            int num = 0;
+//            llvm::BasicBlock *pb;
+//            for (auto *Pred : llvm::predecessors(b)) {
+//                if (useLessPred.find(Pred) == useLessPred.end()) {
+//                    pb = Pred;
+//                    num++;
+//                }
+//            }
+//            if (num == 1) {
+//                inferCoverBB(input, pb);
+//                inferPredecessors(pb);
+//                inferPredecessorsUncover(b, pb);
+//            }
+//        } else if (!b->hasName()) {
+//            for (auto *Pred : llvm::predecessors(b)) {
+//                inferCoverBB(input, b->getSinglePredecessor());
+//                inferPredecessors(b->getSinglePredecessor());
+//                inferPredecessorsUncover(b, b->getSinglePredecessor());
+//            }
+//        } else {
+//
+//        }
+//
+//    }
 
-        }
-
-    }
-
-    void DBasicBlock::inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred) {
-        auto *inst = Pred->getTerminator();
-        if (inst->getNumSuccessors() == 1) {
-
-        } else {
-            for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
-                if (inst->getSuccessor(i) != b && inst->getSuccessor(i)->hasName()) {
-                    inferUncoverBB(b, inst->getSuccessor(i));
-                }
-            }
-        }
-    }
+//    void DBasicBlock::inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred) {
+//        auto *inst = Pred->getTerminator();
+//        if (inst->getNumSuccessors() == 1) {
+//
+//        } else {
+//            for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+//                if (inst->getSuccessor(i) != b && inst->getSuccessor(i)->hasName()) {
+//                    inferUncoverBB(b, inst->getSuccessor(i));
+//                }
+//            }
+//        }
+//    }
 
     void DBasicBlock::infer() {
         if (this->state == CoverKind::cover) {

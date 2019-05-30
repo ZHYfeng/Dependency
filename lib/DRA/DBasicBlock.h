@@ -44,9 +44,9 @@ namespace dra {
 
         void inferSuccessors(llvm::BasicBlock *s, llvm::BasicBlock *b);
 
-        void inferPredecessors(llvm::BasicBlock *b);
+//        void inferPredecessors(llvm::BasicBlock *b);
 
-        void inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred);
+//        void inferPredecessorsUncover(llvm::BasicBlock *b, llvm::BasicBlock *Pred);
 
         void infer();
 
