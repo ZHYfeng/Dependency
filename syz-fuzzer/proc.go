@@ -224,7 +224,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
 
 	p := item.p
-	proc.logProgram(proc.execOpts, p)
+	log.Logf(1, "DependencyMutate prog : %v", p)
 
 	for iu, u := range p.Uncover {
 		p.UncoverIdx = iu
@@ -237,9 +237,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				log.Logf(1, "related prog : %v", rp)
 				p0 := p.Clone()
 				p0.Splice(rp, u.Idx, programLength)
-
-				proc.logProgram(proc.execOptsCover, p0)
-				info := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
+				log.Logf(1, "p0 prog : %v", p0)
+				info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 				var inputCover cover.Cover
 				for _, c := range info.Calls {
 					inputCover.Merge(c.Cover)
