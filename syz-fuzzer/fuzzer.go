@@ -313,7 +313,6 @@ func (fuzzer *Fuzzer) pollLoop() {
 		//sig := hash.Hash(data)
 		//fuzzer.dManager.SendDependencyInput(sig.String())
 		newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
-		log.Logf(1, "newDependencyInput size : %v", len(newDependencyInput.DependencyInput))
 		for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
 			log.Logf(1, "dependencyInput : %v", dependencyInput)
 			fuzzer.addDInputFromAnotherFuzzer(dependencyInput)

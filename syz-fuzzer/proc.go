@@ -216,8 +216,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 	log.Logf(1, "#%v: DependencyMutate", proc.pid)
 
-	ct := proc.fuzzer.choiceTable
-	corpus := proc.fuzzer.corpusSnapshot()
+	//ct := proc.fuzzer.choiceTable
+	//corpus := proc.fuzzer.corpusSnapshot()
 	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
 	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
 	//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
@@ -228,10 +228,13 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 	for iu, u := range p.Uncover {
 		p.UncoverIdx = iu
+		log.Logf(1, "Uncover address : %v", u.UncoveredAddress)
 		for _, ra := range u.RelatedAddress {
+			log.Logf(1, "related address : %v", ra.RelatedAddress)
 			p.WriteAddress = nil
 			p.WriteAddress = append(p.WriteAddress, ra.RelatedAddress)
 			for _, rp := range ra.RelatedProgs {
+				log.Logf(1, "related prog : %v", rp)
 				p0 := p.Clone()
 				p0.Splice(rp, u.Idx, programLength)
 
@@ -241,6 +244,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				for _, c := range info.Calls {
 					inputCover.Merge(c.Cover)
 				}
+				log.Logf(1, "inputCover : %v", inputCover)
 				proc.checkCoverage(p, inputCover)
 
 			}
@@ -250,8 +254,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 		}
 	}
 
-	p.DependencyMutate(proc.rnd, programLength, ct, corpus)
-	proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
+	//p.DependencyMutate(proc.rnd, programLength, ct, corpus)
+	//proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
 
 	return
 }
