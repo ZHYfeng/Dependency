@@ -29,6 +29,7 @@ namespace dra {
         static void record();
 
         void test_sta();
+        void test_rpc();
 
     private:
         DependencyRPCClient *client;

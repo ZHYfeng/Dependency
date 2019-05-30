@@ -24,7 +24,9 @@ namespace dra {
 
         NewInput *GetNewInput();
 
-        void SendDependencyInput(const DependencyInput &request);
+        Empty *SendDependencyInput(const DependencyInput &request);
+
+        NewDependencyInput *GetDependencyInput();
 
     private:
         std::unique_ptr<DependencyRPC::Stub> stub_;
