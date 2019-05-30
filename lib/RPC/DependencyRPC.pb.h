@@ -675,6 +675,18 @@ class RelatedAddress :
   ::PROTOBUF_NAMESPACE_ID::uint32 address() const;
   void set_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
 
+  // uint32 prio = 6;
+  void clear_prio();
+  static const int kPrioFieldNumber = 6;
+  ::PROTOBUF_NAMESPACE_ID::uint32 prio() const;
+  void set_prio(::PROTOBUF_NAMESPACE_ID::uint32 value);
+
+  // uint32 repeat = 7;
+  void clear_repeat();
+  static const int kRepeatFieldNumber = 7;
+  ::PROTOBUF_NAMESPACE_ID::uint32 repeat() const;
+  void set_repeat(::PROTOBUF_NAMESPACE_ID::uint32 value);
+
   // @@protoc_insertion_point(class_scope:dra.RelatedAddress)
  private:
   class HasBitSetters;
@@ -683,6 +695,8 @@ class RelatedAddress :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::RelatedInput > related_input_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::RelatedSyscall > related_syscall_;
   ::PROTOBUF_NAMESPACE_ID::uint32 address_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 prio_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 repeat_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -1878,6 +1892,34 @@ inline void RelatedSyscall::set_number(::PROTOBUF_NAMESPACE_ID::uint64 value) {
 // -------------------------------------------------------------------
 
 // RelatedAddress
+
+// uint32 repeat = 7;
+inline void RelatedAddress::clear_repeat() {
+  repeat_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RelatedAddress::repeat() const {
+  // @@protoc_insertion_point(field_get:dra.RelatedAddress.repeat)
+  return repeat_;
+}
+inline void RelatedAddress::set_repeat(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  repeat_ = value;
+  // @@protoc_insertion_point(field_set:dra.RelatedAddress.repeat)
+}
+
+// uint32 prio = 6;
+inline void RelatedAddress::clear_prio() {
+  prio_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 RelatedAddress::prio() const {
+  // @@protoc_insertion_point(field_get:dra.RelatedAddress.prio)
+  return prio_;
+}
+inline void RelatedAddress::set_prio(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  prio_ = value;
+  // @@protoc_insertion_point(field_set:dra.RelatedAddress.prio)
+}
 
 // uint32 address = 2;
 inline void RelatedAddress::clear_address() {

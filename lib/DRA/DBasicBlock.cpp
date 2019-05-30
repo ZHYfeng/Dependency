@@ -115,7 +115,7 @@ namespace dra {
         return false;
     }
 
-    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b) {
+    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b, int i) {
         DBasicBlock *Dp;
         DBasicBlock *Db;
         std::string pname = p->getName().str();
@@ -128,10 +128,10 @@ namespace dra {
                 if (Db->state == CoverKind::untest) {
                     Db->setState(CoverKind::uncover);
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->address, Dp->address);
+                    dInput->addUncoveredAddress(Db->address, Dp->address, i);
                 } else if (Db->state == CoverKind::uncover) {
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->address, Dp->address);
+                    dInput->addUncoveredAddress(Db->address, Dp->address, i);
                 } else if (Db->state == CoverKind::cover) {
 
                 }
@@ -160,7 +160,7 @@ namespace dra {
         } else {
             for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
                 if (inst->getSuccessor(i)->hasName()) {
-                    inferUncoverBB(s, inst->getSuccessor(i));
+                    inferUncoverBB(s, inst->getSuccessor(i), i);
                 } else {
                     inferSuccessors(s, inst->getSuccessor(i));
                 }
