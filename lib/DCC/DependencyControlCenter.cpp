@@ -137,7 +137,17 @@ namespace dra {
                         std::cerr << "SendDependencyInput sig : " << dependencyInput.sig() << std::endl;
                         auto reply = client->SendDependencyInput(dependencyInput);
 
-//                    std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
+                        for (auto u : dependencyInput.uncovered_address()) {
+                            std::cout << "u.address() : " << u.address() << std::endl;
+                            std::cout << "u.condition_address() : " << u.condition_address() << std::endl;
+                            for (auto ra : u.related_address()) {
+                                std::cout << "ra.address() : " << ra.address() << std::endl;
+                                for (auto rp : ra.related_input()) {
+                                    std::cout << "rp.sig() : " << rp.sig() << std::endl;
+                                }
+                            }
+                        }
+//                        std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
 //                    std::cerr << "test GetDependencyInput : " << std::endl;
 //                    auto neww = client->GetDependencyInput();
 //                    for (int ni = 0; ni < neww->dependencyinput_size(); ni++) {
