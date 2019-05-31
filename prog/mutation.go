@@ -640,83 +640,23 @@ func storeInt(data []byte, v uint64, size int) {
 	}
 }
 
-func (p *Prog) DependencyMutate(rs rand.Source, ncalls int, ct *ChoiceTable, corpus []*Prog) {
-	r := newRand(p.Target, rs)
-	ctx := &mutator{
-		p:      p,
-		r:      r,
-		ncalls: ncalls,
-		ct:     ct,
-		corpus: corpus,
-	}
-
-	//select a uncover address random
-	uidx := r.Intn(len(p.Uncover))
-	p.UncoverIdx = uidx
-	uncover := p.Uncover[uidx]
-	idx := int(uncover.Idx)
-	p.WriteAddress = nil
-
-	// insert related progs for expectation = 2 times
-	for stop, ok := false, false; !stop; stop = ok && r.oneOf(2) {
-		//select a insert place random
-		//var insertIdx = r.Intn(int(idx))
-		var insertIdx = idx
-		//select a uncover address random
-		syscallIdx := r.Intn(len(uncover.RelatedAddress))
-		ra := uncover.RelatedAddress[syscallIdx]
-		p.WriteAddress = append(p.WriteAddress, ra.RelatedAddress)
-
-		if len(ra.RelatedProgs) != 0 {
-			//select a related prog random
-			progIdx := r.Intn(len(ra.RelatedProgs))
-			p0 := ra.RelatedProgs[progIdx]
-			p0c := p0.Clone()
-			p.Calls = append(p.Calls[:insertIdx], append(p0c.Calls, p.Calls[insertIdx:]...)...)
-			for i := len(p.Calls) - 1; i >= ncalls; i-- {
-				p.removeCall(i)
-			}
-		} else {
-			//select a related call random
-			lra := len(ra.RelatedCalls)
-			if lra != 0 {
-				callIdx := r.Intn(lra)
-				c0 := ra.RelatedCalls[callIdx]
-				meta := c0.Meta
-				c := p.Calls[insertIdx]
-				s := analyze(ctx.ct, p, c)
-				c0c := r.generateParticularCall(s, meta)
-				p.insertBefore(c, c0c)
-				for i := len(p.Calls) - 1; i >= ncalls; i-- {
-					p.removeCall(i)
-				}
-			} else {
-				var c *Call
-				if insertIdx < len(p.Calls) {
-					c = p.Calls[insertIdx]
-				}
-				s := analyze(ctx.ct, p, c)
-				calls := r.generateCall(s, p)
-				p.insertBefore(c, calls)
-			}
-
-		}
-
-	}
-
-	for _, c := range p.Calls {
-		p.Target.SanitizeCall(c)
-	}
-	if debug {
-		if err := p.validate(); err != nil {
-			panic(err)
-		}
-	}
-}
-
 func (p *Prog) Splice(rp *Prog, idx uint32, ncalls int) bool {
 	p0c := rp.Clone()
 	p.Calls = append(p.Calls[:idx], append(p0c.Calls, p.Calls[idx:]...)...)
+	for i := len(p.Calls) - 1; i >= ncalls; i-- {
+		p.removeCall(i)
+	}
+	return true
+}
+
+func (p *Prog) InsertCall(rs rand.Source, rc *Call, idx uint32, ncalls int, ct *ChoiceTable) bool {
+	r := newRand(p.Target, rs)
+
+	meta := rc.Meta
+	c := p.Calls[idx]
+	s := analyze(ct, p, c)
+	c0c := r.generateParticularCall(s, meta)
+	p.insertBefore(c, c0c)
 	for i := len(p.Calls) - 1; i >= ncalls; i-- {
 		p.removeCall(i)
 	}

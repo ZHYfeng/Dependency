@@ -216,7 +216,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 	log.Logf(1, "#%v: DependencyMutate", proc.pid)
 
-	//ct := proc.fuzzer.choiceTable
+	ct := proc.fuzzer.choiceTable
 	//corpus := proc.fuzzer.corpusSnapshot()
 	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
 	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
@@ -228,33 +228,79 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 	for iu, u := range p.Uncover {
 		p.UncoverIdx = iu
+		ok := false
 		log.Logf(1, "Uncover address : %x", u.UncoveredAddress)
 		for _, ra := range u.RelatedAddress {
 			log.Logf(1, "related address : %x", ra.RelatedAddress)
 			p.WriteAddress = nil
 			p.WriteAddress = append(p.WriteAddress, ra.RelatedAddress)
-			for _, rp := range ra.RelatedProgs {
-				log.Logf(1, "related prog : %v", rp)
-				p0 := p.Clone()
-				p0.Splice(rp, u.Idx, programLength)
-				log.Logf(1, "p0 prog : %v", p0)
-				info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
-				var inputCover cover.Cover
-				for _, c := range info.Calls {
-					inputCover.Merge(c.Cover)
-					log.Logf(1, "Cover : %x", c)
+			if ra.Repeat == 0 {
+				mini := 1
+				ra.Repeat = uint32(proc.rnd.Int31n(int32(programLength-len(p.Calls))-int32(mini)) + int32(mini))
+			}
+			if len(ra.RelatedProgs) > 0 {
+				for _, rp := range ra.RelatedProgs {
+					log.Logf(1, "test related prog : %v", rp)
+					p0 := rp.Clone()
+					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+					var inputCover cover.Cover
+					for _, c := range info.Calls {
+						inputCover.Merge(c.Cover)
+						log.Logf(1, "Cover : %x", c.Cover)
+					}
+					ok = proc.checkCoverage(p, inputCover)
+					if ok {
+						goto covered
+					}
 				}
-				proc.checkCoverage(p, inputCover)
 
+				for _, rp := range ra.RelatedProgs {
+					log.Logf(1, "related prog : %v", rp)
+					p0 := p.Clone()
+					p0.Splice(rp, u.Idx, programLength)
+					log.Logf(1, "p0 prog : %v", p0)
+					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+					var inputCover cover.Cover
+					for _, c := range info.Calls {
+						inputCover.Merge(c.Cover)
+						log.Logf(1, "Cover : %x", c.Cover)
+					}
+					ok = proc.checkCoverage(p, inputCover)
+					if ok {
+						goto covered
+					}
+				}
 			}
-			if len(ra.RelatedCalls) > 0 {
+			if !ok {
+				if len(ra.RelatedCalls) > 0 {
+					for _, rc := range ra.RelatedCalls {
 
+						log.Logf(1, "related call : %v", ra)
+						p0 := p.Clone()
+						for i := 0; i < int(ra.Repeat); i++ {
+							p0.InsertCall(proc.rnd, rc, u.Idx, programLength, ct)
+						}
+						log.Logf(1, "p0 prog : %v", p0)
+						info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+						var inputCover cover.Cover
+						for _, c := range info.Calls {
+							inputCover.Merge(c.Cover)
+							log.Logf(1, "Cover : %x", c.Cover)
+						}
+						ok = proc.checkCoverage(p, inputCover)
+						if ok {
+							goto covered
+						}
+
+					}
+				} else {
+
+				}
 			}
+
 		}
+	covered:
 	}
-
-	//p.DependencyMutate(proc.rnd, programLength, ct, corpus)
-	//proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
 
 	return
 }
