@@ -194,7 +194,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	data := item.p.Serialize()
 	sig := hash.Hash(data)
 
-	log.Logf(2, "added new input sig %v for %v to corpus:\n%s", sig, logCallName, data)
+	log.Logf(2, "added new input sig %s for %v to corpus:\n%s", sig.String(), logCallName, data)
 	proc.fuzzer.sendInputToManager(rpctype.RPCInput{
 		Call:   callName,
 		Prog:   data,
@@ -240,7 +240,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 			}
 			if len(ra.RelatedProgs) > 0 {
 				for _, rp := range ra.RelatedProgs {
-					log.Logf(1, "test related prog : %v", rp)
+					log.Logf(1, "test related prog : %s", rp)
+					data := rp.Serialize()
+					log.Logf(1, "test related prog : %s", data)
 					p0 := rp.Clone()
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
@@ -260,9 +262,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					p0.Splice(rp, u.Idx, programLength)
 					for i := 0; i < 1000; i++ {
 						p0.MutateIoctl3Arg(proc.rnd, u.Idx, ct)
-						log.Logf(1, "p0 prog : %v", p0)
+						log.Logf(1, "p0 prog : %s", p0)
 						data := p.Serialize()
-						log.Logf(1, "p0 prog : %v", data)
+						log.Logf(1, "p0 prog : %s", data)
 						info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 						var inputCover cover.Cover
 						for _, c := range info.Calls {
