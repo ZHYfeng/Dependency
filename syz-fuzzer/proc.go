@@ -242,7 +242,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				for _, rp := range ra.RelatedProgs {
 					log.Logf(1, "test related prog : %s", rp)
 					data := rp.Serialize()
-					log.Logf(1, "test related prog Serialize : %s", data)
+					log.Logf(1, "test related prog Serialize : \n%s", data)
 					p0 := rp.Clone()
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
@@ -262,7 +262,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					p0.Splice(rp, u.Idx, programLength)
 					log.Logf(1, "p0 prog : %s", p0)
 					data := p0.Serialize()
-					log.Logf(1, "p0 prog Serialize : %s", data)
+					log.Logf(1, "p0 prog Serialize : \n%s", data)
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
 					for _, c := range info.Calls {
@@ -291,7 +291,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 							p0.MutateIoctl3Arg(proc.rnd, u.Idx, ct)
 							log.Logf(1, "RelatedCalls p0 prog : %s", p0)
 							data := p0.Serialize()
-							log.Logf(1, "RelatedCalls p0 prog Serialize : %s", data)
+							log.Logf(1, "RelatedCalls p0 prog Serialize : \n%s", data)
 							info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 							var inputCover cover.Cover
 							for _, c := range info.Calls {
