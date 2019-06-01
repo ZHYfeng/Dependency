@@ -649,6 +649,37 @@ func (p *Prog) Splice(rp *Prog, idx uint32, ncalls int) bool {
 	return true
 }
 
+func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool {
+	r := newRand(p.Target, rs)
+	c := p.Calls[idx]
+	if len(c.Args) == 0 {
+		return false
+	}
+	s := analyze(ct, p, c)
+	updateSizes := true
+	for stop, ok := false, false; !stop; stop = ok && r.oneOf(3) {
+		ok = true
+		ma := &mutationArgs{target: p.Target}
+		ForeachArg(c, ma.collectArg)
+		if len(ma.args) == 0 {
+			return false
+		}
+		idx := r.Intn(len(ma.args))
+		arg, ctx := ma.args[idx], ma.ctxes[idx]
+		calls, ok1 := p.Target.mutateArg(r, s, arg, ctx, &updateSizes)
+		if !ok1 {
+			ok = false
+			continue
+		}
+		p.insertBefore(c, calls)
+		if updateSizes {
+			p.Target.assignSizesCall(c)
+		}
+		p.Target.SanitizeCall(c)
+	}
+	return true
+}
+
 func (p *Prog) InsertCall(rs rand.Source, rc *Call, idx uint32, ncalls int, ct *ChoiceTable) bool {
 	r := newRand(p.Target, rs)
 
