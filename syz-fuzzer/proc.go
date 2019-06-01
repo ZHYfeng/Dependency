@@ -260,21 +260,18 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					log.Logf(1, "related prog : %v", rp)
 					p0 := p.Clone()
 					p0.Splice(rp, u.Idx, programLength)
-					for i := 0; i < 1000; i++ {
-						p0.MutateIoctl3Arg(proc.rnd, u.Idx, ct)
-						log.Logf(1, "p0 prog : %s", p0)
-						data := p.Serialize()
-						log.Logf(1, "p0 prog : %s", data)
-						info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
-						var inputCover cover.Cover
-						for _, c := range info.Calls {
-							inputCover.Merge(c.Cover)
-							log.Logf(1, "Cover : %x", c.Cover)
-						}
-						ok = proc.checkCoverage(p, inputCover)
-						if ok {
-							goto covered
-						}
+					log.Logf(1, "p0 prog : %s", p0)
+					data := p.Serialize()
+					log.Logf(1, "p0 prog : %s", data)
+					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+					var inputCover cover.Cover
+					for _, c := range info.Calls {
+						inputCover.Merge(c.Cover)
+						log.Logf(1, "Cover : %x", c.Cover)
+					}
+					ok = proc.checkCoverage(p, inputCover)
+					if ok {
+						goto covered
 					}
 				}
 			}
@@ -287,16 +284,22 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						for i := 0; i < int(ra.Repeat); i++ {
 							p0.InsertCall(proc.rnd, rc, u.Idx, programLength, ct)
 						}
-						log.Logf(1, "p0 prog : %v", p0)
-						info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
-						var inputCover cover.Cover
-						for _, c := range info.Calls {
-							inputCover.Merge(c.Cover)
-							log.Logf(1, "Cover : %x", c.Cover)
-						}
-						ok = proc.checkCoverage(p, inputCover)
-						if ok {
-							goto covered
+						log.Logf(1, "RelatedCalls p0 prog : %v", p0)
+						for i := 0; i < 1000; i++ {
+							p0.MutateIoctl3Arg(proc.rnd, u.Idx, ct)
+							log.Logf(1, "RelatedCalls p0 prog : %s", p0)
+							data := p.Serialize()
+							log.Logf(1, "RelatedCalls p0 prog : %s", data)
+							info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+							var inputCover cover.Cover
+							for _, c := range info.Calls {
+								inputCover.Merge(c.Cover)
+								log.Logf(1, "Cover : %x", c.Cover)
+							}
+							ok = proc.checkCoverage(p, inputCover)
+							if ok {
+								goto covered
+							}
 						}
 
 					}
