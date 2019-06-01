@@ -242,7 +242,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				for _, rp := range ra.RelatedProgs {
 					log.Logf(1, "test related prog : %s", rp)
 					data := rp.Serialize()
-					log.Logf(1, "test related prog : %s", data)
+					log.Logf(1, "test related prog Serialize : %s", data)
 					p0 := rp.Clone()
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
@@ -261,8 +261,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					p0 := p.Clone()
 					p0.Splice(rp, u.Idx, programLength)
 					log.Logf(1, "p0 prog : %s", p0)
-					data := p.Serialize()
-					log.Logf(1, "p0 prog : %s", data)
+					data := p0.Serialize()
+					log.Logf(1, "p0 prog Serialize : %s", data)
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
 					for _, c := range info.Calls {
@@ -281,15 +281,17 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 						log.Logf(1, "related call : %v", ra)
 						p0 := p.Clone()
-						for i := 0; i < int(ra.Repeat); i++ {
-							p0.InsertCall(proc.rnd, rc, u.Idx, programLength, ct)
-						}
+						log.Logf(1, "Repeat : %v", ra.Repeat)
+						//for i := 0; i < int(ra.Repeat); i++ {
+						p0.InsertCall(proc.rnd, rc, u.Idx, programLength, ct)
+						//}
+
 						log.Logf(1, "RelatedCalls p0 prog : %v", p0)
 						for i := 0; i < 1000; i++ {
 							p0.MutateIoctl3Arg(proc.rnd, u.Idx, ct)
 							log.Logf(1, "RelatedCalls p0 prog : %s", p0)
-							data := p.Serialize()
-							log.Logf(1, "RelatedCalls p0 prog : %s", data)
+							data := p0.Serialize()
+							log.Logf(1, "RelatedCalls p0 prog Serialize : %s", data)
 							info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 							var inputCover cover.Cover
 							for _, c := range info.Calls {
