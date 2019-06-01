@@ -145,6 +145,9 @@ namespace dra {
                                 for (auto rp : ra.related_input()) {
                                     std::cout << "rp.sig() : " << rp.sig() << std::endl;
                                 }
+                                for (auto rc : ra.related_syscall()) {
+                                    std::cout << "rc.number() : " << rc.number() << std::endl;
+                                }
                             }
                         }
 //                        std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
