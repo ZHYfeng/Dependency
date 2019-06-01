@@ -109,6 +109,7 @@ namespace sta {
         Mod() {}
 
         Mod(llvm::BasicBlock *b, MOD_INF *pm, StaticAnalysisResult *sta) {
+            this->init_properties();
             this->B = b;
             this->I = nullptr;
             this->mod_inf = *pm;
@@ -117,6 +118,7 @@ namespace sta {
         }
 
         Mod(llvm::Instruction *i, MOD_INF *pm, StaticAnalysisResult *sta) {
+            this->init_properties();
             this->I = i;
             this->B = nullptr;
             if (i) {
@@ -174,18 +176,26 @@ namespace sta {
             return this->pallcmds;
         }
 
+        void init_properties() {
+            this->sta = nullptr;
+            this->repeat = 1;
+            this->prio = 0;
+            this->from_nlp = false;
+            this->single_trait_id = 0;
+        }
+
         llvm::BasicBlock *B;
         llvm::Instruction *I;
         //0: repeat but not sure about the times, >0: repeat at least for a certain time ("1" means no repeat).
-        int64_t repeat = 1;
-        int prio = 0;
-        bool from_nlp = false;
+        int64_t repeat;
+        int prio;
+        bool from_nlp;
 
     private:
-        StaticAnalysisResult *sta = nullptr;
+        StaticAnalysisResult *sta;
         MOD_INF mod_inf;
         std::set<uint64_t> *pallcmds;
-        uint64_t single_trait_id = 0;
+        uint64_t single_trait_id;
         TRAIT single_trait;
 
         //TODO: now we assume all traits are the same even under differnt contexts.
