@@ -155,6 +155,8 @@ func cloneDependencyInput(d *DependencyInput) *DependencyInput {
 		for _, a := range u.RelatedAddress {
 			a1 := &RelatedAddress{
 				Address: a.Address,
+				Repeat:  a.Repeat,
+				Prio:    a.Prio,
 			}
 
 			for _, i := range a.RelatedInput {
@@ -169,7 +171,8 @@ func cloneDependencyInput(d *DependencyInput) *DependencyInput {
 
 			for _, s := range a.RelatedSyscall {
 				s1 := &RelatedSyscall{
-					Name: s.Name,
+					Name:   s.Name,
+					Number: s.Number,
 				}
 				a1.RelatedSyscall = append(a1.RelatedSyscall, s1)
 			}
