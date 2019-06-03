@@ -69,13 +69,7 @@ namespace dra {
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[u->condition_address]->parent->basicBlock;
-                                bool flag;
-                                if (u->successor_idx) {
-                                    flag = true;
-                                } else {
-                                    flag = false;
-                                }
-                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), flag);
+                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), u->successor_idx);
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
                                     std::cout << "allBasicblock == nullptr" << std::endl;

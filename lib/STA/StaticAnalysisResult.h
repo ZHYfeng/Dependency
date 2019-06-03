@@ -13,11 +13,13 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/CFG.h>
+#include <llvm/IR/Dominators.h>
 #include <fstream>
 #include <set>
 #include "../JSON/json.cpp"
 #include "ResType.h"
 #include "../DRA/DataManagement.h"
+#include <algorithm>
 
 //typedef std::map<llvm::Instruction *, MOD_INF> MOD_IRS;
 //typedef std::map<llvm::BasicBlock *, MOD_INF> MOD_BBS;
@@ -54,13 +56,9 @@ namespace sta {
 
         dra::DataManagement *dm;
 
-        MODS *GetAllGlobalWriteInsts(llvm::BasicBlock *B, bool branch);
+        MODS *GetAllGlobalWriteInsts(llvm::BasicBlock *B, unsigned int branch);
 
-        MODS *GetAllGlobalWriteInsts(BR_INF *p_taint_inf, bool branch);
-
-        MODS *GetAllGlobalWriteBBs(llvm::BasicBlock *B, bool branch);
-
-        MODS *GetAllGlobalWriteBBs(BR_INF *p_taint_inf, bool branch);
+        MODS *GetAllGlobalWriteBBs(llvm::BasicBlock *B, unsigned int branch);
 
         std::string &getBBStrID(llvm::BasicBlock *B);
 
@@ -79,6 +77,10 @@ namespace sta {
         //Calculate the Levenshtein distance between two strings as a measure of fuzzy matching.
         static int levDistance(const std::string& source, const std::string& target);
 
+        std::set<llvm::BasicBlock*> *get_all_successors(llvm::BasicBlock *bb);
+
+        llvm::DominatorTree *get_dom_tree(llvm::Function*);
+
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF *);
 
@@ -92,6 +94,12 @@ namespace sta {
         TAG_INFO_TY tagInfo;
         CALLEE_MAP_TY calleeMap;
 
+        //The mapping from one BB to all its successors (recursively).
+        std::map<llvm::BasicBlock*,std::set<llvm::BasicBlock*>> succ_map;
+
+        //The mapping from one Func to its dominator tree;
+        std::map<llvm::Function*,llvm::DominatorTree*> dom_map;
+
         BR_INF *QueryBranchTaint(llvm::BasicBlock *B);
 
         void QueryModIRsFromTagTy(std::string ty);
@@ -100,7 +108,9 @@ namespace sta {
 
         MODS *GetRealModBbs(MOD_IR_TY *p_mod_irs);
 
-        void tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, bool branch);
+        void tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, unsigned int branch);
+
+        void filterMods(MODS *pmods, llvm::BasicBlock *B, unsigned int branch);
     };
 
     //A BB/Inst that can modify a global state.
@@ -237,6 +247,14 @@ namespace sta {
                 return &(this->single_trait);
             }
             return pt;
+        }
+
+        bool is_trait_fixed() {
+            TRAIT *tr = this->getSingleTrait();
+            if (!tr) {
+                return false;
+            }
+            return (tr->find("CONST_INT") != tr->end());
         }
 
         int calcPrio_E(int64_t n) {

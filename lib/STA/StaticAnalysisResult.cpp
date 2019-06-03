@@ -196,12 +196,9 @@ namespace sta {
         return nullptr;
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B, bool branch) {
-        return this->GetAllGlobalWriteInsts(this->QueryBranchTaint(B),branch);
-    }
-
     //Whatever call context under which the br is tainted, we will contain its mod insts for any tags (i.e. ALL).
-    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(BR_INF *p_taint_inf, bool branch) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteInsts(llvm::BasicBlock *B, unsigned int branch_id) {
+        BR_INF *p_taint_inf = this->QueryBranchTaint(B);
         if (!p_taint_inf) {
             std::cout << "GetAllGlobalWriteInsts : p_taint_inf = nullptr" << std::endl;
             return nullptr;
@@ -234,16 +231,17 @@ namespace sta {
         }
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
         //Also do some function name pair NLP analysis here.
-        //TODO: the "bool" value indicating the taken branch.
-        tweakModsOnTraits(p_mod_irs,trait_id,branch);
+        llvm::Instruction *inst = B->getTerminator();
+        //TODO: support switch inst.
+        if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
+            tweakModsOnTraits(p_mod_irs,trait_id,branch_id);
+            filterMods(p_mod_irs,B,branch_id);
+        }
         return p_mod_irs;
     }
 
-    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B, bool branch) {
-        return this->GetAllGlobalWriteBBs(this->QueryBranchTaint(B), branch);
-    }
-
-    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(BR_INF *p_taint_inf, bool branch) {
+    MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B, unsigned int branch_id) {
+        BR_INF *p_taint_inf = this->QueryBranchTaint(B);
         if (!p_taint_inf) {
             return nullptr;
         }
@@ -277,15 +275,110 @@ namespace sta {
         }
         //According to the traits of both "br" and "store", pick out and rank the suitable mod IRs.
         //Also do some function name pair NLP analysis here.
-        //TODO: the "bool" value indicating the taken branch.
-        tweakModsOnTraits(p_mod_bbs,trait_id,branch);
+        llvm::Instruction *inst = B->getTerminator();
+        //TODO: support switch inst.
+        if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
+            tweakModsOnTraits(p_mod_bbs,trait_id,branch_id);
+            filterMods(p_mod_bbs,B,branch_id);
+        }
         return p_mod_bbs;
     }
 
-    void StaticAnalysisResult::tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, bool branch) {
+    std::set<llvm::BasicBlock*>* StaticAnalysisResult::get_all_successors(llvm::BasicBlock *bb) {
+        if(this->succ_map.find(bb) != this->succ_map.end()){
+            return &this->succ_map[bb];
+        }
+        for(llvm::succ_iterator sit = llvm::succ_begin(bb), set = llvm::succ_end(bb); sit != set; ++sit) {
+            llvm::BasicBlock *curr_bb = *sit;
+            this->succ_map[bb].insert(curr_bb);
+            if(this->succ_map.find(curr_bb) == this->succ_map.end()){
+                this->get_all_successors(curr_bb);
+            }
+            this->succ_map[bb].insert(this->succ_map[curr_bb].begin(),this->succ_map[curr_bb].end());
+        }
+        return &this->succ_map[bb];
+    }
+
+    llvm::DominatorTree *StaticAnalysisResult::get_dom_tree(llvm::Function* pfunc) {
+        if (!pfunc) {
+            return nullptr;
+        }
+        if (this->dom_map.find(pfunc) == this->dom_map.end()) {
+            llvm::DominatorTree *pdom = new llvm::DominatorTree(*pfunc);
+            this->dom_map[pfunc] = pdom;
+        }
+        return this->dom_map[pfunc];
+    }
+
+    void StaticAnalysisResult::filterMods(MODS *pmods, llvm::BasicBlock *B, unsigned int branch_id) {
+        if ((!pmods) || pmods->empty() || !B) {
+            return;
+        }
+        llvm::Instruction *inst = B->getTerminator();
+        if (!inst) {
+            return;
+        }
+        //Get the successors only found for this "branch_id".
+        std::set<llvm::BasicBlock*> succ_this, succ_other, succ_uniq;
+        if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
+            llvm::BranchInst *br_inst = llvm::dyn_cast<llvm::BranchInst>(inst);
+            for (unsigned i = 0; i < br_inst->getNumSuccessors(); ++i) {
+                std::set<llvm::BasicBlock*> *succs = this->get_all_successors(br_inst->getSuccessor(i));
+                if (!succs) {
+                    continue;
+                }
+                if (i == branch_id) {
+                    succ_this.insert(br_inst->getSuccessor(i));
+                    succ_this.insert(succs->begin(),succs->end());
+                }else{
+                    succ_other.insert(br_inst->getSuccessor(i));
+                    succ_other.insert(succs->begin(),succs->end());
+                }
+            }
+        }else if (llvm::dyn_cast<llvm::SwitchInst>(inst)) {
+            llvm::SwitchInst *sw_inst = llvm::dyn_cast<llvm::SwitchInst>(inst);
+            for (unsigned i = 0; i < sw_inst->getNumSuccessors(); ++i) {
+                std::set<llvm::BasicBlock*> *succs = this->get_all_successors(sw_inst->getSuccessor(i));
+                if (!succs) {
+                    continue;
+                }
+                if (i == branch_id) {
+                    succ_this.insert(sw_inst->getSuccessor(i));
+                    succ_this.insert(succs->begin(),succs->end());
+                }else{
+                    succ_other.insert(sw_inst->getSuccessor(i));
+                    succ_other.insert(succs->begin(),succs->end());
+                }
+            }
+        }else {
+            return;
+        }
+        std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(), std::inserter(succ_uniq, succ_uniq.end()));
+        llvm::DominatorTree *pdom = this->get_dom_tree(B->getParent());
+        std::remove_if(pmods->begin(),pmods->end(),
+                       [succ_uniq,pdom](Mod *pmod) {
+                           if (!pmod->B) {
+                               return false;
+                           }
+                           //Case 0: we need to satisfy the "br" to reach the mod inst...
+                           if (succ_uniq.find(pmod->B) != succ_uniq.end()) {
+                               return true;
+                           }
+                           //Case 1: we can for sure reach the mod inst if we can reach the "br" and the mod inst is not accumulative (i.e. i++) 
+                           if (pmod->B->getParent() == B->getParent() && pmod->is_trait_fixed() && pdom->dominates(pmod->B,B)) {
+                               return true;
+                           }
+                           return false;
+                       }
+        );
+    }
+
+    void StaticAnalysisResult::tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, unsigned int branch_id) {
         if ((!pmods) || this->traitMap.find(br_trait_id) == this->traitMap.end()) {
             return;
         }
+        //TODO: verify the successor order with true/false
+        bool branch = (!branch_id ? true : false);
         TRAIT& br_trait = this->traitMap[br_trait_id];
         std::string cond("");
         int64_t v = 0;
