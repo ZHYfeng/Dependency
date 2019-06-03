@@ -664,7 +664,8 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool
 		if len(ma.args) == 0 {
 			return false
 		}
-		idx := r.Intn(len(ma.args))
+		//idx := r.Intn(len(ma.args))
+		idx := len(ma.args) - 1
 		arg, ctx := ma.args[idx], ma.ctxes[idx]
 		calls, ok1 := p.Target.mutateArg(r, s, arg, ctx, &updateSizes)
 		if !ok1 {

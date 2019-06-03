@@ -224,7 +224,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
 
 	p := item.p
-	log.Logf(1, "DependencyMutate prog : %v", p)
+	data := p.Serialize()
+	log.Logf(1, "DependencyMutate prog : \n%s", data)
 
 	for iu, u := range p.Uncover {
 		p.UncoverIdx = iu
@@ -241,9 +242,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 			}
 			if len(ra.RelatedProgs) > 0 {
 				for _, rp := range ra.RelatedProgs {
-					log.Logf(1, "test related prog : %s", rp)
 					data := rp.Serialize()
-					log.Logf(1, "test related prog Serialize : \n%s", data)
+					log.Logf(1, "test related program : \n%s", data)
 					p0 := rp.Clone()
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
@@ -258,11 +258,10 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				}
 
 				for _, rp := range ra.RelatedProgs {
-					log.Logf(1, "related prog : %v", rp)
 					p0 := p.Clone()
 					p0.Splice(rp, u.Idx, programLength)
 					data := p0.Serialize()
-					log.Logf(1, "p0 prog Serialize : \n%s", data)
+					log.Logf(1, "p0 program : \n%s", data)
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
 					for _, c := range info.Calls {
@@ -280,17 +279,19 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				log.Logf(1, "Repeat : %v", ra.Repeat)
 				if len(ra.RelatedCalls) > 0 {
 					for _, rc := range ra.RelatedCalls {
-						log.Logf(1, "related call : %v", rc)
+						log.Logf(1, "related call : %s", rc)
 						p0 := p.Clone()
 
 						//for i := 0; i < int(ra.Repeat); i++ {
 						p0.InsertCall(proc.rnd, rc, u.Idx, programLength, ct)
 						//}
+						data := p0.Serialize()
+						log.Logf(1, "RelatedCalls p0 program : \n%s", data)
 
 						for i := 0; i < 1000; i++ {
 							p0.MutateIoctl3Arg(proc.rnd, u.Idx, ct)
 							data := p0.Serialize()
-							log.Logf(1, "RelatedCalls p0 prog Serialize : \n%s", data)
+							log.Logf(1, "RelatedCalls p0 program : \n%s", data)
 							info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 							var inputCover cover.Cover
 							for _, c := range info.Calls {

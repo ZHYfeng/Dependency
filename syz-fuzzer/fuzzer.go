@@ -446,6 +446,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 											arg := typ.DefaultArg()
 											c1.Args = append(c1.Args, arg)
 										}
+										a1.RelatedCalls = append(a1.RelatedCalls, c1)
 									}
 								default:
 
@@ -454,7 +455,6 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 						}
 					}
 				}
-				a1.RelatedCalls = append(a1.RelatedCalls, c1)
 			}
 			u1.RelatedAddress = append(u1.RelatedAddress, a1)
 		}
@@ -466,7 +466,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 	})
 
 	for _, u := range p.Uncover {
-		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer : %x", u)
+		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer Uncover: %x", u)
 	}
 
 }
