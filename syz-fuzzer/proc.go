@@ -230,6 +230,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 		p.UncoverIdx = iu
 		ok := false
 		log.Logf(1, "Uncover address : %x", u.UncoveredAddress)
+		log.Logf(1, "Idx : %x", u.Idx)
 		for _, ra := range u.RelatedAddress {
 			log.Logf(1, "related address : %x", ra.RelatedAddress)
 			p.WriteAddress = nil
@@ -260,7 +261,6 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					log.Logf(1, "related prog : %v", rp)
 					p0 := p.Clone()
 					p0.Splice(rp, u.Idx, programLength)
-					log.Logf(1, "p0 prog : %s", p0)
 					data := p0.Serialize()
 					log.Logf(1, "p0 prog Serialize : \n%s", data)
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
@@ -276,20 +276,19 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				}
 			}
 			if !ok {
+				log.Logf(1, "related call size : %v", len(ra.RelatedCalls))
+				log.Logf(1, "Repeat : %v", ra.Repeat)
 				if len(ra.RelatedCalls) > 0 {
 					for _, rc := range ra.RelatedCalls {
-
-						log.Logf(1, "related call : %v", ra)
+						log.Logf(1, "related call : %v", rc)
 						p0 := p.Clone()
-						log.Logf(1, "Repeat : %v", ra.Repeat)
+
 						//for i := 0; i < int(ra.Repeat); i++ {
 						p0.InsertCall(proc.rnd, rc, u.Idx, programLength, ct)
 						//}
 
-						log.Logf(1, "RelatedCalls p0 prog : %v", p0)
 						for i := 0; i < 1000; i++ {
 							p0.MutateIoctl3Arg(proc.rnd, u.Idx, ct)
-							log.Logf(1, "RelatedCalls p0 prog : %s", p0)
 							data := p0.Serialize()
 							log.Logf(1, "RelatedCalls p0 prog Serialize : \n%s", data)
 							info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
@@ -306,7 +305,6 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 					}
 				} else {
-
 				}
 			}
 
