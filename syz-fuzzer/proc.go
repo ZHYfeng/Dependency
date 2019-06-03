@@ -156,21 +156,21 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		}
 		inputCover.Merge(thisCover)
 
-		for i, c := range info.Calls {
-			ii := uint32(i)
-			if cc, ok := input.Call[ii]; !ok {
-				cc = &pb.Call{
-					Idx:     ii,
-					Address: make(map[uint32]uint32),
-				}
-				input.Call[ii] = cc
-			}
-			cc := input.Call[ii]
-			for _, a := range c.Cover {
-				cc.Address[a] = 0
-			}
-
-		}
+		//for i, c := range info.Calls {
+		//	ii := uint32(i)
+		//	if cc, ok := input.Call[ii]; !ok {
+		//		cc = &pb.Call{
+		//			Idx:     ii,
+		//			Address: make(map[uint32]uint32),
+		//		}
+		//		input.Call[ii] = cc
+		//	}
+		//	cc := input.Call[ii]
+		//	for _, a := range c.Cover {
+		//		cc.Address[a] = 0
+		//	}
+		//
+		//}
 	}
 	if item.flags&ProgMinimized == 0 {
 		item.p, item.call = prog.Minimize(item.p, item.call, false,
@@ -206,6 +206,17 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 
 	if item.flags&ProgSmashed == 0 {
 		proc.fuzzer.workQueue.enqueue(&WorkSmash{item.p, item.call})
+	}
+
+	if item.call != -1 {
+		cc := &pb.Call{
+			Idx:     uint32(item.call),
+			Address: make(map[uint32]uint32),
+		}
+		input.Call[uint32(item.call)] = cc
+		for a, _ := range inputCover {
+			cc.Address[a] = 0
+		}
 	}
 
 	input.Sig = sig.String()
@@ -303,7 +314,6 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 								goto covered
 							}
 						}
-
 					}
 				} else {
 				}

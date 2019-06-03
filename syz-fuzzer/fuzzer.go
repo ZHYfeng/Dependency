@@ -314,7 +314,7 @@ func (fuzzer *Fuzzer) pollLoop() {
 		//fuzzer.dManager.SendDependencyInput(sig.String())
 		newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
 		for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
-			log.Logf(1, "dependencyInput : %v", dependencyInput)
+
 			fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
 		}
 	}
@@ -395,6 +395,7 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 }
 
 func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
+	log.Logf(1, "dependencyInput : %v", dependencyInput)
 	//sig := dependencyInput.GetSig()
 	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
 	p.Uncover = make(map[int]*prog.Uncover)
@@ -620,4 +621,14 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 
 	fuzzer.coverMu.Unlock()
 	return
+}
+
+func (fuzzer *Fuzzer) checkIsCovered(id int, address uint32) (res bool) {
+	fuzzer.coverMu.RLock()
+	call := fuzzer.cover[id].Address
+	if _, ok := call[address]; !ok {
+		return false
+	} else {
+		return true
+	}
 }

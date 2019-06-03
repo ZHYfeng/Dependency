@@ -119,14 +119,14 @@ func (wq *WorkQueue) dequeue() (item interface{}) {
 		last := len(wq.triage) - 1
 		item = wq.triage[last]
 		wq.triage = wq.triage[:last]
-	} else if len(wq.smash) != 0 {
-		last := len(wq.smash) - 1
-		item = wq.smash[last]
-		wq.smash = wq.smash[:last]
 	} else if len(wq.dependency) != 0 {
 		last := len(wq.dependency) - 1
 		item = wq.dependency[last]
 		wq.dependency = wq.dependency[:last]
+	} else if len(wq.smash) != 0 {
+		last := len(wq.smash) - 1
+		item = wq.smash[last]
+		wq.smash = wq.smash[:last]
 	}
 	wq.mu.Unlock()
 	if wantCandidates {
