@@ -356,7 +356,7 @@ namespace sta {
         std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(), std::inserter(succ_uniq, succ_uniq.end()));
         llvm::DominatorTree *pdom = this->get_dom_tree(B->getParent());
         std::remove_if(pmods->begin(),pmods->end(),
-                       [succ_uniq,pdom](Mod *pmod) {
+                       [succ_uniq,pdom,B](Mod *pmod) {
                            if (!pmod->B) {
                                return false;
                            }

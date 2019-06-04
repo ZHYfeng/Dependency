@@ -9,7 +9,7 @@ git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
 git submodule update --init --recursive
 ./autogen.sh
-./configure --prefix=/usr
+./configure
 make
 make check
 sudo make install

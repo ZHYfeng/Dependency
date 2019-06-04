@@ -202,6 +202,14 @@ namespace sta {
         int prio;
         bool from_nlp;
 
+        bool is_trait_fixed() {
+            TRAIT *tr = this->getSingleTrait();
+            if (!tr) {
+                return false;
+            }
+            return (tr->find("CONST_INT") != tr->end());
+        }
+
     private:
         StaticAnalysisResult *sta;
         MOD_INF mod_inf;
@@ -248,14 +256,6 @@ namespace sta {
                 return &(this->single_trait);
             }
             return pt;
-        }
-
-        bool is_trait_fixed() {
-            TRAIT *tr = this->getSingleTrait();
-            if (!tr) {
-                return false;
-            }
-            return (tr->find("CONST_INT") != tr->end());
         }
 
         int calcPrio_E(int64_t n) {
