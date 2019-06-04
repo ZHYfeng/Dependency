@@ -71,9 +71,9 @@ namespace dra {
                                 auto *b = DM.Address2BB[u->condition_address]->parent->basicBlock;
                                 bool flag;
                                 if (u->successor_idx) {
-                                    flag = true;
-                                } else {
                                     flag = false;
+                                } else {
+                                    flag = true;
                                 }
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), flag);
                                 if (allBasicblock == nullptr) {
