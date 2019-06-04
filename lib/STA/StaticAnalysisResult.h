@@ -10,6 +10,7 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Instruction.h>
+#include <llvm/IR/Instructions.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/CFG.h>
