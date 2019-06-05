@@ -664,10 +664,8 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 		ForeachArg(c, ma.collectArg)
 		log.Logf(1, "len(ma.args) : %v", len(ma.args))
 		var idx int
-		if len(ma.args) == 0 {
+		if len(ma.args) == 0 || len(ma.args) == 1 {
 			return false
-		} else if len(ma.args) == 1 {
-			idx = 0
 		} else {
 			idx = r.Intn(len(ma.args)-1) + 1
 		}
