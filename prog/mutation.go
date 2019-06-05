@@ -5,6 +5,7 @@ package prog
 
 import (
 	"fmt"
+	"github.com/google/syzkaller/pkg/log"
 	"math/rand"
 	"unsafe"
 )
@@ -661,11 +662,12 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 		ok = true
 		ma := &mutationArgs{target: p.Target}
 		ForeachArg(c, ma.collectArg)
+		log.Logf(1, "len(ma.args) : %v", len(ma.args))
 		var idx int
 		if len(ma.args) == 0 {
 			return false
 		} else if len(ma.args) == 1 {
-			idx = 1
+			idx = 0
 		} else {
 			idx = r.Intn(len(ma.args)-1) + 1
 		}
