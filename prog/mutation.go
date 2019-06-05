@@ -649,7 +649,7 @@ func (p *Prog) Splice(rp *Prog, idx uint32, ncalls int) bool {
 	return true
 }
 
-func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool {
+func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 	r := newRand(p.Target, rs)
 	c := p.Calls[idx]
 	if len(c.Args) == 0 {
@@ -664,8 +664,7 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool
 		if len(ma.args) == 0 {
 			return false
 		}
-		//idx := r.Intn(len(ma.args))
-		idx := len(ma.args) - 1
+		idx := r.Intn(len(ma.args)-1) + 1
 		arg, ctx := ma.args[idx], ma.ctxes[idx]
 		calls, ok1 := p.Target.mutateArg(r, s, arg, ctx, &updateSizes)
 		if !ok1 {
@@ -681,18 +680,41 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool
 	return true
 }
 
-func (p *Prog) InsertCall(rs rand.Source, rc *Call, idx uint32, ncalls int, ct *ChoiceTable) bool {
+func (p *Prog) GetCall(rs rand.Source, rc *Call, idx uint32, ct *ChoiceTable) []*Call {
 	r := newRand(p.Target, rs)
-
 	meta := rc.Meta
 	c := p.Calls[idx]
 	s := analyze(ct, p, c)
 	c0c := r.generateParticularCall(s, meta)
+
+	return c0c
+}
+
+func (p *Prog) InsertCall(c0c []*Call, idx uint32, ncalls int) {
+	c := p.Calls[idx]
 	p.insertBefore(c, c0c)
 	for i := len(p.Calls) - 1; i >= ncalls; i-- {
 		p.removeCall(i)
 	}
-	return true
+}
+
+func (p *Prog) RepeatCall(idx int) {
+	c := p.Calls[idx]
+
+	//newargs := make(map[*ResultArg]*ResultArg)
+	//c1 := new(Call)
+	//c1.Meta = c.Meta
+	//if c.Ret != nil {
+	//	c1.Ret = clone(c.Ret, newargs).(*ResultArg)
+	//}
+	//c1.Args = make([]Arg, len(c.Args))
+	//for ai, arg := range c.Args {
+	//	c1.Args[ai] = clone(arg, newargs)
+	//}
+
+	var c0c []*Call
+	c0c = append(c0c, c)
+	p.insertBefore(c, c0c)
 }
 
 func (p *Prog) mutateArgForCall(r *randGen, ct *ChoiceTable, c *Call) bool {

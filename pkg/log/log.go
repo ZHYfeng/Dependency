@@ -13,6 +13,7 @@ import (
 	"flag"
 	"fmt"
 	golog "log"
+	"os"
 	"sync"
 	"time"
 )
@@ -91,6 +92,17 @@ func Logf(v int, msg string, args ...interface{}) {
 	if doLog {
 		golog.Printf(msg, args...)
 	}
+}
+
+func Logff(v int, msg string, args ...interface{}) {
+	mu.Lock()
+	f, _ := os.Create("./dependency.log")
+	timeStr := ""
+	if prependTime {
+		timeStr = time.Now().Format("2006/01/02 15:04:05 ")
+	}
+	f.WriteString(fmt.Sprintf(timeStr+msg, args...))
+	mu.Unlock()
 }
 
 func Fatal(err error) {
