@@ -190,6 +190,8 @@ namespace dra {
                         return true;
                     } else if (f->Path.find("drivers/") == 0) {
                         return true;
+                    } else if (f->Path.find("sound/") == 0) {
+                        return true;
                     }
                 } else {
                     std::cerr << "isDriver not have parent f" << std::hex << address << "\n";
