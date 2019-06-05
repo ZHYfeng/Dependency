@@ -80,8 +80,8 @@ func (d *DRPCClient) SendInput(input *Input) {
 				log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 			}
 			log.Logf(1, "Dependency gRPC SendInput sig : v%", ii.Sig)
-			for _, cc := range ii.Call {
-				log.Logf(1, "Dependency gRPC SendInput address : %x", cc.Address)
+			for idx, cc := range ii.Call {
+				log.Logf(1, "Dependency gRPC SendInput idx: %v address : %x", idx, cc.Address)
 			}
 		}
 	}

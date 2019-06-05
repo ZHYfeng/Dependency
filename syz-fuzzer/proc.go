@@ -332,10 +332,9 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 		//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
 		//delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
 		log.Logf(1, "checkUncoveredAddress")
-		os.Exit(0)
+		res = true
 	} else if proc.checkWriteAddress(p, inputCover) {
 		log.Logf(1, "checkWriteAddress")
-		os.Exit(0)
 	}
 	return
 }
