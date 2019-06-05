@@ -219,11 +219,10 @@ namespace sta {
                 MODS *p_cur_mod_irs = this->GetRealModIrs(ps_mod_irs);
 
                 //Append the list.
-                for (auto& x : *p_cur_mod_irs) {
-                    if (std::find_if(p_mod_irs->begin(), p_mod_irs->end(), [x](const Mod* m){
-                            return x->equal(m);
-                        }) == p_mod_irs->end()) 
-                    {
+                for (auto &x : *p_cur_mod_irs) {
+                    if (std::find_if(p_mod_irs->begin(), p_mod_irs->end(), [x](const Mod *m) {
+                        return x->equal(m);
+                    }) == p_mod_irs->end()) {
                         p_mod_irs->push_back(x);
                     }
                 }
@@ -234,15 +233,16 @@ namespace sta {
         llvm::Instruction *inst = B->getTerminator();
         //TODO: support switch inst.
         if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
-            tweakModsOnTraits(p_mod_irs,trait_id,branch_id);
-            filterMods(p_mod_irs,B,branch_id);
+            tweakModsOnTraits(p_mod_irs, trait_id, branch_id);
+            filterMods(p_mod_irs, B, branch_id);
         }
         return p_mod_irs;
     }
 
     MODS *StaticAnalysisResult::GetAllGlobalWriteBBs(llvm::BasicBlock *B, unsigned int branch_id) {
         BR_INF *p_taint_inf = this->QueryBranchTaint(B);
-        if (!p_taint_inf) {
+        //std::cout << "p_taint_inf->size() : " << p_taint_inf->size() << std::endl;
+        if (!p_taint_inf || p_taint_inf->size() == 0) {
             return nullptr;
         }
         MODS *p_mod_bbs = new MODS();
@@ -263,11 +263,10 @@ namespace sta {
                 //Append the list.
                 //TODO: this can be problematic, since one BB can contain two different insts that update different global states and have different traits.
                 //TODO: maybe we should deprecate GetAllGlobalWriteBBs and use GetAllGlobalWriteInsts instead.
-                for (auto& x : *p_cur_mod_bbs) {
-                    if (std::find_if(p_mod_bbs->begin(), p_mod_bbs->end(), [x](const Mod* m){
-                            return x->equal(m);
-                        }) == p_mod_bbs->end()) 
-                    {
+                for (auto &x : *p_cur_mod_bbs) {
+                    if (std::find_if(p_mod_bbs->begin(), p_mod_bbs->end(), [x](const Mod *m) {
+                        return x->equal(m);
+                    }) == p_mod_bbs->end()) {
                         p_mod_bbs->push_back(x);
                     }
                 }
@@ -279,30 +278,30 @@ namespace sta {
         //TODO: support switch inst.
         std::cout << "p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
         if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
-            tweakModsOnTraits(p_mod_bbs,trait_id,branch_id);
+            tweakModsOnTraits(p_mod_bbs, trait_id, branch_id);
             std::cout << "tweakModsOnTraits p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
-            filterMods(p_mod_bbs,B,branch_id);
+            filterMods(p_mod_bbs, B, branch_id);
             std::cout << "filterMods p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
         }
         return p_mod_bbs;
     }
 
-    std::set<llvm::BasicBlock*>* StaticAnalysisResult::get_all_successors(llvm::BasicBlock *bb) {
-        if(this->succ_map.find(bb) != this->succ_map.end()){
+    std::set<llvm::BasicBlock *> *StaticAnalysisResult::get_all_successors(llvm::BasicBlock *bb) {
+        if (this->succ_map.find(bb) != this->succ_map.end()) {
             return &this->succ_map[bb];
         }
-        for(llvm::succ_iterator sit = llvm::succ_begin(bb), set = llvm::succ_end(bb); sit != set; ++sit) {
+        for (llvm::succ_iterator sit = llvm::succ_begin(bb), set = llvm::succ_end(bb); sit != set; ++sit) {
             llvm::BasicBlock *curr_bb = *sit;
             this->succ_map[bb].insert(curr_bb);
-            if(this->succ_map.find(curr_bb) == this->succ_map.end()){
+            if (this->succ_map.find(curr_bb) == this->succ_map.end()) {
                 this->get_all_successors(curr_bb);
             }
-            this->succ_map[bb].insert(this->succ_map[curr_bb].begin(),this->succ_map[curr_bb].end());
+            this->succ_map[bb].insert(this->succ_map[curr_bb].begin(), this->succ_map[curr_bb].end());
         }
         return &this->succ_map[bb];
     }
 
-    llvm::DominatorTree *StaticAnalysisResult::get_dom_tree(llvm::Function* pfunc) {
+    llvm::DominatorTree *StaticAnalysisResult::get_dom_tree(llvm::Function *pfunc) {
         if (!pfunc) {
             return nullptr;
         }
@@ -322,44 +321,44 @@ namespace sta {
             return;
         }
         //Get the successors only found for this "branch_id".
-        std::set<llvm::BasicBlock*> succ_this, succ_other, succ_uniq;
+        std::set<llvm::BasicBlock *> succ_this, succ_other, succ_uniq;
         if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
             llvm::BranchInst *br_inst = llvm::dyn_cast<llvm::BranchInst>(inst);
             for (unsigned i = 0; i < br_inst->getNumSuccessors(); ++i) {
-                std::set<llvm::BasicBlock*> *succs = this->get_all_successors(br_inst->getSuccessor(i));
+                std::set<llvm::BasicBlock *> *succs = this->get_all_successors(br_inst->getSuccessor(i));
                 if (!succs) {
                     continue;
                 }
                 if (i == branch_id) {
                     succ_this.insert(br_inst->getSuccessor(i));
-                    succ_this.insert(succs->begin(),succs->end());
-                }else{
+                    succ_this.insert(succs->begin(), succs->end());
+                } else {
                     succ_other.insert(br_inst->getSuccessor(i));
-                    succ_other.insert(succs->begin(),succs->end());
+                    succ_other.insert(succs->begin(), succs->end());
                 }
             }
-        }else if (llvm::dyn_cast<llvm::SwitchInst>(inst)) {
+        } else if (llvm::dyn_cast<llvm::SwitchInst>(inst)) {
             llvm::SwitchInst *sw_inst = llvm::dyn_cast<llvm::SwitchInst>(inst);
             for (unsigned i = 0; i < sw_inst->getNumSuccessors(); ++i) {
-                std::set<llvm::BasicBlock*> *succs = this->get_all_successors(sw_inst->getSuccessor(i));
+                std::set<llvm::BasicBlock *> *succs = this->get_all_successors(sw_inst->getSuccessor(i));
                 if (!succs) {
                     continue;
                 }
                 if (i == branch_id) {
                     succ_this.insert(sw_inst->getSuccessor(i));
-                    succ_this.insert(succs->begin(),succs->end());
-                }else{
+                    succ_this.insert(succs->begin(), succs->end());
+                } else {
                     succ_other.insert(sw_inst->getSuccessor(i));
-                    succ_other.insert(succs->begin(),succs->end());
+                    succ_other.insert(succs->begin(), succs->end());
                 }
             }
-        }else {
+        } else {
             return;
         }
         std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(), std::inserter(succ_uniq, succ_uniq.end()));
         llvm::DominatorTree *pdom = this->get_dom_tree(B->getParent());
-        std::remove_if(pmods->begin(),pmods->end(),
-                       [succ_uniq,pdom,B](Mod *pmod) {
+        std::remove_if(pmods->begin(), pmods->end(),
+                       [succ_uniq, pdom, B](Mod *pmod) {
                            if (!pmod->B) {
                                return false;
                            }
@@ -368,7 +367,7 @@ namespace sta {
                                return true;
                            }
                            //Case 1: we can for sure reach the mod inst if we can reach the "br" and the mod inst is not accumulative (i.e. i++) 
-                           if (pmod->B->getParent() == B->getParent() && pmod->is_trait_fixed() && pdom->dominates(pmod->B,B)) {
+                           if (pmod->B->getParent() == B->getParent() && pmod->is_trait_fixed() && pdom->dominates(pmod->B, B)) {
                                return true;
                            }
                            return false;
@@ -382,47 +381,47 @@ namespace sta {
         }
         //TODO: verify the successor order with true/false
         bool branch = (!branch_id ? true : false);
-        TRAIT& br_trait = this->traitMap[br_trait_id];
+        TRAIT &br_trait = this->traitMap[br_trait_id];
         std::string cond("");
         int64_t v = 0;
-        for (auto& x : br_trait) {
-            const std::string& s = x.first;
+        for (auto &x : br_trait) {
+            const std::string &s = x.first;
             if (s == "==" || s == "!=") {
                 if ((s == "==") == branch) {
                     //Need to take a certain value to reach the destination.
                     cond = "==";
-                }else {
+                } else {
                     //Need to not take a certain value to reach the destination.
                     cond = "!=";
                 }
                 v = x.second;
-            }else if (s == ">=" || s == "<=") {
+            } else if (s == ">=" || s == "<=") {
                 if ((s == ">=") == branch) {
                     //Need to be larger than a certain value to reach the destination.
                     cond = ">=";
-                }else {
+                } else {
                     //Need to be smaller than a certain value to reach the destination.
                     cond = "<=";
                 }
                 v = x.second;
-            }else if (s == ">" || s == "<") {
+            } else if (s == ">" || s == "<") {
                 if ((s == ">") == branch) {
                     //Need to be larger than a certain value to reach the destination.
                     cond = ">";
-                }else {
+                } else {
                     //Need to be smaller than a certain value to reach the destination.
                     cond = "<";
                 }
                 v = x.second;
-            }else if (s.substr(0,3) == "RET") {
+            } else if (s.substr(0, 3) == "RET") {
                 //The condition is related to a function return value, do some NLP analysis.
                 std::string br_func = s.substr(4);
                 //E.g. if the condition is related to the return value "dequeue", then possibly to satisfy the condition we need call "enqueue" first.
                 //So we need to find the "antonym" function names.
                 //The heuristic is that antonym names are different but usually very similar to original names (e.g. de- and en-), so we can pick
                 //those callee names with low Levenshtein distances.
-                for (auto& x : this->calleeMap) {
-                    int dis = this->levDistance(br_func,x.first);
+                for (auto &x : this->calleeMap) {
+                    int dis = this->levDistance(br_func, x.first);
                     //TODO: is "2" a proper threshold value?
                     if (dis == 0 || dis > 2) {
                         continue;
@@ -434,18 +433,18 @@ namespace sta {
                         continue;
                     }
                     //Set proper priorities and properties of these MOD IRs.
-                    for (auto& x : *p_callee_mods) {
+                    for (auto &x : *p_callee_mods) {
                         x->from_nlp = true;
                     }
                     //Append these NLP Mod IRs to the original list.
-                    pmods->insert(pmods->end(),p_callee_mods->begin(),p_callee_mods->end());
+                    pmods->insert(pmods->end(), p_callee_mods->begin(), p_callee_mods->end());
                 }
             }
         }
         //Calculate mod inst priorities based given the br's and mod inst's traits.
         if (!cond.empty()) {
-            for (auto& x : *pmods) {
-                x->calcPrio(cond,v);
+            for (auto &x : *pmods) {
+                x->calcPrio(cond, v);
             }
         }
         //Rank the mod insts.
@@ -469,7 +468,7 @@ namespace sta {
                         if (!pinst) {
                             continue;
                         }
-                        Mod *pmod = new Mod(pinst,&el3.second,this);
+                        Mod *pmod = new Mod(pinst, &el3.second, this);
                         mod_irs->push_back(pmod);
                     }//inst
                 }//bb
@@ -504,7 +503,7 @@ namespace sta {
                         }
                     }
                     if (p_mod_inf) {
-                        Mod *pmod = new Mod(pbb,p_mod_inf,this);
+                        Mod *pmod = new Mod(pbb, p_mod_inf, this);
                         mod_bbs->push_back(pmod);
                     }
                 }//bb
@@ -656,27 +655,27 @@ namespace sta {
         return BBNameMap[B];
     }
 
-    std::string& StaticAnalysisResult::getInstStrID(llvm::Instruction* I) {
-        static std::map<llvm::Instruction*,std::string> InstNameNoMap;
+    std::string &StaticAnalysisResult::getInstStrID(llvm::Instruction *I) {
+        static std::map<llvm::Instruction *, std::string> InstNameNoMap;
         if (InstNameNoMap.find(I) == InstNameNoMap.end()) {
             if (I) {
-                if (false){
-                //if (!I->getName().empty()){
+                if (false) {
+                    //if (!I->getName().empty()){
                     InstNameNoMap[I] = I->getName().str();
-                }else if (I->getParent()){
+                } else if (I->getParent()) {
                     int no = 0;
-                    for (llvm::Instruction& i : *(I->getParent())) {
+                    for (llvm::Instruction &i : *(I->getParent())) {
                         if (&i == I) {
                             InstNameNoMap[I] = std::to_string(no);
                             break;
                         }
                         ++no;
                     }
-                }else{
+                } else {
                     //Seems impossible..
                     InstNameNoMap[I] = "";
                 }
-            }else{
+            } else {
                 InstNameNoMap[I] = "";
             }
         }
@@ -722,8 +721,7 @@ namespace sta {
         return nullptr;
     }
 
-    int StaticAnalysisResult::levDistance(const std::string& source, const std::string& target)
-    {
+    int StaticAnalysisResult::levDistance(const std::string &source, const std::string &target) {
         // Step 1
         const int n = source.length();
         const int m = target.length();
@@ -735,58 +733,57 @@ namespace sta {
         }
 
         // Good form to declare a TYPEDEF
-        typedef std::vector<std::vector<int>> Tmatrix; 
+        typedef std::vector<std::vector<int>> Tmatrix;
 
-        Tmatrix matrix(n+1);
+        Tmatrix matrix(n + 1);
         // Size the vectors in the 2.nd dimension. Unfortunately C++ doesn't
         // allow for allocation on declaration of 2.nd dimension of vec of vec
         for (int i = 0; i <= n; i++) {
-            matrix[i].resize(m+1);
+            matrix[i].resize(m + 1);
         }
 
         // Step 2
         for (int i = 0; i <= n; i++) {
-            matrix[i][0]=i;
+            matrix[i][0] = i;
         }
         for (int j = 0; j <= m; j++) {
-            matrix[0][j]=j;
+            matrix[0][j] = j;
         }
 
         // Step 3
         for (int i = 1; i <= n; i++) {
-            const char s_i = source[i-1];
+            const char s_i = source[i - 1];
 
             // Step 4
             for (int j = 1; j <= m; j++) {
-                const char t_j = target[j-1];
+                const char t_j = target[j - 1];
 
                 // Step 5
                 int cost;
                 if (s_i == t_j) {
                     cost = 0;
-                }
-                else {
+                } else {
                     cost = 1;
                 }
 
                 // Step 6
-                const int above = matrix[i-1][j];
-                const int left = matrix[i][j-1];
-                const int diag = matrix[i-1][j-1];
-                int cell = std::min( above + 1, std::min(left + 1, diag + cost));
+                const int above = matrix[i - 1][j];
+                const int left = matrix[i][j - 1];
+                const int diag = matrix[i - 1][j - 1];
+                int cell = std::min(above + 1, std::min(left + 1, diag + cost));
 
                 // Step 6A: Cover transposition, in addition to deletion,
                 // insertion and substitution. This step is taken from:
                 // Berghel, Hal ; Roach, David : "An Extension of Ukkonen's 
                 // Enhanced Dynamic Programming ASM Algorithm"
                 // (http://www.acm.org/~hlb/publications/asm/asm.html)
-                if (i>2 && j>2) {
-                    int trans=matrix[i-2][j-2]+1;
-                    if (source[i-2]!=t_j) trans++;
-                    if (s_i!=target[j-2]) trans++;
-                    if (cell>trans) cell=trans;
+                if (i > 2 && j > 2) {
+                    int trans = matrix[i - 2][j - 2] + 1;
+                    if (source[i - 2] != t_j) trans++;
+                    if (s_i != target[j - 2]) trans++;
+                    if (cell > trans) cell = trans;
                 }
-                matrix[i][j]=cell;
+                matrix[i][j] = cell;
             }
         }
 
