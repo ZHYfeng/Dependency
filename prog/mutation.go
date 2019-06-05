@@ -661,10 +661,14 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 		ok = true
 		ma := &mutationArgs{target: p.Target}
 		ForeachArg(c, ma.collectArg)
+		var idx int
 		if len(ma.args) == 0 {
 			return false
+		} else if len(ma.args) == 1 {
+			idx = 1
+		} else {
+			idx = r.Intn(len(ma.args)-1) + 1
 		}
-		idx := r.Intn(len(ma.args)-1) + 1
 		arg, ctx := ma.args[idx], ma.ctxes[idx]
 		calls, ok1 := p.Target.mutateArg(r, s, arg, ctx, &updateSizes)
 		if !ok1 {
