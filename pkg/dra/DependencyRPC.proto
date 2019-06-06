@@ -20,6 +20,8 @@ service DependencyRPC {
     }
     rpc SendInput (Input) returns (Empty) {
     }
+    rpc SendLog (Empty) returns (Empty) {
+    }
 }
 
 message Empty {

@@ -95,3 +95,15 @@ func (d *DRPCClient) SendInput(input *Input) {
 	//	}
 	//}
 }
+
+// SendInput ...
+func (d *DRPCClient) SendLog(log string) {
+	// Contact the server and print out its response.
+	request := &Empty{
+		Name: log,
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	_, _ = d.c.SendLog(ctx, request)
+	return
+}

@@ -29,6 +29,14 @@ type Server struct {
 	corpus   *map[string]rpctype.RPCInput
 }
 
+func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+	log.Logff(1, request.Name)
+	reply := &Empty{}
+	return reply, nil
+}
+
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
