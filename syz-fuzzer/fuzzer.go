@@ -472,8 +472,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 
 	for _, u := range p.Uncover {
 		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u)
-		log := fmt.Sprintf("fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u)
-		fuzzer.dManager.SendLog(log)
+		fuzzer.dManager.SendLog(fmt.Sprintf("fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u))
 	}
 
 }
