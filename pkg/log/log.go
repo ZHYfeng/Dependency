@@ -12,8 +12,8 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	golog "log"
+	"os"
 	"sync"
 	"time"
 )
@@ -100,7 +100,8 @@ func Logff(v int, msg string, args ...interface{}) {
 	if prependTime {
 		timeStr = time.Now().Format("2006/01/02 15:04:05 ")
 	}
-	_ = ioutil.WriteFile("./dependency.log", []byte(fmt.Sprintf(timeStr+msg, args...)), 0644)
+	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	f.WriteString(fmt.Sprintf(timeStr+msg, args...))
 	mu.Unlock()
 }
 
