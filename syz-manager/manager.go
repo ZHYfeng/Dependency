@@ -298,6 +298,9 @@ type ReproResult struct {
 func (mgr *Manager) vmLoop() {
 	log.Logf(0, "booting test machines...")
 	log.Logf(0, "wait for the connection from test machine...")
+	log.Logff(0, "wait for the connection from test machine...")
+	log.Logff(0, "wait for the connection from test machine...")
+	log.Logff(0, "wait for the connection from test machine...")
 	instancesPerRepro := 4
 	vmCount := mgr.vmPool.Count()
 	if instancesPerRepro > vmCount {
