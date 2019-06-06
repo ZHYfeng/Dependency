@@ -276,12 +276,12 @@ namespace sta {
         //Also do some function name pair NLP analysis here.
         llvm::Instruction *inst = B->getTerminator();
         //TODO: support switch inst.
-        std::cout << "p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
+//        std::cout << "p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
         if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
             tweakModsOnTraits(p_mod_bbs, trait_id, branch_id);
-            std::cout << "tweakModsOnTraits p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
+//            std::cout << "tweakModsOnTraits p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
             filterMods(p_mod_bbs, B, branch_id);
-            std::cout << "filterMods p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
+//            std::cout << "filterMods p_mod_bbs->size() : " << p_mod_bbs->size() << std::endl;
         }
         return p_mod_bbs;
     }

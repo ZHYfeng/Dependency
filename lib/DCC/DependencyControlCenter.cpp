@@ -105,7 +105,7 @@ namespace dra {
                                         related_address->set_address(writeAddress);
                                         related_address->set_repeat(x->repeat);
                                         related_address->set_prio(x->prio);
-                                        std::cout << "cmds size : " << cmds->size() << std::endl;
+//                                        std::cout << "cmds size : " << cmds->size() << std::endl;
                                         for (auto c : *cmds) {
                                             auto related_syscall = related_address->add_related_syscall();
                                             related_syscall->set_name(function_name);
@@ -128,8 +128,19 @@ namespace dra {
                     }
 
                     if (sendFlag) {
-                        std::cerr << "SendDependencyInput sig : " << dependencyInput.sig() << std::endl;
+                        std::cout << "SendDependencyInput sig : " << dependencyInput.sig() << std::endl;
                         auto reply = client->SendDependencyInput(dependencyInput);
+                        for (auto ua : dependencyInput.uncovered_address()) {
+                            std::cout << "uncovered_address : " << ua.address() << std::endl;
+                            std::cout << "uncovered_idx : " << ua.idx() << std::endl;
+                            std::cout << "uncovered_condition_address : " << ua.condition_address() << std::endl;
+                            for (auto ra : ua.related_address()) {
+                                std::cout << "ra.address() : " << ra.address() << std::endl;
+                                std::cout << "ra.repeat() : " << ra.repeat() << std::endl;
+                                std::cout << "ra.prio() : " << ra.prio() << std::endl;
+                            }
+                        }
+
 
 //                    std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
 //                    std::cerr << "test GetDependencyInput : " << std::endl;
