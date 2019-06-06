@@ -400,7 +400,7 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] =
   "\n\003sig\030\001 \001(\t\022\"\n\004call\030\002 \003(\0132\024.dra.Input.Ca"
   "llEntry\022\014\n\004prog\030\003 \001(\014\0326\n\tCallEntry\022\013\n\003ke"
   "y\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:\0028\001\"%\n"
-  "\010NewInput\022\031\n\005input\030\001 \003(\0132\n.dra.Input2\251\002\n"
+  "\010NewInput\022\031\n\005input\030\001 \003(\0132\n.dra.Input2\316\002\n"
   "\rDependencyRPC\022(\n\014GetVmOffsets\022\n.dra.Emp"
   "ty\032\n.dra.Empty\"\000\022*\n\013GetNewInput\022\n.dra.Em"
   "pty\032\r.dra.NewInput\"\000\0229\n\023SendDependencyIn"
@@ -408,7 +408,8 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] =
   "#\n\007Connect\022\n.dra.Empty\032\n.dra.Empty\"\000\022;\n\022"
   "GetDependencyInput\022\n.dra.Empty\032\027.dra.New"
   "DependencyInput\"\000\022%\n\tSendInput\022\n.dra.Inp"
-  "ut\032\n.dra.Empty\"\000b\006proto3"
+  "ut\032\n.dra.Empty\"\000\022#\n\007SendLog\022\n.dra.Empty\032"
+  "\n.dra.Empty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -429,7 +430,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1184,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1221,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 12, 0,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 12, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
