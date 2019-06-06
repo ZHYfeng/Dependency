@@ -5,7 +5,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -433,7 +432,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 				}
 
 				log.Logf(1, "cmd value : %x", i.Number)
-				fuzzer.dManager.SendLog(fmt.Sprintf("cmd value : %x", i.Number))
+				//fuzzer.dManager.SendLog(fmt.Sprintf("cmd value : %x", i.Number))
 				// only work for ioctl
 				for n, c := range fuzzer.target.SyscallMap {
 					if strings.HasPrefix(n, i.Name) {
@@ -445,7 +444,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 									if val == i.Number {
 										c1.Meta = c
 										log.Logf(1, "ioctl name : %v", c.Name)
-										fuzzer.dManager.SendLog(fmt.Sprintf("ioctl name : %v", c.Name))
+										//fuzzer.dManager.SendLog(fmt.Sprintf("ioctl name : %v", c.Name))
 										c1.Ret = prog.MakeReturnArg(c.Ret)
 										for _, typ := range c.Args {
 											arg := typ.DefaultArg()
@@ -472,7 +471,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 
 	for _, u := range p.Uncover {
 		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u)
-		fuzzer.dManager.SendLog(fmt.Sprintf("fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u))
+		//fuzzer.dManager.SendLog(fmt.Sprintf("fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u))
 	}
 
 }

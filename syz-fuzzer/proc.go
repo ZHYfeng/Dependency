@@ -333,11 +333,11 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 		//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
 		//delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
 		log.Logf(1, "checkUncoveredAddress")
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkUncoveredAddress"))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkUncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
 		res = true
 	} else if proc.checkWriteAddress(p, inputCover) {
 		log.Logf(1, "checkWriteAddress")
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress"))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
 	}
 	return
 }
@@ -438,6 +438,9 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
+		if stat == StatDependency {
+			log.Logff(1, "new input from StatDependency : %v", p)
+		}
 	}
 	if extra {
 		proc.enqueueCallTriage(p, flags, -1, info.Extra)

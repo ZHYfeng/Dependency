@@ -8,8 +8,9 @@ import (
 )
 
 type DRPCClient struct {
-	c DependencyRPCClient
-	I []*Input
+	c    DependencyRPCClient
+	I    []*Input
+	name *string
 }
 
 func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
@@ -19,6 +20,7 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 		log.Fatalf("Dependency gRPC did not connect: %v", err)
 	}
 	d.c = NewDependencyRPCClient(conn)
+	d.name = name
 	d.Connect(name)
 }
 
@@ -100,7 +102,7 @@ func (d *DRPCClient) SendInput(input *Input) {
 func (d *DRPCClient) SendLog(log string) {
 	// Contact the server and print out its response.
 	request := &Empty{
-		Name: log,
+		Name: *(d.name) + " fuzzer : " + log,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
