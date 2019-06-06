@@ -314,7 +314,6 @@ func (fuzzer *Fuzzer) pollLoop() {
 		//fuzzer.dManager.SendDependencyInput(sig.String())
 		newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
 		for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
-
 			fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
 		}
 	}
@@ -396,7 +395,7 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 
 func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
 	log.Logf(1, "dependencyInput : %v", dependencyInput)
-	log.Logff(1, "dependencyInput : %v", dependencyInput)
+	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
 	//sig := dependencyInput.GetSig()
 	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
 	p.Uncover = make(map[int]*prog.Uncover)
