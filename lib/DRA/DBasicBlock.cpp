@@ -239,6 +239,7 @@ namespace dra {
         std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
         std::cout << "IR :" << IR << std::endl;
         std::cout << "CoverKind :" << state << std::endl;
+        std::cout << "address :" << address << std::endl;
 //        basicBlock->dump();
         if (lastInput != nullptr) {
             std::cout << "lastInput :" << lastInput->sig << std::endl;

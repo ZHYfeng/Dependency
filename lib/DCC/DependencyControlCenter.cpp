@@ -74,15 +74,18 @@ namespace dra {
 
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
-                                auto *b = DM.Address2BB[u->condition_address]->parent->basicBlock;
+                                auto *p = DM.Address2BB[u->condition_address]->parent;
+                                auto *b = p->basicBlock;
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), u->successor_idx);
                                 if (allBasicblock == nullptr) {
                                     // no taint or out side
                                     std::cout << "allBasicblock == nullptr" << std::endl;
+                                    p->dump();
 
                                 } else if (allBasicblock->size() == 0) {
                                     // unrelated to gv
                                     std::cout << "allBasicblock->size() == 0" << std::endl;
+                                    p->dump();
 
                                 } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
                                     this->uncovered_address_number_gv_driver++;
