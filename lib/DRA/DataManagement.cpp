@@ -149,7 +149,7 @@ namespace dra {
                 auto final_address = getRealAddress(address);
                 if (this->Address2BB.find(final_address) != this->Address2BB.end()) {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
-                    isDriver(final_address);
+                    this->dump_address(final_address);
                 } else {
                     std::cerr << "un find address " << std::hex << final_address << "\n";
                 }
@@ -204,6 +204,26 @@ namespace dra {
             std::cerr << "isDriver not find address : " << std::hex << address << "\n";
         }
         return false;
+    }
+
+    void DataManagement::dump_address(unsigned long long int address) {
+
+        if(this->Address2BB.find(address)!= this->Address2BB.end()){
+            if(this->Address2BB[address]->parent != nullptr ){
+                auto b = this->Address2BB[address]->parent;
+                if (b->parent!= nullptr){
+                    auto f = b->parent;
+                    std::cout << "dump_address path : " << f->Path << "\n";
+                    std::cout << "dump_address address : " << this->getSyzkallerAddress(address) << "\n";
+                } else {
+                    std::cerr << "dump_address not have parent f : " << std::hex << address << "\n";
+                }
+            } else {
+                std::cerr << "dump_address not have parent bb : " << std::hex << address << "\n";
+            }
+        }else {
+            std::cerr << "dump_address not find address : " << std::hex << address << "\n";
+        }
     }
 
     llvm::BasicBlock *DataManagement::getRealBB(llvm::BasicBlock *b) {

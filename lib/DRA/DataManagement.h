@@ -56,6 +56,8 @@ namespace dra {
 
         bool isDriver(unsigned long long int address);
 
+        void dump_address(unsigned long long int address);
+
     public:
         dra::DModule *Modules;
         std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
