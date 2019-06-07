@@ -317,10 +317,12 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						}
 					}
 				} else {
+					// no cmd
 				}
 			}
 
 		}
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("we can not cover this address : %x", u.UncoveredAddress))
 	covered:
 	}
 
