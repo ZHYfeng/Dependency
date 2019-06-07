@@ -167,6 +167,21 @@ namespace dra {
                 }
             }
         }
+
+        std::vector<DUncoveredAddress *> temp;
+        for(auto ua : dInput->dUncoveredAddress){
+            if (this->Address2BB.find(ua->address) != this->Address2BB.end()) {
+                if (this->Address2BB[ua->address]->state == CoverKind::cover) {
+                    delete ua;
+                } else {
+                    temp.push_back(ua);
+                }
+            }
+        }
+        dInput->dUncoveredAddress.clear();
+        for (auto ua : temp){
+            dInput->dUncoveredAddress.push_back(ua);
+        }
         return dInput;
     }
 

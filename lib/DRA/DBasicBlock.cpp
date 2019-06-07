@@ -103,7 +103,6 @@ namespace dra {
                 Db->setState(CoverKind::cover);
                 Db->input.clear();
                 this->addNewInput(input);
-                input->removeUncoveredAddress(Db->address);
                 return true;
             } else if (Db->state == CoverKind::cover) {
                 this->addNewInput(input);

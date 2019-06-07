@@ -114,20 +114,4 @@ namespace dra {
         std::cout << "condition_address : " << std::hex << condition_address << std::endl;
     }
 
-    void DInput::removeUncoveredAddress(unsigned long long int address) {
-        std::vector<DUncoveredAddress *> temp;
-        for (auto ua : this->dUncoveredAddress) {
-            if (ua->address == address) {
-
-            } else {
-                temp.push_back(ua);
-            }
-        }
-        this->dUncoveredAddress.clear();
-        for (auto ua : temp){
-            this->dUncoveredAddress.push_back(ua);
-        }
-
-    }
-
 } /* namespace dra */
