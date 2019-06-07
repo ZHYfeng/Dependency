@@ -36,7 +36,6 @@ namespace dra {
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
         this->current_time = std::time(NULL);
-//        this->current_time
         std::cout << std::ctime(&this->current_time) << "*time : initStaticRes" << std::endl;
 
         this->client = new dra::DependencyRPCClient(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
@@ -66,6 +65,13 @@ namespace dra {
                     for (auto u : dInput->dUncoveredAddress) {
                         this->uncovered_address_number++;
                         if (this->DM.isDriver(u->address)) {
+                            unsigned long long int address = DM.getSyzkallerAddress(u->address);
+                            unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
+
+                            this->current_time = std::time(NULL);
+                            std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << address << "\n";
+                            std::cout << std::ctime(&current_time) << "condition_address : " << std::hex << condition_address << "\n";
+
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
                                 auto *b = DM.Address2BB[u->condition_address]->parent->basicBlock;
@@ -83,8 +89,7 @@ namespace dra {
                                     sendFlag = true;
                                     std::cout << "get useful static analysis result" << std::endl;
 
-                                    unsigned long long int address = DM.getSyzkallerAddress(u->address);
-                                    unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
+
                                     UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
                                     uncoveredAddress->set_address(address);
                                     uncoveredAddress->set_idx(u->idx);

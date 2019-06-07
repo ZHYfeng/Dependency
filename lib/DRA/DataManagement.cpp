@@ -161,7 +161,8 @@ namespace dra {
                     c->address = final_address;
                     this->cover[final_address] = t;
                     this->time.push_back(c);
-                    std::cout << "new cover address " << std::hex << final_address << "\n";
+                    auto current_time = std::time(NULL);
+                    std::cout << std::ctime(&current_time) << "new cover address " << std::hex << final_address << "\n";
                 } else {
                 }
             }
