@@ -156,6 +156,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		}
 		inputCover.Merge(thisCover)
 
+		proc.fuzzer.checkNewCoverage(item.p, info)
 		//for i, c := range info.Calls {
 		//	ii := uint32(i)
 		//	if cc, ok := input.Call[ii]; !ok {
@@ -336,6 +337,12 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 		//delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
 		log.Logf(1, "checkUncoveredAddress")
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkUncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
+		id := p.Calls[p.Uncover[p.UncoverIdx].Idx].Meta.ID
+		if proc.fuzzer.checkIsCovered(id, p.Uncover[p.UncoverIdx].UncoveredAddress) {
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("old UncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
+		} else {
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new UncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
+		}
 		res = true
 	} else if proc.checkWriteAddress(p, inputCover) {
 		log.Logf(1, "checkWriteAddress")

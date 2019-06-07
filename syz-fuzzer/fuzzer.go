@@ -585,7 +585,6 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	input.Sig = sig.String()
 	tflags := false
 	for i, inf := range info.Calls {
-
 		input.Call[uint32(i)] = &pb.Call{
 			Idx:     uint32(i),
 			Address: map[uint32]uint32{},
@@ -600,7 +599,6 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 			}
 		}
 		call := fuzzer.cover[id].Address
-
 		flags := false
 		for _, address := range inf.Cover {
 			if _, ok := call[address]; !ok {
@@ -616,10 +614,11 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	}
 
 	if tflags {
-		fuzzer.dManager.SendInput(input)
+		//fuzzer.dManager.SendInput(input)
 	}
+
 	for _, cc := range info.Calls {
-		log.Logf(3, "Dependency gRPC checkNewCoverage address : %v", cc.Cover)
+		log.Logf(1, "Dependency gRPC checkNewCoverage address : %v", cc.Cover)
 	}
 
 	fuzzer.coverMu.Unlock()
