@@ -38,6 +38,8 @@ namespace dra {
 
         void addUncoveredAddress(unsigned long long int address, unsigned long long int condition_address, int i);
 
+        void removeUncoveredAddress(unsigned long long int address);
+
     public:
         std::string sig;
         std::string progam;

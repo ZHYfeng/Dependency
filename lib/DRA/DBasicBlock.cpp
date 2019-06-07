@@ -73,7 +73,7 @@ namespace dra {
             }
             infer();
         } else {
-//            std::cerr << "DBasicBlock update basicBlock == nullptr" << "\n";
+            std::cerr << "DBasicBlock update basicBlock == nullptr : " << this->address << "\n";
         }
 
     }
@@ -103,6 +103,7 @@ namespace dra {
                 Db->setState(CoverKind::cover);
                 Db->input.clear();
                 this->addNewInput(input);
+                input->removeUncoveredAddress(Db->address);
                 return true;
             } else if (Db->state == CoverKind::cover) {
                 this->addNewInput(input);
