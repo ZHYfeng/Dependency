@@ -178,26 +178,17 @@ namespace dra {
 
         std::vector<DUncoveredAddress *> temp;
         for (auto ua : dInput->dUncoveredAddress) {
-            if (this->Address2BB.find(ua->address) != this->Address2BB.end()) {
-                if(this->Address2BB[ua->address]->parent != nullptr){
-                    if (this->Address2BB[ua->address]->parent->state == CoverKind::cover) {
-                        if (this->cover.find(ua->address) == this->cover.end()) {
-                            std::cerr << "getInput error infer cover address : " << std::hex << ua->address << "\n";
-                        }
-                        delete ua;
-                    } else if (this->Address2BB[ua->address]->parent->state == CoverKind::uncover) {
-                        temp.push_back(ua);
-                        if (this->uncover.find(ua->address) == this->uncover.end()) {
-                            auto current_time = std::time(NULL);
-                            auto ui = new uncover_info();
-                            ui->time = current_time;
-                            ui->address = ua->address;
-                            this->uncover[ua->address] = ui;
-                        }
-                    } else {
-                        std::cerr << "getInput error CoverKind address : " << std::hex << ua->address << " kind : " << this->Address2BB[ua->address]->state << "\n";
-                    }
+            if (this->cover.find(ua->address) == this->cover.end()) {
+                temp.push_back(ua);
+                if (this->uncover.find(ua->address) == this->uncover.end()) {
+                    auto current_time = std::time(NULL);
+                    auto ui = new uncover_info();
+                    ui->time = current_time;
+                    ui->address = ua->address;
+                    this->uncover[ua->address] = ui;
                 }
+            } else {
+                delete ua;
             }
         }
         dInput->dUncoveredAddress.clear();
