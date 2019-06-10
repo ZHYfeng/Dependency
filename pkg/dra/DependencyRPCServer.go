@@ -114,7 +114,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		i := 0
 		for s, c := range f.corpusDI {
-			if i < 50 {
+			if i < 1 {
 				reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(c))
 				i++
 				delete(f.corpusDI, s)
