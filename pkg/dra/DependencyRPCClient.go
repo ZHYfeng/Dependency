@@ -4,13 +4,16 @@ import (
 	"context"
 	"github.com/google/syzkaller/pkg/log"
 	"google.golang.org/grpc"
+	"sync"
 	"time"
 )
 
 type DRPCClient struct {
-	c    DependencyRPCClient
-	I    []*Input
-	name *string
+	c     DependencyRPCClient
+	I     []*Input
+	name  *string
+	log   string
+	logMu sync.RWMutex
 }
 
 func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
@@ -101,11 +104,23 @@ func (d *DRPCClient) SendInput(input *Input) {
 // SendInput ...
 func (d *DRPCClient) SendLog(log string) {
 	// Contact the server and print out its response.
+	d.logMu.Lock()
+	timeStr := time.Now().Format("2006/01/02 15:04:05 ")
+	d.log = d.log + timeStr + *(d.name) + " fuzzer : " + log + "\n"
+	d.logMu.Unlock()
+	return
+}
+
+func (d *DRPCClient) SSendLog() {
+	// Contact the server and print out its response.
+	d.logMu.Lock()
 	request := &Empty{
-		Name: *(d.name) + " fuzzer : " + log,
+		Name: d.log,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	_, _ = d.c.SendLog(ctx, request)
+	d.log = ""
+	d.logMu.Unlock()
 	return
 }

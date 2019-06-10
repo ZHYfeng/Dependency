@@ -111,7 +111,8 @@ func (proc *Proc) loop() {
 func (proc *Proc) triageInput(item *WorkTriage) {
 
 	input := pb.Input{
-		Call: make(map[uint32]*pb.Call),
+		Call:       make(map[uint32]*pb.Call),
+		Dependency: false,
 	}
 
 	log.Logf(1, "#%v: triaging type=%x", proc.pid, item.flags)
@@ -217,6 +218,11 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		input.Call[uint32(item.call)] = cc
 		for a, _ := range inputCover {
 			cc.Address[a] = 0
+		}
+	}
+	for _, c := range item.p.Comments {
+		if c == "StatDependency" {
+			input.Dependency = true
 		}
 	}
 
@@ -326,6 +332,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("we can not cover this address : %x", u.UncoveredAddress))
 	covered:
 	}
+	proc.fuzzer.dManager.SSendLog()
 
 	return
 }
@@ -446,10 +453,11 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	info := proc.executeRaw(execOpts, p, stat)
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
-		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 		if stat == StatDependency {
-			log.Logff(1, "new input from StatDependency : %v", p)
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new input from StatDependency : %v", p))
+			p.Comments = append(p.Comments, "StatDependency")
 		}
+		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}
 	if extra {
 		proc.enqueueCallTriage(p, flags, -1, info.Extra)

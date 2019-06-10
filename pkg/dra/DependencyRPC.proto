@@ -71,6 +71,7 @@ message Call {
 
 message Input {
     string sig = 1;
+    bool dependency = 4;
     map<uint32, Call> call = 2;
     bytes prog = 3;
 }

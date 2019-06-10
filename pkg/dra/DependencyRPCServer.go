@@ -193,8 +193,9 @@ func cloneDependencyInput(d *DependencyInput) *DependencyInput {
 
 func cloneInput(d *Input) *Input {
 	ci := &Input{
-		Sig:  d.Sig,
-		Call: make(map[uint32]*Call),
+		Sig:        d.Sig,
+		Call:       make(map[uint32]*Call),
+		Dependency: d.Dependency,
 	}
 	for i, u := range d.Call {
 		u1 := &Call{

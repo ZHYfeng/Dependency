@@ -96,12 +96,8 @@ func Logf(v int, msg string, args ...interface{}) {
 
 func Logff(v int, msg string, args ...interface{}) {
 	mu.Lock()
-	timeStr := ""
-	if prependTime {
-		timeStr = time.Now().Format("2006/01/02 15:04:05 ")
-	}
 	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	f.WriteString(fmt.Sprintf(timeStr+msg+"\n", args...))
+	f.WriteString(fmt.Sprintf(msg, args...))
 	f.Close()
 	mu.Unlock()
 }
