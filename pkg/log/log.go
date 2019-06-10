@@ -96,7 +96,7 @@ func Logf(v int, msg string, args ...interface{}) {
 
 func Logff(v int, msg string, args ...interface{}) {
 	mu.Lock()
-	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	f.WriteString(fmt.Sprintf(msg, args...))
 	f.Close()
 	mu.Unlock()
