@@ -179,6 +179,9 @@ namespace dra {
                 std::cout << std::ctime(&this->current_time) << "*time : sleep_for 60s." << std::endl;
                 std::this_thread::sleep_for(std::chrono::seconds(60));
             }
+
+            this->DM.dump_cover();
+            this->DM.dump_uncover();
         }
     }
 
