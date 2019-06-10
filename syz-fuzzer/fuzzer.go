@@ -278,6 +278,17 @@ func (fuzzer *Fuzzer) pollLoop() {
 	var lastPrint time.Time
 	ticker := time.NewTicker(3 * time.Second).C
 	for {
+
+		//data := fuzzer.corpus[0].Serialize()
+		//sig := hash.Hash(data)
+		//fuzzer.dManager.SendDependencyInput(sig.String())
+		if len(fuzzer.workQueue.dependency) == 0 {
+			newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
+			for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
+				fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
+			}
+		}
+
 		poll := false
 		select {
 		case <-ticker:
@@ -309,15 +320,6 @@ func (fuzzer *Fuzzer) pollLoop() {
 			}
 		}
 
-		//data := fuzzer.corpus[0].Serialize()
-		//sig := hash.Hash(data)
-		//fuzzer.dManager.SendDependencyInput(sig.String())
-		if len(fuzzer.workQueue.dependency) == 0 {
-			newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
-			for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
-				fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
-			}
-		}
 	}
 }
 

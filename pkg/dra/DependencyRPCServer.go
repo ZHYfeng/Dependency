@@ -120,7 +120,6 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 				delete(f.corpusDI, s)
 			} else {
 			}
-
 		}
 	} else {
 		log.Fatalf("fuzzer %v is not connected", request.Name)
