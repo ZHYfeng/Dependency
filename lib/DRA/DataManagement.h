@@ -26,6 +26,19 @@ namespace dra {
         unsigned long long int address;
     };
 
+    class uncover_info {
+    public:
+        uncover_info();
+
+    public:
+        std::time_t time;
+        unsigned long long int address;
+        bool belong_to_Driver;
+        bool related_to_gv;
+        bool covered;
+        bool covered_by_dependency;
+    };
+
     class DataManagement {
     public:
         DataManagement();
@@ -58,12 +71,17 @@ namespace dra {
 
         void dump_address(unsigned long long int address);
 
+        void dump_cover();
+
+        void dump_uncover();
+
     public:
         dra::DModule *Modules;
         std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
         std::unordered_map<std::string, DInput *> Inputs;
 //        dra::all_data Add_Data;
         std::map<unsigned long long int, std::time_t> cover;
+        std::map<unsigned long long int, uncover_info *> uncover;
         std::vector<coverage *> time;
         unsigned long long int vmOffsets;
 

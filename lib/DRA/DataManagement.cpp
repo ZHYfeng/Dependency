@@ -155,31 +155,51 @@ namespace dra {
                 }
 
                 if (this->cover.find(final_address) == this->cover.end()) {
-                    std::time_t t = std::time(NULL);
-                    coverage *c = new coverage();
-                    c->time = t;
-                    c->address = final_address;
-                    this->cover[final_address] = t;
-                    this->time.push_back(c);
                     auto current_time = std::time(NULL);
+                    coverage *c = new coverage();
+                    c->time = current_time;
+                    c->address = final_address;
+                    this->cover[final_address] = current_time;
+                    this->time.push_back(c);
                     std::cout << std::ctime(&current_time) << "new cover address " << std::hex << final_address << "\n";
+                    if (this->uncover.find(final_address) == this->uncover.end()) {
+
+                    } else {
+                        this->uncover[final_address]->covered = true;
+                        if (input.dependency() == true) {
+                            this->uncover[final_address]->covered_by_dependency = true;
+                        }
+                    }
+
                 } else {
                 }
             }
         }
 
         std::vector<DUncoveredAddress *> temp;
-        for(auto ua : dInput->dUncoveredAddress){
+        for (auto ua : dInput->dUncoveredAddress) {
             if (this->Address2BB.find(ua->address) != this->Address2BB.end()) {
                 if (this->Address2BB[ua->address]->state == CoverKind::cover) {
+                    if (this->cover.find(ua->address) == this->cover.end()) {
+                        std::cerr << "getInput error infer cover address : " << std::hex << ua->address << "\n";
+                    }
                     delete ua;
-                } else {
+                } else if (this->Address2BB[ua->address]->state == CoverKind::uncover) {
                     temp.push_back(ua);
+                    if (this->uncover.find(ua->address) == this->uncover.end()) {
+                        auto current_time = std::time(NULL);
+                        auto ui = new uncover_info();
+                        ui->time = current_time;
+                        ui->address = ua->address;
+                        this->uncover[ua->address] = ui;
+                    }
+                } else {
+                    std::cerr << "getInput error CoverKind address : " << std::hex << ua->address << " kind : " << this->Address2BB[ua->address]->state << "\n";
                 }
             }
         }
         dInput->dUncoveredAddress.clear();
-        for (auto ua : temp){
+        for (auto ua : temp) {
             dInput->dUncoveredAddress.push_back(ua);
         }
         return dInput;
@@ -195,10 +215,10 @@ namespace dra {
 
     bool DataManagement::isDriver(unsigned long long int address) {
 
-        if(this->Address2BB.find(address)!= this->Address2BB.end()){
-            if(this->Address2BB[address]->parent != nullptr ){
+        if (this->Address2BB.find(address) != this->Address2BB.end()) {
+            if (this->Address2BB[address]->parent != nullptr) {
                 auto b = this->Address2BB[address]->parent;
-                if (b->parent!= nullptr){
+                if (b->parent != nullptr) {
                     auto f = b->parent;
                     std::cout << "isDriver path : " << f->Path << "\n";
                     std::cout << "isDriver address : " << address << "\n";
@@ -215,7 +235,7 @@ namespace dra {
             } else {
                 std::cerr << "isDriver not have parent bb : " << std::hex << address << "\n";
             }
-        }else {
+        } else {
             std::cerr << "isDriver not find address : " << std::hex << address << "\n";
         }
         return false;
@@ -223,10 +243,10 @@ namespace dra {
 
     void DataManagement::dump_address(unsigned long long int address) {
 
-        if(this->Address2BB.find(address)!= this->Address2BB.end()){
-            if(this->Address2BB[address]->parent != nullptr ){
+        if (this->Address2BB.find(address) != this->Address2BB.end()) {
+            if (this->Address2BB[address]->parent != nullptr) {
                 auto b = this->Address2BB[address]->parent;
-                if (b->parent!= nullptr){
+                if (b->parent != nullptr) {
                     auto f = b->parent;
                     std::cout << "dump_address path : " << f->Path << "\n";
                     std::cout << "dump_address address : " << this->getSyzkallerAddress(address) << "\n";
@@ -236,7 +256,7 @@ namespace dra {
             } else {
                 std::cerr << "dump_address not have parent bb : " << std::hex << address << "\n";
             }
-        }else {
+        } else {
             std::cerr << "dump_address not find address : " << std::hex << address << "\n";
         }
     }
@@ -263,5 +283,50 @@ namespace dra {
         return b;
     }
 
+    void DataManagement::dump_cover() {
+        std::ofstream out_file("cover_uncover.txt",
+                               std::ios_base::out | std::ios_base::app);
+        auto current_time = std::time(NULL);
+        out_file << std::ctime(&current_time);
+        out_file << "this->cover.size() : " << this->cover.size() << "\n";
+        out_file.close();
+    }
+
+    void DataManagement::dump_uncover() {
+        std::ofstream out_file("cover_uncover.txt",
+                               std::ios_base::out | std::ios_base::app);
+
+        int ud = 0, ug = 0, ucc = 0, ucd = 0;
+        for (auto uc : this->uncover) {
+            if (uc.second->belong_to_Driver) {
+                ud++;
+                if (uc.second->related_to_gv) {
+                    ug++;
+                    if (uc.second->covered) {
+                        ucc++;
+                        if (uc.second->covered_by_dependency) {
+                            ucd++;
+                        }
+                    }
+                }
+            }
+        }
+
+        auto current_time = std::time(NULL);
+        out_file << std::ctime(&current_time);
+        out_file << "this->uncover.size() : " << this->uncover.size() << "\n";
+        out_file << "belong to driver : " << ud << "\n";
+        out_file << "related to gv : " << ug << "\n";
+        out_file << "be covered : " << ucc << "\n";
+        out_file << "be covered by dependency : " << ucd << "\n";
+
+        out_file.close();
+    }
+
+    uncover_info::uncover_info() : address(0),
+                                   belong_to_Driver(false),
+                                   related_to_gv(false),
+                                   covered(false),
+                                   covered_by_dependency(false) {}
 } /* namespace dra */
 

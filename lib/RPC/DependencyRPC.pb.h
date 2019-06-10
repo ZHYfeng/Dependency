@@ -1490,6 +1490,12 @@ class Input :
   std::string* release_prog();
   void set_allocated_prog(std::string* prog);
 
+  // bool dependency = 4;
+  void clear_dependency();
+  static const int kDependencyFieldNumber = 4;
+  bool dependency() const;
+  void set_dependency(bool value);
+
   // @@protoc_insertion_point(class_scope:dra.Input)
  private:
   class HasBitSetters;
@@ -1503,6 +1509,7 @@ class Input :
       0 > call_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr prog_;
+  bool dependency_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -2334,6 +2341,20 @@ inline void Input::set_allocated_sig(std::string* sig) {
   }
   sig_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), sig);
   // @@protoc_insertion_point(field_set_allocated:dra.Input.sig)
+}
+
+// bool dependency = 4;
+inline void Input::clear_dependency() {
+  dependency_ = false;
+}
+inline bool Input::dependency() const {
+  // @@protoc_insertion_point(field_get:dra.Input.dependency)
+  return dependency_;
+}
+inline void Input::set_dependency(bool value) {
+  
+  dependency_ = value;
+  // @@protoc_insertion_point(field_set:dra.Input.dependency)
 }
 
 // map<uint32, .dra.Call> call = 2;

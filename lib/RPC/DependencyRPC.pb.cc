@@ -339,6 +339,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Input, sig_),
+  PROTOBUF_FIELD_OFFSET(::dra::Input, dependency_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, call_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, prog_),
   ~0u,  // no _has_bits_
@@ -360,7 +361,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 63, -1, sizeof(::dra::Call)},
   { 70, 77, sizeof(::dra::Input_CallEntry_DoNotUse)},
   { 79, -1, sizeof(::dra::Input)},
-  { 87, -1, sizeof(::dra::NewInput)},
+  { 88, -1, sizeof(::dra::NewInput)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -396,20 +397,21 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] =
   "ndencyInput\030\001 \003(\0132\024.dra.DependencyInput\""
   "l\n\004Call\022\013\n\003idx\030\001 \001(\r\022\'\n\007address\030\002 \003(\0132\026."
   "dra.Call.AddressEntry\032.\n\014AddressEntry\022\013\n"
-  "\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"~\n\005Input\022\013"
-  "\n\003sig\030\001 \001(\t\022\"\n\004call\030\002 \003(\0132\024.dra.Input.Ca"
-  "llEntry\022\014\n\004prog\030\003 \001(\014\0326\n\tCallEntry\022\013\n\003ke"
-  "y\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:\0028\001\"%\n"
-  "\010NewInput\022\031\n\005input\030\001 \003(\0132\n.dra.Input2\316\002\n"
-  "\rDependencyRPC\022(\n\014GetVmOffsets\022\n.dra.Emp"
-  "ty\032\n.dra.Empty\"\000\022*\n\013GetNewInput\022\n.dra.Em"
-  "pty\032\r.dra.NewInput\"\000\0229\n\023SendDependencyIn"
-  "put\022\024.dra.DependencyInput\032\n.dra.Empty\"\000\022"
-  "#\n\007Connect\022\n.dra.Empty\032\n.dra.Empty\"\000\022;\n\022"
-  "GetDependencyInput\022\n.dra.Empty\032\027.dra.New"
-  "DependencyInput\"\000\022%\n\tSendInput\022\n.dra.Inp"
-  "ut\032\n.dra.Empty\"\000\022#\n\007SendLog\022\n.dra.Empty\032"
-  "\n.dra.Empty\"\000b\006proto3"
+  "\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\222\001\n\005Input\022"
+  "\013\n\003sig\030\001 \001(\t\022\022\n\ndependency\030\004 \001(\010\022\"\n\004call"
+  "\030\002 \003(\0132\024.dra.Input.CallEntry\022\014\n\004prog\030\003 \001"
+  "(\014\0326\n\tCallEntry\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 "
+  "\001(\0132\t.dra.Call:\0028\001\"%\n\010NewInput\022\031\n\005input\030"
+  "\001 \003(\0132\n.dra.Input2\316\002\n\rDependencyRPC\022(\n\014G"
+  "etVmOffsets\022\n.dra.Empty\032\n.dra.Empty\"\000\022*\n"
+  "\013GetNewInput\022\n.dra.Empty\032\r.dra.NewInput\""
+  "\000\0229\n\023SendDependencyInput\022\024.dra.Dependenc"
+  "yInput\032\n.dra.Empty\"\000\022#\n\007Connect\022\n.dra.Em"
+  "pty\032\n.dra.Empty\"\000\022;\n\022GetDependencyInput\022"
+  "\n.dra.Empty\032\027.dra.NewDependencyInput\"\000\022%"
+  "\n\tSendInput\022\n.dra.Input\032\n.dra.Empty\"\000\022#\n"
+  "\007SendLog\022\n.dra.Empty\032\n.dra.Empty\"\000b\006prot"
+  "o3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -430,7 +432,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1221,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1242,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 12, 0,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 12, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
@@ -3339,6 +3341,7 @@ class Input::HasBitSetters {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Input::kSigFieldNumber;
+const int Input::kDependencyFieldNumber;
 const int Input::kCallFieldNumber;
 const int Input::kProgFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -3361,6 +3364,7 @@ Input::Input(const Input& from)
   if (from.prog().size() > 0) {
     prog_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.prog_);
   }
+  dependency_ = from.dependency_;
   // @@protoc_insertion_point(copy_constructor:dra.Input)
 }
 
@@ -3368,6 +3372,7 @@ void Input::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Input_DependencyRPC_2eproto.base);
   sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   prog_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  dependency_ = false;
 }
 
 Input::~Input() {
@@ -3398,6 +3403,7 @@ void Input::Clear() {
   call_.Clear();
   sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   prog_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  dependency_ = false;
   _internal_metadata_.Clear();
 }
 
@@ -3432,6 +3438,13 @@ const char* Input::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(mutable_prog(), ptr, ctx);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // bool dependency = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          dependency_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3503,6 +3516,19 @@ bool Input::MergePartialFromCodedStream(
         if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (26 & 0xFF)) {
           DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_prog()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool dependency = 4;
+      case 4: {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (32 & 0xFF)) {
+
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &dependency_)));
         } else {
           goto handle_unusual;
         }
@@ -3583,6 +3609,11 @@ void Input::SerializeWithCachedSizes(
       3, this->prog(), output);
   }
 
+  // bool dependency = 4;
+  if (this->dependency() != 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBool(4, this->dependency(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -3645,6 +3676,11 @@ void Input::SerializeWithCachedSizes(
         3, this->prog(), target);
   }
 
+  // bool dependency = 4;
+  if (this->dependency() != 0) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(4, this->dependency(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target);
@@ -3689,6 +3725,11 @@ size_t Input::ByteSizeLong() const {
         this->prog());
   }
 
+  // bool dependency = 4;
+  if (this->dependency() != 0) {
+    total_size += 1 + 1;
+  }
+
   int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -3725,6 +3766,9 @@ void Input::MergeFrom(const Input& from) {
 
     prog_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.prog_);
   }
+  if (from.dependency() != 0) {
+    set_dependency(from.dependency());
+  }
 }
 
 void Input::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -3757,6 +3801,7 @@ void Input::InternalSwap(Input* other) {
     GetArenaNoVirtual());
   prog_.Swap(&other->prog_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  swap(dependency_, other->dependency_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Input::GetMetadata() const {

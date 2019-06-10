@@ -78,16 +78,26 @@ namespace dra {
                                 auto *b = p->basicBlock;
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), u->successor_idx);
                                 if (allBasicblock == nullptr) {
+                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                        this->DM.uncover[u->address]->belong_to_Driver = true;
+                                    }
                                     // no taint or out side
                                     std::cout << "allBasicblock == nullptr" << std::endl;
                                     p->dump();
 
                                 } else if (allBasicblock->size() == 0) {
+                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                        this->DM.uncover[u->address]->belong_to_Driver = true;
+                                    }
                                     // unrelated to gv
                                     std::cout << "allBasicblock->size() == 0" << std::endl;
                                     p->dump();
 
                                 } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
+                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                        this->DM.uncover[u->address]->belong_to_Driver = true;
+                                        this->DM.uncover[u->address]->related_to_gv = true;
+                                    }
                                     this->uncovered_address_number_gv_driver++;
                                     sendFlag = true;
                                     std::cout << "get useful static analysis result" << std::endl;
