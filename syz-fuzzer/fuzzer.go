@@ -634,10 +634,20 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 
 func (fuzzer *Fuzzer) checkIsCovered(id int, address uint32) (res bool) {
 	fuzzer.coverMu.RLock()
-	call := fuzzer.cover[id].Address
-	if _, ok := call[address]; !ok {
-		return false
+	if c, ok := fuzzer.cover[id]; ok {
+		call := c.Address
+		if _, ok := call[address]; !ok {
+			return false
+		} else {
+			return true
+		}
 	} else {
-		return true
+		fuzzer.cover[id] = &pb.Call{
+			Idx:     0,
+			Address: make(map[uint32]uint32),
+		}
+		call := fuzzer.cover[id].Address
+		call[address] = 0
+		return false
 	}
 }
