@@ -31,8 +31,8 @@ type Server struct {
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
+	//ss.mu.Lock()
+	//defer ss.mu.Unlock()
 	log.Logff(1, request.Name)
 	reply := &Empty{}
 	return reply, nil
@@ -116,7 +116,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		i := 0
 		for s, c := range f.corpusDI {
-			if i < 10 {
+			if i < 1 {
 				reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(c))
 				i++
 				delete(f.corpusDI, s)
