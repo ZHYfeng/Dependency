@@ -298,7 +298,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						data := p0.Serialize()
 						log.Logf(1, "RelatedCalls p0 program : \n%s", data)
 						proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0 program : \n%s", data))
-						for i := 0; i < 200; i++ {
+						for i := 0; i < 50; i++ {
 							p0.MutateIoctl3Arg(proc.rnd, int(u.Idx)+size-1, ct)
 							data := p0.Serialize()
 							log.Logf(1, "RelatedCalls p0 program mutate : \n%s", data)
@@ -327,7 +327,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					// no cmd
 				}
 			}
-
+			proc.fuzzer.dManager.SSendLog()
 		}
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("we can not cover this address : %x", u.UncoveredAddress))
 	covered:
