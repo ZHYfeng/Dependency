@@ -223,6 +223,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.corpusDI = make(map[string]*DependencyInput)
 	ss.fuzzers = make(map[string]*fuzzer)
 	ss.mu = &sync.Mutex{}
+	ss.fmu = &sync.Mutex{}
 	ss.corpus = corpus
 
 	lis, err := net.Listen("tcp", port)
