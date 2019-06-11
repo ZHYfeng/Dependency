@@ -282,8 +282,10 @@ func (fuzzer *Fuzzer) pollLoop() {
 		//data := fuzzer.corpus[0].Serialize()
 		//sig := hash.Hash(data)
 		//fuzzer.dManager.SendDependencyInput(sig.String())
+		log.Logf(0, "len(fuzzer.workQueue.dependency) %v", len(fuzzer.workQueue.dependency))
 		if len(fuzzer.workQueue.dependency) == 0 {
 			newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
+			log.Logf(0, "len(newDependencyInput.DependencyInput) %v", len(newDependencyInput.DependencyInput))
 			for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
 				fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
 			}

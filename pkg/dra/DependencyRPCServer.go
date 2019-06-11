@@ -73,7 +73,6 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 
 func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInput) (*Empty, error) {
 	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	reply := &Empty{}
 	cd := cloneDependencyInput(request)
 	sig := cd.Sig
@@ -104,17 +103,17 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 		reply.Address = uint32(len(f.corpusDI))
 	}
 	reply.Name = "success"
+	ss.mu.Unlock()
 	return reply, nil
 }
 
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDependencyInput, error) {
 	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	reply := &NewDependencyInput{}
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		i := 0
 		for s, c := range f.corpusDI {
-			if i < 1 {
+			if i < 2 {
 				reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(c))
 				i++
 				delete(f.corpusDI, s)
@@ -133,7 +132,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 	//if len(f.corpusDI) == 0 {
 	//	f.corpusDI = nil
 	//}
-
+	ss.mu.Unlock()
 	return reply, nil
 }
 
