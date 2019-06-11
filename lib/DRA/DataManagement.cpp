@@ -307,8 +307,8 @@ namespace dra {
                         }
                     }
                 }
-                out_file << "uc.second->condition_address : " << uc.second->condition_address << "\n";
-                out_file << "uc.second->address : " << uc.second->address << "\n";
+                out_file << "uc.second->condition_address : " << std::hex << uc.second->condition_address << "\n";
+                out_file << "uc.second->address : " << std::hex << uc.second->address << "\n";
             }
         }
 
