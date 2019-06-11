@@ -72,7 +72,9 @@ func (proc *Proc) loop() {
 		generatePeriod = 2
 	}
 	for i := 0; ; i++ {
+		log.Logf(1, "loop : %v", i)
 		item := proc.fuzzer.workQueue.dequeue()
+		log.Logf(1, "item := proc.fuzzer.workQueue.dequeue()")
 		if item != nil {
 			switch item := item.(type) {
 			case *WorkTriage:

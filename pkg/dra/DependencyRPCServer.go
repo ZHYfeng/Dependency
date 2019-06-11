@@ -24,6 +24,7 @@ type Server struct {
 	//corpusDC []*Input
 	corpusDC map[string]*Input
 	corpusDI map[string]*DependencyInput
+	fmu      *sync.Mutex
 	fuzzers  map[string]*fuzzer
 	mu       *sync.Mutex
 	corpus   *map[string]rpctype.RPCInput
@@ -74,7 +75,6 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 }
 
 func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInput) (*Empty, error) {
-	ss.mu.Lock()
 	reply := &Empty{}
 	cd := cloneDependencyInput(request)
 	sig := cd.Sig
@@ -100,17 +100,18 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 			}
 		}
 	}
+	ss.fmu.Lock()
 	for _, f := range ss.fuzzers {
 		f.corpusDI[sig] = cloneDependencyInput(cd)
 		reply.Address = uint32(len(f.corpusDI))
 	}
 	reply.Name = "success"
-	ss.mu.Unlock()
+	ss.fmu.Unlock()
 	return reply, nil
 }
 
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDependencyInput, error) {
-	ss.mu.Lock()
+	ss.fmu.Lock()
 	reply := &NewDependencyInput{}
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		i := 0
@@ -134,7 +135,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDe
 	//if len(f.corpusDI) == 0 {
 	//	f.corpusDI = nil
 	//}
-	ss.mu.Unlock()
+	ss.fmu.Unlock()
 	return reply, nil
 }
 
