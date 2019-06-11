@@ -288,6 +288,7 @@ func (fuzzer *Fuzzer) pollLoop() {
 				fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
 			}
 		}
+		fuzzer.dManager.SSendLog()
 
 		poll := false
 		select {
