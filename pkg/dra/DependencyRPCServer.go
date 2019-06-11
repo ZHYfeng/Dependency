@@ -40,8 +40,10 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
-	ss.fuzzers[request.Name] = &fuzzer{
-		corpusDI: map[string]*DependencyInput{},
+	if _, ok := ss.fuzzers[request.Name]; !ok {
+		ss.fuzzers[request.Name] = &fuzzer{
+			corpusDI: map[string]*DependencyInput{},
+		}
 	}
 	return &Empty{}, nil
 }
