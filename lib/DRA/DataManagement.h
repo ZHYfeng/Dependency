@@ -33,6 +33,7 @@ namespace dra {
     public:
         std::time_t time;
         unsigned long long int address;
+        unsigned long long int condition_address;
         bool belong_to_Driver;
         bool related_to_gv;
         bool covered;

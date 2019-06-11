@@ -185,6 +185,7 @@ namespace dra {
                     auto ui = new uncover_info();
                     ui->time = current_time;
                     ui->address = ua->address;
+                    ui->condition_address = ua->condition_address;
                     this->uncover[ua->address] = ui;
                 }
             } else {
@@ -293,15 +294,21 @@ namespace dra {
         for (auto uc : this->uncover) {
             if (uc.second->belong_to_Driver) {
                 ud++;
+                out_file << "belong to driver " << "\n";
                 if (uc.second->related_to_gv) {
                     ug++;
+                    out_file << "related to gv " << "\n";
                     if (uc.second->covered) {
                         ucc++;
+                        out_file << "be covered " << "\n";
                         if (uc.second->covered_by_dependency) {
                             ucd++;
+                            out_file << "be covered by dependency " << "\n";
                         }
                     }
                 }
+                out_file << "uc.second->condition_address : " << uc.second->condition_address << "\n";
+                out_file << "uc.second->address : " << uc.second->address << "\n";
             }
         }
 
