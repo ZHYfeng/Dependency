@@ -29,7 +29,7 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 
 func (d *DRPCClient) Connect(name *string) {
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	_, err := d.c.Connect(ctx, &Empty{Name: *name})
 	if err != nil {
