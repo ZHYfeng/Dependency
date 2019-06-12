@@ -22,6 +22,9 @@ func (p *Prog) Clone() *Prog {
 		p1.Calls[ci] = c1
 	}
 	p1.debugValidate()
+	for _, c := range p.Comments {
+		p1.Comments = append(p1.Comments, c)
+	}
 	return p1
 }
 

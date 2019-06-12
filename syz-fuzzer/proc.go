@@ -225,6 +225,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	for _, c := range item.p.Comments {
 		if c == "StatDependency" {
 			input.Dependency = true
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : %v", item.p))
 		}
 	}
 
@@ -246,14 +247,14 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 	p := item.p
 	data := p.Serialize()
 	log.Logf(1, "DependencyMutate prog : \n%s", data)
-	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
+	//proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
 	for iu, u := range p.Uncover {
 		p.UncoverIdx = iu
 		ok := false
 		log.Logf(1, "Uncover address : %x", u.UncoveredAddress)
 		log.Logf(1, "Idx : %x", u.Idx)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("Uncover address : %x", u.UncoveredAddress))
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
+		//proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
 		for _, ra := range u.RelatedAddress {
 			log.Logf(1, "related address : %x", ra.RelatedAddress)
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("related address : %x", ra.RelatedAddress))
@@ -273,7 +274,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					}
 					data := p0.Serialize()
 					log.Logf(1, "p0 program : \n%s", data)
-					proc.fuzzer.dManager.SendLog(fmt.Sprintf("p0 program : \n%s", data))
+					//proc.fuzzer.dManager.SendLog(fmt.Sprintf("p0 program : \n%s", data))
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
 					for _, c := range info.Calls {
@@ -299,19 +300,19 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						p0.InsertCall(c0c, u.Idx, programLength)
 						data := p0.Serialize()
 						log.Logf(1, "RelatedCalls p0 program : \n%s", data)
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0 program : \n%s", data))
+						//proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0 program : \n%s", data))
 						for i := 0; i < 50; i++ {
 							p0.MutateIoctl3Arg(proc.rnd, int(u.Idx)+size-1, ct)
 							data := p0.Serialize()
 							log.Logf(1, "RelatedCalls p0 program mutate : \n%s", data)
-							proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0 program mutate : \n%s", data))
+							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0 program mutate : \n%s", data))
 							p0c := p0.Clone()
 							for i := 0; i < int(ra.Repeat-1); i++ {
 								p0c.RepeatCall(int(u.Idx) + size - 1)
 							}
 							data1 := p0c.Serialize()
 							log.Logf(1, "RelatedCalls p0c program mutate repeat: \n%s", data1)
-							proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0c program mutate repeat: \n%s", data1))
+							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0c program mutate repeat: \n%s", data1))
 
 							info := proc.execute(proc.execOptsCover, p0c, ProgNormal, StatDependency)
 							var inputCover cover.Cover
@@ -341,6 +342,15 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool) {
 	res = false
+
+	if proc.checkWriteAddress(p, inputCover) {
+		log.Logf(1, "checkWriteAddress")
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
+	} else {
+		log.Logf(1, "not checkWriteAddress")
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
+	}
+
 	if proc.checkUncoveredAddress(p, inputCover) {
 		//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
 		//delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
@@ -353,9 +363,8 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res bool)
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new UncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
 		}
 		res = true
-	} else if proc.checkWriteAddress(p, inputCover) {
-		log.Logf(1, "checkWriteAddress")
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
+	} else {
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkUncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
 	}
 	return
 }
@@ -480,7 +489,7 @@ func (proc *Proc) enqueueCallTriage(p *prog.Prog, flags ProgTypes, callIndex int
 	// Note: triage input uses executeRaw to get coverage.
 	info.Cover = nil
 	proc.fuzzer.workQueue.enqueue(&WorkTriage{
-		p:     p.CloneWithUncover(),
+		p:     p.Clone(),
 		call:  callIndex,
 		info:  info,
 		flags: flags,
