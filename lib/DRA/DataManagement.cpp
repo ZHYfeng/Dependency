@@ -243,7 +243,8 @@ namespace dra {
                 if (b->parent != nullptr) {
                     auto f = b->parent;
                     std::cout << "dump_address path : " << f->Path << "\n";
-                    std::cout << "dump_address address : " << this->getSyzkallerAddress(address) << "\n";
+                    std::cout << "dump_address address : " << address << "\n";
+                    std::cout << "dump_address getSyzkallerAddress : " << this->getSyzkallerAddress(address) << "\n";
                 } else {
                     std::cerr << "dump_address not have parent f : " << std::hex << address << "\n";
                 }
@@ -309,6 +310,7 @@ namespace dra {
                 }
                 out_file << "uc.second->condition_address : " << std::hex << uc.second->condition_address << "\n";
                 out_file << "uc.second->address : " << std::hex << uc.second->address << "\n";
+                out_file << "getSyzkallerAddress : " << std::hex << this->getSyzkallerAddress(uc.second->address) << "\n";
             }
         }
 
