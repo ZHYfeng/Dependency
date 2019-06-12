@@ -307,10 +307,10 @@ namespace dra {
                             out_file << "be covered by dependency " << "\n";
                         }
                     }
+                    out_file << "uc.second->condition_address : " << std::hex << uc.second->condition_address << "\n";
+                    out_file << "uc.second->address : " << std::hex << uc.second->address << "\n";
+                    out_file << "getSyzkallerAddress : " << std::hex << this->getSyzkallerAddress(uc.second->address) << "\n";
                 }
-                out_file << "uc.second->condition_address : " << std::hex << uc.second->condition_address << "\n";
-                out_file << "uc.second->address : " << std::hex << uc.second->address << "\n";
-                out_file << "getSyzkallerAddress : " << std::hex << this->getSyzkallerAddress(uc.second->address) << "\n";
             }
         }
 
