@@ -149,7 +149,7 @@ namespace dra {
                 auto final_address = getRealAddress(address);
                 if (this->Address2BB.find(final_address) != this->Address2BB.end()) {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
-                    this->dump_address(final_address);
+//                    this->dump_address(final_address);
                 } else {
                     std::cerr << "un find address " << std::hex << final_address << "\n";
                 }
@@ -214,8 +214,8 @@ namespace dra {
                 auto b = this->Address2BB[address]->parent;
                 if (b->parent != nullptr) {
                     auto f = b->parent;
-                    std::cout << "isDriver path : " << f->Path << "\n";
-                    std::cout << "isDriver address : " << address << "\n";
+//                    std::cout << "isDriver path : " << f->Path << "\n";
+//                    std::cout << "isDriver address : " << address << "\n";
                     if (f->Path.find("block/") == 0) {
                         return true;
                     } else if (f->Path.find("drivers/") == 0) {

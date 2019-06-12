@@ -69,8 +69,10 @@ namespace dra {
                             unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
 
                             this->current_time = std::time(NULL);
-                            std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << address << "\n";
-                            std::cout << std::ctime(&current_time) << "condition_address : " << std::hex << condition_address << "\n";
+                            std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << u->address << "\n";
+                            std::cout << std::ctime(&current_time) << "condition address : " << std::hex << u->condition_address << "\n";
+                            std::cout << std::ctime(&current_time) << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
+                            std::cout << std::ctime(&current_time) << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
 
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
@@ -120,6 +122,13 @@ namespace dra {
                                         unsigned int writeAddress = DM.getSyzkallerAddress(db->address);
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_related_address();
+
+                                        std::cout << "related write basicblock" << std::endl;
+                                        db->dump();
+                                        std::cout << std::ctime(&current_time) << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress << "\n";
+                                        std::cout << std::ctime(&current_time) << "x->repeat : " << std::hex << x->repeat << "\n";
+                                        std::cout << std::ctime(&current_time) << "x->prio : " << std::hex << x->prio << "\n";
+
                                         related_address->set_address(writeAddress);
                                         related_address->set_repeat(x->repeat);
                                         related_address->set_prio(x->prio);
@@ -148,16 +157,17 @@ namespace dra {
                     if (sendFlag) {
                         std::cout << "SendDependencyInput sig : " << dependencyInput.sig() << std::endl;
                         auto reply = client->SendDependencyInput(dependencyInput);
-                        for (auto ua : dependencyInput.uncovered_address()) {
-                            std::cout << "uncover address : " << ua.address() << std::endl;
-                            std::cout << "uncovered_idx : " << ua.idx() << std::endl;
-                            std::cout << "uncovered_condition_address : " << ua.condition_address() << std::endl;
-                            for (auto ra : ua.related_address()) {
-                                std::cout << "ra.address() : " << ra.address() << std::endl;
-                                std::cout << "ra.repeat() : " << ra.repeat() << std::endl;
-                                std::cout << "ra.prio() : " << ra.prio() << std::endl;
-                            }
-                        }
+
+//                        for (auto ua : dependencyInput.uncovered_address()) {
+//                            std::cout << "uncover address : " << ua.address() << std::endl;
+//                            std::cout << "uncovered_idx : " << ua.idx() << std::endl;
+//                            std::cout << "uncovered_condition_address : " << ua.condition_address() << std::endl;
+//                            for (auto ra : ua.related_address()) {
+//                                std::cout << "ra.address() : " << ra.address() << std::endl;
+//                                std::cout << "ra.repeat() : " << ra.repeat() << std::endl;
+//                                std::cout << "ra.prio() : " << ra.prio() << std::endl;
+//                            }
+//                        }
 
 
 //                    std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
