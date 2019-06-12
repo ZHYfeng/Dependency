@@ -149,7 +149,7 @@ namespace dra {
                         std::cout << "SendDependencyInput sig : " << dependencyInput.sig() << std::endl;
                         auto reply = client->SendDependencyInput(dependencyInput);
                         for (auto ua : dependencyInput.uncovered_address()) {
-                            std::cout << "uncovered_address : " << ua.address() << std::endl;
+                            std::cout << "uncover address : " << ua.address() << std::endl;
                             std::cout << "uncovered_idx : " << ua.idx() << std::endl;
                             std::cout << "uncovered_condition_address : " << ua.condition_address() << std::endl;
                             for (auto ra : ua.related_address()) {
