@@ -263,7 +263,7 @@ namespace sta {
             for (auto& x : this->single_trait) {
                 std::string s = x.first;
                 int64_t v = x.second;
-                if (s == "CONST_INT") {
+                if (s == "CONST_INT" || s == "CONST_NULLPTR") {
                     if (v == n) {
                         //This mod can (potentially) set the global state to the target value.
                         p = 100;
@@ -288,7 +288,7 @@ namespace sta {
             for (auto& x : this->single_trait) {
                 std::string s = x.first;
                 int64_t v = x.second;
-                if (s == "CONST_INT") {
+                if (s == "CONST_INT" || s == "CONST_NULLPTR") {
                     if (v != n) {
                         //This mod can (potentially) set the global state to a different target value.
                         p = 100;
