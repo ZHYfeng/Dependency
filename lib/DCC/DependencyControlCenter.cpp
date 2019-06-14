@@ -77,6 +77,8 @@ namespace dra {
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
                                 auto *p = DM.Address2BB[u->condition_address]->parent;
+                                p->dump();
+
                                 auto *b = p->basicBlock;
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), u->successor_idx);
                                 if (allBasicblock == nullptr) {
@@ -123,11 +125,11 @@ namespace dra {
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_related_address();
 
-                                        std::cout << "related write basicblock" << std::endl;
-                                        db->dump();
+                                        std::cout << "related write basicblock : " << std::endl;
                                         std::cout << std::ctime(&current_time) << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress << "\n";
                                         std::cout << std::ctime(&current_time) << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << std::ctime(&current_time) << "x->prio : " << std::hex << x->prio << "\n";
+                                        db->dump();
 
                                         related_address->set_address(writeAddress);
                                         related_address->set_repeat(x->repeat);
