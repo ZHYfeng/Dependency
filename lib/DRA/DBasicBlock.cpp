@@ -234,7 +234,7 @@ namespace dra {
             std::cout << "Path :" << parent->Path << std::endl;
             std::cout << "FunctionName :" << parent->FunctionName << std::endl;
         }
-        std::cout << "name :" << name << std::endl;
+        std::cout << "basicblock name :" << name << std::endl;
         std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
         std::cout << "IR :" << IR << std::endl;
         std::cout << "CoverKind :" << state << std::endl;
