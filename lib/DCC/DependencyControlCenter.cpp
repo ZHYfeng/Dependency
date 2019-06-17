@@ -70,9 +70,9 @@ namespace dra {
 
                             this->current_time = std::time(NULL);
                             std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << u->address << "\n";
-                            std::cout << std::ctime(&current_time) << "condition address : " << std::hex << u->condition_address << "\n";
-                            std::cout << std::ctime(&current_time) << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
-                            std::cout << std::ctime(&current_time) << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
+                            std::cout << "condition address : " << std::hex << u->condition_address << "\n";
+                            std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
+                            std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
 
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
@@ -125,10 +125,10 @@ namespace dra {
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_related_address();
 
-                                        std::cout << "related write basicblock : " << std::endl;
-                                        std::cout << std::ctime(&current_time) << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress << "\n";
-                                        std::cout << std::ctime(&current_time) << "x->repeat : " << std::hex << x->repeat << "\n";
-                                        std::cout << std::ctime(&current_time) << "x->prio : " << std::hex << x->prio << "\n";
+                                        std::cout << std::ctime(&current_time) << "related write basicblock : " << std::endl;
+                                        std::cout << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress << "\n";
+                                        std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
+                                        std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
 
                                         related_address->set_address(writeAddress);
