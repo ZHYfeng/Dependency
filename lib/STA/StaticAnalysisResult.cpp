@@ -721,6 +721,18 @@ namespace sta {
         return nullptr;
     }
 
+    bool StaticAnalysisResult::getCtx(ID_TY id, std::vector<llvm::Instruction*> *pctx) {
+        if (this->ctxMap.find(id) == this->ctxMap.end() || !pctx) {
+            return false;
+        }
+        pctx->clear();
+        for (auto& loc : this->ctxMap[id]) {
+            llvm::Instruction *inst = this->getInstFromStr(loc[0],loc[1],loc[2],loc[3]);
+            pctx->push_back(inst);
+        }
+        return true;
+    }
+
     int StaticAnalysisResult::levDistance(const std::string &source, const std::string &target) {
         // Step 1
         const int n = source.length();

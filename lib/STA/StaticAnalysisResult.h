@@ -85,6 +85,8 @@ namespace sta {
         //This is a temporary function...
         std::set<uint64_t> *getIoctlCmdSet(MOD_INF *);
 
+        bool getCtx(ID_TY, std::vector<llvm::Instruction*>*);
+
     private:
         nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagInfo, j_calleeMap;
 
@@ -208,6 +210,23 @@ namespace sta {
                 return false;
             }
             return (tr->find("CONST_INT") != tr->end());
+        }
+
+        std::vector<std::vector<llvm::Instruction*>> ctxs;
+
+        std::vector<std::vector<llvm::Instruction*>> *get_ctxs() {
+            if (!this->ctxs.empty()) {
+                return &(this->ctxs);
+            }
+            if (this->mod_inf.empty() || !this->sta) {
+                return nullptr;
+            }
+            for (auto& x : this->mod_inf) {
+                std::vector<llvm::Instruction*> vec;
+                this->sta->getCtx(x.first,&vec);
+                this->ctxs.push_back(vec);
+            }
+            return &(this->ctxs);
         }
 
     private:
