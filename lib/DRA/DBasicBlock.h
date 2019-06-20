@@ -10,6 +10,7 @@
 
 #include <llvm/IR/BasicBlock.h>
 #include <set>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -67,7 +68,6 @@ namespace dra {
         bool AsmSourceCode;
 
         llvm::BasicBlock *basicBlock;
-        std::set<llvm::BasicBlock *> useLessPred;
         DFunction *parent;
         CoverKind state;
         std::string name;
@@ -79,7 +79,11 @@ namespace dra {
 
         std::set<DInput *> input;
         DInput *lastInput;
+
+        std::map<dra::DBasicBlock *, bool> arrive;
+
         DBasicBlock *realPred;
+        std::set<llvm::BasicBlock *> useLessPred;
     };
 
 } /* namespace dra */

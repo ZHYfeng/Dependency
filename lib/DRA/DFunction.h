@@ -71,6 +71,8 @@ namespace dra {
 
         void inferUseLessPred();
 
+        void compute_arrive();
+
     public:
         bool Objudump;
         bool AsmSourceCode;

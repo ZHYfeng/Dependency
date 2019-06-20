@@ -199,4 +199,11 @@ namespace dra {
         }
     }
 
+    void DFunction::compute_arrive() {
+        for(auto : ){
+
+        }
+
+    }
+
 } /* namespace dra */
