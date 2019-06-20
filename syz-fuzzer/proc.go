@@ -247,7 +247,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 	p := item.p
 	data := p.Serialize()
 	log.Logf(1, "DependencyMutate prog : \n%s", data)
-	//proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
 	write_address, uncover_address := false, false
 	for iu, u := range p.Uncover {
 		p.UncoverIdx = iu
@@ -255,7 +255,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 		log.Logf(1, "uncover address : %x", u.UncoveredAddress)
 		log.Logf(1, "idx : %x", u.Idx)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("uncover address : %x", u.UncoveredAddress))
-		//proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
 		for _, ra := range u.RelatedAddress {
 			write_address = false
 			log.Logf(1, "related address : %x", ra.RelatedAddress)
@@ -276,7 +276,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					}
 					data := p0.Serialize()
 					log.Logf(1, "p0 program : \n%s", data)
-					//proc.fuzzer.dManager.SendLog(fmt.Sprintf("p0 program : \n%s", data))
+					proc.fuzzer.dManager.SendLog(fmt.Sprintf("p0 program : \n%s", data))
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
 					for _, c := range info.Calls {
@@ -306,7 +306,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						p0.InsertCall(c0c, u.Idx, programLength)
 						data := p0.Serialize()
 						log.Logf(1, "RelatedCalls p0 program : \n%s", data)
-						//proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0 program : \n%s", data))
+						proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0 program : \n%s", data))
 						for i := 0; i < 1000; i++ {
 							p0.MutateIoctl3Arg(proc.rnd, int(u.Idx)+size-1, ct)
 							data := p0.Serialize()
@@ -318,7 +318,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 							}
 							data1 := p0c.Serialize()
 							log.Logf(1, "RelatedCalls p0c program mutate repeat: \n%s", data1)
-							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0c program mutate repeat: \n%s", data1))
+							proc.fuzzer.dManager.SendLog(fmt.Sprintf("RelatedCalls p0c program mutate repeat: \n%s", data1))
 
 							info := proc.execute(proc.execOptsCover, p0c, ProgNormal, StatDependency)
 							var inputCover cover.Cover
