@@ -95,6 +95,8 @@ namespace sta {
         INST_TRAIT_MAP traitMap;
         TAG_MOD_MAP_TY tagModMap;
         TAG_INFO_TY tagInfo;
+        TAG_INFO_TY tagInfo_global;
+        TAG_INFO_TY tagInfo_local;
         CALLEE_MAP_TY calleeMap;
 
         //The mapping from one BB to all its successors (recursively).

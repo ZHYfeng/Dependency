@@ -27,6 +27,14 @@ namespace sta {
             this->traitMap = this->j_traitMap.get<INST_TRAIT_MAP>();
             this->tagModMap = this->j_tagModMap.get<TAG_MOD_MAP_TY>();
             this->tagInfo = this->j_tagInfo.get<TAG_INFO_TY>();
+            //Sort the tag info into two separate maps" global and local (e.g. user provided arg)
+            for (auto& x : this->tagInfo) {
+                if (x.second.find("is_global") != x.second.end() && x.second["is_global"] == "false") {
+                    this->tagInfo_local[x.first] = x.second;
+                }else {
+                    this->tagInfo_global[x.first] = x.second;
+                }
+            }
             this->calleeMap = this->j_calleeMap.get<CALLEE_MAP_TY>();
             return 0;
         } catch (...) {
@@ -212,6 +220,10 @@ namespace sta {
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
+                //Only consider the mod insts for global taint source.
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    continue;
+                }
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
                 }
@@ -254,6 +266,10 @@ namespace sta {
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
+                //Only consider the mod insts for global taint source.
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    continue;
+                }
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
                 }

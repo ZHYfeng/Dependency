@@ -40,8 +40,8 @@ typedef std::map<std::string,std::map<std::string,std::map<std::string,std::map<
 //tag id -> file path -> func -> BB -> inst -> MOD_INF of this mod inst
 typedef std::map<ID_TY,MOD_IR_TY> TAG_MOD_MAP_TY;
 
-//tag id -> info (currently the type) of this tag
-typedef std::map<ID_TY,std::string> TAG_INFO_TY;
+//tag id -> info (type, field, is_global, etc) of this tag
+typedef std::map<ID_TY,std::map<std::string,std::string>> TAG_INFO_TY;
 
 //pattern name -> numeric value (e.g. ADD -> 1, LT -> 0)
 typedef std::map<std::string,int64_t> TRAIT;
