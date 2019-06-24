@@ -23,6 +23,7 @@ namespace dra {
         state = CoverKind::untest;
         COVNum = 0;
         this->lastInput = nullptr;
+        this->arrive[this] = true;
     }
 
     DBasicBlock::~DBasicBlock() = default;
@@ -244,6 +245,23 @@ namespace dra {
             std::cout << "lastInput :" << lastInput->sig << std::endl;
         }
         std::cout << "--------------------------------------------" << std::endl;
+
+    }
+
+    bool DBasicBlock::set_arrive(dra::DBasicBlock *db) {
+        bool res = false;
+        for (auto bb : db->arrive) {
+            if (this->arrive.find(bb.first) != this->arrive.end()) {
+
+            } else {
+                res = true;
+                this->arrive[bb.first] = true;
+            }
+        }
+        return res;
+    }
+
+    void DBasicBlock::set_critical_condition() {
 
     }
 

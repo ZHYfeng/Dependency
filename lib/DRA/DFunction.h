@@ -73,6 +73,12 @@ namespace dra {
 
         void compute_arrive();
 
+        void get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb);
+
+        void set_predsuccessor(DBasicBlock * db);
+
+        void set_critical_condition();
+
     public:
         bool Objudump;
         bool AsmSourceCode;

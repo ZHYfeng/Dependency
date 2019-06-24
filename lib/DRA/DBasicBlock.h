@@ -63,6 +63,10 @@ namespace dra {
 
         void dump();
 
+        bool set_arrive(dra::DBasicBlock *db);
+
+        void set_critical_condition();
+
     public:
         bool IR;
         bool AsmSourceCode;
