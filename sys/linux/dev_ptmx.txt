@@ -10,9 +10,10 @@ include <uapi/linux/serial.h>
 include <uapi/linux/termios.h>
 
 resource fd_tty[fd]
+resource fd_ttty[fd]
 
-openat$ptmx(fd const[AT_FDCWD], file ptr[in, string["/dev/ptmx"]], flags flags[open_flags], mode const[0]) fd_tty
-syz_open_pts(fd fd_tty, flags flags[open_flags]) fd_tty
+openat$ptmx(fd const[AT_FDCWD], file ptr[in, string["/dev/ptmx"]], flags flags[open_flags], mode const[0]) fd_ttty
+syz_open_pts(fd fd_ttty, flags flags[open_flags]) fd_tty
 ioctl$TCGETS(fd fd_tty, cmd const[TCGETS], arg ptr[out, termios])
 ioctl$TCSETS(fd fd_tty, cmd const[TCSETS], arg ptr[in, termios])
 ioctl$TCSETSW(fd fd_tty, cmd const[TCSETSW], arg ptr[in, termios])
