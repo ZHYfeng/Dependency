@@ -819,4 +819,35 @@ namespace sta {
         return matrix[n][m];
     }
 
+    //the absolute return value is the #(arg taint tags), if the value is positive, then the "br" only has arg taints,
+    //if negative, there also exists global variable taints.
+    int StaticAnalysisResult::getArgTaintStatus(llvm::BasicBlock *B) {
+        if (!B) {
+            return 0;
+        }
+        BR_INF *p_taint_inf = this->QueryBranchTaint(B);
+        if (!p_taint_inf) {
+            return 0;
+        }
+        bool has_global_taint = false;
+        std::set<ID_TY> uniqArgTag;
+        for (auto &x : *p_taint_inf) {
+            auto &actx_id = x.first;
+            //trait_id = std::get<0>(x.second);
+            auto &tag_ids = std::get<1>(x.second);
+            for (ID_TY tid : tag_ids) {
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    uniqArgTag.insert(tid);
+                }else if (this->tagInfo_global.find(tid) != this->tagInfo_global.end()) {
+                    has_global_taint = true;
+                }
+            }
+        }
+        int n = uniqArgTag.size();
+        if (has_global_taint) {
+            n = 0 - n;
+        }
+        return n;
+    }
+
 } /* namespace sta */

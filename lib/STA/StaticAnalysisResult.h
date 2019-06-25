@@ -61,6 +61,11 @@ namespace sta {
 
         MODS *GetAllGlobalWriteBBs(llvm::BasicBlock *B, unsigned int branch);
 
+        //Whether a "br" in the given BB is tainted by the user provided "arg"?
+        //the absolute return value is the #(arg taint tags), if the value is positive, then the "br" only has arg taints,
+        //if negative, there also exists global variable taints.
+        int getArgTaintStatus(llvm::BasicBlock *B);
+
         std::string &getBBStrID(llvm::BasicBlock *B);
 
         std::string &getInstStrID(llvm::Instruction* I);
