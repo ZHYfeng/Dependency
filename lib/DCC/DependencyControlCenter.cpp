@@ -13,6 +13,7 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include "../DRA/DModule.h"
 #include "../DRA/DFunction.h"
+#include "../RPC/DependencyRPC.pb.h"
 
 namespace dra {
 
