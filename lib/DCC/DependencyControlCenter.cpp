@@ -141,8 +141,13 @@ namespace dra {
                                         for (auto path : *ctx) {
                                             path_num++;
                                             std::cout << "call chain " << path_num << ": \n";
-                                            for(auto inst : path){
-                                                inst->dump();
+                                            for (auto inst : path) {
+                                                if (inst != nullptr) {
+                                                    inst->dump();
+                                                } else {
+                                                    std::cerr << "nullptr in ctx" << std::endl;
+                                                }
+
                                             }
                                         }
 
