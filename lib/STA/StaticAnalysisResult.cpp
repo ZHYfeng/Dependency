@@ -20,13 +20,22 @@ namespace sta {
         try {
             std::ifstream infile;
             infile.open(staticRes);
-            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap >> this->j_tagInfo >> this->j_calleeMap;
+            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap >> this->j_tagConstMap >> this->j_tagInfo >> this->j_calleeMap;
             infile.close();
             this->taintedBrs = this->j_taintedBrs.get<TAINTED_BR_TY>();
             this->ctxMap = this->j_ctxMap.get<CTX_MAP_TY>();
             this->traitMap = this->j_traitMap.get<INST_TRAIT_MAP>();
             this->tagModMap = this->j_tagModMap.get<TAG_MOD_MAP_TY>();
+            this->tagConstMap = this->j_tagConstMap.get<TAG_CONST_MAP_TY>();
             this->tagInfo = this->j_tagInfo.get<TAG_INFO_TY>();
+            //Sort the tag info into two separate maps" global and local (e.g. user provided arg)
+            for (auto& x : this->tagInfo) {
+                if (x.second.find("is_global") != x.second.end() && x.second["is_global"] == "false") {
+                    this->tagInfo_local[x.first] = x.second;
+                }else {
+                    this->tagInfo_global[x.first] = x.second;
+                }
+            }
             this->calleeMap = this->j_calleeMap.get<CALLEE_MAP_TY>();
             return 0;
         } catch (...) {
@@ -212,6 +221,10 @@ namespace sta {
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
+                //Only consider the mod insts for global taint source.
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    continue;
+                }
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
                 }
@@ -254,6 +267,10 @@ namespace sta {
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
+                //Only consider the mod insts for global taint source.
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    continue;
+                }
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
                 }
@@ -801,6 +818,37 @@ namespace sta {
 
         // Step 7
         return matrix[n][m];
+    }
+
+    //the absolute return value is the #(arg taint tags), if the value is positive, then the "br" only has arg taints,
+    //if negative, there also exists global variable taints.
+    int StaticAnalysisResult::getArgTaintStatus(llvm::BasicBlock *B) {
+        if (!B) {
+            return 0;
+        }
+        BR_INF *p_taint_inf = this->QueryBranchTaint(B);
+        if (!p_taint_inf) {
+            return 0;
+        }
+        bool has_global_taint = false;
+        std::set<ID_TY> uniqArgTag;
+        for (auto &x : *p_taint_inf) {
+            auto &actx_id = x.first;
+            //trait_id = std::get<0>(x.second);
+            auto &tag_ids = std::get<1>(x.second);
+            for (ID_TY tid : tag_ids) {
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    uniqArgTag.insert(tid);
+                }else if (this->tagInfo_global.find(tid) != this->tagInfo_global.end()) {
+                    has_global_taint = true;
+                }
+            }
+        }
+        int n = uniqArgTag.size();
+        if (has_global_taint) {
+            n = 0 - n;
+        }
+        return n;
     }
 
 } /* namespace sta */

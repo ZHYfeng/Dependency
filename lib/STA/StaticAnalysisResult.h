@@ -61,6 +61,11 @@ namespace sta {
 
         MODS *GetAllGlobalWriteBBs(llvm::BasicBlock *B, unsigned int branch);
 
+        //Whether a "br" in the given BB is tainted by the user provided "arg"?
+        //the absolute return value is the #(arg taint tags), if the value is positive, then the "br" only has arg taints,
+        //if negative, there also exists global variable taints.
+        int getArgTaintStatus(llvm::BasicBlock *B);
+
         std::string &getBBStrID(llvm::BasicBlock *B);
 
         std::string &getInstStrID(llvm::Instruction* I);
@@ -88,13 +93,16 @@ namespace sta {
         bool getCtx(ID_TY, std::vector<llvm::Instruction*>*);
 
     private:
-        nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagInfo, j_calleeMap;
+        nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagConstMap, j_tagInfo, j_calleeMap;
 
         TAINTED_BR_TY taintedBrs;
         CTX_MAP_TY ctxMap;
         INST_TRAIT_MAP traitMap;
         TAG_MOD_MAP_TY tagModMap;
+        TAG_CONST_MAP_TY tagConstMap;
         TAG_INFO_TY tagInfo;
+        TAG_INFO_TY tagInfo_global;
+        TAG_INFO_TY tagInfo_local;
         CALLEE_MAP_TY calleeMap;
 
         //The mapping from one BB to all its successors (recursively).
