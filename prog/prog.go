@@ -27,6 +27,7 @@ type RelatedAddresses struct {
 
 type Uncover struct {
 	UncoveredAddress uint32
+	ConditionAddress uint32
 	Idx              uint32
 	RelatedAddress   []*RelatedAddresses
 }

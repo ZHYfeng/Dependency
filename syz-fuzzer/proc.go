@@ -248,7 +248,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 	data := p.Serialize()
 	log.Logf(1, "DependencyMutate prog : \n%s", data)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
-	write_address, uncover_address := false, false
+	write_address, condition_address, uncover_address := false, false, false
 	for iu, u := range p.Uncover {
 		p.UncoverIdx = iu
 		uncover_address = false
@@ -283,11 +283,14 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						inputCover.Merge(c.Cover)
 						//log.Logf(1, "Cover : %x", c.Cover)
 					}
-					ok1, ok2 := proc.checkCoverage(p, inputCover)
+					ok1, ok2, ok3 := proc.checkCoverage(p, inputCover)
 					if ok1 {
 						write_address = true
 					}
 					if ok2 {
+						condition_address = true
+					}
+					if ok3 {
 						uncover_address = true
 						goto cover
 					}
@@ -326,11 +329,14 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 								inputCover.Merge(c.Cover)
 								//log.Logf(1, "Cover : %x", c.Cover)
 							}
-							ok1, ok2 := proc.checkCoverage(p, inputCover)
+							ok1, ok2, ok3 := proc.checkCoverage(p, inputCover)
 							if ok1 {
 								write_address = true
 							}
 							if ok2 {
+								condition_address = true
+							}
+							if ok3 {
 								uncover_address = true
 								goto cover
 							}
@@ -347,6 +353,11 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 			} else {
 				proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
 			}
+			if condition_address {
+				proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.WriteAddress))
+			} else {
+				proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.WriteAddress))
+			}
 		}
 	cover:
 		if uncover_address {
@@ -360,12 +371,19 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 	return
 }
 
-func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res1 bool, res2 bool) {
+func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res1 bool, res2 bool, res3 bool) {
 	res1 = false
 	res2 = false
+	res3 = false
 
 	if proc.checkWriteAddress(p, inputCover) {
 		res1 = true
+		//proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
+	} else {
+	}
+
+	if proc.checkConditionAddress(p, inputCover) {
+		res2 = true
 		//proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
 	} else {
 	}
@@ -381,7 +399,7 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res1 bool
 		} else {
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new UncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
 		}
-		res2 = true
+		res3 = true
 	} else {
 	}
 	return
@@ -404,6 +422,16 @@ func (proc *Proc) checkWriteAddress(p *prog.Prog, inputCover cover.Cover) (res b
 			res = true
 			return
 		}
+	}
+	return
+}
+
+func (proc *Proc) checkConditionAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
+	res = false
+	var condition = p.Uncover[p.UncoverIdx].ConditionAddress
+	if _, ok := inputCover[condition]; ok {
+		res = true
+		return
 	}
 	return
 }
