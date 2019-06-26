@@ -75,7 +75,7 @@ namespace dra {
 
         void get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb);
 
-        void set_predsuccessor(DBasicBlock * db);
+        void set_pred_successor(DBasicBlock *db);
 
         void set_critical_condition();
 

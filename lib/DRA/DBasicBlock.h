@@ -67,6 +67,8 @@ namespace dra {
 
         void set_critical_condition();
 
+        void add_critical_condition(dra::DBasicBlock *db, uint64_t condition);
+
     public:
         bool IR;
         bool AsmSourceCode;
@@ -75,8 +77,8 @@ namespace dra {
         DFunction *parent;
         CoverKind state;
         std::string name;
-        unsigned int COVNum;
-        unsigned long long int address;
+        uint64_t COVNum;
+        uint64_t address;
 
         std::vector<DAInstruction *> InstASM;
         std::vector<DLInstruction *> InstIR;
@@ -84,9 +86,9 @@ namespace dra {
         std::set<DInput *> input;
         DInput *lastInput;
 
-        std::map<dra::DBasicBlock *, bool> arrive;
+        std::map<dra::DBasicBlock *, uint64_t > arrive;
+        std::map<dra::DBasicBlock *, uint64_t > critical_condition;
 
-        DBasicBlock *realPred;
         std::set<llvm::BasicBlock *> useLessPred;
     };
 

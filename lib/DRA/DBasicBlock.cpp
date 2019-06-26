@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "DFunction.h"
+#include "DataManagement.h"
 
 namespace dra {
 
@@ -23,7 +24,6 @@ namespace dra {
         state = CoverKind::untest;
         COVNum = 0;
         this->lastInput = nullptr;
-        this->arrive[this] = true;
     }
 
     DBasicBlock::~DBasicBlock() = default;
@@ -248,21 +248,58 @@ namespace dra {
 
     }
 
+    // not work if there is a switch with more than 64 cases.
     bool DBasicBlock::set_arrive(dra::DBasicBlock *db) {
         bool res = false;
+        uint64_t Num;
+        auto *inst = dra::getFinalBB(this->basicBlock)->getTerminator();
+        for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+            if (inst->getSuccessor(i) == db->basicBlock) {
+                Num = i;
+                if (this->arrive.find(db) != this->arrive.end()) {
+                    if ((this->arrive[db] & 1 << i) > 0) {
+
+                    } else {
+                        this->arrive[db] |= 1 << i;
+                        res = true;
+                    }
+                } else {
+                    this->arrive[db] = 1 << i;
+                    res = true;
+                }
+            }
+        }
+
         for (auto bb : db->arrive) {
             if (this->arrive.find(bb.first) != this->arrive.end()) {
+                if ((this->arrive[bb.first] & 1 << Num) > 0) {
 
+                } else {
+                    this->arrive[bb.first] |= 1 << Num;
+                    res = true;
+                }
             } else {
+                this->arrive[bb.first] = 1 << Num;
                 res = true;
-                this->arrive[bb.first] = true;
             }
         }
         return res;
     }
 
     void DBasicBlock::set_critical_condition() {
+        auto *inst = dra::getFinalBB(this->basicBlock)->getTerminator();
+        auto successor_num = inst->getNumSuccessors();
+        for (auto bb : this->arrive) {
+            if (bb.second == ((1 << successor_num) - 1)) {
 
+            } else {
+                bb.first->add_critical_condition(this, bb.second);
+            }
+        }
+    }
+
+    void DBasicBlock::add_critical_condition(dra::DBasicBlock *db, uint64_t condition) {
+        this->critical_condition[db] = condition;
     }
 
 } /* namespace dra */

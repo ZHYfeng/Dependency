@@ -14,6 +14,30 @@
 
 namespace dra {
 
+    llvm::BasicBlock *getRealBB(llvm::BasicBlock *b) {
+        llvm::BasicBlock *rb;
+        if (b->hasName()) {
+            rb = b;
+        } else {
+            for (auto *Pred : llvm::predecessors(b)) {
+                rb = getRealBB(Pred);
+            }
+        }
+        return rb;
+    }
+
+    llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b) {
+        auto *inst = b->getTerminator();
+        for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+            std::string name = inst->getSuccessor(i)->getName().str();
+            if (inst->getSuccessor(i)->hasName()) {
+            } else {
+                return getFinalBB(inst->getSuccessor(i));
+            }
+        }
+        return b;
+    }
+
     DataManagement::DataManagement() {
         vmOffsets = 0;
         Modules = new dra::DModule();
@@ -256,28 +280,6 @@ namespace dra {
         }
     }
 
-    llvm::BasicBlock *DataManagement::getRealBB(llvm::BasicBlock *b) {
-        if (b->hasName()) {
-            return b;
-        } else {
-            for (auto *Pred : llvm::predecessors(b)) {
-                return getRealBB(Pred);
-            }
-        }
-    }
-
-    llvm::BasicBlock *DataManagement::getFinalBB(llvm::BasicBlock *b) {
-        auto *inst = b->getTerminator();
-        for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
-            std::string name = inst->getSuccessor(i)->getName().str();
-            if (inst->getSuccessor(i)->hasName()) {
-            } else {
-                return getFinalBB(inst->getSuccessor(i));
-            }
-        }
-        return b;
-    }
-
     void DataManagement::dump_cover() {
         std::ofstream out_file("cover_uncover.txt",
                                std::ios_base::out | std::ios_base::app);
@@ -309,7 +311,8 @@ namespace dra {
                     }
                     out_file << "uc.second->condition_address : " << std::hex << uc.second->condition_address << "\n";
                     out_file << "uc.second->address : " << std::hex << uc.second->address << "\n";
-                    out_file << "getSyzkallerAddress : " << std::hex << this->getSyzkallerAddress(uc.second->address) << "\n";
+                    out_file << "getSyzkallerAddress : " << std::hex << this->getSyzkallerAddress(uc.second->address)
+                             << "\n";
                 }
             }
         }

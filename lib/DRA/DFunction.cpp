@@ -14,6 +14,7 @@
 #include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Value.h>
 #include "llvm/IR/Instructions.h"
+#include "DataManagement.h"
 #include <set>
 #include <utility>
 
@@ -65,6 +66,7 @@ namespace dra {
             }
             BasicBlock[Name]->InitIRBasicBlock(&it);
         }
+        compute_arrive();
         //	inferUseLessPred();
         //	inferUseLessPred(&f->getEntryBlock());
     }
@@ -189,9 +191,8 @@ namespace dra {
         get_terminator(terminator_bb);
 
         for (auto db : terminator_bb) {
-            set_predsuccessor(db);
+            set_pred_successor(db);
         }
-
         set_critical_condition();
     }
 
@@ -206,14 +207,14 @@ namespace dra {
         return;
     }
 
-    void DFunction::set_predsuccessor(DBasicBlock *db) {
+    void DFunction::set_pred_successor(DBasicBlock *db) {
         for (auto *pred : llvm::predecessors(db->basicBlock)) {
-            std::string basicblock_name = pred->getName().str();
+            std::string basicblock_name  = dra::getRealBB(pred)->getName().str();
             if (this->BasicBlock.find(basicblock_name) != this->BasicBlock.end()) {
                 auto pred_db = this->BasicBlock[basicblock_name];
                 bool new_basicblock = pred_db->set_arrive(db);
                 if (new_basicblock) {
-                    set_predsuccessor(pred_db);
+                    set_pred_successor(pred_db);
                 }
             }
         }

@@ -81,7 +81,7 @@ namespace dra {
                                 p->dump();
 
                                 auto *b = p->basicBlock;
-                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), u->successor_idx);
+                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(dra::getFinalBB(b), u->successor_idx);
                                 if (allBasicblock == nullptr) {
                                     if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
@@ -114,7 +114,7 @@ namespace dra {
                                     uncoveredAddress->set_condition_address(condition_address);
 
                                     for (auto &x : *allBasicblock) {
-                                        llvm::BasicBlock *bb = DM.getRealBB(x->B);
+                                        llvm::BasicBlock *bb = dra::getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
                                         std::set<uint64_t> *cmds = x->getIoctlCmdSet();
@@ -131,6 +131,7 @@ namespace dra {
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
+
 
                                         related_address->set_address(writeAddress);
                                         related_address->set_repeat(x->repeat);

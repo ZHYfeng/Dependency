@@ -40,6 +40,10 @@ namespace dra {
         bool covered_by_dependency;
     };
 
+    llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
+
+    llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
+
     class DataManagement {
     public:
         DataManagement();
@@ -63,10 +67,6 @@ namespace dra {
         unsigned long long int getRealAddress(unsigned long long int address);
 
         unsigned long long int getSyzkallerAddress(unsigned long long int address);
-
-        llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
-
-        llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
 
         bool isDriver(unsigned long long int address);
 
