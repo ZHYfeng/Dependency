@@ -20,12 +20,13 @@ namespace sta {
         try {
             std::ifstream infile;
             infile.open(staticRes);
-            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap >> this->j_tagInfo >> this->j_calleeMap;
+            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap >> this->j_tagConstMap >> this->j_tagInfo >> this->j_calleeMap;
             infile.close();
             this->taintedBrs = this->j_taintedBrs.get<TAINTED_BR_TY>();
             this->ctxMap = this->j_ctxMap.get<CTX_MAP_TY>();
             this->traitMap = this->j_traitMap.get<INST_TRAIT_MAP>();
             this->tagModMap = this->j_tagModMap.get<TAG_MOD_MAP_TY>();
+            this->tagConstMap = this->j_tagConstMap.get<TAG_CONST_MAP_TY>();
             this->tagInfo = this->j_tagInfo.get<TAG_INFO_TY>();
             //Sort the tag info into two separate maps" global and local (e.g. user provided arg)
             for (auto& x : this->tagInfo) {

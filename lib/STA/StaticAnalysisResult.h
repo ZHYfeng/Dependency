@@ -93,12 +93,13 @@ namespace sta {
         bool getCtx(ID_TY, std::vector<llvm::Instruction*>*);
 
     private:
-        nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagInfo, j_calleeMap;
+        nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagConstMap, j_tagInfo, j_calleeMap;
 
         TAINTED_BR_TY taintedBrs;
         CTX_MAP_TY ctxMap;
         INST_TRAIT_MAP traitMap;
         TAG_MOD_MAP_TY tagModMap;
+        TAG_CONST_MAP_TY tagConstMap;
         TAG_INFO_TY tagInfo;
         TAG_INFO_TY tagInfo_global;
         TAG_INFO_TY tagInfo_local;

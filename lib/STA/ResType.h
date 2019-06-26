@@ -40,6 +40,17 @@ typedef std::map<std::string,std::map<std::string,std::map<std::string,std::map<
 //tag id -> file path -> func -> BB -> inst -> MOD_INF of this mod inst
 typedef std::map<ID_TY,MOD_IR_TY> TAG_MOD_MAP_TY;
 
+//The constants set.
+typedef std::set<int64_t> CONST_INF;
+
+//file path -> func -> BB -> inst -> CONST_INF
+//The 4-tuple represents a comparison inst, like "cmp".
+typedef std::map<std::string,std::map<std::string,std::map<std::string,std::map<std::string,CONST_INF>>>> IR_CONST_MAP;
+
+//The map recording the constants used in comparison with variables tainted by a certain tag.
+//tag id -> IR_CONST_MAP
+typedef std::map<ID_TY,IR_CONST_MAP> TAG_CONST_MAP_TY;
+
 //tag id -> info (type, field, is_global, etc) of this tag
 typedef std::map<ID_TY,std::map<std::string,std::string>> TAG_INFO_TY;
 
