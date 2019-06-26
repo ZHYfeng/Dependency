@@ -537,33 +537,6 @@ namespace sta {
     StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
 
         auto function = this->dm->Modules->Function;
-        if (function.find(path) != function.end()) {
-            auto file = function[path];
-            if (file.find(func) != file.end()) {
-                auto f = file[func];
-                if (f->BasicBlock.find(bb) != f->BasicBlock.end()) {
-                    auto bbb = f->BasicBlock[bb]->basicBlock;
-                    for (llvm::Instruction &curInst : *bbb) {
-                        if (this->getInstStrID(&curInst) == inst) {
-                            return &curInst;
-                        }
-                    }//Inst
-                } else {
-                    for (auto &it : *f->function) {
-                        auto name = getBBStrID(&it);
-                        if (name == bb) {
-                            for (llvm::Instruction &curInst : it) {
-                                if (this->getInstStrID(&curInst) == inst) {
-                                    return &curInst;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return nullptr;
-
         llvm::Instruction *iii = nullptr;
         if (function.find(path) != function.end()) {
             auto file = function[path];
