@@ -231,7 +231,11 @@ namespace sta {
             }
             for (auto& x : this->mod_inf) {
                 std::vector<llvm::Instruction*> vec;
-                this->sta->getCtx(x.first,&vec);
+                if(this->sta->getCtx(x.first,&vec)){
+
+                } else {
+
+                }
                 this->ctxs.push_back(vec);
             }
             return &(this->ctxs);

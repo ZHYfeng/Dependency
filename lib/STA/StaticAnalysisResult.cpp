@@ -20,7 +20,8 @@ namespace sta {
         try {
             std::ifstream infile;
             infile.open(staticRes);
-            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap >> this->j_tagConstMap >> this->j_tagInfo >> this->j_calleeMap;
+            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap
+                   >> this->j_tagConstMap >> this->j_tagInfo >> this->j_calleeMap;
             infile.close();
             this->taintedBrs = this->j_taintedBrs.get<TAINTED_BR_TY>();
             this->ctxMap = this->j_ctxMap.get<CTX_MAP_TY>();
@@ -29,10 +30,10 @@ namespace sta {
             this->tagConstMap = this->j_tagConstMap.get<TAG_CONST_MAP_TY>();
             this->tagInfo = this->j_tagInfo.get<TAG_INFO_TY>();
             //Sort the tag info into two separate maps" global and local (e.g. user provided arg)
-            for (auto& x : this->tagInfo) {
+            for (auto &x : this->tagInfo) {
                 if (x.second.find("is_global") != x.second.end() && x.second["is_global"] == "false") {
                     this->tagInfo_local[x.first] = x.second;
-                }else {
+                } else {
                     this->tagInfo_global[x.first] = x.second;
                 }
             }
@@ -68,7 +69,8 @@ namespace sta {
         return "";
     }
 
-    llvm::DILocation *getRecursiveDILoc(llvm::Instruction *currInst, std::string &funcFileName, std::set<llvm::BasicBlock *> &visitedBBs) {
+    llvm::DILocation *getRecursiveDILoc(llvm::Instruction *currInst, std::string &funcFileName,
+                                        std::set<llvm::BasicBlock *> &visitedBBs) {
         llvm::DILocation *currIL = currInst->getDebugLoc().get();
         if (funcFileName.length() == 0) {
             return currIL;
@@ -372,7 +374,8 @@ namespace sta {
         } else {
             return;
         }
-        std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(), std::inserter(succ_uniq, succ_uniq.end()));
+        std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(),
+                            std::inserter(succ_uniq, succ_uniq.end()));
         llvm::DominatorTree *pdom = this->get_dom_tree(B->getParent());
         std::remove_if(pmods->begin(), pmods->end(),
                        [succ_uniq, pdom, B](Mod *pmod) {
@@ -384,7 +387,8 @@ namespace sta {
                                return true;
                            }
                            //Case 1: we can for sure reach the mod inst if we can reach the "br" and the mod inst is not accumulative (i.e. i++) 
-                           if (pmod->B->getParent() == B->getParent() && pmod->is_trait_fixed() && pdom->dominates(pmod->B, B)) {
+                           if (pmod->B->getParent() == B->getParent() && pmod->is_trait_fixed() &&
+                               pdom->dominates(pmod->B, B)) {
                                return true;
                            }
                            return false;
@@ -529,7 +533,8 @@ namespace sta {
         return mod_bbs;
     }
 
-    llvm::Instruction *StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
+    llvm::Instruction *
+    StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
 
         auto function = this->dm->Modules->Function;
         if (function.find(path) != function.end()) {
@@ -558,6 +563,41 @@ namespace sta {
             }
         }
         return nullptr;
+
+        llvm::Instruction *iii = nullptr;
+        if (function.find(path) != function.end()) {
+            auto file = function[path];
+            if (file.find(func) != file.end()) {
+                auto f = file[func];
+                if (f->BasicBlock.find(bb) != f->BasicBlock.end()) {
+                    auto bbb = f->BasicBlock[bb]->basicBlock;
+                    for (llvm::Instruction &curInst : *bbb) {
+                        if (this->getInstStrID(&curInst) == inst) {
+                            iii = &curInst;
+                            return iii;
+                        }
+                    }//Inst
+
+                } else {
+                    for (auto &it : *f->function) {
+                        auto name = getBBStrID(&it);
+                        if (name == bb) {
+                            for (llvm::Instruction &curInst : it) {
+                                if (this->getInstStrID(&curInst) == inst) {
+                                    iii = &curInst;
+                                    return iii;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                std::cout << "not find function" << std::endl;
+            }
+        } else {
+            std::cout << "not find file" << std::endl;
+        }
+        return iii;
     }
 
     llvm::BasicBlock *StaticAnalysisResult::getBBFromStr(std::string path, std::string func, std::string bb) {
@@ -738,13 +778,13 @@ namespace sta {
         return nullptr;
     }
 
-    bool StaticAnalysisResult::getCtx(ID_TY id, std::vector<llvm::Instruction*> *pctx) {
+    bool StaticAnalysisResult::getCtx(ID_TY id, std::vector<llvm::Instruction *> *pctx) {
         if (this->ctxMap.find(id) == this->ctxMap.end() || !pctx) {
             return false;
         }
         pctx->clear();
-        for (auto& loc : this->ctxMap[id]) {
-            llvm::Instruction *inst = this->getInstFromStr(loc[0],loc[1],loc[2],loc[3]);
+        for (auto &loc : this->ctxMap[id]) {
+            llvm::Instruction *inst = this->getInstFromStr(loc[0], loc[1], loc[2], loc[3]);
             pctx->push_back(inst);
         }
         return true;
@@ -839,7 +879,7 @@ namespace sta {
             for (ID_TY tid : tag_ids) {
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
                     uniqArgTag.insert(tid);
-                }else if (this->tagInfo_global.find(tid) != this->tagInfo_global.end()) {
+                } else if (this->tagInfo_global.find(tid) != this->tagInfo_global.end()) {
                     has_global_taint = true;
                 }
             }
