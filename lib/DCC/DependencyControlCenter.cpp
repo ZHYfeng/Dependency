@@ -27,7 +27,8 @@ namespace dra {
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
-    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes) {
+    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename,
+                                       const std::string &staticRes) {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         this->current_time = std::time(NULL);
@@ -38,7 +39,8 @@ namespace dra {
         this->current_time = std::time(NULL);
         std::cout << std::ctime(&this->current_time) << "*time : initStaticRes" << std::endl;
 
-        this->client = new dra::DependencyRPCClient(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
+        this->client = new dra::DependencyRPCClient(
+                grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
         this->current_time = std::time(NULL);
@@ -69,7 +71,8 @@ namespace dra {
                             unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
 
                             this->current_time = std::time(NULL);
-                            std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << u->address << "\n";
+                            std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << u->address
+                                      << "\n";
                             std::cout << "condition address : " << std::hex << u->condition_address << "\n";
                             std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
                             std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
@@ -80,9 +83,10 @@ namespace dra {
                                 p->dump();
 
                                 auto *b = p->basicBlock;
-                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b), u->successor_idx);
+                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(DM.getFinalBB(b),
+                                                                                          u->successor_idx);
                                 if (allBasicblock == nullptr) {
-                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                    if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
                                     }
                                     // no taint or out side
@@ -90,7 +94,7 @@ namespace dra {
                                     p->dump();
 
                                 } else if (allBasicblock->size() == 0) {
-                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                    if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
                                     }
                                     // unrelated to gv
@@ -98,7 +102,7 @@ namespace dra {
                                     p->dump();
 
                                 } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
-                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                    if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
                                         this->DM.uncover[u->address]->related_to_gv = true;
                                     }
@@ -125,11 +129,22 @@ namespace dra {
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_related_address();
 
-                                        std::cout << std::ctime(&current_time) << "related write basicblock : " << std::endl;
-                                        std::cout << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress << "\n";
+                                        std::cout << std::ctime(&current_time) << "related write basicblock : "
+                                                  << std::endl;
+                                        std::cout << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress
+                                                  << "\n";
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
+                                        auto ctx = x->get_ctxs();
+                                        uint64_t path_num = 0;
+                                        for (auto path : *ctx) {
+                                            path_num++;
+                                            std::cout << "call chain " << path_num << ": \n";
+                                            for(auto inst : path){
+                                                inst->dump();
+                                            }
+                                        }
 
                                         related_address->set_address(writeAddress);
                                         related_address->set_repeat(x->repeat);
@@ -150,7 +165,8 @@ namespace dra {
                                     }
                                 }
                             } else {
-                                std::cerr << "can not find condition_address : " << std::hex << u->condition_address << std::endl;
+                                std::cerr << "can not find condition_address : " << std::hex << u->condition_address
+                                          << std::endl;
                             }
                         } else {
                         }
