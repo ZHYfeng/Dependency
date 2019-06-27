@@ -757,7 +757,7 @@ namespace sta {
         }
         pctx->clear();
         for (auto &loc : this->ctxMap[id]) {
-            llvm::Instruction *inst = this->getInstFromStr(loc[0], loc[1], loc[2], loc[3]);
+            llvm::Instruction *inst = this->getInstFromStr(loc[3], loc[2], loc[1], loc[0]);
             pctx->push_back(inst);
         }
         return true;
