@@ -568,7 +568,7 @@ namespace sta {
                 std::cout << "not find function" << std::endl;
             }
         } else {
-            std::cout << "not find file" << std::endl;
+            std::cout << "not find file : " << path << std::endl;
         }
         return iii;
     }
