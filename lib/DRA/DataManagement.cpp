@@ -325,6 +325,26 @@ namespace dra {
         out_file.close();
     }
 
+    void DataManagement::dump_ctxs(std::vector<std::vector<llvm::Instruction*>> *ctx) {
+            uint64_t path_num = 0;
+            for (auto path : *ctx) {
+                path_num++;
+                std::cout << "call chain " << path_num << ": \n";
+                for (auto inst : path) {
+                    if (inst != nullptr) {
+                        auto f = inst->getParent()->getParent();
+                        std::string Path = dra::DModule::getFileName(f);
+                        std::string FunctionName = dra::DModule::getFunctionName(f);
+                        DFunction *df = this->Modules->Function[Path][FunctionName];
+                        std::cout << df->Path << " : " << df->FunctionName << ": \n";
+                    } else {
+                        std::cerr << "nullptr in ctx" << std::endl;
+                    }
+
+                }
+            }
+    }
+
     uncover_info::uncover_info() : address(0),
                                    belong_to_Driver(false),
                                    related_to_gv(false),

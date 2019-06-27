@@ -76,6 +76,10 @@ namespace dra {
 
         void dump_uncover();
 
+        void dump_ctxs(std::vector<std::vector<llvm::Instruction*>> *ctx);
+
+
+
     public:
         dra::DModule *Modules;
         std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;

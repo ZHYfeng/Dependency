@@ -136,20 +136,7 @@ namespace dra {
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
-                                        auto ctx = x->get_ctxs();
-                                        uint64_t path_num = 0;
-                                        for (auto path : *ctx) {
-                                            path_num++;
-                                            std::cout << "call chain " << path_num << ": \n";
-                                            for (auto inst : path) {
-                                                if (inst != nullptr) {
-                                                    inst->dump();
-                                                } else {
-                                                    std::cerr << "nullptr in ctx" << std::endl;
-                                                }
-
-                                            }
-                                        }
+                                        this->DM.dump_ctxs(x->get_ctxs());
 
                                         related_address->set_address(writeAddress);
                                         related_address->set_repeat(x->repeat);
