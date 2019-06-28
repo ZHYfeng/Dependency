@@ -29,6 +29,7 @@ namespace sta {
 
 
     class Mod;
+    class FieldPtr;
     typedef std::vector<Mod*> MODS;
 
     class StaticAnalysisResult {
@@ -92,6 +93,10 @@ namespace sta {
 
         bool getCtx(ID_TY, std::vector<llvm::Instruction*>*);
 
+        std::map<ID_TY,CONST_INF> *getArgTaintInfo(llvm::BasicBlock *B);
+
+        std::vector<std::vector<FieldPtr*>*> *getTagType(ID_TY tag_id);
+
     private:
         nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagConstMap, j_tagInfo, j_calleeMap;
 
@@ -122,6 +127,10 @@ namespace sta {
         void tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, unsigned int branch);
 
         void filterMods(MODS *pmods, llvm::BasicBlock *B, unsigned int branch);
+
+        bool getAllTagConstants(ID_TY tag_id, CONST_INF *p_consts);
+
+        std::vector<FieldPtr*> *parseTypeStr(std::string tys);
     };
 
     //A BB/Inst that can modify a global state.
@@ -421,6 +430,31 @@ namespace sta {
         }
 
     };
+
+    //This class tries to uniquely locate a field in a struct (e.g. may be pointed to by ioctl "arg"),
+    //"ty" is the type string of the host struct (e.g. "struct_a"), "field" is the field number,
+    //"is_embed" indicates whether this field is an embedded struct in the host struct.
+    //By using multiple sorted "FieldPtr" class, we can locate an arbitrary field in a complex nested struct.
+    class FieldPtr {
+    public:
+        FieldPtr() {
+            this->field = 0;
+            this->is_embed = true;
+        }
+
+        FieldPtr(std::string& ty, long field, bool is_embed) {
+            this->ty = ty;
+            this->field = field;
+            this->is_embed = is_embed;
+        }
+
+        ~FieldPtr() {}
+
+        std::string ty;
+        long field;
+        bool is_embed;
+    };
+
 
 } /* namespace sta */
 

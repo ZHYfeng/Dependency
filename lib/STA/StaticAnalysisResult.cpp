@@ -864,4 +864,108 @@ namespace sta {
         return n;
     }
 
+    bool StaticAnalysisResult::getAllTagConstants(ID_TY tag_id, CONST_INF *p_consts) {
+        if (this->tagConstMap.find(tag_id) == this->tagConstMap.end() || !p_consts) {
+            return false;
+        }
+        for (auto& i0 : this->tagConstMap[tag_id]) {
+            //i0.first : file
+            for (auto& i1 : i0.second) {
+                //i1.first : func
+                for (auto& i2 : i1.second) {
+                    //i2.first : BB
+                    for (auto& i3 : i2.second) {
+                        //i3.first : inst
+                        p_consts->insert(i3.second.begin(),i3.second.end());
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    //parse the type str to get more easy-to-read info.
+    //type str, e.g.
+    //%struct.A = type {...}:3->%struct.B = type {...}:2.%struct.C = type {...}:5
+    std::vector<FieldPtr*> *StaticAnalysisResult::parseTypeStr(std::string tys) {
+        std::vector<FieldPtr*> *r = new std::vector<FieldPtr*>();
+        int prev = 0;
+        for (int i=0; i<tys.length(); ++i) {
+            if (tys[i] == ':') {
+                std::string obj_ty = tys.substr(prev,i-prev);
+                size_t j = 0;
+                long field = 0;
+                try{
+                    field = std::stoi(tys.substr(i+1),&j,10);
+                }catch(...){
+                    std::cout << "Exception in StaticAnalysisResult::parseTypeStr: " << tys << "\n";
+                    return r;
+                }
+                if (j <= 0) {
+                    std::cout << "No valid field number after :" << tys << "\n";
+                    return r;
+                }
+                i += (j+1);
+                bool is_embed = true;
+                if (i < tys.length()-1) {
+                    if (tys[i] == '-' && tys[i+1] == '>') {
+                        is_embed = false;
+                        prev = i+2;
+                    }else if (tys[i] != '.') {
+                        //Something goes wrong
+                        std::cout << "Invalid format :" << tys << "\n";
+                        return r;
+                    }else {
+                        prev = i+1;
+                    }
+                }
+                FieldPtr *fiptr = new FieldPtr(obj_ty,field,is_embed);
+                r->push_back(fiptr);
+            }
+        }
+        return r;
+    }
+
+    //Return the type of the tag variable, see comment
+    std::vector<std::vector<FieldPtr*>*> *StaticAnalysisResult::getTagType(ID_TY tag_id) {
+        if (this->tagInfo.find(tag_id) == this->tagInfo.end()) {
+            return nullptr;
+        }
+        std::vector<std::vector<FieldPtr*>*> *r = new std::vector<std::vector<FieldPtr*>*>();
+        for (auto& x : this->tagInfo[tag_id]) {
+            if (x.first.find("hs_") == 0) {
+                //Find a hierarchy string.
+                r->push_back(this->parseTypeStr(x.second));
+            }
+        }
+        return r;
+    }
+
+    //If the conditional jump in the passed-in BB is tainted by any user arg,
+    //return these args (e.g. a field in a user struct) and related constants we collected.
+    //NOTE: free the returned obj after using.
+    std::map<ID_TY,CONST_INF> *StaticAnalysisResult::getArgTaintInfo(llvm::BasicBlock *B) {
+        if (!B) {
+            return nullptr;
+        }
+        BR_INF *p_taint_inf = this->QueryBranchTaint(B);
+        if (!p_taint_inf) {
+            return nullptr;
+        }
+        std::map<ID_TY,CONST_INF> *pres = new std::map<ID_TY,CONST_INF>();
+        for (auto &x : *p_taint_inf) {
+            auto &actx_id = x.first;
+            //trait_id = std::get<0>(x.second);
+            auto &tag_ids = std::get<1>(x.second);
+            for (ID_TY tid : tag_ids) {
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    //Ok, find one arg that taints this BB.
+                    //Get its collected cmp constants.
+                    this->getAllTagConstants(tid,&((*pres)[tid]));
+                }
+            }
+        }
+        return pres;
+    }
+
 } /* namespace sta */
