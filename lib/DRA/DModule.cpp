@@ -50,7 +50,7 @@ namespace dra {
         DFunction *function;
         for (auto &it : *Module) {
             std::string Path = getFileName(&it);
-            if(Path != ""){
+            if (Path != "") {
                 std::string name = it.getName().str();
                 std::string FunctionName = getFunctionName(&it);
                 function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
@@ -129,7 +129,7 @@ namespace dra {
                         std::cout << ">: :" << std::endl;
 #endif
 
-                        // get address
+                        // get trace_pc_address
                         ss.str("");
                         for (unsigned long i = 0; i < 16; i++) {
                             ss << Line.at(i);
@@ -246,7 +246,7 @@ namespace dra {
         unsigned int LineNum;
         unsigned int InstNum = 0;
         unsigned int CallInstNum = 0;
-        unsigned int COVNum;
+        unsigned int trace_num;
 
         DFunction *function;
 #if DEBUG
@@ -260,7 +260,7 @@ namespace dra {
 
         std::ifstream AssemblySourceCodeFile(AssemblySourceCode);
         LineNum = 0;
-        COVNum = 0;
+        trace_num = 0;
         if (AssemblySourceCodeFile.is_open()) {
             while (getline(AssemblySourceCodeFile, line)) {
                 LineNum++;
@@ -284,7 +284,7 @@ namespace dra {
                                     std::cout << "FunctionName :" << FunctionName << std::endl;
                                     std::cout << "InstASM.size() :" << function->InstASM.size() << std::endl;
                                     std::cout << "CallInstNum :" << CallInstNum << std::endl;
-                                    std::cout << "COVNum :" << COVNum << std::endl;
+                                    std::cout << "tracr_num :" << tracr_num << std::endl;
                                     for (auto i : function->InstASM) {
                                         std::cout << "OInst :" << i->OInst << std::endl;
                                         std::cout << "SInst :" << i->SInst << std::endl;
@@ -296,7 +296,7 @@ namespace dra {
                                     std::cout << "FunctionName :" << FunctionName << std::endl;
                                     std::cout << "InstASM.size() :" << function->InstASM.size() << std::endl;
                                     std::cout << "CallInstNum :" << CallInstNum << std::endl;
-                                    std::cout << "COVNum :" << COVNum << std::endl;
+                                    std::cout << "tracr_num :" << tracr_num << std::endl;
                                     for (auto i : function->InstASM) {
                                         std::cout << "OInst :" << i->OInst << std::endl;
                                         std::cout << "SInst :" << i->SInst << std::endl;
@@ -309,7 +309,7 @@ namespace dra {
 #endif
                                 InstNum = 0;
                                 CallInstNum = 0;
-                                COVNum = 0;
+                                trace_num = 0;
                             } else if (line.find("# %") < line.size()) {
 
                                 ss.str("");
@@ -408,10 +408,14 @@ namespace dra {
                                             inst->BasicBlockName = BasicBlockName;
                                             inst->parent = function->BasicBlock[BasicBlockName];
                                             function->BasicBlock[BasicBlockName]->InstASM.push_back(inst);
-                                            if (Inst.find("__sanitizer_cov_trace_pc") <= Inst.size()) {
-                                                (function->BasicBlock[BasicBlockName])->COVNum++;
-                                                (function->BasicBlock[BasicBlockName])->address = inst->address;
-                                                COVNum++;
+                                            if (Inst.find("__sanitizer_cov_trace") <= Inst.size()) {
+                                                if (Inst.find("_pc") <= Inst.size()) {
+                                                    (function->BasicBlock[BasicBlockName])->trace_pc_address = inst->address;
+                                                } else if (Inst.find("_cmp") <= Inst.size()) {
+
+                                                }
+                                                (function->BasicBlock[BasicBlockName])->tracr_num++;
+                                                trace_num++;
 #if DEBUGASM
                                                 std::cout << "o inst :" << inst->OInst << std::endl;
 #endif
@@ -478,7 +482,8 @@ namespace dra {
                     break;
                 }
                 case dra::FunctionKind::S: {
-                    RepeatSFunction[function->Path].insert(std::pair<std::string, DFunction *>(function->FunctionName, function));
+                    RepeatSFunction[function->Path].insert(
+                            std::pair<std::string, DFunction *>(function->FunctionName, function));
                     //maybe they are same
                     break;
                 }

@@ -110,7 +110,7 @@ namespace dra {
         d->condition_address = condition_address;
         dUncoveredAddress.push_back(d);
 //
-//        std::cout << "uncovered address : " << std::hex << address << std::endl;
+//        std::cout << "uncovered trace_pc_address : " << std::hex << trace_pc_address << std::endl;
 //        std::cout << "condition_address : " << std::hex << condition_address << std::endl;
     }
 

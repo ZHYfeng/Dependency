@@ -70,8 +70,8 @@ namespace dra {
                             unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
 
                             this->current_time = std::time(NULL);
-                            std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << u->address << "\n";
-                            std::cout << "condition address : " << std::hex << u->condition_address << "\n";
+                            std::cout << std::ctime(&current_time) << "uncovered trace_pc_address : " << std::hex << u->address << "\n";
+                            std::cout << "condition trace_pc_address : " << std::hex << u->condition_address << "\n";
                             std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
                             std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
 
@@ -122,7 +122,7 @@ namespace dra {
                                         std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
                                         std::string bbname = bb->getName().str();
                                         auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
-                                        unsigned int writeAddress = DM.getSyzkallerAddress(db->address);
+                                        unsigned int writeAddress = DM.getSyzkallerAddress(db->trace_pc_address);
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_related_address();
 
@@ -163,18 +163,18 @@ namespace dra {
                         auto reply = client->SendDependencyInput(dependencyInput);
 
 //                        for (auto ua : dependencyInput.uncovered_address()) {
-//                            std::cout << "uncover address : " << ua.address() << std::endl;
+//                            std::cout << "uncover trace_pc_address : " << ua.trace_pc_address() << std::endl;
 //                            std::cout << "uncovered_idx : " << ua.idx() << std::endl;
 //                            std::cout << "uncovered_condition_address : " << ua.condition_address() << std::endl;
 //                            for (auto ra : ua.related_address()) {
-//                                std::cout << "ra.address() : " << ra.address() << std::endl;
+//                                std::cout << "ra.trace_pc_address() : " << ra.trace_pc_address() << std::endl;
 //                                std::cout << "ra.repeat() : " << ra.repeat() << std::endl;
 //                                std::cout << "ra.prio() : " << ra.prio() << std::endl;
 //                            }
 //                        }
 
 
-//                    std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
+//                    std::cerr << "SendDependencyInput size : " << reply->trace_pc_address() << std::endl;
 //                    std::cerr << "test GetDependencyInput : " << std::endl;
 //                    auto neww = client->GetDependencyInput();
 //                    for (int ni = 0; ni < neww->dependencyinput_size(); ni++) {
@@ -257,13 +257,13 @@ namespace dra {
 //            for (int k = 0; k < uu.related_input_size(); k++) {
 //                auto ii = uu.related_input(k);
 //                std::cout << "ii.sig : " << ii.sig() << std::endl;
-//                std::cout << "ii.address : " << ii.address() << std::endl;
+//                std::cout << "ii.trace_pc_address : " << ii.trace_pc_address() << std::endl;
 //            }
 //
 //            for (auto ss: uu.related_syscall()) {
 //                std::cout << "ss.number : " << ss.number() << std::endl;
 //                std::cout << "ss.name : " << ss.name() << std::endl;
-//                std::cout << "ss.address : " << ss.address() << std::endl;
+//                std::cout << "ss.trace_pc_address : " << ss.trace_pc_address() << std::endl;
 //            }
 //        }
 //
@@ -278,13 +278,13 @@ namespace dra {
 //                for (int k = 0; k < uu.related_input_size(); k++) {
 //                    auto ii = uu.related_input(k);
 //                    std::cout << "ii.sig : " << ii.sig() << std::endl;
-//                    std::cout << "ii.address : " << std::hex << ii.address() << std::endl;
+//                    std::cout << "ii.trace_pc_address : " << std::hex << ii.trace_pc_address() << std::endl;
 //                }
 //
 //                for (auto ss: uu.related_syscall()) {
 //                    std::cout << "ss.number : " << ss.number() << std::endl;
 //                    std::cout << "ss.name : " << ss.name() << std::endl;
-//                    std::cout << "ss.address : " << ss.address() << std::endl;
+//                    std::cout << "ss.trace_pc_address : " << ss.trace_pc_address() << std::endl;
 //                }
 //            }
 //        }

@@ -2502,10 +2502,10 @@ subsequent call for input from the std::istream.
 
                 const auto len = static_cast<size_t>(std::distance(first, last));
                 if (JSON_LIKELY(len > 0)) {
-                    // there is at least one element: use the address of first
+                    // there is at least one element: use the trace_pc_address of first
                     ia = std::make_shared<input_buffer_adapter>(reinterpret_cast<const char *>(&(*first)), len);
                 } else {
-                    // the address of first cannot be used: use nullptr
+                    // the trace_pc_address of first cannot be used: use nullptr
                     ia = std::make_shared<input_buffer_adapter>(nullptr, len);
                 }
             }

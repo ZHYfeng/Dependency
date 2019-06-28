@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
                 if (Line.find(">:") < Line.size()) {
                     //deal with function
 
-                    // get address
+                    // get trace_pc_address
                     ss.str("");
                     for (unsigned long i = 0; i < 16; i++) {
                         ss << Line.at(i);
