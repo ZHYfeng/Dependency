@@ -29,6 +29,7 @@ namespace sta {
 
 
     class Mod;
+    class FieldPtr;
     typedef std::vector<Mod*> MODS;
 
     class StaticAnalysisResult {
@@ -61,6 +62,11 @@ namespace sta {
 
         MODS *GetAllGlobalWriteBBs(llvm::BasicBlock *B, unsigned int branch);
 
+        //Whether a "br" in the given BB is tainted by the user provided "arg"?
+        //the absolute return value is the #(arg taint tags), if the value is positive, then the "br" only has arg taints,
+        //if negative, there also exists global variable taints.
+        int getArgTaintStatus(llvm::BasicBlock *B);
+
         std::string &getBBStrID(llvm::BasicBlock *B);
 
         std::string &getInstStrID(llvm::Instruction* I);
@@ -87,14 +93,21 @@ namespace sta {
 
         bool getCtx(ID_TY, std::vector<llvm::Instruction*>*);
 
+        std::map<ID_TY,CONST_INF> *getArgTaintInfo(llvm::BasicBlock *B);
+
+        std::vector<std::vector<FieldPtr*>*> *getTagType(ID_TY tag_id);
+
     private:
-        nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagInfo, j_calleeMap;
+        nlohmann::json j_taintedBrs, j_ctxMap, j_traitMap, j_tagModMap, j_tagConstMap, j_tagInfo, j_calleeMap;
 
         TAINTED_BR_TY taintedBrs;
         CTX_MAP_TY ctxMap;
         INST_TRAIT_MAP traitMap;
         TAG_MOD_MAP_TY tagModMap;
+        TAG_CONST_MAP_TY tagConstMap;
         TAG_INFO_TY tagInfo;
+        TAG_INFO_TY tagInfo_global;
+        TAG_INFO_TY tagInfo_local;
         CALLEE_MAP_TY calleeMap;
 
         //The mapping from one BB to all its successors (recursively).
@@ -114,6 +127,10 @@ namespace sta {
         void tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, unsigned int branch);
 
         void filterMods(MODS *pmods, llvm::BasicBlock *B, unsigned int branch);
+
+        bool getAllTagConstants(ID_TY tag_id, CONST_INF *p_consts);
+
+        std::vector<FieldPtr*> *parseTypeStr(std::string tys);
     };
 
     //A BB/Inst that can modify a global state.
@@ -223,7 +240,11 @@ namespace sta {
             }
             for (auto& x : this->mod_inf) {
                 std::vector<llvm::Instruction*> vec;
-                this->sta->getCtx(x.first,&vec);
+                if(this->sta->getCtx(x.first,&vec)){
+
+                } else {
+
+                }
                 this->ctxs.push_back(vec);
             }
             return &(this->ctxs);
@@ -409,6 +430,31 @@ namespace sta {
         }
 
     };
+
+    //This class tries to uniquely locate a field in a struct (e.g. may be pointed to by ioctl "arg"),
+    //"ty" is the type string of the host struct (e.g. "struct_a"), "field" is the field number,
+    //"is_embed" indicates whether this field is an embedded struct in the host struct.
+    //By using multiple sorted "FieldPtr" class, we can locate an arbitrary field in a complex nested struct.
+    class FieldPtr {
+    public:
+        FieldPtr() {
+            this->field = 0;
+            this->is_embed = true;
+        }
+
+        FieldPtr(std::string& ty, long field, bool is_embed) {
+            this->ty = ty;
+            this->field = field;
+            this->is_embed = is_embed;
+        }
+
+        ~FieldPtr() {}
+
+        std::string ty;
+        long field;
+        bool is_embed;
+    };
+
 
 } /* namespace sta */
 
