@@ -7,6 +7,8 @@
 
 #include "DataManagement.h"
 #include "llvm/IR/CFG.h"
+#include <llvm/IR/DebugLoc.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <fstream>
 #include <iostream>
 
@@ -36,6 +38,23 @@ namespace dra {
             }
         }
         return b;
+    }
+
+    void dump_inst(llvm::Instruction *inst) {
+        auto b = inst->getParent();
+        std::string BasicBlockName = getRealBB(b)->getName();
+
+        auto f = b->getParent();
+        std::string Path = dra::DModule::getFileName(f);
+        std::string FunctionName = dra::DModule::getFunctionName(f);
+
+        const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
+
+        int line = debugInfo->getLine();
+        int column = debugInfo->getColumn();
+
+        std::cout << Path << " : " << FunctionName << " : " << BasicBlockName << " : " << line << " : " << column
+                  << std::endl;
     }
 
     DataManagement::DataManagement() {
@@ -185,7 +204,8 @@ namespace dra {
                     c->address = final_address;
                     this->cover[final_address] = current_time;
                     this->time.push_back(c);
-                    std::cout << std::ctime(&current_time) << "new cover trace_pc_address " << std::hex << final_address << "\n";
+                    std::cout << std::ctime(&current_time) << "new cover trace_pc_address " << std::hex << final_address
+                              << "\n";
                     if (this->uncover.find(final_address) == this->uncover.end()) {
 
                     } else {
@@ -328,24 +348,20 @@ namespace dra {
         out_file.close();
     }
 
-    void DataManagement::dump_ctxs(std::vector<std::vector<llvm::Instruction*>> *ctx) {
-            uint64_t path_num = 0;
-            for (auto path : *ctx) {
-                path_num++;
-                std::cout << "call chain " << path_num << ": \n";
-                for (auto inst : path) {
-                    if (inst != nullptr) {
-                        auto f = inst->getParent()->getParent();
-                        std::string Path = dra::DModule::getFileName(f);
-                        std::string FunctionName = dra::DModule::getFunctionName(f);
-                        DFunction *df = this->Modules->Function[Path][FunctionName];
-                        std::cout << df->Path << " : " << df->FunctionName << ": \n";
-                    } else {
-                        std::cerr << "nullptr in ctx" << std::endl;
-                    }
-
+    void DataManagement::dump_ctxs(std::vector<std::vector<llvm::Instruction *>> *ctx) {
+        uint64_t path_num = 0;
+        for (auto path : *ctx) {
+            path_num++;
+            std::cout << "call chain " << path_num << ": \n";
+            for (auto inst : path) {
+                if (inst != nullptr) {
+                    dump_inst(inst);
+                } else {
+                    std::cerr << "nullptr in ctx" << std::endl;
                 }
+
             }
+        }
     }
 
     uncover_info::uncover_info() : address(0),

@@ -44,6 +44,8 @@ namespace dra {
 
     llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
 
+    void dump_inst(llvm::Instruction *inst);
+
     class DataManagement {
     public:
         DataManagement();

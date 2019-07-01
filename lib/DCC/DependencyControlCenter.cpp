@@ -131,6 +131,7 @@ namespace dra {
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
+                                        this->DM.dump_ctxs(x->get_ctxs());
 
 
                                         related_address->set_address(writeAddress);
