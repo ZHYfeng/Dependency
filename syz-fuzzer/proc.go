@@ -253,11 +253,31 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 		uncoverAddress = false
 		log.Logf(1, "uncover address : %x", u.UncoveredAddress)
 		log.Logf(1, "idx : %x", u.Idx)
+
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("condition address : %x", u.ConditionAddress))
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("uncover address : %x", u.UncoveredAddress))
+
+		rpinfo := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
+		var rpCover cover.Cover
+		for _, c := range rpinfo.Calls {
+			rpCover.Merge(c.Cover)
+			//log.Logf(1, "Cover : %x", c.Cover)
+		}
+		if proc.checkConditionAddress(p, rpCover) {
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
+		} else {
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
+		}
+
 		for _, ra := range u.WriteAddress {
+
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("condition address : %x", u.ConditionAddress))
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("uncover address : %x", u.UncoveredAddress))
+
 			writeAddress = false
 			log.Logf(1, "write address : %x", ra.WriteAddress)
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("write address : %x", ra.WriteAddress))
@@ -284,16 +304,16 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 					if proc.checkWriteAddress(p, rpCover) {
 						proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
 					} else {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
+						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
 					}
 
 					p0 := p.Clone()
-					for i := 0; i < int(ra.Repeat); i++ {
-						p0.Splice(rp, u.Idx, programLength)
-					}
+					//for i := 0; i < int(ra.Repeat); i++ {
+					p0.Splice(rp, u.Idx, programLength)
+					//}
 					data := p0.Serialize()
-					log.Logf(1, "write program : \n%s", data)
-					proc.fuzzer.dManager.SendLog(fmt.Sprintf("write program : \n%s", data))
+					log.Logf(1, "test case with write program : \n%s", data)
+					proc.fuzzer.dManager.SendLog(fmt.Sprintf("test case with write program : \n%s", data))
 
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 					var inputCover cover.Cover
@@ -308,9 +328,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
 					}
 					if ok2 {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.WriteAddress))
+						proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
 					} else {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.WriteAddress))
+						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
 					}
 					if ok3 {
 						uncoverAddress = true
@@ -321,31 +341,33 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				}
 			}
 			if !uncoverAddress {
-				log.Logf(1, "related call size : %v", len(ra.WriteCalls))
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("related call size : %v", len(ra.WriteCalls)))
+				log.Logf(1, "write call size : %v", len(ra.WriteCalls))
+				proc.fuzzer.dManager.SendLog(fmt.Sprintf("write call size : %v", len(ra.WriteCalls)))
 				if len(ra.WriteCalls) > 0 {
 					for _, rc := range ra.WriteCalls {
-						log.Logf(1, "related call : %s", rc)
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("related call : %s", rc))
+						log.Logf(1, "write call : %s", rc)
+						proc.fuzzer.dManager.SendLog(fmt.Sprintf("write call : %s", rc))
 						p0 := p.Clone()
+
+						p0.MutateIoctl1Arg(proc.rnd, int(u.Idx+1), ct)
 						c0c := p0.GetCall(proc.rnd, rc, u.Idx, ct)
 						size := len(c0c)
 						p0.InsertCall(c0c, u.Idx, programLength)
 						data := p0.Serialize()
-						log.Logf(1, "WriteCalls p0 program : \n%s", data)
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("WriteCalls p0 program : \n%s", data))
+						log.Logf(1, "test case with WriteCalls program : \n%s", data)
+						proc.fuzzer.dManager.SendLog(fmt.Sprintf("WriteCalls program : \n%s", data))
 						for i := 0; i < 1000; i++ {
 							p0.MutateIoctl3Arg(proc.rnd, int(u.Idx)+size-1, ct)
 							data := p0.Serialize()
-							log.Logf(1, "WriteCalls p0 program mutate : \n%s", data)
+							log.Logf(1, "test case with WriteCalls program mutate : \n%s", data)
 							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("WriteCalls p0 program mutate : \n%s", data))
 							p0c := p0.Clone()
 							for i := 0; i < int(ra.Repeat-1); i++ {
 								p0c.RepeatCall(int(u.Idx) + size - 1)
 							}
 							data1 := p0c.Serialize()
-							log.Logf(1, "WriteCalls p0c program mutate repeat: \n%s", data1)
-							proc.fuzzer.dManager.SendLog(fmt.Sprintf("WriteCalls p0c program mutate repeat: \n%s", data1))
+							log.Logf(1, "test case with WriteCalls program mutate repeat: \n%s", data1)
+							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("test case with WriteCalls program mutate repeat: \n%s", data1))
 
 							info := proc.execute(proc.execOptsCover, p0c, ProgNormal, StatDependency)
 							var inputCover cover.Cover
@@ -378,9 +400,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
 			}
 			if conditionAddress {
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.WriteAddress))
+				proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
 			} else {
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.WriteAddress))
+				proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
 			}
 		}
 	cover:

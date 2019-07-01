@@ -165,6 +165,29 @@ func (ctx *mutator) mutateArg() bool {
 	return true
 }
 
+func (target *Target) mutateArgForDependencyResource(r *randGen, s *state, arg Arg, ctx ArgCtx, updateSizes *bool) ([]*Call, bool) {
+	var baseSize uint64
+	if ctx.Base != nil {
+		baseSize = ctx.Base.Res.Size()
+	}
+	calls, retry, preserve := arg.Type().mutate(r, s, arg, ctx)
+	if retry {
+		return nil, false
+	}
+	if preserve {
+		*updateSizes = false
+	}
+	// Update base pointer if size has increased.
+	if base := ctx.Base; base != nil && baseSize < base.Res.Size() {
+		newArg := r.allocAddr(s, base.Type(), base.Res.Size(), base.Res)
+		replaceArg(base, newArg)
+	}
+	for _, c := range calls {
+		target.SanitizeCall(c)
+	}
+	return calls, true
+}
+
 func (target *Target) mutateArg(r *randGen, s *state, arg Arg, ctx ArgCtx, updateSizes *bool) ([]*Call, bool) {
 	var baseSize uint64
 	if ctx.Base != nil {
@@ -646,6 +669,40 @@ func (p *Prog) Splice(rp *Prog, idx uint32, ncalls int) bool {
 	p.Calls = append(p.Calls[:idx], append(p0c.Calls, p.Calls[idx:]...)...)
 	for i := len(p.Calls) - 1; i >= ncalls; i-- {
 		p.removeCall(i)
+	}
+	return true
+}
+
+func (p *Prog) MutateIoctl1Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
+	r := newRand(p.Target, rs)
+	c := p.Calls[idx]
+	if len(c.Args) == 0 {
+		return false
+	}
+	s := analyze(ct, p, c)
+	updateSizes := true
+	for stop, ok := false, false; !stop; stop = ok && r.oneOf(3) {
+		ok = true
+		ma := &mutationArgs{target: p.Target}
+		ForeachArg(c, ma.collectArg)
+		log.Logf(1, "len(ma.args) : %v", len(ma.args))
+		var idx int
+		if len(ma.args) == 0 {
+			return false
+		} else {
+			idx = 0
+		}
+		arg, ctx := ma.args[idx], ma.ctxes[idx]
+		calls, ok1 := p.Target.mutateArgForDependencyResource(r, s, arg, ctx, &updateSizes)
+		if !ok1 {
+			ok = false
+			continue
+		}
+		p.insertBefore(c, calls)
+		if updateSizes {
+			p.Target.assignSizesCall(c)
+		}
+		p.Target.SanitizeCall(c)
 	}
 	return true
 }
