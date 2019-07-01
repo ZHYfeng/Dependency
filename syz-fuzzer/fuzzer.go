@@ -414,23 +414,23 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 		u1 := new(prog.Uncover)
 		u1.UncoveredAddress = u.GetAddress()
 		u1.Idx = u.GetIdx()
-		for _, a := range u.GetRelatedAddress() {
+		for _, a := range u.GetWriteAddress() {
 
-			a1 := &prog.RelatedAddresses{
-				RelatedAddress: a.GetAddress(),
-				Prio:           a.GetPrio(),
-				Repeat:         a.GetRepeat(),
+			a1 := &prog.WriteAddresses{
+				WriteAddress: a.GetAddress(),
+				Prio:         a.GetPrio(),
+				Repeat:       a.GetRepeat(),
 			}
 
-			for _, i := range a.GetRelatedInput() {
+			for _, i := range a.GetWriteInput() {
 				rp, err := fuzzer.target.Deserialize(i.GetProg(), prog.NonStrict)
 				if err != nil {
 					panic(err)
 				}
-				a1.RelatedProgs = append(a1.RelatedProgs, rp)
+				a1.WriteProgs = append(a1.WriteProgs, rp)
 			}
 
-			for _, i := range a.GetRelatedSyscall() {
+			for _, i := range a.GetWriteSyscall() {
 				c1 := &prog.Call{
 					Meta:    nil,
 					Ret:     nil,
@@ -456,7 +456,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 											arg := typ.DefaultArg()
 											c1.Args = append(c1.Args, arg)
 										}
-										a1.RelatedCalls = append(a1.RelatedCalls, c1)
+										a1.WriteCalls = append(a1.WriteCalls, c1)
 									}
 								default:
 
@@ -466,7 +466,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 					}
 				}
 			}
-			u1.RelatedAddress = append(u1.RelatedAddress, a1)
+			u1.WriteAddress = append(u1.WriteAddress, a1)
 		}
 		p.Uncover[idx] = u1
 	}

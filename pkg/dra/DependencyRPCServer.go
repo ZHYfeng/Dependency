@@ -87,8 +87,8 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 		return reply, nil
 	}
 	for _, u := range cd.UncoveredAddress {
-		for _, a := range u.RelatedAddress {
-			for _, r := range a.RelatedInput {
+		for _, a := range u.WriteAddress {
+			for _, r := range a.WriteInput {
 				if rinp, ok := (*ss.corpus)[r.Sig]; ok {
 					for _, p := range rinp.Prog {
 						r.Prog = append(r.Prog, p)
@@ -161,31 +161,31 @@ func cloneDependencyInput(d *DependencyInput) *DependencyInput {
 		u1.Address = u.Address
 		u1.Idx = u.Idx
 		u1.ConditionAddress = u.ConditionAddress
-		for _, a := range u.RelatedAddress {
-			a1 := &RelatedAddress{
+		for _, a := range u.WriteAddress {
+			a1 := &WriteAddress{
 				Address: a.Address,
 				Repeat:  a.Repeat,
 				Prio:    a.Prio,
 			}
 
-			for _, i := range a.RelatedInput {
-				i1 := &RelatedInput{
+			for _, i := range a.WriteInput {
+				i1 := &Input{
 					Sig: i.Sig,
 				}
 				for _, p := range i.Prog {
 					i1.Prog = append(cd.Prog, p)
 				}
-				a1.RelatedInput = append(a1.RelatedInput, i1)
+				a1.WriteInput = append(a1.WriteInput, i1)
 			}
 
-			for _, s := range a.RelatedSyscall {
-				s1 := &RelatedSyscall{
+			for _, s := range a.WriteSyscall {
+				s1 := &Syscall{
 					Name:   s.Name,
 					Number: s.Number,
 				}
-				a1.RelatedSyscall = append(a1.RelatedSyscall, s1)
+				a1.WriteSyscall = append(a1.WriteSyscall, s1)
 			}
-			u1.RelatedAddress = append(u1.RelatedAddress, a1)
+			u1.WriteAddress = append(u1.WriteAddress, a1)
 		}
 		cd.UncoveredAddress = append(cd.UncoveredAddress, u1)
 	}
