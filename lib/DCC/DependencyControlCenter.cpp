@@ -70,10 +70,11 @@ namespace dra {
                             unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
 
                             this->current_time = std::time(NULL);
-                            std::cout << std::ctime(&current_time) << "uncovered trace_pc_address : " << std::hex << u->address << "\n";
+                            std::cout << std::ctime(&current_time);
                             std::cout << "condition trace_pc_address : " << std::hex << u->condition_address << "\n";
-                            std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
+                            std::cout<< "uncovered trace_pc_address : " << std::hex << u->address << "\n";
                             std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
+                            std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
 
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
