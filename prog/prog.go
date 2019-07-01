@@ -17,19 +17,19 @@ type Prog struct {
 	Sig          string
 }
 
-type RelatedAddresses struct {
-	RelatedAddress uint32
-	Prio           uint32
-	Repeat         uint32
-	RelatedProgs   []*Prog
-	RelatedCalls   []*Call
+type WriteAddresses struct {
+	WriteAddress uint32
+	Prio         uint32
+	Repeat       uint32
+	WriteProgs   []*Prog
+	WriteCalls   []*Call
 }
 
 type Uncover struct {
 	UncoveredAddress uint32
 	ConditionAddress uint32
 	Idx              uint32
-	RelatedAddress   []*RelatedAddresses
+	WriteAddress     []*WriteAddresses
 }
 
 type Call struct {
