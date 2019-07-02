@@ -118,7 +118,7 @@ namespace dra {
                                         llvm::BasicBlock *bb = dra::getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
-                                        std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
+
                                         std::string Path = dra::DModule::getFileName(bb->getParent());
                                         std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
                                         std::string bbname = bb->getName().str();
@@ -132,6 +132,8 @@ namespace dra {
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
+
+                                        std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                                         std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
                                         for(auto c: *cmd_ctx){
                                             std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
