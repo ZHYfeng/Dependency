@@ -23,6 +23,7 @@ namespace dra {
         } else {
             for (auto *Pred : llvm::predecessors(b)) {
                 rb = getRealBB(Pred);
+                break;
             }
         }
         return rb;
@@ -42,16 +43,19 @@ namespace dra {
 
     void dump_inst(llvm::Instruction *inst) {
         auto b = inst->getParent();
-        std::string BasicBlockName = getRealBB(b)->getName();
+        std::string BasicBlockName = b->getName();
+//        std::string BasicBlockName = getRealBB(b)->getName();
 
         auto f = b->getParent();
         std::string Path = dra::DModule::getFileName(f);
         std::string FunctionName = dra::DModule::getFunctionName(f);
 
         const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
-
         int line = debugInfo->getLine();
         int column = debugInfo->getColumn();
+
+//        std::string directory = debugInfo->getDirectory().str();
+//        std::string filePath = debugInfo->getFilename().str();
 
         std::cout << Path << " : " << FunctionName << " : " << BasicBlockName << " : " << std::dec << line << " : " << column
                   << std::endl;

@@ -60,6 +60,7 @@ namespace dra {
                 for (int j = 0; j < newInput->input_size(); j++) {
                     const Input &input = newInput->input(j);
                     std::cout << "new input : " << input.sig() << std::endl;
+                    std::cout << input.prog() << std::endl;
                     DInput *dInput = DM.getInput(input);
                     DependencyInput dependencyInput;
                     bool sendFlag = false;
@@ -125,7 +126,7 @@ namespace dra {
                                         std::cout << std::ctime(&current_time);
                                         std::cout << "write basicblock : " << std::endl;
 
-                                        x->B->dump();
+                                        dra::dump_inst(x->B->getTerminator());
 
                                         llvm::BasicBlock *bb = dra::getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
