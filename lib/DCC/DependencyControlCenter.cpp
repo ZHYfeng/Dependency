@@ -110,7 +110,8 @@ namespace dra {
                                     }
                                     this->uncovered_address_number_gv_driver++;
                                     sendFlag = true;
-                                    std::cout << "get useful static analysis result : " << << std::dec allBasicblock->size()
+                                    std::cout << "get useful static analysis result : " << std::dec
+                                              << allBasicblock->size()
                                               << std::endl;
 
 
