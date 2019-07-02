@@ -42,23 +42,30 @@ namespace dra {
     }
 
     void dump_inst(llvm::Instruction *inst) {
-        auto b = inst->getParent();
-        std::string BasicBlockName = b->getName();
-//        std::string BasicBlockName = getRealBB(b)->getName();
 
+        auto b = inst->getParent();
         auto f = b->getParent();
+
         std::string Path = dra::DModule::getFileName(f);
         std::string FunctionName = dra::DModule::getFunctionName(f);
+        std::cout << Path << " : ";
+        std::cout << FunctionName << " : ";
 
         const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
         int line = debugInfo->getLine();
         int column = debugInfo->getColumn();
+        std::cout << std::dec << line << " : ";
+        std::cout << column << " : ";
+
+
+        std::string BasicBlockName = getRealBB(b)->getName();
+        std::cout << BasicBlockName << " : ";
 
 //        std::string directory = debugInfo->getDirectory().str();
 //        std::string filePath = debugInfo->getFilename().str();
 
-        std::cout << Path << " : " << FunctionName << " : " << BasicBlockName << " : " << std::dec << line << " : " << column
-                  << std::endl;
+        std::cout << std::endl;
+
     }
 
     DataManagement::DataManagement() {
@@ -353,15 +360,15 @@ namespace dra {
     }
 
     void DataManagement::dump_ctxs(std::vector<llvm::Instruction *> *ctx) {
-            std::cout << "call chain : " << ctx->size() << "\n";
-            for (auto inst : *ctx) {
-                if (inst != nullptr) {
-                    dump_inst(inst);
-                } else {
-                    std::cerr << "nullptr in ctx" << std::endl;
-                }
-
+        std::cout << "call chain : " << ctx->size() << "\n";
+        for (auto inst : *ctx) {
+            if (inst != nullptr) {
+                dump_inst(inst);
+            } else {
+                std::cerr << "nullptr in ctx" << std::endl;
             }
+
+        }
     }
 
     uncover_info::uncover_info() : address(0),
