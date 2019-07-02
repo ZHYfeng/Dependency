@@ -118,7 +118,7 @@ namespace dra {
                                         llvm::BasicBlock *bb = dra::getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
-                                        std::set<uint64_t> *cmds = x->getIoctlCmdSet();
+                                        std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                                         std::string Path = dra::DModule::getFileName(bb->getParent());
                                         std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
                                         std::string bbname = bb->getName().str();
@@ -132,17 +132,20 @@ namespace dra {
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
-                                        this->DM.dump_ctxs(x->get_ctxs());
-
+                                        for(auto c: *cmd_ctx){
+                                            std::cout << "cmd : " << std::dec << c->cmd << "\n";
+                                            std::cout << "cmd : " << std::hex << c->cmd << "\n";
+                                            this->DM.dump_ctxs(&c->ctx);
+                                        }
 
                                         related_address->set_address(writeAddress);
                                         related_address->set_repeat(x->repeat);
                                         related_address->set_prio(x->prio);
 //                                        std::cout << "cmds size : " << cmds->size() << std::endl;
-                                        for (auto c : *cmds) {
+                                        for (auto c : *cmd_ctx) {
                                             auto related_syscall = related_address->add_related_syscall();
                                             related_syscall->set_name(function_name);
-                                            related_syscall->set_number(c);
+                                            related_syscall->set_number(c->cmd);
                                         }
                                         for (auto i : db->input) {
                                             auto related_input = related_address->add_related_input();

@@ -78,7 +78,7 @@ namespace dra {
 
         void dump_uncover();
 
-        void dump_ctxs(std::vector<std::vector<llvm::Instruction*>> *ctx);
+        void dump_ctxs(std::vector<llvm::Instruction *> *ctx);
 
 
 

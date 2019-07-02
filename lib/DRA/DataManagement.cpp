@@ -53,7 +53,7 @@ namespace dra {
         int line = debugInfo->getLine();
         int column = debugInfo->getColumn();
 
-        std::cout << Path << " : " << FunctionName << " : " << BasicBlockName << " : " << line << " : " << column
+        std::cout << Path << " : " << FunctionName << " : " << BasicBlockName << " : " << std::dec << line << " : " << column
                   << std::endl;
     }
 
@@ -348,12 +348,9 @@ namespace dra {
         out_file.close();
     }
 
-    void DataManagement::dump_ctxs(std::vector<std::vector<llvm::Instruction *>> *ctx) {
-        uint64_t path_num = 0;
-        for (auto path : *ctx) {
-            path_num++;
-            std::cout << "call chain " << path_num << ": \n";
-            for (auto inst : path) {
+    void DataManagement::dump_ctxs(std::vector<llvm::Instruction *> *ctx) {
+            std::cout << "call chain : " << ": \n";
+            for (auto inst : *ctx) {
                 if (inst != nullptr) {
                     dump_inst(inst);
                 } else {
@@ -361,7 +358,6 @@ namespace dra {
                 }
 
             }
-        }
     }
 
     uncover_info::uncover_info() : address(0),
