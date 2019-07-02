@@ -132,9 +132,10 @@ namespace dra {
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
+                                        std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
                                         for(auto c: *cmd_ctx){
-                                            std::cout << "cmd : " << std::dec << c->cmd << "\n";
-                                            std::cout << "cmd : " << std::hex << c->cmd << "\n";
+                                            std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
+                                            std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
                                             this->DM.dump_ctxs(&c->ctx);
                                         }
 
