@@ -106,7 +106,7 @@ namespace dra {
                                     }
                                     this->uncovered_address_number_gv_driver++;
                                     sendFlag = true;
-                                    std::cout << "get useful static analysis result" << std::endl;
+                                    std::cout << "get useful static analysis result : " << allBasicblock->size() << std::endl;
 
 
                                     UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
@@ -125,9 +125,10 @@ namespace dra {
                                         auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
                                         unsigned int writeAddress = DM.getSyzkallerAddress(db->trace_pc_address);
                                         auto function_name = "ioctl";
-                                        auto related_address = uncoveredAddress->add_related_address();
+                                        auto related_address = uncoveredAddress->add_write_address();
 
-                                        std::cout << std::ctime(&current_time) << "related write basicblock : " << std::endl;
+                                        std::cout << std::ctime(&current_time);
+                                        std::cout << "write basicblock : " << std::endl;
                                         std::cout << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress << "\n";
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
@@ -146,12 +147,12 @@ namespace dra {
                                         related_address->set_prio(x->prio);
 //                                        std::cout << "cmds size : " << cmds->size() << std::endl;
                                         for (auto c : *cmd_ctx) {
-                                            auto related_syscall = related_address->add_related_syscall();
+                                            auto related_syscall = related_address->add_write_syscall();
                                             related_syscall->set_name(function_name);
                                             related_syscall->set_number(c->cmd);
                                         }
                                         for (auto i : db->input) {
-                                            auto related_input = related_address->add_related_input();
+                                            auto related_input = related_address->add_write_input();
                                             related_input->set_sig(i->sig);
                                         }
 
