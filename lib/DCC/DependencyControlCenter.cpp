@@ -28,7 +28,8 @@ namespace dra {
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
-    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes) {
+    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename,
+                                       const std::string &staticRes) {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         this->current_time = std::time(NULL);
@@ -39,7 +40,8 @@ namespace dra {
         this->current_time = std::time(NULL);
         std::cout << std::ctime(&this->current_time) << "*time : initStaticRes" << std::endl;
 
-        this->client = new dra::DependencyRPCClient(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
+        this->client = new dra::DependencyRPCClient(
+                grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
         this->current_time = std::time(NULL);
@@ -62,7 +64,8 @@ namespace dra {
                     DependencyInput dependencyInput;
                     bool sendFlag = false;
                     dependencyInput.set_sig(dInput->sig);
-                    std::cout << "dUncoveredAddress size : " << dInput->dUncoveredAddress.size() << std::endl;
+                    std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
+                              << std::endl;
                     for (auto u : dInput->dUncoveredAddress) {
                         this->uncovered_address_number++;
                         if (this->DM.isDriver(u->address)) {
@@ -72,7 +75,7 @@ namespace dra {
                             this->current_time = std::time(NULL);
                             std::cout << std::ctime(&current_time);
                             std::cout << "condition trace_pc_address : " << std::hex << u->condition_address << "\n";
-                            std::cout<< "uncovered trace_pc_address : " << std::hex << u->address << "\n";
+                            std::cout << "uncovered trace_pc_address : " << std::hex << u->address << "\n";
                             std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
                             std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
 
@@ -82,9 +85,10 @@ namespace dra {
                                 p->dump();
 
                                 auto *b = p->basicBlock;
-                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(dra::getFinalBB(b), u->successor_idx);
+                                sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(dra::getFinalBB(b),
+                                                                                          u->successor_idx);
                                 if (allBasicblock == nullptr) {
-                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                    if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
                                     }
                                     // no taint or out side
@@ -92,7 +96,7 @@ namespace dra {
                                     p->dump();
 
                                 } else if (allBasicblock->size() == 0) {
-                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                    if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
                                     }
                                     // unrelated to gv
@@ -100,13 +104,14 @@ namespace dra {
                                     p->dump();
 
                                 } else if (allBasicblock != nullptr && allBasicblock->size() != 0) {
-                                    if(this->DM.uncover.find(u->address) != this->DM.uncover.end()){
+                                    if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
                                         this->DM.uncover[u->address]->related_to_gv = true;
                                     }
                                     this->uncovered_address_number_gv_driver++;
                                     sendFlag = true;
-                                    std::cout << "get useful static analysis result : " << allBasicblock->size() << std::endl;
+                                    std::cout << "get useful static analysis result : " << << std::dec allBasicblock->size()
+                                              << std::endl;
 
 
                                     UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
@@ -115,6 +120,12 @@ namespace dra {
                                     uncoveredAddress->set_condition_address(condition_address);
 
                                     for (auto &x : *allBasicblock) {
+
+                                        std::cout << std::ctime(&current_time);
+                                        std::cout << "write basicblock : " << std::endl;
+
+                                        x->B->dump();
+
                                         llvm::BasicBlock *bb = dra::getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
@@ -127,16 +138,15 @@ namespace dra {
                                         auto function_name = "ioctl";
                                         auto related_address = uncoveredAddress->add_write_address();
 
-                                        std::cout << std::ctime(&current_time);
-                                        std::cout << "write basicblock : " << std::endl;
-                                        std::cout << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress << "\n";
+                                        std::cout << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress
+                                                  << "\n";
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
 
                                         std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                                         std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
-                                        for(auto c: *cmd_ctx){
+                                        for (auto c: *cmd_ctx) {
                                             std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
                                             std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
                                             this->DM.dump_ctxs(&c->ctx);
@@ -161,7 +171,8 @@ namespace dra {
                                     }
                                 }
                             } else {
-                                std::cerr << "can not find condition_address : " << std::hex << u->condition_address << std::endl;
+                                std::cerr << "can not find condition_address : " << std::hex << u->condition_address
+                                          << std::endl;
                             }
                         } else {
                         }
