@@ -366,9 +366,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 							log.Logf(1, "test case with WriteCalls program mutate : \n%s", data)
 							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("WriteCalls p0 program mutate : \n%s", data))
 							p0c := p0.Clone()
-							for i := 0; i < int(ra.Repeat-1); i++ {
-								p0c.RepeatCall(int(u.Idx) + size - 1)
-							}
+							//for i := 0; i < int(ra.Repeat-1); i++ {
+							p0c.RepeatCall(int(u.Idx) + size - 1)
+							//}
 							data1 := p0c.Serialize()
 							log.Logf(1, "test case with WriteCalls program mutate repeat: \n%s", data1)
 							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("test case with WriteCalls program mutate repeat: \n%s", data1))

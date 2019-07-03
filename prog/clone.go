@@ -55,6 +55,7 @@ func (p *Prog) CloneWithUncover() *Prog {
 	for ui, u := range p.Uncover {
 		u1 := new(Uncover)
 		u1.UncoveredAddress = u.UncoveredAddress
+		u1.ConditionAddress = u.ConditionAddress
 		u1.Idx = u.Idx
 
 		u1.WriteAddress = make([]*WriteAddresses, len(u.WriteAddress))
