@@ -86,8 +86,15 @@ namespace dra {
                                 p->dump();
 
                                 auto *b = p->basicBlock;
+
+                                this->current_time = std::time(NULL);
+                                std::cout << std::ctime(&current_time);
+                                std::cout << "GetAllGlobalWriteBBs : " << std::endl;
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(dra::getFinalBB(b),
                                                                                           u->successor_idx);
+                                this->current_time = std::time(NULL);
+                                std::cout << std::ctime(&current_time);
+
                                 if (allBasicblock == nullptr) {
                                     if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
@@ -124,6 +131,7 @@ namespace dra {
 
                                     for (auto &x : *allBasicblock) {
 
+                                        this->current_time = std::time(NULL);
                                         std::cout << std::ctime(&current_time);
                                         std::cout << "write basicblock : " << std::endl;
 
@@ -147,13 +155,19 @@ namespace dra {
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
 
+                                        this->current_time = std::time(NULL);
+                                        std::cout << std::ctime(&current_time);
                                         std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                                         std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
+                                        this->current_time = std::time(NULL);
+                                        std::cout << std::ctime(&current_time);
                                         for (auto c: *cmd_ctx) {
                                             std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
                                             std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
                                             this->DM.dump_ctxs(&c->ctx);
                                         }
+                                        this->current_time = std::time(NULL);
+                                        std::cout << std::ctime(&current_time);
 
                                         writeAddress1->set_address(writeAddress);
                                         writeAddress1->set_repeat(x->repeat);
