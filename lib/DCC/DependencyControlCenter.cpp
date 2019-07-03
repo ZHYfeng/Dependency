@@ -126,7 +126,7 @@ namespace dra {
                                         std::cout << std::ctime(&current_time);
                                         std::cout << "write basicblock : " << std::endl;
 
-                                        dra::dump_inst(x->B->getTerminator());
+                                        dra::dump_inst(&x->B->front());
 
                                         llvm::BasicBlock *bb = dra::getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
