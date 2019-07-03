@@ -874,15 +874,29 @@ static long syz_open_procfs(volatile long a0, volatile long a1)
 #include <sys/stat.h>
 #include <sys/types.h>
 
-static long syz_open_pts(volatile long a0, volatile long a1)
+static long syz_open_pts()
 {
 	// syz_openpts(fd fd[tty], flags flags[open_flags]) fd[tty]
+
+
+//    unsigned int dir = 0xffffffffffffff9c;
+    int flag = 0x802;
+    int mode = 0x0;
+//	int a0 = openat(dir, "/dev/ptmx", flag, mode);
+	int a0 = open("/dev/ptmx", flag, mode);
+
+	// unlockpt()
+	ioctl(a0, TIOCSPTLCK, 0);
+
+	// ptsname()
 	int ptyno = 0;
-	if (ioctl(a0, TIOCGPTN, &ptyno))
+	if (ioctl(a0, TIOCGPTN, &ptyno)) {
 		return -1;
+	}
+
 	char buf[128];
 	sprintf(buf, "/dev/pts/%d", ptyno);
-	return open(buf, a1, 0);
+	return open(buf, 2050, 0);
 }
 #endif
 

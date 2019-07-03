@@ -11,8 +11,12 @@ include <uapi/linux/termios.h>
 
 resource fd_tty[fd]
 
-openat$ptmx(fd const[AT_FDCWD], file ptr[in, string["/dev/ptmx"]], flags flags[open_flags], mode const[0]) fd_tty
-syz_open_pts(fd fd_tty, flags flags[open_flags]) fd_tty
+# openat$ptmx(fd const[AT_FDCWD], file ptr[in, string["/dev/ptmx"]], flags flags[open_flags], mode const[0]) fd_tty
+# syz_open_pts(fd fd_tty, flags flags[open_flags]) fd_tty
+
+# openat$ptmx(fd const[AT_FDCWD], file ptr[in, string["/dev/ptmx"]], flags const[2050], mode const[0]) fd_tty
+syz_open_pts() fd_tty
+
 ioctl$TCGETS(fd fd_tty, cmd const[TCGETS], arg ptr[out, termios])
 ioctl$TCSETS(fd fd_tty, cmd const[TCSETS], arg ptr[in, termios])
 ioctl$TCSETSW(fd fd_tty, cmd const[TCSETSW], arg ptr[in, termios])
@@ -33,7 +37,7 @@ ioctl$TCXONC(fd fd_tty, cmd const[TCXONC], arg intptr)
 ioctl$FIONREAD(fd fd_tty, cmd const[FIONREAD], arg ptr[out, int32])
 ioctl$TIOCOUTQ(fd fd_tty, cmd const[TIOCOUTQ], arg ptr[out, int32])
 ioctl$TCFLSH(fd fd_tty, cmd const[TCFLSH], arg intptr)
-ioctl$TIOCGPTPEER(fd fd_tty, cmd const[TIOCGPTPEER], arg intptr) fd_tty
+# ioctl$TIOCGPTPEER(fd fd_tty, cmd const[TIOCGPTPEER], arg intptr) fd_tty
 ioctl$TIOCSTI(fd fd_tty, cmd const[TIOCSTI], arg intptr)
 ioctl$TIOCCONS(fd fd_tty, cmd const[TIOCCONS])
 ioctl$TIOCSCTTY(fd fd_tty, cmd const[TIOCSCTTY], arg intptr)
