@@ -241,8 +241,8 @@ namespace dra {
         std::cout << "CoverKind :" << state << std::endl;
         std::cout << "trace_pc_address :" << trace_pc_address << std::endl;
 //        basicBlock->dump();
-        if (lastInput != nullptr) {
-            std::cout << "lastInput :" << lastInput->sig << std::endl;
+        for (auto i : this->input) {
+            std::cout << "input :" << i->sig << std::endl;
         }
         std::cout << "--------------------------------------------" << std::endl;
 
