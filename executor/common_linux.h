@@ -896,7 +896,7 @@ static long syz_open_pts()
 
 	char buf[128];
 	sprintf(buf, "/dev/pts/%d", ptyno);
-	return open(buf, 2050, 0);
+	return open(buf, flag, mode);
 }
 #endif
 
