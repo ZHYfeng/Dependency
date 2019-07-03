@@ -230,6 +230,9 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	}
 
 	input.Sig = sig.String()
+	for _, c := range data {
+		input.Prog = append(input.Prog, c)
+	}
 	proc.fuzzer.dManager.SendInput(&input)
 }
 
@@ -349,7 +352,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 						proc.fuzzer.dManager.SendLog(fmt.Sprintf("write call : %s", rc))
 						p0 := p.Clone()
 
-						p0.MutateIoctl1Arg(proc.rnd, int(u.Idx+1), ct)
+						//p0.MutateIoctl1Arg(proc.rnd, int(u.Idx), ct)
+
 						c0c := p0.GetCall(proc.rnd, rc, u.Idx, ct)
 						size := len(c0c)
 						p0.InsertCall(c0c, u.Idx, programLength)

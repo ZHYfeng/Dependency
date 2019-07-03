@@ -413,6 +413,7 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyI
 	for idx, u := range dependencyInput.GetUncoveredAddress() {
 		u1 := new(prog.Uncover)
 		u1.UncoveredAddress = u.GetAddress()
+		u1.ConditionAddress = u.GetConditionAddress()
 		u1.Idx = u.GetIdx()
 		for _, a := range u.GetWriteAddress() {
 

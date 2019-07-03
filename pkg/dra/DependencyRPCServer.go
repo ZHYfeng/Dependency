@@ -94,7 +94,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 						r.Prog = append(r.Prog, p)
 					}
 				} else {
-					reply.Name = "related input sig error : " + r.Sig
+					reply.Name = "write input sig error : " + r.Sig
 					return reply, nil
 				}
 			}
@@ -207,6 +207,9 @@ func cloneInput(d *Input) *Input {
 			u1.Address[aa] = 0
 		}
 		ci.Call[i] = u1
+	}
+	for _, c := range d.Prog {
+		ci.Prog = append(ci.Prog, c)
 	}
 	return ci
 }
