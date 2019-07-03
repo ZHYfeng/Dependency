@@ -886,7 +886,8 @@ static long syz_open_pts()
 	int a0 = open("/dev/ptmx", flag, mode);
 
 	// unlockpt()
-	ioctl(a0, TIOCSPTLCK, 0);
+	int lock = 0;
+	ioctl(a0, TIOCSPTLCK, &lock);
 
 	// ptsname()
 	int ptyno = 0;
