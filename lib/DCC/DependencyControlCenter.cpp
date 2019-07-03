@@ -215,6 +215,13 @@ namespace dra {
                 this->current_time = std::time(NULL);
                 std::cout << std::ctime(&this->current_time) << "*time : sleep_for 60s." << std::endl;
                 std::this_thread::sleep_for(std::chrono::seconds(60));
+
+                this->client = new dra::DependencyRPCClient(
+                        grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
+                unsigned long long int vmOffsets = client->GetVmOffsets();
+                DM.setVmOffsets(vmOffsets);
+                this->current_time = std::time(NULL);
+                std::cout << std::ctime(&this->current_time) << "*time : GetVmOffsets" << std::endl;
             }
 
             this->DM.dump_cover();
