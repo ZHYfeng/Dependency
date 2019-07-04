@@ -66,7 +66,7 @@ namespace dra {
             }
             BasicBlock[Name]->InitIRBasicBlock(&it);
         }
-        compute_arrive();
+//        compute_arrive();
         //	inferUseLessPred();
         //	inferUseLessPred(&f->getEntryBlock());
     }

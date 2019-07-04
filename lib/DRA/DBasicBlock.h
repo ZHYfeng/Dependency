@@ -77,8 +77,9 @@ namespace dra {
         DFunction *parent;
         CoverKind state;
         std::string name;
-        uint64_t COVNum;
-        uint64_t address;
+        uint64_t tracr_num;
+        uint64_t trace_pc_address;
+        uint64_t trace_cmp_address;
 
         std::vector<DAInstruction *> InstASM;
         std::vector<DLInstruction *> InstIR;

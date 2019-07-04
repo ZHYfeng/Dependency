@@ -4,7 +4,7 @@ package dra;
 
 // The DependencyRPC service definition.
 service DependencyRPC {
-    
+
     // C++ and syz-manager
     rpc GetVmOffsets (Empty) returns (Empty) {
     }
@@ -12,7 +12,7 @@ service DependencyRPC {
     }
     rpc SendDependencyInput (DependencyInput) returns (Empty) {
     }
-    
+
     //syz-fuzzer and syz-manager
     rpc Connect (Empty) returns (Empty) {
     }
@@ -29,29 +29,24 @@ message Empty {
     string name = 2;
 }
 
-message RelatedInput {
-    string sig = 1; // hash value for each input from syzkaller
-    bytes prog = 3;
-}
-
-message RelatedSyscall {
+message Syscall {
     string name = 1;
     uint64 number =3;
 }
 
-message RelatedAddress {
+message WriteAddress {
     uint32 repeat = 7;
     uint32 prio = 6;
     uint32 address = 2;
-    repeated RelatedInput related_input = 4;
-    repeated RelatedSyscall related_syscall = 5;
+    repeated Input write_input = 4;
+    repeated Syscall write_syscall = 5;
 }
 
 message UncoveredAddress {
     uint32 address = 1;
     uint32 idx = 2;
     uint32 condition_address = 3;
-    repeated RelatedAddress related_address = 4;
+    repeated WriteAddress write_address = 4;
 }
 
 message DependencyInput {

@@ -7,6 +7,8 @@
 
 #include "DataManagement.h"
 #include "llvm/IR/CFG.h"
+#include <llvm/IR/DebugLoc.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <fstream>
 #include <iostream>
 
@@ -21,6 +23,7 @@ namespace dra {
         } else {
             for (auto *Pred : llvm::predecessors(b)) {
                 rb = getRealBB(Pred);
+                break;
             }
         }
         return rb;
@@ -36,6 +39,33 @@ namespace dra {
             }
         }
         return b;
+    }
+
+    void dump_inst(llvm::Instruction *inst) {
+
+        auto b = inst->getParent();
+        auto f = b->getParent();
+
+        std::string Path = dra::DModule::getFileName(f);
+        std::string FunctionName = dra::DModule::getFunctionName(f);
+        std::cout << Path << " : ";
+        std::cout << FunctionName << " : ";
+
+        const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
+        int line = debugInfo->getLine();
+        int column = debugInfo->getColumn();
+        std::cout << std::dec << line << " : ";
+        std::cout << column << " : ";
+
+
+        std::string BasicBlockName = getRealBB(b)->getName();
+        std::cout << BasicBlockName << " : ";
+
+//        std::string directory = debugInfo->getDirectory().str();
+//        std::string filePath = debugInfo->getFilename().str();
+
+        std::cout << std::endl;
+
     }
 
     DataManagement::DataManagement() {
@@ -140,7 +170,7 @@ namespace dra {
                 if (this->Address2BB.find(addr) != this->Address2BB.end()) {
                     this->Address2BB[addr]->update(CoverKind::cover, it.second);
                 } else {
-                    std::cerr << "un find address " << std::hex << addr << "\n";
+                    std::cerr << "un find trace_pc_address " << std::hex << addr << "\n";
                 }
 
             }
@@ -175,7 +205,7 @@ namespace dra {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
 //                    this->dump_address(final_address);
                 } else {
-                    std::cerr << "un find address " << std::hex << final_address << "\n";
+                    std::cerr << "un find trace_pc_address " << std::hex << final_address << "\n";
                 }
 
                 if (this->cover.find(final_address) == this->cover.end()) {
@@ -185,7 +215,8 @@ namespace dra {
                     c->address = final_address;
                     this->cover[final_address] = current_time;
                     this->time.push_back(c);
-                    std::cout << std::ctime(&current_time) << "new cover address " << std::hex << final_address << "\n";
+                    std::cout << std::ctime(&current_time) << "new cover trace_pc_address " << std::hex << final_address
+                              << "\n";
                     if (this->uncover.find(final_address) == this->uncover.end()) {
 
                     } else {
@@ -239,7 +270,7 @@ namespace dra {
                 if (b->parent != nullptr) {
                     auto f = b->parent;
 //                    std::cout << "isDriver path : " << f->Path << "\n";
-//                    std::cout << "isDriver address : " << address << "\n";
+//                    std::cout << "isDriver trace_pc_address : " << trace_pc_address << "\n";
                     if (f->Path.find("block/") == 0) {
                         return true;
                     } else if (f->Path.find("drivers/") == 0) {
@@ -254,7 +285,7 @@ namespace dra {
                 std::cerr << "isDriver not have parent bb : " << std::hex << address << "\n";
             }
         } else {
-            std::cerr << "isDriver not find address : " << std::hex << address << "\n";
+            std::cerr << "isDriver not find trace_pc_address : " << std::hex << address << "\n";
         }
         return false;
     }
@@ -267,7 +298,7 @@ namespace dra {
                 if (b->parent != nullptr) {
                     auto f = b->parent;
                     std::cout << "dump_address path : " << f->Path << "\n";
-                    std::cout << "dump_address address : " << address << "\n";
+                    std::cout << "dump_address trace_pc_address : " << address << "\n";
                     std::cout << "dump_address getSyzkallerAddress : " << this->getSyzkallerAddress(address) << "\n";
                 } else {
                     std::cerr << "dump_address not have parent f : " << std::hex << address << "\n";
@@ -276,7 +307,7 @@ namespace dra {
                 std::cerr << "dump_address not have parent bb : " << std::hex << address << "\n";
             }
         } else {
-            std::cerr << "dump_address not find address : " << std::hex << address << "\n";
+            std::cerr << "dump_address not find trace_pc_address : " << std::hex << address << "\n";
         }
     }
 
@@ -310,7 +341,7 @@ namespace dra {
                         }
                     }
                     out_file << "uc.second->condition_address : " << std::hex << uc.second->condition_address << "\n";
-                    out_file << "uc.second->address : " << std::hex << uc.second->address << "\n";
+                    out_file << "uc.second->trace_pc_address : " << std::hex << uc.second->address << "\n";
                     out_file << "getSyzkallerAddress : " << std::hex << this->getSyzkallerAddress(uc.second->address)
                              << "\n";
                 }
@@ -326,6 +357,18 @@ namespace dra {
         out_file << "be covered by dependency : " << ucd << "\n";
 
         out_file.close();
+    }
+
+    void DataManagement::dump_ctxs(std::vector<llvm::Instruction *> *ctx) {
+        std::cout << "call chain : " << std::dec << ctx->size() << "\n";
+        for (auto inst : *ctx) {
+            if (inst != nullptr) {
+                dump_inst(inst);
+            } else {
+                std::cerr << "nullptr in ctx" << std::endl;
+            }
+
+        }
     }
 
     uncover_info::uncover_info() : address(0),

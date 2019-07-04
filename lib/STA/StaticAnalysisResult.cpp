@@ -20,13 +20,23 @@ namespace sta {
         try {
             std::ifstream infile;
             infile.open(staticRes);
-            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap >> this->j_tagInfo >> this->j_calleeMap;
+            infile >> this->j_taintedBrs >> this->j_ctxMap >> this->j_traitMap >> this->j_tagModMap
+                   >> this->j_tagConstMap >> this->j_tagInfo >> this->j_calleeMap;
             infile.close();
             this->taintedBrs = this->j_taintedBrs.get<TAINTED_BR_TY>();
             this->ctxMap = this->j_ctxMap.get<CTX_MAP_TY>();
             this->traitMap = this->j_traitMap.get<INST_TRAIT_MAP>();
             this->tagModMap = this->j_tagModMap.get<TAG_MOD_MAP_TY>();
+            this->tagConstMap = this->j_tagConstMap.get<TAG_CONST_MAP_TY>();
             this->tagInfo = this->j_tagInfo.get<TAG_INFO_TY>();
+            //Sort the tag info into two separate maps" global and local (e.g. user provided arg)
+            for (auto &x : this->tagInfo) {
+                if (x.second.find("is_global") != x.second.end() && x.second["is_global"] == "false") {
+                    this->tagInfo_local[x.first] = x.second;
+                } else {
+                    this->tagInfo_global[x.first] = x.second;
+                }
+            }
             this->calleeMap = this->j_calleeMap.get<CALLEE_MAP_TY>();
             return 0;
         } catch (...) {
@@ -59,7 +69,8 @@ namespace sta {
         return "";
     }
 
-    llvm::DILocation *getRecursiveDILoc(llvm::Instruction *currInst, std::string &funcFileName, std::set<llvm::BasicBlock *> &visitedBBs) {
+    llvm::DILocation *getRecursiveDILoc(llvm::Instruction *currInst, std::string &funcFileName,
+                                        std::set<llvm::BasicBlock *> &visitedBBs) {
         llvm::DILocation *currIL = currInst->getDebugLoc().get();
         if (funcFileName.length() == 0) {
             return currIL;
@@ -212,6 +223,10 @@ namespace sta {
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
+                //Only consider the mod insts for global taint source.
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    continue;
+                }
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
                 }
@@ -254,6 +269,10 @@ namespace sta {
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             for (ID_TY tid : tag_ids) {
+                //Only consider the mod insts for global taint source.
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    continue;
+                }
                 if (this->tagModMap.find(tid) == this->tagModMap.end()) {
                     continue;
                 }
@@ -355,7 +374,8 @@ namespace sta {
         } else {
             return;
         }
-        std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(), std::inserter(succ_uniq, succ_uniq.end()));
+        std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(),
+                            std::inserter(succ_uniq, succ_uniq.end()));
         llvm::DominatorTree *pdom = this->get_dom_tree(B->getParent());
         std::remove_if(pmods->begin(), pmods->end(),
                        [succ_uniq, pdom, B](Mod *pmod) {
@@ -367,7 +387,8 @@ namespace sta {
                                return true;
                            }
                            //Case 1: we can for sure reach the mod inst if we can reach the "br" and the mod inst is not accumulative (i.e. i++) 
-                           if (pmod->B->getParent() == B->getParent() && pmod->is_trait_fixed() && pdom->dominates(pmod->B, B)) {
+                           if (pmod->B->getParent() == B->getParent() && pmod->is_trait_fixed() &&
+                               pdom->dominates(pmod->B, B)) {
                                return true;
                            }
                            return false;
@@ -512,9 +533,11 @@ namespace sta {
         return mod_bbs;
     }
 
-    llvm::Instruction *StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
+    llvm::Instruction *
+    StaticAnalysisResult::getInstFromStr(std::string path, std::string func, std::string bb, std::string inst) {
 
         auto function = this->dm->Modules->Function;
+        llvm::Instruction *iii = nullptr;
         if (function.find(path) != function.end()) {
             auto file = function[path];
             if (file.find(func) != file.end()) {
@@ -523,24 +546,31 @@ namespace sta {
                     auto bbb = f->BasicBlock[bb]->basicBlock;
                     for (llvm::Instruction &curInst : *bbb) {
                         if (this->getInstStrID(&curInst) == inst) {
-                            return &curInst;
+                            iii = &curInst;
+                            return iii;
                         }
                     }//Inst
+
                 } else {
                     for (auto &it : *f->function) {
                         auto name = getBBStrID(&it);
                         if (name == bb) {
                             for (llvm::Instruction &curInst : it) {
                                 if (this->getInstStrID(&curInst) == inst) {
-                                    return &curInst;
+                                    iii = &curInst;
+                                    return iii;
                                 }
                             }
                         }
                     }
                 }
+            } else {
+                std::cout << "not find function" << std::endl;
             }
+        } else {
+            std::cout << "not find file : " << path << std::endl;
         }
-        return nullptr;
+        return iii;
     }
 
     llvm::BasicBlock *StaticAnalysisResult::getBBFromStr(std::string path, std::string func, std::string bb) {
@@ -721,13 +751,13 @@ namespace sta {
         return nullptr;
     }
 
-    bool StaticAnalysisResult::getCtx(ID_TY id, std::vector<llvm::Instruction*> *pctx) {
+    bool StaticAnalysisResult::getCtx(ID_TY id, std::vector<llvm::Instruction *> *pctx) {
         if (this->ctxMap.find(id) == this->ctxMap.end() || !pctx) {
             return false;
         }
         pctx->clear();
-        for (auto& loc : this->ctxMap[id]) {
-            llvm::Instruction *inst = this->getInstFromStr(loc[0],loc[1],loc[2],loc[3]);
+        for (auto &loc : this->ctxMap[id]) {
+            llvm::Instruction *inst = this->getInstFromStr(loc[3], loc[2], loc[1], loc[0]);
             pctx->push_back(inst);
         }
         return true;
@@ -801,6 +831,141 @@ namespace sta {
 
         // Step 7
         return matrix[n][m];
+    }
+
+    //the absolute return value is the #(arg taint tags), if the value is positive, then the "br" only has arg taints,
+    //if negative, there also exists global variable taints.
+    int StaticAnalysisResult::getArgTaintStatus(llvm::BasicBlock *B) {
+        if (!B) {
+            return 0;
+        }
+        BR_INF *p_taint_inf = this->QueryBranchTaint(B);
+        if (!p_taint_inf) {
+            return 0;
+        }
+        bool has_global_taint = false;
+        std::set<ID_TY> uniqArgTag;
+        for (auto &x : *p_taint_inf) {
+            auto &actx_id = x.first;
+            //trait_id = std::get<0>(x.second);
+            auto &tag_ids = std::get<1>(x.second);
+            for (ID_TY tid : tag_ids) {
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    uniqArgTag.insert(tid);
+                } else if (this->tagInfo_global.find(tid) != this->tagInfo_global.end()) {
+                    has_global_taint = true;
+                }
+            }
+        }
+        int n = uniqArgTag.size();
+        if (has_global_taint) {
+            n = 0 - n;
+        }
+        return n;
+    }
+
+    bool StaticAnalysisResult::getAllTagConstants(ID_TY tag_id, CONST_INF *p_consts) {
+        if (this->tagConstMap.find(tag_id) == this->tagConstMap.end() || !p_consts) {
+            return false;
+        }
+        for (auto& i0 : this->tagConstMap[tag_id]) {
+            //i0.first : file
+            for (auto& i1 : i0.second) {
+                //i1.first : func
+                for (auto& i2 : i1.second) {
+                    //i2.first : BB
+                    for (auto& i3 : i2.second) {
+                        //i3.first : inst
+                        p_consts->insert(i3.second.begin(),i3.second.end());
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    //parse the type str to get more easy-to-read info.
+    //type str, e.g.
+    //%struct.A = type {...}:3->%struct.B = type {...}:2.%struct.C = type {...}:5
+    std::vector<FieldPtr*> *StaticAnalysisResult::parseTypeStr(std::string tys) {
+        std::vector<FieldPtr*> *r = new std::vector<FieldPtr*>();
+        int prev = 0;
+        for (int i=0; i<tys.length(); ++i) {
+            if (tys[i] == ':') {
+                std::string obj_ty = tys.substr(prev,i-prev);
+                size_t j = 0;
+                long field = 0;
+                try{
+                    field = std::stoi(tys.substr(i+1),&j,10);
+                }catch(...){
+                    std::cout << "Exception in StaticAnalysisResult::parseTypeStr: " << tys << "\n";
+                    return r;
+                }
+                if (j <= 0) {
+                    std::cout << "No valid field number after :" << tys << "\n";
+                    return r;
+                }
+                i += (j+1);
+                bool is_embed = true;
+                if (i < tys.length()-1) {
+                    if (tys[i] == '-' && tys[i+1] == '>') {
+                        is_embed = false;
+                        prev = i+2;
+                    }else if (tys[i] != '.') {
+                        //Something goes wrong
+                        std::cout << "Invalid format :" << tys << "\n";
+                        return r;
+                    }else {
+                        prev = i+1;
+                    }
+                }
+                FieldPtr *fiptr = new FieldPtr(obj_ty,field,is_embed);
+                r->push_back(fiptr);
+            }
+        }
+        return r;
+    }
+
+    //Return the type of the tag variable, see comment
+    std::vector<std::vector<FieldPtr*>*> *StaticAnalysisResult::getTagType(ID_TY tag_id) {
+        if (this->tagInfo.find(tag_id) == this->tagInfo.end()) {
+            return nullptr;
+        }
+        std::vector<std::vector<FieldPtr*>*> *r = new std::vector<std::vector<FieldPtr*>*>();
+        for (auto& x : this->tagInfo[tag_id]) {
+            if (x.first.find("hs_") == 0) {
+                //Find a hierarchy string.
+                r->push_back(this->parseTypeStr(x.second));
+            }
+        }
+        return r;
+    }
+
+    //If the conditional jump in the passed-in BB is tainted by any user arg,
+    //return these args (e.g. a field in a user struct) and related constants we collected.
+    //NOTE: free the returned obj after using.
+    std::map<ID_TY,CONST_INF> *StaticAnalysisResult::getArgTaintInfo(llvm::BasicBlock *B) {
+        if (!B) {
+            return nullptr;
+        }
+        BR_INF *p_taint_inf = this->QueryBranchTaint(B);
+        if (!p_taint_inf) {
+            return nullptr;
+        }
+        std::map<ID_TY,CONST_INF> *pres = new std::map<ID_TY,CONST_INF>();
+        for (auto &x : *p_taint_inf) {
+            auto &actx_id = x.first;
+            //trait_id = std::get<0>(x.second);
+            auto &tag_ids = std::get<1>(x.second);
+            for (ID_TY tid : tag_ids) {
+                if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
+                    //Ok, find one arg that taints this BB.
+                    //Get its collected cmp constants.
+                    this->getAllTagConstants(tid,&((*pres)[tid]));
+                }
+            }
+        }
+        return pres;
     }
 
 } /* namespace sta */

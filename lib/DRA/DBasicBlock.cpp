@@ -22,7 +22,7 @@ namespace dra {
         basicBlock = nullptr;
         parent = nullptr;
         state = CoverKind::untest;
-        COVNum = 0;
+        tracr_num = 0;
         this->lastInput = nullptr;
     }
 
@@ -74,7 +74,7 @@ namespace dra {
             }
             infer();
         } else {
-            std::cerr << "DBasicBlock update basicBlock == nullptr : " << this->address << "\n";
+            std::cerr << "DBasicBlock update basicBlock == nullptr : " << this->trace_pc_address << "\n";
         }
 
     }
@@ -129,10 +129,10 @@ namespace dra {
                 if (Db->state == CoverKind::untest) {
                     Db->setState(CoverKind::uncover);
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->address, Dp->address, i);
+                    dInput->addUncoveredAddress(Db->trace_pc_address, Dp->trace_pc_address, i);
                 } else if (Db->state == CoverKind::uncover) {
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->address, Dp->address, i);
+                    dInput->addUncoveredAddress(Db->trace_pc_address, Dp->trace_pc_address, i);
                 } else if (Db->state == CoverKind::cover) {
 
                 }
@@ -239,10 +239,10 @@ namespace dra {
         std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
         std::cout << "IR :" << IR << std::endl;
         std::cout << "CoverKind :" << state << std::endl;
-        std::cout << "address :" << address << std::endl;
+        std::cout << "trace_pc_address :" << trace_pc_address << std::endl;
 //        basicBlock->dump();
-        if (lastInput != nullptr) {
-            std::cout << "lastInput :" << lastInput->sig << std::endl;
+        for (auto i : this->input) {
+            std::cout << "input :" << i->sig << std::endl;
         }
         std::cout << "--------------------------------------------" << std::endl;
 

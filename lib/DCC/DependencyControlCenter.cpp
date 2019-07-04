@@ -60,11 +60,13 @@ namespace dra {
                 for (int j = 0; j < newInput->input_size(); j++) {
                     const Input &input = newInput->input(j);
                     std::cout << "new input : " << input.sig() << std::endl;
+                    std::cout << input.prog() << std::endl;
                     DInput *dInput = DM.getInput(input);
                     DependencyInput dependencyInput;
                     bool sendFlag = false;
                     dependencyInput.set_sig(dInput->sig);
-                    std::cout << "dUncoveredAddress size : " << dInput->dUncoveredAddress.size() << std::endl;
+                    std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
+                              << std::endl;
                     for (auto u : dInput->dUncoveredAddress) {
                         this->uncovered_address_number++;
                         if (this->DM.isDriver(u->address)) {
@@ -72,11 +74,11 @@ namespace dra {
                             unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
 
                             this->current_time = std::time(nullptr);
-                            std::cout << std::ctime(&current_time) << "uncovered address : " << std::hex << u->address
-                                      << "\n";
-                            std::cout << "condition address : " << std::hex << u->condition_address << "\n";
-                            std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
+                            std::cout << std::ctime(&current_time);
+                            std::cout << "condition trace_pc_address : " << std::hex << u->condition_address << "\n";
+                            std::cout << "uncovered trace_pc_address : " << std::hex << u->address << "\n";
                             std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
+                            std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
 
                             this->uncovered_address_number_driver++;
                             if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
@@ -84,8 +86,15 @@ namespace dra {
                                 p->dump();
 
                                 auto *b = p->basicBlock;
+
+                                this->current_time = std::time(nullptr);
+                                std::cout << std::ctime(&current_time);
+                                std::cout << "GetAllGlobalWriteBBs : " << std::endl;
                                 sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(dra::getFinalBB(b),
                                                                                           u->successor_idx);
+                                this->current_time = std::time(nullptr);
+                                std::cout << std::ctime(&current_time);
+
                                 if (allBasicblock == nullptr) {
                                     if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
                                         this->DM.uncover[u->address]->belong_to_Driver = true;
@@ -108,8 +117,11 @@ namespace dra {
                                         this->DM.uncover[u->address]->related_to_gv = true;
                                     }
                                     this->uncovered_address_number_gv_driver++;
+
                                     sendFlag = true;
-                                    std::cout << "get useful static analysis result" << std::endl;
+                                    std::cout << "get useful static analysis result : " << std::dec
+                                              << allBasicblock->size()
+                                              << std::endl;
 
 
                                     UncoveredAddress *uncoveredAddress = dependencyInput.add_uncovered_address();
@@ -118,38 +130,56 @@ namespace dra {
                                     uncoveredAddress->set_condition_address(condition_address);
 
                                     for (auto &x : *allBasicblock) {
+
+                                        this->current_time = std::time(NULL);
+                                        std::cout << std::ctime(&current_time);
+                                        std::cout << "write basicblock : " << std::endl;
+
+                                        dra::dump_inst(&x->B->front());
+
                                         llvm::BasicBlock *bb = dra::getRealBB(x->B);
                                         //Hang: NOTE: now let's just use "ioctl" as the "related syscall"
                                         //Hang: Below "cmds" is the value set for "cmd" arg of ioctl to reach this write BB.
-                                        std::set<uint64_t> *cmds = x->getIoctlCmdSet();
+
                                         std::string Path = dra::DModule::getFileName(bb->getParent());
                                         std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
                                         std::string bbname = bb->getName().str();
                                         auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
-                                        unsigned int writeAddress = DM.getSyzkallerAddress(db->address);
+                                        unsigned int writeAddress = DM.getSyzkallerAddress(db->trace_pc_address);
                                         auto function_name = "ioctl";
-                                        auto related_address = uncoveredAddress->add_related_address();
+                                        auto writeAddress1 = uncoveredAddress->add_write_address();
 
-                                        std::cout << std::ctime(&current_time) << "related write basicblock : "
-                                                  << std::endl;
                                         std::cout << "writeAddress getSyzkallerAddress : " << std::hex << writeAddress
                                                   << "\n";
                                         std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
                                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                                         db->dump();
 
+                                        this->current_time = std::time(NULL);
+                                        std::cout << std::ctime(&current_time);
+                                        std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
+                                        std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
+                                        this->current_time = std::time(NULL);
+                                        std::cout << std::ctime(&current_time);
+                                        for (auto c: *cmd_ctx) {
+                                            std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
+                                            std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
+                                            this->DM.dump_ctxs(&c->ctx);
+                                        }
+                                        this->current_time = std::time(NULL);
+                                        std::cout << std::ctime(&current_time);
 
-                                        related_address->set_address(writeAddress);
-                                        related_address->set_repeat(x->repeat);
-                                        related_address->set_prio(x->prio);
+                                        writeAddress1->set_address(writeAddress);
+                                        writeAddress1->set_repeat(x->repeat);
+                                        writeAddress1->set_prio(x->prio);
 //                                        std::cout << "cmds size : " << cmds->size() << std::endl;
-                                        for (auto c : *cmds) {
-                                            auto related_syscall = related_address->add_related_syscall();
+                                        for (auto c : *cmd_ctx) {
+                                            auto related_syscall = writeAddress1->add_write_syscall();
                                             related_syscall->set_name(function_name);
-                                            related_syscall->set_number(c);
+                                            related_syscall->set_number(c->cmd);
                                         }
                                         for (auto i : db->input) {
-                                            auto related_input = related_address->add_related_input();
+                                            auto related_input = writeAddress1->add_write_input();
                                             related_input->set_sig(i->sig);
                                         }
 
@@ -170,18 +200,18 @@ namespace dra {
                         auto reply = client->SendDependencyInput(dependencyInput);
 
 //                        for (auto ua : dependencyInput.uncovered_address()) {
-//                            std::cout << "uncover address : " << ua.address() << std::endl;
+//                            std::cout << "uncover trace_pc_address : " << ua.trace_pc_address() << std::endl;
 //                            std::cout << "uncovered_idx : " << ua.idx() << std::endl;
 //                            std::cout << "uncovered_condition_address : " << ua.condition_address() << std::endl;
 //                            for (auto ra : ua.related_address()) {
-//                                std::cout << "ra.address() : " << ra.address() << std::endl;
+//                                std::cout << "ra.trace_pc_address() : " << ra.trace_pc_address() << std::endl;
 //                                std::cout << "ra.repeat() : " << ra.repeat() << std::endl;
 //                                std::cout << "ra.prio() : " << ra.prio() << std::endl;
 //                            }
 //                        }
 
 
-//                    std::cerr << "SendDependencyInput size : " << reply->address() << std::endl;
+//                    std::cerr << "SendDependencyInput size : " << reply->trace_pc_address() << std::endl;
 //                    std::cerr << "test GetDependencyInput : " << std::endl;
 //                    auto neww = client->GetDependencyInput();
 //                    for (int ni = 0; ni < neww->dependencyinput_size(); ni++) {
@@ -199,6 +229,13 @@ namespace dra {
                 this->current_time = std::time(nullptr);
                 std::cout << std::ctime(&this->current_time) << "*time : sleep_for 60s." << std::endl;
                 std::this_thread::sleep_for(std::chrono::seconds(60));
+
+                this->client = new dra::DependencyRPCClient(
+                        grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
+                unsigned long long int vmOffsets = client->GetVmOffsets();
+                DM.setVmOffsets(vmOffsets);
+                this->current_time = std::time(NULL);
+                std::cout << std::ctime(&this->current_time) << "*time : GetVmOffsets" << std::endl;
             }
 
             this->DM.dump_cover();
@@ -264,13 +301,13 @@ namespace dra {
 //            for (int k = 0; k < uu.related_input_size(); k++) {
 //                auto ii = uu.related_input(k);
 //                std::cout << "ii.sig : " << ii.sig() << std::endl;
-//                std::cout << "ii.address : " << ii.address() << std::endl;
+//                std::cout << "ii.trace_pc_address : " << ii.trace_pc_address() << std::endl;
 //            }
 //
 //            for (auto ss: uu.related_syscall()) {
 //                std::cout << "ss.number : " << ss.number() << std::endl;
 //                std::cout << "ss.name : " << ss.name() << std::endl;
-//                std::cout << "ss.address : " << ss.address() << std::endl;
+//                std::cout << "ss.trace_pc_address : " << ss.trace_pc_address() << std::endl;
 //            }
 //        }
 //
@@ -285,13 +322,13 @@ namespace dra {
 //                for (int k = 0; k < uu.related_input_size(); k++) {
 //                    auto ii = uu.related_input(k);
 //                    std::cout << "ii.sig : " << ii.sig() << std::endl;
-//                    std::cout << "ii.address : " << std::hex << ii.address() << std::endl;
+//                    std::cout << "ii.trace_pc_address : " << std::hex << ii.trace_pc_address() << std::endl;
 //                }
 //
 //                for (auto ss: uu.related_syscall()) {
 //                    std::cout << "ss.number : " << ss.number() << std::endl;
 //                    std::cout << "ss.name : " << ss.name() << std::endl;
-//                    std::cout << "ss.address : " << ss.address() << std::endl;
+//                    std::cout << "ss.trace_pc_address : " << ss.trace_pc_address() << std::endl;
 //                }
 //            }
 //        }

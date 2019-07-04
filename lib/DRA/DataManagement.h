@@ -44,6 +44,8 @@ namespace dra {
 
     llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
 
+    void dump_inst(llvm::Instruction *inst);
+
     class DataManagement {
     public:
         DataManagement();
@@ -75,6 +77,10 @@ namespace dra {
         void dump_cover();
 
         void dump_uncover();
+
+        void dump_ctxs(std::vector<llvm::Instruction *> *ctx);
+
+
 
     public:
         dra::DModule *Modules;
