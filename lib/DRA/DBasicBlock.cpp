@@ -225,7 +225,7 @@ namespace dra {
 
     void DBasicBlock::addNewInput(DInput *i) {
         this->lastInput = i;
-        this->input.insert(i);
+        this->input[i] = i->idx;
     }
 
     void DBasicBlock::dump() {
@@ -242,7 +242,8 @@ namespace dra {
         std::cout << "trace_pc_address :" << trace_pc_address << std::endl;
 //        basicBlock->dump();
         for (auto i : this->input) {
-            std::cout << "input :" << i->sig << std::endl;
+            std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
+            std::cout << i.first->prog;
         }
         std::cout << "--------------------------------------------" << std::endl;
 

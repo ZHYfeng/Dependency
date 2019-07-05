@@ -28,11 +28,15 @@ namespace dra {
 
         void setRPCConnection();
 
-        void get_dependency_input(std::string sig, DUncoveredAddress *u);
+        sta::MODS *get_write_basicblock(DUncoveredAddress *u);
+
+        void get_dependency_input(DInput *dInput);
 
         void send_dependency_input(Input *dependencyInput);
 
-//        void
+        void get_write_address();
+
+        void send_write_address(WriteAddress *writeAddress);
 
         void test_sta();
         void test_rpc();

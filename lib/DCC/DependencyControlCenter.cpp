@@ -46,21 +46,12 @@ namespace dra {
             if (newInput != nullptr) {
                 std::cout << "new input : " << newInput->sig() << std::endl;
                 std::cout << newInput->prog() << std::endl;
+
                 DInput *dInput = DM.getInput(newInput);
                 std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
                           << std::endl;
-                for (auto u : dInput->dUncoveredAddress) {
-                    if (this->DM.isDriver(u->address)) {
+                get_dependency_input(dInput);
 
-                        if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
-                            this->DM.uncover[u->address]->belong_to_Driver = true;
-                        }
-
-                        this->get_dependency_input(dInput->sig, u);
-
-                    } else {
-                    }
-                }
                 newInput->Clear();
                 this->current_time = std::time(nullptr);
                 std::cout << std::ctime(&this->current_time) << "*time : sleep_for 10s." << std::endl;
@@ -88,122 +79,102 @@ namespace dra {
         std::cout << std::ctime(&this->current_time) << "*time : GetVmOffsets" << std::endl;
     }
 
-    void DependencyControlCenter::get_dependency_input(std::string prog, DUncoveredAddress *u) {
-        Input *dependencyInput;
-        bool sendFlag = false;
-        dependencyInput->set_prog(prog);
+    void DependencyControlCenter::get_dependency_input(DInput *dInput) {
 
-        unsigned long long int address = DM.getSyzkallerAddress(u->address);
-        unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
+        Input *dependencyInput = new Input();
+        dependencyInput->set_prog(dInput->prog);
+        bool send_flag = false;
 
-        this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&current_time);
-        std::cout << "condition trace_pc_address : " << std::hex << u->condition_address << "\n";
-        std::cout << "uncovered trace_pc_address : " << std::hex << u->address << "\n";
-        std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
-        std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
+        for (auto u : dInput->dUncoveredAddress) {
+            if (this->DM.check_uncovered_address(u)) {
 
-        if (DM.Address2BB.find(u->condition_address) != DM.Address2BB.end()) {
-            auto *p = DM.Address2BB[u->condition_address]->parent;
-            p->dump();
-
-            auto *b = p->basicBlock;
-
-            this->current_time = std::time(nullptr);
-            std::cout << std::ctime(&current_time);
-            std::cout << "GetAllGlobalWriteBBs : " << std::endl;
-            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(dra::getFinalBB(b),
-                                                                      u->successor_idx);
-            this->current_time = std::time(nullptr);
-            std::cout << std::ctime(&current_time);
-
-
-            if (allBasicblock == nullptr) {
-                // no taint or out side
-                std::cout << "allBasicblock == nullptr" << std::endl;
-                p->dump();
-
-            } else if (allBasicblock->size() == 0) {
-                // unrelated to gv
-                std::cout << "allBasicblock->size() == 0" << std::endl;
-                p->dump();
-
-            } else if (!allBasicblock->empty()) {
                 if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
-                    this->DM.uncover[u->address]->related_to_gv = true;
+                    this->DM.uncover[u->address]->belong_to_Driver = true;
                 }
-                sendFlag = true;
-                std::cout << "get useful static analysis result : " << std::dec
-                          << allBasicblock->size()
-                          << std::endl;
 
-                UncoveredAddress uncoveredAddress = dependencyInput->uncovered_address();
-                uncoveredAddress.set_uncovered_address(address);
-                uncoveredAddress.set_idx(u->idx);
-                uncoveredAddress.set_condition_address(condition_address);
 
-                for (auto &x : *allBasicblock) {
+                unsigned long long int address = DM.getSyzkallerAddress(u->address);
+                unsigned long long int condition_address = DM.getSyzkallerAddress(u->condition_address);
 
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
-                    std::cout << "write basicblock : " << std::endl;
+                this->current_time = std::time(nullptr);
+                std::cout << std::ctime(&current_time);
+                std::cout << "condition trace_pc_address : " << std::hex << u->condition_address << "\n";
+                std::cout << "uncovered trace_pc_address : " << std::hex << u->address << "\n";
+                std::cout << "condition getSyzkallerAddress : " << std::hex << condition_address << "\n";
+                std::cout << "uncovered getSyzkallerAddress : " << std::hex << address << "\n";
 
-                    dra::dump_inst(&x->B->front());
+                UncoveredAddress *uncoveredAddress = dependencyInput->add_uncovered_address();
+                uncoveredAddress->set_uncovered_address(address);
+                uncoveredAddress->set_idx(u->idx);
+                uncoveredAddress->set_condition_address(condition_address);
 
-                    llvm::BasicBlock *bb = dra::getRealBB(x->B);
-                    std::string Path = dra::DModule::getFileName(bb->getParent());
-                    std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
-                    std::string bbname = bb->getName().str();
-                    auto db = DM.Modules->Function[Path][FunctionName]->BasicBlock[bbname];
-                    unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
-                    WriteAddress writeAddress = uncoveredAddress.write_address();
+                sta::MODS *write_basicblock = get_write_basicblock(u);
 
-                    std::cout << "write_address getSyzkallerAddress : " << std::hex << write_address
-                              << "\n";
-                    std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
-                    std::cout << "x->prio : " << std::hex << x->prio << "\n";
-                    db->dump();
+                if (write_basicblock == nullptr) {
 
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
-                    std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
-                    std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
-                    for (auto c: *cmd_ctx) {
-                        std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
-                        std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
-                        this->DM.dump_ctxs(&c->ctx);
-                    }
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
+                } else {
 
-                    writeAddress.set_write_address(write_address);
-                    writeAddress.set_condition_address(condition_address);
-                    writeAddress.set_repeat(x->repeat);
-                    writeAddress.set_prio(x->prio);
+                    send_flag = true;
 
-                    auto function_name = "ioctl";
-                    for (auto c : *cmd_ctx) {
-                        auto write_syscall = writeAddress.write_syscall();
-                        write_syscall.set_name(function_name);
-                        write_syscall.set_number(c->cmd);
-                    }
-                    for (auto i : db->input) {
-                        auto write_input = writeAddress.write_input();
-                        write_input.set_sig(i->sig);
+                    if (this->DM.uncover.find(u->address) != this->DM.uncover.end()) {
+                        this->DM.uncover[u->address]->related_to_gv = true;
                     }
 
-                    //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak,
-                    // or we can also set up a cache to avoid repeated query to STA.
+                    for (auto &x : *write_basicblock) {
+
+                        this->current_time = std::time(nullptr);
+                        std::cout << std::ctime(&current_time);
+                        std::cout << "write basicblock : " << std::endl;
+
+                        dra::dump_inst(&x->B->front());
+
+                        DBasicBlock *db = this->DM.get_DB_from_bb(x->B);
+                        unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
+
+
+                        std::cout << "write_address getSyzkallerAddress : " << std::hex << write_address << "\n";
+                        std::cout << "x->repeat : " << std::hex << x->repeat << "\n";
+                        std::cout << "x->prio : " << std::hex << x->prio << "\n";
+                        db->dump();
+
+                        this->current_time = std::time(nullptr);
+                        std::cout << std::ctime(&current_time);
+                        std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
+                        std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
+                        this->current_time = std::time(nullptr);
+                        std::cout << std::ctime(&current_time);
+                        for (auto c: *cmd_ctx) {
+                            std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
+                            std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
+                            this->DM.dump_ctxs(&c->ctx);
+                        }
+                        this->current_time = std::time(nullptr);
+                        std::cout << std::ctime(&current_time);
+
+                        WriteAddress *writeAddress = uncoveredAddress->add_write_address();
+                        writeAddress->set_write_address(write_address);
+                        writeAddress->set_condition_address(condition_address);
+                        writeAddress->set_repeat(x->repeat);
+                        writeAddress->set_prio(x->prio);
+
+                        auto function_name = "ioctl";
+                        for (auto c : *cmd_ctx) {
+                            auto write_syscall = writeAddress->add_write_syscall();
+                            write_syscall->set_name(function_name);
+                            write_syscall->set_number(c->cmd);
+                        }
+                        for (auto i : db->input) {
+                            auto write_input = writeAddress->add_write_input();
+                            write_input->set_sig(i.first->sig);
+                        }
+
+                        this->send_dependency_input(dependencyInput);
+                    }
                 }
             }
-        } else {
-            std::cerr << "can not find condition_address : " << std::hex << u->condition_address
-                      << std::endl;
         }
 
-        if (sendFlag) {
+        if (send_flag) {
             this->send_dependency_input(dependencyInput);
         }
 
@@ -251,6 +222,46 @@ namespace dra {
     void DependencyControlCenter::test_rpc() {
 
         exit(0);
+    }
+
+    void DependencyControlCenter::get_write_address() {
+
+    }
+
+    void DependencyControlCenter::send_write_address(WriteAddress *writeAddress) {
+
+    }
+
+    sta::MODS *DependencyControlCenter::get_write_basicblock(DUncoveredAddress *u) {
+
+        //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak,
+        // or we can also set up a cache to avoid repeated query to STA.
+
+        sta::MODS *res = nullptr;
+
+        DBasicBlock *p = DM.Address2BB[u->condition_address]->parent;
+        llvm::BasicBlock *b = dra::getFinalBB(p->basicBlock);
+
+        this->current_time = std::time(nullptr);
+        std::cout << std::ctime(&current_time);
+        std::cout << "GetAllGlobalWriteBBs : " << std::endl;
+        sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, u->successor_idx);
+        this->current_time = std::time(nullptr);
+        std::cout << std::ctime(&current_time);
+
+        p->dump();
+        if (write_basicblock == nullptr) {
+            // no taint or out side
+            std::cout << "allBasicblock == nullptr" << std::endl;
+        } else if (write_basicblock->size() == 0) {
+            // unrelated to gv
+            std::cout << "allBasicblock->size() == 0" << std::endl;
+        } else if (!write_basicblock->empty()) {
+            std::cout << "get useful static analysis result : " << std::dec << write_basicblock->size() << std::endl;
+            res = write_basicblock;
+        }
+
+        return res;
     }
 
 } /* namespace dra */

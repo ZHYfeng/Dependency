@@ -271,8 +271,6 @@ namespace dra {
                 auto b = this->Address2BB[address]->parent;
                 if (b->parent != nullptr) {
                     auto f = b->parent;
-//                    std::cout << "isDriver path : " << f->Path << "\n";
-//                    std::cout << "isDriver trace_pc_address : " << trace_pc_address << "\n";
                     if (f->Path.find("block/") == 0) {
                         return true;
                     } else if (f->Path.find("drivers/") == 0) {
@@ -380,6 +378,20 @@ namespace dra {
         std::string bbname = bb->getName().str();
         DBasicBlock *db = this->Modules->Function[Path][FunctionName]->BasicBlock[bbname];
         return db;
+    }
+
+    bool DataManagement::check_uncovered_address(DUncoveredAddress *u) {
+        bool res = false;
+        if (this->isDriver(u->address)) {
+            if (this->Address2BB.find(u->condition_address) != this->Address2BB.end()) {
+                res = true;
+            } else {
+                std::cerr << "can not find condition_address : " << std::hex << u->condition_address
+                          << std::endl;
+            }
+        }
+
+        return res;
     }
 
     uncover_info::uncover_info() : address(0),

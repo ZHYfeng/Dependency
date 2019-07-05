@@ -84,11 +84,11 @@ namespace dra {
         std::vector<DAInstruction *> InstASM;
         std::vector<DLInstruction *> InstIR;
 
-        std::set<DInput *> input;
+        std::map<DInput *, uint64_t> input;
         DInput *lastInput;
 
-        std::map<dra::DBasicBlock *, uint64_t > arrive;
-        std::map<dra::DBasicBlock *, uint64_t > critical_condition;
+        std::map<dra::DBasicBlock *, uint64_t> arrive;
+        std::map<dra::DBasicBlock *, uint64_t> critical_condition;
 
         std::set<llvm::BasicBlock *> useLessPred;
     };
