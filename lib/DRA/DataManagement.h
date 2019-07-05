@@ -62,7 +62,7 @@ namespace dra {
 
         void getInput(std::string coverfile);
 
-        DInput *getInput(Input input);
+        DInput *getInput(Input *input);
 
         void setInput();
 
@@ -79,6 +79,8 @@ namespace dra {
         void dump_uncover();
 
         void dump_ctxs(std::vector<llvm::Instruction *> *ctx);
+
+        DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
 
 
 

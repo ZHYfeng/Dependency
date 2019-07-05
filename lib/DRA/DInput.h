@@ -40,7 +40,7 @@ namespace dra {
 
     public:
         std::string sig;
-        std::string progam;
+        std::string prog;
         unsigned long long int Number;
         std::vector<std::set<unsigned long long int> *> AllCover;
         std::set<unsigned long long int> MaxCover;

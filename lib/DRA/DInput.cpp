@@ -26,27 +26,27 @@ namespace dra {
     }
 
     void DInput::setProg(const std::string &prog) {
-
-        std::stringstream ss;
-        std::string temp = prog.substr(1, prog.size() - 2) + ' ';
-        char c = 0;
-
-#if DEBUGINPUT
-        std::cout << prog << std::endl;
-#endif
-        for (auto cc : temp) {
-            if (cc != ' ') {
-                c = static_cast<char>(c * 10 + cc - '0');
-            } else {
-                ss.str("");
-                ss << c;
-                c = 0;
-                this->progam += ss.str();
-            }
-        }
-#if DEBUGINPUT
-        std::cout << this->progam << std::endl;
-#endif
+        this->prog = prog;
+//        std::stringstream ss;
+//        std::string temp = prog.substr(1, prog.size() - 2) + ' ';
+//        char c = 0;
+//
+//#if DEBUGINPUT
+//        std::cout << prog << std::endl;
+//#endif
+//        for (auto cc : temp) {
+//            if (cc != ' ') {
+//                c = static_cast<char>(c * 10 + cc - '0');
+//            } else {
+//                ss.str("");
+//                ss << c;
+//                c = 0;
+//                this->prog += ss.str();
+//            }
+//        }
+//#if DEBUGINPUT
+//        std::cout << this->prog << std::endl;
+//#endif
     }
 
     void DInput::setCover(const std::string &cover, unsigned long long int vmOffsets) {

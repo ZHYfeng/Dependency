@@ -182,8 +182,9 @@ namespace dra {
         std::cout << "GetVmOffsets : " << std::hex << this->vmOffsets << std::endl;
     }
 
-    DInput *DataManagement::getInput(Input input) {
-        std::string sig = input.sig();
+    DInput *DataManagement::getInput(Input *input) {
+        std::string sig = input->sig();
+        std::string prog = input->prog();
 #if DEBUGINPUT
         std::cout << "sig : " << sig << std::endl;
 #endif
@@ -194,9 +195,10 @@ namespace dra {
             dInput = new DInput;
             Inputs[sig] = dInput;
             dInput->setSig(sig);
+            dInput->setProg(prog);
         }
         dInput->Number++;
-        for (auto c : input.call()) {
+        for (auto c : input->call()) {
             dInput->idx = c.second.idx();
             for (auto a : c.second.address()) {
                 unsigned long long int address = a.first;
@@ -221,7 +223,7 @@ namespace dra {
 
                     } else {
                         this->uncover[final_address]->covered = true;
-                        if (input.dependency() == true) {
+                        if (input->dependency() == true) {
                             this->uncover[final_address]->covered_by_dependency = true;
                         }
                     }
@@ -314,9 +316,9 @@ namespace dra {
     void DataManagement::dump_cover() {
         std::ofstream out_file("cover_uncover.txt",
                                std::ios_base::out | std::ios_base::app);
-        auto current_time = std::time(NULL);
+        auto current_time = std::time(nullptr);
         out_file << std::ctime(&current_time);
-        out_file << "this->cover.size() : " << this->cover.size() << "\n";
+        out_file << "this->cover.size() : " << std::dec << this->cover.size() << "\n";
         out_file.close();
     }
 
@@ -348,9 +350,9 @@ namespace dra {
             }
         }
 
-        auto current_time = std::time(NULL);
+        auto current_time = std::time(nullptr);
         out_file << std::ctime(&current_time);
-        out_file << "this->uncover.size() : " << this->uncover.size() << "\n";
+        out_file << "this->uncover.size() : " << std::dec << this->uncover.size() << "\n";
         out_file << "belong to driver : " << ud << "\n";
         out_file << "related to gv : " << ug << "\n";
         out_file << "be covered : " << ucc << "\n";
@@ -369,6 +371,15 @@ namespace dra {
             }
 
         }
+    }
+
+    DBasicBlock *DataManagement::get_DB_from_bb(llvm::BasicBlock *b) {
+        llvm::BasicBlock *bb = dra::getRealBB(b);
+        std::string Path = dra::DModule::getFileName(bb->getParent());
+        std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
+        std::string bbname = bb->getName().str();
+        DBasicBlock *db = this->Modules->Function[Path][FunctionName]->BasicBlock[bbname];
+        return db;
     }
 
     uncover_info::uncover_info() : address(0),

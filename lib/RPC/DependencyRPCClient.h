@@ -16,17 +16,21 @@ namespace dra {
 
     class DependencyRPCClient {
     public:
-        DependencyRPCClient(const std::shared_ptr<grpc::Channel> &channel);
+        explicit DependencyRPCClient(const std::shared_ptr<grpc::Channel> &channel);
 
         virtual ~DependencyRPCClient();
 
         unsigned long long int GetVmOffsets();
 
-        NewInput *GetNewInput();
+        Input *GetNewInput();
 
-        Empty *SendDependencyInput(const DependencyInput &request);
+        Empty *SendDependencyInput(const Input &request);
 
-        NewDependencyInput *GetDependencyInput();
+        Input *GetDependencyInput();
+
+        condition *GetCondition();
+
+        Empty *SendWriteAddress(const WriteAddress &request);
 
     private:
         std::unique_ptr<DependencyRPC::Stub> stub_;
