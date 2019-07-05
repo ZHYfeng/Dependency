@@ -2,6 +2,7 @@ package dra
 
 import (
 	"context"
+	"github.com/google/syzkaller/pkg/hash"
 	"github.com/google/syzkaller/pkg/log"
 	"github.com/google/syzkaller/pkg/rpctype"
 	"google.golang.org/grpc"
@@ -77,15 +78,24 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInput) (*Empty, error) {
 	reply := &Empty{}
 	cd := cloneDependencyInput(request)
-	sig := cd.Sig
-	if inp, ok := (*ss.corpus)[sig]; ok {
-		for _, p := range inp.Prog {
-			cd.Prog = append(cd.Prog, p)
+	if len(cd.Prog) == 0 {
+		if inp, ok := (*ss.corpus)[cd.Sig]; ok {
+			for _, p := range inp.Prog {
+				cd.Prog = append(cd.Prog, p)
+			}
+		} else {
+			reply.Name = "dependency Sig error : " + cd.Sig
+			return reply, nil
 		}
-	} else {
-		reply.Name = "dependency sig error : " + sig
-		return reply, nil
+	} else if len(cd.Sig) == 0 {
+		if len(cd.Prog) == 0 {
+			reply.Name = "dependency Prog error : " + string(cd.Prog)
+			return reply, nil
+		} else {
+			cd.Sig = hash.Hash(cd.Prog).String()
+		}
 	}
+
 	for _, u := range cd.UncoveredAddress {
 		for _, a := range u.WriteAddress {
 			for _, r := range a.WriteInput {
@@ -102,7 +112,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 	}
 	ss.fmu.Lock()
 	for _, f := range ss.fuzzers {
-		f.corpusDI[sig] = cloneDependencyInput(cd)
+		f.corpusDI[cd.Sig] = cloneDependencyInput(cd)
 		reply.Address = uint32(len(f.corpusDI))
 	}
 	reply.Name = "success"
