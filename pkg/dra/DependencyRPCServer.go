@@ -2,7 +2,6 @@ package dra
 
 import (
 	"context"
-	"github.com/google/syzkaller/pkg/hash"
 	"github.com/google/syzkaller/pkg/log"
 	"github.com/google/syzkaller/pkg/rpctype"
 	"google.golang.org/grpc"
@@ -15,7 +14,7 @@ const (
 )
 
 type fuzzer struct {
-	corpusDI map[string]*DependencyInput
+	corpusDI map[string]*Input
 }
 
 // server is used to implement dra.DependencyServer.
@@ -24,11 +23,31 @@ type Server struct {
 	Dport   int
 	//corpusDC []*Input
 	corpusDC map[string]*Input
-	corpusDI map[string]*DependencyInput
+	corpusDI map[string]*Input
 	fmu      *sync.Mutex
 	fuzzers  map[string]*fuzzer
 	mu       *sync.Mutex
 	corpus   *map[string]rpctype.RPCInput
+}
+
+func (ss Server) GetCondition(context.Context, *Empty) (*Condition, error) {
+	panic("implement me")
+}
+
+func (ss Server) SendWriteAddress(context.Context, *WriteAddress) (*Empty, error) {
+	panic("implement me")
+}
+
+func (ss Server) SendNewInput(context.Context, *Input) (*Empty, error) {
+	panic("implement me")
+}
+
+func (ss Server) SendCondition(context.Context, *Condition) (*Empty, error) {
+	panic("implement me")
+}
+
+func (ss Server) GetWriteAddress(context.Context, *Empty) (*WriteAddress, error) {
+	panic("implement me")
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
@@ -44,7 +63,7 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	defer ss.mu.Unlock()
 	if _, ok := ss.fuzzers[request.Name]; !ok {
 		ss.fuzzers[request.Name] = &fuzzer{
-			corpusDI: map[string]*DependencyInput{},
+			corpusDI: map[string]*Input{},
 		}
 	}
 	return &Empty{}, nil
@@ -58,14 +77,14 @@ func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 	return reply, nil
 }
 
-func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
+func (ss Server) GetNewInput(context.Context, *Empty) (*Input, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
-	reply := &NewInput{}
+	reply := &Input{}
 	i := 0
 	for s, c := range ss.corpusDC {
-		if i < 50 {
-			reply.Input = append(reply.Input, cloneInput(c))
+		if i < 1 {
+			reply = CloneInput(c)
 			i++
 			delete(ss.corpusDC, s)
 		} else {
@@ -75,44 +94,21 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*NewInput, error) {
 	return reply, nil
 }
 
-func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInput) (*Empty, error) {
+func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empty, error) {
 	reply := &Empty{}
-	cd := cloneDependencyInput(request)
+	cd := CloneInput(request)
+
 	if len(cd.Prog) == 0 {
-		if inp, ok := (*ss.corpus)[cd.Sig]; ok {
-			for _, p := range inp.Prog {
-				cd.Prog = append(cd.Prog, p)
-			}
-		} else {
-			reply.Name = "dependency Sig error : " + cd.Sig
-			return reply, nil
-		}
+		reply.Name = "dependency Sig error : " + cd.Sig
+		return reply, nil
 	} else if len(cd.Sig) == 0 {
-		if len(cd.Prog) == 0 {
-			reply.Name = "dependency Prog error : " + string(cd.Prog)
-			return reply, nil
-		} else {
-			cd.Sig = hash.Hash(cd.Prog).String()
-		}
+		reply.Name = "dependency Prog error : " + string(cd.Prog)
+		return reply, nil
 	}
 
-	for _, u := range cd.UncoveredAddress {
-		for _, a := range u.WriteAddress {
-			for _, r := range a.WriteInput {
-				if rinp, ok := (*ss.corpus)[r.Sig]; ok {
-					for _, p := range rinp.Prog {
-						r.Prog = append(r.Prog, p)
-					}
-				} else {
-					reply.Name = "write input sig error : " + r.Sig
-					return reply, nil
-				}
-			}
-		}
-	}
 	ss.fmu.Lock()
 	for _, f := range ss.fuzzers {
-		f.corpusDI[cd.Sig] = cloneDependencyInput(cd)
+		f.corpusDI[cd.Sig] = CloneInput(cd)
 		reply.Address = uint32(len(f.corpusDI))
 	}
 	reply.Name = "success"
@@ -120,14 +116,14 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *DependencyInp
 	return reply, nil
 }
 
-func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*NewDependencyInput, error) {
+func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input, error) {
 	ss.fmu.Lock()
-	reply := &NewDependencyInput{}
+	reply := &Input{}
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		i := 0
 		for s, c := range f.corpusDI {
 			if i < 1 {
-				reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(c))
+				reply = CloneInput(c)
 				i++
 				delete(f.corpusDI, s)
 			} else {
@@ -153,56 +149,14 @@ func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) 
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 	reply := &Empty{}
-	input := cloneInput(request)
+	input := CloneInput(request)
 
 	//ss.corpusDC = append(ss.corpusDC, input)
 	ss.corpusDC[input.Sig] = input
 	return reply, nil
 }
 
-func cloneDependencyInput(d *DependencyInput) *DependencyInput {
-	cd := new(DependencyInput)
-	cd.Sig = d.Sig
-	for _, p := range d.Prog {
-		cd.Prog = append(cd.Prog, p)
-	}
-	for _, u := range d.UncoveredAddress {
-		u1 := new(UncoveredAddress)
-		u1.Address = u.Address
-		u1.Idx = u.Idx
-		u1.ConditionAddress = u.ConditionAddress
-		for _, a := range u.WriteAddress {
-			a1 := &WriteAddress{
-				Address: a.Address,
-				Repeat:  a.Repeat,
-				Prio:    a.Prio,
-			}
-
-			for _, i := range a.WriteInput {
-				i1 := &Input{
-					Sig: i.Sig,
-				}
-				for _, p := range i.Prog {
-					i1.Prog = append(cd.Prog, p)
-				}
-				a1.WriteInput = append(a1.WriteInput, i1)
-			}
-
-			for _, s := range a.WriteSyscall {
-				s1 := &Syscall{
-					Name:   s.Name,
-					Number: s.Number,
-				}
-				a1.WriteSyscall = append(a1.WriteSyscall, s1)
-			}
-			u1.WriteAddress = append(u1.WriteAddress, a1)
-		}
-		cd.UncoveredAddress = append(cd.UncoveredAddress, u1)
-	}
-	return cd
-}
-
-func cloneInput(d *Input) *Input {
+func CloneInput(d *Input) *Input {
 	ci := &Input{
 		Sig:        d.Sig,
 		Call:       make(map[uint32]*Call),
@@ -221,6 +175,51 @@ func cloneInput(d *Input) *Input {
 	for _, c := range d.Prog {
 		ci.Prog = append(ci.Prog, c)
 	}
+
+	for _, u := range d.UncoveredAddress {
+		u1 := new(UncoveredAddress)
+		u1.ConditionAddress = u.ConditionAddress
+		u1.UncoveredAddress = u.UncoveredAddress
+		u1.Idx = u.Idx
+		for _, a := range u.WriteAddress {
+			a1 := &WriteAddress{
+				WriteAddress:     a.WriteAddress,
+				ConditionAddress: a.ConditionAddress,
+				Repeat:           a.Repeat,
+				Prio:             a.Prio,
+			}
+
+			for _, i := range a.WriteInput {
+				i1 := CloneInput(i)
+				a1.WriteInput = append(a1.WriteInput, i1)
+			}
+
+			for _, s := range a.WriteSyscall {
+				s1 := &Syscall{
+					Name:   s.Name,
+					Number: s.Number,
+				}
+				for _, c := range s.CriticalCondition {
+					c1 := &Condition{
+						ConditionAddress: c.ConditionAddress,
+						UncoveredAddress: c.UncoveredAddress,
+						Idx:              c.Idx,
+					}
+					for _, a := range c.RightBranchAddress {
+						c1.RightBranchAddress = append(c1.RightBranchAddress, a)
+					}
+					for _, a := range c.WrongBranchAddress {
+						c1.WrongBranchAddress = append(c1.WrongBranchAddress, a)
+					}
+					s1.CriticalCondition = append(s1.CriticalCondition, c1)
+				}
+				a1.WriteSyscall = append(a1.WriteSyscall, s1)
+			}
+			u1.WriteAddress = append(u1.WriteAddress, a1)
+		}
+		ci.UncoveredAddress = append(ci.UncoveredAddress, u1)
+	}
+
 	return ci
 }
 
@@ -233,7 +232,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	//ss.corpusDC = []*Input{}
 	ss.corpusDC = make(map[string]*Input)
-	ss.corpusDI = make(map[string]*DependencyInput)
+	ss.corpusDI = make(map[string]*Input)
 	ss.fuzzers = make(map[string]*fuzzer)
 	ss.mu = &sync.Mutex{}
 	ss.fmu = &sync.Mutex{}

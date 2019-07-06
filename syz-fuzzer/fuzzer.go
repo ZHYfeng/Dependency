@@ -10,7 +10,6 @@ import (
 	"os"
 	"runtime"
 	"runtime/debug"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -285,10 +284,7 @@ func (fuzzer *Fuzzer) pollLoop() {
 		log.Logf(0, "len(fuzzer.workQueue.dependency) %v", len(fuzzer.workQueue.dependency))
 		if len(fuzzer.workQueue.dependency) == 0 {
 			newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
-			log.Logf(0, "len(newDependencyInput.DependencyInput) %v", len(newDependencyInput.DependencyInput))
-			for _, dependencyInput := range newDependencyInput.GetDependencyInput() {
-				fuzzer.addDInputFromAnotherFuzzer(dependencyInput)
-			}
+			fuzzer.addDInputFromAnotherFuzzer(newDependencyInput)
 		}
 		fuzzer.dManager.SSendLog()
 
@@ -400,87 +396,13 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 	}
 }
 
-func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.DependencyInput) {
+func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.Input) {
 	log.Logf(1, "dependencyInput : %v", dependencyInput)
 	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
-	//sig := dependencyInput.GetSig()
-	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
-	p.Uncover = make(map[int]*prog.Uncover)
-	if err != nil {
-		log.Fatalf("failed to deserialize prog from another fuzzer: %v", err)
-	}
-
-	for idx, u := range dependencyInput.GetUncoveredAddress() {
-		u1 := new(prog.Uncover)
-		u1.UncoveredAddress = u.GetAddress()
-		u1.ConditionAddress = u.GetConditionAddress()
-		u1.Idx = u.GetIdx()
-		for _, a := range u.GetWriteAddress() {
-
-			a1 := &prog.WriteAddresses{
-				WriteAddress: a.GetAddress(),
-				Prio:         a.GetPrio(),
-				Repeat:       a.GetRepeat(),
-			}
-
-			for _, i := range a.GetWriteInput() {
-				rp, err := fuzzer.target.Deserialize(i.GetProg(), prog.NonStrict)
-				if err != nil {
-					panic(err)
-				}
-				a1.WriteProgs = append(a1.WriteProgs, rp)
-			}
-
-			for _, i := range a.GetWriteSyscall() {
-				c1 := &prog.Call{
-					Meta:    nil,
-					Ret:     nil,
-					Comment: "dependency",
-				}
-
-				log.Logf(1, "cmd value : %x", i.Number)
-				//fuzzer.dManager.SendLog(fmt.Sprintf("cmd value : %x", i.Number))
-				// only work for ioctl
-				for n, c := range fuzzer.target.SyscallMap {
-					if strings.HasPrefix(n, i.Name) {
-						for _, a := range c.Args {
-							if a.FieldName() == "cmd" {
-								switch t := a.DefaultArg().(type) {
-								case *prog.ConstArg:
-									val, _ := t.Value()
-									if val == i.Number {
-										c1.Meta = c
-										log.Logf(1, "ioctl name : %v", c.Name)
-										//fuzzer.dManager.SendLog(fmt.Sprintf("ioctl name : %v", c.Name))
-										c1.Ret = prog.MakeReturnArg(c.Ret)
-										for _, typ := range c.Args {
-											arg := typ.DefaultArg()
-											c1.Args = append(c1.Args, arg)
-										}
-										a1.WriteCalls = append(a1.WriteCalls, c1)
-									}
-								default:
-
-								}
-							}
-						}
-					}
-				}
-			}
-			u1.WriteAddress = append(u1.WriteAddress, a1)
-		}
-		p.Uncover[idx] = u1
-	}
 
 	fuzzer.workQueue.enqueue(&WorkDependency{
-		p: p.CloneWithUncover(),
+		dependencyInput: pb.CloneInput(dependencyInput),
 	})
-
-	for _, u := range p.Uncover {
-		log.Logf(1, "fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u)
-		//fuzzer.dManager.SendLog(fmt.Sprintf("fuzzer.addDInputFromAnotherFuzzer Uncover: %v", u))
-	}
-
 }
 
 //func (fuzzer *Fuzzer) corpusSigSnapshot() []string {

@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"os"
 	"runtime/debug"
+	"strings"
 	"sync/atomic"
 	"syscall"
 	"time"
@@ -236,6 +237,44 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	proc.fuzzer.dManager.SendInput(&input)
 }
 
+func (proc *Proc) getCall(sc *pb.Syscall) {
+
+	//log.Logf(1, "cmd value : %x", cmd)
+	//fuzzer.dManager.SendLog(fmt.Sprintf("cmd value : %x", cmd))
+
+	c1 := &prog.Call{
+		Meta:    nil,
+		Ret:     nil,
+		Comment: "dependency",
+	}
+
+	// only work for ioctl
+	for n, c := range proc.fuzzer.target.SyscallMap {
+		if strings.HasPrefix(n, sc.Name) {
+			for _, a := range c.Args {
+				if a.FieldName() == "cmd" {
+					switch t := a.DefaultArg().(type) {
+					case *prog.ConstArg:
+						val, _ := t.Value()
+						if val == sc.Number {
+							c1.Meta = c
+							log.Logf(1, "ioctl name : %v", c.Name)
+							//fuzzer.dManager.SendLog(fmt.Sprintf("ioctl name : %v", c.Name))
+							c1.Ret = prog.MakeReturnArg(c.Ret)
+							for _, typ := range c.Args {
+								arg := typ.DefaultArg()
+								c1.Args = append(c1.Args, arg)
+							}
+						}
+					default:
+
+					}
+				}
+			}
+		}
+	}
+}
+
 func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 	log.Logf(1, "#%v: DependencyMutate", proc.pid)
@@ -246,6 +285,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
 	//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
 	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
+
+	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
 
 	p := item.p
 	data := p.Serialize()
@@ -455,31 +496,9 @@ func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res1 bool
 	return
 }
 
-func (proc *Proc) checkUncoveredAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
+func checkAddress(conditionAddress uint32, inputCover cover.Cover) (res bool) {
 	res = false
-	var uncover = p.Uncover[p.UncoverIdx].UncoveredAddress
-	if _, ok := inputCover[uncover]; ok {
-		res = true
-		return
-	}
-	return
-}
-
-func (proc *Proc) checkWriteAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
-	res = false
-	for _, address := range p.WriteAddress {
-		if _, ok := inputCover[address]; ok {
-			res = true
-			return
-		}
-	}
-	return
-}
-
-func (proc *Proc) checkConditionAddress(p *prog.Prog, inputCover cover.Cover) (res bool) {
-	res = false
-	var condition = p.Uncover[p.UncoverIdx].ConditionAddress
-	if _, ok := inputCover[condition]; ok {
+	if _, ok := inputCover[conditionAddress]; ok {
 		res = true
 		return
 	}

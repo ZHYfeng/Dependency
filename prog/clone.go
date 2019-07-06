@@ -28,57 +28,6 @@ func (p *Prog) Clone() *Prog {
 	return p1
 }
 
-func (p *Prog) CloneWithUncover() *Prog {
-	p1 := &Prog{
-		Target:       p.Target,
-		Calls:        make([]*Call, len(p.Calls)),
-		Uncover:      make(map[int]*Uncover),
-		UncoverIdx:   p.UncoverIdx,
-		WriteAddress: p.WriteAddress,
-		Sig:          p.Sig,
-	}
-	newargs := make(map[*ResultArg]*ResultArg)
-	for ci, c := range p.Calls {
-		c1 := new(Call)
-		c1.Meta = c.Meta
-		if c.Ret != nil {
-			c1.Ret = clone(c.Ret, newargs).(*ResultArg)
-		}
-		c1.Args = make([]Arg, len(c.Args))
-		for ai, arg := range c.Args {
-			c1.Args[ai] = clone(arg, newargs)
-		}
-		p1.Calls[ci] = c1
-	}
-	p1.debugValidate()
-
-	for ui, u := range p.Uncover {
-		u1 := new(Uncover)
-		u1.UncoveredAddress = u.UncoveredAddress
-		u1.ConditionAddress = u.ConditionAddress
-		u1.Idx = u.Idx
-
-		u1.WriteAddress = make([]*WriteAddresses, len(u.WriteAddress))
-		for ai, address := range u.WriteAddress {
-			ra := &WriteAddresses{
-				WriteAddress: address.WriteAddress,
-				Prio:         address.Prio,
-				Repeat:       address.Repeat,
-			}
-			for _, call := range address.WriteCalls {
-				ra.WriteCalls = append(ra.WriteCalls, call)
-			}
-			for _, prog := range address.WriteProgs {
-				ra.WriteProgs = append(ra.WriteProgs, prog.Clone())
-			}
-			u1.WriteAddress[ai] = ra
-		}
-		p1.Uncover[ui] = u1
-	}
-
-	return p1
-}
-
 func clone(arg Arg, newargs map[*ResultArg]*ResultArg) Arg {
 	var arg1 Arg
 	switch a := arg.(type) {

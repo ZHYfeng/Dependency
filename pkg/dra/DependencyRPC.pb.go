@@ -71,19 +71,91 @@ func (m *Empty) GetName() string {
 	return ""
 }
 
-type Syscall struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Number               uint64   `protobuf:"varint,3,opt,name=number,proto3" json:"number,omitempty"`
+type Condition struct {
+	ConditionAddress     uint32   `protobuf:"varint,1,opt,name=condition_address,json=conditionAddress,proto3" json:"condition_address,omitempty"`
+	UncoveredAddress     uint32   `protobuf:"varint,2,opt,name=uncovered_address,json=uncoveredAddress,proto3" json:"uncovered_address,omitempty"`
+	Idx                  uint32   `protobuf:"varint,4,opt,name=idx,proto3" json:"idx,omitempty"`
+	RightBranchAddress   []uint32 `protobuf:"varint,5,rep,packed,name=right_branch_address,json=rightBranchAddress,proto3" json:"right_branch_address,omitempty"`
+	WrongBranchAddress   []uint32 `protobuf:"varint,6,rep,packed,name=wrong_branch_address,json=wrongBranchAddress,proto3" json:"wrong_branch_address,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Condition) Reset()         { *m = Condition{} }
+func (m *Condition) String() string { return proto.CompactTextString(m) }
+func (*Condition) ProtoMessage()    {}
+func (*Condition) Descriptor() ([]byte, []int) {
+	return fileDescriptor_db4d5fd3d0a7c985, []int{1}
+}
+
+func (m *Condition) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Condition.Unmarshal(m, b)
+}
+func (m *Condition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Condition.Marshal(b, m, deterministic)
+}
+func (m *Condition) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Condition.Merge(m, src)
+}
+func (m *Condition) XXX_Size() int {
+	return xxx_messageInfo_Condition.Size(m)
+}
+func (m *Condition) XXX_DiscardUnknown() {
+	xxx_messageInfo_Condition.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Condition proto.InternalMessageInfo
+
+func (m *Condition) GetConditionAddress() uint32 {
+	if m != nil {
+		return m.ConditionAddress
+	}
+	return 0
+}
+
+func (m *Condition) GetUncoveredAddress() uint32 {
+	if m != nil {
+		return m.UncoveredAddress
+	}
+	return 0
+}
+
+func (m *Condition) GetIdx() uint32 {
+	if m != nil {
+		return m.Idx
+	}
+	return 0
+}
+
+func (m *Condition) GetRightBranchAddress() []uint32 {
+	if m != nil {
+		return m.RightBranchAddress
+	}
+	return nil
+}
+
+func (m *Condition) GetWrongBranchAddress() []uint32 {
+	if m != nil {
+		return m.WrongBranchAddress
+	}
+	return nil
+}
+
+type Syscall struct {
+	Name                 string       `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Number               uint64       `protobuf:"varint,3,opt,name=number,proto3" json:"number,omitempty"`
+	CriticalCondition    []*Condition `protobuf:"bytes,10,rep,name=critical_condition,json=criticalCondition,proto3" json:"critical_condition,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
 func (m *Syscall) Reset()         { *m = Syscall{} }
 func (m *Syscall) String() string { return proto.CompactTextString(m) }
 func (*Syscall) ProtoMessage()    {}
 func (*Syscall) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{1}
+	return fileDescriptor_db4d5fd3d0a7c985, []int{2}
 }
 
 func (m *Syscall) XXX_Unmarshal(b []byte) error {
@@ -118,10 +190,20 @@ func (m *Syscall) GetNumber() uint64 {
 	return 0
 }
 
+func (m *Syscall) GetCriticalCondition() []*Condition {
+	if m != nil {
+		return m.CriticalCondition
+	}
+	return nil
+}
+
 type WriteAddress struct {
-	Repeat               uint32     `protobuf:"varint,7,opt,name=repeat,proto3" json:"repeat,omitempty"`
-	Prio                 uint32     `protobuf:"varint,6,opt,name=prio,proto3" json:"prio,omitempty"`
-	Address              uint32     `protobuf:"varint,2,opt,name=address,proto3" json:"address,omitempty"`
+	Repeat uint32 `protobuf:"varint,7,opt,name=repeat,proto3" json:"repeat,omitempty"`
+	Prio   uint32 `protobuf:"varint,6,opt,name=prio,proto3" json:"prio,omitempty"`
+	// the address writes to global variable
+	WriteAddress uint32 `protobuf:"varint,2,opt,name=write_address,json=writeAddress,proto3" json:"write_address,omitempty"`
+	// the address of condition is related to this global variable
+	ConditionAddress     uint32     `protobuf:"varint,3,opt,name=condition_address,json=conditionAddress,proto3" json:"condition_address,omitempty"`
 	WriteInput           []*Input   `protobuf:"bytes,4,rep,name=write_input,json=writeInput,proto3" json:"write_input,omitempty"`
 	WriteSyscall         []*Syscall `protobuf:"bytes,5,rep,name=write_syscall,json=writeSyscall,proto3" json:"write_syscall,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
@@ -133,7 +215,7 @@ func (m *WriteAddress) Reset()         { *m = WriteAddress{} }
 func (m *WriteAddress) String() string { return proto.CompactTextString(m) }
 func (*WriteAddress) ProtoMessage()    {}
 func (*WriteAddress) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{2}
+	return fileDescriptor_db4d5fd3d0a7c985, []int{3}
 }
 
 func (m *WriteAddress) XXX_Unmarshal(b []byte) error {
@@ -168,9 +250,16 @@ func (m *WriteAddress) GetPrio() uint32 {
 	return 0
 }
 
-func (m *WriteAddress) GetAddress() uint32 {
+func (m *WriteAddress) GetWriteAddress() uint32 {
 	if m != nil {
-		return m.Address
+		return m.WriteAddress
+	}
+	return 0
+}
+
+func (m *WriteAddress) GetConditionAddress() uint32 {
+	if m != nil {
+		return m.ConditionAddress
 	}
 	return 0
 }
@@ -190,9 +279,9 @@ func (m *WriteAddress) GetWriteSyscall() []*Syscall {
 }
 
 type UncoveredAddress struct {
-	Address              uint32          `protobuf:"varint,1,opt,name=address,proto3" json:"address,omitempty"`
-	Idx                  uint32          `protobuf:"varint,2,opt,name=idx,proto3" json:"idx,omitempty"`
 	ConditionAddress     uint32          `protobuf:"varint,3,opt,name=condition_address,json=conditionAddress,proto3" json:"condition_address,omitempty"`
+	UncoveredAddress     uint32          `protobuf:"varint,1,opt,name=uncovered_address,json=uncoveredAddress,proto3" json:"uncovered_address,omitempty"`
+	Idx                  uint32          `protobuf:"varint,2,opt,name=idx,proto3" json:"idx,omitempty"`
 	WriteAddress         []*WriteAddress `protobuf:"bytes,4,rep,name=write_address,json=writeAddress,proto3" json:"write_address,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
@@ -203,7 +292,7 @@ func (m *UncoveredAddress) Reset()         { *m = UncoveredAddress{} }
 func (m *UncoveredAddress) String() string { return proto.CompactTextString(m) }
 func (*UncoveredAddress) ProtoMessage()    {}
 func (*UncoveredAddress) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{3}
+	return fileDescriptor_db4d5fd3d0a7c985, []int{4}
 }
 
 func (m *UncoveredAddress) XXX_Unmarshal(b []byte) error {
@@ -224,9 +313,16 @@ func (m *UncoveredAddress) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_UncoveredAddress proto.InternalMessageInfo
 
-func (m *UncoveredAddress) GetAddress() uint32 {
+func (m *UncoveredAddress) GetConditionAddress() uint32 {
 	if m != nil {
-		return m.Address
+		return m.ConditionAddress
+	}
+	return 0
+}
+
+func (m *UncoveredAddress) GetUncoveredAddress() uint32 {
+	if m != nil {
+		return m.UncoveredAddress
 	}
 	return 0
 }
@@ -238,110 +334,9 @@ func (m *UncoveredAddress) GetIdx() uint32 {
 	return 0
 }
 
-func (m *UncoveredAddress) GetConditionAddress() uint32 {
-	if m != nil {
-		return m.ConditionAddress
-	}
-	return 0
-}
-
 func (m *UncoveredAddress) GetWriteAddress() []*WriteAddress {
 	if m != nil {
 		return m.WriteAddress
-	}
-	return nil
-}
-
-type DependencyInput struct {
-	Sig                  string              `protobuf:"bytes,1,opt,name=sig,proto3" json:"sig,omitempty"`
-	UncoveredAddress     []*UncoveredAddress `protobuf:"bytes,2,rep,name=uncovered_address,json=uncoveredAddress,proto3" json:"uncovered_address,omitempty"`
-	Prog                 []byte              `protobuf:"bytes,3,opt,name=prog,proto3" json:"prog,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
-	XXX_unrecognized     []byte              `json:"-"`
-	XXX_sizecache        int32               `json:"-"`
-}
-
-func (m *DependencyInput) Reset()         { *m = DependencyInput{} }
-func (m *DependencyInput) String() string { return proto.CompactTextString(m) }
-func (*DependencyInput) ProtoMessage()    {}
-func (*DependencyInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{4}
-}
-
-func (m *DependencyInput) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DependencyInput.Unmarshal(m, b)
-}
-func (m *DependencyInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DependencyInput.Marshal(b, m, deterministic)
-}
-func (m *DependencyInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DependencyInput.Merge(m, src)
-}
-func (m *DependencyInput) XXX_Size() int {
-	return xxx_messageInfo_DependencyInput.Size(m)
-}
-func (m *DependencyInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_DependencyInput.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DependencyInput proto.InternalMessageInfo
-
-func (m *DependencyInput) GetSig() string {
-	if m != nil {
-		return m.Sig
-	}
-	return ""
-}
-
-func (m *DependencyInput) GetUncoveredAddress() []*UncoveredAddress {
-	if m != nil {
-		return m.UncoveredAddress
-	}
-	return nil
-}
-
-func (m *DependencyInput) GetProg() []byte {
-	if m != nil {
-		return m.Prog
-	}
-	return nil
-}
-
-type NewDependencyInput struct {
-	DependencyInput      []*DependencyInput `protobuf:"bytes,1,rep,name=dependencyInput,proto3" json:"dependencyInput,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
-	XXX_unrecognized     []byte             `json:"-"`
-	XXX_sizecache        int32              `json:"-"`
-}
-
-func (m *NewDependencyInput) Reset()         { *m = NewDependencyInput{} }
-func (m *NewDependencyInput) String() string { return proto.CompactTextString(m) }
-func (*NewDependencyInput) ProtoMessage()    {}
-func (*NewDependencyInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{5}
-}
-
-func (m *NewDependencyInput) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_NewDependencyInput.Unmarshal(m, b)
-}
-func (m *NewDependencyInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_NewDependencyInput.Marshal(b, m, deterministic)
-}
-func (m *NewDependencyInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NewDependencyInput.Merge(m, src)
-}
-func (m *NewDependencyInput) XXX_Size() int {
-	return xxx_messageInfo_NewDependencyInput.Size(m)
-}
-func (m *NewDependencyInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_NewDependencyInput.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NewDependencyInput proto.InternalMessageInfo
-
-func (m *NewDependencyInput) GetDependencyInput() []*DependencyInput {
-	if m != nil {
-		return m.DependencyInput
 	}
 	return nil
 }
@@ -358,7 +353,7 @@ func (m *Call) Reset()         { *m = Call{} }
 func (m *Call) String() string { return proto.CompactTextString(m) }
 func (*Call) ProtoMessage()    {}
 func (*Call) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{6}
+	return fileDescriptor_db4d5fd3d0a7c985, []int{5}
 }
 
 func (m *Call) XXX_Unmarshal(b []byte) error {
@@ -394,20 +389,22 @@ func (m *Call) GetAddress() map[uint32]uint32 {
 }
 
 type Input struct {
-	Sig                  string           `protobuf:"bytes,1,opt,name=sig,proto3" json:"sig,omitempty"`
-	Dependency           bool             `protobuf:"varint,4,opt,name=dependency,proto3" json:"dependency,omitempty"`
-	Call                 map[uint32]*Call `protobuf:"bytes,2,rep,name=call,proto3" json:"call,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Prog                 []byte           `protobuf:"bytes,3,opt,name=prog,proto3" json:"prog,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
-	XXX_unrecognized     []byte           `json:"-"`
-	XXX_sizecache        int32            `json:"-"`
+	// hash value for each input from syzkaller
+	Sig                  string              `protobuf:"bytes,1,opt,name=sig,proto3" json:"sig,omitempty"`
+	Prog                 []byte              `protobuf:"bytes,2,opt,name=prog,proto3" json:"prog,omitempty"`
+	Call                 map[uint32]*Call    `protobuf:"bytes,3,rep,name=call,proto3" json:"call,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Dependency           bool                `protobuf:"varint,4,opt,name=dependency,proto3" json:"dependency,omitempty"`
+	UncoveredAddress     []*UncoveredAddress `protobuf:"bytes,5,rep,name=uncovered_address,json=uncoveredAddress,proto3" json:"uncovered_address,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
 }
 
 func (m *Input) Reset()         { *m = Input{} }
 func (m *Input) String() string { return proto.CompactTextString(m) }
 func (*Input) ProtoMessage()    {}
 func (*Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{7}
+	return fileDescriptor_db4d5fd3d0a7c985, []int{6}
 }
 
 func (m *Input) XXX_Unmarshal(b []byte) error {
@@ -435,11 +432,11 @@ func (m *Input) GetSig() string {
 	return ""
 }
 
-func (m *Input) GetDependency() bool {
+func (m *Input) GetProg() []byte {
 	if m != nil {
-		return m.Dependency
+		return m.Prog
 	}
-	return false
+	return nil
 }
 
 func (m *Input) GetCall() map[uint32]*Call {
@@ -449,108 +446,79 @@ func (m *Input) GetCall() map[uint32]*Call {
 	return nil
 }
 
-func (m *Input) GetProg() []byte {
+func (m *Input) GetDependency() bool {
 	if m != nil {
-		return m.Prog
+		return m.Dependency
 	}
-	return nil
+	return false
 }
 
-type NewInput struct {
-	Input                []*Input `protobuf:"bytes,1,rep,name=input,proto3" json:"input,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *NewInput) Reset()         { *m = NewInput{} }
-func (m *NewInput) String() string { return proto.CompactTextString(m) }
-func (*NewInput) ProtoMessage()    {}
-func (*NewInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_db4d5fd3d0a7c985, []int{8}
-}
-
-func (m *NewInput) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_NewInput.Unmarshal(m, b)
-}
-func (m *NewInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_NewInput.Marshal(b, m, deterministic)
-}
-func (m *NewInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NewInput.Merge(m, src)
-}
-func (m *NewInput) XXX_Size() int {
-	return xxx_messageInfo_NewInput.Size(m)
-}
-func (m *NewInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_NewInput.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NewInput proto.InternalMessageInfo
-
-func (m *NewInput) GetInput() []*Input {
+func (m *Input) GetUncoveredAddress() []*UncoveredAddress {
 	if m != nil {
-		return m.Input
+		return m.UncoveredAddress
 	}
 	return nil
 }
 
 func init() {
 	proto.RegisterType((*Empty)(nil), "dra.Empty")
+	proto.RegisterType((*Condition)(nil), "dra.condition")
 	proto.RegisterType((*Syscall)(nil), "dra.Syscall")
 	proto.RegisterType((*WriteAddress)(nil), "dra.WriteAddress")
 	proto.RegisterType((*UncoveredAddress)(nil), "dra.UncoveredAddress")
-	proto.RegisterType((*DependencyInput)(nil), "dra.DependencyInput")
-	proto.RegisterType((*NewDependencyInput)(nil), "dra.NewDependencyInput")
 	proto.RegisterType((*Call)(nil), "dra.Call")
 	proto.RegisterMapType((map[uint32]uint32)(nil), "dra.Call.AddressEntry")
 	proto.RegisterType((*Input)(nil), "dra.Input")
 	proto.RegisterMapType((map[uint32]*Call)(nil), "dra.Input.CallEntry")
-	proto.RegisterType((*NewInput)(nil), "dra.NewInput")
 }
 
 func init() { proto.RegisterFile("DependencyRPC.proto", fileDescriptor_db4d5fd3d0a7c985) }
 
 var fileDescriptor_db4d5fd3d0a7c985 = []byte{
-	// 610 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x94, 0xcf, 0x6e, 0xd3, 0x4e,
-	0x10, 0xc7, 0xbb, 0xb1, 0x93, 0x34, 0x13, 0x47, 0x4d, 0xb7, 0xfd, 0xf5, 0x67, 0xf5, 0x00, 0x96,
-	0x11, 0x92, 0x45, 0x51, 0x04, 0x45, 0x45, 0x50, 0x24, 0x24, 0x1a, 0xaa, 0x08, 0x09, 0x15, 0xe4,
-	0xf2, 0xe7, 0x18, 0xb9, 0xf1, 0x36, 0xb2, 0x9a, 0xac, 0x2d, 0x7b, 0xd3, 0x60, 0x71, 0xe7, 0x45,
-	0x78, 0x05, 0x6e, 0xbc, 0x03, 0xcf, 0x84, 0x76, 0xbc, 0x76, 0x36, 0x56, 0xc3, 0x6d, 0x66, 0xe7,
-	0xeb, 0x99, 0xcf, 0xcc, 0xac, 0x17, 0xf6, 0xde, 0xb2, 0x84, 0xf1, 0x90, 0xf1, 0x49, 0xee, 0x7f,
-	0x1c, 0x0e, 0x92, 0x34, 0x16, 0x31, 0x35, 0xc2, 0x34, 0x70, 0x4f, 0xa0, 0x79, 0x3e, 0x4f, 0x44,
-	0x4e, 0x6d, 0x68, 0x07, 0x61, 0x98, 0xb2, 0x2c, 0xb3, 0x89, 0x43, 0xbc, 0x9e, 0x5f, 0xba, 0x94,
-	0x82, 0xc9, 0x83, 0x39, 0xb3, 0x1b, 0x0e, 0xf1, 0x3a, 0x3e, 0xda, 0xee, 0x09, 0xb4, 0x2f, 0xf3,
-	0x6c, 0x12, 0xcc, 0x66, 0x55, 0x98, 0xac, 0xc2, 0xf4, 0x00, 0x5a, 0x7c, 0x31, 0xbf, 0x62, 0xa9,
-	0x6d, 0x38, 0xc4, 0x33, 0x7d, 0xe5, 0xb9, 0xbf, 0x08, 0x58, 0x5f, 0xd3, 0x48, 0xb0, 0x37, 0x2a,
-	0xf7, 0x01, 0xb4, 0x52, 0x96, 0xb0, 0x40, 0xd8, 0x6d, 0x2c, 0xaa, 0x3c, 0x99, 0x34, 0x49, 0xa3,
-	0xd8, 0x6e, 0xe1, 0x29, 0xda, 0x3a, 0x61, 0x63, 0x9d, 0xf0, 0x08, 0xba, 0x4b, 0x99, 0x75, 0x1c,
-	0xf1, 0x64, 0x21, 0x6c, 0xd3, 0x31, 0xbc, 0xee, 0x31, 0x0c, 0xc2, 0x34, 0x18, 0xbc, 0x93, 0x27,
-	0x3e, 0x60, 0x18, 0x6d, 0xfa, 0x14, 0x7a, 0x85, 0x38, 0x2b, 0x1a, 0xb0, 0x9b, 0x28, 0xb7, 0x50,
-	0xae, 0x9a, 0xf2, 0x2d, 0x94, 0x28, 0xcf, 0xfd, 0x49, 0xa0, 0xff, 0x99, 0x4f, 0xe2, 0x5b, 0x96,
-	0xb2, 0xb0, 0x44, 0xdf, 0x3c, 0xb0, 0x3e, 0x18, 0x51, 0xf8, 0x4d, 0x41, 0x4a, 0x93, 0x1e, 0xc1,
-	0xee, 0x24, 0xe6, 0x61, 0x24, 0xa2, 0x98, 0x8f, 0xcb, 0xaf, 0x0c, 0x8c, 0xf7, 0xab, 0x40, 0x99,
-	0xf8, 0x79, 0x09, 0x58, 0x0a, 0x8b, 0x7e, 0x76, 0x11, 0x50, 0x9f, 0x9e, 0xa2, 0x54, 0x9e, 0xfb,
-	0x1d, 0x76, 0x56, 0x6b, 0x2e, 0x7a, 0xed, 0x83, 0x91, 0x45, 0x53, 0xb5, 0x1a, 0x69, 0xd2, 0x33,
-	0xd8, 0x5d, 0x94, 0x9d, 0x8c, 0x57, 0xe3, 0x94, 0x05, 0xfe, 0xc3, 0x02, 0xf5, 0x3e, 0xfd, 0xfe,
-	0xa2, 0xde, 0x39, 0x2e, 0x27, 0x9e, 0x62, 0x03, 0x96, 0x8f, 0xb6, 0xfb, 0x09, 0xe8, 0x05, 0x5b,
-	0xd6, 0xeb, 0xbf, 0x86, 0x9d, 0x70, 0xfd, 0xc8, 0x26, 0x58, 0x6b, 0x1f, 0x6b, 0xd5, 0xe4, 0x7e,
-	0x5d, 0xec, 0xfe, 0x20, 0x60, 0x0e, 0xe5, 0x25, 0x53, 0x23, 0x25, 0xab, 0x91, 0x3e, 0xd1, 0x6f,
-	0x83, 0x4c, 0x79, 0x80, 0x29, 0xa5, 0x7a, 0xa0, 0x40, 0xcf, 0xb9, 0x48, 0xf3, 0x6a, 0x2d, 0x87,
-	0xa7, 0x60, 0xe9, 0x01, 0x99, 0xf3, 0x86, 0xe5, 0x65, 0xce, 0x1b, 0x96, 0xd3, 0x7d, 0x68, 0xde,
-	0x06, 0xb3, 0x05, 0x53, 0xab, 0x2b, 0x9c, 0xd3, 0xc6, 0x0b, 0xe2, 0xfe, 0x26, 0xd0, 0xdc, 0x34,
-	0xd2, 0x7b, 0x00, 0x2b, 0x6e, 0xdb, 0x74, 0x88, 0xb7, 0xed, 0x6b, 0x27, 0xd4, 0x03, 0x13, 0xef,
-	0x59, 0x43, 0xeb, 0x1c, 0x73, 0x21, 0x6c, 0x01, 0x69, 0x96, 0xbf, 0x52, 0x7d, 0xb0, 0x87, 0x67,
-	0xd0, 0xa9, 0x64, 0x77, 0x20, 0xdf, 0xd7, 0x91, 0xbb, 0xc7, 0x9d, 0x6a, 0x08, 0x3a, 0xfd, 0x63,
-	0xd8, 0xbe, 0x60, 0xcb, 0x82, 0xdf, 0x81, 0x66, 0xa4, 0x2d, 0x42, 0xff, 0x4b, 0x8a, 0xc0, 0xf1,
-	0x9f, 0x06, 0xf4, 0xd6, 0xde, 0x0b, 0xea, 0x81, 0x35, 0x62, 0xe2, 0xcb, 0xfc, 0xc3, 0xf5, 0x75,
-	0xc6, 0x44, 0x46, 0x8b, 0x8f, 0xf0, 0xdd, 0x38, 0xd4, 0x6c, 0x77, 0x8b, 0x3e, 0x82, 0xee, 0x88,
-	0x89, 0xaa, 0x98, 0x2e, 0xec, 0xa1, 0x5d, 0x86, 0xdc, 0x2d, 0xfa, 0x12, 0xf6, 0x2e, 0x19, 0x0f,
-	0xeb, 0x77, 0xe6, 0xce, 0xab, 0x51, 0x2b, 0xf3, 0x00, 0xda, 0xc3, 0x98, 0x73, 0x36, 0x11, 0xff,
-	0x60, 0x79, 0x05, 0x74, 0xc4, 0x44, 0x3d, 0xbd, 0xae, 0xff, 0xbf, 0x44, 0xaa, 0x89, 0xdc, 0x2d,
-	0xfa, 0x10, 0x3a, 0x12, 0x4e, 0xff, 0x66, 0x03, 0x88, 0x94, 0xbd, 0x8f, 0xa7, 0x9b, 0x41, 0xae,
-	0x5a, 0xf8, 0xde, 0x3e, 0xfb, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xa0, 0xc9, 0xc1, 0xda, 0x86, 0x05,
+	// 690 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x55, 0x5d, 0x6e, 0xd3, 0x40,
+	0x10, 0xae, 0xe3, 0xfc, 0x90, 0x89, 0x03, 0xc9, 0x36, 0x54, 0x56, 0x1f, 0x20, 0x72, 0x1f, 0xb0,
+	0x54, 0x08, 0x25, 0x15, 0x08, 0x55, 0xe2, 0x81, 0x86, 0x2a, 0x42, 0x42, 0x80, 0x5c, 0x01, 0x8f,
+	0x95, 0x63, 0x6f, 0x53, 0xab, 0xc9, 0x3a, 0x5a, 0x6f, 0x1a, 0x72, 0x01, 0x8e, 0xc4, 0x65, 0xb8,
+	0x02, 0x57, 0x40, 0x20, 0xcf, 0xda, 0x1b, 0xdb, 0x71, 0x2b, 0xf1, 0x36, 0x3b, 0x3f, 0xdf, 0xce,
+	0xf7, 0xcd, 0x78, 0x0d, 0xbb, 0xef, 0xe8, 0x82, 0x32, 0x9f, 0x32, 0x6f, 0xed, 0x7c, 0x1e, 0x0d,
+	0x16, 0x3c, 0x14, 0x21, 0xd1, 0x7d, 0xee, 0x5a, 0x2f, 0xa1, 0x76, 0x36, 0x5f, 0x88, 0x35, 0x31,
+	0xa1, 0xe1, 0xfa, 0x3e, 0xa7, 0x51, 0x64, 0x6a, 0x7d, 0xcd, 0x6e, 0x3b, 0xe9, 0x91, 0x10, 0xa8,
+	0x32, 0x77, 0x4e, 0xcd, 0x4a, 0x5f, 0xb3, 0x9b, 0x0e, 0xda, 0xd6, 0x2f, 0x0d, 0x9a, 0x5e, 0xc8,
+	0xfc, 0x40, 0x04, 0x21, 0x23, 0x87, 0xd0, 0x55, 0x87, 0x8b, 0x3c, 0x4a, 0x47, 0x05, 0xde, 0x26,
+	0x70, 0x87, 0xd0, 0x5d, 0x32, 0x2f, 0xbc, 0xa1, 0x9c, 0xfa, 0x2a, 0xb9, 0x22, 0x93, 0x55, 0x20,
+	0x4d, 0xee, 0x80, 0x1e, 0xf8, 0xdf, 0xcd, 0x2a, 0x86, 0x63, 0x93, 0x1c, 0x41, 0x8f, 0x07, 0xd3,
+	0x2b, 0x71, 0x31, 0xe1, 0x2e, 0xf3, 0xae, 0x14, 0x42, 0xad, 0xaf, 0xdb, 0x6d, 0x87, 0x60, 0xec,
+	0x14, 0x43, 0x29, 0xc6, 0x11, 0xf4, 0x56, 0x3c, 0x64, 0xd3, 0x62, 0x45, 0x5d, 0x56, 0x60, 0x2c,
+	0x57, 0x61, 0x09, 0x68, 0x9c, 0xaf, 0x23, 0xcf, 0x9d, 0xcd, 0x14, 0x79, 0x6d, 0x43, 0x9e, 0xec,
+	0x41, 0x9d, 0x2d, 0xe7, 0x13, 0xca, 0x4d, 0xbd, 0xaf, 0xd9, 0x55, 0x27, 0x39, 0x91, 0x37, 0x40,
+	0x3c, 0x1e, 0x88, 0xc0, 0x73, 0x67, 0x17, 0x8a, 0xb6, 0x09, 0x7d, 0xdd, 0x6e, 0x0d, 0xef, 0x0f,
+	0x7c, 0xee, 0x0e, 0x94, 0xd7, 0xe9, 0xa6, 0x99, 0xa3, 0xd4, 0x65, 0xfd, 0xd6, 0xc0, 0xf8, 0xc6,
+	0x03, 0x41, 0xd3, 0xc6, 0xf7, 0xa0, 0xce, 0xe9, 0x82, 0xba, 0xc2, 0x6c, 0x20, 0xff, 0xe4, 0x14,
+	0xf7, 0xb4, 0xe0, 0x41, 0x68, 0xd6, 0xd1, 0x8b, 0x36, 0x39, 0x80, 0xf6, 0x2a, 0xae, 0x2d, 0x28,
+	0x6a, 0xac, 0xb2, 0x80, 0xa5, 0x73, 0xd2, 0x6f, 0x9d, 0x53, 0x4b, 0x22, 0x06, 0x6c, 0xb1, 0x14,
+	0x66, 0x15, 0x69, 0x00, 0xd2, 0x78, 0x1f, 0x7b, 0x1c, 0xc0, 0x30, 0xda, 0xe4, 0x45, 0x7a, 0x7d,
+	0x24, 0x75, 0xc3, 0x71, 0xb4, 0x86, 0x06, 0xa6, 0x27, 0x5a, 0x26, 0xcd, 0x24, 0x27, 0xeb, 0xa7,
+	0x06, 0x9d, 0x2f, 0xc5, 0x79, 0xff, 0x67, 0x87, 0x25, 0x9b, 0xa4, 0xdd, 0xbd, 0x49, 0x95, 0xcd,
+	0x26, 0xbd, 0x2a, 0x4a, 0x26, 0x29, 0x76, 0xb1, 0xe7, 0xec, 0x20, 0xf2, 0x2a, 0x5a, 0x3f, 0x34,
+	0xa8, 0x8e, 0xe2, 0xdd, 0x48, 0x20, 0xb5, 0xec, 0x72, 0x36, 0x36, 0xfa, 0xc7, 0x60, 0x7b, 0x08,
+	0x16, 0x67, 0x0f, 0x92, 0xf2, 0x33, 0x26, 0xf8, 0x5a, 0x7d, 0x5c, 0xfb, 0x27, 0x60, 0x64, 0x03,
+	0x31, 0xe6, 0x35, 0x5d, 0xa7, 0x98, 0xd7, 0x74, 0x4d, 0x7a, 0x50, 0xbb, 0x71, 0x67, 0x4b, 0x9a,
+	0xb4, 0x2e, 0x0f, 0x27, 0x95, 0xd7, 0x9a, 0xf5, 0x57, 0x83, 0x9a, 0x94, 0xbf, 0x03, 0x7a, 0x14,
+	0x4c, 0x93, 0x25, 0x8d, 0x4d, 0xb9, 0x23, 0xe1, 0x14, 0x8b, 0x0c, 0x07, 0x6d, 0x62, 0x43, 0x15,
+	0x67, 0xa3, 0x63, 0x6b, 0xbd, 0xcd, 0x28, 0xb1, 0x41, 0xd9, 0x18, 0x66, 0x90, 0x47, 0x00, 0xbe,
+	0x7a, 0x31, 0xf0, 0xeb, 0xbb, 0xe7, 0x64, 0x3c, 0xe4, 0xb4, 0x4c, 0x79, 0x39, 0xf2, 0x87, 0x08,
+	0x5b, 0x1c, 0xec, 0xf6, 0x40, 0xf6, 0x4f, 0xa1, 0xa9, 0xae, 0x2d, 0xa1, 0xfd, 0x38, 0x4b, 0xbb,
+	0x35, 0x6c, 0x2a, 0x21, 0x33, 0x0a, 0x0c, 0xff, 0xe8, 0xd0, 0xce, 0x3d, 0x6d, 0xc4, 0x06, 0x63,
+	0x4c, 0xc5, 0xd7, 0xf9, 0xa7, 0xcb, 0xcb, 0x88, 0x8a, 0x88, 0xc8, 0x85, 0xc5, 0x27, 0x6e, 0x3f,
+	0x63, 0x5b, 0x3b, 0xe4, 0x09, 0xb4, 0xc6, 0x54, 0x7c, 0xa4, 0x2b, 0x29, 0xe1, 0x76, 0x22, 0xfa,
+	0xad, 0x1d, 0xf2, 0x1c, 0x76, 0xcf, 0x29, 0xf3, 0x37, 0xf7, 0x64, 0x0b, 0xd0, 0x2e, 0x20, 0x3f,
+	0xc5, 0x1e, 0xd4, 0x87, 0x9d, 0x83, 0x2e, 0xbc, 0x03, 0xd6, 0x0e, 0x39, 0x86, 0x4e, 0x0c, 0x9f,
+	0xfb, 0xf2, 0xb7, 0x77, 0xb0, 0x70, 0xc5, 0x01, 0x34, 0x46, 0x21, 0x63, 0xd4, 0x13, 0x77, 0x30,
+	0xb4, 0xc1, 0x88, 0x91, 0x0b, 0x14, 0xcb, 0x3a, 0x1e, 0x00, 0x19, 0x53, 0x51, 0xce, 0xb0, 0x4c,
+	0x92, 0x67, 0xd0, 0x8e, 0x91, 0x37, 0x14, 0x0b, 0xb4, 0x0a, 0xf0, 0x43, 0x78, 0x30, 0xa6, 0x22,
+	0xc7, 0x30, 0x8b, 0xbd, 0xcd, 0x56, 0x32, 0x8c, 0xaf, 0xf8, 0x10, 0x4e, 0x6f, 0x67, 0x38, 0xa9,
+	0xe3, 0x9f, 0xec, 0xf8, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x25, 0x5c, 0x0c, 0x15, 0xe0, 0x06,
 	0x00, 0x00,
 }
 
@@ -566,14 +534,18 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type DependencyRPCClient interface {
-	// C++ and syz-manager
+	// DRA and syz-manager
 	GetVmOffsets(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
-	GetNewInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*NewInput, error)
-	SendDependencyInput(ctx context.Context, in *DependencyInput, opts ...grpc.CallOption) (*Empty, error)
+	GetNewInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Input, error)
+	SendDependencyInput(ctx context.Context, in *Input, opts ...grpc.CallOption) (*Empty, error)
+	GetCondition(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Condition, error)
+	SendWriteAddress(ctx context.Context, in *WriteAddress, opts ...grpc.CallOption) (*Empty, error)
 	//syz-fuzzer and syz-manager
 	Connect(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
-	GetDependencyInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*NewDependencyInput, error)
-	SendInput(ctx context.Context, in *Input, opts ...grpc.CallOption) (*Empty, error)
+	SendNewInput(ctx context.Context, in *Input, opts ...grpc.CallOption) (*Empty, error)
+	GetDependencyInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Input, error)
+	SendCondition(ctx context.Context, in *Condition, opts ...grpc.CallOption) (*Empty, error)
+	GetWriteAddress(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*WriteAddress, error)
 	SendLog(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 }
 
@@ -594,8 +566,8 @@ func (c *dependencyRPCClient) GetVmOffsets(ctx context.Context, in *Empty, opts 
 	return out, nil
 }
 
-func (c *dependencyRPCClient) GetNewInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*NewInput, error) {
-	out := new(NewInput)
+func (c *dependencyRPCClient) GetNewInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Input, error) {
+	out := new(Input)
 	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/GetNewInput", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -603,9 +575,27 @@ func (c *dependencyRPCClient) GetNewInput(ctx context.Context, in *Empty, opts .
 	return out, nil
 }
 
-func (c *dependencyRPCClient) SendDependencyInput(ctx context.Context, in *DependencyInput, opts ...grpc.CallOption) (*Empty, error) {
+func (c *dependencyRPCClient) SendDependencyInput(ctx context.Context, in *Input, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/SendDependencyInput", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dependencyRPCClient) GetCondition(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Condition, error) {
+	out := new(Condition)
+	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/GetCondition", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dependencyRPCClient) SendWriteAddress(ctx context.Context, in *WriteAddress, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/SendWriteAddress", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -621,8 +611,17 @@ func (c *dependencyRPCClient) Connect(ctx context.Context, in *Empty, opts ...gr
 	return out, nil
 }
 
-func (c *dependencyRPCClient) GetDependencyInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*NewDependencyInput, error) {
-	out := new(NewDependencyInput)
+func (c *dependencyRPCClient) SendNewInput(ctx context.Context, in *Input, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/SendNewInput", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dependencyRPCClient) GetDependencyInput(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Input, error) {
+	out := new(Input)
 	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/GetDependencyInput", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -630,9 +629,18 @@ func (c *dependencyRPCClient) GetDependencyInput(ctx context.Context, in *Empty,
 	return out, nil
 }
 
-func (c *dependencyRPCClient) SendInput(ctx context.Context, in *Input, opts ...grpc.CallOption) (*Empty, error) {
+func (c *dependencyRPCClient) SendCondition(ctx context.Context, in *Condition, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/SendInput", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/SendCondition", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dependencyRPCClient) GetWriteAddress(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*WriteAddress, error) {
+	out := new(WriteAddress)
+	err := c.cc.Invoke(ctx, "/dra.DependencyRPC/GetWriteAddress", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -650,14 +658,18 @@ func (c *dependencyRPCClient) SendLog(ctx context.Context, in *Empty, opts ...gr
 
 // DependencyRPCServer is the server API for DependencyRPC service.
 type DependencyRPCServer interface {
-	// C++ and syz-manager
+	// DRA and syz-manager
 	GetVmOffsets(context.Context, *Empty) (*Empty, error)
-	GetNewInput(context.Context, *Empty) (*NewInput, error)
-	SendDependencyInput(context.Context, *DependencyInput) (*Empty, error)
+	GetNewInput(context.Context, *Empty) (*Input, error)
+	SendDependencyInput(context.Context, *Input) (*Empty, error)
+	GetCondition(context.Context, *Empty) (*Condition, error)
+	SendWriteAddress(context.Context, *WriteAddress) (*Empty, error)
 	//syz-fuzzer and syz-manager
 	Connect(context.Context, *Empty) (*Empty, error)
-	GetDependencyInput(context.Context, *Empty) (*NewDependencyInput, error)
-	SendInput(context.Context, *Input) (*Empty, error)
+	SendNewInput(context.Context, *Input) (*Empty, error)
+	GetDependencyInput(context.Context, *Empty) (*Input, error)
+	SendCondition(context.Context, *Condition) (*Empty, error)
+	GetWriteAddress(context.Context, *Empty) (*WriteAddress, error)
 	SendLog(context.Context, *Empty) (*Empty, error)
 }
 
@@ -668,20 +680,32 @@ type UnimplementedDependencyRPCServer struct {
 func (*UnimplementedDependencyRPCServer) GetVmOffsets(ctx context.Context, req *Empty) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetVmOffsets not implemented")
 }
-func (*UnimplementedDependencyRPCServer) GetNewInput(ctx context.Context, req *Empty) (*NewInput, error) {
+func (*UnimplementedDependencyRPCServer) GetNewInput(ctx context.Context, req *Empty) (*Input, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNewInput not implemented")
 }
-func (*UnimplementedDependencyRPCServer) SendDependencyInput(ctx context.Context, req *DependencyInput) (*Empty, error) {
+func (*UnimplementedDependencyRPCServer) SendDependencyInput(ctx context.Context, req *Input) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendDependencyInput not implemented")
+}
+func (*UnimplementedDependencyRPCServer) GetCondition(ctx context.Context, req *Empty) (*Condition, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCondition not implemented")
+}
+func (*UnimplementedDependencyRPCServer) SendWriteAddress(ctx context.Context, req *WriteAddress) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendWriteAddress not implemented")
 }
 func (*UnimplementedDependencyRPCServer) Connect(ctx context.Context, req *Empty) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Connect not implemented")
 }
-func (*UnimplementedDependencyRPCServer) GetDependencyInput(ctx context.Context, req *Empty) (*NewDependencyInput, error) {
+func (*UnimplementedDependencyRPCServer) SendNewInput(ctx context.Context, req *Input) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendNewInput not implemented")
+}
+func (*UnimplementedDependencyRPCServer) GetDependencyInput(ctx context.Context, req *Empty) (*Input, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDependencyInput not implemented")
 }
-func (*UnimplementedDependencyRPCServer) SendInput(ctx context.Context, req *Input) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendInput not implemented")
+func (*UnimplementedDependencyRPCServer) SendCondition(ctx context.Context, req *Condition) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendCondition not implemented")
+}
+func (*UnimplementedDependencyRPCServer) GetWriteAddress(ctx context.Context, req *Empty) (*WriteAddress, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWriteAddress not implemented")
 }
 func (*UnimplementedDependencyRPCServer) SendLog(ctx context.Context, req *Empty) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendLog not implemented")
@@ -728,7 +752,7 @@ func _DependencyRPC_GetNewInput_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _DependencyRPC_SendDependencyInput_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DependencyInput)
+	in := new(Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -740,7 +764,43 @@ func _DependencyRPC_SendDependencyInput_Handler(srv interface{}, ctx context.Con
 		FullMethod: "/dra.DependencyRPC/SendDependencyInput",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DependencyRPCServer).SendDependencyInput(ctx, req.(*DependencyInput))
+		return srv.(DependencyRPCServer).SendDependencyInput(ctx, req.(*Input))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DependencyRPC_GetCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DependencyRPCServer).GetCondition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dra.DependencyRPC/GetCondition",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DependencyRPCServer).GetCondition(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DependencyRPC_SendWriteAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WriteAddress)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DependencyRPCServer).SendWriteAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dra.DependencyRPC/SendWriteAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DependencyRPCServer).SendWriteAddress(ctx, req.(*WriteAddress))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -763,6 +823,24 @@ func _DependencyRPC_Connect_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DependencyRPC_SendNewInput_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Input)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DependencyRPCServer).SendNewInput(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dra.DependencyRPC/SendNewInput",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DependencyRPCServer).SendNewInput(ctx, req.(*Input))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DependencyRPC_GetDependencyInput_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
@@ -781,20 +859,38 @@ func _DependencyRPC_GetDependencyInput_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DependencyRPC_SendInput_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Input)
+func _DependencyRPC_SendCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Condition)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DependencyRPCServer).SendInput(ctx, in)
+		return srv.(DependencyRPCServer).SendCondition(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dra.DependencyRPC/SendInput",
+		FullMethod: "/dra.DependencyRPC/SendCondition",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DependencyRPCServer).SendInput(ctx, req.(*Input))
+		return srv.(DependencyRPCServer).SendCondition(ctx, req.(*Condition))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DependencyRPC_GetWriteAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DependencyRPCServer).GetWriteAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dra.DependencyRPC/GetWriteAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DependencyRPCServer).GetWriteAddress(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -834,16 +930,32 @@ var _DependencyRPC_serviceDesc = grpc.ServiceDesc{
 			Handler:    _DependencyRPC_SendDependencyInput_Handler,
 		},
 		{
+			MethodName: "GetCondition",
+			Handler:    _DependencyRPC_GetCondition_Handler,
+		},
+		{
+			MethodName: "SendWriteAddress",
+			Handler:    _DependencyRPC_SendWriteAddress_Handler,
+		},
+		{
 			MethodName: "Connect",
 			Handler:    _DependencyRPC_Connect_Handler,
+		},
+		{
+			MethodName: "SendNewInput",
+			Handler:    _DependencyRPC_SendNewInput_Handler,
 		},
 		{
 			MethodName: "GetDependencyInput",
 			Handler:    _DependencyRPC_GetDependencyInput_Handler,
 		},
 		{
-			MethodName: "SendInput",
-			Handler:    _DependencyRPC_SendInput_Handler,
+			MethodName: "SendCondition",
+			Handler:    _DependencyRPC_SendCondition_Handler,
+		},
+		{
+			MethodName: "GetWriteAddress",
+			Handler:    _DependencyRPC_GetWriteAddress_Handler,
 		},
 		{
 			MethodName: "SendLog",

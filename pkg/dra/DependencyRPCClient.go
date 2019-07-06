@@ -38,7 +38,7 @@ func (d *DRPCClient) Connect(name *string) {
 	return
 }
 
-func (d *DRPCClient) GetDependencyInput(name string) *NewDependencyInput {
+func (d *DRPCClient) GetDependencyInput(name string) *Input {
 	// Contact the server and print out its response.
 	request := &Empty{
 		Name: name,
@@ -49,16 +49,13 @@ func (d *DRPCClient) GetDependencyInput(name string) *NewDependencyInput {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
 	}
-	reply := &NewDependencyInput{}
-	for _, d := range dInput.DependencyInput {
-		reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(d))
-	}
+	reply := CloneInput(dInput)
 	return reply
 }
 
 // SendDependencyInput is
 func (d *DRPCClient) SendDependencyInput(sig string) (*Empty, error) {
-	request := &DependencyInput{
+	request := &Input{
 		Sig: sig,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -77,28 +74,14 @@ func (d *DRPCClient) SendInput(input *Input) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	d.I = append(d.I, cloneInput(input))
-	if len(d.I) == 1 {
-		for _, ii := range d.I {
-			_, err := d.c.SendInput(ctx, ii)
-			if err != nil {
-				log.Fatalf("Dependency gRPC could not SendInput: %v", err)
-			}
-			log.Logf(1, "Dependency gRPC SendInput sig : v%", ii.Sig)
-			for idx, cc := range ii.Call {
-				log.Logf(1, "Dependency gRPC SendInput idx: %v address : %x", idx, cc.Address)
-			}
-		}
+	_, err := d.c.SendNewInput(ctx, CloneInput(input))
+	if err != nil {
+		log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 	}
-	d.I = nil
-	//n, _ := d.c.GetNewInput(ctx, &Empty{})
-	//log.Logf(1, "Dependency gRPC GetNewInput : %v", len(n.Input))
-	//for _, aa := range n.Input {
-	//	log.Logf(1, "Dependency gRPC GetNewInput sig : %v", aa.Sig)
-	//	for _, cc := range aa.Call {
-	//		log.Logf(1, "Dependency gRPC GetNewInput address : %x", cc.Address)
-	//	}
-	//}
+	log.Logf(1, "Dependency gRPC SendInput sig : v%", input.Sig)
+	for idx, cc := range input.Call {
+		log.Logf(1, "Dependency gRPC SendInput idx: %v address : %x", idx, cc.Address)
+	}
 }
 
 // SendInput ...

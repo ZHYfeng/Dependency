@@ -6,6 +6,7 @@ package main
 import (
 	"sync"
 
+	pb "github.com/google/syzkaller/pkg/dra"
 	"github.com/google/syzkaller/pkg/ipc"
 	"github.com/google/syzkaller/prog"
 )
@@ -65,8 +66,8 @@ type WorkSmash struct {
 // WorkDependency are programs from dependency analysis.
 // During WorkDependency these programs receive a dependency mutation.
 type WorkDependency struct {
-	p    *prog.Prog
-	call int
+	dependencyInput *pb.Input
+	call            int
 }
 
 func newWorkQueue(procs int, needCandidates chan struct{}) *WorkQueue {

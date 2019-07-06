@@ -8,28 +8,9 @@ import (
 )
 
 type Prog struct {
-	Target       *Target
-	Calls        []*Call
-	Comments     []string
-	Uncover      map[int]*Uncover
-	UncoverIdx   int
-	WriteAddress []uint32
-	Sig          string
-}
-
-type WriteAddresses struct {
-	WriteAddress uint32
-	Prio         uint32
-	Repeat       uint32
-	WriteProgs   []*Prog
-	WriteCalls   []*Call
-}
-
-type Uncover struct {
-	UncoveredAddress uint32
-	ConditionAddress uint32
-	Idx              uint32
-	WriteAddress     []*WriteAddresses
+	Target   *Target
+	Calls    []*Call
+	Comments []string
 }
 
 type Call struct {
