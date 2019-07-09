@@ -98,11 +98,11 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	reply := &Empty{}
 	cd := CloneInput(request)
 
-	if len(cd.Prog) == 0 {
+	if len(cd.Program) == 0 {
 		reply.Name = "dependency Sig error : " + cd.Sig
 		return reply, nil
 	} else if len(cd.Sig) == 0 {
-		reply.Name = "dependency Prog error : " + string(cd.Prog)
+		reply.Name = "dependency Prog error : " + string(cd.Program)
 		return reply, nil
 	}
 
@@ -172,9 +172,7 @@ func CloneInput(d *Input) *Input {
 		}
 		ci.Call[i] = u1
 	}
-	for _, c := range d.Prog {
-		ci.Prog = append(ci.Prog, c)
-	}
+	copy(ci.Program, d.Program)
 
 	for _, u := range d.UncoveredAddress {
 		u1 := new(UncoveredAddress)
@@ -196,8 +194,8 @@ func CloneInput(d *Input) *Input {
 
 			for _, s := range a.WriteSyscall {
 				s1 := &Syscall{
-					Name:   s.Name,
-					Number: s.Number,
+					Name: s.Name,
+					Cmd:  s.Cmd,
 				}
 				for _, c := range s.CriticalCondition {
 					c1 := &Condition{

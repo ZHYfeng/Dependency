@@ -113,11 +113,6 @@ func (proc *Proc) loop() {
 
 func (proc *Proc) triageInput(item *WorkTriage) {
 
-	input := pb.Input{
-		Call:       make(map[uint32]*pb.Call),
-		Dependency: false,
-	}
-
 	log.Logf(1, "#%v: triaging type=%x", proc.pid, item.flags)
 	prio := signalPrio(item.p, &item.info, item.call)
 	inputSignal := signal.FromRaw(item.info.Signal, prio)
@@ -213,6 +208,10 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		proc.fuzzer.workQueue.enqueue(&WorkSmash{item.p, item.call})
 	}
 
+	input := pb.Input{
+		Call:       make(map[uint32]*pb.Call),
+		Dependency: false,
+	}
 	if item.call != -1 {
 		cc := &pb.Call{
 			Idx:     uint32(item.call),
@@ -232,22 +231,12 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 
 	input.Sig = sig.String()
 	for _, c := range data {
-		input.Prog = append(input.Prog, c)
+		input.Program = append(input.Program, c)
 	}
 	proc.fuzzer.dManager.SendInput(&input)
 }
 
-func (proc *Proc) getCall(sc *pb.Syscall) {
-
-	//log.Logf(1, "cmd value : %x", cmd)
-	//fuzzer.dManager.SendLog(fmt.Sprintf("cmd value : %x", cmd))
-
-	c1 := &prog.Call{
-		Meta:    nil,
-		Ret:     nil,
-		Comment: "dependency",
-	}
-
+func (proc *Proc) getCall(sc *pb.Syscall) (res *prog.Syscall) {
 	// only work for ioctl
 	for n, c := range proc.fuzzer.target.SyscallMap {
 		if strings.HasPrefix(n, sc.Name) {
@@ -256,251 +245,255 @@ func (proc *Proc) getCall(sc *pb.Syscall) {
 					switch t := a.DefaultArg().(type) {
 					case *prog.ConstArg:
 						val, _ := t.Value()
-						if val == sc.Number {
-							c1.Meta = c
-							log.Logf(1, "ioctl name : %v", c.Name)
-							//fuzzer.dManager.SendLog(fmt.Sprintf("ioctl name : %v", c.Name))
-							c1.Ret = prog.MakeReturnArg(c.Ret)
-							for _, typ := range c.Args {
-								arg := typ.DefaultArg()
-								c1.Args = append(c1.Args, arg)
-							}
+						if val == sc.Cmd {
+							res = c
+							return
 						}
 					default:
-
 					}
 				}
 			}
 		}
 	}
+	return
 }
 
 func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 	log.Logf(1, "#%v: DependencyMutate", proc.pid)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("#%v: DependencyMutate", proc.pid))
-	ct := proc.fuzzer.choiceTable
+
 	//corpus := proc.fuzzer.corpusSnapshot()
 	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
 	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
 	//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
 	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
 
-	p, err := fuzzer.target.Deserialize(dependencyInput.GetProg(), prog.NonStrict)
+	dependencyInput := item.dependencyInput
+	p, err := proc.fuzzer.target.Deserialize(dependencyInput.Program, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("failed to deserialize program from dependencyInput: %v", err)
+	}
+	log.Logf(1, "DependencyMutate program : \n%s", dependencyInput.Program)
 
-	p := item.p
-	data := p.Serialize()
-	log.Logf(1, "DependencyMutate prog : \n%s", data)
-	writeAddress, conditionAddress, uncoverAddress := false, false, false
-	for iu, u := range p.Uncover {
-		p.UncoverIdx = iu
-		uncoverAddress = false
-		log.Logf(1, "uncover address : %x", u.UncoveredAddress)
-		log.Logf(1, "idx : %x", u.Idx)
+	for _, u := range dependencyInput.UncoveredAddress {
 
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("condition address : %x", u.ConditionAddress))
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("uncover address : %x", u.UncoveredAddress))
+		if u.RunTimeDate.CheckAddress == false {
 
-		rpinfo := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
-		var rpCover cover.Cover
-		for _, c := range rpinfo.Calls {
-			rpCover.Merge(c.Cover)
-			//log.Logf(1, "Cover : %x", c.Cover)
-		}
-		if proc.checkConditionAddress(p, rpCover) {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
-		} else {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
-		}
+			info := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 
-		for _, ra := range u.WriteAddress {
+			if checkAddress(u.ConditionAddress, info.Calls[u.Idx].Cover) {
+				u.RunTimeDate.CheckCondition = true
+				for _, wa := range u.WriteAddress {
+					proc.dependencyWriteAddress(wa)
+				}
+			} else {
 
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate prog : \n%s", data))
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("Idx : %x", u.Idx))
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("condition address : %x", u.ConditionAddress))
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("uncover address : %x", u.UncoveredAddress))
-
-			writeAddress = false
-			log.Logf(1, "write address : %x", ra.WriteAddress)
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("write address : %x", ra.WriteAddress))
-			p.WriteAddress = nil
-			p.WriteAddress = append(p.WriteAddress, ra.WriteAddress)
-			if ra.Repeat == 0 {
-				mini := 1
-				ra.Repeat = uint32(proc.rnd.Int31n(int32(programLength-len(p.Calls))-int32(mini)) + int32(mini))
 			}
-			log.Logf(1, "repeat : %v", ra.Repeat)
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("repeat : %v", ra.Repeat))
-			if len(ra.WriteProgs) > 0 {
-				for _, rp := range ra.WriteProgs {
+		} else {
 
-					wdata := rp.Serialize()
-					log.Logf(1, "write program : \n%s", wdata)
-					proc.fuzzer.dManager.SendLog(fmt.Sprintf("write program : \n%s", wdata))
-					rpinfo := proc.execute(proc.execOptsCover, rp, ProgNormal, StatDependency)
-					var rpCover cover.Cover
-					for _, c := range rpinfo.Calls {
-						rpCover.Merge(c.Cover)
-						//log.Logf(1, "Cover : %x", c.Cover)
-					}
-					if proc.checkWriteAddress(p, rpCover) {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
-					} else {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
-					}
+		}
 
-					p0 := p.Clone()
-					//for i := 0; i < int(ra.Repeat); i++ {
-					p0.Splice(rp, u.Idx, programLength)
-					//}
-					data := p0.Serialize()
-					log.Logf(1, "test case with write program : \n%s", data)
-					proc.fuzzer.dManager.SendLog(fmt.Sprintf("test case with write program : \n%s", data))
+	}
+	return
+}
 
+func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *ipc.ProgInfo) {
+	if wa.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
+		for _, wc := range wa.WriteSyscall {
+			if wc.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
+
+				ct := proc.fuzzer.choiceTable
+				p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
+				if err != nil {
+					log.Fatalf("failed to deserialize program from dependencyWriteAddress: %v", err)
+				}
+
+				p0 := p.Clone()
+				c0c := p0.GetCall(proc.rnd, proc.getCall(wc), wc.RunTimeDate.Parent.Idx, ct)
+
+				p0.InsertCall(c0c, wc.RunTimeDate.Parent.Idx, programLength)
+
+				size := uint32(len(c0c))
+				wc.RunTimeDate.Idx = wc.RunTimeDate.Parent.Idx + size - 1
+
+				data := p0.Serialize()
+				copy(wc.RunTimeDate.Program, data)
+
+				for i := 0; i < 100; i++ {
+					p0.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
 					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
-					var inputCover cover.Cover
-					for _, c := range info.Calls {
-						inputCover.Merge(c.Cover)
-						//log.Logf(1, "Cover : %x", c.Cover)
-					}
-					ok1, ok2, ok3 := proc.checkCoverage(p, inputCover)
-					if ok1 {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
-					} else {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
-					}
-					if ok2 {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
-					} else {
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
-					}
-					if ok3 {
-						uncoverAddress = true
-						goto cover
-					} else {
 
-					}
-				}
-			}
-			if !uncoverAddress {
-				log.Logf(1, "write call size : %v", len(ra.WriteCalls))
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("write call size : %v", len(ra.WriteCalls)))
-				if len(ra.WriteCalls) > 0 {
-					for _, rc := range ra.WriteCalls {
-						log.Logf(1, "write call : %s", rc)
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("write call : %s", rc))
-						p0 := p.Clone()
-
-						//p0.MutateIoctl1Arg(proc.rnd, int(u.Idx), ct)
-
-						c0c := p0.GetCall(proc.rnd, rc, u.Idx, ct)
-						size := len(c0c)
-						p0.InsertCall(c0c, u.Idx, programLength)
-						data := p0.Serialize()
-						log.Logf(1, "test case with WriteCalls program : \n%s", data)
-						proc.fuzzer.dManager.SendLog(fmt.Sprintf("WriteCalls program : \n%s", data))
-						for i := 0; i < 1000; i++ {
-							p0.MutateIoctl3Arg(proc.rnd, int(u.Idx)+size-1, ct)
+					if checkAddress(wc.RunTimeDate.Address, info.Calls[wc.RunTimeDate.Idx].Cover) {
+						wc.RunTimeDate.CheckAddress = true
+						if len(wc.RunTimeDate.Program) == 0 {
 							data := p0.Serialize()
-							log.Logf(1, "test case with WriteCalls program mutate : \n%s", data)
-							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("WriteCalls p0 program mutate : \n%s", data))
-							p0c := p0.Clone()
-							//for i := 0; i < int(ra.Repeat-1); i++ {
-							p0c.RepeatCall(int(u.Idx) + size - 1)
-							//}
-							data1 := p0c.Serialize()
-							log.Logf(1, "test case with WriteCalls program mutate repeat: \n%s", data1)
-							//proc.fuzzer.dManager.SendLog(fmt.Sprintf("test case with WriteCalls program mutate repeat: \n%s", data1))
-
-							info := proc.execute(proc.execOptsCover, p0c, ProgNormal, StatDependency)
-							var inputCover cover.Cover
-							for _, c := range info.Calls {
-								inputCover.Merge(c.Cover)
-								//log.Logf(1, "Cover : %x", c.Cover)
-							}
-							ok1, ok2, ok3 := proc.checkCoverage(p, inputCover)
-							if ok1 {
-								writeAddress = true
-							}
-							if ok2 {
-								conditionAddress = true
-							}
-							if ok3 {
-								uncoverAddress = true
-								goto cover
-							}
+							copy(wc.RunTimeDate.Program, data)
 						}
-
 					}
-				} else {
-					// no cmd
+
+					if checkAddress(wc.RunTimeDate.Parent.ConditionAddress, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
+						wc.RunTimeDate.Parent.CheckCondition = true
+						if checkAddress(wc.RunTimeDate.Parent.Address, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
+
+							wc.RunTimeDate.Parent.CheckAddress = true
+
+							wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+
+							data := p0.Serialize()
+							copy(wc.RunTimeDate.Program, data)
+
+							return true, info
+						}
+					}
+
 				}
-			}
-			proc.fuzzer.dManager.SSendLog()
-			if writeAddress {
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
-			} else {
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
-			}
-			if conditionAddress {
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
-			} else {
-				proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
+
+				if wc.RunTimeDate.CheckAddress == false && wc.RunTimeDate.Parent.CheckCondition == true {
+					// request recursive
+					wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+				} else {
+					wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+				}
+
+			} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive && len(wc.WriteAddress) != 0 {
+				for _, wwa := range wc.WriteAddress {
+					if ok, info := proc.dependencyWriteAddress(wwa); ok {
+
+						copy(wc.RunTimeDate.Program, wwa.RunTimeDate.Program)
+
+						if wwa.RunTimeDate.Parent.Address == wc.RunTimeDate.Address {
+
+							wc.RunTimeDate.CheckAddress = true
+							wa.RunTimeDate.CheckAddress = true
+
+							if checkAddress(wc.RunTimeDate.Parent.ConditionAddress, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
+								wc.RunTimeDate.Parent.CheckCondition = true
+								if checkAddress(wc.RunTimeDate.Parent.Address, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
+
+									wc.RunTimeDate.Parent.CheckAddress = true
+
+									wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+
+									copy(wc.RunTimeDate.Program, wwa.RunTimeDate.Program)
+
+									return true, info
+								}
+							}
+						} else {
+							// get next condition
+							var cover cover.Cover
+							cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
+							for _, condition := range wc.CriticalCondition {
+								if checkCondition(condition, cover) {
+
+								} else {
+									wc.RunTimeDate.ConditionAddress = condition.ConditionAddress
+								}
+							}
+							return false, nil
+						}
+					}
+				}
+
+				wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+				for _, wwa := range wc.WriteAddress {
+					if wwa.RunTimeDate.TaskStatus != pb.RunTimeData_tested {
+						wc.RunTimeDate.TaskStatus = wwa.RunTimeDate.TaskStatus
+					}
+				}
+
+			} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_tested {
+
 			}
 		}
-	cover:
-		if uncoverAddress {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("we can cover this address : %x", u.UncoveredAddress))
-		} else {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("we can not cover this address : %x", u.UncoveredAddress))
+
+		wa.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+		for _, wc := range wa.WriteSyscall {
+			if wc.RunTimeDate.TaskStatus != pb.RunTimeData_tested {
+				wa.RunTimeDate.TaskStatus = wc.RunTimeDate.TaskStatus
+			}
 		}
 	}
-	proc.fuzzer.dManager.SSendLog()
 
-	return
+	return false, nil
 }
 
-func (proc *Proc) checkCoverage(p *prog.Prog, inputCover cover.Cover) (res1 bool, res2 bool, res3 bool) {
-	res1 = false
-	res2 = false
-	res3 = false
-
-	if proc.checkWriteAddress(p, inputCover) {
-		res1 = true
-		//proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
-	} else {
-	}
-
-	if proc.checkConditionAddress(p, inputCover) {
-		res2 = true
-		//proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
-	} else {
-	}
-
-	if proc.checkUncoveredAddress(p, inputCover) {
-		//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
-		//delete(corpusDependencySnapshot[p.Sig].Uncover, corpusDependencySnapshot[p.Sig].UncoverIdx)
-		log.Logf(1, "checkUncoveredAddress")
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkUncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
-		id := p.Calls[p.Uncover[p.UncoverIdx].Idx].Meta.ID
-		if proc.fuzzer.checkIsCovered(id, p.Uncover[p.UncoverIdx].UncoveredAddress) {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("old UncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
-		} else {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new UncoveredAddress : %x", p.Uncover[p.UncoverIdx].UncoveredAddress))
-		}
-		res3 = true
-	} else {
-	}
-	return
+func testSyscall(wc *pb.Syscall) (res bool) {
+	return false
 }
 
-func checkAddress(conditionAddress uint32, inputCover cover.Cover) (res bool) {
+func aaaa() {
+
+	// for repeat
+	//if wa.Repeat == 0 {
+	//	mini := 1
+	//	wa.Repeat = uint32(proc.rnd.Int31n(int32(programLength-len(p.Calls))-int32(mini)) + int32(mini))
+	//}
+	// log.Logf(1, "repeat : %v", wa.Repeat)
+
+	//	for _, wi := range wa.WriteInput {
+	//
+	//		log.Logf(1, "write program : \n%s", wi.Program)
+	//		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write program : \n%s", wi.Program))
+	//
+	//		wp, err := proc.fuzzer.target.Deserialize(wi.Program, prog.NonStrict)
+	//		if err != nil {
+	//			log.Fatalf("failed to deserialize program from write program: %v", err)
+	//		}
+	//		wpInfo := proc.execute(proc.execOptsCover, wp, ProgNormal, StatDependency)
+	//		u.RunTimeDate.CheckAddress = checkAddress(wi.WriteAddress, wpInfo.Calls[wi.Idx].Cover)
+	//
+	//		p0 := p.Clone()
+	//		p0.Splice(wp, u.Idx, programLength)
+	//
+	//		data := p0.Serialize()
+	//		log.Logf(1, "test case with write program : \n%s", data)
+	//		proc.fuzzer.dManager.SendLog(fmt.Sprintf("test case with write program : \n%s", data))
+	//
+	//		info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+	//		u.RunTimeDate.CheckAddress = checkAddress(wi.WriteAddress, info.Calls[wi.Idx].Cover)
+	//
+	//		ok1, ok2, ok3 := proc.checkCoverage(p, inputCover)
+	//		if ok1 {
+	//			proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkWriteAddress : %x", p.WriteAddress))
+	//		} else {
+	//			proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkWriteAddress : %x", p.WriteAddress))
+	//		}
+	//		if ok2 {
+	//			proc.fuzzer.dManager.SendLog(fmt.Sprintf("checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
+	//		} else {
+	//			proc.fuzzer.dManager.SendLog(fmt.Sprintf("not checkConditionAddress : %x", p.Uncover[p.UncoverIdx].ConditionAddress))
+	//		}
+	//		if ok3 {
+	//			u.RunTimeDate.CheckAddress = true
+	//			goto cover
+	//		} else {
+	//
+	//		}
+	//	}
+}
+
+func checkAddress(conditionAddress uint32, cover []uint32) (res bool) {
 	res = false
-	if _, ok := inputCover[conditionAddress]; ok {
-		res = true
-		return
+	for _, c := range cover {
+		if c == conditionAddress {
+			res = true
+			return
+		}
+	}
+	return
+}
+
+func checkCondition(condition *pb.Condition, cover cover.Cover) (res bool) {
+	res = false
+	if _, ok := cover[condition.ConditionAddress]; ok {
+		for _, a := range condition.RightBranchAddress {
+			if _, ok := cover[a]; ok {
+				res = true
+				return
+			}
+		}
 	}
 	return
 }

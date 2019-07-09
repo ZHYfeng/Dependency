@@ -707,7 +707,7 @@ func (p *Prog) MutateIoctl1Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 	return true
 }
 
-func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
+func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool {
 	r := newRand(p.Target, rs)
 	c := p.Calls[idx]
 	if len(c.Args) == 0 {
@@ -741,9 +741,9 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 	return true
 }
 
-func (p *Prog) GetCall(rs rand.Source, rc *Call, idx uint32, ct *ChoiceTable) []*Call {
+// TODO: change to use arg0 of c
+func (p *Prog) GetCall(rs rand.Source, meta *Syscall, idx uint32, ct *ChoiceTable) []*Call {
 	r := newRand(p.Target, rs)
-	meta := rc.Meta
 	c := p.Calls[idx]
 	s := analyze(ct, p, c)
 	c0c := r.generateParticularCall(s, meta)

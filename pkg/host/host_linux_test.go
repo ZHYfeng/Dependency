@@ -25,14 +25,14 @@ func TestSupportedSyscalls(t *testing.T) {
 	}
 	// These are safe to execute with invalid arguments.
 	safe := []string{
-		"memfd_create",
-		"sendfile",
-		"bpf$MAP_CREATE",
-		"open",
-		"openat",
-		"read",
-		"write",
-		"stat",
+		//"memfd_create",
+		//"sendfile",
+		//"bpf$MAP_CREATE",
+		//"open",
+		//"openat",
+		//"read",
+		//"write",
+		//"stat",
 		"ioctl",
 		"ioctl$BLKTRACESETUP",
 		"ioctl$BLKTRACESTART",

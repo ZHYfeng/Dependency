@@ -32,6 +32,26 @@ service DependencyRPC {
     }
 }
 
+message runTimeData {
+    runTimeData parent = 9;
+    bytes program = 2;
+    enum taskStatus {
+        untested = 0;
+        recursive = 1;
+        tested = 2;
+        out = 3;
+    }
+    taskStatus task_status = 3;
+
+    uint32 idx = 10;
+
+    bool checkCondition = 11;
+    uint32 condition_address = 12;
+
+    bool checkAddress = 13;
+    uint32 address = 14;
+}
+
 message Empty {
     uint32 address = 1;
     string name = 2;
@@ -48,15 +68,20 @@ message condition {
 
 message Syscall {
     string name = 1;
-    uint64 number = 3;
+    uint64 cmd = 2;
 
-    repeated condition critical_condition = 10;
+    repeated condition critical_condition = 4;
+    runTimeData run_time_date = 5;
 
+    repeated WriteAddress write_address = 11;
 }
 
 message WriteAddress {
     uint32 repeat = 7;
+    uint32 real_repeat = 8;
+
     uint32 prio = 6;
+
     // the address writes to global variable
     uint32 write_address = 2;
     // the address of condition is related to this global variable
@@ -64,6 +89,8 @@ message WriteAddress {
 
     repeated Input write_input = 4;
     repeated Syscall write_syscall = 5;
+
+    runTimeData run_time_date = 11;
 }
 
 message UncoveredAddress {
@@ -71,6 +98,8 @@ message UncoveredAddress {
     uint32 uncovered_address = 1;
     uint32 idx = 2;
     repeated WriteAddress write_address = 4;
+
+    runTimeData run_time_date = 5;
 }
 
 message Call {
@@ -79,11 +108,16 @@ message Call {
 }
 
 message Input {
-    // hash value for each input from syzkaller
-    string sig = 1;
-    bytes prog = 2;
-    map<uint32, Call> call = 3;
-    bool dependency = 4;
+    // for input
+    string sig = 11; // hash value for each input from syzkaller
+    bytes program = 12;
+    map<uint32, Call> call = 13;
 
-    repeated UncoveredAddress uncovered_address = 5;
+    // for dependency
+    bool dependency = 21;
+    repeated UncoveredAddress uncovered_address = 22;
+
+    // for write address
+    uint32 write_address = 31;
+    uint32 idx = 32;
 }
