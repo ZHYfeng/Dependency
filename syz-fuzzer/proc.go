@@ -320,9 +320,10 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 				data := p0.Serialize()
 				copy(wc.RunTimeDate.Program, data)
 
+				var info *ipc.ProgInfo
 				for i := 0; i < 100; i++ {
 					p0.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
-					info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+					info = proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 
 					if checkAddress(wc.RunTimeDate.Address, info.Calls[wc.RunTimeDate.Idx].Cover) {
 						wc.RunTimeDate.CheckAddress = true
@@ -349,9 +350,16 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 
 				}
 
-				if wc.RunTimeDate.CheckAddress == false && wc.RunTimeDate.Parent.CheckCondition == true {
-					// request recursive
+				if wc.RunTimeDate.Parent.CheckCondition == true && wc.RunTimeDate.CheckAddress == false {
+					// recursive for getting write address
 					wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+					var cover cover.Cover
+					cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
+					for _, c := range wc.CriticalCondition {
+						if checkCondition(c, cover) {
+
+						}
+					}
 				} else {
 					wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
 				}
@@ -381,7 +389,7 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 								}
 							}
 						} else {
-							// get next condition
+							// recursive for getting next critical condition
 							var cover cover.Cover
 							cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
 							for _, condition := range wc.CriticalCondition {
@@ -391,7 +399,6 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 									wc.RunTimeDate.ConditionAddress = condition.ConditionAddress
 								}
 							}
-							return false, nil
 						}
 					}
 				}
@@ -423,7 +430,7 @@ func testSyscall(wc *pb.Syscall) (res bool) {
 	return false
 }
 
-func aaaa() {
+func forprogam() {
 
 	// for repeat
 	//if wa.Repeat == 0 {
@@ -496,6 +503,10 @@ func checkCondition(condition *pb.Condition, cover cover.Cover) (res bool) {
 		}
 	}
 	return
+}
+
+func checkCriticalCondition() (condition *pb.Condition) {
+
 }
 
 func reexecutionSuccess(info *ipc.ProgInfo, oldInfo *ipc.CallInfo, call int) bool {

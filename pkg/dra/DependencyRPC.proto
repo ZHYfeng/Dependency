@@ -96,10 +96,12 @@ message WriteAddress {
 message UncoveredAddress {
     uint32 condition_address = 3;
     uint32 uncovered_address = 1;
-    uint32 idx = 2;
-    repeated WriteAddress write_address = 4;
 
     runTimeData run_time_date = 5;
+
+    repeated WriteAddress write_address = 4;
+
+
 }
 
 message Call {
