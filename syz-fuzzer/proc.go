@@ -278,20 +278,140 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 	for _, u := range dependencyInput.UncoveredAddress {
 
-		if u.RunTimeDate.CheckAddress == false {
+		for _, wa := range u.WriteAddress {
+			if wa.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
+				for _, wc := range wa.WriteSyscall {
+					if wc.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
 
-			info := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
+						ct := proc.fuzzer.choiceTable
+						p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
+						if err != nil {
+							log.Fatalf("failed to deserialize program from dependencyWriteAddress: %v", err)
+						}
 
-			if checkAddress(u.ConditionAddress, info.Calls[u.Idx].Cover) {
-				u.RunTimeDate.CheckCondition = true
-				for _, wa := range u.WriteAddress {
-					proc.dependencyWriteAddress(wa)
+						p0 := p.Clone()
+						c0c := p0.GetCall(proc.rnd, proc.getCall(wc), wc.RunTimeDate.Parent.Idx, ct)
+
+						p0.InsertCall(c0c, wc.RunTimeDate.Parent.Idx, programLength)
+
+						size := uint32(len(c0c))
+						wc.RunTimeDate.Idx = wc.RunTimeDate.Parent.Idx + size - 1
+
+						data := p0.Serialize()
+						copy(wc.RunTimeDate.Program, data)
+
+						var info *ipc.ProgInfo
+						for i := 0; i < 100; i++ {
+							p0.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
+							temp_info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+
+							ConditionAddress := checkAddress(wc.RunTimeDate.Parent.ConditionAddress, temp_info.Calls[wc.RunTimeDate.Parent.Idx].Cover)
+							UncoveredAddress := checkAddress(wc.RunTimeDate.Parent.Address, temp_info.Calls[wc.RunTimeDate.Parent.Idx].Cover)
+							WriteAddress := checkAddress(wc.RunTimeDate.Address, temp_info.Calls[wc.RunTimeDate.Idx].Cover)
+
+							data := p0.Serialize()
+							copy(wc.RunTimeDate.Program, data)
+
+							if ConditionAddress == true &&
+								UncoveredAddress == false &&
+								WriteAddress == false {
+
+								// recursive for getting write address
+								wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+								var cover cover.Cover
+								cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
+								for _, c := range wc.CriticalCondition {
+									if checkCondition(c, cover) {
+
+									}
+								}
+							} else if ConditionAddress == true &&
+								UncoveredAddress == false &&
+								WriteAddress == true {
+
+								// normal this case can not happen.
+								wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+							} else if ConditionAddress == true &&
+								UncoveredAddress == true &&
+								WriteAddress == false {
+
+								// we can do nothing here now.
+								wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+							} else if ConditionAddress == true &&
+								UncoveredAddress == true &&
+								WriteAddress == true {
+								wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+
+								// we cover the address we want.
+
+							} else if ConditionAddress == false {
+
+								// we may need more mutation of argument or recursive here.
+								// now we do nothing here.
+								wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+							}
+
+						}
+
+					} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive && len(wc.WriteAddress) != 0 {
+						for _, wwa := range wc.WriteAddress {
+							if ok, info := proc.dependencyWriteAddress(wwa); ok {
+
+								copy(wc.RunTimeDate.Program, wwa.RunTimeDate.Program)
+
+								// recursive for getting next critical condition
+								var cover cover.Cover
+								cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
+								for _, condition := range wc.CriticalCondition {
+									if checkCondition(condition, cover) {
+
+									} else {
+										wc.RunTimeDate.ConditionAddress = condition.ConditionAddress
+									}
+								}
+
+								if wwa.RunTimeDate.Parent.Address == wc.RunTimeDate.Address {
+
+									wc.RunTimeDate.CheckAddress = true
+									wa.RunTimeDate.CheckAddress = true
+
+									if checkAddress(wc.RunTimeDate.Parent.ConditionAddress, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
+										wc.RunTimeDate.Parent.CheckCondition = true
+										if checkAddress(wc.RunTimeDate.Parent.Address, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
+
+											wc.RunTimeDate.Parent.CheckAddress = true
+
+											wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+
+											copy(wc.RunTimeDate.Program, wwa.RunTimeDate.Program)
+
+										}
+									}
+								} else {
+
+								}
+							}
+						}
+
+						wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+						for _, wwa := range wc.WriteAddress {
+							if wwa.RunTimeDate.TaskStatus != pb.RunTimeData_tested {
+								wc.RunTimeDate.TaskStatus = wwa.RunTimeDate.TaskStatus
+							}
+						}
+
+					} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_tested {
+
+					}
 				}
-			} else {
 
+				wa.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+				for _, wc := range wa.WriteSyscall {
+					if wc.RunTimeDate.TaskStatus != pb.RunTimeData_tested {
+						wa.RunTimeDate.TaskStatus = wc.RunTimeDate.TaskStatus
+					}
+				}
 			}
-		} else {
-
 		}
 
 	}
@@ -300,6 +420,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *ipc.ProgInfo) {
 	if wa.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
+
 		for _, wc := range wa.WriteSyscall {
 			if wc.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
 
@@ -323,45 +444,40 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 				var info *ipc.ProgInfo
 				for i := 0; i < 100; i++ {
 					p0.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
-					info = proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+					temp_info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
 
-					if checkAddress(wc.RunTimeDate.Address, info.Calls[wc.RunTimeDate.Idx].Cover) {
-						wc.RunTimeDate.CheckAddress = true
-						if len(wc.RunTimeDate.Program) == 0 {
-							data := p0.Serialize()
-							copy(wc.RunTimeDate.Program, data)
-						}
-					}
-
-					if checkAddress(wc.RunTimeDate.Parent.ConditionAddress, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
-						wc.RunTimeDate.Parent.CheckCondition = true
-						if checkAddress(wc.RunTimeDate.Parent.Address, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
-
-							wc.RunTimeDate.Parent.CheckAddress = true
-
-							wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
-
-							data := p0.Serialize()
-							copy(wc.RunTimeDate.Program, data)
-
-							return true, info
-						}
-					}
-
-				}
-
-				if wc.RunTimeDate.Parent.CheckCondition == true && wc.RunTimeDate.CheckAddress == false {
-					// recursive for getting write address
-					wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+					address := checkAddress(wc.RunTimeDate.Parent.Address, temp_info.Calls[wc.RunTimeDate.Parent.Idx].Cover)
+					writeAddress := checkAddress(wc.RunTimeDate.Address, temp_info.Calls[wc.RunTimeDate.Idx].Cover)
 					var cover cover.Cover
-					cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
-					for _, c := range wc.CriticalCondition {
-						if checkCondition(c, cover) {
+					cover.Merge(info.Calls[wc.RunTimeDate.Parent.Idx].Cover)
+					ConditionAddress := checkAddresses(wc.RunTimeDate.Parent.RightBranchAddress, cover)
 
-						}
+					data := p0.Serialize()
+					copy(wc.RunTimeDate.Program, data)
+
+					if address == true {
+						//
+
+						wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+						return true, info
+
+					} else if ConditionAddress == true {
+						//
+
+						// we can do nothing here now.
+						wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+						return true, info
+
+					} else if writeAddress == false {
+
+						// we can do nothing here now.
+						wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+					} else if writeAddress == true {
+
+						// we can do nothing here now.
+						wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
 					}
-				} else {
-					wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+
 				}
 
 			} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive && len(wc.WriteAddress) != 0 {
@@ -369,36 +485,71 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 					if ok, info := proc.dependencyWriteAddress(wwa); ok {
 
 						copy(wc.RunTimeDate.Program, wwa.RunTimeDate.Program)
+						wc.RunTimeDate.Idx = wwa.RunTimeDate.Idx + 1
 
-						if wwa.RunTimeDate.Parent.Address == wc.RunTimeDate.Address {
+						if wwa.RunTimeDate.Parent.CheckAddress == true {
 
 							wc.RunTimeDate.CheckAddress = true
 							wa.RunTimeDate.CheckAddress = true
 
-							if checkAddress(wc.RunTimeDate.Parent.ConditionAddress, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
-								wc.RunTimeDate.Parent.CheckCondition = true
-								if checkAddress(wc.RunTimeDate.Parent.Address, info.Calls[wc.RunTimeDate.Parent.Idx].Cover) {
+							ok1 := checkAddress(wc.RunTimeDate.Parent.Address, info.Calls[wc.RunTimeDate.Parent.Idx].Cover)
+							if ok1 {
+								wc.RunTimeDate.Parent.CheckAddress = true
 
-									wc.RunTimeDate.Parent.CheckAddress = true
-
-									wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
-
-									copy(wc.RunTimeDate.Program, wwa.RunTimeDate.Program)
-
-									return true, info
-								}
 							}
+							wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+							return true, info
+
 						} else {
-							// recursive for getting next critical condition
-							var cover cover.Cover
-							cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
-							for _, condition := range wc.CriticalCondition {
-								if checkCondition(condition, cover) {
 
-								} else {
-									wc.RunTimeDate.ConditionAddress = condition.ConditionAddress
+							if wwa.RunTimeDate.CheckCondition == true {
+
+								ct := proc.fuzzer.choiceTable
+								p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
+								if err != nil {
+									log.Fatalf("failed to deserialize program from dependencyWriteAddress: %v", err)
 								}
+
+								p0 := p.Clone()
+								for i := 0; i < 100; i++ {
+									p0.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
+									temp_info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
+									WriteAddress := checkAddress(wc.RunTimeDate.Address, temp_info.Calls[wc.RunTimeDate.Idx].Cover)
+
+									if WriteAddress == true {
+										info = temp_info
+										// we may need more mutation of argument or recursive here.
+										// now we do nothing here.
+										wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+										return true, info
+									}
+								}
+
+								// recursive for getting next critical condition
+								flag := false
+
+								var cover cover.Cover
+								cover.Merge(info.Calls[wc.RunTimeDate.Idx].Cover)
+								for _, condition := range wc.CriticalCondition {
+									if checkCondition(condition, cover) {
+
+									} else {
+										wc.RunTimeDate.ConditionAddress = condition.ConditionAddress
+										for _, ra := range condition.RightBranchAddress {
+											wc.RunTimeDate.RightBranchAddress = append(wc.RunTimeDate.RightBranchAddress, ra)
+										}
+										wc.WriteAddress = nil
+										flag = true
+										break
+									}
+								}
+								if flag == false {
+									// error
+								}
+							} else {
+
 							}
+
 						}
 					}
 				}
@@ -481,13 +632,22 @@ func forprogam() {
 	//	}
 }
 
-func checkAddress(conditionAddress uint32, cover []uint32) (res bool) {
+func checkAddress(Address uint32, cover []uint32) (res bool) {
 	res = false
 	for _, c := range cover {
-		if c == conditionAddress {
+		if c == Address {
 			res = true
 			return
 		}
+	}
+	return
+}
+
+func checkAddressMap(Address uint32, cover cover.Cover) (res bool) {
+	res = false
+	if _, ok := cover[Address]; ok {
+		res = true
+		return
 	}
 	return
 }
@@ -500,6 +660,17 @@ func checkCondition(condition *pb.Condition, cover cover.Cover) (res bool) {
 				res = true
 				return
 			}
+		}
+	}
+	return
+}
+
+func checkAddresses(Address []uint32, cover cover.Cover) (res bool) {
+	res = false
+	for _, a := range Address {
+		if _, ok := cover[a]; ok {
+			res = true
+			return
 		}
 	}
 	return

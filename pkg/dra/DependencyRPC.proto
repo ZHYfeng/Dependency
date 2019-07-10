@@ -42,6 +42,7 @@ message runTimeData {
         out = 3;
     }
     taskStatus task_status = 3;
+    uint32 rcursive_count = 4;
 
     uint32 idx = 10;
 
@@ -50,6 +51,9 @@ message runTimeData {
 
     bool checkAddress = 13;
     uint32 address = 14;
+
+    bool checkRightAddress = 15;
+    repeated uint32 right_branch_address = 16;
 }
 
 message Empty {
