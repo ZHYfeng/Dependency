@@ -52,7 +52,7 @@ message runTimeData {
     bool checkAddress = 13;
     uint32 address = 14;
 
-    bool checkRightAddress = 15;
+    bool checkRightBranchAddress = 15;
     repeated uint32 right_branch_address = 16;
 }
 
