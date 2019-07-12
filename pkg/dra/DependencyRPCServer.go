@@ -178,7 +178,6 @@ func CloneInput(d *Input) *Input {
 		u1 := new(UncoveredAddress)
 		u1.ConditionAddress = u.ConditionAddress
 		u1.UncoveredAddress = u.UncoveredAddress
-		u1.Idx = u.Idx
 		for _, a := range u.WriteAddress {
 			a1 := &WriteAddress{
 				WriteAddress:     a.WriteAddress,

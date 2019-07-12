@@ -40,6 +40,7 @@ message runTimeData {
         recursive = 1;
         tested = 2;
         out = 3;
+        cover = 4;
     }
     taskStatus task_status = 3;
     uint32 rcursive_count = 4;
