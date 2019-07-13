@@ -258,7 +258,7 @@ func (proc *Proc) getCall(sc *pb.Syscall) (res *prog.Syscall) {
 	return
 }
 
-func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
+func (proc *Proc) dependencyMutate(item *WorkDependency) {
 
 	log.Logf(1, "#%v: DependencyMutate", proc.pid)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("#%v: DependencyMutate", proc.pid))
@@ -279,6 +279,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 				u.RunTimeDate.CheckAddress = true
 				break
 			}
+			updateRunTimeDataTaskStatusWa(wa)
 		}
 	}
 	return
@@ -286,9 +287,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) (result bool) {
 
 func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *ipc.ProgInfo) {
 	for _, wc := range wa.WriteSyscall {
-		if ok, info := proc.dependencyRecursiveWriteSyscall(wc); ok {
-			updateRunTimeData(wa.RunTimeDate, wc.RunTimeDate)
-			wa.RunTimeDate.CheckAddress = true
+		info = proc.dependencyRecursiveWriteSyscall(wc)
+		if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
+			updateRunTimeData(wa.RunTimeDate, wc.RunTimeDate.Parent)
 
 			p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
 			if err != nil {
@@ -296,13 +297,13 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 			}
 			tempInfo := info
 			ct := proc.fuzzer.choiceTable
-			for i := 0; i < 100; i++ {
-				address := checkAddress(wa.RunTimeDate.Parent.Address, tempInfo.Calls[wa.RunTimeDate.Parent.Idx].Cover)
-				conditionAddress := checkAddress(wa.RunTimeDate.Parent.ConditionAddress, tempInfo.Calls[wa.RunTimeDate.Parent.Idx].Cover)
+			for i := 0; i < 10; i++ {
+				address := checkAddress(wa.RunTimeDate.Address, tempInfo.Calls[wa.RunTimeDate.Idx].Cover)
+				conditionAddress := checkAddress(wa.RunTimeDate.ConditionAddress, tempInfo.Calls[wa.RunTimeDate.Idx].Cover)
 				if conditionAddress == true {
 					if address == true {
 						// arrive at address
-						updateRunTimeDataCover(wa.RunTimeDate.Parent)
+						updateRunTimeDataCover(wa.RunTimeDate)
 						data := p.Serialize()
 						copy(wa.RunTimeDate.Program, data)
 						info = tempInfo
@@ -313,6 +314,12 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 				p.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
 				tempInfo = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 			}
+		} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive {
+			// can not arrive at write address
+			// recursive for getting next critical condition
+			checkCriticalCondition(wc, info)
+		} else {
+
 		}
 	}
 
@@ -320,13 +327,11 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 	return false, nil
 }
 
-// return true once arrive at condition or address for write address
-func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (res bool, info *ipc.ProgInfo) {
+func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (info *ipc.ProgInfo) {
 	for _, wc := range wa.WriteSyscall {
-		if ok, info := proc.dependencyRecursiveWriteSyscall(wc); ok {
-
-			updateRunTimeData(wa.RunTimeDate, wc.RunTimeDate)
-			wa.RunTimeDate.CheckAddress = true
+		info = proc.dependencyRecursiveWriteSyscall(wc)
+		if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
+			updateRunTimeData(wa.RunTimeDate, wc.RunTimeDate.Parent)
 
 			p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
 			if err != nil {
@@ -334,25 +339,25 @@ func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (res bool
 			}
 			tempInfo := info
 			ct := proc.fuzzer.choiceTable
-			for i := 0; i < 100; i++ {
-				address := checkAddress(wa.RunTimeDate.Parent.Address, tempInfo.Calls[wa.RunTimeDate.Parent.Idx].Cover)
+			for i := 0; i < 10; i++ {
+				address := checkAddress(wa.RunTimeDate.Address, tempInfo.Calls[wa.RunTimeDate.Idx].Cover)
 				var cover cover.Cover
-				cover.Merge(info.Calls[wa.RunTimeDate.Parent.Idx].Cover)
-				rightBranchAddress := checkAddresses(wa.RunTimeDate.Parent.RightBranchAddress, cover)
+				cover.Merge(info.Calls[wa.RunTimeDate.Idx].Cover)
+				rightBranchAddress := checkAddresses(wa.RunTimeDate.RightBranchAddress, cover)
 
 				if address == true {
 					// arrive at address
-					updateRunTimeDataCover(wa.RunTimeDate.Parent)
+					updateRunTimeDataCover(wa.RunTimeDate)
 					data := p.Serialize()
 					copy(wa.RunTimeDate.Program, data)
 					info = tempInfo
-					return true, info
+					return info
 				} else if rightBranchAddress == true {
 					// arrive at right branch of critical condition
 					// continue next critical condition
-					if wa.RunTimeDate.Parent.CheckRightBranchAddress != true {
-						wa.RunTimeDate.Parent.TaskStatus = pb.RunTimeData_recursive
-						wa.RunTimeDate.Parent.CheckRightBranchAddress = true
+					if wa.RunTimeDate.CheckRightBranchAddress != true {
+						wa.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+						wa.RunTimeDate.CheckRightBranchAddress = true
 						data := p.Serialize()
 						copy(wa.RunTimeDate.Program, data)
 						info = tempInfo
@@ -362,22 +367,21 @@ func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (res bool
 				p.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
 				tempInfo = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 			}
-		} else {
+			wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+		} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive {
 			// can not arrive at write address
 			// recursive for getting next critical condition
 			checkCriticalCondition(wc, info)
+		} else {
+
 		}
 	}
 	updateRunTimeDataTaskStatusWa(wa)
-	if wa.RunTimeDate.Parent.CheckRightBranchAddress == true {
-		return true, info
-	} else {
-		return false, nil
-	}
+	return info
 }
 
 // return true once arrive at write address for write syscall
-func (proc *Proc) dependencyRecursiveWriteSyscall(wc *pb.Syscall) (res bool, info *ipc.ProgInfo) {
+func (proc *Proc) dependencyRecursiveWriteSyscall(wc *pb.Syscall) (info *ipc.ProgInfo) {
 	if wc.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
 		return proc.dependencyWriteSyscallUntested(wc)
 	} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive {
@@ -389,10 +393,10 @@ func (proc *Proc) dependencyRecursiveWriteSyscall(wc *pb.Syscall) (res bool, inf
 	} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
 
 	}
-	return false, nil
+	return nil
 }
 
-func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (res bool, info *ipc.ProgInfo) {
+func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (info *ipc.ProgInfo) {
 	ct := proc.fuzzer.choiceTable
 	p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
 	if err != nil {
@@ -403,6 +407,7 @@ func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (res bool, info
 
 	data := p.Serialize()
 	copy(wc.RunTimeDate.Program, data)
+	copy(wc.RunTimeDate.Parent.Program, data)
 	size := uint32(len(c0c))
 	wc.RunTimeDate.Parent.Idx = wc.RunTimeDate.Parent.Idx + size
 	wc.RunTimeDate.Idx = wc.RunTimeDate.Parent.Idx - 1
@@ -410,49 +415,49 @@ func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (res bool, info
 	return proc.dependencyWriteSyscallMutateArgument(wc)
 }
 
-func (proc *Proc) dependencyWriteSyscallMutateArgument(wc *pb.Syscall) (res bool, info *ipc.ProgInfo) {
+func (proc *Proc) dependencyWriteSyscallMutateArgument(wc *pb.Syscall) (info *ipc.ProgInfo) {
 	p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("failed to deserialize program from dependencyRecursiveWriteAddress: %v", err)
 	}
 	ct := proc.fuzzer.choiceTable
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 10; i++ {
 		info = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 		address := checkAddress(wc.RunTimeDate.Address, info.Calls[wc.RunTimeDate.Idx].Cover)
 		if address == true {
 			updateRunTimeDataCover(wc.RunTimeDate)
 			data := p.Serialize()
 			copy(wc.RunTimeDate.Program, data)
-			return true, info
+			return info
 		}
 		p.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
 	}
-	return false, info
+	wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+	return info
 }
 
-func (proc *Proc) dependencyWriteSyscallRecursive(wc *pb.Syscall) (res bool, info *ipc.ProgInfo) {
+func (proc *Proc) dependencyWriteSyscallRecursive(wc *pb.Syscall) (info *ipc.ProgInfo) {
 	for _, wa := range wc.WriteAddress {
-		if ok, info := proc.dependencyRecursiveWriteAddress(wa); ok {
+		WAinfo := proc.dependencyRecursiveWriteAddress(wa)
+		if wa.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
 			updateRunTimeData(wc.RunTimeDate, wa.RunTimeDate)
-			if wa.RunTimeDate.Parent.CheckAddress == true {
-				updateRunTimeDataCover(wc.RunTimeDate)
-				return true, info
-			} else if wa.RunTimeDate.Parent.CheckRightBranchAddress == true {
-				if ok, info := proc.dependencyWriteSyscallMutateArgument(wc); ok {
-					return true, info
-				} else {
-					return false, info
-				}
+			updateRunTimeDataCover(wc.RunTimeDate)
+			return WAinfo
+		} else if wa.RunTimeDate.CheckRightBranchAddress == true {
+			updateRunTimeData(wc.RunTimeDate, wa.RunTimeDate)
+			WSinfo := proc.dependencyWriteSyscallMutateArgument(wc)
+			if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
+				return WSinfo
 			} else {
-				log.Fatalf("recursive return true but we can do nothing")
+				wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+				info = WAinfo
 			}
-		} else {
+		} else if wa.RunTimeDate.TaskStatus == pb.RunTimeData_recursive {
 
 		}
 	}
 	updateRunTimeDataTaskStatusWc(wc)
-
-	return false, nil
+	return info
 }
 
 func forprogam() {
@@ -507,7 +512,6 @@ func forprogam() {
 }
 
 func updateRunTimeData(parent *pb.RunTimeData, child *pb.RunTimeData) {
-	parent.TaskStatus = child.TaskStatus
 	copy(parent.Program, child.Program)
 	parent.Idx = child.Idx
 }
@@ -539,16 +543,17 @@ func updateRunTimeDataTaskStatusWc(wc *pb.Syscall) {
 
 		}
 	}
-	if cover > 0 {
-		wc.RunTimeDate.TaskStatus = pb.RunTimeData_cover
-	} else if untested > 0 {
-		wc.RunTimeDate.TaskStatus = pb.RunTimeData_untested
-	} else if recursive > 0 {
-		wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
-	} else if out > 0 {
-		wc.RunTimeDate.TaskStatus = pb.RunTimeData_out
-	} else if tested > 0 {
-		wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+
+	if wc.RunTimeDate.TaskStatus != pb.RunTimeData_recursive {
+		if recursive > 0 {
+			wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+		} else if out > 0 {
+			wc.RunTimeDate.TaskStatus = pb.RunTimeData_out
+		} else if tested > 0 {
+			wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+		} else if cover > 0 {
+			wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+		}
 	}
 }
 
