@@ -37,6 +37,8 @@ namespace sta {
                     this->tagInfo_global[x.first] = x.second;
                 }
             }
+            //Group the same-typed tags.
+            this->setupTagGroups();
             this->calleeMap = this->j_calleeMap.get<CALLEE_MAP_TY>();
             return 0;
         } catch (...) {
@@ -222,6 +224,7 @@ namespace sta {
             auto &actx_id = x.first;
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
+            //TODO: Consider all the tags w/ the same type.
             for (ID_TY tid : tag_ids) {
                 //Only consider the mod insts for global taint source.
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
@@ -268,6 +271,7 @@ namespace sta {
             auto &actx_id = x.first;
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
+            //TODO: Consider all the tags w/ the same type.
             for (ID_TY tid : tag_ids) {
                 //Only consider the mod insts for global taint source.
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
@@ -624,9 +628,51 @@ namespace sta {
         return bbb;
     }
 
-    //TODO:
-    void StaticAnalysisResult::QueryModIRsFromTagTy(std::string ty) {
-        return;
+    bool StaticAnalysisResult::isSameTypedTag(ID_TY t0, ID_TY t1) {
+        if (t0 == t1) {
+            return true;
+        }
+        if ((this->tagInfo.find(t0) == this->tagInfo.end()) != (this->tagInfo.find(t1) == this->tagInfo.end())) {
+            return false;
+        }
+        if (this->tagInfo.find(t0) == this->tagInfo.end()) {
+            //Neither exists in the map.
+            return true;
+        }
+        auto& inf0 = this->tagInfo[t0];
+        auto& inf1 = this->tagInfo[t1];
+        return inf0["v"] == inf1["v"] &&
+               inf0["field"] == inf1["field"] &&
+               inf0["is_global"] == inf1["is_global"] &&
+               inf0["ty"] == inf1["ty"];
+    }
+
+    //Group the same typed taint tags together.
+    void StaticAnalysisResult::setupTagGroups() {
+        std::set<ID_TY> tags;
+        for (auto& x : this->tagInfo) {
+            tags.insert(x.first);
+        }
+        while(!tags.empty()) {
+            ID_TY tgt = *(tags.begin());
+            std::set<ID_TY> group;
+            for(auto it=tags.begin(); it!=tags.end(); ++it) {
+                if (this->isSameTypedTag(tgt,*it)) {
+                    group.insert(*it);
+                    tags.erase(it);
+                }
+            }
+            this->tagGroups.insert(group);
+        }
+    }
+
+    const std::set<ID_TY> *StaticAnalysisResult::getSameTypedTags(ID_TY tid) {
+        for (auto& x : this->tagGroups) {
+            if (x.find(tid) != x.end()) {
+                return &x;
+            }
+        }
+        return nullptr;
     }
 
     /*

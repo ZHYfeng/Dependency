@@ -110,6 +110,8 @@ namespace sta {
         TAG_INFO_TY tagInfo_local;
         CALLEE_MAP_TY calleeMap;
 
+        std::set<std::set<ID_TY>> tagGroups;
+
         //The mapping from one BB to all its successors (recursively).
         std::map<llvm::BasicBlock*,std::set<llvm::BasicBlock*>> succ_map;
 
@@ -117,8 +119,6 @@ namespace sta {
         std::map<llvm::Function*,llvm::DominatorTree*> dom_map;
 
         BR_INF *QueryBranchTaint(llvm::BasicBlock *B);
-
-        void QueryModIRsFromTagTy(std::string ty);
 
         MODS *GetRealModIrs(MOD_IR_TY *p_mod_irs);
 
@@ -131,6 +131,12 @@ namespace sta {
         bool getAllTagConstants(ID_TY tag_id, CONST_INF *p_consts);
 
         std::vector<FieldPtr*> *parseTypeStr(std::string tys);
+
+        const std::set<ID_TY> *getSameTypedTags(ID_TY tid);
+
+        bool isSameTypedTag(ID_TY t0, ID_TY t1);
+
+        void setupTagGroups();
     };
 
     //A BB/Inst that can modify a global state.
