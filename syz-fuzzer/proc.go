@@ -309,11 +309,14 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 						info = tempInfo
 						return true, info
 					}
+				} else {
+
 				}
 
 				p.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
 				tempInfo = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 			}
+			wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
 		} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive {
 			// can not arrive at write address
 			// recursive for getting next critical condition
@@ -443,17 +446,17 @@ func (proc *Proc) dependencyWriteSyscallRecursive(wc *pb.Syscall) (info *ipc.Pro
 			updateRunTimeData(wc.RunTimeDate, wa.RunTimeDate)
 			updateRunTimeDataCover(wc.RunTimeDate)
 			return WAinfo
-		} else if wa.RunTimeDate.CheckRightBranchAddress == true {
-			updateRunTimeData(wc.RunTimeDate, wa.RunTimeDate)
-			WSinfo := proc.dependencyWriteSyscallMutateArgument(wc)
-			if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
-				return WSinfo
-			} else {
-				wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
-				info = WAinfo
-			}
 		} else if wa.RunTimeDate.TaskStatus == pb.RunTimeData_recursive {
-
+			if wa.RunTimeDate.CheckRightBranchAddress == true {
+				updateRunTimeData(wc.RunTimeDate, wa.RunTimeDate)
+				WSinfo := proc.dependencyWriteSyscallMutateArgument(wc)
+				if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
+					return WSinfo
+				} else {
+					wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+					info = WAinfo
+				}
+			}
 		}
 	}
 	updateRunTimeDataTaskStatusWc(wc)

@@ -76,6 +76,7 @@ message Syscall {
     uint64 cmd = 2;
 
     repeated condition critical_condition = 4;
+    // it is the data of this syscall
     runTimeData run_time_date = 5;
 
     repeated WriteAddress write_address = 11;
@@ -95,6 +96,7 @@ message WriteAddress {
     repeated Input write_input = 4;
     repeated Syscall write_syscall = 5;
 
+    // it is the data of uncovered address
     runTimeData run_time_date = 11;
 }
 
