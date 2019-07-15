@@ -401,15 +401,18 @@ namespace sta {
     }
 
     void StaticAnalysisResult::tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, unsigned int branch_id) {
-        if ((!pmods) || this->traitMap.find(br_trait_id) == this->traitMap.end()) {
+        if (!pmods) {
             return;
         }
         //TODO: verify the successor order with true/false
         bool branch = (!branch_id ? true : false);
-        TRAIT &br_trait = this->traitMap[br_trait_id];
         std::string cond("");
         int64_t v = 0;
-        for (auto &x : br_trait) {
+        if (this->traitMap.find(br_trait_id) == this->traitMap.end()) {
+            //No trait is also a kind of trait..
+            goto CALC;
+        }
+        for (auto &x : this->traitMap[br_trait_id]) {
             const std::string &s = x.first;
             if (s == "==" || s == "!=") {
                 if ((s == "==") == branch) {
@@ -466,11 +469,10 @@ namespace sta {
                 }
             }
         }
+CALC:
         //Calculate mod inst priorities based given the br's and mod inst's traits.
-        if (!cond.empty()) {
-            for (auto &x : *pmods) {
-                x->calcPrio(cond, v);
-            }
+        for (auto &x : *pmods) {
+            x->calcPrio(cond, v);
         }
         //Rank the mod insts.
     }

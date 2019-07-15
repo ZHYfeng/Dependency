@@ -192,6 +192,8 @@ namespace sta {
                 p = calcPrio_B(v, cond == ">=");
             }else if (cond == "<=" || cond == "<") {
                 p = calcPrio_S(v, cond == "<=");
+            }else if (cond == "") {
+                p = calcPrio_UNK();
             }
             this->prio = p;
             return p;
@@ -428,6 +430,24 @@ namespace sta {
                         p = 0;
                         this->repeat = 0;
                     }
+                }
+                //Assume only one key exists in the trait.
+                break;
+            }
+            return p;
+        }
+
+        //We have no trait for the branch inst - this fact itself might also give out some information.
+        //One assumption we can make is that the branch condition should involve no constants, so we'd better
+        //exclude the write IRs that assign nullptr.
+        //TODO:
+        int calcPrio_UNK() {
+            int p = 0;
+            for (auto& x : this->single_trait) {
+                std::string s = x.first;
+                int64_t v = x.second;
+                if (s == "CONST_NULLPTR") {
+                    p = -100;
                 }
                 //Assume only one key exists in the trait.
                 break;
