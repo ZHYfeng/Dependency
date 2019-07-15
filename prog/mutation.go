@@ -741,13 +741,30 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool
 	return true
 }
 
-// TODO: change to use arg0 of c
 func (p *Prog) GetCall(rs rand.Source, meta *Syscall, idx uint32, ct *ChoiceTable) []*Call {
 	r := newRand(p.Target, rs)
 	c := p.Calls[idx]
 	s := analyze(ct, p, c)
 	c0c := r.generateParticularCall(s, meta)
+	var cc *Call
+	if len(c0c) == 2 {
+		cc = c0c[1]
+	} else if len(c0c) == 1 {
+		cc = c0c[0]
+	} else {
+		log.Fatalf("GetCall more than 2")
+	}
 
+	for i, arg := range cc.Args {
+		switch arg.(type) {
+		case *ResultArg:
+			cc.Args[i] = c.Args[i]
+		default:
+		}
+	}
+
+	var rcc []*Call
+	rcc = append(rcc, cc)
 	return c0c
 }
 
