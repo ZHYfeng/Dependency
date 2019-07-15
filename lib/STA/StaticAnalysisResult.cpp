@@ -9,6 +9,7 @@
 #include <iostream>
 
 #define DEBUG_TIME 0
+#define ENABLE_TAG_GROUP
 
 namespace sta {
 
@@ -225,7 +226,17 @@ namespace sta {
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
             //TODO: Consider all the tags w/ the same type.
+            std::set<ID_TY> tag_ids_extend = tag_ids;
+#ifdef ENABLE_TAG_GROUP
+            //Consider all the tags w/ the same type.
             for (ID_TY tid : tag_ids) {
+                const std::set<ID_TY> *tagGrp = this->getSameTypedTags(tid);
+                if (tagGrp) {
+                    tag_ids_extend.insert(tagGrp->begin(),tagGrp->end());
+                }
+            }
+#endif
+            for (ID_TY tid : tag_ids_extend) {
                 //Only consider the mod insts for global taint source.
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
                     continue;
@@ -271,8 +282,17 @@ namespace sta {
             auto &actx_id = x.first;
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
-            //TODO: Consider all the tags w/ the same type.
+            std::set<ID_TY> tag_ids_extend = tag_ids;
+#ifdef ENABLE_TAG_GROUP
+            //Consider all the tags w/ the same type.
             for (ID_TY tid : tag_ids) {
+                const std::set<ID_TY> *tagGrp = this->getSameTypedTags(tid);
+                if (tagGrp) {
+                    tag_ids_extend.insert(tagGrp->begin(),tagGrp->end());
+                }
+            }
+#endif
+            for (ID_TY tid : tag_ids_extend) {
                 //Only consider the mod insts for global taint source.
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
                     continue;
