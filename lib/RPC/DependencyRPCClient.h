@@ -28,9 +28,9 @@ namespace dra {
 
         Input *GetDependencyInput();
 
-        condition *GetCondition();
+        Condition *GetCondition();
 
-        Empty *SendWriteAddress(const WriteAddress &request);
+        Empty *SendWriteAddress(const WriteAddresses &request);
 
     private:
         std::unique_ptr<DependencyRPC::Stub> stub_;

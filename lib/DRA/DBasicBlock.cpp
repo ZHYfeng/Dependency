@@ -243,7 +243,7 @@ namespace dra {
 //        basicBlock->dump();
         for (auto i : this->input) {
             std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
-            std::cout << i.first->prog;
+            std::cout << i.first->program;
         }
         std::cout << "--------------------------------------------" << std::endl;
 

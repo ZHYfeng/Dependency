@@ -32,7 +32,7 @@ namespace dra {
 
         void setSig(const std::string &sig);
 
-        void setProg(const std::string &prog);
+        void setProgram(const std::string &program);
 
         void setCover(const std::string &cover, unsigned long long int vmOffsets);
 
@@ -40,7 +40,7 @@ namespace dra {
 
     public:
         std::string sig;
-        std::string prog;
+        std::string program;
         unsigned long long int Number;
         std::vector<std::set<unsigned long long int> *> AllCover;
         std::set<unsigned long long int> MaxCover;

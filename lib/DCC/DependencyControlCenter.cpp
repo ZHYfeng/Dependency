@@ -45,7 +45,7 @@ namespace dra {
             Input *newInput = client->GetNewInput();
             if (newInput != nullptr) {
                 std::cout << "new input : " << newInput->sig() << std::endl;
-                std::cout << newInput->prog() << std::endl;
+                std::cout << newInput->program() << std::endl;
 
                 DInput *dInput = DM.getInput(newInput);
                 std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
@@ -82,7 +82,7 @@ namespace dra {
     void DependencyControlCenter::get_dependency_input(DInput *dInput) {
 
         Input *dependencyInput = new Input();
-        dependencyInput->set_prog(dInput->prog);
+        dependencyInput->set_program(dInput->program);
         bool send_flag = false;
 
         for (auto u : dInput->dUncoveredAddress) {
@@ -105,7 +105,7 @@ namespace dra {
 
                 UncoveredAddress *uncoveredAddress = dependencyInput->add_uncovered_address();
                 uncoveredAddress->set_uncovered_address(address);
-                uncoveredAddress->set_idx(u->idx);
+                uncoveredAddress->mutable_run_time_date()->set_idx(u->idx);
                 uncoveredAddress->set_condition_address(condition_address);
 
                 sta::MODS *write_basicblock = get_write_basicblock(u);
@@ -161,7 +161,7 @@ namespace dra {
                         for (auto c : *cmd_ctx) {
                             auto write_syscall = writeAddress->add_write_syscall();
                             write_syscall->set_name(function_name);
-                            write_syscall->set_number(c->cmd);
+                            write_syscall->set_cmd(c->cmd);
                         }
                         for (auto i : db->input) {
                             auto write_input = writeAddress->add_write_input();

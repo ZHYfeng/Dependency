@@ -25,14 +25,14 @@ namespace dra {
 #endif
     }
 
-    void DInput::setProg(const std::string &prog) {
-        this->prog = prog;
+    void DInput::setProgram(const std::string &program) {
+        this->program = program;
 //        std::stringstream ss;
-//        std::string temp = prog.substr(1, prog.size() - 2) + ' ';
+//        std::string temp = program.substr(1, program.size() - 2) + ' ';
 //        char c = 0;
 //
 //#if DEBUGINPUT
-//        std::cout << prog << std::endl;
+//        std::cout << program << std::endl;
 //#endif
 //        for (auto cc : temp) {
 //            if (cc != ' ') {
@@ -41,11 +41,11 @@ namespace dra {
 //                ss.str("");
 //                ss << c;
 //                c = 0;
-//                this->prog += ss.str();
+//                this->program += ss.str();
 //            }
 //        }
 //#if DEBUGINPUT
-//        std::cout << this->prog << std::endl;
+//        std::cout << this->program << std::endl;
 //#endif
     }
 

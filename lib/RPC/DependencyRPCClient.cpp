@@ -72,9 +72,9 @@ namespace dra {
         return reply;
     }
 
-    condition *DependencyRPCClient::GetCondition() {
+    Condition *DependencyRPCClient::GetCondition() {
         Empty request;
-        auto *reply = new condition();
+        auto *reply = new Condition();
         grpc::ClientContext context;
         grpc::Status status = stub_->GetCondition(&context, request, reply);
         if (status.ok()) {
@@ -85,7 +85,7 @@ namespace dra {
         }
     }
 
-    Empty *DependencyRPCClient::SendWriteAddress(const WriteAddress &request) {
+    Empty *DependencyRPCClient::SendWriteAddress(const WriteAddresses &request) {
         Empty *reply = new Empty();
         grpc::ClientContext context;
         grpc::Status status = stub_->SendWriteAddress(&context, request, reply);

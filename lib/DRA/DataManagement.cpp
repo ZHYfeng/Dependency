@@ -124,7 +124,7 @@ namespace dra {
                     Inputs[Line] = input;
                     input->setSig(Line);
                     getline(coverFile, Line);
-                    input->setProg(Line);
+                    input->setProgram(Line);
                 }
                 input->Number++;
                 getline(coverFile, Line);
@@ -184,7 +184,7 @@ namespace dra {
 
     DInput *DataManagement::getInput(Input *input) {
         std::string sig = input->sig();
-        std::string prog = input->prog();
+        std::string program = input->program();
 #if DEBUGINPUT
         std::cout << "sig : " << sig << std::endl;
 #endif
@@ -195,7 +195,7 @@ namespace dra {
             dInput = new DInput;
             Inputs[sig] = dInput;
             dInput->setSig(sig);
-            dInput->setProg(prog);
+            dInput->setProgram(program);
         }
         dInput->Number++;
         for (auto c : input->call()) {
