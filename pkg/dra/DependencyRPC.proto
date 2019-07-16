@@ -12,9 +12,9 @@ service DependencyRPC {
     }
     rpc SendDependencyInput (Input) returns (Empty) {
     }
-    rpc GetCondition (Empty) returns (condition) {
+    rpc GetCondition (Empty) returns (Condition) {
     }
-    rpc SendWriteAddress (WriteAddress) returns (Empty) {
+    rpc SendWriteAddress (WriteAddresses) returns (Empty) {
     }
 
     //syz-fuzzer and syz-manager
@@ -24,9 +24,7 @@ service DependencyRPC {
     }
     rpc GetDependencyInput (Empty) returns (Input) {
     }
-    rpc SendCondition (condition) returns (Empty) {
-    }
-    rpc GetWriteAddress (Empty) returns (WriteAddress) {
+    rpc ReturnDependencyInput (task) returns (Empty) {
     }
     rpc SendLog (Empty) returns (Empty) {
     }
@@ -62,7 +60,7 @@ message Empty {
     string name = 2;
 }
 
-message condition {
+message Condition {
     uint32 condition_address = 1;
     uint32 uncovered_address = 2;
     uint32 idx = 4;
@@ -75,7 +73,7 @@ message Syscall {
     string name = 1;
     uint64 cmd = 2;
 
-    repeated condition critical_condition = 4;
+    map<uint32, Condition> critical_condition = 4;
     // it is the data of this syscall
     runTimeData run_time_date = 5;
 
@@ -100,6 +98,11 @@ message WriteAddress {
     runTimeData run_time_date = 11;
 }
 
+message WriteAddresses {
+    Condition condition = 1;
+    repeated WriteAddress writeAddress = 2;
+}
+
 message UncoveredAddress {
     uint32 condition_address = 3;
     uint32 uncovered_address = 1;
@@ -107,8 +110,6 @@ message UncoveredAddress {
     runTimeData run_time_date = 5;
 
     repeated WriteAddress write_address = 4;
-
-
 }
 
 message Call {
@@ -129,4 +130,10 @@ message Input {
     // for write address
     uint32 write_address = 31;
     uint32 idx = 32;
+}
+
+//for syz-fuzzer
+message task {
+    Input input = 1;
+    string name = 41;
 }

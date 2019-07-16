@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	port = ":50051"
+	port    = ":50051"
+	taskNum = 1
 )
 
 type fuzzer struct {
@@ -22,32 +23,61 @@ type Server struct {
 	address uint32
 	Dport   int
 	//corpusDC []*Input
-	corpusDC map[string]*Input
-	corpusDI map[string]*Input
-	fmu      *sync.Mutex
-	fuzzers  map[string]*fuzzer
-	mu       *sync.Mutex
-	corpus   *map[string]rpctype.RPCInput
+	corpusDC              map[string]*Input
+	corpusDependencyInput map[string]*Input
+	corpusRecursiveInput  map[string]*Input
+	corpusErrorInput      map[string]*Input
+	corpusCondition       map[*Condition]*WriteAddresses
+	fmu                   *sync.Mutex
+	fuzzers               map[string]*fuzzer
+	mu                    *sync.Mutex
+	corpus                *map[string]rpctype.RPCInput
+}
+
+func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+	if f, ok := ss.fuzzers[request.Name]; ok {
+		if i, ok := f.corpusDI[request.Input.Sig]; ok {
+			delete(f.corpusDI, request.Input.Sig)
+			if ok := ss.checkDependencyInput(i); ok {
+				ss.corpusDependencyInput[request.Input.Sig] = CloneInput(i)
+			} else {
+				ss.corpusRecursiveInput[request.Input.Sig] = CloneInput(i)
+			}
+		}
+	} else {
+		log.Fatalf("ReturnDependencyInput : ", request.Name)
+	}
+	reply := &Empty{}
+	return reply, nil
 }
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Condition, error) {
-	panic("implement me")
+	for c, wa := range ss.corpusCondition {
+		if len(wa.WriteAddress) == 0 {
+			return c, nil
+		}
+	}
+	return nil, nil
 }
 
-func (ss Server) SendWriteAddress(context.Context, *WriteAddress) (*Empty, error) {
-	panic("implement me")
-}
-
-func (ss Server) SendNewInput(context.Context, *Input) (*Empty, error) {
-	panic("implement me")
-}
-
-func (ss Server) SendCondition(context.Context, *Condition) (*Empty, error) {
-	panic("implement me")
-}
-
-func (ss Server) GetWriteAddress(context.Context, *Empty) (*WriteAddress, error) {
-	panic("implement me")
+func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
+	if wa, ok := ss.corpusCondition[request.Condition]; ok {
+		for _, wwa := range request.WriteAddress {
+			wa.WriteAddress = append(wa.WriteAddress, CloneWriteAddress(wwa))
+		}
+		for sig, i := range ss.corpusRecursiveInput {
+			if ok := ss.checkDependencyInput(i); ok {
+				delete(ss.corpusRecursiveInput, sig)
+				ss.corpusDependencyInput[sig] = CloneInput(i)
+			} else {
+			}
+		}
+	} else {
+		log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
+	}
+	return &Empty{}, nil
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
@@ -106,26 +136,39 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 		return reply, nil
 	}
 
-	ss.fmu.Lock()
+	ss.mu.Lock()
+	ss.corpusDependencyInput[request.Sig] = cd
+	ss.mu.Unlock()
+
 	for _, f := range ss.fuzzers {
 		f.corpusDI[cd.Sig] = CloneInput(cd)
-		reply.Address = uint32(len(f.corpusDI))
 	}
 	reply.Name = "success"
-	ss.fmu.Unlock()
 	return reply, nil
 }
 
+//
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input, error) {
 	ss.fmu.Lock()
-	reply := &Input{}
+	defer ss.fmu.Unlock()
+
 	if f, ok := ss.fuzzers[request.Name]; ok {
-		i := 0
-		for s, c := range f.corpusDI {
-			if i < 1 {
-				reply = CloneInput(c)
-				i++
+		if len(f.corpusDI) > 0 {
+			for s, c := range f.corpusDI {
+				ss.corpusErrorInput[s] = c
 				delete(f.corpusDI, s)
+			}
+		}
+
+		i := 0
+		for s, c := range ss.corpusDependencyInput {
+			if i < taskNum {
+				i++
+
+				reply := CloneInput(c)
+				f.corpusDI[s] = c
+				delete(ss.corpusDependencyInput, s)
+				return reply, nil
 			} else {
 			}
 		}
@@ -133,19 +176,18 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 		log.Fatalf("fuzzer %v is not connected", request.Name)
 	}
 
-	//for i := 0; i < 50 && len(f.corpusDI) > 0; i++ {
-	//	last := len(f.corpusDI) - 1
-	//	reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(&f.corpusDI[last]))
-	//	f.corpusDI = f.corpusDI[:last]
+	//for i := 0; i < 50 && len(f.corpusDependencyInput) > 0; i++ {
+	//	last := len(f.corpusDependencyInput) - 1
+	//	reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(&f.corpusDependencyInput[last]))
+	//	f.corpusDependencyInput = f.corpusDependencyInput[:last]
 	//}
-	//if len(f.corpusDI) == 0 {
-	//	f.corpusDI = nil
+	//if len(f.corpusDependencyInput) == 0 {
+	//	f.corpusDependencyInput = nil
 	//}
-	ss.fmu.Unlock()
-	return reply, nil
+	return &Input{}, nil
 }
 
-func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) {
+func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 	reply := &Empty{}
@@ -156,13 +198,67 @@ func (ss Server) SendInput(ctx context.Context, request *Input) (*Empty, error) 
 	return reply, nil
 }
 
-func CloneInput(d *Input) *Input {
-	ci := &Input{
-		Sig:        d.Sig,
-		Call:       make(map[uint32]*Call),
-		Dependency: d.Dependency,
+func (ss Server) checkDependencyInput(request *Input) (res bool) {
+	res = false
+	for _, u := range request.UncoveredAddress {
+		if u.RunTimeDate.TaskStatus == RunTimeData_recursive {
+			for _, wa := range u.WriteAddress {
+				res = res || ss.checkWriteAddress(wa)
+			}
+		}
 	}
-	for i, u := range d.Call {
+	return res
+}
+
+func (ss Server) checkWriteAddress(wa *WriteAddress) (res bool) {
+	res = false
+	if wa.RunTimeDate.TaskStatus == RunTimeData_recursive {
+		for _, wc := range wa.WriteSyscall {
+			if wc.RunTimeDate.TaskStatus == RunTimeData_recursive {
+				if wc.WriteAddress != nil {
+					for _, wwa := range wc.WriteAddress {
+						res = res || ss.checkWriteAddress(wwa)
+					}
+				} else {
+					res = res || ss.checkCondition(wc)
+				}
+			}
+		}
+	}
+	return res
+}
+
+func (ss Server) checkCondition(wc *Syscall) (res bool) {
+	res = false
+	condition := wc.RunTimeDate.ConditionAddress
+	if cc, ok := wc.CriticalCondition[condition]; ok {
+		if wa, ok := ss.corpusCondition[cc]; ok {
+			if len(wa.WriteAddress) > 0 {
+				res = true
+				for _, wwa := range wa.WriteAddress {
+					wc.WriteAddress = append(wc.WriteAddress, wwa)
+				}
+			}
+		} else {
+			ss.corpusCondition[cc] = new(WriteAddresses)
+		}
+	}
+	return res
+}
+
+// not finish
+func (m *Input) Merge(i *Input) {
+
+}
+
+func CloneInput(input *Input) *Input {
+	inputClone := &Input{
+		Sig:        input.Sig,
+		Call:       make(map[uint32]*Call),
+		Dependency: input.Dependency,
+	}
+
+	for i, u := range input.Call {
 		u1 := &Call{
 			Address: make(map[uint32]uint32),
 			Idx:     u.Idx,
@@ -170,54 +266,120 @@ func CloneInput(d *Input) *Input {
 		for aa := range u.Address {
 			u1.Address[aa] = 0
 		}
-		ci.Call[i] = u1
+		inputClone.Call[i] = u1
 	}
-	copy(ci.Program, d.Program)
+	copy(inputClone.Program, input.Program)
 
-	for _, u := range d.UncoveredAddress {
+	for _, u := range input.UncoveredAddress {
 		u1 := new(UncoveredAddress)
 		u1.ConditionAddress = u.ConditionAddress
 		u1.UncoveredAddress = u.UncoveredAddress
-		for _, a := range u.WriteAddress {
-			a1 := &WriteAddress{
-				WriteAddress:     a.WriteAddress,
-				ConditionAddress: a.ConditionAddress,
-				Repeat:           a.Repeat,
-				Prio:             a.Prio,
-			}
+		u1.RunTimeDate = CloneRunTimeData(u.RunTimeDate)
 
-			for _, i := range a.WriteInput {
-				i1 := CloneInput(i)
-				a1.WriteInput = append(a1.WriteInput, i1)
-			}
-
-			for _, s := range a.WriteSyscall {
-				s1 := &Syscall{
-					Name: s.Name,
-					Cmd:  s.Cmd,
-				}
-				for _, c := range s.CriticalCondition {
-					c1 := &Condition{
-						ConditionAddress: c.ConditionAddress,
-						UncoveredAddress: c.UncoveredAddress,
-						Idx:              c.Idx,
-					}
-					for _, a := range c.RightBranchAddress {
-						c1.RightBranchAddress = append(c1.RightBranchAddress, a)
-					}
-					for _, a := range c.WrongBranchAddress {
-						c1.WrongBranchAddress = append(c1.WrongBranchAddress, a)
-					}
-					s1.CriticalCondition = append(s1.CriticalCondition, c1)
-				}
-				a1.WriteSyscall = append(a1.WriteSyscall, s1)
-			}
-			u1.WriteAddress = append(u1.WriteAddress, a1)
+		for _, wa := range u.WriteAddress {
+			u1.WriteAddress = append(u1.WriteAddress, CloneWriteAddress(wa))
 		}
-		ci.UncoveredAddress = append(ci.UncoveredAddress, u1)
+
+		inputClone.UncoveredAddress = append(inputClone.UncoveredAddress, u1)
 	}
 
-	return ci
+	return inputClone
+}
+
+func CloneWriteAddress(a *WriteAddress) *WriteAddress {
+	a1 := &WriteAddress{
+		Repeat:     a.Repeat,
+		RealRepeat: a.RealRepeat,
+		Prio:       a.Prio,
+
+		WriteAddress:     a.WriteAddress,
+		ConditionAddress: a.ConditionAddress,
+
+		RunTimeDate: CloneRunTimeData(a.RunTimeDate),
+	}
+
+	for _, i := range a.WriteInput {
+		a1.WriteInput = append(a1.WriteInput, CloneInput(i))
+	}
+
+	for _, s := range a.WriteSyscall {
+		a1.WriteSyscall = append(a1.WriteSyscall, CloneSyscall(s))
+	}
+	return a1
+}
+
+func CloneSyscall(s *Syscall) *Syscall {
+	s1 := &Syscall{
+		Name:        s.Name,
+		Cmd:         s.Cmd,
+		RunTimeDate: CloneRunTimeData(s.RunTimeDate),
+	}
+
+	for i, c := range s.CriticalCondition {
+		s1.CriticalCondition[i] = CloneCondition(c)
+	}
+
+	for _, wa := range s.WriteAddress {
+		s1.WriteAddress = append(s1.WriteAddress, CloneWriteAddress(wa))
+	}
+
+	return s1
+}
+
+func CloneCondition(c *Condition) *Condition {
+	c1 := &Condition{
+		ConditionAddress: c.ConditionAddress,
+		UncoveredAddress: c.UncoveredAddress,
+		Idx:              c.Idx,
+	}
+
+	for _, a := range c.RightBranchAddress {
+		c1.RightBranchAddress = append(c1.RightBranchAddress, a)
+	}
+
+	for _, a := range c.WrongBranchAddress {
+		c1.WrongBranchAddress = append(c1.WrongBranchAddress, a)
+	}
+
+	return c1
+}
+
+// not finish
+func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
+	if d == nil {
+		return
+	}
+
+	m.Parent.MargeRunTimeData(d.Parent)
+
+	return
+}
+
+func CloneRunTimeData(d *RunTimeData) *RunTimeData {
+	if d == nil {
+		return nil
+	}
+	d1 := &RunTimeData{
+		Parent:                  CloneRunTimeData(d.Parent),
+		TaskStatus:              d.TaskStatus,
+		RcursiveCount:           d.RcursiveCount,
+		Idx:                     d.Idx,
+		CheckCondition:          d.CheckCondition,
+		ConditionAddress:        d.ConditionAddress,
+		CheckAddress:            d.CheckAddress,
+		Address:                 d.Address,
+		CheckRightBranchAddress: d.CheckRightBranchAddress,
+	}
+
+	for _, c := range d.Program {
+		d1.Program = append(d1.Program, c)
+	}
+
+	for _, a := range d.RightBranchAddress {
+		d1.RightBranchAddress = append(d1.RightBranchAddress, a)
+	}
+
+	return d1
 }
 
 func (ss *Server) SetAddress(address uint32) {
@@ -229,7 +391,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	//ss.corpusDC = []*Input{}
 	ss.corpusDC = make(map[string]*Input)
-	ss.corpusDI = make(map[string]*Input)
+	ss.corpusDependencyInput = make(map[string]*Input)
 	ss.fuzzers = make(map[string]*fuzzer)
 	ss.mu = &sync.Mutex{}
 	ss.fmu = &sync.Mutex{}

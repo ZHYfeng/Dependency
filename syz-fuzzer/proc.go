@@ -277,11 +277,14 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 			if ok, _ := proc.dependencyWriteAddress(wa); ok {
 				updateRunTimeData(u.RunTimeDate, wa.RunTimeDate)
 				u.RunTimeDate.CheckAddress = true
+				u.RunTimeDate.TaskStatus = pb.RunTimeData_cover
 				break
+			} else {
 			}
-			updateRunTimeDataTaskStatusWa(wa)
 		}
+		updateRunTimeDataTaskStatusU(u)
 	}
+	_, _ = proc.fuzzer.dManager.ReturnDependencyInput(dependencyInput)
 	return
 }
 
@@ -592,6 +595,41 @@ func updateRunTimeDataTaskStatusWa(wa *pb.WriteAddress) {
 		wa.RunTimeDate.TaskStatus = pb.RunTimeData_out
 	} else if tested > 0 {
 		wa.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+	}
+}
+
+func updateRunTimeDataTaskStatusU(u *pb.UncoveredAddress) {
+	untested := 0
+	recursive := 0
+	tested := 0
+	out := 0
+	cover := 0
+	for _, wa := range u.WriteAddress {
+		switch wa.RunTimeDate.TaskStatus {
+		case pb.RunTimeData_untested:
+			untested++
+		case pb.RunTimeData_recursive:
+			recursive++
+		case pb.RunTimeData_tested:
+			tested++
+		case pb.RunTimeData_out:
+			out++
+		case pb.RunTimeData_cover:
+			cover++
+		default:
+
+		}
+	}
+	if cover > 0 {
+		u.RunTimeDate.TaskStatus = pb.RunTimeData_cover
+	} else if untested > 0 {
+		u.RunTimeDate.TaskStatus = pb.RunTimeData_untested
+	} else if recursive > 0 {
+		u.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
+	} else if out > 0 {
+		u.RunTimeDate.TaskStatus = pb.RunTimeData_out
+	} else if tested > 0 {
+		u.RunTimeDate.TaskStatus = pb.RunTimeData_tested
 	}
 }
 

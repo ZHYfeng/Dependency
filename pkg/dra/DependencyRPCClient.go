@@ -9,9 +9,10 @@ import (
 )
 
 type DRPCClient struct {
-	c     DependencyRPCClient
-	I     []*Input
-	name  *string
+	c    DependencyRPCClient
+	I    []*Input
+	name *string
+
 	log   string
 	logMu sync.RWMutex
 }
@@ -54,17 +55,18 @@ func (d *DRPCClient) GetDependencyInput(name string) *Input {
 }
 
 // SendDependencyInput is
-func (d *DRPCClient) SendDependencyInput(sig string) (*Empty, error) {
-	request := &Input{
-		Sig: sig,
+func (d *DRPCClient) ReturnDependencyInput(input *Input) (*Empty, error) {
+	request := &Task{
+		Input: CloneInput(input),
+		Name:  *d.name,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	reply, err := d.c.SendDependencyInput(ctx, request)
+	reply, err := d.c.ReturnDependencyInput(ctx, request)
 	if err != nil {
-		log.Fatalf("Dependency gRPC could not SendDependencyInput: %v", err)
+		log.Fatalf("Dependency gRPC could not ReturnDependencyInput: %v", err)
 	}
-	log.Logf(1, "Dependency gRPC SendDependencyInput reply.Name : %v", reply.Name)
+	log.Logf(1, "Dependency gRPC ReturnDependencyInput reply.Name : %v", reply.Name)
 	return reply, nil
 }
 
