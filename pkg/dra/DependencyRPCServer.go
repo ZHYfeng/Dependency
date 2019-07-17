@@ -55,13 +55,14 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 	return reply, nil
 }
 
-func (ss Server) GetCondition(context.Context, *Empty) (*Condition, error) {
+func (ss Server) GetCondition(context.Context, *Empty) (reply *Conditions, err error) {
 	for c, wa := range ss.corpusCondition {
 		if len(wa.WriteAddress) == 0 {
-			return c, nil
+			reply.Condition = append(reply.Condition, CloneCondition(c))
+			return
 		}
 	}
-	return nil, nil
+	return
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
@@ -114,14 +115,14 @@ func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 	return reply, nil
 }
 
-func (ss Server) GetNewInput(context.Context, *Empty) (*Input, error) {
+func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
-	reply := &Input{}
+	reply := &Inputs{}
 	i := 0
 	for s, c := range ss.corpusDC {
 		if i < 1 {
-			reply = CloneInput(c)
+			reply.Input = append(reply.Input, CloneInput(c))
 			i++
 			delete(ss.corpusDC, s)
 		} else {
@@ -155,7 +156,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 }
 
 //
-func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input, error) {
+func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (reply *Inputs, err error) {
 	ss.fmu.Lock()
 	defer ss.fmu.Unlock()
 
@@ -172,10 +173,10 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 			if i < taskNum {
 				i++
 
-				reply := CloneInput(c)
+				reply.Input = append(reply.Input, CloneInput(c))
 				f.corpusDI[s] = c
 				delete(ss.corpusDependencyInput, s)
-				return reply, nil
+				return
 			} else {
 			}
 		}
@@ -191,7 +192,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	//if len(f.corpusDependencyInput) == 0 {
 	//	f.corpusDependencyInput = nil
 	//}
-	return nil, nil
+	return
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {

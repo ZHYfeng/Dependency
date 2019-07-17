@@ -39,23 +39,22 @@ func (d *DRPCClient) Connect(name *string) {
 	return
 }
 
-func (d *DRPCClient) GetDependencyInput(name string) *Input {
+func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
 	// Contact the server and print out its response.
 	request := &Empty{
 		Name: name,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	dInput, err := d.c.GetDependencyInput(ctx, request)
+	dInputs, err := d.c.GetDependencyInput(ctx, request)
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
 	}
-	if dInput == nil {
-		return nil
-	} else {
-		reply := CloneInput(dInput)
-		return reply
+	reply := &Inputs{}
+	for _, i := range dInputs.Input {
+		reply.Input = append(reply.Input, CloneInput(i))
 	}
+	return reply
 }
 
 // SendDependencyInput is
