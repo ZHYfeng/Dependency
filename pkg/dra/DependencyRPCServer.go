@@ -3,9 +3,11 @@ package dra
 import (
 	"context"
 	"fmt"
+	"github.com/golang/protobuf/proto"
 	"github.com/google/syzkaller/pkg/log"
 	"github.com/google/syzkaller/pkg/rpctype"
 	"google.golang.org/grpc"
+	"io/ioutil"
 	"net"
 	"os"
 	"sync"
@@ -25,15 +27,12 @@ type Server struct {
 	address uint32
 	Dport   int
 	//corpusDC []*Input
-	corpusDC              map[string]*Input
-	corpusDependencyInput map[string]*Input
-	corpusRecursiveInput  map[string]*Input
-	corpusErrorInput      map[string]*Input
-	corpusCondition       map[*Condition]*WriteAddresses
-	fmu                   *sync.Mutex
-	fuzzers               map[string]*fuzzer
-	mu                    *sync.Mutex
-	corpus                *map[string]rpctype.RPCInput
+	corpusDC         map[string]*Input
+	corpusDependency *Corpus
+	fmu              *sync.Mutex
+	fuzzers          map[string]*fuzzer
+	mu               *sync.Mutex
+	corpus           *map[string]rpctype.RPCInput
 }
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
@@ -43,9 +42,9 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 		if i, ok := f.corpusDI[request.Input.Sig]; ok {
 			delete(f.corpusDI, request.Input.Sig)
 			if ok := ss.checkDependencyInput(i); ok {
-				ss.corpusDependencyInput[request.Input.Sig] = CloneInput(i)
+				ss.corpusDependency.CorpusDependencyInput[request.Input.Sig] = CloneInput(i)
 			} else {
-				ss.corpusRecursiveInput[request.Input.Sig] = CloneInput(i)
+				ss.corpusDependency.CorpusDependencyInput[request.Input.Sig] = CloneInput(i)
 			}
 		}
 	} else {
@@ -57,9 +56,9 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 	reply := &Conditions{}
-	for c, wa := range ss.corpusCondition {
+	for _, wa := range ss.corpusDependency.WriteAddress {
 		if len(wa.WriteAddress) == 0 {
-			reply.Condition = append(reply.Condition, CloneCondition(c))
+			reply.Condition = append(reply.Condition, CloneCondition(wa.Condition))
 			return reply, nil
 		}
 	}
@@ -67,14 +66,15 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
-	if wa, ok := ss.corpusCondition[request.Condition]; ok {
+	a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
+	if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
 		for _, wwa := range request.WriteAddress {
 			wa.WriteAddress = append(wa.WriteAddress, CloneWriteAddress(wwa))
 		}
-		for sig, i := range ss.corpusRecursiveInput {
+		for sig, i := range ss.corpusDependency.CorpusRecursiveInput {
 			if ok := ss.checkDependencyInput(i); ok {
-				delete(ss.corpusRecursiveInput, sig)
-				ss.corpusDependencyInput[sig] = CloneInput(i)
+				delete(ss.corpusDependency.CorpusRecursiveInput, sig)
+				ss.corpusDependency.CorpusRecursiveInput[sig] = CloneInput(i)
 			} else {
 			}
 		}
@@ -146,7 +146,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	}
 
 	ss.mu.Lock()
-	ss.corpusDependencyInput[request.Sig] = cd
+	ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
 	ss.mu.Unlock()
 
 	for _, f := range ss.fuzzers {
@@ -164,19 +164,19 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		if len(f.corpusDI) > 0 {
 			for s, c := range f.corpusDI {
-				ss.corpusErrorInput[s] = c
+				ss.corpusDependency.CorpusErrorInput[s] = c
 				delete(f.corpusDI, s)
 			}
 		}
 
 		i := 0
-		for s, c := range ss.corpusDependencyInput {
+		for s, c := range ss.corpusDependency.CorpusDependencyInput {
 			if i < taskNum {
 				i++
 
 				reply.Input = append(reply.Input, CloneInput(c))
 				f.corpusDI[s] = c
-				delete(ss.corpusDependencyInput, s)
+				delete(ss.corpusDependency.CorpusDependencyInput, s)
 				return reply, nil
 			} else {
 			}
@@ -241,7 +241,8 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 	res = false
 	condition := wc.RunTimeDate.ConditionAddress
 	if cc, ok := wc.CriticalCondition[condition]; ok {
-		if wa, ok := ss.corpusCondition[cc]; ok {
+		a := cc.ConditionAddress<<32 + cc.Successor
+		if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
 			if len(wa.WriteAddress) > 0 {
 				res = true
 				for _, wwa := range wa.WriteAddress {
@@ -249,7 +250,7 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 				}
 			}
 		} else {
-			ss.corpusCondition[cc] = new(WriteAddresses)
+			ss.corpusDependency.WriteAddress[a] = new(WriteAddresses)
 		}
 	}
 	return res
@@ -400,7 +401,12 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	//ss.corpusDC = []*Input{}
 	ss.corpusDC = make(map[string]*Input)
-	ss.corpusDependencyInput = make(map[string]*Input)
+	ss.corpusDependency = &Corpus{
+		CorpusDependencyInput: map[string]*Input{},
+		CorpusRecursiveInput:  map[string]*Input{},
+		CorpusErrorInput:      map[string]*Input{},
+		WriteAddress:          map[uint64]*WriteAddresses{},
+	}
 	ss.fuzzers = make(map[string]*fuzzer)
 	ss.mu = &sync.Mutex{}
 	ss.fmu = &sync.Mutex{}
@@ -418,4 +424,18 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 			log.Fatalf("failed to serve: %v", err)
 		}
 	}()
+}
+
+func (ss *Server) writeToDisk() {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+	// Write the new address book back to disk.
+	out, err := proto.Marshal(ss.corpusDependency)
+	if err != nil {
+		log.Fatalf("Failed to encode address book:", err)
+	}
+	if err := ioutil.WriteFile("data.txt", out, 0644); err != nil {
+		log.Fatalf("Failed to write address book:", err)
+	}
+	// [END marshal_proto]
 }

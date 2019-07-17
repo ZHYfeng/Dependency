@@ -152,3 +152,11 @@ message task {
     Input input = 1;
     string name = 41;
 }
+
+message corpus {
+    map<string, Input> corpusDependencyInput = 1;
+    map<string, Input> corpusRecursiveInput = 2;
+    map<string, Input> corpusErrorInput = 3;
+    map<uint64, WriteAddresses> WriteAddress = 4;
+}
+
