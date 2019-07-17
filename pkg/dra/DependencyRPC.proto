@@ -8,11 +8,11 @@ service DependencyRPC {
     // DRA and syz-manager
     rpc GetVmOffsets (Empty) returns (Empty) {
     }
-    rpc GetNewInput (Empty) returns (Input) {
+    rpc GetNewInput (Empty) returns (Inputs) {
     }
     rpc SendDependencyInput (Input) returns (Empty) {
     }
-    rpc GetCondition (Empty) returns (Condition) {
+    rpc GetCondition (Empty) returns (Conditions) {
     }
     rpc SendWriteAddress (WriteAddresses) returns (Empty) {
     }
@@ -22,7 +22,7 @@ service DependencyRPC {
     }
     rpc SendNewInput (Input) returns (Empty) {
     }
-    rpc GetDependencyInput (Empty) returns (Input) {
+    rpc GetDependencyInput (Empty) returns (Inputs) {
     }
     rpc ReturnDependencyInput (task) returns (Empty) {
     }
@@ -74,6 +74,10 @@ message Condition {
     repeated uint32 syzkaller_right_branch_address = 8;
     repeated uint64 wrong_branch_address = 9;
     repeated uint32 syzkallerwrong_branch_address = 10;
+}
+
+message Conditions {
+    repeated Condition condition = 10;
 }
 
 message Syscall {
@@ -137,6 +141,10 @@ message Input {
     // for write address
     uint32 write_address = 31;
     uint32 idx = 32;
+}
+
+message Inputs {
+    repeated Input input = 1;
 }
 
 //for syz-fuzzer
