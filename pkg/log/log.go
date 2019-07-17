@@ -13,7 +13,6 @@ import (
 	"flag"
 	"fmt"
 	golog "log"
-	"os"
 	"sync"
 	"time"
 )
