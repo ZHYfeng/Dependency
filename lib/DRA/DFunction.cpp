@@ -40,6 +40,8 @@ namespace dra {
         CallInstNum = 0;
         JumpInstNum = 0;
         BasicBlockNum = 0;
+
+        critical_condition = false;
     }
 
     DFunction::~DFunction() = default;
@@ -187,13 +189,19 @@ namespace dra {
     }
 
     void DFunction::compute_arrive() {
-        std::vector<dra::DBasicBlock *> terminator_bb;
-        get_terminator(terminator_bb);
+        if(this->critical_condition){
+            return;
+        } else {
+            this->critical_condition = true;
+            std::vector<dra::DBasicBlock *> terminator_bb;
+            get_terminator(terminator_bb);
 
-        for (auto db : terminator_bb) {
-            set_pred_successor(db);
+            for (auto db : terminator_bb) {
+                set_pred_successor(db);
+            }
+            set_critical_condition();
+            return;
         }
-        set_critical_condition();
     }
 
     void DFunction::get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb) {
@@ -209,7 +217,7 @@ namespace dra {
 
     void DFunction::set_pred_successor(DBasicBlock *db) {
         for (auto *pred : llvm::predecessors(db->basicBlock)) {
-            std::string basicblock_name  = dra::getRealBB(pred)->getName().str();
+            std::string basicblock_name = dra::getRealBB(pred)->getName().str();
             if (this->BasicBlock.find(basicblock_name) != this->BasicBlock.end()) {
                 auto pred_db = this->BasicBlock[basicblock_name];
                 bool new_basicblock = pred_db->set_arrive(db);
@@ -221,7 +229,7 @@ namespace dra {
     }
 
     void DFunction::set_critical_condition() {
-        for(auto db : this->BasicBlock){
+        for (auto db : this->BasicBlock) {
             db.second->set_critical_condition();
         }
     }

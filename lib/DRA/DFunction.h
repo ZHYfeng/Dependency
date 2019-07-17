@@ -106,6 +106,8 @@ namespace dra {
         std::vector<llvm::BasicBlock *> path;
         std::set<llvm::BasicBlock *> order;
 
+        bool critical_condition;
+
     };
 
 } /* namespace dra */

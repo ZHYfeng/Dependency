@@ -11,18 +11,11 @@
 #include <set>
 #include <vector>
 #include <string>
+#include "../RPC/DependencyRPC.pb.h"
 
 #define DEBUGINPUT 0
 
 namespace dra {
-
-    class DUncoveredAddress {
-    public:
-        unsigned long long int address;
-        int successor_idx;
-        unsigned long long int idx;
-        unsigned long long int condition_address;
-    };
 
     class DInput {
     public:
@@ -36,7 +29,7 @@ namespace dra {
 
         void setCover(const std::string &cover, unsigned long long int vmOffsets);
 
-        void addUncoveredAddress(unsigned long long int address, unsigned long long int condition_address, int i);
+        void addUncoveredAddress(unsigned long long int uncoveredAddress, unsigned long long int conditionAddress, int i);
 
     public:
         std::string sig;
@@ -47,7 +40,7 @@ namespace dra {
         std::set<unsigned long long int> MiniCover;
 
         unsigned long long int idx;
-        std::vector<DUncoveredAddress *> dUncoveredAddress;
+        std::vector<Condition *> dUncoveredAddress;
     };
 
 } /* namespace dra */

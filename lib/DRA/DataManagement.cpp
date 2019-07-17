@@ -233,17 +233,17 @@ namespace dra {
             }
         }
 
-        std::vector<DUncoveredAddress *> temp;
+        std::vector<Condition *> temp;
         for (auto ua : dInput->dUncoveredAddress) {
-            if (this->cover.find(ua->address) == this->cover.end()) {
+            if (this->cover.find(ua->uncovered_address()) == this->cover.end()) {
                 temp.push_back(ua);
-                if (this->uncover.find(ua->address) == this->uncover.end()) {
+                if (this->uncover.find(ua->uncovered_address()) == this->uncover.end()) {
                     auto current_time = std::time(NULL);
                     auto ui = new uncover_info();
                     ui->time = current_time;
-                    ui->address = ua->address;
-                    ui->condition_address = ua->condition_address;
-                    this->uncover[ua->address] = ui;
+                    ui->address = ua->uncovered_address();
+                    ui->condition_address = ua->condition_address();
+                    this->uncover[ua->uncovered_address()] = ui;
                 }
             } else {
                 delete ua;
@@ -380,13 +380,13 @@ namespace dra {
         return db;
     }
 
-    bool DataManagement::check_uncovered_address(DUncoveredAddress *u) {
+    bool DataManagement::check_uncovered_address(Condition *u) {
         bool res = false;
-        if (this->isDriver(u->address)) {
-            if (this->Address2BB.find(u->condition_address) != this->Address2BB.end()) {
+        if (this->isDriver(u->uncovered_address())) {
+            if (this->Address2BB.find(u->condition_address()) != this->Address2BB.end()) {
                 res = true;
             } else {
-                std::cerr << "can not find condition_address : " << std::hex << u->condition_address
+                std::cerr << "can not find condition_address : " << std::hex << u->condition_address()
                           << std::endl;
             }
         }

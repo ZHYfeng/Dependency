@@ -300,7 +300,26 @@ namespace dra {
     }
 
     void DBasicBlock::add_critical_condition(dra::DBasicBlock *db, uint64_t condition) {
-        this->critical_condition[db] = condition;
+        Condition *c = new Condition();
+        c->set_condition_address(db->trace_pc_address);
+        c->set_successor(condition);
+        auto *inst = dra::getFinalBB(db->basicBlock)->getTerminator();
+        for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+            auto temp = this->get_DB_from_bb(inst->getSuccessor(i));
+            if (condition && 1 << i) {
+                c->add_right_branch_address(temp->trace_pc_address);
+            } else {
+                c->add_wrong_branch_address(temp->trace_pc_address);
+            }
+        }
+        this->critical_condition[db] = c;
+    }
+
+    DBasicBlock *DBasicBlock::get_DB_from_bb(llvm::BasicBlock *b) {
+        llvm::BasicBlock *bb = dra::getRealBB(b);
+        std::string bbname = bb->getName().str();
+        DBasicBlock *db = this->parent->BasicBlock[bbname];
+        return db;
     }
 
 } /* namespace dra */

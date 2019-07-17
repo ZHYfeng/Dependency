@@ -72,7 +72,7 @@ namespace dra {
 
         bool isDriver(unsigned long long int address);
 
-        bool check_uncovered_address(DUncoveredAddress *);
+        bool check_uncovered_address(Condition *);
 
         void dump_address(unsigned long long int address);
 

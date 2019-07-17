@@ -69,6 +69,8 @@ namespace dra {
 
         void add_critical_condition(dra::DBasicBlock *db, uint64_t condition);
 
+        DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
+
     public:
         bool IR;
         bool AsmSourceCode;
@@ -88,7 +90,7 @@ namespace dra {
         DInput *lastInput;
 
         std::map<dra::DBasicBlock *, uint64_t> arrive;
-        std::map<dra::DBasicBlock *, uint64_t> critical_condition;
+        std::map<dra::DBasicBlock *, Condition *> critical_condition;
 
         std::set<llvm::BasicBlock *> useLessPred;
     };

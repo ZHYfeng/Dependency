@@ -102,16 +102,16 @@ namespace dra {
 #endif
     }
 
-    void DInput::addUncoveredAddress(unsigned long long int address, unsigned long long int condition_address, int i) {
-        DUncoveredAddress *d = new DUncoveredAddress();
-        d->address = address;
-        d->successor_idx = i;
-        d->idx = this->idx;
-        d->condition_address = condition_address;
+    void DInput::addUncoveredAddress(unsigned long long int uncoveredAddress, unsigned long long int conditionAddress, int i) {
+        Condition *d = new Condition();
+        d->set_condition_address(conditionAddress);
+        d->set_uncovered_address(uncoveredAddress);
+        d->set_idx(this->idx);
+        d->set_successor(1 << i);
         dUncoveredAddress.push_back(d);
 //
 //        std::cout << "uncovered trace_pc_address : " << std::hex << trace_pc_address << std::endl;
-//        std::cout << "condition_address : " << std::hex << condition_address << std::endl;
+//        std::cout << "conditionAddress : " << std::hex << conditionAddress << std::endl;
     }
 
 } /* namespace dra */

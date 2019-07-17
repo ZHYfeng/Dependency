@@ -61,12 +61,19 @@ message Empty {
 }
 
 message Condition {
-    uint32 condition_address = 1;
-    uint32 uncovered_address = 2;
-    uint32 idx = 4;
 
-    repeated uint32 right_branch_address = 5;
-    repeated uint32 wrong_branch_address = 6;
+    uint64 condition_address = 1;
+    uint32 syzkaller_condition_address = 2;
+    uint64 uncovered_address = 3;
+    uint32 syzkaller_uncovered_address = 4;
+
+    uint32 idx = 5;
+    uint64 successor = 6;
+
+    repeated uint64 right_branch_address = 7;
+    repeated uint32 syzkaller_right_branch_address = 8;
+    repeated uint64 wrong_branch_address = 9;
+    repeated uint32 syzkallerwrong_branch_address = 10;
 }
 
 message Syscall {
