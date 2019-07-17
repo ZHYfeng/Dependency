@@ -37,7 +37,6 @@ type Server struct {
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
 	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		if i, ok := f.corpusDI[request.Input.Sig]; ok {
 			delete(f.corpusDI, request.Input.Sig)
@@ -51,10 +50,15 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 		log.Fatalf("ReturnDependencyInput : ", request.Name)
 	}
 	reply := &Empty{}
+	ss.mu.Unlock()
+
+	ss.writeToDisk()
+
 	return reply, nil
 }
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
+	ss.mu.Lock()
 	reply := &Conditions{}
 	for _, wa := range ss.corpusDependency.WriteAddress {
 		if len(wa.WriteAddress) == 0 {
@@ -62,10 +66,15 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 			return reply, nil
 		}
 	}
+	ss.mu.Unlock()
+
+	ss.writeToDisk()
+
 	return reply, nil
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
+	ss.mu.Lock()
 	a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
 	if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
 		for _, wwa := range request.WriteAddress {
@@ -81,6 +90,10 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 	} else {
 		log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
 	}
+	ss.mu.Unlock()
+
+	ss.writeToDisk()
+
 	return &Empty{}, nil
 }
 
@@ -149,9 +162,14 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
 	ss.mu.Unlock()
 
+	ss.fmu.Lock()
 	for _, f := range ss.fuzzers {
 		f.corpusDI[cd.Sig] = CloneInput(cd)
 	}
+	ss.fmu.Unlock()
+
+	ss.writeToDisk()
+
 	reply.Name = "success"
 	return reply, nil
 }
@@ -184,6 +202,8 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	} else {
 		log.Fatalf("fuzzer %v is not connected", request.Name)
 	}
+
+	ss.writeToDisk()
 
 	//for i := 0; i < 50 && len(f.corpusDependencyInput) > 0; i++ {
 	//	last := len(f.corpusDependencyInput) - 1
