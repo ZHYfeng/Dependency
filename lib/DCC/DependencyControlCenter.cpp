@@ -174,7 +174,6 @@ namespace dra {
 
                                     this->outputTime("compute_arrive start");
                                     auto db = this->DM.get_DB_from_bb(i->getParent());
-                                    this->outputTime("get db");
                                     db->parent->compute_arrive();
                                     this->outputTime("compute_arrive finish");
                                 } else {

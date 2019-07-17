@@ -288,7 +288,9 @@ namespace dra {
     }
 
     void DBasicBlock::set_critical_condition() {
-        auto *inst = dra::getFinalBB(this->basicBlock)->getTerminator();
+        auto *fb = dra::getFinalBB(this->basicBlock);
+        fb->dump();
+        auto *inst = fb->getTerminator();
         auto successor_num = inst->getNumSuccessors();
         for (auto bb : this->arrive) {
             if (bb.second == ((1 << successor_num) - 1)) {
