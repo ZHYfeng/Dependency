@@ -288,10 +288,11 @@ namespace dra {
     }
 
     void DBasicBlock::set_critical_condition() {
-        this->basicBlock->dump();
+
         if(this->basicBlock == nullptr) {
 
         } else {
+            this->basicBlock->dump();
             auto *fb = dra::getFinalBB(this->basicBlock);
             auto *inst = fb->getTerminator();
             auto successor_num = inst->getNumSuccessors();
