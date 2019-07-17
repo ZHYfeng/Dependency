@@ -22,13 +22,13 @@ namespace dra {
 
         unsigned long long int GetVmOffsets();
 
-        Input *GetNewInput();
+        Inputs *GetNewInput();
 
         Empty *SendDependencyInput(const Input &request);
 
-        Input *GetDependencyInput();
+        Inputs *GetDependencyInput();
 
-        Condition *GetCondition();
+        Conditions *GetCondition();
 
         Empty *SendWriteAddress(const WriteAddresses &request);
 

@@ -40,16 +40,17 @@ namespace dra {
     void DependencyControlCenter::run() {
         while (true) {
             std::cout << "wait for get newInput" << std::endl;
-            Input *newInput = client->GetNewInput();
+            Inputs *newInput = client->GetNewInput();
             if (newInput != nullptr) {
-                std::cout << "new input : " << newInput->sig() << std::endl;
-                std::cout << newInput->program() << std::endl;
+                for(auto &input : *newInput->mutable_input()){
+                    std::cout << "new input : " << input.sig() << std::endl;
+                    std::cout << input.program() << std::endl;
 
-                DInput *dInput = DM.getInput(newInput);
-                std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
-                          << std::endl;
-                get_dependency_input(dInput);
-
+                    DInput *dInput = DM.getInput(&input);
+                    std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
+                              << std::endl;
+                    get_dependency_input(dInput);
+                }
                 newInput->Clear();
 
                 this->outputTime("sleep_for 10s");
@@ -250,14 +251,14 @@ namespace dra {
     }
 
     void DependencyControlCenter::get_write_addresses() {
-        for (dra::Condition *c = client->GetCondition(); c != nullptr; c = client->GetCondition()) {
-
-            sta::MODS *write_basicblock = get_write_basicblock(c);
+        dra::Conditions *cs = client->GetCondition();
+        for (auto condition : *cs->mutable_condition()) {
+            sta::MODS *write_basicblock = get_write_basicblock(&condition);
             if (write_basicblock == nullptr) {
 
             } else {
                 WriteAddresses *wa = new WriteAddresses();
-                wa->set_allocated_condition(c);
+                wa->set_allocated_condition(&condition);
 
                 for (auto &x : *write_basicblock) {
 
@@ -292,7 +293,7 @@ namespace dra {
 
                     WriteAddress *writeAddress = wa->add_writeaddress();
                     writeAddress->set_write_address(write_address);
-                    writeAddress->set_condition_address(c->syzkaller_condition_address());
+                    writeAddress->set_condition_address(condition.syzkaller_condition_address());
                     writeAddress->set_repeat(x->repeat);
                     writeAddress->set_prio(x->prio);
 
@@ -394,9 +395,9 @@ namespace dra {
     }
 
     void DependencyControlCenter::outputTime(std::string s) {
-            this->current_time = std::time(nullptr);
-            std::cout << std::ctime(&current_time);
-            std::cout << "#time : " << s << std::endl;
+        this->current_time = std::time(nullptr);
+        std::cout << std::ctime(&current_time);
+        std::cout << "#time : " << s << std::endl;
     }
 
 } /* namespace dra */

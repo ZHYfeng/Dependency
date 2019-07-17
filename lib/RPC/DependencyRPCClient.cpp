@@ -33,9 +33,9 @@ namespace dra {
         }
     }
 
-    Input *DependencyRPCClient::GetNewInput() {
+    Inputs *DependencyRPCClient::GetNewInput() {
         Empty request;
-        auto *reply = new Input();
+        auto *reply = new Inputs();
         grpc::ClientContext context;
         grpc::Status status = stub_->GetNewInput(&context, request, reply);
         if (status.ok()) {
@@ -58,9 +58,9 @@ namespace dra {
         return reply;
     }
 
-    Input *DependencyRPCClient::GetDependencyInput() {
+    Inputs *DependencyRPCClient::GetDependencyInput() {
         Empty request;
-        Input *reply = new Input;
+        Inputs *reply = new Inputs;
         grpc::ClientContext context;
         request.set_name("vm-0");
         grpc::Status status = stub_->GetDependencyInput(&context, request, reply);
@@ -72,9 +72,9 @@ namespace dra {
         return reply;
     }
 
-    Condition *DependencyRPCClient::GetCondition() {
+    Conditions *DependencyRPCClient::GetCondition() {
         Empty request;
-        auto *reply = new Condition();
+        auto *reply = new Conditions();
         grpc::ClientContext context;
         grpc::Status status = stub_->GetCondition(&context, request, reply);
         if (status.ok()) {
