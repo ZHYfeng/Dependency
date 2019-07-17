@@ -50,8 +50,12 @@ func (d *DRPCClient) GetDependencyInput(name string) *Input {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
 	}
-	reply := CloneInput(dInput)
-	return reply
+	if dInput == nil {
+		return nil
+	} else {
+		reply := CloneInput(dInput)
+		return reply
+	}
 }
 
 // SendDependencyInput is

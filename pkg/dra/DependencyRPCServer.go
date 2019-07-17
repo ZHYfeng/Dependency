@@ -2,10 +2,12 @@ package dra
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/syzkaller/pkg/log"
 	"github.com/google/syzkaller/pkg/rpctype"
 	"google.golang.org/grpc"
 	"net"
+	"os"
 	"sync"
 )
 
@@ -81,9 +83,14 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
-	//ss.mu.Lock()
-	//defer ss.mu.Unlock()
-	log.Logff(1, request.Name)
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+
+	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+
+	_, _ = f.WriteString(fmt.Sprintf(request.Name))
+
 	reply := &Empty{}
 	return reply, nil
 }
@@ -184,7 +191,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	//if len(f.corpusDependencyInput) == 0 {
 	//	f.corpusDependencyInput = nil
 	//}
-	return &Input{}, nil
+	return nil, nil
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {

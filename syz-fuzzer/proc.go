@@ -263,16 +263,11 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	log.Logf(1, "#%v: DependencyMutate", proc.pid)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("#%v: DependencyMutate", proc.pid))
 
-	//corpus := proc.fuzzer.corpusSnapshot()
-	//corpusSigSnapshot := proc.fuzzer.corpusSigSnapshot()
-	//log.Logf(3, "corpusSigSnapshot size : %v", len(corpusSigSnapshot))
-	//corpusDependencySnapshot := proc.fuzzer.corpusDependencySnapshot()
-	//log.Logf(3, "corpusDependencySnapshot size : %v", len(corpusDependencySnapshot))
-
 	dependencyInput := item.dependencyInput
-	log.Logf(1, "DependencyMutate program : \n%s", dependencyInput.Program)
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate program : \n%s", dependencyInput.Program))
 
 	for _, u := range dependencyInput.UncoveredAddress {
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("UncoveredAddress : %v", u.UncoveredAddress))
 		for _, wa := range u.WriteAddress {
 			if ok, _ := proc.dependencyWriteAddress(wa); ok {
 				updateRunTimeData(u.RunTimeDate, wa.RunTimeDate)

@@ -284,7 +284,9 @@ func (fuzzer *Fuzzer) pollLoop() {
 		log.Logf(0, "len(fuzzer.workQueue.dependency) %v", len(fuzzer.workQueue.dependency))
 		if len(fuzzer.workQueue.dependency) == 0 {
 			newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
-			fuzzer.addDInputFromAnotherFuzzer(newDependencyInput)
+			if newDependencyInput != nil {
+				fuzzer.addDInputFromAnotherFuzzer(newDependencyInput)
+			}
 		}
 		fuzzer.dManager.SSendLog()
 
