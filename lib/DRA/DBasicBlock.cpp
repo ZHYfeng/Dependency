@@ -288,15 +288,19 @@ namespace dra {
     }
 
     void DBasicBlock::set_critical_condition() {
-        auto *fb = dra::getFinalBB(this->basicBlock);
-        fb->dump();
-        auto *inst = fb->getTerminator();
-        auto successor_num = inst->getNumSuccessors();
-        for (auto bb : this->arrive) {
-            if (bb.second == ((1 << successor_num) - 1)) {
+        this->basicBlock->dump();
+        if(this->basicBlock == nullptr) {
 
-            } else {
-                bb.first->add_critical_condition(this, bb.second);
+        } else {
+            auto *fb = dra::getFinalBB(this->basicBlock);
+            auto *inst = fb->getTerminator();
+            auto successor_num = inst->getNumSuccessors();
+            for (auto bb : this->arrive) {
+                if (bb.second == ((1 << successor_num) - 1)) {
+
+                } else {
+                    bb.first->add_critical_condition(this, bb.second);
+                }
             }
         }
     }
