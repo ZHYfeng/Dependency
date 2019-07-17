@@ -9,6 +9,7 @@
 #include <iostream>
 
 #define DEBUG_TIME 0
+#define ENABLE_TAG_GROUP
 
 namespace sta {
 
@@ -37,6 +38,8 @@ namespace sta {
                     this->tagInfo_global[x.first] = x.second;
                 }
             }
+            //Group the same-typed tags.
+            this->setupTagGroups();
             this->calleeMap = this->j_calleeMap.get<CALLEE_MAP_TY>();
             return 0;
         } catch (...) {
@@ -222,7 +225,18 @@ namespace sta {
             auto &actx_id = x.first;
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
+            //TODO: Consider all the tags w/ the same type.
+            std::set<ID_TY> tag_ids_extend = tag_ids;
+#ifdef ENABLE_TAG_GROUP
+            //Consider all the tags w/ the same type.
             for (ID_TY tid : tag_ids) {
+                const std::set<ID_TY> *tagGrp = this->getSameTypedTags(tid);
+                if (tagGrp) {
+                    tag_ids_extend.insert(tagGrp->begin(),tagGrp->end());
+                }
+            }
+#endif
+            for (ID_TY tid : tag_ids_extend) {
                 //Only consider the mod insts for global taint source.
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
                     continue;
@@ -268,7 +282,17 @@ namespace sta {
             auto &actx_id = x.first;
             trait_id = std::get<0>(x.second);
             auto &tag_ids = std::get<1>(x.second);
+            std::set<ID_TY> tag_ids_extend = tag_ids;
+#ifdef ENABLE_TAG_GROUP
+            //Consider all the tags w/ the same type.
             for (ID_TY tid : tag_ids) {
+                const std::set<ID_TY> *tagGrp = this->getSameTypedTags(tid);
+                if (tagGrp) {
+                    tag_ids_extend.insert(tagGrp->begin(),tagGrp->end());
+                }
+            }
+#endif
+            for (ID_TY tid : tag_ids_extend) {
                 //Only consider the mod insts for global taint source.
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
                     continue;
@@ -397,15 +421,18 @@ namespace sta {
     }
 
     void StaticAnalysisResult::tweakModsOnTraits(MODS *pmods, ID_TY br_trait_id, unsigned int branch_id) {
-        if ((!pmods) || this->traitMap.find(br_trait_id) == this->traitMap.end()) {
+        if (!pmods) {
             return;
         }
         //TODO: verify the successor order with true/false
         bool branch = (!branch_id ? true : false);
-        TRAIT &br_trait = this->traitMap[br_trait_id];
         std::string cond("");
         int64_t v = 0;
-        for (auto &x : br_trait) {
+        if (this->traitMap.find(br_trait_id) == this->traitMap.end()) {
+            //No trait is also a kind of trait..
+            goto CALC;
+        }
+        for (auto &x : this->traitMap[br_trait_id]) {
             const std::string &s = x.first;
             if (s == "==" || s == "!=") {
                 if ((s == "==") == branch) {
@@ -462,11 +489,10 @@ namespace sta {
                 }
             }
         }
+CALC:
         //Calculate mod inst priorities based given the br's and mod inst's traits.
-        if (!cond.empty()) {
-            for (auto &x : *pmods) {
-                x->calcPrio(cond, v);
-            }
+        for (auto &x : *pmods) {
+            x->calcPrio(cond, v);
         }
         //Rank the mod insts.
     }
@@ -624,9 +650,51 @@ namespace sta {
         return bbb;
     }
 
-    //TODO:
-    void StaticAnalysisResult::QueryModIRsFromTagTy(std::string ty) {
-        return;
+    bool StaticAnalysisResult::isSameTypedTag(ID_TY t0, ID_TY t1) {
+        if (t0 == t1) {
+            return true;
+        }
+        if ((this->tagInfo.find(t0) == this->tagInfo.end()) != (this->tagInfo.find(t1) == this->tagInfo.end())) {
+            return false;
+        }
+        if (this->tagInfo.find(t0) == this->tagInfo.end()) {
+            //Neither exists in the map.
+            return true;
+        }
+        auto& inf0 = this->tagInfo[t0];
+        auto& inf1 = this->tagInfo[t1];
+        return inf0["v"] == inf1["v"] &&
+               inf0["field"] == inf1["field"] &&
+               inf0["is_global"] == inf1["is_global"] &&
+               inf0["ty"] == inf1["ty"];
+    }
+
+    //Group the same typed taint tags together.
+    void StaticAnalysisResult::setupTagGroups() {
+        std::set<ID_TY> tags;
+        for (auto& x : this->tagInfo) {
+            tags.insert(x.first);
+        }
+        while(!tags.empty()) {
+            ID_TY tgt = *(tags.begin());
+            std::set<ID_TY> group;
+            for(auto it=tags.begin(); it!=tags.end(); ++it) {
+                if (this->isSameTypedTag(tgt,*it)) {
+                    group.insert(*it);
+                    tags.erase(it);
+                }
+            }
+            this->tagGroups.insert(group);
+        }
+    }
+
+    const std::set<ID_TY> *StaticAnalysisResult::getSameTypedTags(ID_TY tid) {
+        for (auto& x : this->tagGroups) {
+            if (x.find(tid) != x.end()) {
+                return &x;
+            }
+        }
+        return nullptr;
     }
 
     /*

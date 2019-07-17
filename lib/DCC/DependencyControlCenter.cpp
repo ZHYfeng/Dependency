@@ -29,12 +29,12 @@ namespace dra {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&this->current_time) << "*time : initializeModule" << std::endl;
+        std::cout << std::ctime(&this->current_time) << "#time : initializeModule" << std::endl;
 
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
         this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&this->current_time) << "*time : initStaticRes" << std::endl;
+        std::cout << std::ctime(&this->current_time) << "#time : initStaticRes" << std::endl;
 
         this->setRPCConnection();
     }
