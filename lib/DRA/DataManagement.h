@@ -8,6 +8,8 @@
 #ifndef LIB_DRA_DATAMANAGEMENT_H_
 #define LIB_DRA_DATAMANAGEMENT_H_
 
+#define DEBUGDM 1
+
 #include <string>
 #include <unordered_map>
 

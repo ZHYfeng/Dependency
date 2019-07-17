@@ -173,7 +173,9 @@ namespace dra {
                                 if (parity) {
 
                                     this->outputTime("compute_arrive start");
-                                    this->DM.get_DB_from_bb(i->getParent())->parent->compute_arrive();
+                                    auto db = this->DM.get_DB_from_bb(i->getParent());
+                                    this->outputTime("get db");
+                                    db->parent->compute_arrive();
                                     this->outputTime("compute_arrive finish");
                                 } else {
                                     auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
