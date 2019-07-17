@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "DFunction.h"
+#include "DataManagement.h"
 
 namespace dra {
 
@@ -21,7 +22,7 @@ namespace dra {
         basicBlock = nullptr;
         parent = nullptr;
         state = CoverKind::untest;
-        COVNum = 0;
+        tracr_num = 0;
         this->lastInput = nullptr;
     }
 
@@ -73,7 +74,7 @@ namespace dra {
             }
             infer();
         } else {
-            std::cerr << "DBasicBlock update basicBlock == nullptr : " << this->address << "\n";
+            std::cerr << "DBasicBlock update basicBlock == nullptr : " << this->trace_pc_address << "\n";
         }
 
     }
@@ -128,10 +129,10 @@ namespace dra {
                 if (Db->state == CoverKind::untest) {
                     Db->setState(CoverKind::uncover);
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->address, Dp->address, i);
+                    dInput->addUncoveredAddress(Db->trace_pc_address, Dp->trace_pc_address, i);
                 } else if (Db->state == CoverKind::uncover) {
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->address, Dp->address, i);
+                    dInput->addUncoveredAddress(Db->trace_pc_address, Dp->trace_pc_address, i);
                 } else if (Db->state == CoverKind::cover) {
 
                 }
@@ -224,7 +225,7 @@ namespace dra {
 
     void DBasicBlock::addNewInput(DInput *i) {
         this->lastInput = i;
-        this->input.insert(i);
+        this->input[i] = i->idx;
     }
 
     void DBasicBlock::dump() {
@@ -238,13 +239,87 @@ namespace dra {
         std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
         std::cout << "IR :" << IR << std::endl;
         std::cout << "CoverKind :" << state << std::endl;
-        std::cout << "address :" << address << std::endl;
+        std::cout << "trace_pc_address :" << trace_pc_address << std::endl;
 //        basicBlock->dump();
-        if (lastInput != nullptr) {
-            std::cout << "lastInput :" << lastInput->sig << std::endl;
+        for (auto i : this->input) {
+            std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
+            std::cout << i.first->program;
         }
         std::cout << "--------------------------------------------" << std::endl;
 
+    }
+
+    // not work if there is a switch with more than 64 cases.
+    bool DBasicBlock::set_arrive(dra::DBasicBlock *db) {
+        bool res = false;
+        uint64_t Num;
+        auto *inst = dra::getFinalBB(this->basicBlock)->getTerminator();
+        for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+            if (inst->getSuccessor(i) == db->basicBlock) {
+                Num = i;
+                if (this->arrive.find(db) != this->arrive.end()) {
+                    if ((this->arrive[db] & 1 << i) > 0) {
+
+                    } else {
+                        this->arrive[db] |= 1 << i;
+                        res = true;
+                    }
+                } else {
+                    this->arrive[db] = 1 << i;
+                    res = true;
+                }
+            }
+        }
+
+        for (auto bb : db->arrive) {
+            if (this->arrive.find(bb.first) != this->arrive.end()) {
+                if ((this->arrive[bb.first] & 1 << Num) > 0) {
+
+                } else {
+                    this->arrive[bb.first] |= 1 << Num;
+                    res = true;
+                }
+            } else {
+                this->arrive[bb.first] = 1 << Num;
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    void DBasicBlock::set_critical_condition() {
+        auto *inst = dra::getFinalBB(this->basicBlock)->getTerminator();
+        auto successor_num = inst->getNumSuccessors();
+        for (auto bb : this->arrive) {
+            if (bb.second == ((1 << successor_num) - 1)) {
+
+            } else {
+                bb.first->add_critical_condition(this, bb.second);
+            }
+        }
+    }
+
+    void DBasicBlock::add_critical_condition(dra::DBasicBlock *db, uint64_t condition) {
+        Condition *c = new Condition();
+        c->set_condition_address(db->trace_pc_address);
+        c->set_successor(condition);
+        auto *inst = dra::getFinalBB(db->basicBlock)->getTerminator();
+        for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
+            auto temp = this->get_DB_from_bb(inst->getSuccessor(i));
+            if (condition && 1 << i) {
+                c->add_right_branch_address(temp->trace_pc_address);
+            } else {
+                c->add_wrong_branch_address(temp->trace_pc_address);
+            }
+        }
+        this->critical_condition[db] = c;
+    }
+
+    DBasicBlock *DBasicBlock::get_DB_from_bb(llvm::BasicBlock *b) {
+        llvm::BasicBlock *bb = dra::getRealBB(b);
+        std::string bbname = bb->getName().str();
+        DBasicBlock *db = this->parent->BasicBlock[bbname];
+        return db;
     }
 
 } /* namespace dra */

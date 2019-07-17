@@ -10,6 +10,7 @@
 
 #include <llvm/IR/BasicBlock.h>
 #include <set>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -62,24 +63,36 @@ namespace dra {
 
         void dump();
 
+        bool set_arrive(dra::DBasicBlock *db);
+
+        void set_critical_condition();
+
+        void add_critical_condition(dra::DBasicBlock *db, uint64_t condition);
+
+        DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
+
     public:
         bool IR;
         bool AsmSourceCode;
 
         llvm::BasicBlock *basicBlock;
-        std::set<llvm::BasicBlock *> useLessPred;
         DFunction *parent;
         CoverKind state;
         std::string name;
-        unsigned int COVNum;
-        unsigned long long int address;
+        uint64_t tracr_num;
+        uint64_t trace_pc_address;
+        uint64_t trace_cmp_address;
 
         std::vector<DAInstruction *> InstASM;
         std::vector<DLInstruction *> InstIR;
 
-        std::set<DInput *> input;
+        std::map<DInput *, uint64_t> input;
         DInput *lastInput;
-        DBasicBlock *realPred;
+
+        std::map<dra::DBasicBlock *, uint64_t> arrive;
+        std::map<dra::DBasicBlock *, Condition *> critical_condition;
+
+        std::set<llvm::BasicBlock *> useLessPred;
     };
 
 } /* namespace dra */

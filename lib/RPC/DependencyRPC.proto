@@ -4,24 +4,55 @@ package dra;
 
 // The DependencyRPC service definition.
 service DependencyRPC {
-    
-    // C++ and syz-manager
+
+    // DRA and syz-manager
     rpc GetVmOffsets (Empty) returns (Empty) {
     }
-    rpc GetNewInput (Empty) returns (NewInput) {
+    rpc GetNewInput (Empty) returns (Input) {
     }
-    rpc SendDependencyInput (DependencyInput) returns (Empty) {
+    rpc SendDependencyInput (Input) returns (Empty) {
     }
-    
+    rpc GetCondition (Empty) returns (Condition) {
+    }
+    rpc SendWriteAddress (WriteAddresses) returns (Empty) {
+    }
+
     //syz-fuzzer and syz-manager
     rpc Connect (Empty) returns (Empty) {
     }
-    rpc GetDependencyInput (Empty) returns (NewDependencyInput) {
+    rpc SendNewInput (Input) returns (Empty) {
     }
-    rpc SendInput (Input) returns (Empty) {
+    rpc GetDependencyInput (Empty) returns (Input) {
+    }
+    rpc ReturnDependencyInput (task) returns (Empty) {
     }
     rpc SendLog (Empty) returns (Empty) {
     }
+}
+
+message runTimeData {
+    runTimeData parent = 9;
+    bytes program = 2;
+    enum taskStatus {
+        untested = 0;
+        recursive = 1;
+        tested = 2;
+        out = 3;
+        cover = 4;
+    }
+    taskStatus task_status = 3;
+    uint32 rcursive_count = 4;
+
+    uint32 idx = 10;
+
+    bool checkCondition = 11;
+    uint32 condition_address = 12;
+
+    bool checkAddress = 13;
+    uint32 address = 14;
+
+    bool checkRightBranchAddress = 15;
+    repeated uint32 right_branch_address = 16;
 }
 
 message Empty {
@@ -29,39 +60,63 @@ message Empty {
     string name = 2;
 }
 
-message RelatedInput {
-    string sig = 1; // hash value for each input from syzkaller
-    bytes prog = 3;
+message Condition {
+
+    uint64 condition_address = 1;
+    uint32 syzkaller_condition_address = 2;
+    uint64 uncovered_address = 3;
+    uint32 syzkaller_uncovered_address = 4;
+
+    uint32 idx = 5;
+    uint64 successor = 6;
+
+    repeated uint64 right_branch_address = 7;
+    repeated uint32 syzkaller_right_branch_address = 8;
+    repeated uint64 wrong_branch_address = 9;
+    repeated uint32 syzkallerwrong_branch_address = 10;
 }
 
-message RelatedSyscall {
+message Syscall {
     string name = 1;
-    uint64 number =3;
+    uint64 cmd = 2;
+
+    map<uint32, Condition> critical_condition = 4;
+    // it is the data of this syscall
+    runTimeData run_time_date = 5;
+
+    repeated WriteAddress write_address = 11;
 }
 
-message RelatedAddress {
+message WriteAddress {
     uint32 repeat = 7;
+    uint32 real_repeat = 8;
+
     uint32 prio = 6;
-    uint32 address = 2;
-    repeated RelatedInput related_input = 4;
-    repeated RelatedSyscall related_syscall = 5;
+
+    // the address writes to global variable
+    uint32 write_address = 2;
+    // the address of condition is related to this global variable
+    uint32 condition_address = 3;
+
+    repeated Input write_input = 4;
+    repeated Syscall write_syscall = 5;
+
+    // it is the data of uncovered address
+    runTimeData run_time_date = 11;
+}
+
+message WriteAddresses {
+    Condition condition = 1;
+    repeated WriteAddress writeAddress = 2;
 }
 
 message UncoveredAddress {
-    uint32 address = 1;
-    uint32 idx = 2;
     uint32 condition_address = 3;
-    repeated RelatedAddress related_address = 4;
-}
+    uint32 uncovered_address = 1;
 
-message DependencyInput {
-    string sig = 1; // hash value for each input from syzkaller
-    repeated UncoveredAddress uncovered_address = 2;
-    bytes prog = 3;
-}
+    runTimeData run_time_date = 5;
 
-message NewDependencyInput {
-    repeated DependencyInput dependencyInput = 1;
+    repeated WriteAddress write_address = 4;
 }
 
 message Call {
@@ -70,12 +125,22 @@ message Call {
 }
 
 message Input {
-    string sig = 1;
-    bool dependency = 4;
-    map<uint32, Call> call = 2;
-    bytes prog = 3;
+    // for input
+    string sig = 11; // hash value for each input from syzkaller
+    bytes program = 12;
+    map<uint32, Call> call = 13;
+
+    // for dependency
+    bool dependency = 21;
+    repeated UncoveredAddress uncovered_address = 22;
+
+    // for write address
+    uint32 write_address = 31;
+    uint32 idx = 32;
 }
 
-message NewInput {
-    repeated Input input = 1;
+//for syz-fuzzer
+message task {
+    Input input = 1;
+    string name = 41;
 }

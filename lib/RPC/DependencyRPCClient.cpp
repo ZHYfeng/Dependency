@@ -33,9 +33,9 @@ namespace dra {
         }
     }
 
-    NewInput *DependencyRPCClient::GetNewInput() {
+    Input *DependencyRPCClient::GetNewInput() {
         Empty request;
-        auto *reply = new NewInput();
+        auto *reply = new Input();
         grpc::ClientContext context;
         grpc::Status status = stub_->GetNewInput(&context, request, reply);
         if (status.ok()) {
@@ -46,7 +46,7 @@ namespace dra {
         }
     }
 
-    Empty *DependencyRPCClient::SendDependencyInput(const DependencyInput &request) {
+    Empty *DependencyRPCClient::SendDependencyInput(const Input &request) {
         Empty *reply = new Empty();
         grpc::ClientContext context;
         grpc::Status status = stub_->SendDependencyInput(&context, request, reply);
@@ -58,14 +58,39 @@ namespace dra {
         return reply;
     }
 
-    NewDependencyInput *DependencyRPCClient::GetDependencyInput() {
+    Input *DependencyRPCClient::GetDependencyInput() {
         Empty request;
-        NewDependencyInput *reply = new NewDependencyInput;
+        Input *reply = new Input;
         grpc::ClientContext context;
         request.set_name("vm-0");
         grpc::Status status = stub_->GetDependencyInput(&context, request, reply);
         if (status.ok()) {
 
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+        }
+        return reply;
+    }
+
+    Condition *DependencyRPCClient::GetCondition() {
+        Empty request;
+        auto *reply = new Condition();
+        grpc::ClientContext context;
+        grpc::Status status = stub_->GetCondition(&context, request, reply);
+        if (status.ok()) {
+            return reply;
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+            return nullptr;
+        }
+    }
+
+    Empty *DependencyRPCClient::SendWriteAddress(const WriteAddresses &request) {
+        Empty *reply = new Empty();
+        grpc::ClientContext context;
+        grpc::Status status = stub_->SendWriteAddress(&context, request, reply);
+        if (status.ok()) {
+            std::cout << "SendDependencyInput : " << reply->name() << std::endl;
         } else {
             std::cout << status.error_code() << ": " << status.error_message() << std::endl;
         }

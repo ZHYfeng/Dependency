@@ -71,6 +71,14 @@ namespace dra {
 
         void inferUseLessPred();
 
+        void compute_arrive();
+
+        void get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb);
+
+        void set_pred_successor(DBasicBlock *db);
+
+        void set_critical_condition();
+
     public:
         bool Objudump;
         bool AsmSourceCode;
@@ -97,6 +105,8 @@ namespace dra {
 
         std::vector<llvm::BasicBlock *> path;
         std::set<llvm::BasicBlock *> order;
+
+        bool critical_condition;
 
     };
 

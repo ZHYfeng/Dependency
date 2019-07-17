@@ -2,15 +2,138 @@ syntax = "proto3";
 
 package dra;
 
-message data {
-    uint64 time = 1;
-    string date = 2;
-    
-    uint64 uncovered = 3;
+// The DependencyRPC service definition.
+service DependencyRPC {
+
+    // DRA and syz-manager
+    rpc GetVmOffsets (Empty) returns (Empty) {
+    }
+    rpc GetNewInput (Empty) returns (Input) {
+    }
+    rpc SendDependencyInput (Input) returns (Empty) {
+    }
+    rpc GetCondition (Empty) returns (Condition) {
+    }
+    rpc SendWriteAddress (WriteAddresses) returns (Empty) {
+    }
+
+    //syz-fuzzer and syz-manager
+    rpc Connect (Empty) returns (Empty) {
+    }
+    rpc SendNewInput (Input) returns (Empty) {
+    }
+    rpc GetDependencyInput (Empty) returns (Input) {
+    }
+    rpc ReturnDependencyInput (task) returns (Empty) {
+    }
+    rpc SendLog (Empty) returns (Empty) {
+    }
 }
 
-message all_data {
+message runTimeData {
+    runTimeData parent = 9;
+    bytes program = 2;
+    enum taskStatus {
+        untested = 0;
+        recursive = 1;
+        tested = 2;
+        out = 3;
+        cover = 4;
+    }
+    taskStatus task_status = 3;
+    uint32 rcursive_count = 4;
+
+    uint32 idx = 10;
+
+    bool checkCondition = 11;
+    uint32 condition_address = 12;
+
+    bool checkAddress = 13;
+    uint32 address = 14;
+
+    bool checkRightBranchAddress = 15;
+    repeated uint32 right_branch_address = 16;
+}
+
+message Empty {
+    uint32 address = 1;
+    string name = 2;
+}
+
+message Condition {
+    uint32 condition_address = 1;
+    uint32 uncovered_address = 2;
+    uint32 idx = 4;
+
+    repeated uint32 right_branch_address = 5;
+    repeated uint32 wrong_branch_address = 6;
+}
+
+message Syscall {
     string name = 1;
-    map<uint64, uint64> address_time = 2;
-    repeated data data = 3;
+    uint64 cmd = 2;
+
+    map<uint32, Condition> critical_condition = 4;
+    // it is the data of this syscall
+    runTimeData run_time_date = 5;
+
+    repeated WriteAddress write_address = 11;
+}
+
+message WriteAddress {
+    uint32 repeat = 7;
+    uint32 real_repeat = 8;
+
+    uint32 prio = 6;
+
+    // the address writes to global variable
+    uint32 write_address = 2;
+    // the address of condition is related to this global variable
+    uint32 condition_address = 3;
+
+    repeated Input write_input = 4;
+    repeated Syscall write_syscall = 5;
+
+    // it is the data of uncovered address
+    runTimeData run_time_date = 11;
+}
+
+message WriteAddresses {
+    Condition condition = 1;
+    repeated WriteAddress writeAddress = 2;
+}
+
+message UncoveredAddress {
+    uint32 condition_address = 3;
+    uint32 uncovered_address = 1;
+
+    runTimeData run_time_date = 5;
+
+    repeated WriteAddress write_address = 4;
+}
+
+message Call {
+    uint32 idx = 1;
+    map<uint32, uint32> address = 2;
+}
+
+message Input {
+    // for input
+    string sig = 11; // hash value for each input from syzkaller
+    bytes program = 12;
+    map<uint32, Call> call = 13;
+
+    // for dependency
+    bool dependency = 21;
+    repeated UncoveredAddress uncovered_address = 22;
+
+    // for write address
+    uint32 write_address = 31;
+    uint32 idx = 32;
+}
+
+//for syz-fuzzer
+message task {
+    Input input = 1;
+    string name = 41;
 }

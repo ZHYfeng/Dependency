@@ -25,28 +25,28 @@ namespace dra {
 #endif
     }
 
-    void DInput::setProg(const std::string &prog) {
-
-        std::stringstream ss;
-        std::string temp = prog.substr(1, prog.size() - 2) + ' ';
-        char c = 0;
-
-#if DEBUGINPUT
-        std::cout << prog << std::endl;
-#endif
-        for (auto cc : temp) {
-            if (cc != ' ') {
-                c = static_cast<char>(c * 10 + cc - '0');
-            } else {
-                ss.str("");
-                ss << c;
-                c = 0;
-                this->progam += ss.str();
-            }
-        }
-#if DEBUGINPUT
-        std::cout << this->progam << std::endl;
-#endif
+    void DInput::setProgram(const std::string &program) {
+        this->program = program;
+//        std::stringstream ss;
+//        std::string temp = program.substr(1, program.size() - 2) + ' ';
+//        char c = 0;
+//
+//#if DEBUGINPUT
+//        std::cout << program << std::endl;
+//#endif
+//        for (auto cc : temp) {
+//            if (cc != ' ') {
+//                c = static_cast<char>(c * 10 + cc - '0');
+//            } else {
+//                ss.str("");
+//                ss << c;
+//                c = 0;
+//                this->program += ss.str();
+//            }
+//        }
+//#if DEBUGINPUT
+//        std::cout << this->program << std::endl;
+//#endif
     }
 
     void DInput::setCover(const std::string &cover, unsigned long long int vmOffsets) {
@@ -102,16 +102,16 @@ namespace dra {
 #endif
     }
 
-    void DInput::addUncoveredAddress(unsigned long long int address, unsigned long long int condition_address, int i) {
-        DUncoveredAddress *d = new DUncoveredAddress();
-        d->address = address;
-        d->successor_idx = i;
-        d->idx = this->idx;
-        d->condition_address = condition_address;
+    void DInput::addUncoveredAddress(unsigned long long int uncoveredAddress, unsigned long long int conditionAddress, int i) {
+        Condition *d = new Condition();
+        d->set_condition_address(conditionAddress);
+        d->set_uncovered_address(uncoveredAddress);
+        d->set_idx(this->idx);
+        d->set_successor(1 << i);
         dUncoveredAddress.push_back(d);
 //
-//        std::cout << "uncovered address : " << std::hex << address << std::endl;
-//        std::cout << "condition_address : " << std::hex << condition_address << std::endl;
+//        std::cout << "uncovered trace_pc_address : " << std::hex << trace_pc_address << std::endl;
+//        std::cout << "conditionAddress : " << std::hex << conditionAddress << std::endl;
     }
 
 } /* namespace dra */

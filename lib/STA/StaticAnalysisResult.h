@@ -27,6 +27,11 @@
 
 namespace sta {
 
+    class cmd_ctx {
+    public:
+        uint64_t cmd;
+        std::vector<llvm::Instruction *> ctx;
+    };
 
     class Mod;
     class FieldPtr;
@@ -256,6 +261,29 @@ namespace sta {
                 this->ctxs.push_back(vec);
             }
             return &(this->ctxs);
+        }
+
+
+
+        std::vector<cmd_ctx *> all_cmd_ctx;
+
+        std::vector<cmd_ctx *> *get_cmd_ctx() {
+            if (all_cmd_ctx.empty()) {
+                for (auto &x : this->mod_inf) {
+                    std::set<uint64_t> &cs = x.second[1];
+                    for(auto c : cs){
+                        cmd_ctx *temp = new cmd_ctx();
+                        temp->cmd = c;
+                        if (this->sta->getCtx(x.first, &(temp->ctx))) {
+
+                        } else {
+
+                        }
+                        this->all_cmd_ctx.push_back(temp);
+                    }
+                }
+            }
+            return &all_cmd_ctx;
         }
 
     private:

@@ -40,6 +40,12 @@ namespace dra {
         bool covered_by_dependency;
     };
 
+    llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
+
+    llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
+
+    void dump_inst(llvm::Instruction *inst);
+
     class DataManagement {
     public:
         DataManagement();
@@ -56,7 +62,7 @@ namespace dra {
 
         void getInput(std::string coverfile);
 
-        DInput *getInput(Input input);
+        DInput *getInput(Input *input);
 
         void setInput();
 
@@ -64,11 +70,9 @@ namespace dra {
 
         unsigned long long int getSyzkallerAddress(unsigned long long int address);
 
-        llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
-
-        llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
-
         bool isDriver(unsigned long long int address);
+
+        bool check_uncovered_address(Condition *);
 
         void dump_address(unsigned long long int address);
 
@@ -76,7 +80,9 @@ namespace dra {
 
         void dump_uncover();
 
-        void dump_ctxs(std::vector<std::vector<llvm::Instruction*>> *ctx);
+        void dump_ctxs(std::vector<llvm::Instruction *> *ctx);
+
+        DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
 
 
 

@@ -7,12 +7,14 @@
 
 #include "DFunction.h"
 
+#include <iostream>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/IR/CFG.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Value.h>
-#include <iostream>
+#include "llvm/IR/Instructions.h"
+#include "DataManagement.h"
 #include <set>
 #include <utility>
 
@@ -38,6 +40,8 @@ namespace dra {
         CallInstNum = 0;
         JumpInstNum = 0;
         BasicBlockNum = 0;
+
+        critical_condition = false;
     }
 
     DFunction::~DFunction() = default;
@@ -58,61 +62,48 @@ namespace dra {
                     BasicBlock[Name]->setIr(true);
                     BasicBlock[Name]->parent = this;
                 } else {
-                    std::cerr << "error same basic block name" << "\n";
+                    std::cerr << "error same basic block name"
+                              << "\n";
                 }
             }
             BasicBlock[Name]->InitIRBasicBlock(&it);
         }
-//	inferUseLessPred();
-//	inferUseLessPred(&f->getEntryBlock());
+//        compute_arrive();
+        //	inferUseLessPred();
+        //	inferUseLessPred(&f->getEntryBlock());
     }
 
     void DFunction::setState(CoverKind kind) {
         if (state == CoverKind::cover && kind == CoverKind::uncover) {
-            std::cerr << "error DFunction kind" << "\n";
+            std::cerr << "error DFunction kind"
+                      << "\n";
         }
         state = kind;
     }
 
-    void DFunction::update(CoverKind kind) {
-        setState(kind);
-    }
+    void DFunction::update(CoverKind kind) { setState(kind); }
 
-    bool DFunction::isObjudump() const {
-        return Objudump;
-    }
+    bool DFunction::isObjudump() const { return Objudump; }
 
-    void DFunction::setObjudump(bool Objudump) {
-        DFunction::Objudump = Objudump;
-    }
+    void DFunction::setObjudump(bool Objudump) { DFunction::Objudump = Objudump; }
 
-    bool DFunction::isAsmSourceCode() const {
-        return AsmSourceCode;
-    }
+    bool DFunction::isAsmSourceCode() const { return AsmSourceCode; }
 
     void DFunction::setAsmSourceCode(bool AsmSourceCode) {
         DFunction::AsmSourceCode = AsmSourceCode;
     }
 
-    bool DFunction::isIR() const {
-        return IR;
-    }
+    bool DFunction::isIR() const { return IR; }
 
-    void DFunction::setIR(bool IR) {
-        DFunction::IR = IR;
-    }
+    void DFunction::setIR(bool IR) { DFunction::IR = IR; }
 
     bool DFunction::isMap() {
         return DFunction::Objudump && DFunction::AsmSourceCode && DFunction::IR;
     }
 
-    bool DFunction::isRepeat() const {
-        return repeat;
-    }
+    bool DFunction::isRepeat() const { return repeat; }
 
-    void DFunction::setRepeat(bool repeat) {
-        this->repeat = repeat;
-    }
+    void DFunction::setRepeat(bool repeat) { this->repeat = repeat; }
 
     void DFunction::setKind(FunctionKind kind) {
         switch (kind) {
@@ -129,7 +120,6 @@ namespace dra {
                 break;
             }
             default: {
-
             }
         }
     }
@@ -152,10 +142,9 @@ namespace dra {
         std::cout << "JumpInstNum :" << JumpInstNum << std::endl;
         std::cout << "BasicBlockNum :" << BasicBlockNum << std::endl;
         if (this->function != nullptr) {
-//            function->dump();
+            //            function->dump();
         }
         std::cout << "--------------------------------------------" << std::endl;
-
     }
 
     void DFunction::inferUseLessPred(llvm::BasicBlock *b) {
@@ -186,16 +175,62 @@ namespace dra {
             if (it.getSinglePredecessor()) {
 
             } else {
-                for (auto *Pred : llvm::predecessors(&it)) {
+                for (auto *pred : llvm::predecessors(&it)) {
                     auto name = it.getName().str();
-                    if (order.find(Pred) == order.end()) {
-                        BasicBlock[name]->useLessPred.insert(Pred);
+                    if (order.find(pred) == order.end()) {
+                        BasicBlock[name]->useLessPred.insert(pred);
                         std::cout << "function : " << FunctionName << std::endl;
                         std::cout << "name : " << name << std::endl;
-                        std::cout << "use less : " << Pred->getName().str() << std::endl;
+                        std::cout << "use less : " << pred->getName().str() << std::endl;
                     }
                 }
             }
+        }
+    }
+
+    void DFunction::compute_arrive() {
+        if(this->critical_condition){
+            return;
+        } else {
+            this->critical_condition = true;
+            std::vector<dra::DBasicBlock *> terminator_bb;
+            get_terminator(terminator_bb);
+
+            for (auto db : terminator_bb) {
+                set_pred_successor(db);
+            }
+            set_critical_condition();
+            return;
+        }
+    }
+
+    void DFunction::get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb) {
+        for (auto db : this->BasicBlock) {
+            for (auto di : db.second->InstIR) {
+                if (llvm::ReturnInst *RI = llvm::dyn_cast<llvm::ReturnInst>(di->i)) {
+                    terminator_bb.push_back(db.second);
+                }
+            }
+        }
+        return;
+    }
+
+    void DFunction::set_pred_successor(DBasicBlock *db) {
+        for (auto *pred : llvm::predecessors(db->basicBlock)) {
+            std::string basicblock_name = dra::getRealBB(pred)->getName().str();
+            if (this->BasicBlock.find(basicblock_name) != this->BasicBlock.end()) {
+                auto pred_db = this->BasicBlock[basicblock_name];
+                bool new_basicblock = pred_db->set_arrive(db);
+                if (new_basicblock) {
+                    set_pred_successor(pred_db);
+                }
+            }
+        }
+    }
+
+    void DFunction::set_critical_condition() {
+        for (auto db : this->BasicBlock) {
+            db.second->set_critical_condition();
         }
     }
 
