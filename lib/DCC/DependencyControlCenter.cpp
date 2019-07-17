@@ -174,12 +174,13 @@ namespace dra {
                             for (auto i : c->ctx) {
                                 parity = !parity;
                                 if (parity) {
-                                    std::cout << "compute_arrive : " << std::endl;
                                     this->current_time = std::time(nullptr);
-                                    std::cout << "start : " << std::ctime(&current_time);
+                                    std::cout << std::ctime(&current_time);
+                                    std::cout << "#time : compute_arrive start " << std::endl;
                                     this->DM.get_DB_from_bb(i->getParent())->parent->compute_arrive();
                                     this->current_time = std::time(nullptr);
-                                    std::cout << "finish : " << std::ctime(&current_time);
+                                    std::cout << std::ctime(&current_time);
+                                    std::cout << "#time : compute_arrive finish" << std::endl;
                                 } else {
                                     auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
                                     for (auto ccc : cc) {
