@@ -55,14 +55,15 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 	return reply, nil
 }
 
-func (ss Server) GetCondition(context.Context, *Empty) (reply *Conditions, err error) {
+func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
+	reply := &Conditions{}
 	for c, wa := range ss.corpusCondition {
 		if len(wa.WriteAddress) == 0 {
 			reply.Condition = append(reply.Condition, CloneCondition(c))
-			return
+			return reply, nil
 		}
 	}
-	return
+	return reply, nil
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
@@ -156,10 +157,10 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 }
 
 //
-func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (reply *Inputs, err error) {
+func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
 	ss.fmu.Lock()
 	defer ss.fmu.Unlock()
-
+	reply := &Inputs{}
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		if len(f.corpusDI) > 0 {
 			for s, c := range f.corpusDI {
@@ -176,7 +177,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (reply 
 				reply.Input = append(reply.Input, CloneInput(c))
 				f.corpusDI[s] = c
 				delete(ss.corpusDependencyInput, s)
-				return
+				return reply, nil
 			} else {
 			}
 		}
@@ -192,7 +193,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (reply 
 	//if len(f.corpusDependencyInput) == 0 {
 	//	f.corpusDependencyInput = nil
 	//}
-	return
+	return reply, nil
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
