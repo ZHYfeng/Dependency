@@ -40,6 +40,8 @@ namespace dra {
 
         void set_runtime_data(runTimeData *r, std::string program, uint32_t idx, uint32_t condition, uint32_t address);
 
+        void outputTime(std::string);
+
         void test_sta();
         void test_rpc();
 

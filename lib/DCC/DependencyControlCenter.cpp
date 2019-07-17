@@ -18,8 +18,7 @@
 namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() {
-        this->start_time = std::time(nullptr);
-        std::cout << std::ctime(&this->start_time) << "*time : start_time" << std::endl;
+        this->outputTime("start_time");
     }
 
     DependencyControlCenter::~DependencyControlCenter() = default;
@@ -28,13 +27,12 @@ namespace dra {
                                        const std::string &staticRes) {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
-        this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&this->current_time) << "#time : initializeModule" << std::endl;
+        this->outputTime("initializeModule");
+
+
 
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
-        this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&this->current_time) << "#time : initStaticRes" << std::endl;
 
         this->setRPCConnection();
     }
@@ -53,12 +51,11 @@ namespace dra {
                 get_dependency_input(dInput);
 
                 newInput->Clear();
-                this->current_time = std::time(nullptr);
-                std::cout << std::ctime(&this->current_time) << "*time : sleep_for 10s." << std::endl;
+
+                this->outputTime("sleep_for 10s");
                 std::this_thread::sleep_for(std::chrono::seconds(10));
             } else {
-                this->current_time = std::time(nullptr);
-                std::cout << std::ctime(&this->current_time) << "*time : sleep_for 60s." << std::endl;
+                this->outputTime("sleep_for 60s");
                 std::this_thread::sleep_for(std::chrono::seconds(60));
                 setRPCConnection();
             }
@@ -76,8 +73,7 @@ namespace dra {
                 grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
-        this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&this->current_time) << "*time : GetVmOffsets" << std::endl;
+        this->outputTime("GetVmOffsets");
     }
 
     void DependencyControlCenter::get_dependency_input(DInput *dInput) {
@@ -174,13 +170,10 @@ namespace dra {
                             for (auto i : c->ctx) {
                                 parity = !parity;
                                 if (parity) {
-                                    this->current_time = std::time(nullptr);
-                                    std::cout << std::ctime(&current_time);
-                                    std::cout << "#time : compute_arrive start " << std::endl;
+
+                                    this->outputTime("compute_arrive start");
                                     this->DM.get_DB_from_bb(i->getParent())->parent->compute_arrive();
-                                    this->current_time = std::time(nullptr);
-                                    std::cout << std::ctime(&current_time);
-                                    std::cout << "#time : compute_arrive finish" << std::endl;
+                                    this->outputTime("compute_arrive finish");
                                 } else {
                                     auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
                                     for (auto ccc : cc) {
@@ -398,6 +391,12 @@ namespace dra {
         r->set_checkaddress(false);
         r->set_address(address);
         r->set_checkrightbranchaddress(false);
+    }
+
+    void DependencyControlCenter::outputTime(std::string s) {
+            this->current_time = std::time(nullptr);
+            std::cout << std::ctime(&current_time);
+            std::cout << "#time : " << s << std::endl;
     }
 
 } /* namespace dra */
