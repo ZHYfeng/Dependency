@@ -874,7 +874,7 @@ static long syz_open_procfs(volatile long a0, volatile long a1)
 #include <sys/stat.h>
 #include <sys/types.h>
 
-static long syz_open_pts()
+static long syz_open_pts(volatile long a0, volatile long a1)
 {
 	// syz_openpts(fd fd[tty], flags flags[open_flags]) fd[tty]
 
@@ -883,7 +883,7 @@ static long syz_open_pts()
     int flag = 0x802;
     int mode = 0x0;
 //	int a0 = openat(dir, "/dev/ptmx", flag, mode);
-	int a0 = open("/dev/ptmx", flag, mode);
+//	int a0 = open("/dev/ptmx", flag, mode);
 
 	// unlockpt()
 	int lock = 0;
