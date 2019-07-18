@@ -11,6 +11,7 @@
 
 #define DEBUG_TIME 0
 #define ENABLE_TAG_GROUP
+#define DEBUG_TAG_GROUP
 
 namespace sta {
 
@@ -660,11 +661,12 @@ CALC:
         }
         if (this->tagInfo.find(t0) == this->tagInfo.end()) {
             //Neither exists in the map.
-            return true;
+            return false;
         }
         auto& inf0 = this->tagInfo[t0];
         auto& inf1 = this->tagInfo[t1];
         return inf0["v"] == inf1["v"] &&
+               inf0["vid"] == inf1["vid"] &&
                inf0["field"] == inf1["field"] &&
                inf0["is_global"] == inf1["is_global"] &&
                inf0["ty"] == inf1["ty"];
@@ -672,6 +674,9 @@ CALC:
 
     //Group the same typed taint tags together.
     void StaticAnalysisResult::setupTagGroups() {
+#ifdef DEBUG_TAG_GROUP
+        std::cout << "-------TAG GROUP------\n";
+#endif
         std::set<ID_TY> tags;
         for (auto& x : this->tagInfo) {
             tags.insert(x.first);
@@ -685,8 +690,18 @@ CALC:
                     tags.erase(it);
                 }
             }
+#ifdef DEBUG_TAG_GROUP
+            std::cout << "+ ";
+            for (auto& x : group) {
+                std::cout << (const void*)x << ", ";
+            }
+            std::cout << "\n";
+#endif
             this->tagGroups.insert(group);
         }
+#ifdef DEBUG_TAG_GROUP
+        std::cout << "-------END------\n";
+#endif
     }
 
     const std::set<ID_TY> *StaticAnalysisResult::getSameTypedTags(ID_TY tid) {
