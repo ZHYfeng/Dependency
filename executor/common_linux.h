@@ -875,6 +875,7 @@ static long syz_open_procfs(volatile long a0, volatile long a1)
 #include <sys/types.h>
 
 static long syz_open_pts(volatile long a0, volatile long a1)
+//static long syz_open_pts()
 {
 	// syz_openpts(fd fd[tty], flags flags[open_flags]) fd[tty]
 
