@@ -40,8 +40,6 @@ namespace dra {
 
         void set_runtime_data(runTimeData *r, std::string program, uint32_t idx, uint32_t condition, uint32_t address);
 
-        void outputTime(std::string);
-
         void test_sta();
         void test_rpc();
 
@@ -51,7 +49,6 @@ namespace dra {
         sta::StaticAnalysisResult STA;
 
         std::time_t start_time;
-        std::time_t current_time;
 
         std::map<llvm::BasicBlock *, std::map<uint64_t , sta::MODS *>> staticResult;
 

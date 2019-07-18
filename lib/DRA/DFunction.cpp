@@ -15,6 +15,7 @@
 #include <llvm/IR/Value.h>
 #include "llvm/IR/Instructions.h"
 #include "DataManagement.h"
+#include "../DCC/general.h"
 #include <set>
 #include <utility>
 

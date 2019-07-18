@@ -42,12 +42,6 @@ namespace dra {
         bool covered_by_dependency;
     };
 
-    llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
-
-    llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
-
-    void dump_inst(llvm::Instruction *inst);
-
     class DataManagement {
     public:
         DataManagement();

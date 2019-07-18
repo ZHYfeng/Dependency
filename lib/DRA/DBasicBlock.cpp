@@ -13,6 +13,7 @@
 
 #include "DFunction.h"
 #include "DataManagement.h"
+#include "../DCC/general.h"
 
 namespace dra {
 

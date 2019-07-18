@@ -14,11 +14,12 @@
 #include "../DRA/DModule.h"
 #include "../DRA/DFunction.h"
 #include "../RPC/DependencyRPC.pb.h"
+#include "general.h"
 
 namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() {
-        this->outputTime("start_time");
+        outputTime("start_time");
     }
 
     DependencyControlCenter::~DependencyControlCenter() = default;
@@ -27,7 +28,7 @@ namespace dra {
                                        const std::string &staticRes) {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
-        this->outputTime("initializeModule");
+        outputTime("initializeModule");
 
 
 
@@ -51,10 +52,10 @@ namespace dra {
                 }
                 newInput->Clear();
 
-                this->outputTime("sleep_for 10s");
+                outputTime("sleep_for 10s");
                 std::this_thread::sleep_for(std::chrono::seconds(10));
             } else {
-                this->outputTime("sleep_for 60s");
+                outputTime("sleep_for 60s");
                 std::this_thread::sleep_for(std::chrono::seconds(60));
                 setRPCConnection();
             }
@@ -72,7 +73,7 @@ namespace dra {
                 grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
-        this->outputTime("GetVmOffsets");
+        outputTime("GetVmOffsets");
     }
 
     void DependencyControlCenter::get_dependency_input(DInput *dInput) {
@@ -87,7 +88,7 @@ namespace dra {
         uint64_t i = 0;
         for (auto u : dInput->dUncoveredAddress) {
             i++;
-            this->outputTime("uncovered address count : " + std::to_string(i));
+            outputTime("uncovered address count : " + std::to_string(i));
             if (this->DM.check_uncovered_address(u)) {
 
                 if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
@@ -103,8 +104,7 @@ namespace dra {
                     unsigned long long int syzkallerUncoveredAddress = DM.getSyzkallerAddress(u->uncovered_address());
                     unsigned long long int syzkallerConditionAddress = DM.getSyzkallerAddress(u->condition_address());
 
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
+                    outputTime("");
                     std::cout << "condition trace_pc_address : " << std::hex << u->condition_address() << "\n";
                     std::cout << "uncovered trace_pc_address : " << std::hex << u->uncovered_address() << "\n";
                     std::cout << "condition getSyzkallerAddress : " << std::hex << syzkallerConditionAddress << "\n";
@@ -125,9 +125,7 @@ namespace dra {
 
                     for (auto &x : *write_basicblock) {
 
-                        this->current_time = std::time(nullptr);
-                        std::cout << std::ctime(&current_time);
-                        std::cout << "write basicblock : " << std::endl;
+                        outputTime("write basicblock : ");
 
                         dra::dump_inst(&x->B->front());
 
@@ -140,19 +138,15 @@ namespace dra {
                         std::cout << "x->prio : " << std::hex << x->prio << "\n";
                         db->dump();
 
-                        this->current_time = std::time(nullptr);
-                        std::cout << std::ctime(&current_time);
+                        outputTime("get_cmd_ctx : start");
                         std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                         std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
-                        this->current_time = std::time(nullptr);
-                        std::cout << std::ctime(&current_time);
+                        outputTime("get_cmd_ctx : finish");
                         for (auto c: *cmd_ctx) {
                             std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
                             std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
                             this->DM.dump_ctxs(&c->ctx);
                         }
-                        this->current_time = std::time(nullptr);
-                        std::cout << std::ctime(&current_time);
 
                         WriteAddress *writeAddress = uncoveredAddress->add_write_address();
                         writeAddress->set_repeat(x->repeat);
@@ -263,9 +257,7 @@ namespace dra {
 
                 for (auto &x : *write_basicblock) {
 
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
-                    std::cout << "write basicblock : " << std::endl;
+                    outputTime("write basicblock : ");
 
                     dra::dump_inst(&x->B->front());
 
@@ -278,19 +270,15 @@ namespace dra {
                     std::cout << "x->prio : " << std::hex << x->prio << "\n";
                     db->dump();
 
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
+                    outputTime("get_cmd_ctx : start");
                     std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                     std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
+                    outputTime("get_cmd_ctx : finish");
                     for (auto c: *cmd_ctx) {
                         std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
                         std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
                         this->DM.dump_ctxs(&c->ctx);
                     }
-                    this->current_time = std::time(nullptr);
-                    std::cout << std::ctime(&current_time);
 
                     WriteAddress *writeAddress = wa->add_writeaddress();
                     writeAddress->set_write_address(write_address);
@@ -350,9 +338,8 @@ namespace dra {
 
         llvm::BasicBlock *b = dra::getFinalBB(p->basicBlock);
 
-        this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&current_time);
-        std::cout << "GetAllGlobalWriteBBs : " << std::endl;
+
+        outputTime("GetAllGlobalWriteBBs : ");
 
         int64_t successor = u->successor();
         int64_t idx;
@@ -372,8 +359,7 @@ namespace dra {
 
             sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
             res = write_basicblock;
-            this->current_time = std::time(nullptr);
-            std::cout << std::ctime(&current_time);
+            outputTime("");
 
             if (write_basicblock == nullptr) {
                 // no taint or out side
@@ -404,12 +390,6 @@ namespace dra {
         r->set_checkaddress(false);
         r->set_address(address);
         r->set_checkrightbranchaddress(false);
-    }
-
-    void DependencyControlCenter::outputTime(std::string s) {
-        this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&current_time);
-        std::cout << "#time : " << s << std::endl;
     }
 
 } /* namespace dra */
