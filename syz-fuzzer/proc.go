@@ -209,9 +209,16 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	}
 
 	input := pb.Input{
+		Sig:        sig.String(),
+		Program:    []byte{},
 		Call:       make(map[uint32]*pb.Call),
 		Dependency: false,
 	}
+	copy(input.Program, data)
+
+	log.Logf(2, "data :\n%s", data)
+	log.Logf(2, "input.Program :\n%s", input.Program)
+
 	if item.call != -1 {
 		cc := &pb.Call{
 			Idx:     uint32(item.call),
@@ -222,17 +229,13 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			cc.Address[a] = 0
 		}
 	}
+
 	for _, c := range item.p.Comments {
 		if c == "StatDependency" {
 			input.Dependency = true
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : %v", item.p))
 		}
 	}
-
-	input.Sig = sig.String()
-	copy(input.Program, data)
-
-	log.Logf(2, "input.Program :\n%s", input.Program)
 
 	proc.fuzzer.dManager.SendInput(&input)
 }
