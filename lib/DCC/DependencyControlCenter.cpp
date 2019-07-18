@@ -181,7 +181,6 @@ namespace dra {
                                     for (auto ccc : cc) {
                                         auto ca = ccc.second->syzkaller_condition_address();
                                         (*mm)[ca] = *ccc.second;
-                                        std::cout << " condition : " << ccc.second->SerializeAsString() << std::endl;
                                     }
                                 }
                             }
