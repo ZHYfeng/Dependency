@@ -214,8 +214,10 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		Call:       make(map[uint32]*pb.Call),
 		Dependency: false,
 	}
-	copy(input.Program, data)
 
+	for _, c := range data {
+		input.Program = append(input.Program, c)
+	}
 	log.Logf(2, "data :\n%s", data)
 	log.Logf(2, "input.Program :\n%s", input.Program)
 

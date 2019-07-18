@@ -300,7 +300,9 @@ func CloneInput(input *Input) *Input {
 		Idx:              input.Idx,
 	}
 
-	copy(inputClone.Program, input.Program)
+	for _, c := range input.Program {
+		inputClone.Program = append(inputClone.Program, c)
+	}
 
 	for i, u := range input.Call {
 		u1 := &Call{
