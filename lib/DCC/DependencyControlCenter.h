@@ -53,6 +53,8 @@ namespace dra {
         std::time_t start_time;
         std::time_t current_time;
 
+        std::map<llvm::BasicBlock *, std::map<uint64_t , sta::MODS *>> staticResult;
+
     };
 
 } /* namespace dra */

@@ -239,7 +239,7 @@ namespace dra {
         std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
         std::cout << "IR :" << IR << std::endl;
         std::cout << "CoverKind :" << state << std::endl;
-        std::cout << "trace_pc_address :" << trace_pc_address << std::endl;
+        std::cout << "trace_pc_address :" << std::hex << trace_pc_address << std::endl;
 //        basicBlock->dump();
         for (auto i : this->input) {
             std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;

@@ -42,13 +42,11 @@ namespace dra {
             std::cout << "wait for get newInput" << std::endl;
             Inputs *newInput = client->GetNewInput();
             if (newInput != nullptr) {
-                for(auto &input : *newInput->mutable_input()){
+                for (auto &input : *newInput->mutable_input()) {
                     std::cout << "new input : " << input.sig() << std::endl;
                     std::cout << input.program() << std::endl;
 
                     DInput *dInput = DM.getInput(&input);
-                    std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
-                              << std::endl;
                     get_dependency_input(dInput);
                 }
                 newInput->Clear();
@@ -84,8 +82,12 @@ namespace dra {
         dependencyInput->set_program(dInput->program);
 
         bool send_flag = false;
-
+        std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
+                  << std::endl;
+        uint64_t i = 0;
         for (auto u : dInput->dUncoveredAddress) {
+            i++;
+            this->outputTime("uncovered address count : " + std::to_string(i));
             if (this->DM.check_uncovered_address(u)) {
 
                 if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
@@ -172,15 +174,14 @@ namespace dra {
                                 parity = !parity;
                                 if (parity) {
 
-                                    this->outputTime("compute_arrive start");
                                     auto db = this->DM.get_DB_from_bb(i->getParent());
                                     db->parent->compute_arrive();
-                                    this->outputTime("compute_arrive finish");
                                 } else {
                                     auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
                                     for (auto ccc : cc) {
                                         auto ca = ccc.second->syzkaller_condition_address();
                                         (*mm)[ca] = *ccc.second;
+                                        std::cout << " condition : " << ccc.second->SerializeAsString() << std::endl;
                                     }
                                 }
                             }
@@ -346,6 +347,8 @@ namespace dra {
         sta::MODS *res = nullptr;
 
         DBasicBlock *p = DM.Address2BB[u->condition_address()]->parent;
+        p->dump();
+
         llvm::BasicBlock *b = dra::getFinalBB(p->basicBlock);
 
         this->current_time = std::time(nullptr);
@@ -363,21 +366,30 @@ namespace dra {
             std::cerr << "switch case : " << std::hex << successor << std::endl;
         }
 
-        sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
-        this->current_time = std::time(nullptr);
-        std::cout << std::ctime(&current_time);
+        if ((this->staticResult.find(b) != this->staticResult.end()) &&
+            (this->staticResult[b].find(idx) != this->staticResult[b].end())) {
+            res = this->staticResult[b][idx];
+        } else {
 
-        p->dump();
-        if (write_basicblock == nullptr) {
-            // no taint or out side
-            std::cout << "allBasicblock == nullptr" << std::endl;
-        } else if (write_basicblock->size() == 0) {
-            // unrelated to gv
-            std::cout << "allBasicblock->size() == 0" << std::endl;
-        } else if (!write_basicblock->empty()) {
-            std::cout << "get useful static analysis result : " << std::dec << write_basicblock->size() << std::endl;
+            sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
             res = write_basicblock;
+            this->current_time = std::time(nullptr);
+            std::cout << std::ctime(&current_time);
+
+            if (write_basicblock == nullptr) {
+                // no taint or out side
+                std::cout << "allBasicblock == nullptr" << std::endl;
+            } else if (write_basicblock->size() == 0) {
+                // unrelated to gv
+                std::cout << "allBasicblock->size() == 0" << std::endl;
+            } else if (!write_basicblock->empty()) {
+                std::cout << "get useful static analysis result : " << std::dec << write_basicblock->size()
+                          << std::endl;
+            }
+
+            this->staticResult[b].insert(std::pair<uint64_t, sta::MODS *>(idx, res));
         }
+
 
         return res;
     }
