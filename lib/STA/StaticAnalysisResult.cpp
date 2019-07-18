@@ -10,6 +10,7 @@
 
 #define DEBUG_TIME 0
 #define ENABLE_TAG_GROUP
+#define DEBUG_TAG_GROUP
 
 namespace sta {
 
@@ -672,6 +673,9 @@ CALC:
 
     //Group the same typed taint tags together.
     void StaticAnalysisResult::setupTagGroups() {
+#ifdef DEBUG_TAG_GROUP
+        std::cout << "-------TAG GROUP------\n";
+#endif
         std::set<ID_TY> tags;
         for (auto& x : this->tagInfo) {
             tags.insert(x.first);
@@ -685,8 +689,18 @@ CALC:
                     tags.erase(it);
                 }
             }
+#ifdef DEBUG_TAG_GROUP
+            std::cout << "+ ";
+            for (auto& x : group) {
+                std::cout << (const void*)x << ", ";
+            }
+            std::cout << "\n";
+#endif
             this->tagGroups.insert(group);
         }
+#ifdef DEBUG_TAG_GROUP
+        std::cout << "-------END------\n";
+#endif
     }
 
     const std::set<ID_TY> *StaticAnalysisResult::getSameTypedTags(ID_TY tid) {
