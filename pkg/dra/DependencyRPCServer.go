@@ -283,10 +283,16 @@ func (m *Input) Merge(i *Input) {
 
 func CloneInput(input *Input) *Input {
 	inputClone := &Input{
-		Sig:        input.Sig,
-		Call:       make(map[uint32]*Call),
-		Dependency: input.Dependency,
+		Sig:              input.Sig,
+		Program:          []byte{},
+		Call:             make(map[uint32]*Call),
+		Dependency:       input.Dependency,
+		UncoveredAddress: []*UncoveredAddress{},
+		WriteAddress:     input.WriteAddress,
+		Idx:              input.Idx,
 	}
+
+	copy(inputClone.Program, input.Program)
 
 	for i, u := range input.Call {
 		u1 := &Call{
@@ -298,18 +304,17 @@ func CloneInput(input *Input) *Input {
 		}
 		inputClone.Call[i] = u1
 	}
-	copy(inputClone.Program, input.Program)
 
 	for _, u := range input.UncoveredAddress {
-		u1 := new(UncoveredAddress)
-		u1.ConditionAddress = u.ConditionAddress
-		u1.UncoveredAddress = u.UncoveredAddress
-		u1.RunTimeDate = CloneRunTimeData(u.RunTimeDate)
-
+		u1 := &UncoveredAddress{
+			ConditionAddress: u.ConditionAddress,
+			UncoveredAddress: u.UncoveredAddress,
+			RunTimeDate:      CloneRunTimeData(u.RunTimeDate),
+			WriteAddress:     []*WriteAddress{},
+		}
 		for _, wa := range u.WriteAddress {
 			u1.WriteAddress = append(u1.WriteAddress, CloneWriteAddress(wa))
 		}
-
 		inputClone.UncoveredAddress = append(inputClone.UncoveredAddress, u1)
 	}
 
@@ -322,8 +327,11 @@ func CloneWriteAddress(a *WriteAddress) *WriteAddress {
 		RealRepeat: a.RealRepeat,
 		Prio:       a.Prio,
 
-		WriteAddress:     a.WriteAddress,
+		WriteAddress: a.WriteAddress,
+
 		ConditionAddress: a.ConditionAddress,
+		WriteInput:       []*Input{},
+		WriteSyscall:     []*Syscall{},
 
 		RunTimeDate: CloneRunTimeData(a.RunTimeDate),
 	}
@@ -340,9 +348,11 @@ func CloneWriteAddress(a *WriteAddress) *WriteAddress {
 
 func CloneSyscall(s *Syscall) *Syscall {
 	s1 := &Syscall{
-		Name:        s.Name,
-		Cmd:         s.Cmd,
-		RunTimeDate: CloneRunTimeData(s.RunTimeDate),
+		Name:              s.Name,
+		Cmd:               s.Cmd,
+		CriticalCondition: map[uint32]*Condition{},
+		RunTimeDate:       CloneRunTimeData(s.RunTimeDate),
+		WriteAddress:      []*WriteAddress{},
 	}
 
 	for i, c := range s.CriticalCondition {
@@ -358,17 +368,32 @@ func CloneSyscall(s *Syscall) *Syscall {
 
 func CloneCondition(c *Condition) *Condition {
 	c1 := &Condition{
-		ConditionAddress: c.ConditionAddress,
-		UncoveredAddress: c.UncoveredAddress,
-		Idx:              c.Idx,
+		ConditionAddress:            c.ConditionAddress,
+		SyzkallerConditionAddress:   c.SyzkallerConditionAddress,
+		UncoveredAddress:            c.UncoveredAddress,
+		SyzkallerUncoveredAddress:   c.SyzkallerUncoveredAddress,
+		Idx:                         c.Idx,
+		Successor:                   c.Successor,
+		RightBranchAddress:          []uint64{},
+		SyzkallerRightBranchAddress: []uint32{},
+		WrongBranchAddress:          []uint64{},
+		SyzkallerwrongBranchAddress: []uint32{},
 	}
 
 	for _, a := range c.RightBranchAddress {
 		c1.RightBranchAddress = append(c1.RightBranchAddress, a)
 	}
 
+	for _, a := range c.SyzkallerRightBranchAddress {
+		c1.SyzkallerRightBranchAddress = append(c1.SyzkallerRightBranchAddress, a)
+	}
+
 	for _, a := range c.WrongBranchAddress {
 		c1.WrongBranchAddress = append(c1.WrongBranchAddress, a)
+	}
+
+	for _, a := range c.SyzkallerwrongBranchAddress {
+		c1.SyzkallerwrongBranchAddress = append(c1.SyzkallerwrongBranchAddress, a)
 	}
 
 	return c1
@@ -391,6 +416,7 @@ func CloneRunTimeData(d *RunTimeData) *RunTimeData {
 	}
 	d1 := &RunTimeData{
 		Parent:                  CloneRunTimeData(d.Parent),
+		Program:                 []byte{},
 		TaskStatus:              d.TaskStatus,
 		RcursiveCount:           d.RcursiveCount,
 		Idx:                     d.Idx,
@@ -399,6 +425,7 @@ func CloneRunTimeData(d *RunTimeData) *RunTimeData {
 		CheckAddress:            d.CheckAddress,
 		Address:                 d.Address,
 		CheckRightBranchAddress: d.CheckRightBranchAddress,
+		RightBranchAddress:      []uint32{},
 	}
 
 	for _, c := range d.Program {
