@@ -5,6 +5,7 @@
 */
 
 #include "StaticAnalysisResult.h"
+#include "../DCC/general.h"
 
 #include <iostream>
 
@@ -728,6 +729,9 @@ CALC:
     */
 
     std::string &StaticAnalysisResult::getBBStrID(llvm::BasicBlock *B) {
+
+        dra::outputTime("getBBStrID : start");
+
         static std::map<llvm::BasicBlock *, std::string> BBNameMap;
         if (BBNameMap.find(B) == BBNameMap.end()) {
             if (B) {
@@ -750,10 +754,16 @@ CALC:
                 BBNameMap[B] = "";
             }
         }
+
+        dra::outputTime("getBBStrID : finish");
+
         return BBNameMap[B];
     }
 
     std::string &StaticAnalysisResult::getInstStrID(llvm::Instruction *I) {
+
+        dra::outputTime("getInstStrID : start");
+
         static std::map<llvm::Instruction *, std::string> InstNameNoMap;
         if (InstNameNoMap.find(I) == InstNameNoMap.end()) {
             if (I) {
@@ -777,6 +787,9 @@ CALC:
                 InstNameNoMap[I] = "";
             }
         }
+
+        dra::outputTime("getInstStrID : start");
+
         return InstNameNoMap[I];
     }
 
