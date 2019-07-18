@@ -295,6 +295,9 @@ func (pool *Pool) ctor(workdir, sshkey, sshuser string, index int) (vmimpl.Insta
 	}
 
 	if err := inst.boot(); err != nil {
+		if inst.debug {
+			log.Logf(0, "inst.boot() : %v", err)
+		}
 		return nil, err
 	}
 
@@ -303,6 +306,9 @@ func (pool *Pool) ctor(workdir, sshkey, sshuser string, index int) (vmimpl.Insta
 }
 
 func (inst *instance) Close() {
+	if inst.debug {
+		log.Logf(0, "running command: close qemu")
+	}
 	if inst.qemu != nil {
 		inst.qemu.Process.Kill()
 		inst.qemu.Wait()
