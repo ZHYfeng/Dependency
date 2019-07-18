@@ -151,10 +151,10 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	cd := CloneInput(request)
 
 	if len(cd.Program) == 0 {
-		reply.Name = "dependency Sig error : " + cd.Sig
+		reply.Name = "dependency Program error : " + cd.Sig
 		return reply, nil
 	} else if len(cd.Sig) == 0 {
-		reply.Name = "dependency Prog error : " + string(cd.Program)
+		reply.Name = "dependency Sig error : " + string(cd.Program)
 		return reply, nil
 	}
 
@@ -224,6 +224,14 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 
 	//ss.corpusDC = append(ss.corpusDC, input)
 	ss.corpusDC[input.Sig] = input
+
+	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+	_, _ = f.WriteString(fmt.Sprintf("request : "))
+	_, _ = f.WriteString(fmt.Sprintf(string(request.Program)))
+	_, _ = f.WriteString(fmt.Sprintf("input : "))
+	_, _ = f.WriteString(fmt.Sprintf(string(input.Program)))
+
 	return reply, nil
 }
 
