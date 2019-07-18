@@ -230,9 +230,10 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	}
 
 	input.Sig = sig.String()
-	for _, c := range data {
-		input.Program = append(input.Program, c)
-	}
+	copy(input.Program, data)
+
+	log.Logf(2, "input.Program :\n%s", input.Program)
+
 	proc.fuzzer.dManager.SendInput(&input)
 }
 
