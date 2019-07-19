@@ -70,6 +70,7 @@ namespace dra {
             } else {
                 BasicBlockNum++;
                 Name = std::to_string(no);
+                no++;
                 if (BasicBlock.find(Name) == BasicBlock.end()) {
                     b = new DBasicBlock();
                     BasicBlock[Name] = b;
@@ -205,7 +206,7 @@ namespace dra {
     }
 
     void DFunction::compute_arrive() {
-        if(this->critical_condition){
+        if (this->critical_condition) {
             return;
         } else {
             this->critical_condition = true;
