@@ -130,7 +130,7 @@ namespace dra {
                         dra::dump_inst(&x->B->front());
 
                         DBasicBlock *db = this->DM.get_DB_from_bb(x->B);
-                        unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
+                        uint32_t write_address = DM.getSyzkallerAddress(db->trace_pc_address);
 
 
                         std::cout << "write_address getSyzkallerAddress : " << std::hex << write_address << "\n";
@@ -178,8 +178,10 @@ namespace dra {
                                     }
                                 }
                             }
-
                             set_runtime_data(write_syscall->mutable_run_time_date(), dependencyInput->program(),
+                                             u->idx(),
+                                             syzkallerConditionAddress, write_address);
+                            set_runtime_data(write_syscall->mutable_run_time_date()->mutable_parent(), dependencyInput->program(),
                                              u->idx(),
                                              syzkallerConditionAddress, syzkallerUncoveredAddress);
                         }

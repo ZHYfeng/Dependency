@@ -51,10 +51,25 @@ namespace dra {
         DFunction::function = f;
         std::string Name;
         DBasicBlock *b;
+        int64_t no = 0;
         for (auto &it : *function) {
             if (it.hasName()) {
                 BasicBlockNum++;
                 Name = it.getName().str();
+                if (BasicBlock.find(Name) == BasicBlock.end()) {
+                    b = new DBasicBlock();
+                    BasicBlock[Name] = b;
+                    b->name = Name;
+                    b->basicBlock = &it;
+                    BasicBlock[Name]->setIr(true);
+                    BasicBlock[Name]->parent = this;
+                } else {
+                    std::cerr << "error same basic block name"
+                              << "\n";
+                }
+            } else {
+                BasicBlockNum++;
+                Name = std::to_string(no);
                 if (BasicBlock.find(Name) == BasicBlock.end()) {
                     b = new DBasicBlock();
                     BasicBlock[Name] = b;
