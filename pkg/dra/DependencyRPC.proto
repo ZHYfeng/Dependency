@@ -31,7 +31,6 @@ service DependencyRPC {
 }
 
 message runTimeData {
-    runTimeData parent = 9;
     bytes program = 2;
     enum taskStatus {
         untested = 0;

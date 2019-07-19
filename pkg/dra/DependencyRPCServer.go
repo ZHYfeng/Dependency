@@ -272,9 +272,8 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 
 					temp.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
 					for _, wwc := range temp.WriteSyscall {
-						wwc.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
+						wwc.RunTimeDate = CloneRunTimeData(temp.RunTimeDate)
 						wwc.RunTimeDate.Address = wwa.WriteAddress
-						wwc.RunTimeDate.Parent = CloneRunTimeData(wc.RunTimeDate)
 					}
 				}
 			}
@@ -416,17 +415,11 @@ func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
 		return
 	}
 
-	m.Parent.MargeRunTimeData(d.Parent)
-
 	return
 }
 
 func CloneRunTimeData(d *RunTimeData) *RunTimeData {
-	if d == nil {
-		return nil
-	}
 	d1 := &RunTimeData{
-		Parent:                  CloneRunTimeData(d.Parent),
 		Program:                 []byte{},
 		TaskStatus:              d.TaskStatus,
 		RcursiveCount:           d.RcursiveCount,
