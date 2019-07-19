@@ -167,21 +167,25 @@ namespace dra {
                             for (auto i : c->ctx) {
                                 parity = !parity;
                                 if (parity) {
-
-                                    auto db = this->DM.get_DB_from_bb(i->getParent());
-                                    db->parent->compute_arrive();
+                                    if (i != nullptr) {
+                                        auto db = this->DM.get_DB_from_bb(i->getParent());
+                                        db->parent->compute_arrive();
+                                    }
                                 } else {
-                                    auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
-                                    for (auto ccc : cc) {
-                                        auto ca = ccc.second->syzkaller_condition_address();
-                                        (*mm)[ca] = *ccc.second;
+                                    if (i != nullptr) {
+                                        auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
+                                        for (auto ccc : cc) {
+                                            auto ca = ccc.second->syzkaller_condition_address();
+                                            (*mm)[ca] = *ccc.second;
+                                        }
                                     }
                                 }
                             }
                             set_runtime_data(write_syscall->mutable_run_time_date(), dependencyInput->program(),
                                              u->idx(),
                                              syzkallerConditionAddress, write_address);
-                            set_runtime_data(write_syscall->mutable_run_time_date()->mutable_parent(), dependencyInput->program(),
+                            set_runtime_data(write_syscall->mutable_run_time_date()->mutable_parent(),
+                                             dependencyInput->program(),
                                              u->idx(),
                                              syzkallerConditionAddress, syzkallerUncoveredAddress);
                         }

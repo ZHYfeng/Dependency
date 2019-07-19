@@ -234,7 +234,7 @@ namespace sta {
             for (ID_TY tid : tag_ids) {
                 const std::set<ID_TY> *tagGrp = this->getSameTypedTags(tid);
                 if (tagGrp) {
-                    tag_ids_extend.insert(tagGrp->begin(),tagGrp->end());
+                    tag_ids_extend.insert(tagGrp->begin(), tagGrp->end());
                 }
             }
 #endif
@@ -290,7 +290,7 @@ namespace sta {
             for (ID_TY tid : tag_ids) {
                 const std::set<ID_TY> *tagGrp = this->getSameTypedTags(tid);
                 if (tagGrp) {
-                    tag_ids_extend.insert(tagGrp->begin(),tagGrp->end());
+                    tag_ids_extend.insert(tagGrp->begin(), tagGrp->end());
                 }
             }
 #endif
@@ -491,7 +491,7 @@ namespace sta {
                 }
             }
         }
-CALC:
+        CALC:
         //Calculate mod inst priorities based given the br's and mod inst's traits.
         for (auto &x : *pmods) {
             x->calcPrio(cond, v);
@@ -578,6 +578,8 @@ CALC:
                             return iii;
                         }
                     }//Inst
+                    std::cout << "not find inst find bb : " << inst << std::endl;
+                    bbb->dump();
 
                 } else {
                     for (auto &it : *f->function) {
@@ -589,8 +591,12 @@ CALC:
                                     return iii;
                                 }
                             }
+                            std::cout << "not find inst : " << inst << std::endl;
+                            it.dump();
                         }
                     }
+                    std::cout << "not find bb : " << bb << std::endl;
+                    f->function->dump();
                 }
             } else {
                 std::cout << "not find function" << std::endl;
@@ -663,8 +669,8 @@ CALC:
             //Neither exists in the map.
             return false;
         }
-        auto& inf0 = this->tagInfo[t0];
-        auto& inf1 = this->tagInfo[t1];
+        auto &inf0 = this->tagInfo[t0];
+        auto &inf1 = this->tagInfo[t1];
         return inf0["v"] == inf1["v"] &&
                inf0["vid"] == inf1["vid"] &&
                inf0["field"] == inf1["field"] &&
@@ -678,22 +684,22 @@ CALC:
         std::cout << "-------TAG GROUP------\n";
 #endif
         std::set<ID_TY> tags;
-        for (auto& x : this->tagInfo) {
+        for (auto &x : this->tagInfo) {
             tags.insert(x.first);
         }
-        while(!tags.empty()) {
+        while (!tags.empty()) {
             ID_TY tgt = *(tags.begin());
             std::set<ID_TY> group;
-            for(auto it=tags.begin(); it!=tags.end(); ++it) {
-                if (this->isSameTypedTag(tgt,*it)) {
+            for (auto it = tags.begin(); it != tags.end(); ++it) {
+                if (this->isSameTypedTag(tgt, *it)) {
                     group.insert(*it);
                     tags.erase(it);
                 }
             }
 #ifdef DEBUG_TAG_GROUP
             std::cout << "+ ";
-            for (auto& x : group) {
-                std::cout << (const void*)x << ", ";
+            for (auto &x : group) {
+                std::cout << (const void *) x << ", ";
             }
             std::cout << "\n";
 #endif
@@ -705,7 +711,7 @@ CALC:
     }
 
     const std::set<ID_TY> *StaticAnalysisResult::getSameTypedTags(ID_TY tid) {
-        for (auto& x : this->tagGroups) {
+        for (auto &x : this->tagGroups) {
             if (x.find(tid) != x.end()) {
                 return &x;
             }
@@ -952,15 +958,15 @@ CALC:
         if (this->tagConstMap.find(tag_id) == this->tagConstMap.end() || !p_consts) {
             return false;
         }
-        for (auto& i0 : this->tagConstMap[tag_id]) {
+        for (auto &i0 : this->tagConstMap[tag_id]) {
             //i0.first : file
-            for (auto& i1 : i0.second) {
+            for (auto &i1 : i0.second) {
                 //i1.first : func
-                for (auto& i2 : i1.second) {
+                for (auto &i2 : i1.second) {
                     //i2.first : BB
-                    for (auto& i3 : i2.second) {
+                    for (auto &i3 : i2.second) {
                         //i3.first : inst
-                        p_consts->insert(i3.second.begin(),i3.second.end());
+                        p_consts->insert(i3.second.begin(), i3.second.end());
                     }
                 }
             }
@@ -971,17 +977,17 @@ CALC:
     //parse the type str to get more easy-to-read info.
     //type str, e.g.
     //%struct.A = type {...}:3->%struct.B = type {...}:2.%struct.C = type {...}:5
-    std::vector<FieldPtr*> *StaticAnalysisResult::parseTypeStr(std::string tys) {
-        std::vector<FieldPtr*> *r = new std::vector<FieldPtr*>();
+    std::vector<FieldPtr *> *StaticAnalysisResult::parseTypeStr(std::string tys) {
+        std::vector<FieldPtr *> *r = new std::vector<FieldPtr *>();
         int prev = 0;
-        for (int i=0; i<tys.length(); ++i) {
+        for (int i = 0; i < tys.length(); ++i) {
             if (tys[i] == ':') {
-                std::string obj_ty = tys.substr(prev,i-prev);
+                std::string obj_ty = tys.substr(prev, i - prev);
                 size_t j = 0;
                 long field = 0;
-                try{
-                    field = std::stoi(tys.substr(i+1),&j,10);
-                }catch(...){
+                try {
+                    field = std::stoi(tys.substr(i + 1), &j, 10);
+                } catch (...) {
                     std::cout << "Exception in StaticAnalysisResult::parseTypeStr: " << tys << "\n";
                     return r;
                 }
@@ -989,21 +995,21 @@ CALC:
                     std::cout << "No valid field number after :" << tys << "\n";
                     return r;
                 }
-                i += (j+1);
+                i += (j + 1);
                 bool is_embed = true;
-                if (i < tys.length()-1) {
-                    if (tys[i] == '-' && tys[i+1] == '>') {
+                if (i < tys.length() - 1) {
+                    if (tys[i] == '-' && tys[i + 1] == '>') {
                         is_embed = false;
-                        prev = i+2;
-                    }else if (tys[i] != '.') {
+                        prev = i + 2;
+                    } else if (tys[i] != '.') {
                         //Something goes wrong
                         std::cout << "Invalid format :" << tys << "\n";
                         return r;
-                    }else {
-                        prev = i+1;
+                    } else {
+                        prev = i + 1;
                     }
                 }
-                FieldPtr *fiptr = new FieldPtr(obj_ty,field,is_embed);
+                FieldPtr *fiptr = new FieldPtr(obj_ty, field, is_embed);
                 r->push_back(fiptr);
             }
         }
@@ -1011,12 +1017,12 @@ CALC:
     }
 
     //Return the type of the tag variable, see comment
-    std::vector<std::vector<FieldPtr*>*> *StaticAnalysisResult::getTagType(ID_TY tag_id) {
+    std::vector<std::vector<FieldPtr *> *> *StaticAnalysisResult::getTagType(ID_TY tag_id) {
         if (this->tagInfo.find(tag_id) == this->tagInfo.end()) {
             return nullptr;
         }
-        std::vector<std::vector<FieldPtr*>*> *r = new std::vector<std::vector<FieldPtr*>*>();
-        for (auto& x : this->tagInfo[tag_id]) {
+        std::vector<std::vector<FieldPtr *> *> *r = new std::vector<std::vector<FieldPtr *> *>();
+        for (auto &x : this->tagInfo[tag_id]) {
             if (x.first.find("hs_") == 0) {
                 //Find a hierarchy string.
                 r->push_back(this->parseTypeStr(x.second));
@@ -1028,7 +1034,7 @@ CALC:
     //If the conditional jump in the passed-in BB is tainted by any user arg,
     //return these args (e.g. a field in a user struct) and related constants we collected.
     //NOTE: free the returned obj after using.
-    std::map<ID_TY,CONST_INF> *StaticAnalysisResult::getArgTaintInfo(llvm::BasicBlock *B) {
+    std::map<ID_TY, CONST_INF> *StaticAnalysisResult::getArgTaintInfo(llvm::BasicBlock *B) {
         if (!B) {
             return nullptr;
         }
@@ -1036,7 +1042,7 @@ CALC:
         if (!p_taint_inf) {
             return nullptr;
         }
-        std::map<ID_TY,CONST_INF> *pres = new std::map<ID_TY,CONST_INF>();
+        std::map<ID_TY, CONST_INF> *pres = new std::map<ID_TY, CONST_INF>();
         for (auto &x : *p_taint_inf) {
             auto &actx_id = x.first;
             //trait_id = std::get<0>(x.second);
@@ -1045,7 +1051,7 @@ CALC:
                 if (this->tagInfo_local.find(tid) != this->tagInfo_local.end()) {
                     //Ok, find one arg that taints this BB.
                     //Get its collected cmp constants.
-                    this->getAllTagConstants(tid,&((*pres)[tid]));
+                    this->getAllTagConstants(tid, &((*pres)[tid]));
                 }
             }
         }
