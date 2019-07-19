@@ -38,12 +38,12 @@ type Server struct {
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
 	ss.mu.Lock()
 	if f, ok := ss.fuzzers[request.Name]; ok {
-		if i, ok := f.corpusDI[request.Input.Sig]; ok {
+		if _, ok := f.corpusDI[request.Input.Sig]; ok {
 			delete(f.corpusDI, request.Input.Sig)
-			if ok := ss.checkDependencyInput(i); ok {
-				ss.corpusDependency.CorpusDependencyInput[request.Input.Sig] = CloneInput(i)
+			if ok := ss.checkDependencyInput(request.Input); ok {
+				ss.corpusDependency.CorpusDependencyInput[request.Input.Sig] = CloneInput(request.Input)
 			} else {
-				ss.corpusDependency.CorpusDependencyInput[request.Input.Sig] = CloneInput(i)
+				ss.corpusDependency.CorpusRecursiveInput[request.Input.Sig] = CloneInput(request.Input)
 			}
 		}
 	} else {
@@ -245,7 +245,7 @@ func (ss Server) checkWriteAddress(wa *WriteAddress) (res bool) {
 	if wa.RunTimeDate.TaskStatus == RunTimeData_recursive {
 		for _, wc := range wa.WriteSyscall {
 			if wc.RunTimeDate.TaskStatus == RunTimeData_recursive {
-				if wc.WriteAddress != nil {
+				if len(wc.WriteAddress) != 0 {
 					for _, wwa := range wc.WriteAddress {
 						res = res || ss.checkWriteAddress(wwa)
 					}
