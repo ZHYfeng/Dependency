@@ -415,7 +415,12 @@ func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (info *ipc.Prog
 	if err != nil {
 		log.Fatalf("failed to deserialize program from dependencyRecursiveWriteAddress: %v", err)
 	}
-	c0c := p.GetCall(proc.rnd, proc.getCall(wc), wc.RunTimeDate.Parent.Idx, ct)
+	call := proc.getCall(wc)
+	if call == nil {
+		wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
+		return nil
+	}
+	c0c := p.GetCall(proc.rnd, call, wc.RunTimeDate.Parent.Idx, ct)
 	p.InsertCall(c0c, wc.RunTimeDate.Parent.Idx, programLength)
 
 	data := p.Serialize()

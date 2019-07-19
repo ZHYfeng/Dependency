@@ -490,10 +490,10 @@ func (ss *Server) writeToDisk() {
 	// Write the new address book back to disk.
 	out, err := proto.Marshal(ss.corpusDependency)
 	if err != nil {
-		log.Fatalf("Failed to encode address book:", err)
+		log.Fatalf("Failed to encode address:", err)
 	}
 	if err := ioutil.WriteFile("data.txt", out, 0644); err != nil {
-		log.Fatalf("Failed to write address book:", err)
+		log.Fatalf("Failed to write address:", err)
 	}
 	// [END marshal_proto]
 }
