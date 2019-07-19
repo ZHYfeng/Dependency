@@ -309,7 +309,9 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 						// arrive at address
 						updateRunTimeDataCover(wa.RunTimeDate)
 						data := p.Serialize()
-						copy(wa.RunTimeDate.Program, data)
+						for _, c := range data {
+							wa.RunTimeDate.Program = append(wa.RunTimeDate.Program, c)
+						}
 						info = tempInfo
 						return true, info
 					}
@@ -356,7 +358,9 @@ func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (info *ip
 					// arrive at address
 					updateRunTimeDataCover(wa.RunTimeDate)
 					data := p.Serialize()
-					copy(wa.RunTimeDate.Program, data)
+					for _, c := range data {
+						wa.RunTimeDate.Program = append(wa.RunTimeDate.Program, c)
+					}
 					info = tempInfo
 					return info
 				} else if rightBranchAddress == true {
@@ -366,7 +370,9 @@ func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (info *ip
 						wa.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
 						wa.RunTimeDate.CheckRightBranchAddress = true
 						data := p.Serialize()
-						copy(wa.RunTimeDate.Program, data)
+						for _, c := range data {
+							wa.RunTimeDate.Program = append(wa.RunTimeDate.Program, c)
+						}
 						info = tempInfo
 					}
 				}
@@ -413,8 +419,12 @@ func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (info *ipc.Prog
 	p.InsertCall(c0c, wc.RunTimeDate.Parent.Idx, programLength)
 
 	data := p.Serialize()
-	copy(wc.RunTimeDate.Program, data)
-	copy(wc.RunTimeDate.Parent.Program, data)
+	for _, c := range data {
+		wc.RunTimeDate.Program = append(wc.RunTimeDate.Program, c)
+	}
+	for _, c := range data {
+		wc.RunTimeDate.Parent.Program = append(wc.RunTimeDate.Parent.Program, c)
+	}
 	size := uint32(len(c0c))
 	wc.RunTimeDate.Parent.Idx = wc.RunTimeDate.Parent.Idx + size
 	wc.RunTimeDate.Idx = wc.RunTimeDate.Parent.Idx - 1
@@ -434,7 +444,9 @@ func (proc *Proc) dependencyWriteSyscallMutateArgument(wc *pb.Syscall) (info *ip
 		if address == true {
 			updateRunTimeDataCover(wc.RunTimeDate)
 			data := p.Serialize()
-			copy(wc.RunTimeDate.Program, data)
+			for _, c := range data {
+				wc.RunTimeDate.Parent.Program = append(wc.RunTimeDate.Parent.Program, c)
+			}
 			return info
 		}
 		p.MutateIoctl3Arg(proc.rnd, wc.RunTimeDate.Idx, ct)
@@ -519,7 +531,9 @@ func forprogam() {
 }
 
 func updateRunTimeData(parent *pb.RunTimeData, child *pb.RunTimeData) {
-	copy(parent.Program, child.Program)
+	for _, c := range child.Program {
+		parent.Program = append(parent.Program, c)
+	}
 	parent.Idx = child.Idx
 }
 

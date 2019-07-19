@@ -274,7 +274,15 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 			if len(wa.WriteAddress) > 0 {
 				res = true
 				for _, wwa := range wa.WriteAddress {
-					wc.WriteAddress = append(wc.WriteAddress, wwa)
+					temp := CloneWriteAddress(wwa)
+					wc.WriteAddress = append(wc.WriteAddress, temp)
+
+					temp.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
+					for _, wwc := range temp.WriteSyscall {
+						wwc.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
+						wwc.RunTimeDate.Address = wwa.WriteAddress
+						wwc.RunTimeDate.Parent = CloneRunTimeData(wc.RunTimeDate)
+					}
 				}
 			}
 		} else {
