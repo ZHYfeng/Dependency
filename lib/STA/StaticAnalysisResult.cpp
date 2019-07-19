@@ -578,7 +578,7 @@ namespace sta {
                             return iii;
                         }
                     }//Inst
-                    std::cout << "not find inst find bb : " << inst << std::endl;
+                    std::cout << "not find inst : " << inst << " find bb : " << bb << std::endl;
                     bbb->dump();
 
                 } else {

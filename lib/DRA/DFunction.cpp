@@ -70,7 +70,7 @@ namespace dra {
             } else {
                 BasicBlockNum++;
                 Name = std::to_string(no);
-                no++;
+
                 if (BasicBlock.find(Name) == BasicBlock.end()) {
                     b = new DBasicBlock();
                     BasicBlock[Name] = b;
@@ -83,6 +83,7 @@ namespace dra {
                               << "\n";
                 }
             }
+            no++;
             BasicBlock[Name]->InitIRBasicBlock(&it);
         }
 //        compute_arrive();
