@@ -293,7 +293,7 @@ func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *i
 	for _, wc := range wa.WriteSyscall {
 		info = proc.dependencyRecursiveWriteSyscall(wc)
 		if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
-			updateRunTimeData(wa.RunTimeDate, wc.RunTimeDate.Parent)
+			updatePRunTimeData(wa.RunTimeDate, wc.RunTimeDate)
 
 			p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
 			if err != nil {
@@ -340,7 +340,7 @@ func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (info *ip
 	for _, wc := range wa.WriteSyscall {
 		info = proc.dependencyRecursiveWriteSyscall(wc)
 		if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
-			updateRunTimeData(wa.RunTimeDate, wc.RunTimeDate.Parent)
+			updatePRunTimeData(wa.RunTimeDate, wc.RunTimeDate)
 
 			p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
 			if err != nil {
@@ -420,19 +420,15 @@ func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (info *ipc.Prog
 		wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
 		return nil
 	}
-	c0c := p.GetCall(proc.rnd, call, wc.RunTimeDate.Parent.Idx, ct)
-	p.InsertCall(c0c, wc.RunTimeDate.Parent.Idx, programLength)
+	c0c := p.GetCall(proc.rnd, call, wc.RunTimeDate.Idx, ct)
+	p.InsertCall(c0c, wc.RunTimeDate.Idx, programLength)
 
 	data := p.Serialize()
 	for _, c := range data {
 		wc.RunTimeDate.Program = append(wc.RunTimeDate.Program, c)
 	}
-	for _, c := range data {
-		wc.RunTimeDate.Parent.Program = append(wc.RunTimeDate.Parent.Program, c)
-	}
 	size := uint32(len(c0c))
-	wc.RunTimeDate.Parent.Idx = wc.RunTimeDate.Parent.Idx + size
-	wc.RunTimeDate.Idx = wc.RunTimeDate.Parent.Idx - 1
+	wc.RunTimeDate.Idx = wc.RunTimeDate.Idx + size - 1
 
 	return proc.dependencyWriteSyscallMutateArgument(wc)
 }
@@ -450,7 +446,7 @@ func (proc *Proc) dependencyWriteSyscallMutateArgument(wc *pb.Syscall) (info *ip
 			updateRunTimeDataCover(wc.RunTimeDate)
 			data := p.Serialize()
 			for _, c := range data {
-				wc.RunTimeDate.Parent.Program = append(wc.RunTimeDate.Parent.Program, c)
+				wc.RunTimeDate.Program = append(wc.RunTimeDate.Program, c)
 			}
 			return info
 		}
@@ -540,6 +536,13 @@ func updateRunTimeData(parent *pb.RunTimeData, child *pb.RunTimeData) {
 		parent.Program = append(parent.Program, c)
 	}
 	parent.Idx = child.Idx
+}
+
+func updatePRunTimeData(parent *pb.RunTimeData, child *pb.RunTimeData) {
+	for _, c := range child.Program {
+		parent.Program = append(parent.Program, c)
+	}
+	parent.Idx = child.Idx + 1
 }
 
 func updateRunTimeDataCover(parent *pb.RunTimeData) {
