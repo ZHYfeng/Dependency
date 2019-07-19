@@ -184,10 +184,6 @@ namespace dra {
                             set_runtime_data(write_syscall->mutable_run_time_date(), dependencyInput->program(),
                                              u->idx(),
                                              syzkallerConditionAddress, write_address);
-                            set_runtime_data(write_syscall->mutable_run_time_date()->mutable_parent(),
-                                             dependencyInput->program(),
-                                             u->idx(),
-                                             syzkallerConditionAddress, syzkallerUncoveredAddress);
                         }
 
                         // need something
