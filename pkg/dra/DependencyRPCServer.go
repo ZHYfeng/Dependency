@@ -279,6 +279,7 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 			}
 		} else {
 			ss.corpusDependency.WriteAddress[a] = new(WriteAddresses)
+			ss.corpusDependency.WriteAddress[a].Condition = CloneCondition(cc)
 		}
 	}
 	return res
