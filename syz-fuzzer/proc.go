@@ -716,7 +716,7 @@ func checkCriticalCondition(wc *pb.Syscall, info *ipc.ProgInfo) (res bool) {
 			return true
 		}
 	}
-	log.Fatalf("every critical condition is right but we can not arrive at write address")
+	log.Logf(1, "every critical condition is right but we can not arrive at write address")
 	return false
 }
 

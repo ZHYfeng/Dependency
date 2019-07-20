@@ -30,7 +30,7 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 
 func (d *DRPCClient) Connect(name *string) {
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 	_, err := d.c.Connect(ctx, &Empty{Name: *name})
 	if err != nil {
@@ -44,7 +44,7 @@ func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
 	request := &Empty{
 		Name: name,
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 	dInputs, err := d.c.GetDependencyInput(ctx, request)
 	if err != nil {
@@ -63,7 +63,7 @@ func (d *DRPCClient) ReturnDependencyInput(input *Input) (*Empty, error) {
 		Input: CloneInput(input),
 		Name:  *d.name,
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 	reply, err := d.c.ReturnDependencyInput(ctx, request)
 	if err != nil {
@@ -76,7 +76,7 @@ func (d *DRPCClient) ReturnDependencyInput(input *Input) (*Empty, error) {
 // SendInput ...
 func (d *DRPCClient) SendInput(input *Input) {
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 
 	_, err := d.c.SendNewInput(ctx, CloneInput(input))
@@ -105,7 +105,7 @@ func (d *DRPCClient) SSendLog() {
 	request := &Empty{
 		Name: d.log,
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 	_, _ = d.c.SendLog(ctx, request)
 	d.log = ""
