@@ -221,7 +221,6 @@ namespace dra {
             inferSuccessors(this->basicBlock, this->basicBlock);
 //		    inferPredecessors(this->basicBlock);
         }
-
     }
 
     void DBasicBlock::addNewInput(DInput *i) {

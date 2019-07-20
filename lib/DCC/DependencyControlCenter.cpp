@@ -167,17 +167,13 @@ namespace dra {
                             for (auto i : c->ctx) {
                                 parity = !parity;
                                 if (parity) {
-                                    if (i != nullptr) {
-                                        auto db = this->DM.get_DB_from_bb(i->getParent());
-                                        db->parent->compute_arrive();
-                                    }
+                                    auto db = this->DM.get_DB_from_bb(i->getParent());
+                                    db->parent->compute_arrive();
                                 } else {
-                                    if (i != nullptr) {
-                                        auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
-                                        for (auto ccc : cc) {
-                                            auto ca = ccc.second->syzkaller_condition_address();
-                                            (*mm)[ca] = *ccc.second;
-                                        }
+                                    auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
+                                    for (auto ccc : cc) {
+                                        auto ca = ccc.second->syzkaller_condition_address();
+                                        (*mm)[ca] = *ccc.second;
                                     }
                                 }
                             }
