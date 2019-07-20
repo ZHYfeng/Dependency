@@ -394,6 +394,17 @@ namespace dra {
         return res;
     }
 
+    void DataManagement::set_condition(Condition *c) {
+        c->set_syzkaller_condition_address(this->getSyzkallerAddress(c->condition_address()));
+        c->set_syzkaller_uncovered_address(this->getSyzkallerAddress(c->uncovered_address()));
+        for(auto a : c->right_branch_address()){
+            c->add_syzkaller_right_branch_address(this->getSyzkallerAddress(a));
+        }
+        for(auto a : c->wrong_branch_address()){
+            c->add_syzkaller_wrong_branch_address(this->getSyzkallerAddress(a));
+        }
+    }
+
     uncover_info::uncover_info() : address(0),
                                    belong_to_Driver(false),
                                    related_to_gv(false),

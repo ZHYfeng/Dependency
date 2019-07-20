@@ -80,6 +80,8 @@ namespace dra {
 
         DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
 
+        void set_condition(Condition *);
+
 
 
     public:
