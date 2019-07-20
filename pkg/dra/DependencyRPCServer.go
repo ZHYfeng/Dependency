@@ -27,19 +27,28 @@ type Server struct {
 	address uint32
 	Dport   int
 	//corpusDC []*Input
-	corpusDC         map[string]*Input
-	corpusDependency *Corpus
-	fmu              *sync.Mutex
-	fuzzers          map[string]*fuzzer
+
+	imu      *sync.Mutex
+	corpusDC map[string]*Input
+
 	mu               *sync.Mutex
-	corpus           *map[string]rpctype.RPCInput
+	corpusDependency *Corpus
+
+	fmu     *sync.Mutex
+	fuzzers map[string]*fuzzer
+
+	cmu    *sync.Mutex
+	corpus *map[string]rpctype.RPCInput
 }
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
-	ss.mu.Lock()
+	ss.fmu.Lock()
+	defer ss.fmu.Unlock()
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		if _, ok := f.corpusDI[request.Input.Sig]; ok {
 			delete(f.corpusDI, request.Input.Sig)
+			ss.mu.Lock()
+			defer ss.mu.Unlock()
 			if ok := ss.checkDependencyInput(request.Input); ok {
 				ss.corpusDependency.CorpusDependencyInput[request.Input.Sig] = CloneInput(request.Input)
 			} else {
@@ -50,7 +59,6 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 		log.Fatalf("ReturnDependencyInput : ", request.Name)
 	}
 	reply := &Empty{}
-	ss.mu.Unlock()
 
 	ss.writeToDisk()
 
@@ -58,7 +66,6 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 }
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
-	ss.mu.Lock()
 	reply := &Conditions{}
 	for _, wa := range ss.corpusDependency.WriteAddress {
 		if len(wa.WriteAddress) == 0 {
@@ -66,8 +73,6 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 			return reply, nil
 		}
 	}
-	ss.mu.Unlock()
-
 	ss.writeToDisk()
 
 	return reply, nil
@@ -75,6 +80,7 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
 	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
 	if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
 		for _, wwa := range request.WriteAddress {
@@ -90,7 +96,6 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 	} else {
 		log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
 	}
-	ss.mu.Unlock()
 
 	ss.writeToDisk()
 
@@ -98,8 +103,8 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
+	ss.fmu.Lock()
+	defer ss.fmu.Unlock()
 
 	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	defer f.Close()
@@ -111,8 +116,6 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	if _, ok := ss.fuzzers[request.Name]; !ok {
 		ss.fuzzers[request.Name] = &fuzzer{
 			corpusDI: map[string]*Input{},
@@ -122,16 +125,12 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	reply := &Empty{}
 	reply.Address = ss.address
 	return reply, nil
 }
 
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	reply := &Inputs{}
 	i := 0
 	for s, c := range ss.corpusDC {
@@ -159,14 +158,8 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	}
 
 	ss.mu.Lock()
+	defer ss.mu.Unlock()
 	ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
-	ss.mu.Unlock()
-
-	ss.fmu.Lock()
-	for _, f := range ss.fuzzers {
-		f.corpusDI[cd.Sig] = CloneInput(cd)
-	}
-	ss.fmu.Unlock()
 
 	ss.writeToDisk()
 
@@ -176,10 +169,12 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 
 //
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
-	ss.fmu.Lock()
-	defer ss.fmu.Unlock()
 	reply := &Inputs{}
 	if f, ok := ss.fuzzers[request.Name]; ok {
+
+		ss.mu.Lock()
+		defer ss.mu.Unlock()
+
 		if len(f.corpusDI) > 0 {
 			for s, c := range f.corpusDI {
 				ss.corpusDependency.CorpusErrorInput[s] = c
@@ -479,8 +474,6 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 }
 
 func (ss *Server) writeToDisk() {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	// Write the new address book back to disk.
 	out, err := proto.Marshal(ss.corpusDependency)
 	if err != nil {
