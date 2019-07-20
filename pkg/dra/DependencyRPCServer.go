@@ -286,6 +286,9 @@ func (m *Input) Merge(i *Input) {
 }
 
 func CloneInput(input *Input) *Input {
+	if input == nil {
+		return &Input{}
+	}
 	inputClone := &Input{
 		Sig:              input.Sig,
 		Program:          []byte{},
@@ -328,6 +331,9 @@ func CloneInput(input *Input) *Input {
 }
 
 func CloneWriteAddress(a *WriteAddress) *WriteAddress {
+	if a == nil {
+		return &WriteAddress{}
+	}
 	a1 := &WriteAddress{
 		Repeat:     a.Repeat,
 		RealRepeat: a.RealRepeat,
@@ -353,6 +359,9 @@ func CloneWriteAddress(a *WriteAddress) *WriteAddress {
 }
 
 func CloneSyscall(s *Syscall) *Syscall {
+	if s == nil {
+		return &Syscall{}
+	}
 	s1 := &Syscall{
 		Name:              s.Name,
 		Cmd:               s.Cmd,
@@ -373,6 +382,9 @@ func CloneSyscall(s *Syscall) *Syscall {
 }
 
 func CloneCondition(c *Condition) *Condition {
+	if c == nil {
+		return &Condition{}
+	}
 	c1 := &Condition{
 		ConditionAddress:            c.ConditionAddress,
 		SyzkallerConditionAddress:   c.SyzkallerConditionAddress,
@@ -415,6 +427,9 @@ func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
 }
 
 func CloneRunTimeData(d *RunTimeData) *RunTimeData {
+	if d == nil {
+		return &RunTimeData{}
+	}
 	d1 := &RunTimeData{
 		Program:                 []byte{},
 		TaskStatus:              d.TaskStatus,
