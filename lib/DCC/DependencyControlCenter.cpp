@@ -301,19 +301,30 @@ namespace dra {
                         write_syscall->set_name(function_name);
                         write_syscall->set_cmd(c->cmd);
 
-
                         bool parity = false;
                         auto mm = write_syscall->mutable_critical_condition();
+                        Condition *indirect_call;
                         for (auto i : c->ctx) {
                             parity = !parity;
                             if (parity) {
-                                this->DM.get_DB_from_bb(i->getParent())->parent->compute_arrive();
+                                auto db = this->DM.get_DB_from_bb(i->getParent());
+                                db->parent->compute_arrive();
+                                if(indirect_call != nullptr) {
+                                    indirect_call->add_right_branch_address(db->trace_pc_address);
+                                    this->DM.set_condition(indirect_call);
+                                    auto ca = indirect_call->syzkaller_condition_address();
+                                    (*mm)[ca] = *indirect_call;
+                                }
                             } else {
-                                auto cc = this->DM.get_DB_from_bb(i->getParent())->critical_condition;
+                                auto db = this->DM.get_DB_from_bb(i->getParent());
+                                auto cc = db->critical_condition;
                                 for (auto ccc : cc) {
+                                    this->DM.set_condition(ccc.second);
                                     auto ca = ccc.second->syzkaller_condition_address();
                                     (*mm)[ca] = *ccc.second;
                                 }
+                                indirect_call = new Condition();
+                                indirect_call->set_condition_address(db->trace_pc_address);
                             }
                         }
                     }
