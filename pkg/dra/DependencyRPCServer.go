@@ -264,7 +264,6 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 				for _, wwa := range wa.WriteAddress {
 					temp := CloneWriteAddress(wwa)
 					wc.WriteAddress = append(wc.WriteAddress, temp)
-
 					temp.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
 					for _, wwc := range temp.WriteSyscall {
 						wwc.RunTimeDate = CloneRunTimeData(temp.RunTimeDate)
@@ -273,8 +272,10 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 				}
 			}
 		} else {
-			ss.corpusDependency.WriteAddress[a] = new(WriteAddresses)
-			ss.corpusDependency.WriteAddress[a].Condition = CloneCondition(cc)
+			ss.corpusDependency.WriteAddress[a] = &WriteAddresses{
+				Condition:    CloneCondition(cc),
+				WriteAddress: []*WriteAddress{},
+			}
 		}
 	}
 	return res
@@ -287,7 +288,7 @@ func (m *Input) Merge(i *Input) {
 
 func CloneInput(input *Input) *Input {
 	if input == nil {
-		return &Input{}
+		return nil
 	}
 	inputClone := &Input{
 		Sig:              input.Sig,
@@ -332,7 +333,7 @@ func CloneInput(input *Input) *Input {
 
 func CloneWriteAddress(a *WriteAddress) *WriteAddress {
 	if a == nil {
-		return &WriteAddress{}
+		return nil
 	}
 	a1 := &WriteAddress{
 		Repeat:     a.Repeat,
@@ -360,7 +361,7 @@ func CloneWriteAddress(a *WriteAddress) *WriteAddress {
 
 func CloneSyscall(s *Syscall) *Syscall {
 	if s == nil {
-		return &Syscall{}
+		return nil
 	}
 	s1 := &Syscall{
 		Name:              s.Name,
@@ -383,7 +384,7 @@ func CloneSyscall(s *Syscall) *Syscall {
 
 func CloneCondition(c *Condition) *Condition {
 	if c == nil {
-		return &Condition{}
+		return nil
 	}
 	c1 := &Condition{
 		ConditionAddress:            c.ConditionAddress,
@@ -428,7 +429,7 @@ func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
 
 func CloneRunTimeData(d *RunTimeData) *RunTimeData {
 	if d == nil {
-		return &RunTimeData{}
+		return nil
 	}
 	d1 := &RunTimeData{
 		Program:                 []byte{},
