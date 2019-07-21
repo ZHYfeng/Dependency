@@ -164,18 +164,18 @@ namespace dra {
 
                             bool parity = false;
                             auto mm = write_syscall->mutable_critical_condition();
-                            Condition *indirect_call;
+//                            Condition *indirect_call;
                             for (auto i : c->ctx) {
                                 parity = !parity;
                                 if (parity) {
                                     auto db = this->DM.get_DB_from_bb(i->getParent());
                                     db->parent->compute_arrive();
-                                    if(indirect_call != nullptr) {
-                                        indirect_call->add_right_branch_address(db->trace_pc_address);
-                                        this->DM.set_condition(indirect_call);
-                                        auto ca = indirect_call->syzkaller_condition_address();
-                                        (*mm)[ca] = *indirect_call;
-                                    }
+//                                    if(indirect_call != nullptr) {
+//                                        indirect_call->add_right_branch_address(db->trace_pc_address);
+//                                        this->DM.set_condition(indirect_call);
+//                                        auto ca = indirect_call->syzkaller_condition_address();
+//                                        (*mm)[ca] = *indirect_call;
+//                                    }
                                 } else {
                                     auto db = this->DM.get_DB_from_bb(i->getParent());
                                     auto cc = db->critical_condition;
@@ -184,8 +184,8 @@ namespace dra {
                                         auto ca = ccc.second->syzkaller_condition_address();
                                         (*mm)[ca] = *ccc.second;
                                     }
-                                    indirect_call = new Condition();
-                                    indirect_call->set_condition_address(db->trace_pc_address);
+//                                    indirect_call = new Condition();
+//                                    indirect_call->set_condition_address(db->trace_pc_address);
                                 }
                             }
                             set_runtime_data(write_syscall->mutable_run_time_date(), dependencyInput->program(),
@@ -194,11 +194,11 @@ namespace dra {
                         }
 
                         // need something
-                        for (auto i : db->input) {
-                            auto write_input = writeAddress->add_write_input();
-                            write_input->set_sig(i.first->sig);
-                            write_input->set_program(i.first->program);
-                        }
+//                        for (auto i : db->input) {
+//                            auto write_input = writeAddress->add_write_input();
+//                            write_input->set_sig(i.first->sig);
+//                            write_input->set_program(i.first->program);
+//                        }
                     }
                 }
             }
