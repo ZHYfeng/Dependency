@@ -294,12 +294,14 @@ namespace dra {
                     writeAddress->set_condition_address(condition.syzkaller_condition_address());
                     writeAddress->set_repeat(x->repeat);
                     writeAddress->set_prio(x->prio);
+                    writeAddress->mutable_run_time_date();
 
                     auto function_name = "ioctl";
                     for (auto c : *cmd_ctx) {
                         auto write_syscall = writeAddress->add_write_syscall();
                         write_syscall->set_name(function_name);
                         write_syscall->set_cmd(c->cmd);
+                        write_syscall->mutable_run_time_date();
 
                         bool parity = false;
                         auto mm = write_syscall->mutable_critical_condition();
