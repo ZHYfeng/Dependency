@@ -42,6 +42,7 @@ type Server struct {
 }
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
+	input := CloneInput(request.Input)
 	ss.fmu.Lock()
 	defer ss.fmu.Unlock()
 	if f, ok := ss.fuzzers[request.Name]; ok {
@@ -49,10 +50,10 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 			delete(f.corpusDI, request.Input.Sig)
 			ss.mu.Lock()
 			defer ss.mu.Unlock()
-			if ok := ss.checkDependencyInput(request.Input); ok {
-				ss.corpusDependency.CorpusDependencyInput[request.Input.Sig] = CloneInput(request.Input)
+			if ok := ss.checkDependencyInput(input); ok {
+				ss.corpusDependency.CorpusDependencyInput[input.Sig] = input
 			} else {
-				ss.corpusDependency.CorpusRecursiveInput[request.Input.Sig] = CloneInput(request.Input)
+				ss.corpusDependency.CorpusRecursiveInput[input.Sig] = input
 			}
 		}
 	} else {
@@ -88,7 +89,6 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 		}
 		for sig, i := range ss.corpusDependency.CorpusRecursiveInput {
 			if ok := ss.checkDependencyInput(i); ok {
-				delete(ss.corpusDependency.CorpusRecursiveInput, sig)
 				ss.corpusDependency.CorpusRecursiveInput[sig] = CloneInput(i)
 			} else {
 			}
