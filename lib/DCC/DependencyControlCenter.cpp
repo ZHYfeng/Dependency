@@ -361,10 +361,10 @@ namespace dra {
                     std::cout << "if (parity) { else " << std::endl;
                     auto db = this->DM.get_DB_from_i(i);
                     if(db != nullptr) {
-                        std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
+                        std::cout << "if(db != nullptr) {" << std::endl;
                         auto cc = db->critical_condition;
                         for (auto ccc : cc) {
-                            std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
+                            std::cout << "for (auto ccc : cc) {" << std::endl;
                             this->DM.set_condition(ccc.second);
                             auto ca = ccc.second->syzkaller_condition_address();
                             (*mm)[ca] = *ccc.second;
