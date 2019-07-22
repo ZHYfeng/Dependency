@@ -504,7 +504,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 }
 
 func (ss *Server) writeToDisk() {
-	// Write the new address book back to disk.
+	// Write the new back to disk.
 	out, err := proto.Marshal(ss.corpusDependency)
 	if err != nil {
 		log.Fatalf("Failed to encode address:", err)
@@ -512,5 +512,11 @@ func (ss *Server) writeToDisk() {
 	if err := ioutil.WriteFile("data.txt", out, 0644); err != nil {
 		log.Fatalf("Failed to write address:", err)
 	}
+
+	path := "./data.log"
+	_ = os.Remove(path)
+	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+	_, _ = f.WriteString(fmt.Sprintf("%v", ss.corpusDependency))
 	// [END marshal_proto]
 }
