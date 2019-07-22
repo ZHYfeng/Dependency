@@ -156,13 +156,12 @@ namespace dra {
             }
 #if DEBUG_RPC
             for (auto ua : dependencyInput->uncovered_address()) {
-            std::cout << "uncover address : " << ua.address() << std::endl;
-            std::cout << "uncover idx : " << ua.idx() << std::endl;
             std::cout << "uncover condition address : " << ua.condition_address() << std::endl;
-            for (auto ra : ua.write_address()) {
-                std::cout << "ra.address() : " << ra.address() << std::endl;
-                std::cout << "ra.repeat() : " << ra.repeat() << std::endl;
-                std::cout << "ra.prio() : " << ra.prio() << std::endl;
+            for (auto wa : ua.write_address()) {
+                std::cout << "wa program : " << wa.run_time_date().program() << std::endl;
+                for(auto wc : wa.write_syscall()){
+                    std::cout << "wc program : " << wc.run_time_date().program() << std::endl;
+                }
             }
         }
 #endif
