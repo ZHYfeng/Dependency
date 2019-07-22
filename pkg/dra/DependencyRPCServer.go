@@ -494,7 +494,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	ss.Dport = lis.Addr().(*net.TCPAddr).Port
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.MaxRecvMsgSize(0x7fffffffffffffff), grpc.MaxSendMsgSize(0x7fffffffffffffff))
 	RegisterDependencyRPCServer(s, ss)
 	go func() {
 		if err := s.Serve(lis); err != nil {
