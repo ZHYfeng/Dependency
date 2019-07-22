@@ -129,10 +129,13 @@ namespace dra {
 
                         set_runtime_data(writeAddress->mutable_run_time_date(), dependencyInput->program(), u->idx(),
                                          syzkallerConditionAddress, syzkallerUncoveredAddress);
-
+                        std::cout << "writeAddress->mutable_write_syscall()->size() : "
+                                  << writeAddress->mutable_write_syscall()->size() << std::endl;
                         for (auto write_syscall : *writeAddress->mutable_write_syscall()) {
                             set_runtime_data(write_syscall.mutable_run_time_date(), dependencyInput->program(),
                                              u->idx(), syzkallerConditionAddress, writeAddress->write_address());
+                            std::cout << "write_syscall.run_time_date().program() : "
+                                      << write_syscall.run_time_date().program() << std::endl;
                         }
 
                     }
