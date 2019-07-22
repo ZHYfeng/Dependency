@@ -159,7 +159,13 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
-	ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
+	if i, ok := ss.corpusDependency.CorpusDependencyInput[request.Sig]; ok {
+		for _, u := range request.UncoveredAddress {
+			i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
+		}
+	} else {
+		ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
+	}
 
 	ss.writeToDisk()
 
@@ -316,19 +322,27 @@ func CloneInput(input *Input) *Input {
 	}
 
 	for _, u := range input.UncoveredAddress {
-		u1 := &UncoveredAddress{
-			ConditionAddress: u.ConditionAddress,
-			UncoveredAddress: u.UncoveredAddress,
-			RunTimeDate:      CloneRunTimeData(u.RunTimeDate),
-			WriteAddress:     []*WriteAddress{},
-		}
-		for _, wa := range u.WriteAddress {
-			u1.WriteAddress = append(u1.WriteAddress, CloneWriteAddress(wa))
-		}
-		inputClone.UncoveredAddress = append(inputClone.UncoveredAddress, u1)
+		inputClone.UncoveredAddress = append(inputClone.UncoveredAddress, CloneUncoverAddress(u))
 	}
 
 	return inputClone
+}
+
+func CloneUncoverAddress(u *UncoveredAddress) *UncoveredAddress {
+	if u == nil {
+		return nil
+	}
+	u1 := &UncoveredAddress{
+		ConditionAddress: u.ConditionAddress,
+		UncoveredAddress: u.UncoveredAddress,
+		RunTimeDate:      CloneRunTimeData(u.RunTimeDate),
+		WriteAddress:     []*WriteAddress{},
+	}
+	for _, wa := range u.WriteAddress {
+		u1.WriteAddress = append(u1.WriteAddress, CloneWriteAddress(wa))
+	}
+
+	return u1
 }
 
 func CloneWriteAddress(a *WriteAddress) *WriteAddress {
