@@ -73,7 +73,7 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 			return reply, nil
 		}
 	}
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	return reply, nil
 }
@@ -97,7 +97,7 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 		log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
 	}
 
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	return &Empty{}, nil
 }
@@ -167,7 +167,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 		ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
 	}
 
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	reply.Name = "success"
 	return reply, nil
@@ -204,7 +204,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 		log.Fatalf("fuzzer %v is not connected", request.Name)
 	}
 
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	//for i := 0; i < 50 && len(f.corpusDependencyInput) > 0; i++ {
 	//	last := len(f.corpusDependencyInput) - 1
@@ -512,11 +512,5 @@ func (ss *Server) writeToDisk() {
 	if err := ioutil.WriteFile("data.bin", out, 0644); err != nil {
 		log.Fatalf("Failed to write address:", err)
 	}
-
-	path := "./data.txt"
-	_ = os.Remove(path)
-	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-	defer f.Close()
-	_, _ = f.WriteString(fmt.Sprintf("%v", ss.corpusDependency))
 	// [END marshal_proto]
 }
