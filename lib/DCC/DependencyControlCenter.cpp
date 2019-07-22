@@ -131,11 +131,13 @@ namespace dra {
                                          syzkallerConditionAddress, syzkallerUncoveredAddress);
                         std::cout << "writeAddress->mutable_write_syscall()->size() : "
                                   << writeAddress->mutable_write_syscall()->size() << std::endl;
-                        for (auto write_syscall : *writeAddress->mutable_write_syscall()) {
-                            set_runtime_data(write_syscall.mutable_run_time_date(), dependencyInput->program(),
+                        uint64_t size = writeAddress->mutable_write_syscall()->size();
+                        for (uint64_t i = 0; i < size; i++ ) {
+                            auto write_syscall = writeAddress->mutable_write_syscall(i);
+                            set_runtime_data(write_syscall->mutable_run_time_date(), dependencyInput->program(),
                                              u->idx(), syzkallerConditionAddress, writeAddress->write_address());
                             std::cout << "write_syscall.run_time_date().program() : "
-                                      << write_syscall.run_time_date().program() << std::endl;
+                                      << write_syscall->run_time_date().program() << std::endl;
                         }
 
                     }
@@ -159,14 +161,14 @@ namespace dra {
             }
 #if DEBUG_RPC
             for (auto ua : dependencyInput->uncovered_address()) {
-            std::cout << "uncover condition address : " << ua.condition_address() << std::endl;
-            for (auto wa : ua.write_address()) {
-                std::cout << "wa program : " << wa.run_time_date().program() << std::endl;
-                for(auto wc : wa.write_syscall()){
-                    std::cout << "wc program : " << wc.run_time_date().program() << std::endl;
+                std::cout << "uncover condition address : " << ua.condition_address() << std::endl;
+                for (auto wa : ua.write_address()) {
+                    std::cout << "wa program : " << wa.run_time_date().program() << std::endl;
+                    for (auto wc : wa.write_syscall()) {
+                        std::cout << "wc program : " << wc.run_time_date().program() << std::endl;
+                    }
                 }
             }
-        }
 #endif
         } else {
 
@@ -348,7 +350,7 @@ namespace dra {
                 if (parity) {
                     std::cout << "if (parity) {" << std::endl;
                     auto db = this->DM.get_DB_from_i(i);
-                    if(db != nullptr){
+                    if (db != nullptr) {
                         std::cout << "if(db != nullptr){" << std::endl;
                         db->parent->compute_arrive();
                         if (indirect_call != nullptr) {
@@ -362,7 +364,7 @@ namespace dra {
                 } else {
                     std::cout << "if (parity) { else " << std::endl;
                     auto db = this->DM.get_DB_from_i(i);
-                    if(db != nullptr) {
+                    if (db != nullptr) {
                         std::cout << "if(db != nullptr) {" << std::endl;
                         auto cc = db->critical_condition;
                         for (auto ccc : cc) {
