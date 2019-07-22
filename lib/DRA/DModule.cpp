@@ -10,6 +10,7 @@
 #include <sstream>
 
 #include "../RPC/a2l.pb.h"
+#include "../DCC/general.h"
 
 #define PATH_SIZE 10000
 
@@ -49,10 +50,10 @@ namespace dra {
     void DModule::BuildLLVMFunction(llvm::Module *Module) {
         DFunction *function;
         for (auto &it : *Module) {
-            std::string Path = getFileName(&it);
+            std::string Path = dra::getFileName(&it);
             if (Path != "") {
                 std::string name = it.getName().str();
-                std::string FunctionName = getFunctionName(&it);
+                std::string FunctionName = dra::getFunctionName(&it);
                 function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
                 function->IRName = name;
                 function->InitIRFunction(&it);
@@ -561,31 +562,6 @@ namespace dra {
         function->Path = Path;
         function->setKind(kind);
         return function;
-    }
-
-    std::string DModule::getFileName(llvm::Function *f) {
-        llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
-        f->getAllMetadata(MDs);
-        for (auto &MD : MDs) {
-            if (llvm::MDNode *N = MD.second) {
-                if (auto *SP = llvm::dyn_cast<llvm::DISubprogram>(N)) {
-                    std::string Path = SP->getFilename().str();
-                    return Path;
-                }
-            }
-        }
-        return "";
-    }
-
-    std::string DModule::getFunctionName(llvm::Function *f) {
-        std::string name = f->getName().str();
-        std::string FunctionName = "";
-        if (name.find('.') < name.size()) {
-            FunctionName = name.substr(0, name.find('.'));
-        } else {
-            FunctionName = name;
-        }
-        return FunctionName;
     }
 
 } /* namespace dra */

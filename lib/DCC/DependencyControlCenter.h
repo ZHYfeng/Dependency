@@ -34,6 +34,8 @@ namespace dra {
 
         void send_dependency_input(Input *dependencyInput);
 
+        void get_write_address(sta::Mod *write_basicblock, Condition *condition, WriteAddress *writeAddress);
+
         void get_write_addresses();
 
         void send_write_address(WriteAddresses *writeAddress);

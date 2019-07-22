@@ -7,6 +7,7 @@
 
 #include "DataManagement.h"
 #include "llvm/IR/CFG.h"
+#include "../DCC/general.h"
 #include <llvm/IR/DebugLoc.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <fstream>
@@ -15,58 +16,6 @@
 #define PATH_SIZE 1000000
 
 namespace dra {
-
-    llvm::BasicBlock *getRealBB(llvm::BasicBlock *b) {
-        llvm::BasicBlock *rb;
-        if (b->hasName()) {
-            rb = b;
-        } else {
-            for (auto *Pred : llvm::predecessors(b)) {
-                rb = getRealBB(Pred);
-                break;
-            }
-        }
-        return rb;
-    }
-
-    llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b) {
-        auto *inst = b->getTerminator();
-        for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
-            std::string name = inst->getSuccessor(i)->getName().str();
-            if (inst->getSuccessor(i)->hasName()) {
-            } else {
-                return getFinalBB(inst->getSuccessor(i));
-            }
-        }
-        return b;
-    }
-
-    void dump_inst(llvm::Instruction *inst) {
-
-        auto b = inst->getParent();
-        auto f = b->getParent();
-
-        std::string Path = dra::DModule::getFileName(f);
-        std::string FunctionName = dra::DModule::getFunctionName(f);
-        std::cout << Path << " : ";
-        std::cout << FunctionName << " : ";
-
-        const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
-        int line = debugInfo->getLine();
-        int column = debugInfo->getColumn();
-        std::cout << std::dec << line << " : ";
-        std::cout << column << " : ";
-
-
-        std::string BasicBlockName = getRealBB(b)->getName();
-        std::cout << BasicBlockName << " : ";
-
-//        std::string directory = debugInfo->getDirectory().str();
-//        std::string filePath = debugInfo->getFilename().str();
-
-        std::cout << std::endl;
-
-    }
 
     DataManagement::DataManagement() {
         vmOffsets = 0;
@@ -363,7 +312,7 @@ namespace dra {
         std::cout << "call chain : " << std::dec << ctx->size() << "\n";
         for (auto inst : *ctx) {
             if (inst != nullptr) {
-                dump_inst(inst);
+                dra::dump_inst(inst);
             } else {
                 std::cerr << "nullptr in ctx" << std::endl;
             }
@@ -373,11 +322,31 @@ namespace dra {
 
     DBasicBlock *DataManagement::get_DB_from_bb(llvm::BasicBlock *b) {
         llvm::BasicBlock *bb = dra::getRealBB(b);
-        std::string Path = dra::DModule::getFileName(bb->getParent());
-        std::string FunctionName = dra::DModule::getFunctionName(bb->getParent());
+        std::string Path = dra::getFileName(bb->getParent());
+        std::string FunctionName = dra::getFunctionName(bb->getParent());
         std::string bbname = bb->getName().str();
-        DBasicBlock *db = this->Modules->Function[Path][FunctionName]->BasicBlock[bbname];
-        return db;
+        if (this->Modules->Function.find(Path) != this->Modules->Function.end()) {
+            auto p = this->Modules->Function[Path];
+            if (p.find(FunctionName) != p.end()) {
+                auto f= p[FunctionName];
+                if(f->BasicBlock.find(bbname)!= f->BasicBlock.end()){
+                    DBasicBlock *db = f->BasicBlock[bbname];
+                    return db;
+                } else {
+                    std::cerr << "get_DB_from_bb can not find bbname : " << bbname << std::endl;
+                }
+            } else {
+                std::cerr << "get_DB_from_bb can not find FunctionName : " << FunctionName << std::endl;
+            }
+        } else {
+            std::cerr << "get_DB_from_bb can not find Path : " << Path << std::endl;
+        }
+        return nullptr;
+    }
+
+    DBasicBlock *DataManagement::get_DB_from_i(llvm::Instruction *i) {
+        llvm::BasicBlock *bb = i->getParent();
+        return get_DB_from_bb(bb);
     }
 
     bool DataManagement::check_uncovered_address(Condition *u) {
@@ -392,6 +361,17 @@ namespace dra {
         }
 
         return res;
+    }
+
+    void DataManagement::set_condition(Condition *c) {
+        c->set_syzkaller_condition_address(this->getSyzkallerAddress(c->condition_address()));
+        c->set_syzkaller_uncovered_address(this->getSyzkallerAddress(c->uncovered_address()));
+        for (auto a : c->right_branch_address()) {
+            c->add_syzkaller_right_branch_address(this->getSyzkallerAddress(a));
+        }
+        for (auto a : c->wrong_branch_address()) {
+            c->add_syzkaller_wrong_branch_address(this->getSyzkallerAddress(a));
+        }
     }
 
     uncover_info::uncover_info() : address(0),

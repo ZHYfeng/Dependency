@@ -5,6 +5,9 @@
  *      Author: yhao
  */
 
+#ifndef LIB_DRA_DBASICBLOCK_CPP_
+#define LIB_DRA_DBASICBLOCK_CPP_
+
 #include "DBasicBlock.h"
 
 #include <llvm/IR/Instructions.h>
@@ -329,3 +332,5 @@ namespace dra {
     }
 
 } /* namespace dra */
+
+#endif /* LIB_DRA_DBASICBLOCK_CPP_ */

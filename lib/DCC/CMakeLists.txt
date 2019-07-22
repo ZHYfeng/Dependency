@@ -1,5 +1,5 @@
 set(SOURCES
         DependencyControlCenter.cpp
-        general.h)
+        general.cpp)
 
 add_library(DCC ${SOURCES})
