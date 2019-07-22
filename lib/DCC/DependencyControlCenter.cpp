@@ -335,44 +335,45 @@ namespace dra {
             write_syscall->set_cmd(c->cmd);
             write_syscall->mutable_run_time_date();
 
-            bool parity = false;
+
             auto mm = write_syscall->mutable_critical_condition();
-            Condition *indirect_call = nullptr;
-            for (auto i : c->ctx) {
-                std::cout << "for (auto i : c->ctx) {" << std::endl;
-                parity = !parity;
-                if (parity) {
-                    std::cout << "if (parity) {" << std::endl;
-                    auto db = this->DM.get_DB_from_i(i);
-                    if(db != nullptr){
-                        std::cout << "if(db != nullptr){" << std::endl;
-                        db->parent->compute_arrive();
-                        if (indirect_call != nullptr) {
-                            std::cout << "if (indirect_call != nullptr) {" << std::endl;
-                            indirect_call->add_right_branch_address(db->trace_pc_address);
-                            this->DM.set_condition(indirect_call);
-                            auto ca = indirect_call->syzkaller_condition_address();
-                            (*mm)[ca] = *indirect_call;
-                        }
-                    }
-                } else {
-                    std::cout << "if (parity) { else " << std::endl;
-                    auto db = this->DM.get_DB_from_i(i);
-                    if(db != nullptr) {
-                        std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
-                        auto cc = db->critical_condition;
-                        for (auto ccc : cc) {
-                            std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
-                            this->DM.set_condition(ccc.second);
-                            auto ca = ccc.second->syzkaller_condition_address();
-                            (*mm)[ca] = *ccc.second;
-                        }
-                        indirect_call = new Condition();
-                        indirect_call->set_condition_address(db->trace_pc_address);
-                    }
-                }
-            }
-        }
+//            bool parity = false;
+//            Condition *indirect_call = nullptr;
+//            for (auto i : c->ctx) {
+//                std::cout << "for (auto i : c->ctx) {" << std::endl;
+//                parity = !parity;
+//                if (parity) {
+//                    std::cout << "if (parity) {" << std::endl;
+//                    auto db = this->DM.get_DB_from_i(i);
+//                    if(db != nullptr){
+//                        std::cout << "if(db != nullptr){" << std::endl;
+//                        db->parent->compute_arrive();
+//                        if (indirect_call != nullptr) {
+//                            std::cout << "if (indirect_call != nullptr) {" << std::endl;
+//                            indirect_call->add_right_branch_address(db->trace_pc_address);
+//                            this->DM.set_condition(indirect_call);
+//                            auto ca = indirect_call->syzkaller_condition_address();
+//                            (*mm)[ca] = *indirect_call;
+//                        }
+//                    }
+//                } else {
+//                    std::cout << "if (parity) { else " << std::endl;
+//                    auto db = this->DM.get_DB_from_i(i);
+//                    if(db != nullptr) {
+//                        std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
+//                        auto cc = db->critical_condition;
+//                        for (auto ccc : cc) {
+//                            std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
+//                            this->DM.set_condition(ccc.second);
+//                            auto ca = ccc.second->syzkaller_condition_address();
+//                            (*mm)[ca] = *ccc.second;
+//                        }
+//                        indirect_call = new Condition();
+//                        indirect_call->set_condition_address(db->trace_pc_address);
+//                    }
+//                }
+//            }
+//        }
 //        for (auto i : db->input) {
 //            auto write_input = writeAddress->add_write_input();
 //            write_input->set_sig(i.first->sig);
