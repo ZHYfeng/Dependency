@@ -373,10 +373,10 @@ namespace dra {
                 }
             }
         }
-        for (auto i : db->input) {
-            auto write_input = writeAddress->add_write_input();
-            write_input->set_sig(i.first->sig);
-        }
+//        for (auto i : db->input) {
+//            auto write_input = writeAddress->add_write_input();
+//            write_input->set_sig(i.first->sig);
+//        }
     }
 
 } /* namespace dra */
