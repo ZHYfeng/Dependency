@@ -341,7 +341,7 @@ namespace dra {
 
             bool parity = false;
             auto mm = write_syscall->mutable_critical_condition();
-            Condition *indirect_call;
+            Condition *indirect_call = nullptr;
             for (auto i : c->ctx) {
                 std::cout << "for (auto i : c->ctx) {" << std::endl;
                 parity = !parity;
