@@ -131,7 +131,7 @@ namespace dra {
                         std::cout << "writeAddress->mutable_write_syscall()->size() : "
                                   << writeAddress->mutable_write_syscall()->size() << std::endl;
                         uint64_t size = writeAddress->mutable_write_syscall()->size();
-                        for (uint64_t i = 0; i < size; i++ ) {
+                        for (uint64_t i = 0; i < size; i++) {
                             auto write_syscall = writeAddress->mutable_write_syscall(i);
                             set_runtime_data(write_syscall->mutable_run_time_date(), dependencyInput->program(),
                                              u->idx(), syzkallerConditionAddress, writeAddress->write_address());
@@ -225,7 +225,8 @@ namespace dra {
 
     void DependencyControlCenter::send_write_address(WriteAddresses *writeAddress) {
         if (writeAddress != nullptr) {
-            std::cout << "send_write_address : " << writeAddress->condition().condition_address() << std::endl;
+            std::cout << "send_write_address : " << std::hex << writeAddress->condition().condition_address()
+                      << std::endl;
             auto reply = client->SendWriteAddress(*writeAddress);
 #if DEBUG_RPC
 #endif
