@@ -46,7 +46,7 @@ func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-	dInputs, err := d.c.GetDependencyInput(ctx, request)
+	dInputs, err := d.c.GetDependencyInput(ctx, request, grpc.MaxCallRecvMsgSize(0x7fffffffffffffff))
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
 	}
@@ -65,7 +65,7 @@ func (d *DRPCClient) ReturnDependencyInput(input *Input) (*Empty, error) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-	reply, err := d.c.ReturnDependencyInput(ctx, request)
+	reply, err := d.c.ReturnDependencyInput(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not ReturnDependencyInput: %v", err)
 	}
@@ -79,7 +79,7 @@ func (d *DRPCClient) SendInput(input *Input) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 
-	_, err := d.c.SendNewInput(ctx, CloneInput(input))
+	_, err := d.c.SendNewInput(ctx, CloneInput(input), grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 	}
@@ -107,7 +107,7 @@ func (d *DRPCClient) SSendLog() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-	_, _ = d.c.SendLog(ctx, request)
+	_, _ = d.c.SendLog(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	d.log = ""
 	d.logMu.Unlock()
 	return
