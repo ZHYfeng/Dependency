@@ -402,9 +402,22 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.Input) {
 	log.Logf(1, "dependencyInput : %v", dependencyInput)
 	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
 
+	d := pb.CloneInput(dependencyInput)
 	fuzzer.workQueue.enqueue(&WorkDependency{
-		dependencyInput: pb.CloneInput(dependencyInput),
+		dependencyInput: d,
 	})
+
+	log.Logf(1, "d.Program : %v", d.Program)
+	for _, u := range d.UncoveredAddress {
+		log.Logf(1, "u.RunTimeDate.Program : %v", u.RunTimeDate.Program)
+		for _, wa := range u.WriteAddress {
+			log.Logf(1, "wa.RunTimeDate.Program : %v", wa.RunTimeDate.Program)
+			for _, wc := range wa.WriteSyscall {
+				log.Logf(1, "wc.RunTimeDate.Program : %v", wc.RunTimeDate.Program)
+			}
+		}
+	}
+
 }
 
 //func (fuzzer *Fuzzer) corpusSigSnapshot() []string {
