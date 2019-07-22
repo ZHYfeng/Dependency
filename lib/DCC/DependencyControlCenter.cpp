@@ -78,17 +78,19 @@ namespace dra {
 
     void DependencyControlCenter::get_dependency_input(DInput *dInput) {
 
-        Input *dependencyInput = new Input();
-        dependencyInput->set_sig(dInput->sig);
-        dependencyInput->set_program(dInput->program);
 
-        bool send_flag = false;
         std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
                   << std::endl;
         uint64_t i = 0;
         for (auto u : dInput->dUncoveredAddress) {
             i++;
             outputTime("uncovered address count : " + std::to_string(i));
+
+            Input *dependencyInput = new Input();
+            dependencyInput->set_sig(dInput->sig);
+            dependencyInput->set_program(dInput->program);
+
+            bool send_flag = false;
             if (this->DM.check_uncovered_address(u)) {
 
                 if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
@@ -202,17 +204,21 @@ namespace dra {
                     }
                 }
             }
+            if (send_flag) {
+                this->send_dependency_input(dependencyInput);
+            }
         }
 
-        if (send_flag) {
-            this->send_dependency_input(dependencyInput);
-        }
 
     }
 
     void DependencyControlCenter::send_dependency_input(Input *dependencyInput) {
         std::cout << "SendDependencyInput sig : " << dependencyInput->sig() << std::endl;
-        auto reply = client->SendDependencyInput(*dependencyInput);
+        if (dependencyInput->ByteSizeLong() < 0x7fffffff) {
+            auto reply = client->SendDependencyInput(*dependencyInput);
+        } else {
+            std::cout << "dependencyInput is too big : " << dependencyInput->ByteSizeLong() << std::endl;
+        }
 #if DEBUG_RPC
         for (auto ua : dependencyInput->uncovered_address()) {
             std::cout << "uncover address : " << ua.address() << std::endl;
@@ -311,7 +317,7 @@ namespace dra {
                             if (parity) {
                                 auto db = this->DM.get_DB_from_bb(i->getParent());
                                 db->parent->compute_arrive();
-                                if(indirect_call != nullptr) {
+                                if (indirect_call != nullptr) {
                                     indirect_call->add_right_branch_address(db->trace_pc_address);
                                     this->DM.set_condition(indirect_call);
                                     auto ca = indirect_call->syzkaller_condition_address();
