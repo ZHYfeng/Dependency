@@ -579,7 +579,7 @@ namespace dra {
 
     std::string DModule::getFunctionName(llvm::Function *f) {
         std::string name = f->getName().str();
-        std::string FunctionName;
+        std::string FunctionName = "";
         if (name.find('.') < name.size()) {
             FunctionName = name.substr(0, name.find('.'));
         } else {
