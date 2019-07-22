@@ -6,22 +6,23 @@
 #define INC_2018_DEPENDENCY_GENERAL_H
 
 #include <string>
+#include <signal.h>
+#include <iostream>
 #include <llvm/IR/BasicBlock.h>
 
 namespace dra {
 
+    void outputTime(std::string s) ;
 
-
-    static void outputTime(std::string s) {
-        std::time_t current_time;
-        current_time = std::time(nullptr);
-        std::cout << std::ctime(&current_time);
-        std::cout << "#time : " << s << std::endl;
-    }
+    void handler(int nSignum, siginfo_t* si, void* vcontext);
 
     llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
 
     llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b);
+
+    std::string getFileName(llvm::Function *f);
+
+    std::string getFunctionName(llvm::Function *f);
 
     void dump_inst(llvm::Instruction *inst);
 }

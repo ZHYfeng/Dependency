@@ -52,10 +52,6 @@ namespace dra {
 
         DFunction *CreatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
 
-        static std::string getFileName(llvm::Function *f);
-
-        static std::string getFunctionName(llvm::Function *f);
-
     public:
         std::unique_ptr<llvm::Module> module;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;

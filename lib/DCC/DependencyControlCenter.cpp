@@ -20,6 +20,11 @@ namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() {
         outputTime("start_time");
+        struct sigaction action;
+        memset(&action, 0, sizeof(struct sigaction));
+        action.sa_flags = SA_SIGINFO;
+        action.sa_sigaction = dra::handler;
+        sigaction(SIGSEGV, &action, NULL);
     }
 
     DependencyControlCenter::~DependencyControlCenter() = default;
@@ -28,7 +33,7 @@ namespace dra {
                                        const std::string &staticRes) {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
-        outputTime("initializeModule");
+        dra::outputTime("initializeModule");
 
 
 
@@ -73,7 +78,7 @@ namespace dra {
                 grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
-        outputTime("GetVmOffsets");
+        dra::outputTime("GetVmOffsets");
     }
 
     void DependencyControlCenter::get_dependency_input(DInput *dInput) {
@@ -296,7 +301,7 @@ namespace dra {
     void DependencyControlCenter::get_write_address(sta::Mod *write_basicblock, Condition *condition,
                                                     WriteAddress *writeAddress) {
 
-        outputTime("write basicblock : ");
+        dra::outputTime("write basicblock : ");
 
         dra::dump_inst(&write_basicblock->B->front());
 
@@ -309,10 +314,10 @@ namespace dra {
         std::cout << "write_basicblock->prio : " << std::hex << write_basicblock->prio << "\n";
         db->dump();
 
-        outputTime("get_cmd_ctx : start");
+        dra::outputTime("get_cmd_ctx : start");
         std::vector<sta::cmd_ctx *> *cmd_ctx = write_basicblock->get_cmd_ctx();
         std::cout << "cmd size : " << std::dec << cmd_ctx->size() << "\n";
-        outputTime("get_cmd_ctx : finish");
+        dra::outputTime("get_cmd_ctx : finish");
         for (auto c: *cmd_ctx) {
             std::cout << "cmd dec: " << std::dec << c->cmd << "\n";
             std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
@@ -326,7 +331,9 @@ namespace dra {
         writeAddress->mutable_run_time_date();
 
         auto function_name = "ioctl";
+        std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
         for (auto c : *cmd_ctx) {
+            std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
             auto write_syscall = writeAddress->add_write_syscall();
             write_syscall->set_name(function_name);
             write_syscall->set_cmd(c->cmd);
@@ -336,26 +343,37 @@ namespace dra {
             auto mm = write_syscall->mutable_critical_condition();
             Condition *indirect_call;
             for (auto i : c->ctx) {
+                std::cout << "for (auto i : c->ctx) {" << std::endl;
                 parity = !parity;
                 if (parity) {
-                    auto db = this->DM.get_DB_from_bb(i->getParent());
-                    db->parent->compute_arrive();
-                    if (indirect_call != nullptr) {
-                        indirect_call->add_right_branch_address(db->trace_pc_address);
-                        this->DM.set_condition(indirect_call);
-                        auto ca = indirect_call->syzkaller_condition_address();
-                        (*mm)[ca] = *indirect_call;
+                    std::cout << "if (parity) {" << std::endl;
+                    auto db = this->DM.get_DB_from_i(i);
+                    if(db != nullptr){
+                        std::cout << "if(db != nullptr){" << std::endl;
+                        db->parent->compute_arrive();
+                        if (indirect_call != nullptr) {
+                            std::cout << "if (indirect_call != nullptr) {" << std::endl;
+                            indirect_call->add_right_branch_address(db->trace_pc_address);
+                            this->DM.set_condition(indirect_call);
+                            auto ca = indirect_call->syzkaller_condition_address();
+                            (*mm)[ca] = *indirect_call;
+                        }
                     }
                 } else {
-                    auto db = this->DM.get_DB_from_bb(i->getParent());
-                    auto cc = db->critical_condition;
-                    for (auto ccc : cc) {
-                        this->DM.set_condition(ccc.second);
-                        auto ca = ccc.second->syzkaller_condition_address();
-                        (*mm)[ca] = *ccc.second;
+                    std::cout << "if (parity) { else " << std::endl;
+                    auto db = this->DM.get_DB_from_i(i);
+                    if(db != nullptr) {
+                        std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
+                        auto cc = db->critical_condition;
+                        for (auto ccc : cc) {
+                            std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
+                            this->DM.set_condition(ccc.second);
+                            auto ca = ccc.second->syzkaller_condition_address();
+                            (*mm)[ca] = *ccc.second;
+                        }
+                        indirect_call = new Condition();
+                        indirect_call->set_condition_address(db->trace_pc_address);
                     }
-                    indirect_call = new Condition();
-                    indirect_call->set_condition_address(db->trace_pc_address);
                 }
             }
         }

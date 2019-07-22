@@ -207,19 +207,24 @@ namespace dra {
     }
 
     void DFunction::compute_arrive() {
-        if (this->critical_condition) {
-            return;
-        } else {
-            this->critical_condition = true;
-            std::vector<dra::DBasicBlock *> terminator_bb;
-            get_terminator(terminator_bb);
+        if(this->isIR()){
+            if (this->critical_condition) {
+                return;
+            } else {
+                this->critical_condition = true;
+                std::vector<dra::DBasicBlock *> terminator_bb;
+                get_terminator(terminator_bb);
 
-            for (auto db : terminator_bb) {
-                set_pred_successor(db);
+                for (auto db : terminator_bb) {
+                    set_pred_successor(db);
+                }
+                set_critical_condition();
+                return;
             }
-            set_critical_condition();
-            return;
+        } else {
+            std::cerr << "compute_arrive is not ir" << std::endl;
         }
+
     }
 
     void DFunction::get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb) {
