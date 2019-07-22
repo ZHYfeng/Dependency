@@ -60,7 +60,7 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 	}
 	reply := &Empty{}
 
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	return reply, nil
 }
@@ -73,7 +73,6 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 			return reply, nil
 		}
 	}
-	_, _ = proto.Marshal(ss.corpusDependency)
 	//ss.writeToDisk()
 
 	return reply, nil
@@ -98,7 +97,6 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 		log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
 	}
 
-	_, _ = proto.Marshal(ss.corpusDependency)
 	//ss.writeToDisk()
 
 	return &Empty{}, nil
@@ -177,7 +175,6 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 		ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
 	}
 
-	_, _ = proto.Marshal(ss.corpusDependency)
 	//ss.writeToDisk()
 
 	reply.Name = "success"
@@ -215,7 +212,6 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 		log.Fatalf("fuzzer %v is not connected", request.Name)
 	}
 
-	_, _ = proto.Marshal(ss.corpusDependency)
 	//ss.writeToDisk()
 
 	//for i := 0; i < 50 && len(f.corpusDependencyInput) > 0; i++ {
@@ -281,10 +277,12 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 				res = true
 				for _, wwa := range wa.WriteAddress {
 					temp := CloneWriteAddress(wwa)
-					wc.WriteAddress = append(wc.WriteAddress, temp)
 					temp.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
+
+					wc.WriteAddress = append(wc.WriteAddress, temp)
+
 					for _, wwc := range temp.WriteSyscall {
-						wwc.RunTimeDate = CloneRunTimeData(temp.RunTimeDate)
+						wwc.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
 						wwc.RunTimeDate.Address = wwa.WriteAddress
 					}
 				}
