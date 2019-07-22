@@ -147,13 +147,12 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 
 func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empty, error) {
 	reply := &Empty{}
-	cd := CloneInput(request)
 
-	if len(cd.Program) == 0 {
-		reply.Name = "dependency Program error : " + cd.Sig
+	if len(request.Program) == 0 {
+		reply.Name = "dependency Program error : " + request.Sig
 		return reply, nil
-	} else if len(cd.Sig) == 0 {
-		reply.Name = "dependency Sig error : " + string(cd.Program)
+	} else if len(request.Sig) == 0 {
+		reply.Name = "dependency Sig error : " + string(request.Program)
 		return reply, nil
 	}
 
@@ -164,6 +163,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 			i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
 		}
 	} else {
+		cd := CloneInput(request)
 		ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
 	}
 

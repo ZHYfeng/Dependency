@@ -407,13 +407,13 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.Input) {
 		dependencyInput: d,
 	})
 
-	log.Logf(1, "d.Program : %v", d.Program)
+	log.Logf(1, "d.Program : %s", d.Program)
 	for _, u := range d.UncoveredAddress {
-		log.Logf(1, "u.RunTimeDate.Program : %v", u.RunTimeDate.Program)
+		log.Logf(1, "u.RunTimeDate.Program : %s", u.RunTimeDate.Program)
 		for _, wa := range u.WriteAddress {
-			log.Logf(1, "wa.RunTimeDate.Program : %v", wa.RunTimeDate.Program)
+			log.Logf(1, "wa.RunTimeDate.Program : %s", wa.RunTimeDate.Program)
 			for _, wc := range wa.WriteSyscall {
-				log.Logf(1, "wc.RunTimeDate.Program : %v", wc.RunTimeDate.Program)
+				log.Logf(1, "wc.RunTimeDate.Program : %s", wc.RunTimeDate.Program)
 			}
 		}
 	}
