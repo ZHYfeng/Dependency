@@ -509,11 +509,11 @@ func (ss *Server) writeToDisk() {
 	if err != nil {
 		log.Fatalf("Failed to encode address:", err)
 	}
-	if err := ioutil.WriteFile("data.txt", out, 0644); err != nil {
+	if err := ioutil.WriteFile("data.bin", out, 0644); err != nil {
 		log.Fatalf("Failed to write address:", err)
 	}
 
-	path := "./data.log"
+	path := "./data.txt"
 	_ = os.Remove(path)
 	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	defer f.Close()
