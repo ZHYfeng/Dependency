@@ -270,11 +270,13 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("#%v: DependencyMutate", proc.pid))
 
 	dependencyInput := item.dependencyInput
+	log.Logf(1, "DependencyMutate program : \n%s", dependencyInput.Program)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate program : \n%s", dependencyInput.Program))
 
 	for _, u := range dependencyInput.UncoveredAddress {
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("UncoveredAddress : %v", u.UncoveredAddress))
 		for _, wa := range u.WriteAddress {
+			log.Logf(2, "dependencyMutate data :\n%s", wa.RunTimeDate.Program)
 			if ok, _ := proc.dependencyWriteAddress(wa); ok {
 				updateRunTimeData(u.RunTimeDate, wa.RunTimeDate)
 				u.RunTimeDate.CheckAddress = true
@@ -291,6 +293,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 
 func (proc *Proc) dependencyWriteAddress(wa *pb.WriteAddress) (res bool, info *ipc.ProgInfo) {
 	for _, wc := range wa.WriteSyscall {
+		log.Logf(2, "dependencyWriteAddress data :\n%s", wc.RunTimeDate.Program)
 		info = proc.dependencyRecursiveWriteSyscall(wc)
 		if wc.RunTimeDate.TaskStatus == pb.RunTimeData_cover {
 			updatePRunTimeData(wa.RunTimeDate, wc.RunTimeDate)
@@ -395,6 +398,7 @@ func (proc *Proc) dependencyRecursiveWriteAddress(wa *pb.WriteAddress) (info *ip
 
 // return true once arrive at write address for write syscall
 func (proc *Proc) dependencyRecursiveWriteSyscall(wc *pb.Syscall) (info *ipc.ProgInfo) {
+	log.Logf(2, "dependencyRecursiveWriteSyscall data :\n%s", wc.RunTimeDate.Program)
 	if wc.RunTimeDate.TaskStatus == pb.RunTimeData_untested {
 		return proc.dependencyWriteSyscallUntested(wc)
 	} else if wc.RunTimeDate.TaskStatus == pb.RunTimeData_recursive {
