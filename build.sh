@@ -5,6 +5,7 @@ cd ./lib/RPC/
 ./build-protoc.sh
 cd ../../
 echo "[*] Trying to Run Cmake"
+rm -rf build
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" ..
