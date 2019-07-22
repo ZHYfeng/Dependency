@@ -411,6 +411,8 @@ func (proc *Proc) dependencyRecursiveWriteSyscall(wc *pb.Syscall) (info *ipc.Pro
 
 func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (info *ipc.ProgInfo) {
 	ct := proc.fuzzer.choiceTable
+
+	log.Logf(2, "dependencyWriteSyscallUntested data :\n%s", wc.RunTimeDate.Program)
 	p, err := proc.fuzzer.target.Deserialize(wc.RunTimeDate.Program, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("failed to deserialize program from dependencyRecursiveWriteAddress: %v", err)
@@ -420,6 +422,7 @@ func (proc *Proc) dependencyWriteSyscallUntested(wc *pb.Syscall) (info *ipc.Prog
 		wc.RunTimeDate.TaskStatus = pb.RunTimeData_tested
 		return nil
 	}
+	log.Logf(2, "dependencyWriteSyscallUntested wc.RunTimeDate.Idx : %v", wc.RunTimeDate.Idx)
 	c0c := p.GetCall(proc.rnd, call, wc.RunTimeDate.Idx, ct)
 	p.InsertCall(c0c, wc.RunTimeDate.Idx, programLength)
 
