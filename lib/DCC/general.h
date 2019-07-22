@@ -6,15 +6,26 @@
 #define INC_2018_DEPENDENCY_GENERAL_H
 
 #include <string>
-#include <signal.h>
+#include <csetjmp>
+#include <csignal>
 #include <iostream>
 #include <llvm/IR/BasicBlock.h>
 
 namespace dra {
 
-    void outputTime(std::string s) ;
+    static sigjmp_buf escapeCallJmpBuf;
 
-    void handler(int nSignum, siginfo_t* si, void* vcontext);
+    extern "C" {
+    static void sigsegv_handler(int signal, siginfo_t *info, void *context) {
+        siglongjmp(escapeCallJmpBuf, 1);
+    }
+    }
+
+    void outputTime(std::string s);
+
+    void handler(int nSignum, siginfo_t *si, void *vcontext);
+
+    void deal_sig();
 
     llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
 

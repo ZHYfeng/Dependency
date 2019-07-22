@@ -20,10 +20,10 @@ namespace dra {
         std::cout << "#time : " << s << std::endl;
     }
 
-    void handler(int nSignum, siginfo_t* si, void* vcontext) {
+    void handler(int nSignum, siginfo_t *si, void *vcontext) {
         std::cout << "Segmentation fault" << std::endl;
 
-        ucontext_t* context = (ucontext_t*)vcontext;
+        ucontext_t *context = (ucontext_t *) vcontext;
         context->uc_mcontext.gregs[REG_RIP]++;
     }
 
@@ -38,6 +38,27 @@ namespace dra {
             }
         }
         return rb;
+    }
+
+    void deal_sig() {
+
+//        struct sigaction action;
+//        memset(&action, 0, sizeof(struct sigaction));
+//        action.sa_flags = SA_SIGINFO;
+//        action.sa_sigaction = dra::handler;
+//        sigaction(SIGSEGV, &action, NULL);
+
+        struct sigaction segvAction, segvActionOld;
+
+        segvAction.sa_handler = nullptr;
+        sigemptyset(&(segvAction.sa_mask));
+        sigaddset(&(segvAction.sa_mask), SIGSEGV);
+        segvAction.sa_flags = SA_SIGINFO;
+        segvAction.sa_sigaction = dra::sigsegv_handler;
+        sigaction(SIGSEGV, &segvAction, &segvActionOld);
+
+        if (sigsetjmp(escapeCallJmpBuf, 1)) {
+        }
     }
 
     llvm::BasicBlock *getFinalBB(llvm::BasicBlock *b) {

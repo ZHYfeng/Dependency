@@ -20,11 +20,7 @@ namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() {
         outputTime("start_time");
-        struct sigaction action;
-        memset(&action, 0, sizeof(struct sigaction));
-        action.sa_flags = SA_SIGINFO;
-        action.sa_sigaction = dra::handler;
-        sigaction(SIGSEGV, &action, NULL);
+
     }
 
     DependencyControlCenter::~DependencyControlCenter() = default;
