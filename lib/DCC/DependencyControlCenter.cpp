@@ -19,8 +19,8 @@
 namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() {
-        outputTime("start_time");
-
+        dra::outputTime("start_time");
+        dra::deal_sig();
     }
 
     DependencyControlCenter::~DependencyControlCenter() = default;
