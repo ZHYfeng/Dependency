@@ -696,9 +696,9 @@ func checkCondition(condition *pb.Condition, cover cover.Cover) (res bool) {
 	return
 }
 
-func checkAddresses(Address []uint32, cover cover.Cover) (res bool) {
+func checkAddresses(Address map[uint32]uint32, cover cover.Cover) (res bool) {
 	res = false
-	for _, a := range Address {
+	for a := range Address {
 		if _, ok := cover[a]; ok {
 			res = true
 			return
@@ -716,8 +716,9 @@ func checkCriticalCondition(wc *pb.Syscall, info *ipc.ProgInfo) (res bool) {
 		} else {
 			wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
 			wc.RunTimeDate.ConditionAddress = condition.SyzkallerConditionAddress
-			for _, ra := range condition.SyzkallerRightBranchAddress {
-				wc.RunTimeDate.RightBranchAddress = append(wc.RunTimeDate.RightBranchAddress, ra)
+			for ra := range condition.SyzkallerRightBranchAddress {
+				wc.RunTimeDate.RightBranchAddress[ra] = 0
+				//wc.RunTimeDate.RightBranchAddress = append(wc.RunTimeDate.RightBranchAddress, ra)
 			}
 			wc.WriteAddress = nil
 			return true

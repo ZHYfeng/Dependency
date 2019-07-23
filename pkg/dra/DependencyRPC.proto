@@ -105,7 +105,7 @@ message WriteAddress {
     uint32 condition_address = 3;
 
 
-    map<uint32, Input> write_input = 4;
+    map<string, Input> write_input = 4;
     map<uint32, Syscall> write_syscall = 5;
 
     // it is the data of uncovered address
