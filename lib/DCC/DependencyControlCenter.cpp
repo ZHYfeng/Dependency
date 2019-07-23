@@ -111,23 +111,23 @@ namespace dra {
                     std::cout << "uncovered getSyzkallerAddress : " << std::hex << syzkallerUncoveredAddress << "\n";
 
 
-                    UncoveredAddress *uncoveredAddress = new UncoveredAddress();
+                    UncoveredAddress *uncoveredAddress = dependencyInput->add_uncovered_address();
                     uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
                     uncoveredAddress->set_condition_address(syzkallerConditionAddress);
 
                     set_runtime_data(uncoveredAddress->mutable_run_time_date(), dependencyInput->program(), u->idx(),
                                      syzkallerConditionAddress, syzkallerUncoveredAddress);
 
-                    (*dependencyInput->mutable_uncovered_address())[syzkallerUncoveredAddress] = *uncoveredAddress;
+//                    (*dependencyInput->mutable_uncovered_address())[syzkallerUncoveredAddress] = *uncoveredAddress;
 
                     if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
                         this->DM.uncover[u->uncovered_address()]->related_to_gv = true;
                     }
 
                     for (auto &x : *write_basicblock) {
-                        WriteAddress *writeAddress = new WriteAddress;
-                        (*uncoveredAddress->mutable_write_address())[syzkallerUncoveredAddress] = *writeAddress;
-
+//                        WriteAddress *writeAddress = new WriteAddress;
+//                        (*uncoveredAddress->mutable_write_address())[syzkallerUncoveredAddress] = *writeAddress;
+                        WriteAddress *writeAddress = new WriteAddress();
                         get_write_address(x, u, writeAddress);
 
                         set_runtime_data(writeAddress->mutable_run_time_date(), dependencyInput->program(), u->idx(),
