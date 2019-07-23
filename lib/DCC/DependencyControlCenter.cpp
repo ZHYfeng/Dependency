@@ -358,9 +358,9 @@ namespace dra {
         std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
         for (auto c : *cmd_ctx) {
             std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
-            Syscall *write_syscall = new Syscall();
+            Syscall *write_syscall = writeAddress->add_write_syscall();
 
-            (*writeAddress->mutable_write_syscall())[write_address] = *write_syscall;
+//            (*writeAddress->mutable_write_syscall())[write_address] = *write_syscall;
 
             write_syscall->set_name(function_name);
             write_syscall->set_cmd(c->cmd);
