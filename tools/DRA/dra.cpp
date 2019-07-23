@@ -4,7 +4,8 @@
  *  Created on: Nov 28, 2018
  *      Author: yhao
  */
-
+#include <llvm/Support/Signals.h>
+#include <llvm/ADT/StringRef.h>
 #include <llvm/Support/CommandLine.h>
 #include <iostream>
 
@@ -17,7 +18,7 @@ llvm::cl::opt<std::string> InputFilename(llvm::cl::Positional, llvm::cl::desc("<
 llvm::cl::opt<std::string> staticRes("staticRes", llvm::cl::desc("The path of serialized static analysis results."), llvm::cl::init("./taint_info_serialize"));
 
 int main(int argc, char **argv) {
-
+    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     llvm::cl::ParseCommandLineOptions(argc, argv, "dra\n");
 #if DEBUG
     std::cout << "AssemblySourceCode : " << AssemblySourceCode << std::endl;

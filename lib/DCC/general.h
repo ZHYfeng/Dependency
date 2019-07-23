@@ -13,14 +13,6 @@
 
 namespace dra {
 
-    static sigjmp_buf escapeCallJmpBuf;
-
-    extern "C" {
-    static void sigsegv_handler(int signal, siginfo_t *info, void *context) {
-        siglongjmp(escapeCallJmpBuf, 1);
-    }
-    }
-
     void outputTime(std::string s);
 
     void handler(int nSignum, siginfo_t *si, void *vcontext);
