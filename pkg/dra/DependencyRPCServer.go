@@ -45,6 +45,7 @@ type Server struct {
 }
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
+	log.Logf(1, "(ss Server) ReturnDependencyInput")
 	input := CloneInput(request.Input)
 	ss.fmu.Lock()
 	defer ss.fmu.Unlock()
@@ -69,6 +70,7 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 }
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
+	log.Logf(1, "(ss Server) GetCondition")
 	reply := &Conditions{
 		//Condition: map[uint64]*Condition{},
 		Condition: []*Condition{},
@@ -86,6 +88,7 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
+	log.Logf(1, "(ss Server) SendWriteAddress")
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 	a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
@@ -109,6 +112,7 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
+	log.Logf(1, "(ss Server) SendLog")
 	ss.lmu.Lock()
 	defer ss.lmu.Unlock()
 
@@ -122,6 +126,7 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
+	log.Logf(1, "(ss Server) Connect")
 	if _, ok := ss.fuzzers[request.Name]; !ok {
 		ss.fuzzers[request.Name] = &fuzzer{
 			corpusDI: map[string]*Input{},
@@ -137,6 +142,7 @@ func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 }
 
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
+	log.Logf(1, "(ss Server) GetNewInput")
 	reply := &Inputs{
 		//Input: map[string]*Input{},
 		Input: []*Input{},
@@ -157,6 +163,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 }
 
 func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empty, error) {
+	log.Logf(1, "(ss Server) SendDependencyInput")
 	reply := &Empty{}
 
 	if len(request.Program) == 0 {
@@ -197,6 +204,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 
 //
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
+	log.Logf(1, "(ss Server) GetDependencyInput")
 	reply := &Inputs{
 		//Input: map[string]*Input{},
 		Input: []*Input{},
@@ -245,6 +253,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
+	log.Logf(1, "(ss Server) SendNewInput")
 	ss.imu.Lock()
 	defer ss.imu.Unlock()
 	reply := &Empty{}
@@ -549,8 +558,10 @@ func (ss *Server) writeToDisk() {
 	}
 	ss.tmu.Lock()
 	defer ss.tmu.Unlock()
-	if err := ioutil.WriteFile("data.bin", out, 0644); err != nil {
-		log.Fatalf("Failed to write address:", err)
+	path := "data.bin"
+	_ = os.Remove(path)
+	if err := ioutil.WriteFile(path, out, 0644); err != nil {
+		log.Fatalf("Failed to write corpusDependency:", err)
 	}
 	// [END marshal_proto]
 }
