@@ -510,6 +510,9 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 func (ss *Server) writeToDisk() {
 
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+
 	for _, c := range ss.corpusDependency.WriteAddress {
 		proto.Marshal(c)
 	}
