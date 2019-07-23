@@ -138,6 +138,7 @@ namespace dra {
                     }
 
                     this->send_dependency_input(dependencyInput);
+                    dependencyInput->Clear();
                 }
             }
         }
@@ -215,8 +216,10 @@ namespace dra {
                 }
 
                 send_write_address(wa);
+                wa->Clear();
             }
         }
+        cs->Clear();
     }
 
     void DependencyControlCenter::send_write_address(WriteAddresses *writeAddress) {
