@@ -381,7 +381,8 @@ namespace dra {
                         db->parent->compute_arrive();
                         if (indirect_call != nullptr) {
                             std::cout << "if (indirect_call != nullptr) {" << std::endl;
-                            (*indirect_call->mutable_right_branch_address())[db->trace_pc_address] = 0;
+                            indirect_call->add_right_branch_address(db->trace_pc_address);
+//                            (*indirect_call->mutable_right_branch_address())[db->trace_pc_address] = 0;
 
                             this->DM.set_condition(indirect_call);
                             auto ca = indirect_call->syzkaller_condition_address();
