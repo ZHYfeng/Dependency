@@ -493,8 +493,9 @@ func CloneRunTimeData(d *RunTimeData) *RunTimeData {
 		d1.Program = append(d1.Program, c)
 	}
 
-	for a := range d.RightBranchAddress {
-		d1.RightBranchAddress[a] = 0
+	for _, a := range d.RightBranchAddress {
+		d1.RightBranchAddress = append(d1.RightBranchAddress, a)
+		//d1.RightBranchAddress[a] = 0
 	}
 
 	return d1
