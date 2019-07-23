@@ -70,7 +70,8 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 	reply := &Conditions{
-		Condition: map[uint64]*Condition{},
+		//Condition: map[uint64]*Condition{},
+		Condition: []*Condition{},
 	}
 	for _, wa := range ss.corpusDependency.WriteAddress {
 		if len(wa.WriteAddress) == 0 {
@@ -137,14 +138,15 @@ func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	reply := &Inputs{
-		Input: map[string]*Input{},
+		//Input: map[string]*Input{},
+		Input: []*Input{},
 	}
 	i := 0
 	ss.imu.Lock()
 	for s, c := range ss.corpusDC {
 		if i < 1 {
-			reply.Input[c.Sig] = CloneInput(c)
-			//reply.Input = append(reply.Input, CloneInput(c))
+			//reply.Input[c.Sig] = CloneInput(c)
+			reply.Input = append(reply.Input, CloneInput(c))
 			i++
 			delete(ss.corpusDC, s)
 		} else {
@@ -196,7 +198,8 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 //
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
 	reply := &Inputs{
-		Input: map[string]*Input{},
+		//Input: map[string]*Input{},
+		Input: []*Input{},
 	}
 	if f, ok := ss.fuzzers[request.Name]; ok {
 
@@ -215,8 +218,8 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 			if i < taskNum {
 				i++
 
-				reply.Input[c.Sig] = CloneInput(c)
-				//reply.Input = append(reply.Input, CloneInput(c))
+				//reply.Input[c.Sig] = CloneInput(c)
+				reply.Input = append(reply.Input, CloneInput(c))
 				f.corpusDI[s] = c
 				delete(ss.corpusDependency.CorpusDependencyInput, s)
 				return reply, nil
@@ -304,8 +307,9 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 			}
 		} else {
 			ss.corpusDependency.WriteAddress[a] = &WriteAddresses{
-				Condition:    CloneCondition(cc),
-				WriteAddress: map[uint32]*WriteAddress{},
+				Condition: CloneCondition(cc),
+				//WriteAddress: map[uint32]*WriteAddress{},
+				WriteAddress: []*WriteAddress{},
 			}
 		}
 	}
@@ -319,11 +323,12 @@ func (m *Input) Merge(i *Input) {
 
 func CloneInput(input *Input) *Input {
 	inputClone := &Input{
-		Sig:              input.Sig,
-		Program:          []byte{},
-		Call:             make(map[uint32]*Call),
-		Dependency:       input.Dependency,
-		UncoveredAddress: map[uint32]*UncoveredAddress{},
+		Sig:        input.Sig,
+		Program:    []byte{},
+		Call:       make(map[uint32]*Call),
+		Dependency: input.Dependency,
+		//UncoveredAddress: map[uint32]*UncoveredAddress{},
+		UncoveredAddress: []*UncoveredAddress{},
 		WriteAddress:     input.WriteAddress,
 		Idx:              input.Idx,
 	}
@@ -334,6 +339,7 @@ func CloneInput(input *Input) *Input {
 
 	for i, u := range input.Call {
 		u1 := &Call{
+			//Address: []uint32{},
 			Address: make(map[uint32]uint32),
 			Idx:     u.Idx,
 		}
@@ -356,7 +362,8 @@ func CloneUncoverAddress(u *UncoveredAddress) *UncoveredAddress {
 		ConditionAddress: u.ConditionAddress,
 		UncoveredAddress: u.UncoveredAddress,
 		RunTimeDate:      CloneRunTimeData(u.RunTimeDate),
-		WriteAddress:     map[uint32]*WriteAddress{},
+		//WriteAddress:     map[uint32]*WriteAddress{},
+		WriteAddress: []*WriteAddress{},
 	}
 	for _, wa := range u.WriteAddress {
 		u1.WriteAddress[wa.WriteAddress] = CloneWriteAddress(wa)
@@ -375,15 +382,17 @@ func CloneWriteAddress(a *WriteAddress) *WriteAddress {
 		WriteAddress: a.WriteAddress,
 
 		ConditionAddress: a.ConditionAddress,
-		WriteSyscall:     map[uint32]*Syscall{},
-		WriteInput:       map[string]*Input{},
+		WriteSyscall:     []*Syscall{},
+		WriteInput:       []*Input{},
+		//WriteSyscall:     map[uint32]*Syscall{},
+		//WriteInput:       map[string]*Input{},
 
 		RunTimeDate: CloneRunTimeData(a.RunTimeDate),
 	}
 
 	for _, i := range a.WriteInput {
-		a1.WriteInput[i.Sig] = CloneInput(i)
-		//a1.WriteInput = append(a1.WriteInput, CloneInput(i))
+		//a1.WriteInput[i.Sig] = CloneInput(i)
+		a1.WriteInput = append(a1.WriteInput, CloneInput(i))
 	}
 
 	for _, s := range a.WriteSyscall {
@@ -399,7 +408,8 @@ func CloneSyscall(s *Syscall) *Syscall {
 		Cmd:               s.Cmd,
 		CriticalCondition: map[uint32]*Condition{},
 		RunTimeDate:       CloneRunTimeData(s.RunTimeDate),
-		WriteAddress:      map[uint32]*WriteAddress{},
+		//WriteAddress:      map[uint32]*WriteAddress{},
+		WriteAddress: []*WriteAddress{},
 	}
 
 	for i, c := range s.CriticalCondition {
@@ -416,16 +426,20 @@ func CloneSyscall(s *Syscall) *Syscall {
 
 func CloneCondition(c *Condition) *Condition {
 	c1 := &Condition{
-		ConditionAddress:            c.ConditionAddress,
-		SyzkallerConditionAddress:   c.SyzkallerConditionAddress,
-		UncoveredAddress:            c.UncoveredAddress,
-		SyzkallerUncoveredAddress:   c.SyzkallerUncoveredAddress,
-		Idx:                         c.Idx,
-		Successor:                   c.Successor,
-		RightBranchAddress:          map[uint64]uint32{},
-		SyzkallerRightBranchAddress: map[uint32]uint32{},
-		WrongBranchAddress:          map[uint64]uint32{},
-		SyzkallerWrongBranchAddress: map[uint32]uint32{},
+		ConditionAddress:          c.ConditionAddress,
+		SyzkallerConditionAddress: c.SyzkallerConditionAddress,
+		UncoveredAddress:          c.UncoveredAddress,
+		SyzkallerUncoveredAddress: c.SyzkallerUncoveredAddress,
+		Idx:                       c.Idx,
+		Successor:                 c.Successor,
+		//RightBranchAddress:          map[uint64]uint32{},
+		//SyzkallerRightBranchAddress: map[uint32]uint32{},
+		//WrongBranchAddress:          map[uint64]uint32{},
+		//SyzkallerWrongBranchAddress: map[uint32]uint32{},
+		RightBranchAddress:          []uint64{},
+		SyzkallerRightBranchAddress: []uint32{},
+		WrongBranchAddress:          []uint64{},
+		SyzkallerWrongBranchAddress: []uint32{},
 	}
 
 	for a := range c.RightBranchAddress {
@@ -467,7 +481,8 @@ func CloneRunTimeData(d *RunTimeData) *RunTimeData {
 		CheckAddress:            d.CheckAddress,
 		Address:                 d.Address,
 		CheckRightBranchAddress: d.CheckRightBranchAddress,
-		RightBranchAddress:      map[uint32]uint32{},
+		//RightBranchAddress:      map[uint32]uint32{},
+		RightBranchAddress: []uint32{},
 	}
 
 	for _, c := range d.Program {

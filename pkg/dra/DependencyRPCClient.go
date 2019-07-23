@@ -52,8 +52,8 @@ func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
 	}
 	reply := &Inputs{}
 	for _, i := range dInputs.Input {
-		reply.Input[i.Sig] = CloneInput(i)
-		//reply.Input = append(reply.Input, CloneInput(i))
+		//reply.Input[i.Sig] = CloneInput(i)
+		reply.Input = append(reply.Input, CloneInput(i))
 	}
 	return reply
 }

@@ -696,9 +696,10 @@ func checkCondition(condition *pb.Condition, cover cover.Cover) (res bool) {
 	return
 }
 
-func checkAddresses(Address map[uint32]uint32, cover cover.Cover) (res bool) {
+func checkAddresses(Address []uint32, cover cover.Cover) (res bool) {
+	//func checkAddresses(Address map[uint32]uint32, cover cover.Cover) (res bool) {
 	res = false
-	for a := range Address {
+	for _, a := range Address {
 		if _, ok := cover[a]; ok {
 			res = true
 			return

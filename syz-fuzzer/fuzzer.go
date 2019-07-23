@@ -533,6 +533,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 		input.Call[uint32(i)] = &pb.Call{
 			Idx:     uint32(i),
 			Address: map[uint32]uint32{},
+			//Address: []uint32{},
 		}
 		newCall := input.Call[uint32(i)]
 
@@ -541,6 +542,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 			fuzzer.cover[id] = &pb.Call{
 				Idx:     0,
 				Address: make(map[uint32]uint32),
+				//Address: []uint32{},
 			}
 		}
 		call := fuzzer.cover[id].Address
