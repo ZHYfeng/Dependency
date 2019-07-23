@@ -442,20 +442,24 @@ func CloneCondition(c *Condition) *Condition {
 		SyzkallerWrongBranchAddress: []uint32{},
 	}
 
-	for a := range c.RightBranchAddress {
-		c1.RightBranchAddress[a] = 0
+	for _, a := range c.RightBranchAddress {
+		//c1.RightBranchAddress[a] = 0
+		c1.RightBranchAddress = append(c1.RightBranchAddress, a)
 	}
 
-	for a := range c.SyzkallerRightBranchAddress {
-		c1.SyzkallerRightBranchAddress[a] = 0
+	for _, a := range c.SyzkallerRightBranchAddress {
+		//c1.SyzkallerRightBranchAddress[a] = 0
+		c1.SyzkallerRightBranchAddress = append(c1.SyzkallerRightBranchAddress, a)
 	}
 
-	for a := range c.WrongBranchAddress {
-		c1.WrongBranchAddress[a] = 0
+	for _, a := range c.WrongBranchAddress {
+		//c1.WrongBranchAddress[a] = 0
+		c1.WrongBranchAddress = append(c1.WrongBranchAddress, a)
 	}
 
-	for a := range c.SyzkallerWrongBranchAddress {
-		c1.SyzkallerWrongBranchAddress[a] = 0
+	for _, a := range c.SyzkallerWrongBranchAddress {
+		//c1.SyzkallerWrongBranchAddress[a] = 0
+		c1.SyzkallerWrongBranchAddress = append(c1.SyzkallerWrongBranchAddress, a)
 	}
 
 	return c1
