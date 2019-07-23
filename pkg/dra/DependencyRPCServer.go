@@ -79,7 +79,7 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 			return reply, nil
 		}
 	}
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	return reply, nil
 }
@@ -187,7 +187,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	}
 	ss.mu.Unlock()
 
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	reply.Name = "success"
 	return reply, nil
@@ -228,7 +228,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 		log.Fatalf("fuzzer %v is not connected", request.Name)
 	}
 
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	//for i := 0; i < 50 && len(f.corpusDependencyInput) > 0; i++ {
 	//	last := len(f.corpusDependencyInput) - 1
@@ -522,20 +522,6 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 }
 
 func (ss *Server) writeToDisk() {
-
-	for _, c := range ss.corpusDependency.WriteAddress {
-		proto.Marshal(c)
-	}
-	for _, c := range ss.corpusDependency.CorpusDependencyInput {
-		proto.Marshal(c)
-	}
-	for _, c := range ss.corpusDependency.CorpusRecursiveInput {
-		proto.Marshal(c)
-	}
-	for _, c := range ss.corpusDependency.CorpusErrorInput {
-		proto.Marshal(c)
-	}
-
 	// Write the new back to disk.
 	out, err := proto.Marshal(ss.corpusDependency)
 	if err != nil {
