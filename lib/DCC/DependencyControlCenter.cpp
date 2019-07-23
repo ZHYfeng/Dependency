@@ -177,9 +177,11 @@ namespace dra {
 //            }
                 std::cout << "uncover condition address : " << ua.condition_address() << std::endl;
                 for (auto wa : ua.write_address()) {
-                    std::cout << "wa program : " << wa.run_time_date().program() << std::endl;
+                    std::cout << "wa program : " << std::endl;
+                    std::cout << wa.run_time_date().program();
                     for (auto wc : wa.write_syscall()) {
-                        std::cout << "wc program : " << wc.run_time_date().program() << std::endl;
+                        std::cout << "wc program : " << std::endl;
+                        std::cout << wc.run_time_date().program();
                     }
                 }
             }
