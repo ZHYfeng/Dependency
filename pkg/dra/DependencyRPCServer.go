@@ -39,28 +39,30 @@ type Server struct {
 
 	cmu    *sync.Mutex
 	corpus *map[string]rpctype.RPCInput
+
+	tmu *sync.Mutex
+	lmu *sync.Mutex
 }
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Empty, error) {
 	input := CloneInput(request.Input)
 	ss.fmu.Lock()
-	defer ss.fmu.Unlock()
 	if f, ok := ss.fuzzers[request.Name]; ok {
 		if _, ok := f.corpusDI[request.Input.Sig]; ok {
 			delete(f.corpusDI, request.Input.Sig)
 			ss.mu.Lock()
-			defer ss.mu.Unlock()
 			if ok := ss.checkDependencyInput(input); ok {
 				ss.corpusDependency.CorpusDependencyInput[input.Sig] = input
 			} else {
 				ss.corpusDependency.CorpusRecursiveInput[input.Sig] = input
 			}
+			ss.mu.Unlock()
 		}
 	} else {
 		log.Fatalf("ReturnDependencyInput : ", request.Name)
 	}
 	reply := &Empty{}
-
+	ss.fmu.Unlock()
 	ss.writeToDisk()
 
 	return reply, nil
@@ -82,7 +84,6 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
 	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
 	if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
 		for _, wwa := range request.WriteAddress {
@@ -98,14 +99,15 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 	} else {
 		log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
 	}
+	ss.mu.Unlock()
 	ss.writeToDisk()
 
 	return &Empty{}, nil
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
-	ss.fmu.Lock()
-	defer ss.fmu.Unlock()
+	ss.lmu.Lock()
+	defer ss.lmu.Unlock()
 
 	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	defer f.Close()
@@ -134,6 +136,7 @@ func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	reply := &Inputs{}
 	i := 0
+	ss.imu.Lock()
 	for s, c := range ss.corpusDC {
 		if i < 1 {
 			reply.Input[c.Sig] = CloneInput(c)
@@ -142,8 +145,8 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 			delete(ss.corpusDC, s)
 		} else {
 		}
-
 	}
+	ss.imu.Unlock()
 	return reply, nil
 }
 
@@ -159,7 +162,6 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	}
 
 	ss.mu.Lock()
-	defer ss.mu.Unlock()
 	if i, ok := ss.corpusDependency.CorpusDependencyInput[request.Sig]; ok {
 		for _, u := range request.UncoveredAddress {
 			//i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
@@ -179,6 +181,8 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 		cd := CloneInput(request)
 		ss.corpusDependency.CorpusDependencyInput[request.Sig] = cd
 	}
+	ss.mu.Unlock()
+
 	ss.writeToDisk()
 
 	reply.Name = "success"
@@ -190,16 +194,16 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	reply := &Inputs{}
 	if f, ok := ss.fuzzers[request.Name]; ok {
 
-		ss.mu.Lock()
-		defer ss.mu.Unlock()
-
+		ss.fmu.Lock()
 		if len(f.corpusDI) > 0 {
 			for s, c := range f.corpusDI {
 				ss.corpusDependency.CorpusErrorInput[s] = c
 				delete(f.corpusDI, s)
 			}
 		}
+		ss.fmu.Unlock()
 
+		ss.mu.Lock()
 		i := 0
 		for s, c := range ss.corpusDependency.CorpusDependencyInput {
 			if i < taskNum {
@@ -213,9 +217,11 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 			} else {
 			}
 		}
+		ss.mu.Unlock()
 	} else {
 		log.Fatalf("fuzzer %v is not connected", request.Name)
 	}
+
 	ss.writeToDisk()
 
 	//for i := 0; i < 50 && len(f.corpusDependencyInput) > 0; i++ {
@@ -230,14 +236,12 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
+	ss.imu.Lock()
 	reply := &Empty{}
 	input := CloneInput(request)
-
 	//ss.corpusDC = append(ss.corpusDC, input)
 	ss.corpusDC[input.Sig] = input
-
+	ss.imu.Unlock()
 	return reply, nil
 }
 
@@ -490,8 +494,14 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		WriteAddress:          map[uint64]*WriteAddresses{},
 	}
 	ss.fuzzers = make(map[string]*fuzzer)
+
 	ss.mu = &sync.Mutex{}
 	ss.fmu = &sync.Mutex{}
+	ss.cmu = &sync.Mutex{}
+	ss.imu = &sync.Mutex{}
+	ss.tmu = &sync.Mutex{}
+	ss.lmu = &sync.Mutex{}
+
 	ss.corpus = corpus
 
 	lis, err := net.Listen("tcp", port)
@@ -509,9 +519,6 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 }
 
 func (ss *Server) writeToDisk() {
-
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
 
 	for _, c := range ss.corpusDependency.WriteAddress {
 		proto.Marshal(c)
@@ -531,8 +538,10 @@ func (ss *Server) writeToDisk() {
 	if err != nil {
 		log.Fatalf("Failed to encode address:", err)
 	}
+	ss.tmu.Lock()
 	if err := ioutil.WriteFile("data.bin", out, 0644); err != nil {
 		log.Fatalf("Failed to write address:", err)
 	}
+	ss.tmu.Unlock()
 	// [END marshal_proto]
 }
