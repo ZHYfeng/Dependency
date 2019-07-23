@@ -127,7 +127,7 @@ namespace dra {
                     for (auto &x : *write_basicblock) {
 //                        WriteAddress *writeAddress = new WriteAddress;
 //                        (*uncoveredAddress->mutable_write_address())[syzkallerUncoveredAddress] = *writeAddress;
-                        WriteAddress *writeAddress = new WriteAddress();
+                        WriteAddress *writeAddress = uncoveredAddress->add_write_address();
                         get_write_address(x, u, writeAddress);
 
                         set_runtime_data(writeAddress->mutable_run_time_date(), dependencyInput->program(), u->idx(),
