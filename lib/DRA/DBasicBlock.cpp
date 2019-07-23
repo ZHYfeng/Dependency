@@ -316,9 +316,11 @@ namespace dra {
         for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
             auto temp = this->get_DB_from_bb(inst->getSuccessor(i));
             if (condition && 1 << i) {
-                (*c->mutable_right_branch_address())[temp->trace_pc_address] = 0;
+                c->add_right_branch_address(temp->trace_pc_address);
+//                (*c->mutable_right_branch_address())[temp->trace_pc_address] = 0;
             } else {
-                (*c->mutable_wrong_branch_address())[temp->trace_pc_address] = 0;
+                c->add_wrong_branch_address(temp->trace_pc_address);
+//                (*c->mutable_wrong_branch_address())[temp->trace_pc_address] = 0;
             }
         }
         this->critical_condition[db] = c;
