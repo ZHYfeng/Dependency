@@ -61,7 +61,7 @@ func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
 // SendDependencyInput is
 func (d *DRPCClient) ReturnDependencyInput(input *Input) (*Empty, error) {
 	request := &Task{
-		Input: CloneInput(input),
+		Input: input,
 		Name:  *d.name,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
@@ -80,7 +80,7 @@ func (d *DRPCClient) SendInput(input *Input) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 
-	_, err := d.c.SendNewInput(ctx, CloneInput(input), grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
+	_, err := d.c.SendNewInput(ctx, input, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not SendInput: %v", err)
 	}
