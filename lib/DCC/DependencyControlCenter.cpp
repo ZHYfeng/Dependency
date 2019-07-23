@@ -30,8 +30,6 @@ namespace dra {
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         dra::outputTime("initializeModule");
 
-
-
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
 
