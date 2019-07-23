@@ -150,8 +150,8 @@ namespace dra {
         for (auto c : input->call()) {
             dInput->idx = c.second.idx();
             for (auto a : c.second.address()) {
-//                unsigned long long int address = a.first;
-                unsigned long long int address = a;
+                unsigned long long int address = a.first;
+//                unsigned long long int address = a;
                 auto final_address = getRealAddress(address);
                 if (this->Address2BB.find(final_address) != this->Address2BB.end()) {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
