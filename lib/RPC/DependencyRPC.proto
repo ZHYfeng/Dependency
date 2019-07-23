@@ -51,7 +51,8 @@ message runTimeData {
     uint32 address = 14;
 
     bool checkRightBranchAddress = 15;
-    map<uint32, uint32> right_branch_address = 16;
+//    map<uint32, uint32> right_branch_address = 16;
+    repeated uint32 right_branch_address = 16;
 }
 
 message Empty {
@@ -70,27 +71,35 @@ message Condition {
     uint64 successor = 6;
 
 
-    map<uint64, uint32> right_branch_address = 7;
-    map<uint32, uint32> syzkaller_right_branch_address = 8;
-    map<uint64, uint32> wrong_branch_address = 9;
-    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
+//    map<uint64, uint32> right_branch_address = 7;
+//    map<uint32, uint32> syzkaller_right_branch_address = 8;
+//    map<uint64, uint32> wrong_branch_address = 9;
+//    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
+
+    repeated uint64 right_branch_address = 7;
+    repeated uint32 syzkaller_right_branch_address = 8;
+    repeated uint64 wrong_branch_address = 9;
+    repeated uint32 syzkaller_wrong_branch_address = 10;
 
 }
 
 message Conditions {
-    map<uint64, Condition> condition = 10;
+//    map<uint64, Condition> condition = 10;
+    repeated Condition condition = 10;
 }
 
 message Syscall {
     string name = 1;
     uint64 cmd = 2;
 
-    map<uint32, Condition> critical_condition = 4;
+    repeated Condition critical_condition = 4;
+//    map<uint32, Condition> critical_condition = 4;
     // it is the data of this syscall
     runTimeData run_time_date = 5;
 
 
-    map<uint32, WriteAddress> write_address = 11;
+    repeated WriteAddress write_address = 11;
+//    map<uint32, WriteAddress> write_address = 11;
 }
 
 message WriteAddress {
@@ -105,8 +114,10 @@ message WriteAddress {
     uint32 condition_address = 3;
 
 
-    map<uint32, Input> write_input = 4;
-    map<uint32, Syscall> write_syscall = 5;
+//    map<uint32, Input> write_input = 4;
+//    map<uint32, Syscall> write_syscall = 5;
+    repeated Input write_input = 4;
+    repeated Syscall write_syscall = 5;
 
     // it is the data of uncovered address
     runTimeData run_time_date = 11;
@@ -114,7 +125,8 @@ message WriteAddress {
 
 message WriteAddresses {
     Condition condition = 1;
-    map<uint32, WriteAddress> write_address = 4;
+//    map<uint32, WriteAddress> write_address = 4;
+    repeated WriteAddress write_address = 4;
 }
 
 message UncoveredAddress {
@@ -122,12 +134,14 @@ message UncoveredAddress {
     uint32 uncovered_address = 1;
 
     runTimeData run_time_date = 5;
-    map<uint32, WriteAddress> write_address = 4;
+//    map<uint32, WriteAddress> write_address = 4;
+    repeated WriteAddress write_address = 4;
 }
 
 message Call {
     uint32 idx = 1;
-    map<uint32, uint32> address = 2;
+//    map<uint32, uint32> address = 2;
+    repeated uint32 address = 2;
 }
 
 message Input {
@@ -138,7 +152,8 @@ message Input {
 
     // for dependency
     bool dependency = 21;
-    map<uint32, UncoveredAddress> uncovered_address = 22;
+//    map<uint32, UncoveredAddress> uncovered_address = 22;
+    repeated UncoveredAddress uncovered_address = 22;
 
     // for write address
     uint32 write_address = 31;
@@ -146,7 +161,8 @@ message Input {
 }
 
 message Inputs {
-    map<string, Input> input = 1;
+//    map<string, Input> input = 1;
+    repeated Input input = 1;
 }
 
 //for syz-fuzzer

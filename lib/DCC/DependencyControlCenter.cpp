@@ -42,10 +42,12 @@ namespace dra {
             Inputs *newInput = client->GetNewInput();
             if (newInput != nullptr) {
                 for (auto &input : *newInput->mutable_input()) {
-                    std::cout << "new input : " << input.second.sig() << std::endl;
-                    std::cout << input.second.program() << std::endl;
-
-                    DInput *dInput = DM.getInput(&input.second);
+//                    std::cout << "new input : " << input.second.sig() << std::endl;
+//                    std::cout << input.second.program() << std::endl;
+//                    DInput *dInput = DM.getInput(&input.second);
+                    std::cout << "new input : " << input.sig() << std::endl;
+                    std::cout << input.program() << std::endl;
+                    DInput *dInput = DM.getInput(&input);
                     get_dependency_input(dInput);
                 }
                 newInput->Clear();
@@ -134,10 +136,14 @@ namespace dra {
                                   << writeAddress->mutable_write_syscall()->size() << std::endl;
 
                         for(auto &wc : *writeAddress->mutable_write_syscall()){
-                            set_runtime_data(wc.second.mutable_run_time_date(), dependencyInput->program(),
+//                            set_runtime_data(wc.second.mutable_run_time_date(), dependencyInput->program(),
+//                                             u->idx(), syzkallerConditionAddress, writeAddress->write_address());
+//                            std::cout << "write_syscall.run_time_date().program() : "
+//                                      << wc.second.run_time_date().program() << std::endl;
+                            set_runtime_data(wc.mutable_run_time_date(), dependencyInput->program(),
                                              u->idx(), syzkallerConditionAddress, writeAddress->write_address());
                             std::cout << "write_syscall.run_time_date().program() : "
-                                      << wc.second.run_time_date().program() << std::endl;
+                                      << wc.run_time_date().program() << std::endl;
                         }
 
                     }
@@ -162,11 +168,18 @@ namespace dra {
             }
 #if DEBUG_RPC
             for (auto ua : dependencyInput->uncovered_address()) {
-                std::cout << "uncover condition address : " << ua.second.condition_address() << std::endl;
-                for (auto wa : ua.second.write_address()) {
-                    std::cout << "wa program : " << wa.second.run_time_date().program() << std::endl;
-                    for (auto wc : wa.second.write_syscall()) {
-                        std::cout << "wc program : " << wc.second.run_time_date().program() << std::endl;
+//                std::cout << "uncover condition address : " << ua.second.condition_address() << std::endl;
+//                for (auto wa : ua.second.write_address()) {
+//                std::cout << "wa program : " << wa.second.run_time_date().program() << std::endl;
+//                for (auto wc : wa.second.write_syscall()) {
+//                    std::cout << "wc program : " << wc.second.run_time_date().program() << std::endl;
+//                }
+//            }
+                std::cout << "uncover condition address : " << ua.condition_address() << std::endl;
+                for (auto wa : ua.write_address()) {
+                    std::cout << "wa program : " << wa.run_time_date().program() << std::endl;
+                    for (auto wc : wa.write_syscall()) {
+                        std::cout << "wc program : " << wc.run_time_date().program() << std::endl;
                     }
                 }
             }
@@ -206,20 +219,24 @@ namespace dra {
     void DependencyControlCenter::get_write_addresses() {
         dra::Conditions *cs = client->GetCondition();
         for (auto condition : *cs->mutable_condition()) {
-            sta::MODS *write_basicblock = get_write_basicblock(&condition.second);
-
+//            sta::MODS *write_basicblock = get_write_basicblock(&condition.second);
+            sta::MODS *write_basicblock = get_write_basicblock(&condition);
             if (write_basicblock == nullptr) {
 
             } else {
 
                 WriteAddresses *wa = new WriteAddresses();
-                wa->set_allocated_condition(&condition.second);
+//                wa->set_allocated_condition(&condition.second);
+//                for (auto &x : *write_basicblock) {
+//                    WriteAddress *writeAddress = new WriteAddress;
+//                    get_write_address(x, &condition.second, writeAddress);
+//                    (*wa->mutable_write_address())[condition.second.syzkaller_uncovered_address()] = *writeAddress;
+//                }
 
+                wa->set_allocated_condition(&condition);
                 for (auto &x : *write_basicblock) {
-                    WriteAddress *writeAddress = new WriteAddress;
-                    get_write_address(x, &condition.second, writeAddress);
-
-                    (*wa->mutable_write_address())[condition.second.syzkaller_uncovered_address()] = *writeAddress;
+                    WriteAddress *writeAddress = wa->add_write_address();
+                    get_write_address(x, &condition, writeAddress);
                 }
 
                 send_write_address(wa);
@@ -315,7 +332,6 @@ namespace dra {
 
         DBasicBlock *db = this->DM.get_DB_from_bb(write_basicblock->B);
         unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
-
 
         std::cout << "write_address getSyzkallerAddress : " << std::hex << write_address << "\n";
         std::cout << "write_basicblock->repeat : " << std::hex << write_basicblock->repeat << "\n";
