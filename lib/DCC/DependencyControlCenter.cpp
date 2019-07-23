@@ -242,7 +242,6 @@ namespace dra {
                 }
 
                 send_write_address(wa);
-                wa->Clear();
             }
         }
         cs->Clear();
