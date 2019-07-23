@@ -717,9 +717,9 @@ func checkCriticalCondition(wc *pb.Syscall, info *ipc.ProgInfo) (res bool) {
 		} else {
 			wc.RunTimeDate.TaskStatus = pb.RunTimeData_recursive
 			wc.RunTimeDate.ConditionAddress = condition.SyzkallerConditionAddress
-			for ra := range condition.SyzkallerRightBranchAddress {
-				wc.RunTimeDate.RightBranchAddress[ra] = 0
-				//wc.RunTimeDate.RightBranchAddress = append(wc.RunTimeDate.RightBranchAddress, ra)
+			for _, ra := range condition.SyzkallerRightBranchAddress {
+				//wc.RunTimeDate.RightBranchAddress[ra] = 0
+				wc.RunTimeDate.RightBranchAddress = append(wc.RunTimeDate.RightBranchAddress, ra)
 			}
 			wc.WriteAddress = nil
 			return true

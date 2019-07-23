@@ -547,9 +547,9 @@ func (ss *Server) writeToDisk() {
 		log.Fatalf("Failed to encode address:", err)
 	}
 	ss.tmu.Lock()
+	defer ss.tmu.Unlock()
 	if err := ioutil.WriteFile("data.bin", out, 0644); err != nil {
 		log.Fatalf("Failed to write address:", err)
 	}
-	ss.tmu.Unlock()
 	// [END marshal_proto]
 }
