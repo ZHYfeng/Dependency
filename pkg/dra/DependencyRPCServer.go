@@ -75,8 +75,8 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 	}
 	for _, wa := range ss.corpusDependency.WriteAddress {
 		if len(wa.WriteAddress) == 0 {
-			reply.Condition[wa.Condition.ConditionAddress] = CloneCondition(wa.Condition)
-			//reply.Condition = append(reply.Condition, CloneCondition(wa.Condition))
+			//reply.Condition[wa.Condition.ConditionAddress] = CloneCondition(wa.Condition)
+			reply.Condition = append(reply.Condition, CloneCondition(wa.Condition))
 			return reply, nil
 		}
 	}
@@ -90,8 +90,8 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 	a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
 	if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
 		for _, wwa := range request.WriteAddress {
-			wa.WriteAddress[wwa.WriteAddress] = CloneWriteAddress(wwa)
-			//wa.WriteAddress = append(wa.WriteAddress, CloneWriteAddress(wwa))
+			//wa.WriteAddress[wwa.WriteAddress] = CloneWriteAddress(wwa)
+			wa.WriteAddress = append(wa.WriteAddress, CloneWriteAddress(wwa))
 		}
 		for sig, i := range ss.corpusDependency.CorpusRecursiveInput {
 			if ok := ss.checkDependencyInput(i); ok {
@@ -170,18 +170,18 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	ss.mu.Lock()
 	if i, ok := ss.corpusDependency.CorpusDependencyInput[request.Sig]; ok {
 		for _, u := range request.UncoveredAddress {
-			//i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
-			i.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
+			i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
+			//i.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
 		}
 	} else if i, ok := ss.corpusDependency.CorpusRecursiveInput[request.Sig]; ok {
 		for _, u := range request.UncoveredAddress {
-			//i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
-			i.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
+			i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
+			//i.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
 		}
 	} else if i, ok := ss.corpusDependency.CorpusErrorInput[request.Sig]; ok {
 		for _, u := range request.UncoveredAddress {
-			//i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
-			i.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
+			i.UncoveredAddress = append(i.UncoveredAddress, CloneUncoverAddress(u))
+			//i.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
 		}
 	} else {
 		cd := CloneInput(request)
@@ -296,8 +296,8 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 					temp := CloneWriteAddress(wwa)
 					temp.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
 
-					wc.WriteAddress[temp.WriteAddress] = temp
-					//wc.WriteAddress = append(wc.WriteAddress, temp)
+					//wc.WriteAddress[temp.WriteAddress] = temp
+					wc.WriteAddress = append(wc.WriteAddress, temp)
 
 					for _, wwc := range temp.WriteSyscall {
 						wwc.RunTimeDate = CloneRunTimeData(wc.RunTimeDate)
@@ -350,8 +350,8 @@ func CloneInput(input *Input) *Input {
 	}
 
 	for _, u := range input.UncoveredAddress {
-		inputClone.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
-		//inputClone.UncoveredAddress = append(inputClone.UncoveredAddress, CloneUncoverAddress(u))
+		//inputClone.UncoveredAddress[u.UncoveredAddress] = CloneUncoverAddress(u)
+		inputClone.UncoveredAddress = append(inputClone.UncoveredAddress, CloneUncoverAddress(u))
 	}
 
 	return inputClone
@@ -366,8 +366,8 @@ func CloneUncoverAddress(u *UncoveredAddress) *UncoveredAddress {
 		WriteAddress: []*WriteAddress{},
 	}
 	for _, wa := range u.WriteAddress {
-		u1.WriteAddress[wa.WriteAddress] = CloneWriteAddress(wa)
-		//u1.WriteAddress = append(u1.WriteAddress, CloneWriteAddress(wa))
+		//u1.WriteAddress[wa.WriteAddress] = CloneWriteAddress(wa)
+		u1.WriteAddress = append(u1.WriteAddress, CloneWriteAddress(wa))
 	}
 
 	return u1
@@ -396,8 +396,8 @@ func CloneWriteAddress(a *WriteAddress) *WriteAddress {
 	}
 
 	for _, s := range a.WriteSyscall {
-		a1.WriteSyscall[s.RunTimeDate.Address] = CloneSyscall(s)
-		//a1.WriteSyscall = append(a1.WriteSyscall, CloneSyscall(s))
+		//a1.WriteSyscall[s.RunTimeDate.Address] = CloneSyscall(s)
+		a1.WriteSyscall = append(a1.WriteSyscall, CloneSyscall(s))
 	}
 	return a1
 }
@@ -417,8 +417,8 @@ func CloneSyscall(s *Syscall) *Syscall {
 	}
 
 	for _, wa := range s.WriteAddress {
-		s1.WriteAddress[wa.WriteAddress] = CloneWriteAddress(wa)
-		//s1.WriteAddress = append(s1.WriteAddress, CloneWriteAddress(wa))
+		//s1.WriteAddress[wa.WriteAddress] = CloneWriteAddress(wa)
+		s1.WriteAddress = append(s1.WriteAddress, CloneWriteAddress(wa))
 	}
 
 	return s1
