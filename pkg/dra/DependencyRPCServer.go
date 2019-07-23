@@ -69,7 +69,9 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Task) (*Emp
 }
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
-	reply := &Conditions{}
+	reply := &Conditions{
+		Condition: map[uint64]*Condition{},
+	}
 	for _, wa := range ss.corpusDependency.WriteAddress {
 		if len(wa.WriteAddress) == 0 {
 			reply.Condition[wa.Condition.ConditionAddress] = CloneCondition(wa.Condition)
@@ -134,7 +136,9 @@ func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 }
 
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
-	reply := &Inputs{}
+	reply := &Inputs{
+		Input: map[string]*Input{},
+	}
 	i := 0
 	ss.imu.Lock()
 	for s, c := range ss.corpusDC {
@@ -191,7 +195,9 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 
 //
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
-	reply := &Inputs{}
+	reply := &Inputs{
+		Input: map[string]*Input{},
+	}
 	if f, ok := ss.fuzzers[request.Name]; ok {
 
 		ss.fmu.Lock()
@@ -451,9 +457,6 @@ func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
 }
 
 func CloneRunTimeData(d *RunTimeData) *RunTimeData {
-	if d == nil {
-		return nil
-	}
 	d1 := &RunTimeData{
 		Program:                 []byte{},
 		TaskStatus:              d.TaskStatus,
