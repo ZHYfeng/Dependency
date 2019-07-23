@@ -402,13 +402,13 @@ func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.Input) {
 	log.Logf(1, "dependencyInput : %v", dependencyInput)
 	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
 
-	d := pb.CloneInput(dependencyInput)
+	//d := pb.CloneInput(dependencyInput)
 	fuzzer.workQueue.enqueue(&WorkDependency{
-		dependencyInput: d,
+		dependencyInput: dependencyInput,
 	})
 
-	log.Logf(1, "d.Program : %s", d.Program)
-	for _, u := range d.UncoveredAddress {
+	log.Logf(1, "d.Program : %s", dependencyInput.Program)
+	for _, u := range dependencyInput.UncoveredAddress {
 		log.Logf(1, "u.RunTimeDate.Program : %s", u.RunTimeDate.Program)
 		for _, wa := range u.WriteAddress {
 			log.Logf(1, "wa.RunTimeDate.Program : %s", wa.RunTimeDate.Program)
