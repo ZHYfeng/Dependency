@@ -266,11 +266,15 @@ namespace dra {
         // or we can also set up a cache to avoid repeated query to STA.
 
         sta::MODS *res = nullptr;
+        llvm::BasicBlock *b;
+        if(this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()){
+            DBasicBlock *p = DM.Address2BB[u->condition_address()]->parent;
+            p->dump();
+            b = dra::getFinalBB(p->basicBlock);
+        } else {
+            return res;
+        }
 
-        DBasicBlock *p = DM.Address2BB[u->condition_address()]->parent;
-        p->dump();
-
-        llvm::BasicBlock *b = dra::getFinalBB(p->basicBlock);
 
 
         outputTime("GetAllGlobalWriteBBs : ");
@@ -372,16 +376,12 @@ namespace dra {
             bool parity = false;
             Condition *indirect_call = nullptr;
             for (auto i : c->ctx) {
-                std::cout << "for (auto i : c->ctx) {" << std::endl;
                 parity = !parity;
                 if (parity) {
-                    std::cout << "if (parity) {" << std::endl;
                     auto db = this->DM.get_DB_from_i(i);
                     if (db != nullptr) {
-                        std::cout << "if(db != nullptr){" << std::endl;
                         db->parent->compute_arrive();
                         if (indirect_call != nullptr) {
-                            std::cout << "if (indirect_call != nullptr) {" << std::endl;
                             indirect_call->add_right_branch_address(db->trace_pc_address);
 //                            (*indirect_call->mutable_right_branch_address())[db->trace_pc_address] = 0;
 
@@ -391,13 +391,10 @@ namespace dra {
                         }
                     }
                 } else {
-                    std::cout << "if (parity) { else " << std::endl;
                     auto db = this->DM.get_DB_from_i(i);
                     if (db != nullptr) {
-                        std::cout << "if(db != nullptr) {" << std::endl;
                         auto cc = db->critical_condition;
                         for (auto ccc : cc) {
-                            std::cout << "for (auto ccc : cc) {" << std::endl;
                             this->DM.set_condition(ccc.second);
                             auto ca = ccc.second->syzkaller_condition_address();
                             (*mm)[ca] = *ccc.second;
