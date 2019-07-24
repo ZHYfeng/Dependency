@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	programLength = 30
+	programLength = 40
 )
 
 // Proc represents a single fuzzing process (executor).
