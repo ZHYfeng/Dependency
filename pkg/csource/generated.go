@@ -2266,11 +2266,12 @@ static long syz_open_procfs(volatile long a0, volatile long a1)
 #include <sys/stat.h>
 #include <sys/types.h>
 
-static long syz_open_pts()
+static long syz_open_pts(volatile long a0, volatile long a1)
 {
-
-	long a0 = open(0xffffffffffffff9c, "/dev/ptmx", 2050, 0);
-	ioctl(a0, TIOCSPTLCK, 0);
+	int flag = 0x802;
+	int mode = 0x0;
+	int lock = 0;
+	ioctl(a0, TIOCSPTLCK, &lock);
 	int ptyno = 0;
 	if (ioctl(a0, TIOCGPTN, &ptyno)) {
 		return -1;
@@ -2278,7 +2279,7 @@ static long syz_open_pts()
 
 	char buf[128];
 	sprintf(buf, "/dev/pts/%d", ptyno);
-	return open(buf, a1, 0);
+	return open(buf, flag, mode);
 }
 #endif
 
