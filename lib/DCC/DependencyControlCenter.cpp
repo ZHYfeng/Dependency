@@ -70,7 +70,7 @@ namespace dra {
 
     void DependencyControlCenter::setRPCConnection() {
         this->client = new dra::DependencyRPCClient(
-                grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
+                grpc::CreateChannel("127.0.0.1:22223", grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
         dra::outputTime("GetVmOffsets");
