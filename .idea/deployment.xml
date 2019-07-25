@@ -2,15 +2,13 @@
 <project version="4">
   <component name="PublishConfigData">
     <serverData>
-      <paths name="Remote Host (03cc6013-b16c-4bd2-a72a-7819470d6cca)">
+      <paths name="Remote Host (8ca0f616-6909-4458-bae4-d8bb63fc5926)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.lPf5Psbl1j" local="$PROJECT_DIR$" />
+            <mapping deploy="/data/yhao/git/2018_dependency" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
-            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
-            <excludedPath local="true" path="$PROJECT_DIR$/build" />
           </excludedPaths>
         </serverdata>
       </paths>
