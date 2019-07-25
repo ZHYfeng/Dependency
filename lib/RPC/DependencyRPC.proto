@@ -177,6 +177,6 @@ message corpus {
 }
 
 message coverage {
-    map<uint32, uint32> coverage = 1;
+    map<uint32, uint32> address = 1;
 }
 

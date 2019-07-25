@@ -22,11 +22,11 @@
 
 namespace dra {
 
-    class coverage {
-    public:
-        std::time_t time;
-        unsigned long long int address;
-    };
+    // class coverage {
+    // public:
+    //     std::time_t time;
+    //     unsigned long long int address;
+    // };
 
     class uncover_info {
     public:
@@ -92,7 +92,7 @@ namespace dra {
 //        dra::all_data Add_Data;
         std::map<unsigned long long int, std::time_t> cover;
         std::map<unsigned long long int, uncover_info *> uncover;
-        std::vector<coverage *> time;
+        // std::vector<coverage *> time;
         unsigned long long int vmOffsets;
 
     };

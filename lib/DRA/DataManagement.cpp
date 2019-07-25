@@ -162,11 +162,11 @@ namespace dra {
 
                 if (this->cover.find(final_address) == this->cover.end()) {
                     auto current_time = std::time(NULL);
-                    coverage *c = new coverage();
-                    c->time = current_time;
-                    c->address = final_address;
+                    // coverage *c = new coverage();
+                    // c->time = current_time;
+                    // c->address = final_address;
                     this->cover[final_address] = current_time;
-                    this->time.push_back(c);
+                    // this->time.push_back(c);
                     std::cout << std::ctime(&current_time) << "new cover trace_pc_address " << std::hex << final_address
                               << "\n";
                     if (this->uncover.find(final_address) == this->uncover.end()) {
