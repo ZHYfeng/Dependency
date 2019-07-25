@@ -26,10 +26,12 @@ type fuzzer struct {
 type Server struct {
 	address uint32
 	Dport   int
-	//corpusDC []*Input
+	//corpusNewInput []*Input
 
-	imu      *sync.Mutex
-	corpusDC map[string]*Input
+	imu                *sync.Mutex
+	cov                *Coverage
+	corpusNewInput     map[string]*Input
+	corpusNewInputFlag map[string]bool
 
 	mu               *sync.Mutex
 	corpusDependency *Corpus
@@ -150,12 +152,12 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	i := 0
 	ss.imu.Lock()
 	defer ss.imu.Unlock()
-	for s, c := range ss.corpusDC {
+	for s, c := range ss.corpusNewInput {
 		if i < 1 {
 			//reply.Input[c.Sig] = CloneInput(c)
 			reply.Input = append(reply.Input, CloneInput(c))
 			i++
-			delete(ss.corpusDC, s)
+			delete(ss.corpusNewInput, s)
 		} else {
 		}
 	}
@@ -258,8 +260,33 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	defer ss.imu.Unlock()
 	reply := &Empty{}
 	input := CloneInput(request)
-	//ss.corpusDC = append(ss.corpusDC, input)
-	ss.corpusDC[input.Sig] = input
+	//ss.corpusNewInput = append(ss.corpusNewInput, input)
+	ss.corpusNewInput[input.Sig] = input
+	ss.corpusNewInputFlag[input.Sig] = false
+
+	var isDependency uint32
+	if input.Dependency {
+		isDependency = 1
+	} else {
+		isDependency = 0
+	}
+
+	for _, call := range input.Call {
+		for a := range call.Address {
+			ss.cov.Coverage[a] = isDependency
+		}
+	}
+
+	out, err := proto.Marshal(ss.cov)
+	if err != nil {
+		log.Fatalf("Failed to encode coverage:", err)
+	}
+	path := "coverage.bin"
+	_ = os.Remove(path)
+	if err := ioutil.WriteFile(path, out, 0644); err != nil {
+		log.Fatalf("Failed to write coverage:", err)
+	}
+
 	return reply, nil
 }
 
@@ -517,8 +544,12 @@ func (ss *Server) SetAddress(address uint32) {
 // RunDependencyRPCServer
 func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
-	//ss.corpusDC = []*Input{}
-	ss.corpusDC = make(map[string]*Input)
+	//ss.corpusNewInput = []*Input{}
+	ss.corpusNewInput = make(map[string]*Input)
+	ss.corpusNewInputFlag = make(map[string]bool)
+	ss.cov = &Coverage{
+		Coverage: map[uint32]uint32{},
+	}
 	ss.corpusDependency = &Corpus{
 		CorpusDependencyInput: map[string]*Input{},
 		CorpusRecursiveInput:  map[string]*Input{},

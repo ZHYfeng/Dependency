@@ -176,3 +176,7 @@ message corpus {
     map<uint64, WriteAddresses> WriteAddress = 4;
 }
 
+message coverage {
+    map<uint32, uint32> coverage = 1;
+}
+

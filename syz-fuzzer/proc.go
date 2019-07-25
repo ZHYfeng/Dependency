@@ -155,7 +155,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		}
 		inputCover.Merge(thisCover)
 
-		proc.fuzzer.checkNewCoverage(item.p, info)
+		//proc.fuzzer.checkNewCoverage(item.p, info)
 		//for i, c := range info.Calls {
 		//	ii := uint32(i)
 		//	if cc, ok := input.Call[ii]; !ok {
