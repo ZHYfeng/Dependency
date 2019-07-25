@@ -5,7 +5,7 @@
 
 # test
 ```
-/data/yhao/git/2018_dependency/build/tools/DRA/dra -asm=/home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.s -objdump=/data/yhao/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=/data/yhao/benchmark/linux/result/taint_info/taint_info_tty_ioctl_serialize /home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.bc 2>&1 | tee ./result-cpp.log
+/data/yhao/git/2018_dependency/build/tools/DRA/dra -asm=/home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.s -objdump=/data/yhao/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=/data/yhao/git/work/result/taint_info/taint_info_tty_ioctl_serialize /home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.bc 2>&1 | tee ./result-cpp.log
 ```
 
 # run syzkaller
@@ -37,4 +37,4 @@ scp -P 1569 -F "/dev/null" -o "UserKnownHostsFile=/dev/null" -o "BatchMode=yes" 
 2019/05/22 12:58:44 running command: qemu-system-x86_64 []string{"-m", "2048", "-smp", "2", "-net", "nic,model=e1000", "-net", "user,host=10.0.2.10,hostfwd=tcp::1569-:22", "-display", "none", "-serial", "stdio", "-no-reboot", "-enable-kvm", "-cpu", "host", "-hda", "/data/yhao/benchmark/linux/img/stretch.img", "-snapshot", "-kernel", "/data/yhao/benchmark/linux/12-linux-clang-np/arch/x86/boot/bzImage", "-append", "earlyprintk=serial oops=panic nmi_watchdog=panic panic=1 ftrace_dump_on_oops=orig_cpu rodata=n vsyscall=native net.ifnames=0 biosdevname=0 root=/dev/sda console=ttyS0 kvm-intel.nested=1 kvm-intel.unrestricted_guest=1 kvm-intel.vmm_exclusive=1 kvm-intel.fasteoi=1 kvm-intel.ept=1 kvm-intel.flexpriority=1 kvm-intel.vpid=1 kvm-intel.emulate_invalid_guest_state=1 kvm-intel.eptad=1 kvm-intel.enable_shadow_vmcs=1 kvm-intel.pml=1 kvm-intel.enable_apicv=1 "}
 
 # remove log file
-sudo rm -fr ./cover_uncover.txt dependency.log result-cpp.log result-syzkaller.log data.txt data.bin ./workdir/
+sudo rm -fr ./cover_uncover.txt dependency.log result-cpp.log result-syzkaller.log data.txt data.bin coverage.bin ./workdir/
