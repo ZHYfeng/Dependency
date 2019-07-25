@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="terran">
+    <serverData>
+      <paths name="Remote Host (03cc6013-b16c-4bd2-a72a-7819470d6cca)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.lPf5Psbl1j" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/build" />
+            <excludedPath local="true" path="$PROJECT_DIR$/build" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="terran">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/git/2018_dependency" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
