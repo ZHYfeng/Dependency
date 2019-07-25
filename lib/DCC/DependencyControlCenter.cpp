@@ -262,9 +262,6 @@ namespace dra {
 
     sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u) {
 
-        //TODO: need to free "allBasicblock" and "cmds" to avoid memory leak,
-        // or we can also set up a cache to avoid repeated query to STA.
-
         sta::MODS *res = nullptr;
         llvm::BasicBlock *b;
         if(this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()){
@@ -274,8 +271,6 @@ namespace dra {
         } else {
             return res;
         }
-
-
 
         outputTime("GetAllGlobalWriteBBs : ");
 
@@ -309,7 +304,6 @@ namespace dra {
 
             this->staticResult[b].insert(std::pair<uint64_t, sta::MODS *>(idx, res));
         }
-
 
         return res;
     }
