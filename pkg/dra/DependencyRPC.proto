@@ -159,7 +159,7 @@ message Input {
 }
 
 message Inputs {
-    //    map<string, Input> input = 1;
+    // map<string, Input> input = 1;
     repeated Input input = 1;
 }
 

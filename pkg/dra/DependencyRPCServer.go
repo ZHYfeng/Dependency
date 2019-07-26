@@ -354,7 +354,35 @@ func (ss Server) checkCondition(wc *Syscall) (res bool) {
 
 // not finish
 func (m *Input) Merge(i *Input) {
+	if m.Sig != i.Sig {
+		return
+	}
 
+	for _, u := range i.UncoveredAddress {
+		for _, mu := range m.UncoveredAddress {
+			if u.UncoveredAddress == mu.UncoveredAddress {
+				mu.MargeUncoveredAddress(u)
+			}
+		}
+	}
+
+	return
+}
+
+func (m *UncoveredAddress) MargeUncoveredAddress(d *UncoveredAddress) {
+	if m.UncoveredAddress != d.UncoveredAddress {
+		return
+	}
+
+	return
+}
+
+func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
+	if d == nil {
+		return
+	}
+
+	return
 }
 
 func CloneInput(input *Input) *Input {
@@ -499,15 +527,6 @@ func CloneCondition(c *Condition) *Condition {
 	}
 
 	return c1
-}
-
-// not finish
-func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
-	if d == nil {
-		return
-	}
-
-	return
 }
 
 func CloneRunTimeData(d *RunTimeData) *RunTimeData {
