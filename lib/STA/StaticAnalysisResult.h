@@ -91,6 +91,10 @@ namespace sta {
 
         std::set<llvm::BasicBlock*> *get_all_successors(llvm::BasicBlock *bb);
 
+        void _get_all_successors(llvm::BasicBlock *bb, std::set<llvm::BasicBlock*> &res);
+
+        void getBranchSuccs(llvm::Instruction *inst, unsigned idx, std::set<llvm::BasicBlock*> &res);
+
         llvm::DominatorTree *get_dom_tree(llvm::Function*);
 
         //This is a temporary function...
@@ -239,7 +243,8 @@ namespace sta {
             if (!tr) {
                 return false;
             }
-            return (tr->find("CONST_INT") != tr->end());
+            return (tr->find("CONST_INT") != tr->end() || 
+                    tr->find("CONST_NULLPTR") != tr->end());
         }
 
         std::vector<std::vector<llvm::Instruction*>> ctxs;
@@ -263,10 +268,10 @@ namespace sta {
             return &(this->ctxs);
         }
 
-
-
         std::vector<cmd_ctx *> all_cmd_ctx;
 
+        //hz: TODO: the implementation is memory-consuming since it needs to repeatedly copy contexts for each cmd,
+        //we can store only the ctx pointer and group the cmds associating with a same ctx.
         std::vector<cmd_ctx *> *get_cmd_ctx() {
             if (all_cmd_ctx.empty()) {
                 for (auto &x : this->mod_inf) {
