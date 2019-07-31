@@ -95,7 +95,7 @@ func (d *DRPCClient) SendLog(log string) {
 	// Contact the server and print out its response.
 	d.logMu.Lock()
 	timeStr := time.Now().Format("2006/01/02 15:04:05 ")
-	d.log = d.log + timeStr + *(d.name) + " fuzzer : " + log + "\n"
+	d.log = d.log + timeStr + *(d.name) + " syz_fuzzer : " + log + "\n"
 	d.logMu.Unlock()
 	return
 }

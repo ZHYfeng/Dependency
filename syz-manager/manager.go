@@ -191,8 +191,9 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 
 	// Create gRPC server.
 	ss := &dra.Server{}
+	ss.Address = mgr.cfg.DRPC
 	ss.RunDependencyRPCServer(&mgr.corpus)
-	mgr.dprot = ss.Dport
+	mgr.dprot = ss.Port
 
 	vmlinux := filepath.Join(mgr.cfg.KernelObj, mgr.sysTarget.KernelObject)
 	VMOFFset, _ := getVMOffset(vmlinux, mgr.cfg.TargetOS)
