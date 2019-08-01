@@ -61,7 +61,7 @@ func (ctx *mutator) splice() bool {
 	idx := r.Intn(len(p.Calls))
 	p.Calls = append(p.Calls[:idx], append(p0c.Calls, p.Calls[idx:]...)...)
 	for i := len(p.Calls) - 1; i >= ctx.ncalls; i-- {
-		p.removeCall(i)
+		p.RemoveCall(i)
 	}
 	return true
 }
@@ -127,7 +127,7 @@ func (ctx *mutator) removeCall() bool {
 		return false
 	}
 	idx := r.Intn(len(p.Calls))
-	p.removeCall(idx)
+	p.RemoveCall(idx)
 	return true
 }
 
@@ -668,7 +668,7 @@ func (p *Prog) Splice(rp *Prog, idx uint32, ncalls int) bool {
 	p0c := rp.Clone()
 	p.Calls = append(p.Calls[:idx], append(p0c.Calls, p.Calls[idx:]...)...)
 	for i := len(p.Calls) - 1; i >= ncalls; i-- {
-		p.removeCall(i)
+		p.RemoveCall(i)
 	}
 	return true
 }
@@ -772,7 +772,7 @@ func (p *Prog) InsertCall(c0c []*Call, idx uint32, ncalls int) {
 	c := p.Calls[idx]
 	p.insertBefore(c, c0c)
 	for i := len(p.Calls) - 1; i >= ncalls; i-- {
-		p.removeCall(i)
+		p.RemoveCall(i)
 	}
 }
 

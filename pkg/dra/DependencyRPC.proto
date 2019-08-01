@@ -92,17 +92,19 @@ message Dependencytask {
     string name = 41;
 }
 
+enum taskStatus {
+    untested = 0;
+    recursive = 1;
+    tested = 2;
+    out = 3;
+    cover = 4;
+}
+
 message runTimeData {
     bytes program = 2;
-    enum taskStatus {
-        untested = 0;
-        recursive = 1;
-        tested = 2;
-        out = 3;
-        cover = 4;
-    }
     taskStatus task_status = 3;
     uint32 rcursive_count = 4;
+    uint32 priority = 5;
 
     uint32 idx = 10;
 
@@ -219,6 +221,14 @@ message Dependency {
 
 }
 
+message RecursiveDependency {
+
+    Input input = 1;
+    UncoveredAddress uncovered_address = 2;
+    repeated WriteAddress write_address = 3;
+
+}
+
 message Corpus {
     map<string, Input> input = 1;
     map<uint32, UncoveredAddress> uncovered_address = 4;
@@ -232,16 +242,21 @@ message Corpus {
 message Task {
     string sig = 1;
     uint32 index = 2;
+    bytes program = 3;
 
     string write_sig = 11;
     uint32 write_index = 12;
-    uint32 write_address = 13;
+    bytes write_program = 13;
+    uint32 write_address = 14;
 
-    repeated uint32 uncovered_address = 10;
+    // uncovered address, priority
+    map<uint32, runTimeData> uncovered_address = 21;
+    taskStatus task_status = 22;
+    map<uint32, runTimeData> covered_address = 23;
 }
 
 message Tasks {
-    map<uint32, Task> task = 1;
+    repeated Task task = 1;
 }
 
 message Coverage {

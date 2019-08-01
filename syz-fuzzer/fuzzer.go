@@ -283,9 +283,9 @@ func (fuzzer *Fuzzer) pollLoop() {
 		//fuzzer.dManager.SendDependencyInput(sig.String())
 		log.Logf(0, "len(fuzzer.workQueue.dependency) %v", len(fuzzer.workQueue.dependency))
 		if len(fuzzer.workQueue.dependency) == 0 {
-			newDependencyInput := fuzzer.dManager.GetDependencyInput(fuzzer.name)
-			for _, DependencyInput := range newDependencyInput.Input {
-				fuzzer.addDInputFromAnotherFuzzer(DependencyInput)
+			newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
+			for _, Task := range newDependencyTasks.Task {
+				fuzzer.addDInputFromAnotherFuzzer(Task)
 			}
 		}
 		fuzzer.dManager.SSendLog()
@@ -398,25 +398,14 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 	}
 }
 
-func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(dependencyInput *pb.Input) {
-	log.Logf(1, "dependencyInput : %v", dependencyInput)
+func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(Task *pb.Task) {
+	log.Logf(1, "dependencyInput : %v", Task)
 	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
 
 	//d := pb.CloneInput(dependencyInput)
 	fuzzer.workQueue.enqueue(&WorkDependency{
-		dependencyInput: dependencyInput,
+		task: Task,
 	})
-
-	log.Logf(1, "d.Program : %s", dependencyInput.Program)
-	for _, u := range dependencyInput.UncoveredAddress {
-		log.Logf(1, "u.RunTimeDate.Program : %s", u.RunTimeDate.Program)
-		for _, wa := range u.WriteAddress {
-			log.Logf(1, "wa.RunTimeDate.Program : %s", wa.RunTimeDate.Program)
-			for _, wc := range wa.WriteSyscall {
-				log.Logf(1, "wc.RunTimeDate.Program : %s", wc.RunTimeDate.Program)
-			}
-		}
-	}
 
 }
 
@@ -561,7 +550,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	}
 
 	if tflags {
-		//fuzzer.dManager.SendInput(input)
+		//fuzzer.dManager.SendNewInput(input)
 	}
 
 	//for _, cc := range info.Calls {

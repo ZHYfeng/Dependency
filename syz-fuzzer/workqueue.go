@@ -66,8 +66,8 @@ type WorkSmash struct {
 // WorkDependency are programs from dependency analysis.
 // During WorkDependency these programs receive a dependency mutation.
 type WorkDependency struct {
-	dependencyInput *pb.Input
-	call            int
+	task *pb.Task
+	call int
 }
 
 func newWorkQueue(procs int, needCandidates chan struct{}) *WorkQueue {
