@@ -24,7 +24,7 @@ service DependencyRPC {
     }
     rpc GetTasks (Empty) returns (Tasks) {
     }
-    rpc ReturnTasks (Tasks) returns (Empty) {
+    rpc ReturnTasks (Task) returns (Empty) {
     }
     rpc GetDependencyInput (Empty) returns (Inputs) {
     }
