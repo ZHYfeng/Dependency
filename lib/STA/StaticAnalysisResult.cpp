@@ -331,18 +331,37 @@ namespace sta {
         return p_mod_bbs;
     }
 
-    std::set<llvm::BasicBlock *> *StaticAnalysisResult::get_all_successors(llvm::BasicBlock *bb) {
+    //NOTE: this will be inclusive (the successor list also contains the root BB.)
+    void StaticAnalysisResult::_get_all_successors(llvm::BasicBlock *bb, std::set<llvm::BasicBlock*> &res) {
+        if (!bb || res.find(bb) != res.end()) {
+            return;
+        }
+        //A result cache.
+        if (this->succ_map.find(bb) != this->succ_map.end()) {
+            res.insert(this->succ_map[bb].begin(),this->succ_map[bb].end());
+            return;
+        }
+        //inclusive
+        res.insert(bb);
+        for (llvm::succ_iterator sit = llvm::succ_begin(bb), set = llvm::succ_end(bb); sit != set; ++sit) {
+            this->_get_all_successors(*sit,res);
+        }
+        return;
+    }
+
+    //NOTE: this will be inclusive (the successor list also contains the root BB.)
+    std::set<llvm::BasicBlock*> *StaticAnalysisResult::get_all_successors(llvm::BasicBlock *bb) {
+        if (!bb) {
+            return nullptr;
+        }
+        //A result cache.
         if (this->succ_map.find(bb) != this->succ_map.end()) {
             return &this->succ_map[bb];
         }
-        for (llvm::succ_iterator sit = llvm::succ_begin(bb), set = llvm::succ_end(bb); sit != set; ++sit) {
-            llvm::BasicBlock *curr_bb = *sit;
-            this->succ_map[bb].insert(curr_bb);
-            if (this->succ_map.find(curr_bb) == this->succ_map.end()) {
-                this->get_all_successors(curr_bb);
-            }
-            this->succ_map[bb].insert(this->succ_map[curr_bb].begin(), this->succ_map[curr_bb].end());
-        }
+        std::set<llvm::BasicBlock*> res;
+        res.clear();
+        this->_get_all_successors(bb,res);
+        this->succ_map[bb] = res;
         return &this->succ_map[bb];
     }
 
@@ -357,6 +376,43 @@ namespace sta {
         return this->dom_map[pfunc];
     }
 
+    void StaticAnalysisResult::getBranchSuccs(llvm::Instruction *inst, unsigned idx, std::set<llvm::BasicBlock*> &res) {
+        if (!inst) {
+            return;
+        }
+        llvm::BranchInst *br_inst = llvm::dyn_cast<llvm::BranchInst>(inst);
+        llvm::SwitchInst *sw_inst = llvm::dyn_cast<llvm::SwitchInst>(inst);
+        //TODO: This is quite awkward, from the documentation, "getNumSuccessors()" and "getSuccessor()" are member functions of "llvm::Instruction",
+        //but it will throw compilation error when we try to invoke them just from "inst", maybe it's because of llvm version.
+        unsigned n_succs = 0;
+        if (br_inst) {
+            n_succs = br_inst->getNumSuccessors();
+        } else if (sw_inst) {
+            n_succs = sw_inst->getNumSuccessors();
+        } else {
+            return;
+        }
+        if (idx >= n_succs) {
+            return;
+        }
+        std::set<llvm::BasicBlock*> succ_this, succ_other;
+        for (unsigned i = 0; i < n_succs; ++i) {
+            llvm::BasicBlock *succ_bb = (br_inst ? br_inst->getSuccessor(i) : sw_inst->getSuccessor(i));
+            std::set<llvm::BasicBlock*> *succs = this->get_all_successors(succ_bb);
+            if (!succs) {
+                continue;
+            }
+            if (i == idx) {
+                succ_this.insert(succs->begin(), succs->end());
+            } else {
+                succ_other.insert(succs->begin(), succs->end());
+            }
+        }
+        std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(),
+                            std::inserter(res, res.end()));
+        return;
+    }
+
     void StaticAnalysisResult::filterMods(MODS *pmods, llvm::BasicBlock *B, unsigned int branch_id) {
         if ((!pmods) || pmods->empty() || !B) {
             return;
@@ -366,42 +422,12 @@ namespace sta {
             return;
         }
         //Get the successors only found for this "branch_id".
-        std::set<llvm::BasicBlock *> succ_this, succ_other, succ_uniq;
-        if (llvm::dyn_cast<llvm::BranchInst>(inst)) {
-            llvm::BranchInst *br_inst = llvm::dyn_cast<llvm::BranchInst>(inst);
-            for (unsigned i = 0; i < br_inst->getNumSuccessors(); ++i) {
-                std::set<llvm::BasicBlock *> *succs = this->get_all_successors(br_inst->getSuccessor(i));
-                if (!succs) {
-                    continue;
-                }
-                if (i == branch_id) {
-                    succ_this.insert(br_inst->getSuccessor(i));
-                    succ_this.insert(succs->begin(), succs->end());
-                } else {
-                    succ_other.insert(br_inst->getSuccessor(i));
-                    succ_other.insert(succs->begin(), succs->end());
-                }
-            }
-        } else if (llvm::dyn_cast<llvm::SwitchInst>(inst)) {
-            llvm::SwitchInst *sw_inst = llvm::dyn_cast<llvm::SwitchInst>(inst);
-            for (unsigned i = 0; i < sw_inst->getNumSuccessors(); ++i) {
-                std::set<llvm::BasicBlock *> *succs = this->get_all_successors(sw_inst->getSuccessor(i));
-                if (!succs) {
-                    continue;
-                }
-                if (i == branch_id) {
-                    succ_this.insert(sw_inst->getSuccessor(i));
-                    succ_this.insert(succs->begin(), succs->end());
-                } else {
-                    succ_other.insert(sw_inst->getSuccessor(i));
-                    succ_other.insert(succs->begin(), succs->end());
-                }
-            }
+        std::set<llvm::BasicBlock*> succ_uniq;
+        if (llvm::dyn_cast<llvm::BranchInst>(inst) || llvm::dyn_cast<llvm::SwitchInst>(inst)) {
+            this->getBranchSuccs(inst,branch_id,succ_uniq);
         } else {
             return;
         }
-        std::set_difference(succ_this.begin(), succ_this.end(), succ_other.begin(), succ_other.end(),
-                            std::inserter(succ_uniq, succ_uniq.end()));
         llvm::DominatorTree *pdom = this->get_dom_tree(B->getParent());
         std::remove_if(pmods->begin(), pmods->end(),
                        [succ_uniq, pdom, B](Mod *pmod) {
