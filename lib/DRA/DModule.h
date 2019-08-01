@@ -19,7 +19,7 @@ namespace dra {
 } /* namespace dra */
 
 #define TEST 0
-#define DEBUG 0
+#define DBEBUGMAP 0
 #define DEBUGBC 0
 #define DEBUGOBJDUMP 0
 #define DEBUGASM 0

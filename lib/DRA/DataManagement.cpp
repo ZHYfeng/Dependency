@@ -372,10 +372,10 @@ namespace dra {
                 c->add_syzkaller_right_branch_address(this->getSyzkallerAddress(a));
 //            (*c->mutable_right_branch_address())[(this->getSyzkallerAddress(a.first))] = 0;
             }
-            for (auto a : c->wrong_branch_address()) {
-                c->add_syzkaller_wrong_branch_address(this->getSyzkallerAddress(a));
-//            (*c->mutable_wrong_branch_address())[(this->getSyzkallerAddress(a.first))] = 0;
-            }
+//            for (auto a : c->wrong_branch_address()) {
+//                c->add_syzkaller_wrong_branch_address(this->getSyzkallerAddress(a));
+////            (*c->mutable_wrong_branch_address())[(this->getSyzkallerAddress(a.first))] = 0;
+//            }
         }
     }
 

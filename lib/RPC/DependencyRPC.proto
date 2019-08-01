@@ -4,56 +4,36 @@ package dra;
 
 // The DependencyRPC service definition.
 service DependencyRPC {
-
+    
     // DRA and syz-manager
     rpc GetVmOffsets (Empty) returns (Empty) {
     }
     rpc GetNewInput (Empty) returns (Inputs) {
     }
-    rpc SendDependencyInput (Input) returns (Empty) {
+    rpc SendDependency (Dependency) returns (Empty) {
     }
     rpc GetCondition (Empty) returns (Conditions) {
     }
     rpc SendWriteAddress (WriteAddresses) returns (Empty) {
     }
-
+    
     //syz-fuzzer and syz-manager
     rpc Connect (Empty) returns (Empty) {
     }
     rpc SendNewInput (Input) returns (Empty) {
     }
+    rpc GetTasks (Empty) returns (Tasks) {
+    }
+    rpc ReturnTasks (Tasks) returns (Empty) {
+    }
     rpc GetDependencyInput (Empty) returns (Inputs) {
     }
-    rpc ReturnDependencyInput (task) returns (Empty) {
+    rpc ReturnDependencyInput (Dependencytask) returns (Empty) {
     }
     rpc SendLog (Empty) returns (Empty) {
     }
 }
 
-message runTimeData {
-    bytes program = 2;
-    enum taskStatus {
-        untested = 0;
-        recursive = 1;
-        tested = 2;
-        out = 3;
-        cover = 4;
-    }
-    taskStatus task_status = 3;
-    uint32 rcursive_count = 4;
-
-    uint32 idx = 10;
-
-    bool checkCondition = 11;
-    uint32 condition_address = 12;
-
-    bool checkAddress = 13;
-    uint32 address = 14;
-
-    bool checkRightBranchAddress = 15;
-    //    map<uint32, uint32> right_branch_address = 16;
-    repeated uint32 right_branch_address = 16;
-}
 
 message Empty {
     uint32 address = 1;
@@ -61,65 +41,33 @@ message Empty {
 }
 
 message Condition {
-
+    
     uint64 condition_address = 1;
     uint32 syzkaller_condition_address = 2;
     uint64 uncovered_address = 3;
     uint32 syzkaller_uncovered_address = 4;
-
+    
     uint32 idx = 5;
     uint64 successor = 6;
-
+    
     //    map<uint64, uint32> right_branch_address = 7;
     //    map<uint32, uint32> syzkaller_right_branch_address = 8;
     //    map<uint64, uint32> wrong_branch_address = 9;
     //    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
-
+    
     repeated uint64 right_branch_address = 7;
     repeated uint32 syzkaller_right_branch_address = 8;
-    repeated uint64 wrong_branch_address = 9;
-    repeated uint32 syzkaller_wrong_branch_address = 10;
-
+    //    repeated uint64 wrong_branch_address = 9;
+    //    repeated uint32 syzkaller_wrong_branch_address = 10;
+    
 }
+
 
 message Conditions {
     //    map<uint64, Condition> condition = 10;
     repeated Condition condition = 10;
 }
 
-message Syscall {
-    string name = 1;
-    uint64 cmd = 2;
-
-    //    repeated Condition critical_condition = 4;
-    map<uint32, Condition> critical_condition = 4;
-    // it is the data of this syscall
-    runTimeData run_time_date = 5;
-
-
-    repeated WriteAddress write_address = 11;
-    //    map<uint32, WriteAddress> write_address = 11;
-}
-
-message WriteAddress {
-    uint32 repeat = 7;
-    uint32 real_repeat = 8;
-
-    uint32 prio = 6;
-
-    // the address writes to global variable
-    uint32 write_address = 2;
-    // the address of condition is related to this global variable
-    uint32 condition_address = 3;
-
-    //    map<uint32, Input> write_input = 4;
-    //    map<uint32, Syscall> write_syscall = 5;
-    repeated Input write_input = 4;
-    repeated Syscall write_syscall = 5;
-
-    // it is the data of uncovered address
-    runTimeData run_time_date = 11;
-}
 
 message WriteAddresses {
     Condition condition = 1;
@@ -127,14 +75,6 @@ message WriteAddresses {
     repeated WriteAddress write_address = 4;
 }
 
-message UncoveredAddress {
-    uint32 condition_address = 3;
-    uint32 uncovered_address = 1;
-
-    runTimeData run_time_date = 5;
-    //    map<uint32, WriteAddress> write_address = 4;
-    repeated WriteAddress write_address = 4;
-}
 
 message Call {
     uint32 idx = 1;
@@ -142,41 +82,189 @@ message Call {
     //    repeated uint32 address = 2;
 }
 
-message Input {
-    // for input
-    string sig = 11; // hash value for each input from syzkaller
-    bytes program = 12;
-    map<uint32, Call> call = 13;
-
-    // for dependency
-    bool dependency = 21;
-    //    map<uint32, UncoveredAddress> uncovered_address = 22;
-    repeated UncoveredAddress uncovered_address = 22;
-
-    // for write address
-    uint32 write_address = 31;
-    uint32 idx = 32;
-}
 
 message Inputs {
-    //    map<string, Input> input = 1;
+    // map<string, Input> input = 1;
     repeated Input input = 1;
 }
 
 //for syz-fuzzer
-message task {
+message Dependencytask {
     Input input = 1;
     string name = 41;
 }
 
-message corpus {
-    map<string, Input> corpusDependencyInput = 1;
-    map<string, Input> corpusRecursiveInput = 2;
-    map<string, Input> corpusErrorInput = 3;
-    map<uint64, WriteAddresses> WriteAddress = 4;
+enum taskStatus {
+    untested = 0;
+    recursive = 1;
+    tested = 2;
+    out = 3;
+    covered = 4;
 }
 
-message coverage {
-    map<uint32, uint32> address = 1;
+message runTimeData {
+    bytes program = 2;
+    taskStatus task_status = 3;
+    uint32 rcursive_count = 4;
+    uint32 priority = 5;
+    
+    uint32 idx = 10;
+    
+    bool checkCondition = 11;
+    uint32 condition_address = 12;
+    
+    bool checkAddress = 13;
+    uint32 address = 14;
+    
+    bool checkRightBranchAddress = 15;
+    //    map<uint32, uint32> right_branch_address = 16;
+    repeated uint32 right_branch_address = 16;
+}
+
+message IoctlCmdInput {
+    
+    string sig = 1;
+    // bits
+    uint32 index = 2;
+    
+    uint64 cmd = 11;
+    
+    uint32 write_address = 21;
+    
+}
+
+message IoctlCmd {
+    string name = 1;
+    uint64 cmd = 2;
+    
+    //    repeated Condition critical_condition = 4;
+    //    map<uint32, Condition> critical_condition = 4;
+    // it is the data of this syscall
+    runTimeData run_time_date = 5;
+    
+    //    repeated WriteAddress write_address = 11;
+    map<uint32, uint32> write_address = 11;
+    // sig, write address
+    //    map<string, IoctlCmdInput> input = 12;
+}
+
+message WriteAddress {
+    
+    // the address writes to global variable
+    uint32 write_address = 2;
+    // the address of condition is related to this global variable
+    uint32 condition_address = 3;
+    
+    //    map<uint32, Input> write_input = 4;
+    //    map<uint32, Syscall> write_syscall = 5;
+    //    repeated Input write_input = 4;
+    //    repeated Syscall write_syscall = 5;
+    
+    // uncovered address,
+    map<uint32, writeAddressAttributes> uncovered_address = 23;
+    map<uint64, uint32> ioctl_cmd = 24;
+    // sig, index by bits
+    map<string, uint32> input = 25;
+    
+    // it is the data of uncovered address
+    runTimeData run_time_date = 11;
+}
+
+message writeAddressAttributes {
+    // the address writes to global variable
+    uint32 write_address = 2;
+    uint32 repeat = 7;
+    uint32 prio = 6;
+}
+
+message UncoveredAddress {
+    
+    uint32 condition_address = 1;
+    uint32 uncovered_address = 2;
+    repeated uint32 right_branch_address = 3;
+    
+    // sig, index by bits
+    map<string, uint32> input = 22;
+    map<uint32, writeAddressAttributes> write_address = 23;
+    
+    runTimeData run_time_date = 8;
+    
+    //    map<uint64, uint32> right_branch_address = 7;
+    //    map<uint32, uint32> syzkaller_right_branch_address = 8;
+    //    map<uint64, uint32> wrong_branch_address = 9;
+    //    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
+    
+    //    repeated uint64 right_branch_address = 7;
+    //    repeated uint32 right_branch_address = 8;
+    //    repeated uint64 wrong_branch_address = 9;
+    //    repeated uint32 syzkaller_wrong_branch_address = 10;
+}
+
+message Input {
+    // for program
+    string sig = 11; // hash value for each input from syzkaller
+    bytes program = 12;
+    map<uint32, Call> call = 13;
+    
+    // for dependency
+    bool dependency = 21;
+    // uncovered address, index by bits
+    map<uint32, uint32> uncovered_address = 22;
+    // write address, index by bits
+    map<uint32, uint32> write_address = 25;
+    
+}
+
+message Dependency {
+    
+    Input input = 1;
+    UncoveredAddress uncovered_address = 2;
+    repeated WriteAddress write_address = 3;
+    
+}
+
+
+
+message RecursiveDependency {
+    
+    Input input = 1;
+    UncoveredAddress uncovered_address = 2;
+    repeated WriteAddress write_address = 3;
+    
+}
+
+message Corpus {
+    map<string, Input> input = 1;
+    map<uint32, UncoveredAddress> uncovered_address = 4;
+    map<uint32, WriteAddress> write_address = 5;
+    map<uint64, IoctlCmd> ioctl_cmd = 6;
+    Tasks tasks = 7;
+    Coverage coverage = 8;
+    map<string, Input> new_input = 9;
+}
+
+message Task {
+    string sig = 1;
+    uint32 index = 2;
+    bytes program = 3;
+    
+    string write_sig = 11;
+    uint32 write_index = 12;
+    bytes write_program = 13;
+    uint32 write_address = 14;
+    
+    // uncovered address, priority
+    map<uint32, runTimeData> uncovered_address = 21;
+    taskStatus task_status = 22;
+    map<uint32, runTimeData> covered_address = 23;
+}
+
+message Tasks {
+    string name = 41;
+    repeated Task task = 1;
+}
+
+message Coverage {
+    map<uint32, uint32> coverage = 1;
 }
 

@@ -24,7 +24,7 @@ namespace dra {
     DModule::~DModule() = default;
 
     void DModule::ReadBC(std::string InputFilename) {
-#if DEBUG
+#if DEBUGBC
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadIR***************************" << std::endl;
 #endif
@@ -97,7 +97,7 @@ namespace dra {
         unsigned long start;
 
         DFunction *function;
-#if DEBUG
+#if DEBUGOBJDUMP
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadObjdump**********************" << std::endl;
 #endif
@@ -250,7 +250,7 @@ namespace dra {
         unsigned int trace_num;
 
         DFunction *function;
-#if DEBUG
+#if DEBUGASM
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadAsmSourceCode****************" << std::endl;
 #endif
@@ -277,7 +277,7 @@ namespace dra {
 #endif
                             if (line.find(".Lfunc_end") < line.size()) {
                                 function->InstNum = InstNum;
-#if DEBUG
+#if DEBUGASM
                                 if (CallInstNum != function->InstASM.size()) {
                                     std::cout << "--------------------------------------------" << std::endl;
                                     std::cout << "different function : " << std::endl;
@@ -285,7 +285,6 @@ namespace dra {
                                     std::cout << "FunctionName :" << FunctionName << std::endl;
                                     std::cout << "InstASM.size() :" << function->InstASM.size() << std::endl;
                                     std::cout << "CallInstNum :" << CallInstNum << std::endl;
-                                    std::cout << "tracr_num :" << tracr_num << std::endl;
                                     for (auto i : function->InstASM) {
                                         std::cout << "OInst :" << i->OInst << std::endl;
                                         std::cout << "SInst :" << i->SInst << std::endl;
@@ -462,7 +461,7 @@ namespace dra {
         } else {
             std::cerr << "Unable to open AssemblySourceCodeFile " << AssemblySourceCode << ">\n";
         }
-#if DEBUG
+#if DEBUGASM
         std::cout << "****************ReadAsmSourceCode****************" << std::endl;
 #endif
     }
@@ -504,7 +503,7 @@ namespace dra {
                 case dra::FunctionKind::IR: {
                     if (function->isIR()) {
                         AddRepeatFunction(function, kind);
-#if DEBUG
+#if DBEBUGMAP
                         std::cout << "ir repeat function : " << std::endl;
                         function->dump();
 #endif
@@ -518,7 +517,7 @@ namespace dra {
                 case dra::FunctionKind::O: {
                     if (function->isObjudump()) {
                         AddRepeatFunction(function, kind);
-#if DEBUG
+#if DBEBUGMAP
                         std::cout << "o repeat function : " << std::endl;
                         function->dump();
 #endif
@@ -532,7 +531,7 @@ namespace dra {
                 case dra::FunctionKind::S: {
                     if (function->isAsmSourceCode()) {
                         AddRepeatFunction(function, kind);
-#if DEBUG
+#if DBEBUGMAP
                         std::cout << "s repeat function : " << std::endl;
                         function->dump();
 #endif

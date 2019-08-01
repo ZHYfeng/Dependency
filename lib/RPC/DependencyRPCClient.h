@@ -12,7 +12,7 @@
 
 #include "DependencyRPC.grpc.pb.h"
 
-#define DEBUG_RPC 1
+#define DEBUG_RPC 0
 
 namespace dra {
 
@@ -26,9 +26,7 @@ namespace dra {
 
         Inputs *GetNewInput();
 
-        Empty *SendDependencyInput(const Input &request);
-
-        Inputs *GetDependencyInput();
+        Empty *SendDependency(const Dependency &request);
 
         Conditions *GetCondition();
 

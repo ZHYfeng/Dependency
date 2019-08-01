@@ -228,7 +228,11 @@ namespace dra {
 
     void DBasicBlock::addNewInput(DInput *i) {
         this->lastInput = i;
-        this->input[i] = i->idx;
+        if (this->input.find(i) == this->input.end()) {
+            this->input[i] = 1 << i->idx;
+        } else {
+            this->input[i] = this->input[i] | 1 << i->idx;
+        }
     }
 
     void DBasicBlock::dump() {
@@ -292,7 +296,7 @@ namespace dra {
 
     void DBasicBlock::set_critical_condition() {
 
-        if(this->basicBlock == nullptr) {
+        if (this->basicBlock == nullptr) {
 
         } else {
             auto *fb = dra::getFinalBB(this->basicBlock);
@@ -319,7 +323,7 @@ namespace dra {
                 c->add_right_branch_address(temp->trace_pc_address);
 //                (*c->mutable_right_branch_address())[temp->trace_pc_address] = 0;
             } else {
-                c->add_wrong_branch_address(temp->trace_pc_address);
+//                c->add_wrong_branch_address(temp->trace_pc_address);
 //                (*c->mutable_wrong_branch_address())[temp->trace_pc_address] = 0;
             }
         }

@@ -20,6 +20,7 @@
 #include "../JSON/json.cpp"
 #include "ResType.h"
 #include "../DRA/DataManagement.h"
+#include "../DCC/general.h"
 #include <algorithm>
 
 //typedef std::map<llvm::Instruction *, MOD_INF> MOD_IRS;
@@ -274,6 +275,7 @@ namespace sta {
         //we can store only the ctx pointer and group the cmds associating with a same ctx.
         std::vector<cmd_ctx *> *get_cmd_ctx() {
             if (all_cmd_ctx.empty()) {
+                dra::outputTime("get_cmd_ctx : start");
                 for (auto &x : this->mod_inf) {
                     std::set<uint64_t> &cs = x.second[1];
                     for(auto c : cs){
@@ -287,6 +289,14 @@ namespace sta {
                         this->all_cmd_ctx.push_back(temp);
                     }
                 }
+#if DEBUG
+                std::cout << "cmd size : " << std::dec << all_cmd_ctx.size() << "\n";
+                dra::outputTime("get_cmd_ctx : finish");
+                for (auto c: all_cmd_ctx) {
+                    std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
+                    this->sta->dm->dump_ctxs(&c->ctx);
+                }
+#endif
             }
             return &all_cmd_ctx;
         }

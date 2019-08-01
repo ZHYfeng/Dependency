@@ -32,11 +32,13 @@ namespace dra {
 
         void get_dependency_input(DInput *dInput);
 
-        void send_dependency_input(Input *dependencyInput);
+        void send_dependency(Dependency *dependency);
 
         void get_write_address(sta::Mod *write_basicblock, Condition *condition, WriteAddress *writeAddress);
 
         void get_write_addresses();
+
+        writeAddressAttributes *get_write_addresses_adttributes(sta::Mod *write_basicblock);
 
         void send_write_address(WriteAddresses *writeAddress);
 

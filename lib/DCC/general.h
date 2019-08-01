@@ -11,6 +11,8 @@
 #include <iostream>
 #include <llvm/IR/BasicBlock.h>
 
+#define DEBUG 1
+
 namespace dra {
 
     void outputTime(std::string s);

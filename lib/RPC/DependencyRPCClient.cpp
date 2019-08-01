@@ -46,26 +46,12 @@ namespace dra {
         }
     }
 
-    Empty *DependencyRPCClient::SendDependencyInput(const Input &request) {
+    Empty *DependencyRPCClient::SendDependency(const Dependency &request) {
         Empty *reply = new Empty();
         grpc::ClientContext context;
-        grpc::Status status = stub_->SendDependencyInput(&context, request, reply);
+        grpc::Status status = stub_->SendDependency(&context, request, reply);
         if (status.ok()) {
             std::cout << "SendDependencyInput : " << reply->name() << std::endl;
-        } else {
-            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
-        }
-        return reply;
-    }
-
-    Inputs *DependencyRPCClient::GetDependencyInput() {
-        Empty request;
-        Inputs *reply = new Inputs;
-        grpc::ClientContext context;
-        request.set_name("vm-0");
-        grpc::Status status = stub_->GetDependencyInput(&context, request, reply);
-        if (status.ok()) {
-
         } else {
             std::cout << status.error_code() << ": " << status.error_message() << std::endl;
         }
