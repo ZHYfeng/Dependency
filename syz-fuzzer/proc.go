@@ -352,7 +352,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 			for _, c := range data {
 				r.Program = append(r.Program, c)
 			}
-			r.TaskStatus = pb.TaskStatus_cover
+			r.TaskStatus = pb.TaskStatus_covered
 			r.Idx = idx
 			r.CheckAddress = true
 
@@ -365,6 +365,13 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 			break
 		}
 	}
+
+	tasks := &pb.Tasks{
+		Name: proc.fuzzer.name,
+		Task: []*pb.Task{},
+	}
+	tasks.Task = append(tasks.Task, task)
+	proc.fuzzer.dManager.ReturnTasks(tasks)
 
 	return
 }

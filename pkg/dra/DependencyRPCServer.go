@@ -43,6 +43,25 @@ type Server struct {
 	logmu *sync.Mutex
 }
 
+func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
+	tasks := CloneTasks(request)
+
+	ss.taskmu.Lock()
+	defer ss.taskmu.Unlock()
+	for _, task := range tasks.Task {
+		for _, t := range ss.corpusDependency.Tasks.Task {
+			if t.Sig == task.Sig && t.Index == task.Index &&
+				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
+				t.MergeTask(task)
+			}
+		}
+	}
+
+	reply := &Empty{}
+
+	return reply, nil
+}
+
 func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
 	log.Logf(1, "(ss Server) SendDependency")
 	d := CloneDependency(request)
@@ -76,10 +95,13 @@ func (ss Server) pickTask() *Tasks {
 	log.Logf(1, "(ss Server) GetTasks")
 
 	var i uint
-	tasks := &Tasks{Task: []*Task{}}
+	tasks := &Tasks{
+		Name: "",
+		Task: []*Task{},
+	}
 	i = 0
 	for _, t := range ss.corpusDependency.Tasks.Task {
-		if t.TaskStatus == TaskStatus_untested {
+		if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
 			i++
 			tasks.Task = append(tasks.Task, t)
 			if i > taskNum {
@@ -300,28 +322,7 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 
 	ss.coveragemu.Lock()
 	defer ss.coveragemu.Unlock()
-	var isDependency uint32
-	if input.Dependency {
-		isDependency = 1
-	} else {
-		isDependency = 0
-	}
-
-	for _, call := range input.Call {
-		for a := range call.Address {
-			ss.corpusDependency.Coverage.Coverage[a] = isDependency
-		}
-	}
-
-	out, err := proto.Marshal(ss.corpusDependency.Coverage)
-	if err != nil {
-		log.Fatalf("Failed to encode coverage:", err)
-	}
-	path := "coverage.bin"
-	_ = os.Remove(path)
-	if err := ioutil.WriteFile(path, out, 0644); err != nil {
-		log.Fatalf("Failed to write coverage:", err)
-	}
+	ss.addCoveredAddress(input)
 
 	return reply, nil
 }
@@ -419,20 +420,20 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 		indexBits := uint32(1 << index)
 		for a := range call.Address {
 			if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
-
-				if waIndex, ok := wa.Input[sig]; ok {
-					if waIndex&indexBits > 0 {
-						ss.addWriteAddressTask(wa, sig, indexBits)
+				waIndex, ok := wa.Input[sig]
+				if ok {
+					//
+					if (waIndex|indexBits)^waIndex > 0 {
+						ss.addWriteAddressTask(wa, sig, (waIndex|indexBits)^waIndex)
 						wa.Input[sig] = waIndex | indexBits
 					}
 				} else {
+					ss.addWriteAddressTask(wa, sig, indexBits)
 					wa.Input[sig] = indexBits
 				}
 
 				if iIndex, ok := input.WriteAddress[a]; ok {
-					if iIndex&indexBits > 0 {
-						input.WriteAddress[a] = iIndex | indexBits
-					}
+					input.WriteAddress[a] = iIndex | indexBits
 				} else {
 					input.WriteAddress[a] = indexBits
 				}
@@ -453,6 +454,89 @@ func (ss *Server) addUncoveredAddressMapInput(s *Input) {
 				u2.Input[sig] = i1
 			}
 		}
+	}
+	return
+}
+
+func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+	_, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	if !ok {
+		return false
+	} else {
+		ss.deleteUncoveredAddress(uncoveredAddress)
+	}
+	return true
+}
+
+func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
+	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	if !ok {
+		return
+	}
+
+	for sig, _ := range u.Input {
+		input, ok := ss.corpusDependency.Input[sig]
+		if !ok {
+			log.Fatalf("deleteUncoveredAddress not find sig")
+			continue
+		} else {
+			delete(u.Input, sig)
+		}
+		_, ok1 := input.UncoveredAddress[uncoveredAddress]
+		if !ok1 {
+			log.Fatalf("deleteUncoveredAddress input not find uncoveredAddress")
+		} else {
+			delete(input.UncoveredAddress, uncoveredAddress)
+
+		}
+	}
+
+	for wa, _ := range u.WriteAddress {
+		waa, ok := ss.corpusDependency.WriteAddress[wa]
+		if !ok {
+			log.Fatalf("deleteUncoveredAddress not find wa")
+			continue
+		} else {
+			delete(u.WriteAddress, wa)
+		}
+		_, ok1 := waa.UncoveredAddress[uncoveredAddress]
+		if !ok1 {
+			log.Fatalf("deleteUncoveredAddress write address not find uncoveredAddress")
+		} else {
+			delete(waa.UncoveredAddress, uncoveredAddress)
+		}
+	}
+
+	delete(ss.corpusDependency.UncoveredAddress, uncoveredAddress)
+
+	return
+}
+
+func (ss *Server) addCoveredAddress(input *Input) {
+	var isDependency uint32
+	if input.Dependency {
+		isDependency = 1
+	} else {
+		isDependency = 0
+	}
+
+	for _, call := range input.Call {
+		for a := range call.Address {
+			ss.corpusDependency.Coverage.Coverage[a] = isDependency
+			ss.checkUncoveredAddress(a)
+		}
+	}
+
+	out, err := proto.Marshal(ss.corpusDependency.Coverage)
+	if err != nil {
+		log.Fatalf("Failed to encode coverage:", err)
+	}
+	path := "coverage.bin"
+	_ = os.Remove(path)
+	if err := ioutil.WriteFile(path, out, 0644); err != nil {
+		log.Fatalf("Failed to write coverage:", err)
 	}
 	return
 }
@@ -549,7 +633,7 @@ func (m *Input) MergeInput(d *Input) {
 
 func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 	if i, ok := ss.corpusDependency.UncoveredAddress[s.UncoveredAddress]; ok {
-		i.MargeUncoveredAddress(s)
+		i.MergeUncoveredAddress(s)
 	} else {
 		ss.corpusDependency.UncoveredAddress[s.UncoveredAddress] = s
 	}
@@ -589,7 +673,7 @@ func CloneUncoverAddress(s *UncoveredAddress) *UncoveredAddress {
 	return d
 }
 
-func (m *UncoveredAddress) MargeUncoveredAddress(d *UncoveredAddress) {
+func (m *UncoveredAddress) MergeUncoveredAddress(d *UncoveredAddress) {
 
 	for i, c := range d.Input {
 		if index, ok := m.Input[i]; ok {
@@ -621,9 +705,26 @@ func CloneWriteAddressAttributes(s *WriteAddressAttributes) *WriteAddressAttribu
 
 func (ss *Server) addWriteAddress(s *WriteAddress) {
 	if i, ok := ss.corpusDependency.WriteAddress[s.WriteAddress]; ok {
-		i.MargeWriteAddress(s)
+		if len(s.Input) != len(i.Input) {
+			log.Fatalf("addWriteAddress len(s.Input) != len(i.Input)")
+		}
+		i.MergeWriteAddress(s)
 	} else {
 		ss.corpusDependency.WriteAddress[s.WriteAddress] = s
+	}
+
+	for sig, indexBits1 := range s.Input {
+		waInput, ok := ss.corpusDependency.Input[sig]
+		if ok {
+			indexBits2, ok1 := waInput.WriteAddress[s.WriteAddress]
+			if ok1 {
+				waInput.WriteAddress[s.WriteAddress] = indexBits2 | indexBits1
+			} else {
+				waInput.WriteAddress[s.WriteAddress] = indexBits1
+			}
+		} else {
+			log.Fatalf("addWriteAddress not find sig")
+		}
 	}
 }
 
@@ -652,7 +753,7 @@ func CloneWriteAddress(s *WriteAddress) *WriteAddress {
 	return d
 }
 
-func (m *WriteAddress) MargeWriteAddress(d *WriteAddress) {
+func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
 
 	for i, c := range d.UncoveredAddress {
 		if _, ok := m.UncoveredAddress[i]; ok {
@@ -781,7 +882,7 @@ func CloneRunTimeData(d *RunTimeData) *RunTimeData {
 	return d1
 }
 
-func (m *RunTimeData) MargeRunTimeData(d *RunTimeData) {
+func (m *RunTimeData) MergeRunTimeData(d *RunTimeData) {
 	if d == nil {
 		return
 	}
@@ -827,12 +928,12 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	var index []uint32
 	var writeIndex []uint32
 	for i = 0; i < 32; i++ {
-		if 1<<i&indexBits == 1 {
+		if (1<<i)&indexBits == 1 {
 			index = append(index, i)
 		}
 	}
 	for i = 0; i < 32; i++ {
-		if 1<<i&writeIndexBits == 1 {
+		if (1<<i)&writeIndexBits == 1 {
 			writeIndex = append(writeIndex, i)
 		}
 	}
@@ -940,7 +1041,10 @@ func (ss *Server) SetAddress(address uint32) {
 }
 
 func CloneTasks(s *Tasks) *Tasks {
-	d := &Tasks{Task: []*Task{}}
+	d := &Tasks{
+		Name: s.Name,
+		Task: []*Task{},
+	}
 	for _, t := range s.Task {
 		d.Task = append(d.Task, CloneTask(t))
 	}
@@ -958,6 +1062,7 @@ func CloneTask(s *Task) *Task {
 		WriteAddress:     s.WriteAddress,
 		UncoveredAddress: map[uint32]*RunTimeData{},
 		TaskStatus:       s.TaskStatus,
+		CoveredAddress:   map[uint32]*RunTimeData{},
 	}
 
 	for _, c := range s.Program {
@@ -969,10 +1074,29 @@ func CloneTask(s *Task) *Task {
 	}
 
 	for u, p := range s.UncoveredAddress {
-		d.UncoveredAddress[u] = p
+		d.UncoveredAddress[u] = CloneRunTimeData(p)
+	}
+
+	for u, p := range s.CoveredAddress {
+		d.CoveredAddress[u] = CloneRunTimeData(p)
 	}
 
 	return d
+}
+
+func (m *Task) MergeTask(s *Task) {
+	for u, p := range s.CoveredAddress {
+		m.CoveredAddress[u] = CloneRunTimeData(p)
+	}
+
+	for u := range m.UncoveredAddress {
+		_, ok := m.CoveredAddress[u]
+		if ok {
+			delete(m.UncoveredAddress, u)
+		}
+	}
+
+	return
 }
 
 // RunDependencyRPCServer
@@ -981,6 +1105,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.corpusDependency = &Corpus{
 		Input:            map[string]*Input{},
 		UncoveredAddress: map[uint32]*UncoveredAddress{},
+		CoveredAddress:   map[uint32]*UncoveredAddress{},
 		WriteAddress:     map[uint32]*WriteAddress{},
 		IoctlCmd:         map[uint64]*IoctlCmd{},
 		Tasks:            &Tasks{Task: []*Task{}},

@@ -51,7 +51,6 @@ func (d *DRPCClient) SendNewInput(input *Input) {
 	}
 }
 
-// SendNewInput ...
 func (d *DRPCClient) GetTasks(name string) *Tasks {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
@@ -66,6 +65,18 @@ func (d *DRPCClient) GetTasks(name string) *Tasks {
 		log.Fatalf("Dependency gRPC could not SendNewInput: %v", err)
 	}
 	return CloneTasks(replay)
+}
+
+func (d *DRPCClient) ReturnTasks(task *Tasks) {
+	// Contact the server and print out its response.
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+	task.Name = *d.name
+	_, err := d.c.ReturnTasks(ctx, task, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
+	if err != nil {
+		log.Fatalf("Dependency gRPC could not SendNewInput: %v", err)
+	}
+	return
 }
 
 func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
