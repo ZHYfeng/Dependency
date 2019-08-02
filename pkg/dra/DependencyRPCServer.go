@@ -31,6 +31,7 @@ type Server struct {
 	inputmu          *sync.Mutex
 	coveragemu       *sync.Mutex
 	taskmu           *sync.Mutex
+	taskindex        int
 	corpusDependency *Corpus
 
 	fuzzermu *sync.Mutex
@@ -53,6 +54,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 			if t.Sig == task.Sig && t.Index == task.Index &&
 				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
 				t.MergeTask(task)
+				break
 			}
 		}
 	}
@@ -92,23 +94,38 @@ func (ss Server) GetTasks(context.Context, *Empty) (*Tasks, error) {
 }
 
 func (ss Server) pickTask() *Tasks {
-	log.Logf(1, "(ss Server) GetTasks")
-
-	var i uint
 	tasks := &Tasks{
 		Name: "",
 		Task: []*Task{},
 	}
-	i = 0
-	for _, t := range ss.corpusDependency.Tasks.Task {
-		if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
-			i++
-			tasks.Task = append(tasks.Task, t)
-			if i > taskNum {
-				break
+
+	if len(ss.corpusDependency.Tasks.Task) == 0 {
+
+	} else {
+		for i := 0; i < taskNum; {
+			if ss.taskindex >= len(ss.corpusDependency.Tasks.Task) {
+				ss.taskindex = 0
+			}
+			t := ss.corpusDependency.Tasks.Task[ss.taskindex]
+			if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
+				i++
+				tasks.Task = append(tasks.Task, t)
 			}
 		}
+
 	}
+
+	//i := 0
+	//for _, t := range ss.corpusDependency.Tasks.Task {
+	//	if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
+	//		i++
+	//		tasks.Task = append(tasks.Task, t)
+	//		if i > taskNum {
+	//			break
+	//		}
+	//	}
+	//}
+
 	return tasks
 }
 
@@ -705,9 +722,6 @@ func CloneWriteAddressAttributes(s *WriteAddressAttributes) *WriteAddressAttribu
 
 func (ss *Server) addWriteAddress(s *WriteAddress) {
 	if i, ok := ss.corpusDependency.WriteAddress[s.WriteAddress]; ok {
-		if len(s.Input) != len(i.Input) {
-			log.Fatalf("addWriteAddress len(s.Input) != len(i.Input)")
-		}
 		i.MergeWriteAddress(s)
 	} else {
 		ss.corpusDependency.WriteAddress[s.WriteAddress] = s
@@ -1022,8 +1036,10 @@ func (ss *Server) addTask(task *Task) {
 			} else {
 				t.UncoveredAddress[uncoveredAddress] = CloneRunTimeData(dr)
 			}
+			return
 		}
 	}
+	ss.corpusDependency.Tasks.Task = append(ss.corpusDependency.Tasks.Task, task)
 }
 
 func (ss *Server) updatePriority(p1 uint32, p2 uint32) uint32 {
@@ -1032,7 +1048,18 @@ func (ss *Server) updatePriority(p1 uint32, p2 uint32) uint32 {
 }
 
 func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint32 {
-	priority := writeAddress + uncoveredAddress
+	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	if !ok {
+		log.Fatalf("getPriority not find uncoveredAddress")
+	}
+	bbcount := u.Bbcount
+	waa, ok := u.WriteAddress[writeAddress]
+	if !ok {
+
+		log.Fatalf("getPriority not find writeAddress")
+	}
+	pp := waa.Prio
+	priority := pp + bbcount
 	return priority
 }
 
@@ -1123,6 +1150,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.tmu = &sync.Mutex{}
 	ss.logmu = &sync.Mutex{}
 
+	ss.taskindex = 0
 	ss.corpus = corpus
 
 	lis, err := net.Listen("tcp", ss.Address)
