@@ -236,7 +236,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	for _, c := range item.p.Comments {
 		if c == "StatDependency" {
 			input.Dependency = true
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : %s", data))
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : \n%s", data))
 		}
 	}
 
@@ -277,6 +277,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	task := item.task
 	log.Logf(1, "DependencyMutate program : \n%s", task.Program)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate program : \n%s", task.Program))
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("index  : %d\n write index : %d", task.Index, task.WriteIndex))
 
 	ct := proc.fuzzer.choiceTable
 
@@ -300,6 +301,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 			break
 		}
 	}
+	wdata := wp.Serialize()
+	log.Logf(1, "usefulCall program : \n%s", wdata)
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("usefulCall program : \n%s", wdata))
 
 	idx := task.Index
 
@@ -308,6 +312,9 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	for i := len(p.Calls) - 1; i >= programLength; i-- {
 		p.RemoveCall(i)
 	}
+	data := p.Serialize()
+	log.Logf(1, "final program : \n%s", data)
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("final program : \n%s", data))
 
 	idx = idx + task.WriteIndex + 1
 
@@ -930,7 +937,7 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
 		if stat == StatDependency {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new input from StatDependency : %v", p))
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new input from StatDependency : \n%s", p.Serialize()))
 			p.Comments = append(p.Comments, "StatDependency")
 		}
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])

@@ -225,13 +225,26 @@ message Dependency {
 
 }
 
+message RecursiveIoctlCmd {
+    IoctlCmd ioctl_cmd = 1;
+    repeated Condition critical_condition = 2;
+    runTimeData run_time_data = 3;
+    repeated RecursiveWriteAddress write_address = 11;
+}
+
+message RecursiveWriteAddress {
+    WriteAddress write_address = 1;
+    runTimeData run_time_data = 3;
+    repeated RecursiveIoctlCmd ioctl_cmd = 4;
+}
 
 
 message RecursiveDependency {
 
     Input input = 1;
     UncoveredAddress uncovered_address = 2;
-    repeated WriteAddress write_address = 3;
+    runTimeData run_time_data = 3;
+    repeated RecursiveWriteAddress write_address = 11;
 
 }
 
