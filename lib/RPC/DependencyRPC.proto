@@ -162,6 +162,7 @@ message WriteAddress {
     
     // uncovered address,
     map<uint32, writeAddressAttributes> uncovered_address = 23;
+    // cmd,
     map<uint64, uint32> ioctl_cmd = 24;
     // sig, index by bits
     map<string, uint32> input = 25;
@@ -236,6 +237,7 @@ message RecursiveDependency {
 message Corpus {
     map<string, Input> input = 1;
     map<uint32, UncoveredAddress> uncovered_address = 4;
+    map<uint32, UncoveredAddress> covered_address = 2;
     map<uint32, WriteAddress> write_address = 5;
     map<uint64, IoctlCmd> ioctl_cmd = 6;
     Tasks tasks = 7;
