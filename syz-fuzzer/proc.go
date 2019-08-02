@@ -236,7 +236,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	for _, c := range item.p.Comments {
 		if c == "StatDependency" {
 			input.Dependency = true
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : %v", data))
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : %s", data))
 		}
 	}
 
@@ -366,6 +366,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 		}
 	}
 
+	task.TaskStatus = pb.TaskStatus_tested
 	tasks := &pb.Tasks{
 		Name: proc.fuzzer.name,
 		Task: []*pb.Task{},

@@ -1112,6 +1112,8 @@ func CloneTask(s *Task) *Task {
 }
 
 func (m *Task) MergeTask(s *Task) {
+
+	m.TaskStatus = s.TaskStatus
 	for u, p := range s.CoveredAddress {
 		m.CoveredAddress[u] = CloneRunTimeData(p)
 	}
