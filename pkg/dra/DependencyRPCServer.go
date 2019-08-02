@@ -59,6 +59,8 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 		}
 	}
 
+	ss.writeToDisk()
+
 	reply := &Empty{}
 
 	return reply, nil
@@ -109,6 +111,7 @@ func (ss Server) pickTask() *Tasks {
 			t := ss.corpusDependency.Tasks.Task[ss.taskindex]
 			if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
 				i++
+				ss.taskindex++
 				tasks.Task = append(tasks.Task, t)
 			}
 		}
@@ -963,15 +966,18 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex uint32,
 	writeAddress uint32, uncoveredAddress uint32) *Task {
 	task := &Task{
-		Sig:              sig,
-		Index:            index,
-		Program:          []byte{},
-		WriteSig:         writeSig,
-		WriteIndex:       writeIndex,
-		WriteProgram:     []byte{},
-		WriteAddress:     writeAddress,
-		UncoveredAddress: map[uint32]*RunTimeData{},
-		TaskStatus:       TaskStatus_untested,
+		Sig:                    sig,
+		Index:                  index,
+		Program:                []byte{},
+		WriteSig:               writeSig,
+		WriteIndex:             writeIndex,
+		WriteProgram:           []byte{},
+		WriteAddress:           writeAddress,
+		UncoveredAddress:       map[uint32]*RunTimeData{},
+		CoveredAddress:         map[uint32]*RunTimeData{},
+		TaskStatus:             TaskStatus_untested,
+		CheckWriteAddress:      false,
+		CheckWriteAddressFinal: false,
 	}
 
 	input, ok := ss.corpusDependency.Input[sig]
@@ -1176,6 +1182,14 @@ func (ss *Server) writeToDisk() {
 	if err != nil {
 		log.Fatalf("Failed to encode address:", err)
 	}
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+	ss.taskmu.Lock()
+	defer ss.taskmu.Unlock()
+	ss.coveragemu.Lock()
+	defer ss.coveragemu.Unlock()
+	ss.inputmu.Lock()
+	defer ss.inputmu.Unlock()
 	ss.tmu.Lock()
 	defer ss.tmu.Unlock()
 	path := "data.bin"

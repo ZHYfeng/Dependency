@@ -323,17 +323,23 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	info = proc.execute(proc.execOptsCover, wp, ProgNormal, StatDependency)
 	checkWriteAddress1 := checkAddress(task.WriteAddress, info.Calls[task.WriteIndex].Cover)
 	if checkWriteAddress1 {
-
+		task.CheckWriteAddress = true
+		log.Logf(1, "write program could arrive at write address : %d", task.WriteAddress)
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could arrive at write address : %d", task.WriteAddress))
 	} else {
-
+		log.Logf(1, "write program could not arrive at write address : %d", task.WriteAddress)
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could not arrive at write address : %d", task.WriteAddress))
 	}
 
 	info = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 	checkWriteAddress2 := checkAddress(task.WriteAddress, info.Calls[task.WriteIndex].Cover)
 	if checkWriteAddress2 {
-
+		task.CheckWriteAddressFinal = true
+		log.Logf(1, "write program could arrive at write address : %d", task.WriteAddress)
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could arrive at write address : %d", task.WriteAddress))
 	} else {
-
+		log.Logf(1, "final program could not arrive at write address : %d", task.WriteAddress)
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %d", task.WriteAddress))
 	}
 
 	for i := 0; i < 20; i++ {
@@ -351,6 +357,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 			if !checkUncoveredAddress {
 				continue
 			}
+
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("cover uncovered address : %x", r.Address))
 
 			r := pb.CloneRunTimeData(task.UncoveredAddress[u])
 			task.CoveredAddress[u] = r

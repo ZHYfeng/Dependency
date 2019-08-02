@@ -271,8 +271,10 @@ message Task {
 
     // uncovered address, priority
     map<uint32, runTimeData> uncovered_address = 21;
-    taskStatus task_status = 22;
     map<uint32, runTimeData> covered_address = 23;
+    taskStatus task_status = 24;
+    bool check_write_address = 25;
+    bool check_write_address_final = 26;
 }
 
 message Tasks {
