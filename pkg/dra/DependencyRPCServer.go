@@ -1110,6 +1110,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		IoctlCmd:         map[uint64]*IoctlCmd{},
 		Tasks:            &Tasks{Task: []*Task{}},
 		Coverage:         &Coverage{Coverage: map[uint32]uint32{}},
+		NewInput:         map[string]*Input{},
 	}
 	ss.fuzzers = make(map[string]*syzFuzzer)
 
