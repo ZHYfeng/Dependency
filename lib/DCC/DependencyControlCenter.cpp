@@ -214,14 +214,15 @@ namespace dra {
 
     void DependencyControlCenter::get_write_addresses() {
         dra::Conditions *cs = client->GetCondition();
-        for (auto condition : *cs->mutable_condition()) {
+        if (cs != nullptr) {
+            for (auto condition : *cs->mutable_condition()) {
 //            sta::MODS *write_basicblock = get_write_basicblock(&condition.second);
-            sta::MODS *write_basicblock = get_write_basicblock(&condition);
-            if (write_basicblock == nullptr) {
+                sta::MODS *write_basicblock = get_write_basicblock(&condition);
+                if (write_basicblock == nullptr) {
 
-            } else {
+                } else {
 
-                WriteAddresses *wa = new WriteAddresses();
+                    WriteAddresses *wa = new WriteAddresses();
 //                wa->set_allocated_condition(&condition.second);
 //                for (auto &x : *write_basicblock) {
 //                    WriteAddress *writeAddress = new WriteAddress;
@@ -229,16 +230,20 @@ namespace dra {
 //                    (*wa->mutable_write_address())[condition.second.syzkaller_uncovered_address()] = *writeAddress;
 //                }
 
-                wa->set_allocated_condition(&condition);
-                for (auto &x : *write_basicblock) {
-                    WriteAddress *writeAddress = wa->add_write_address();
-                    get_write_address(x, &condition, writeAddress);
-                }
+                    wa->set_allocated_condition(&condition);
+                    for (auto &x : *write_basicblock) {
+                        WriteAddress *writeAddress = wa->add_write_address();
+                        get_write_address(x, &condition, writeAddress);
+                    }
 
-                send_write_address(wa);
+                    send_write_address(wa);
+                }
             }
+            cs->Clear();
+        } else {
+
         }
-        cs->Clear();
+
     }
 
     void DependencyControlCenter::send_write_address(WriteAddresses *writeAddress) {
