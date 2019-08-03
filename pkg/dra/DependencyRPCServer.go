@@ -28,37 +28,42 @@ type Server struct {
 	Address string
 
 	mu               *sync.Mutex
-	inputmu          *sync.Mutex
-	coveragemu       *sync.Mutex
-	taskmu           *sync.Mutex
-	taskindex        int
+	inputMu          *sync.RWMutex
+	uncoveredMu      *sync.RWMutex
+	writeMu          *sync.RWMutex
+	taskMu           *sync.RWMutex
+	taskIndex        int
+	coverageMu       *sync.Mutex
+	newInputMu       *sync.Mutex
 	corpusDependency *Corpus
 
-	fuzzermu *sync.Mutex
+	fuzzerMu *sync.Mutex
 	fuzzers  map[string]*syzFuzzer
 
-	corpusmu *sync.Mutex
+	corpusMu *sync.Mutex
 	corpus   *map[string]rpctype.RPCInput
 
 	tmu   *sync.Mutex
-	logmu *sync.Mutex
+	logMu *sync.Mutex
 }
 
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
 	log.Logf(1, "(ss Server) ReturnTasks")
 	tasks := CloneTasks(request)
 
-	ss.taskmu.Lock()
-	defer ss.taskmu.Unlock()
-	for _, task := range tasks.Task {
-		for _, t := range ss.corpusDependency.Tasks.Task {
-			if t.Sig == task.Sig && t.Index == task.Index &&
-				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
-				t.MergeTask(task)
-				break
+	go func() {
+		for _, task := range tasks.Task {
+			for _, t := range ss.corpusDependency.Tasks.Task {
+				if t.Sig == task.Sig && t.Index == task.Index &&
+					t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
+					ss.taskMu.Lock()
+					t.MergeTask(task)
+					ss.taskMu.Unlock()
+					break
+				}
 			}
 		}
-	}
+	}()
 
 	//ss.writeToDisk()
 
@@ -70,9 +75,6 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
 	log.Logf(1, "(ss Server) SendDependency")
 	d := CloneDependency(request)
-
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
 
 	for _, wa := range d.WriteAddress {
 		ss.addWriteAddress(wa)
@@ -89,8 +91,6 @@ func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empt
 func (ss Server) GetTasks(context.Context, *Empty) (*Tasks, error) {
 	log.Logf(1, "(ss Server) GetTasks")
 
-	ss.taskmu.Lock()
-	defer ss.taskmu.Unlock()
 	tasks := ss.pickTask()
 
 	return tasks, nil
@@ -101,18 +101,20 @@ func (ss Server) pickTask() *Tasks {
 		Name: "",
 		Task: []*Task{},
 	}
-
+	ss.taskMu.Lock()
+	defer ss.taskMu.Unlock()
 	if len(ss.corpusDependency.Tasks.Task) == 0 {
 
 	} else {
 		for i := 0; i < taskNum; {
-			if ss.taskindex >= len(ss.corpusDependency.Tasks.Task) {
-				ss.taskindex = 0
+			if ss.taskIndex >= len(ss.corpusDependency.Tasks.Task) {
+				ss.taskIndex = 0
+				break
 			}
-			t := ss.corpusDependency.Tasks.Task[ss.taskindex]
+			t := ss.corpusDependency.Tasks.Task[ss.taskIndex]
+			ss.taskIndex++
 			if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
 				i++
-				ss.taskindex++
 				tasks.Task = append(tasks.Task, t)
 			}
 		}
@@ -136,8 +138,8 @@ func (ss Server) pickTask() *Tasks {
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencytask) (*Empty, error) {
 	log.Logf(1, "(ss Server) ReturnDependencyInput")
 	//input := CloneInput(request.Input)
-	ss.fuzzermu.Lock()
-	defer ss.fuzzermu.Unlock()
+	ss.fuzzerMu.Lock()
+	defer ss.fuzzerMu.Unlock()
 	//if f, ok := ss.fuzzers[request.Name]; ok {
 	//if _, ok := f.task.Task[request.Input.Sig]; ok {
 	//	delete(f.corpusDI, request.Input.Sig)
@@ -202,8 +204,8 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 	log.Logf(1, "(ss Server) SendLog")
-	ss.logmu.Lock()
-	defer ss.logmu.Unlock()
+	ss.logMu.Lock()
+	defer ss.logMu.Unlock()
 
 	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	defer f.Close()
@@ -216,8 +218,8 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	log.Logf(1, "(ss Server) Connect")
-	ss.fuzzermu.Lock()
-	defer ss.fuzzermu.Unlock()
+	ss.fuzzerMu.Lock()
+	defer ss.fuzzerMu.Unlock()
 
 	if _, ok := ss.fuzzers[request.Name]; !ok {
 		ss.fuzzers[request.Name] = &syzFuzzer{
@@ -242,16 +244,15 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	}
 
 	i := 0
-	ss.inputmu.Lock()
-	defer ss.inputmu.Unlock()
+	ss.newInputMu.Lock()
+	defer ss.newInputMu.Unlock()
 	for s, c := range ss.corpusDependency.NewInput {
 		if i < 1 {
 			//reply.Input[c.Sig] = CloneInput(c)
-			reply.Input = append(reply.Input, CloneInput(c))
+			cc := CloneInput(c)
+			reply.Input = append(reply.Input, cc)
 			i++
-			ss.mu.Lock()
-			defer ss.mu.Unlock()
-			ss.addInput(c)
+			go ss.addInput(cc)
 			delete(ss.corpusDependency.NewInput, s)
 		} else {
 		}
@@ -290,8 +291,8 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	}
 	//if f, ok := ss.fuzzers[request.Name]; ok {
 	//
-	//	ss.fuzzermu.Lock()
-	//	defer ss.fuzzermu.Unlock()
+	//	ss.fuzzerMu.Lock()
+	//	defer ss.fuzzerMu.Unlock()
 	//if len(f.corpusDI) > 0 {
 	//for s, c := range f.corpusDI {
 	//ss.corpusDependency.CorpusErrorInput[s] = c
@@ -337,13 +338,9 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	reply := &Empty{}
 	input := CloneInput(request)
 
-	ss.inputmu.Lock()
-	defer ss.inputmu.Unlock()
-	ss.addNewInput(input)
+	go ss.addNewInput(input)
 
-	ss.coveragemu.Lock()
-	defer ss.coveragemu.Unlock()
-	ss.addCoveredAddress(input)
+	go ss.addCoveredAddress(input)
 
 	return reply, nil
 }
@@ -412,6 +409,8 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 //}
 
 func (ss *Server) addNewInput(s *Input) {
+	ss.newInputMu.Lock()
+	defer ss.newInputMu.Unlock()
 	if i, ok := ss.corpusDependency.NewInput[s.Sig]; ok {
 		i.MergeInput(s)
 	} else {
@@ -422,45 +421,56 @@ func (ss *Server) addNewInput(s *Input) {
 }
 
 func (ss *Server) addInput(s *Input) {
+	ss.inputMu.Lock()
 	if i, ok := ss.corpusDependency.Input[s.Sig]; ok {
 		i.MergeInput(s)
 	} else {
 		ss.corpusDependency.Input[s.Sig] = s
 	}
+	ss.inputMu.Unlock()
 
 	ss.addWriteAddressMapInput(s)
 	ss.addUncoveredAddressMapInput(s)
 
+	ss.inputMu.Lock()
 	ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
-
+	ss.inputMu.Unlock()
 	return
 }
 
 func (ss *Server) addWriteAddressMapInput(s *Input) {
 	sig := s.Sig
-	input := ss.corpusDependency.Input[sig]
 	for index, call := range s.Call {
 		indexBits := uint32(1 << index)
 		for a := range call.Address {
+			ss.writeMu.RLock()
 			if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
+				ss.writeMu.RUnlock()
+				ss.writeMu.Lock()
+				cwa := CloneWriteAddress(wa)
+				var usefulIndexBits uint32
 				waIndex, ok := wa.Input[sig]
 				if ok {
-					//
 					if (waIndex|indexBits)^waIndex > 0 {
-						ss.addWriteAddressTask(wa, sig, (waIndex|indexBits)^waIndex)
+						usefulIndexBits = (waIndex | indexBits) ^ waIndex
 						wa.Input[sig] = waIndex | indexBits
 					}
 				} else {
-					ss.addWriteAddressTask(wa, sig, indexBits)
+					usefulIndexBits = indexBits
 					wa.Input[sig] = indexBits
 				}
-
+				ss.writeMu.Unlock()
+				ss.addWriteAddressTask(cwa, sig, usefulIndexBits)
+				ss.inputMu.Lock()
+				input := ss.corpusDependency.Input[sig]
 				if iIndex, ok := input.WriteAddress[a]; ok {
 					input.WriteAddress[a] = iIndex | indexBits
 				} else {
 					input.WriteAddress[a] = indexBits
 				}
-
+				ss.inputMu.Unlock()
+			} else {
+				ss.writeMu.RUnlock()
 			}
 		}
 	}
@@ -468,6 +478,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 }
 
 func (ss *Server) addUncoveredAddressMapInput(s *Input) {
+	ss.uncoveredMu.Lock()
 	sig := s.Sig
 	for u1, i1 := range s.UncoveredAddress {
 		if u2, ok := ss.corpusDependency.UncoveredAddress[u1]; ok {
@@ -478,13 +489,14 @@ func (ss *Server) addUncoveredAddressMapInput(s *Input) {
 			}
 		}
 	}
+	ss.uncoveredMu.Unlock()
 	return
 }
 
 func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
+	ss.uncoveredMu.RLock()
 	_, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	ss.uncoveredMu.RUnlock()
 	if !ok {
 		return false
 	} else {
@@ -494,11 +506,13 @@ func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
 }
 
 func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
+	ss.uncoveredMu.RLock()
 	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return
 	}
 
+	ss.inputMu.Lock()
 	for sig, _ := range u.Input {
 		input, ok := ss.corpusDependency.Input[sig]
 		if !ok {
@@ -515,6 +529,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 
 		}
 	}
+	ss.inputMu.Unlock()
 
 	for wa, _ := range u.WriteAddress {
 		waa, ok := ss.corpusDependency.WriteAddress[wa]
@@ -531,7 +546,9 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 			delete(waa.UncoveredAddress, uncoveredAddress)
 		}
 	}
-
+	ss.uncoveredMu.RUnlock()
+	ss.uncoveredMu.Lock()
+	defer ss.uncoveredMu.Unlock()
 	delete(ss.corpusDependency.UncoveredAddress, uncoveredAddress)
 
 	return
@@ -545,10 +562,12 @@ func (ss *Server) addCoveredAddress(input *Input) {
 		isDependency = 0
 	}
 
+	ss.coverageMu.Lock()
+	defer ss.coverageMu.Unlock()
 	for _, call := range input.Call {
 		for a := range call.Address {
 			ss.corpusDependency.Coverage.Coverage[a] = isDependency
-			ss.checkUncoveredAddress(a)
+			go ss.checkUncoveredAddress(a)
 		}
 	}
 
@@ -655,23 +674,27 @@ func (m *Input) MergeInput(d *Input) {
 }
 
 func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
+	ss.uncoveredMu.Lock()
 	if i, ok := ss.corpusDependency.UncoveredAddress[s.UncoveredAddress]; ok {
 		i.MergeUncoveredAddress(s)
 	} else {
 		ss.corpusDependency.UncoveredAddress[s.UncoveredAddress] = s
 	}
+	ss.uncoveredMu.Unlock()
 	ss.addWriteAddressMapUncoveredAddress(s)
 
 	return
 }
 
 func (ss *Server) addWriteAddressMapUncoveredAddress(s *UncoveredAddress) {
+	ss.writeMu.Lock()
 	uncoveredAddress := s.UncoveredAddress
 	for w1, w3 := range s.WriteAddress {
 		if w2, ok := ss.corpusDependency.WriteAddress[w1]; ok {
 			w2.UncoveredAddress[uncoveredAddress] = w3
 		}
 	}
+	ss.writeMu.Unlock()
 	return
 }
 
@@ -727,12 +750,15 @@ func CloneWriteAddressAttributes(s *WriteAddressAttributes) *WriteAddressAttribu
 }
 
 func (ss *Server) addWriteAddress(s *WriteAddress) {
+	ss.writeMu.Lock()
 	if i, ok := ss.corpusDependency.WriteAddress[s.WriteAddress]; ok {
 		i.MergeWriteAddress(s)
 	} else {
 		ss.corpusDependency.WriteAddress[s.WriteAddress] = s
 	}
+	ss.writeMu.Unlock()
 
+	ss.inputMu.Lock()
 	for sig, indexBits1 := range s.Input {
 		waInput, ok := ss.corpusDependency.Input[sig]
 		if ok {
@@ -746,6 +772,7 @@ func (ss *Server) addWriteAddress(s *WriteAddress) {
 			log.Fatalf("addWriteAddress not find sig")
 		}
 	}
+	ss.inputMu.Unlock()
 }
 
 func CloneWriteAddress(s *WriteAddress) *WriteAddress {
@@ -912,6 +939,10 @@ func (m *RunTimeData) MergeRunTimeData(d *RunTimeData) {
 
 func (ss *Server) addInputTask(d *Input) {
 	sig := d.Sig
+	ss.uncoveredMu.RLock()
+	defer ss.uncoveredMu.RUnlock()
+	ss.writeMu.RLock()
+	defer ss.writeMu.RUnlock()
 	for u, inputIndexBits := range d.UncoveredAddress {
 		ua, ok := ss.corpusDependency.UncoveredAddress[u]
 		if !ok {
@@ -983,6 +1014,8 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		CheckWriteAddressFinal: false,
 	}
 
+	ss.inputMu.RLock()
+	defer ss.inputMu.RUnlock()
 	input, ok := ss.corpusDependency.Input[sig]
 	if !ok {
 		log.Fatalf("getTask with error sig")
@@ -998,7 +1031,8 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 	for _, c := range writeInput.Program {
 		task.WriteProgram = append(task.WriteProgram, c)
 	}
-
+	ss.uncoveredMu.RLock()
+	defer ss.uncoveredMu.RUnlock()
 	ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("getTask with error uncoveredAddress")
@@ -1023,8 +1057,8 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 }
 
 func (ss *Server) addTask(task *Task) {
-	ss.taskmu.Lock()
-	defer ss.taskmu.Unlock()
+	ss.taskMu.Lock()
+	defer ss.taskMu.Unlock()
 
 	var uncoveredAddress uint32
 	var dr *RunTimeData
@@ -1057,6 +1091,8 @@ func (ss *Server) updatePriority(p1 uint32, p2 uint32) uint32 {
 }
 
 func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint32 {
+	ss.uncoveredMu.RLock()
+	defer ss.uncoveredMu.RUnlock()
 	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("getPriority not find uncoveredAddress")
@@ -1153,15 +1189,18 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.fuzzers = make(map[string]*syzFuzzer)
 
 	ss.mu = &sync.Mutex{}
-	ss.inputmu = &sync.Mutex{}
-	ss.coveragemu = &sync.Mutex{}
-	ss.taskmu = &sync.Mutex{}
-	ss.fuzzermu = &sync.Mutex{}
-	ss.corpusmu = &sync.Mutex{}
+	ss.inputMu = &sync.RWMutex{}
+	ss.uncoveredMu = &sync.RWMutex{}
+	ss.writeMu = &sync.RWMutex{}
+	ss.taskMu = &sync.RWMutex{}
+	ss.coverageMu = &sync.Mutex{}
+	ss.newInputMu = &sync.Mutex{}
+	ss.fuzzerMu = &sync.Mutex{}
+	ss.corpusMu = &sync.Mutex{}
 	ss.tmu = &sync.Mutex{}
-	ss.logmu = &sync.Mutex{}
+	ss.logMu = &sync.Mutex{}
 
-	ss.taskindex = 0
+	ss.taskIndex = 0
 	ss.corpus = corpus
 
 	lis, err := net.Listen("tcp", ss.Address)
@@ -1184,8 +1223,8 @@ func (ss *Server) writeToDisk() {
 	ss.mu.Lock()
 	defer ss.mu.Unlock()
 
-	ss.taskmu.Lock()
-	defer ss.taskmu.Unlock()
+	ss.taskMu.Lock()
+	defer ss.taskMu.Unlock()
 
 	ss.tmu.Lock()
 	defer ss.tmu.Unlock()
