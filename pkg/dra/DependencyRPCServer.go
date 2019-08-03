@@ -45,6 +45,7 @@ type Server struct {
 }
 
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
+	log.Logf(1, "(ss Server) ReturnTasks")
 	tasks := CloneTasks(request)
 
 	ss.taskmu.Lock()
@@ -59,7 +60,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 		}
 	}
 
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	reply := &Empty{}
 
@@ -152,7 +153,7 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencyt
 	//	log.Fatalf("ReturnDependencyInput : ", request.Name)
 	//}
 	reply := &Empty{}
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	return reply, nil
 }
@@ -194,7 +195,7 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 	//} else {
 	//	log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
 	//}
-	ss.writeToDisk()
+	//ss.writeToDisk()
 
 	return &Empty{}, nil
 }
@@ -429,6 +430,8 @@ func (ss *Server) addInput(s *Input) {
 
 	ss.addWriteAddressMapInput(s)
 	ss.addUncoveredAddressMapInput(s)
+
+	ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
 
 	return
 }
@@ -1177,25 +1180,26 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 }
 
 func (ss *Server) writeToDisk() {
+
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+
+	ss.taskmu.Lock()
+	defer ss.taskmu.Unlock()
+
+	ss.tmu.Lock()
+	defer ss.tmu.Unlock()
+
 	// Write the new back to disk.
 	out, err := proto.Marshal(ss.corpusDependency)
 	if err != nil {
 		log.Fatalf("Failed to encode address:", err)
 	}
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
-	ss.taskmu.Lock()
-	defer ss.taskmu.Unlock()
-	ss.coveragemu.Lock()
-	defer ss.coveragemu.Unlock()
-	ss.inputmu.Lock()
-	defer ss.inputmu.Unlock()
-	ss.tmu.Lock()
-	defer ss.tmu.Unlock()
 	path := "data.bin"
 	_ = os.Remove(path)
 	if err := ioutil.WriteFile(path, out, 0644); err != nil {
 		log.Fatalf("Failed to write corpusDependency:", err)
 	}
+
 	// [END marshal_proto]
 }
