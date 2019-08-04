@@ -250,10 +250,10 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 		if i < 1 {
 			//reply.Input[c.Sig] = CloneInput(c)
 			cc := CloneInput(c)
-			reply.Input = append(reply.Input, cc)
 			i++
-			go ss.addInput(cc)
 			delete(ss.corpusDependency.NewInput, s)
+			reply.Input = append(reply.Input, cc)
+			go ss.addInput(cc)
 		} else {
 		}
 	}
