@@ -245,18 +245,24 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 
 	i := 0
 	ss.newInputMu.Lock()
-	defer ss.newInputMu.Unlock()
+	var nc []*Input
 	for s, c := range ss.corpusDependency.NewInput {
 		if i < 1 {
 			//reply.Input[c.Sig] = CloneInput(c)
 			cc := CloneInput(c)
+			nc = append(nc, cc)
 			i++
 			delete(ss.corpusDependency.NewInput, s)
 			reply.Input = append(reply.Input, cc)
-			go ss.addInput(cc)
 		} else {
 		}
 	}
+	ss.newInputMu.Unlock()
+
+	for _, cc := range nc {
+		ss.addInput(cc)
+	}
+
 	return reply, nil
 }
 
