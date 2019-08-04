@@ -253,7 +253,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 			nc = append(nc, cc)
 			i++
 			delete(ss.corpusDependency.NewInput, s)
-			reply.Input = append(reply.Input, cc)
+			reply.Input = append(reply.Input, CloneInput(c))
 		} else {
 		}
 	}
