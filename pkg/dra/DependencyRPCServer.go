@@ -11,6 +11,7 @@ import (
 	"net"
 	"os"
 	"sync"
+	"time"
 )
 
 const (
@@ -30,7 +31,9 @@ type Server struct {
 	mu               *sync.Mutex
 	inputMu          *sync.RWMutex
 	uncoveredMu      *sync.RWMutex
+	coveredMu        *sync.RWMutex
 	writeMu          *sync.RWMutex
+	cmdMu            *sync.RWMutex
 	taskMu           *sync.RWMutex
 	taskIndex        int
 	coverageMu       *sync.Mutex
@@ -45,6 +48,8 @@ type Server struct {
 
 	tmu   *sync.Mutex
 	logMu *sync.Mutex
+
+	timeStart time.Time
 }
 
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
@@ -65,7 +70,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 		}
 	}()
 
-	//ss.writeToDisk()
+	go ss.writeToDisk()
 
 	reply := &Empty{}
 
@@ -537,6 +542,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 	}
 	ss.inputMu.Unlock()
 
+	ss.writeMu.Lock()
 	for wa, _ := range u.WriteAddress {
 		waa, ok := ss.corpusDependency.WriteAddress[wa]
 		if !ok {
@@ -552,6 +558,8 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 			delete(waa.UncoveredAddress, uncoveredAddress)
 		}
 	}
+	ss.writeMu.Unlock()
+
 	ss.uncoveredMu.RUnlock()
 	ss.uncoveredMu.Lock()
 	defer ss.uncoveredMu.Unlock()
@@ -576,6 +584,13 @@ func (ss *Server) addCoveredAddress(input *Input) {
 			go ss.checkUncoveredAddress(a)
 		}
 	}
+
+	t := time.Now()
+	elapsed := t.Sub(ss.timeStart)
+	ss.corpusDependency.Coverage.Time = append(ss.corpusDependency.Coverage.Time, &Time{
+		Time: elapsed.Seconds(),
+		Num:  int64(len(ss.corpusDependency.Coverage.Coverage)),
+	})
 
 	out, err := proto.Marshal(ss.corpusDependency.Coverage)
 	if err != nil {
@@ -1179,6 +1194,40 @@ func (m *Task) MergeTask(s *Task) {
 	return
 }
 
+func CloneCorpus(s *Corpus) *Corpus {
+	d := &Corpus{
+		Input:            map[string]*Input{},
+		UncoveredAddress: map[uint32]*UncoveredAddress{},
+		CoveredAddress:   map[uint32]*UncoveredAddress{},
+		WriteAddress:     map[uint32]*WriteAddress{},
+		IoctlCmd:         map[uint64]*IoctlCmd{},
+		Tasks:            CloneTasks(s.Tasks),
+		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Tiem: []*Time{}},
+		NewInput:         map[string]*Input{},
+	}
+
+	for i, ss := range s.Input {
+		d.Input[i] = CloneInput(ss)
+	}
+
+	for i, ss := range s.UncoveredAddress {
+		d.UncoveredAddress[i] = CloneUncoverAddress(ss)
+	}
+	for i, ss := range s.CoveredAddress {
+		d.CoveredAddress[i] = CloneUncoverAddress(ss)
+	}
+
+	for i, ss := range s.WriteAddress {
+		d.WriteAddress[i] = CloneWriteAddress(ss)
+	}
+
+	for i, ss := range s.IoctlCmd {
+		d.IoctlCmd[i] = CloneIoctlCmd(ss)
+	}
+
+	return d
+}
+
 // RunDependencyRPCServer
 func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
@@ -1188,8 +1237,8 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		CoveredAddress:   map[uint32]*UncoveredAddress{},
 		WriteAddress:     map[uint32]*WriteAddress{},
 		IoctlCmd:         map[uint64]*IoctlCmd{},
-		Tasks:            &Tasks{Task: []*Task{}},
-		Coverage:         &Coverage{Coverage: map[uint32]uint32{}},
+		Tasks:            &Tasks{Name: "", Task: []*Task{}},
+		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
 		NewInput:         map[string]*Input{},
 	}
 	ss.fuzzers = make(map[string]*syzFuzzer)
@@ -1197,7 +1246,9 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.mu = &sync.Mutex{}
 	ss.inputMu = &sync.RWMutex{}
 	ss.uncoveredMu = &sync.RWMutex{}
+	ss.coveredMu = &sync.RWMutex{}
 	ss.writeMu = &sync.RWMutex{}
+	ss.cmdMu = &sync.RWMutex{}
 	ss.taskMu = &sync.RWMutex{}
 	ss.coverageMu = &sync.Mutex{}
 	ss.newInputMu = &sync.Mutex{}
@@ -1208,6 +1259,8 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	ss.taskIndex = 0
 	ss.corpus = corpus
+
+	ss.timeStart = time.Now()
 
 	lis, err := net.Listen("tcp", ss.Address)
 	log.Logf(0, "drpc on tcp : %s", ss.Address)
@@ -1226,17 +1279,21 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 func (ss *Server) writeToDisk() {
 
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
-
-	ss.taskMu.Lock()
-	defer ss.taskMu.Unlock()
+	ss.inputMu.RLock()
+	defer ss.inputMu.RUnlock()
+	ss.uncoveredMu.RLock()
+	defer ss.uncoveredMu.RUnlock()
+	ss.writeMu.RLock()
+	defer ss.writeMu.RUnlock()
+	ss.taskMu.RLock()
+	defer ss.taskMu.RUnlock()
+	cc := CloneCorpus(ss.corpusDependency)
 
 	ss.tmu.Lock()
 	defer ss.tmu.Unlock()
 
 	// Write the new back to disk.
-	out, err := proto.Marshal(ss.corpusDependency)
+	out, err := proto.Marshal(cc)
 	if err != nil {
 		log.Fatalf("Failed to encode address:", err)
 	}
