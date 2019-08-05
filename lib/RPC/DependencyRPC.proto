@@ -282,7 +282,13 @@ message Tasks {
     repeated Task task = 1;
 }
 
+message Time {
+    double time = 1;
+    int64 num = 2;
+}
+
 message Coverage {
     map<uint32, uint32> coverage = 1;
+    repeated Time time = 2;
 }
 

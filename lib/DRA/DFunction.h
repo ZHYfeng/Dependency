@@ -99,7 +99,7 @@ namespace dra {
         unsigned int CallInstNum;
         unsigned int JumpInstNum;
         std::vector<DAInstruction *> InstASM;
-
+        unsigned int RealBasicBlockNum;
         unsigned int BasicBlockNum;
         std::unordered_map<std::string, DBasicBlock *> BasicBlock;
 

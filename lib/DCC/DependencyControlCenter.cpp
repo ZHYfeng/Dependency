@@ -27,6 +27,8 @@ namespace dra {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         dra::outputTime("initializeModule");
+        dra::outputTime("RealBasicBlockNum : " + std::to_string(this->DM.Modules->RealBasicBlockNum));
+        dra::outputTime("BasicBlockNum : " + std::to_string(this->DM.Modules->BasicBlockNum));
 
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
@@ -137,6 +139,7 @@ namespace dra {
 
                         set_runtime_data(writeAddress->mutable_run_time_date(), input->program(), u->idx(),
                                          syzkallerConditionAddress, syzkallerUncoveredAddress);
+
 
 //                        std::cout << "writeAddress->mutable_write_syscall()->size() : "
 //                                  << writeAddress->mutable_write_syscall()->size() << std::endl;

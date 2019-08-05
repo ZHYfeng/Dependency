@@ -40,6 +40,7 @@ namespace dra {
         InstNum = 0;
         CallInstNum = 0;
         JumpInstNum = 0;
+        this->RealBasicBlockNum = 0;
         BasicBlockNum = 0;
 
         critical_condition = false;
@@ -54,6 +55,7 @@ namespace dra {
         int64_t no = 0;
         for (auto &it : *function) {
             if (it.hasName()) {
+                RealBasicBlockNum++;
                 BasicBlockNum++;
                 Name = it.getName().str();
                 if (BasicBlock.find(Name) == BasicBlock.end()) {
@@ -207,7 +209,7 @@ namespace dra {
     }
 
     void DFunction::compute_arrive() {
-        if(this->isIR()){
+        if (this->isIR()) {
             if (this->critical_condition) {
                 return;
             } else {
