@@ -1202,7 +1202,7 @@ func CloneCorpus(s *Corpus) *Corpus {
 		WriteAddress:     map[uint32]*WriteAddress{},
 		IoctlCmd:         map[uint64]*IoctlCmd{},
 		Tasks:            CloneTasks(s.Tasks),
-		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Tiem: []*Time{}},
+		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
 		NewInput:         map[string]*Input{},
 	}
 
