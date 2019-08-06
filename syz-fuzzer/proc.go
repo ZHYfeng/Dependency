@@ -342,7 +342,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %d", task.WriteAddress))
 	}
 
-	for i := 0; i < 20; i++ {
+	count := len(item.task.UncoveredAddress)
+	for i := 0; i < count*20; i++ {
 		info = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 		var cov cover.Cover
 		cov.Merge(info.Calls[idx].Cover)
@@ -381,7 +382,11 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 		}
 	}
 
-	task.TaskStatus = pb.TaskStatus_tested
+	if len(task.UncoveredAddress) == 0 {
+		task.TaskStatus = pb.TaskStatus_covered
+	} else {
+		task.TaskStatus = pb.TaskStatus_tested
+	}
 	tasks := &pb.Tasks{
 		Name: proc.fuzzer.name,
 		Task: []*pb.Task{},
