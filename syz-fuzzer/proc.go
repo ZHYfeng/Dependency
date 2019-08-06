@@ -342,8 +342,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %d", task.WriteAddress))
 	}
 
-	count := len(item.task.UncoveredAddress)
-	for i := 0; i < count*20; i++ {
+	//count := len(item.task.UncoveredAddress)
+	for i := 0; i < 40; i++ {
 		info = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 		var cov cover.Cover
 		cov.Merge(info.Calls[idx].Cover)
