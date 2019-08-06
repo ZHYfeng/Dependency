@@ -120,6 +120,7 @@ func (ss Server) pickTask() *Tasks {
 			ss.taskIndex++
 			if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
 				i++
+				t.TaskStatus = TaskStatus_testing
 				tasks.Task = append(tasks.Task, t)
 			}
 		}
@@ -1190,7 +1191,10 @@ func CloneTask(s *Task) *Task {
 
 func (m *Task) MergeTask(s *Task) {
 
-	m.TaskStatus = s.TaskStatus
+	if m.TaskStatus == TaskStatus_testing {
+		m.TaskStatus = s.TaskStatus
+	}
+
 	for u, p := range s.CoveredAddress {
 		m.CoveredAddress[u] = CloneRunTimeData(p)
 	}
