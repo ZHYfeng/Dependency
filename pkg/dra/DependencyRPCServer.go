@@ -1000,23 +1000,23 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 
 	f, _ := os.OpenFile("./debug.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	defer f.Close()
-	_, _ = f.WriteString(fmt.Sprintf("%b : %b", indexBits, writeIndexBits))
+	_, _ = f.WriteString(fmt.Sprintf("%b : %b\n", indexBits, writeIndexBits))
 
 	var i uint32
 	var index []uint32
 	var writeIndex []uint32
 	for i = 0; i < 32; i++ {
-		if (1<<i)&indexBits == 1 {
+		if (1<<i)&indexBits > 0 {
 			index = append(index, i)
 		}
 	}
 	for i = 0; i < 32; i++ {
-		if (1<<i)&writeIndexBits == 1 {
+		if (1<<i)&writeIndexBits > 0 {
 			writeIndex = append(writeIndex, i)
 		}
 	}
 
-	_, _ = f.WriteString(fmt.Sprintf("%b : %b", index, writeIndex))
+	_, _ = f.WriteString(fmt.Sprintf("%b\n%b\n", index, writeIndex))
 
 	for _, i := range index {
 		for _, wi := range writeIndex {
