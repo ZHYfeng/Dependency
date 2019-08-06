@@ -214,7 +214,6 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 
 	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	defer f.Close()
-
 	_, _ = f.WriteString(fmt.Sprintf(request.Name))
 
 	reply := &Empty{}
@@ -983,6 +982,7 @@ func (ss *Server) addInputTask(d *Input) {
 }
 
 func (ss *Server) addWriteAddressTask(wa *WriteAddress, writeSig string, indexBits uint32) {
+	ss.uncoveredMu.RLock()
 	for u := range wa.UncoveredAddress {
 		ua, ok := ss.corpusDependency.UncoveredAddress[u]
 		if !ok {
@@ -992,10 +992,16 @@ func (ss *Server) addWriteAddressTask(wa *WriteAddress, writeSig string, indexBi
 			ss.addTasks(sig, inputIndexBits, writeSig, indexBits, wa.WriteAddress, u)
 		}
 	}
+	ss.uncoveredMu.RUnlock()
 }
 
 func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	writeIndexBits uint32, writeAddress uint32, uncoveredAddress uint32) {
+
+	f, _ := os.OpenFile("./debug.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+	_, _ = f.WriteString(fmt.Sprintf("%b : %b", indexBits, writeIndexBits))
+
 	var i uint32
 	var index []uint32
 	var writeIndex []uint32
@@ -1009,6 +1015,8 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 			writeIndex = append(writeIndex, i)
 		}
 	}
+
+	_, _ = f.WriteString(fmt.Sprintf("%b : %b", index, writeIndex))
 
 	for _, i := range index {
 		for _, wi := range writeIndex {
