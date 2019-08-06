@@ -277,7 +277,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	task := item.task
 	log.Logf(1, "DependencyMutate program : \n%s", task.Program)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate program : \n%s", task.Program))
-	proc.fuzzer.dManager.SendLog(fmt.Sprintf("index  : %d\n write index : %d", task.Index, task.WriteIndex))
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("index  : %d write index : %d", task.Index, task.WriteIndex))
 
 	ct := proc.fuzzer.choiceTable
 
