@@ -1096,9 +1096,10 @@ func (ss *Server) addTask(task *Task) {
 		if t.Sig == task.Sig && t.Index == task.Index &&
 			t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
 			if r, ok := t.UncoveredAddress[uncoveredAddress]; ok {
-				t.UncoveredAddress[uncoveredAddress].Priority = ss.updatePriority(r.Priority, r.Priority)
+				t.UncoveredAddress[uncoveredAddress].Priority = ss.updatePriority(r.Priority, dr.Priority)
 			} else {
 				t.UncoveredAddress[uncoveredAddress] = CloneRunTimeData(dr)
+				t.TaskStatus = TaskStatus_untested
 			}
 			return
 		}
@@ -1146,16 +1147,18 @@ func CloneTasks(s *Tasks) *Tasks {
 
 func CloneTask(s *Task) *Task {
 	d := &Task{
-		Sig:              s.Sig,
-		Index:            s.Index,
-		Program:          []byte{},
-		WriteSig:         s.WriteSig,
-		WriteIndex:       s.WriteIndex,
-		WriteProgram:     []byte{},
-		WriteAddress:     s.WriteAddress,
-		UncoveredAddress: map[uint32]*RunTimeData{},
-		TaskStatus:       s.TaskStatus,
-		CoveredAddress:   map[uint32]*RunTimeData{},
+		Sig:                    s.Sig,
+		Index:                  s.Index,
+		Program:                []byte{},
+		WriteSig:               s.WriteSig,
+		WriteIndex:             s.WriteIndex,
+		WriteProgram:           []byte{},
+		WriteAddress:           s.WriteAddress,
+		UncoveredAddress:       map[uint32]*RunTimeData{},
+		CoveredAddress:         map[uint32]*RunTimeData{},
+		TaskStatus:             s.TaskStatus,
+		CheckWriteAddress:      s.CheckWriteAddress,
+		CheckWriteAddressFinal: s.CheckWriteAddressFinal,
 	}
 
 	for _, c := range s.Program {
