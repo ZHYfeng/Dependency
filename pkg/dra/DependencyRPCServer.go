@@ -998,9 +998,9 @@ func (ss *Server) addWriteAddressTask(wa *WriteAddress, writeSig string, indexBi
 func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	writeIndexBits uint32, writeAddress uint32, uncoveredAddress uint32) {
 
-	f, _ := os.OpenFile("./debug.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-	defer f.Close()
-	_, _ = f.WriteString(fmt.Sprintf("%b : %b\n", indexBits, writeIndexBits))
+	//f, _ := os.OpenFile("./debug.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	//defer f.Close()
+	//_, _ = f.WriteString(fmt.Sprintf("%b : %b\n", indexBits, writeIndexBits))
 
 	var i uint32
 	var index []uint32
@@ -1016,7 +1016,7 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 		}
 	}
 
-	_, _ = f.WriteString(fmt.Sprintf("%b\n%b\n", index, writeIndex))
+	//_, _ = f.WriteString(fmt.Sprintf("%b\n%b\n", index, writeIndex))
 
 	for _, i := range index {
 		for _, wi := range writeIndex {
