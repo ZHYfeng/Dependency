@@ -111,7 +111,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	}
 
 	if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
-		proc.executeHintSeed(p, item.call)
+		proc.executeHintSeed(p, int(idx))
 	}
 
 	//count := len(item.task.UncoveredAddress)
