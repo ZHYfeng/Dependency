@@ -36,7 +36,7 @@ type Server struct {
 	cmdMu            *sync.RWMutex
 	taskMu           *sync.RWMutex
 	taskIndex        int
-	coverageMu       *sync.Mutex
+	coverageMu       *sync.RWMutex
 	newInputMu       *sync.Mutex
 	corpusDependency *Corpus
 
@@ -695,6 +695,13 @@ func (m *Input) MergeInput(d *Input) {
 }
 
 func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
+	ss.coverageMu.RLock()
+	_, ok := ss.corpusDependency.Coverage.Coverage[s.UncoveredAddress]
+	ss.coverageMu.RUnlock()
+	if ok {
+		return
+	}
+
 	ss.uncoveredMu.Lock()
 	if i, ok := ss.corpusDependency.UncoveredAddress[s.UncoveredAddress]; ok {
 		i.MergeUncoveredAddress(s)
@@ -1265,7 +1272,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.writeMu = &sync.RWMutex{}
 	ss.cmdMu = &sync.RWMutex{}
 	ss.taskMu = &sync.RWMutex{}
-	ss.coverageMu = &sync.Mutex{}
+	ss.coverageMu = &sync.RWMutex{}
 	ss.newInputMu = &sync.Mutex{}
 	ss.fuzzerMu = &sync.Mutex{}
 	ss.corpusMu = &sync.Mutex{}
