@@ -20,7 +20,7 @@ namespace dra {
     DependencyRPCClient::~DependencyRPCClient() = default;
 
 
-    unsigned long long int DependencyRPCClient::GetVmOffsets() {
+    uint64_t DependencyRPCClient::GetVmOffsets() {
         Empty request;
         Empty reply;
         grpc::ClientContext context;
@@ -28,8 +28,22 @@ namespace dra {
         if (status.ok()) {
             return reply.address();
         } else {
-            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+            std::cerr << status.error_code() << ": " << status.error_message() << std::endl;
             return 0;
+        }
+    }
+
+    void DependencyRPCClient::SendBasicBlockNumber(uint64_t BasicBlockNumber) {
+        Empty request;
+        Empty reply;
+        grpc::ClientContext context;
+        request.set_address(BasicBlockNumber);
+        grpc::Status status = stub_->SendBasicBlockNumber(&context, request, &reply);
+        if (status.ok()) {
+            return;
+        } else {
+            std::cerr << status.error_code() << ": " << status.error_message() << std::endl;
+            return;
         }
     }
 
@@ -41,7 +55,7 @@ namespace dra {
         if (status.ok()) {
             return reply;
         } else {
-            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+            std::cerr << status.error_code() << ": " << status.error_message() << std::endl;
             return nullptr;
         }
     }
@@ -53,7 +67,7 @@ namespace dra {
         if (status.ok()) {
             std::cout << "SendDependencyInput : " << reply->name() << std::endl;
         } else {
-            std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+            std::cerr << status.error_code() << ": " << status.error_message() << std::endl;
         }
         return reply;
     }

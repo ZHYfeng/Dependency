@@ -27,8 +27,8 @@ namespace dra {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         dra::outputTime("initializeModule");
-        dra::outputTime("RealBasicBlockNum : " + std::to_string(this->DM.Modules->RealBasicBlockNum));
-        dra::outputTime("BasicBlockNum : " + std::to_string(this->DM.Modules->BasicBlockNum));
+        dra::outputTime("RealBasicBlockNumber : " + std::to_string(this->DM.Modules->RealBasicBlockNumber));
+        dra::outputTime("BasicBlockNumber : " + std::to_string(this->DM.Modules->BasicBlockNumber));
 
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
@@ -74,6 +74,7 @@ namespace dra {
                 grpc::CreateChannel(port, grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
+        client->SendBasicBlockNumber(DM.Modules->BasicBlockNumber);
         dra::outputTime("GetVmOffsets");
     }
 

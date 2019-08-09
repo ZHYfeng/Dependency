@@ -18,8 +18,8 @@ namespace dra {
 
     DModule::DModule() : addr2line(new dra::address()) {
         Function.reserve(PATH_SIZE);
-        this->RealBasicBlockNum = 0;
-        this->BasicBlockNum = 0;
+        this->RealBasicBlockNumber = 0;
+        this->BasicBlockNumber = 0;
     }
 
     DModule::~DModule() = default;
@@ -59,8 +59,8 @@ namespace dra {
                 function->IRName = name;
                 function->InitIRFunction(&it);
                 function->parent = this;
-                this->RealBasicBlockNum += function->RealBasicBlockNum;
-                this->BasicBlockNum += function->BasicBlockNum;
+                this->RealBasicBlockNumber += function->RealBasicBlockNum;
+                this->BasicBlockNumber += function->BasicBlockNum;
             } else {
 
             }

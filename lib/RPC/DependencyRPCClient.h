@@ -22,7 +22,9 @@ namespace dra {
 
         virtual ~DependencyRPCClient();
 
-        unsigned long long int GetVmOffsets();
+        uint64_t GetVmOffsets();
+
+        void SendBasicBlockNumber(uint64_t BasicBlockNumber);
 
         Inputs *GetNewInput();
 

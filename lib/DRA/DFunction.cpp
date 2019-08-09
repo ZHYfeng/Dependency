@@ -160,7 +160,7 @@ namespace dra {
         std::cout << "InstNum :" << InstNum << std::endl;
         std::cout << "CallInstNum :" << CallInstNum << std::endl;
         std::cout << "JumpInstNum :" << JumpInstNum << std::endl;
-        std::cout << "BasicBlockNum :" << BasicBlockNum << std::endl;
+        std::cout << "BasicBlockNumber :" << BasicBlockNum << std::endl;
         if (this->function != nullptr) {
             //            function->dump();
         }
