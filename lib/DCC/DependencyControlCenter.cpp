@@ -23,7 +23,7 @@ namespace dra {
     DependencyControlCenter::~DependencyControlCenter() = default;
 
     void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename,
-                                       const std::string &staticRes) {
+                                       const std::string &staticRes, std::string port) {
 
         DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
         dra::outputTime("initializeModule");
@@ -32,8 +32,8 @@ namespace dra {
 
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
-
-        this->setRPCConnection();
+        this->port = port;
+        this->setRPCConnection(this->port);
     }
 
     void DependencyControlCenter::run() {
@@ -58,7 +58,7 @@ namespace dra {
             } else {
                 dra::outputTime("sleep_for 60s");
                 std::this_thread::sleep_for(std::chrono::seconds(60));
-                setRPCConnection();
+                setRPCConnection(this->port);
             }
 
 //            this->DM.dump_cover();
@@ -69,9 +69,9 @@ namespace dra {
     }
 
 
-    void DependencyControlCenter::setRPCConnection() {
+    void DependencyControlCenter::setRPCConnection(std::string port) {
         this->client = new dra::DependencyRPCClient(
-                grpc::CreateChannel("127.0.0.1:22223", grpc::InsecureChannelCredentials()));
+                grpc::CreateChannel(port, grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
         dra::outputTime("GetVmOffsets");

@@ -22,11 +22,11 @@ namespace dra {
 
         virtual ~DependencyControlCenter();
 
-        void init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes);
+        void init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes, std::string port);
 
         void run();
 
-        void setRPCConnection();
+        void setRPCConnection(std::string port);
 
         sta::MODS *get_write_basicblock(Condition *u);
 
@@ -49,6 +49,7 @@ namespace dra {
 
     private:
         DependencyRPCClient *client;
+        std::string port;
         DataManagement DM;
         sta::StaticAnalysisResult STA;
 
