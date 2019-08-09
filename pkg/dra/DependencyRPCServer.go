@@ -52,6 +52,15 @@ type Server struct {
 	timeStart time.Time
 }
 
+func (ss Server) SendBasicBlockNumber(ctx context.Context, request *Empty) (*Empty, error) {
+	ss.mu.Lock()
+	defer ss.mu.Unlock()
+	ss.corpusDependency.BasicBlockNumber = request.Address
+
+	reply := &Empty{}
+	return reply, nil
+}
+
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
 	log.Logf(1, "(ss Server) ReturnTasks")
 	tasks := CloneTasks(request)
@@ -1202,6 +1211,9 @@ func (m *Task) MergeTask(s *Task) {
 		m.TaskStatus = s.TaskStatus
 	}
 
+	m.CheckWriteAddress = s.CheckWriteAddress
+	m.CheckWriteAddressFinal = s.CheckWriteAddressFinal
+
 	for u, p := range s.CoveredAddress {
 		m.CoveredAddress[u] = CloneRunTimeData(p)
 	}
@@ -1262,6 +1274,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		Tasks:            &Tasks{Name: "", Task: []*Task{}},
 		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
 		NewInput:         map[string]*Input{},
+		BasicBlockNumber: 0,
 	}
 	ss.fuzzers = make(map[string]*syzFuzzer)
 

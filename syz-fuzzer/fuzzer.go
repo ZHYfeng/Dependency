@@ -398,29 +398,6 @@ func (fuzzer *Fuzzer) addInputToCorpus(p *prog.Prog, sign signal.Signal, sig has
 	}
 }
 
-func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(Task *pb.Task) {
-	log.Logf(1, "dependencyInput : %v", Task)
-	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
-
-	//d := pb.CloneInput(dependencyInput)
-	fuzzer.workQueue.enqueue(&WorkDependency{
-		task: Task,
-	})
-
-}
-
-//func (fuzzer *Fuzzer) corpusSigSnapshot() []string {
-//	fuzzer.corpusDMu.RLock()
-//	defer fuzzer.corpusDMu.RUnlock()
-//	return fuzzer.corpusSig
-//}
-//
-//func (fuzzer *Fuzzer) corpusDependencySnapshot() map[string]*prog.Prog {
-//	fuzzer.corpusDMu.RLock()
-//	defer fuzzer.corpusDMu.RUnlock()
-//	return fuzzer.corpusDependency
-//}
-
 func (fuzzer *Fuzzer) corpusSnapshot() []*prog.Prog {
 	fuzzer.corpusMu.RLock()
 	defer fuzzer.corpusMu.RUnlock()
@@ -505,78 +482,5 @@ func parseOutputType(str string) OutputType {
 	default:
 		log.Fatalf("-output flag must be one of none/stdout/dmesg/file")
 		return OutputNone
-	}
-}
-
-func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls []int) {
-	fuzzer.coverMu.Lock()
-
-	input := &pb.Input{
-		Call: make(map[uint32]*pb.Call),
-	}
-	data := p.Serialize()
-	sig := hash.Hash(data)
-	input.Sig = sig.String()
-	tflags := false
-	for i, inf := range info.Calls {
-		input.Call[uint32(i)] = &pb.Call{
-			Idx:     uint32(i),
-			Address: map[uint32]uint32{},
-			//Address: []uint32{},
-		}
-		newCall := input.Call[uint32(i)]
-
-		id := p.Calls[i].Meta.ID
-		if _, ok := fuzzer.cover[id]; !ok {
-			fuzzer.cover[id] = &pb.Call{
-				Idx:     0,
-				Address: make(map[uint32]uint32),
-				//Address: []uint32{},
-			}
-		}
-		call := fuzzer.cover[id].Address
-		flags := false
-		for _, address := range inf.Cover {
-			if _, ok := call[address]; !ok {
-				call[address] = 0
-				flags = true
-				newCall.Address[address] = 0
-			}
-		}
-		if flags == true {
-			calls = append(calls, i)
-			tflags = true
-		}
-	}
-
-	if tflags {
-		//fuzzer.dManager.SendNewInput(input)
-	}
-
-	//for _, cc := range info.Calls {
-	//	log.Logf(1, "Dependency gRPC checkNewCoverage address : %v", cc.Cover)
-	//}
-
-	fuzzer.coverMu.Unlock()
-	return
-}
-
-func (fuzzer *Fuzzer) checkIsCovered(id int, address uint32) (res bool) {
-	fuzzer.coverMu.RLock()
-	if c, ok := fuzzer.cover[id]; ok {
-		call := c.Address
-		if _, ok := call[address]; !ok {
-			return false
-		} else {
-			return true
-		}
-	} else {
-		fuzzer.cover[id] = &pb.Call{
-			Idx:     0,
-			Address: make(map[uint32]uint32),
-		}
-		call := fuzzer.cover[id].Address
-		call[address] = 0
-		return false
 	}
 }
