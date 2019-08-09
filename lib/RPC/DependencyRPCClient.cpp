@@ -65,7 +65,9 @@ namespace dra {
         grpc::ClientContext context;
         grpc::Status status = stub_->SendDependency(&context, request, reply);
         if (status.ok()) {
-            std::cout << "SendDependencyInput : " << reply->name() << std::endl;
+#if DEBUG
+            std::cout << "SendDependency : " << reply->name() << std::endl;
+#endif
         } else {
             std::cerr << status.error_code() << ": " << status.error_message() << std::endl;
         }
@@ -90,7 +92,9 @@ namespace dra {
         grpc::ClientContext context;
         grpc::Status status = stub_->SendWriteAddress(&context, request, reply);
         if (status.ok()) {
+#if DEBUG
             std::cout << "SendDependencyInput : " << reply->name() << std::endl;
+#endif
         } else {
             std::cout << status.error_code() << ": " << status.error_message() << std::endl;
         }
