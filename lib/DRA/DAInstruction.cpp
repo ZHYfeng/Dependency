@@ -34,7 +34,9 @@ namespace dra {
         if (parent != nullptr) {
             parent->update(kind, input);
         } else {
+#if DEBUG_ERR
             std::cerr << "DAInstruction update parent == nullptr trace_pc_address : " << this->Address << "\n";
+#endif
         }
     }
 

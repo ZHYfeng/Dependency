@@ -11,15 +11,12 @@
 #include <iostream>
 #include <llvm/IR/BasicBlock.h>
 
-#define DEBUG 1
+#define DEBUG 0
+#define DEBUG_ERR 0
 
 namespace dra {
 
     void outputTime(std::string s);
-
-    void handler(int nSignum, siginfo_t *si, void *vcontext);
-
-    void deal_sig();
 
     llvm::BasicBlock *getRealBB(llvm::BasicBlock *b);
 

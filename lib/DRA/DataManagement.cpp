@@ -12,6 +12,7 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 #define PATH_SIZE 1000000
 
@@ -27,7 +28,7 @@ namespace dra {
 
     void
     DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename) {
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
         std::string obj = objdump.substr(0, objdump.find(".objdump"));
         std::string Cmd = "addr2line -afi -e " + obj;
         std::cout << "o Cmd :" << Cmd << std::endl;
@@ -64,7 +65,7 @@ namespace dra {
                 if (Inputs.find(Line) != Inputs.end()) {
                     input = Inputs[Line];
 
-#if DEBUGINPUT
+#if DEBUG_INPUT
                     std::cout << "repeat sig : " << Line << std::endl;
 #endif
                     getline(coverFile, Line);
@@ -91,7 +92,7 @@ namespace dra {
 
         setInput();
 
-#if 0 && DEBUGINPUT
+#if DEBUG_INPUT
         std::cout << "all cover: " << std::endl;
         for(auto i : cover){
             std::cout << std::hex << i << "\n";
@@ -119,7 +120,9 @@ namespace dra {
                 if (this->Address2BB.find(addr) != this->Address2BB.end()) {
                     this->Address2BB[addr]->update(CoverKind::cover, it.second);
                 } else {
+#if DEBUG_ERR
                     std::cerr << "un find trace_pc_address " << std::hex << addr << "\n";
+#endif
                 }
 
             }
@@ -134,7 +137,7 @@ namespace dra {
     DInput *DataManagement::getInput(Input *input) {
         std::string sig = input->sig();
         std::string program = input->program();
-#if DEBUGINPUT
+#if DEBUG_INPUT
         std::cout << "sig : " << sig << std::endl;
 #endif
         DInput *dInput;
@@ -157,7 +160,9 @@ namespace dra {
                     this->Address2BB[final_address]->update(CoverKind::cover, dInput);
 //                    this->dump_address(final_address);
                 } else {
+#if DEBUG_ERR
                     std::cerr << "un find trace_pc_address " << std::hex << final_address << "\n";
+#endif
                 }
 
                 if (this->cover.find(final_address) == this->cover.end()) {
@@ -167,8 +172,11 @@ namespace dra {
                     // c->address = final_address;
                     this->cover[final_address] = current_time;
                     // this->time.push_back(c);
-                    std::cout << std::ctime(&current_time) << "new cover trace_pc_address " << std::hex << final_address
-                              << "\n";
+
+                    std::stringstream stream;
+                    stream << std::hex << final_address;
+                    outputTime("new cover trace_pc_address " + stream.str());
+
                     if (this->uncover.find(final_address) == this->uncover.end()) {
 
                     } else {
@@ -329,8 +337,8 @@ namespace dra {
         if (this->Modules->Function.find(Path) != this->Modules->Function.end()) {
             auto p = this->Modules->Function[Path];
             if (p.find(FunctionName) != p.end()) {
-                auto f= p[FunctionName];
-                if(f->BasicBlock.find(bbname)!= f->BasicBlock.end()){
+                auto f = p[FunctionName];
+                if (f->BasicBlock.find(bbname) != f->BasicBlock.end()) {
                     DBasicBlock *db = f->BasicBlock[bbname];
                     return db;
                 } else {
@@ -365,7 +373,7 @@ namespace dra {
     }
 
     void DataManagement::set_condition(Condition *c) {
-        if(c->right_branch_address_size() != c->syzkaller_right_branch_address_size()) {
+        if (c->right_branch_address_size() != c->syzkaller_right_branch_address_size()) {
             c->set_syzkaller_condition_address(this->getSyzkallerAddress(c->condition_address()));
             c->set_syzkaller_uncovered_address(this->getSyzkallerAddress(c->uncovered_address()));
             for (auto a : c->right_branch_address()) {

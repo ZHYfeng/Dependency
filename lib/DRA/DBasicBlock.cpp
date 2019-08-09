@@ -140,7 +140,7 @@ namespace dra {
                 } else if (Db->state == CoverKind::cover) {
 
                 }
-#if DEBUGINPUT
+#if DEBUG_INPUT
                 if (Db->state == CoverKind::uncover) {
                     std::cout << "-------uncover basic block-----------------" << std::endl;
                     Db->dump();

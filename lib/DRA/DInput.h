@@ -13,7 +13,7 @@
 #include <string>
 #include "../RPC/DependencyRPC.pb.h"
 
-#define DEBUGINPUT 0
+#define DEBUG_INPUT 0
 
 namespace dra {
 

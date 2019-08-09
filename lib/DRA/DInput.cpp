@@ -20,7 +20,7 @@ namespace dra {
 
     void DInput::setSig(const std::string &sig) {
         this->sig = sig;
-#if DEBUGINPUT
+#if DEBUG_INPUT
         std::cout << this->sig << std::endl;
 #endif
     }
@@ -31,7 +31,7 @@ namespace dra {
 //        std::string temp = program.substr(1, program.size() - 2) + ' ';
 //        char c = 0;
 //
-//#if DEBUGINPUT
+//#if DEBUG_INPUT
 //        std::cout << program << std::endl;
 //#endif
 //        for (auto cc : temp) {
@@ -44,7 +44,7 @@ namespace dra {
 //                this->program += ss.str();
 //            }
 //        }
-//#if DEBUGINPUT
+//#if DEBUG_INPUT
 //        std::cout << this->program << std::endl;
 //#endif
     }
@@ -55,7 +55,7 @@ namespace dra {
         auto *thisCover = new std::set<unsigned long long int>;
         auto *tempCover = new std::set<unsigned long long int>;
         this->AllCover.push_back(thisCover);
-#if DEBUGINPUT
+#if DEBUG_INPUT
         std::cout << cover << std::endl;
 #endif
         for (auto cc : temp) {
@@ -63,7 +63,7 @@ namespace dra {
                 addr = addr * 10 + cc - '0';
             } else {
                 auto FinalAddr = addr + vmOffsets - 5;
-#if DEBUGINPUT
+#if DEBUG_INPUT
                 if (this->MaxCover.find(FinalAddr) == this->MaxCover.end()) {
                     std::cout << "new : " << std::hex << FinalAddr << std::endl;
                 } else {
@@ -88,7 +88,7 @@ namespace dra {
             MiniCover = *tempCover;
         }
 
-#if DEBUGINPUT
+#if DEBUG_INPUT
         std::cout << "MiniCover:\n";
         for (auto i : this->MiniCover) {
             std::cout << std::hex << i << " ";

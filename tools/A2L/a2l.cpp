@@ -8,7 +8,7 @@
 #include "../../lib/RPC/a2l.pb.cc"
 
 #define TEST 0
-#define DEBUGOBJDUMP 0
+#define DEBUG_OBJ_DUMP 0
 
 llvm::cl::opt<std::string> objdump("objdump", llvm::cl::desc("The path of objdump."), llvm::cl::init("./vmlinux.objdump"));
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     // get path
     std::string obj = objdump.substr(0, objdump.find(".objdump"));
 
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
     std::cout << "objdump :" << objdump << std::endl;
 #endif
 
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
                         ss << Line.at(i);
                     }
                     Addr = ss.str();
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                     std::cout << "o Addr :" << Addr << std::endl;
 #endif
 
@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
                         ss << Line.at(i);
                     }
                     FunctionName = ss.str();
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                     std::cout << "o FunctionName :" << FunctionName << std::endl;
 #endif
 
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
                                 Result = buffer;
                         pclose(stream);
                     }
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                     std::cout << "Result :" << Result << std::endl;
 #endif
                     ss.str("");
@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
                         ss << Result.at(i);
                     }
                     Path = ss.str();
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                     std::cout << "o Path :" << Path << std::endl;
 #endif
                     (*a->mutable_addr())[Addr] = Path;

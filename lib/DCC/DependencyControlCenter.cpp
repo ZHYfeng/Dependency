@@ -38,24 +38,25 @@ namespace dra {
 
     void DependencyControlCenter::run() {
         while (true) {
-            std::cout << "wait for get newInput" << std::endl;
+            dra::outputTime("wait for get newInput");
             Inputs *newInput = client->GetNewInput();
             if (newInput != nullptr) {
                 for (auto &input : *newInput->mutable_input()) {
 //                    std::cout << "new input : " << input.second.sig() << std::endl;
 //                    std::cout << input.second.program() << std::endl;
 //                    DInput *dInput = DM.getInput(&input.second);
-                    std::cout << "new input : " << input.sig() << std::endl;
-                    std::cout << input.program() << std::endl;
+
+                    dra::outputTime("new input : " + input.sig());
+                    dra::outputTime(input.program());
                     DInput *dInput = DM.getInput(&input);
                     get_dependency_input(dInput);
                 }
                 newInput->Clear();
 
-                outputTime("sleep_for 10s");
+                dra::outputTime("sleep_for 10s");
                 std::this_thread::sleep_for(std::chrono::seconds(10));
             } else {
-                outputTime("sleep_for 60s");
+                dra::outputTime("sleep_for 60s");
                 std::this_thread::sleep_for(std::chrono::seconds(60));
                 setRPCConnection();
             }
@@ -77,13 +78,14 @@ namespace dra {
     }
 
     void DependencyControlCenter::get_dependency_input(DInput *dInput) {
-
+#if DEBUG
         std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
                   << std::endl;
+#endif
         uint64_t i = 0;
         for (auto u : dInput->dUncoveredAddress) {
             i++;
-            outputTime("uncovered address count : " + std::to_string(i));
+            dra::outputTime("uncovered address count : " + std::to_string(i));
 
             if (this->DM.check_uncovered_address(u)) {
 
@@ -268,13 +270,15 @@ namespace dra {
         llvm::BasicBlock *b;
         if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
             DBasicBlock *p = DM.Address2BB[u->condition_address()]->parent;
+#if DEBUG
             p->dump();
+#endif
             b = dra::getFinalBB(p->basicBlock);
         } else {
             return res;
         }
 
-        outputTime("GetAllGlobalWriteBBs : ");
+        dra::outputTime("GetAllGlobalWriteBBs : ");
 
         int64_t successor = u->successor();
         int64_t idx;
@@ -284,7 +288,9 @@ namespace dra {
             idx = 1;
         } else {
             idx = 0;
+#if DEBUG_ERR
             std::cerr << "switch case : " << std::hex << successor << std::endl;
+#endif
         }
 
         if ((this->staticResult.find(b) != this->staticResult.end()) &&
@@ -294,13 +300,12 @@ namespace dra {
             sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
             if (write_basicblock == nullptr) {
                 // no taint or out side
-                std::cout << "allBasicblock == nullptr" << std::endl;
+                dra::outputTime("allBasicblock == nullptr");
             } else if (write_basicblock->size() == 0) {
                 // unrelated to gv
-                std::cout << "allBasicblock->size() == 0" << std::endl;
+                dra::outputTime("allBasicblock->size() == 0");
             } else if (!write_basicblock->empty()) {
-                std::cout << "get useful static analysis result : " << std::dec << write_basicblock->size()
-                          << std::endl;
+                dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
                 res = write_basicblock;
             }
 

@@ -25,7 +25,7 @@ namespace dra {
     DModule::~DModule() = default;
 
     void DModule::ReadBC(std::string InputFilename) {
-#if DEBUGBC
+#if DEBUG_BC
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadIR***************************" << std::endl;
 #endif
@@ -38,7 +38,7 @@ namespace dra {
             std::cerr << "load module: " << InputFilename << " failed\n";
             exit(0);
         } else {
-#if DEBUGBC
+#if DEBUG_BC
             std::cerr << "size : " << module->getNamedMDList().size() << "\n";
             for (auto &i : module->getNamedMDList()) {
                 i.dump();
@@ -100,11 +100,11 @@ namespace dra {
         unsigned long start;
 
         DFunction *function;
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadObjdump**********************" << std::endl;
 #endif
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
         std::cout << "objdump :" << objdump << std::endl;
 #endif
 
@@ -124,12 +124,12 @@ namespace dra {
             while (getline(objdumpFile, Line)) {
                 LineNum++;
                 if (!Line.empty()) {
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                     std::cout << "Line :" << Line << std::endl;
 #endif
                     if (Line.find(">:") < Line.size()) {
                         //deal with function
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                         std::cout << ">: :" << std::endl;
 #endif
 
@@ -148,7 +148,7 @@ namespace dra {
                             ss << Line.at(i);
                         }
                         FunctionName = ss.str();
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                         std::cout << "o FunctionName :" << FunctionName << std::endl;
 #endif
                         // get path
@@ -157,7 +157,7 @@ namespace dra {
                         } else {
                             std::cerr << "Failed to get addr2line." << std::endl;
                         }
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                         std::cout << "o Path :" << Path << std::endl;
 #endif
                         function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::O);
@@ -166,17 +166,17 @@ namespace dra {
                     } else {
                         //asm instruction
                         if (Line.at(0) == '.') {
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                             std::cout << "dot :" << std::endl;
 #endif
                         } else if (Line.at(0) == 'D') {
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                             std::cout << "D :" << std::endl;
 #endif
                         } else if (Line.size() - Line.find(':') <= 23) {
                             // deal with no asm
                         } else {
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                             std::cout << "inst :" << std::endl;
 #endif
                             InsNum++;
@@ -197,7 +197,7 @@ namespace dra {
                             }
 
                             Inst = TempLine.substr(TempLine.find(':') + 24, TempLine.size());
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                             std::cout << "o Addr :" << Addr << std::endl;
                             std::cout << "o Inst :" << Inst << std::endl;
 #endif
@@ -223,7 +223,7 @@ namespace dra {
                 } else if (InsNum > 0) {
                     // need add a space line at the end of objdump file.
                     if (!FunctionName.empty()) {
-#if DEBUGOBJDUMP
+#if DEBUG_OBJ_DUMP
                         std::cout << "Line :" << std::endl;
                         std::cout << "FunctionName :" << FunctionName << std::endl;
                         std::cout << "InsNum :" << InsNum << std::endl;
@@ -253,12 +253,12 @@ namespace dra {
         unsigned int trace_num;
 
         DFunction *function;
-#if DEBUGASM
+#if DEBUG_ASM
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadAsmSourceCode****************" << std::endl;
 #endif
 
-#if DEBUGASM
+#if DEBUG_ASM
         std::cout << "AssemblySourceCode :" << AssemblySourceCode << std::endl;
 #endif
 
@@ -269,18 +269,18 @@ namespace dra {
             while (getline(AssemblySourceCodeFile, line)) {
                 LineNum++;
                 if (!line.empty()) {
-#if DEBUGASM
+#if DEBUG_ASM
                     std::cout << "line :" << line << std::endl;
 #endif
                     switch (line.at(0)) {
                         case '.': {
                             //label
-#if DEBUGASM
+#if DEBUG_ASM
                             std::cout << "dot :" << std::endl;
 #endif
                             if (line.find(".Lfunc_end") < line.size()) {
                                 function->InstNum = InstNum;
-#if DEBUGASM
+#if DEBUG_ASM
                                 if (CallInstNum != function->InstASM.size()) {
                                     std::cout << "--------------------------------------------" << std::endl;
                                     std::cout << "different function : " << std::endl;
@@ -306,7 +306,7 @@ namespace dra {
                                     }
                                 }
 #endif
-#if DEBUGASM
+#if DEBUG_ASM
                                 std::cout << "FunctionName :" << FunctionName << std::endl;
                                 std::cout << "InstNum :" << InstNum << std::endl;
 #endif
@@ -328,7 +328,7 @@ namespace dra {
 
                                 (function->BasicBlock[BasicBlockName])->setAsmSourceCode(true);
 
-#if DEBUGASM
+#if DEBUG_ASM
                                 std::cout << ". bb name :" << ss.str() << std::endl;
 #endif
                             }
@@ -336,7 +336,7 @@ namespace dra {
                         }
                         case '#': {
                             // bb
-#if DEBUGASM
+#if DEBUG_ASM
                             std::cout << "sharp :" << std::endl;
 #endif
                             if (line.find("# %") < line.size()) {
@@ -359,14 +359,14 @@ namespace dra {
                                     }
                                 }
 
-#if DEBUGASM
+#if DEBUG_ASM
                                 std::cout << "# bb name :" << ss.str() << std::endl;
 #endif
                             }
                             break;
                         }
                         case '	': {
-#if DEBUGASM
+#if DEBUG_ASM
                             std::cout << "tab :" << std::endl;
                             std::cout << "line.size() :" << line.size() << std::endl;
 #endif
@@ -381,7 +381,7 @@ namespace dra {
                                         ss << line.at(i);
                                     }
                                     Path = ss.str();
-#if DEBUGASM
+#if DEBUG_ASM
                                     std::cout << "s Path :" << Path << std::endl;
 #endif
 
@@ -400,7 +400,7 @@ namespace dra {
                                         ss << line.at(i);
                                     }
                                     Inst = ss.str();
-#if DEBUGASM
+#if DEBUG_ASM
                                     std::cout << "s Inst :" << Inst << std::endl;
 #endif
                                     if (CallInstNum >= function->InstASM.size()) {
@@ -419,7 +419,7 @@ namespace dra {
                                                 }
                                                 (function->BasicBlock[BasicBlockName])->tracr_num++;
                                                 trace_num++;
-#if DEBUGASM
+#if DEBUG_ASM
                                                 std::cout << "o inst :" << inst->OInst << std::endl;
 #endif
                                             }
@@ -437,7 +437,7 @@ namespace dra {
                         }
                         case ' ': {
                             //comment
-#if DEBUGASM
+#if DEBUG_ASM
                             std::cout << "space :" << std::endl;
 #endif
                             break;
@@ -451,7 +451,7 @@ namespace dra {
                                     }
                                     FunctionName = ss.str();
                                     Path = "";
-#if DEBUGASM
+#if DEBUG_ASM
                                     std::cout << "FunctionName :" << FunctionName << std::endl;
 #endif
                                 }
@@ -464,7 +464,7 @@ namespace dra {
         } else {
             std::cerr << "Unable to open AssemblySourceCodeFile " << AssemblySourceCode << ">\n";
         }
-#if DEBUGASM
+#if DEBUG_ASM
         std::cout << "****************ReadAsmSourceCode****************" << std::endl;
 #endif
     }
@@ -506,7 +506,7 @@ namespace dra {
                 case dra::FunctionKind::IR: {
                     if (function->isIR()) {
                         AddRepeatFunction(function, kind);
-#if DBEBUGMAP
+#if DEBUG_MAP
                         std::cout << "ir repeat function : " << std::endl;
                         function->dump();
 #endif
@@ -520,7 +520,7 @@ namespace dra {
                 case dra::FunctionKind::O: {
                     if (function->isObjudump()) {
                         AddRepeatFunction(function, kind);
-#if DBEBUGMAP
+#if DEBUG_MAP
                         std::cout << "o repeat function : " << std::endl;
                         function->dump();
 #endif
@@ -534,7 +534,7 @@ namespace dra {
                 case dra::FunctionKind::S: {
                     if (function->isAsmSourceCode()) {
                         AddRepeatFunction(function, kind);
-#if DBEBUGMAP
+#if DEBUG_MAP
                         std::cout << "s repeat function : " << std::endl;
                         function->dump();
 #endif
