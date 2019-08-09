@@ -57,8 +57,8 @@ namespace dra {
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
         std::unique_ptr<dra::address> addr2line;
 
-        uint64_t RealBasicBlockNumber;
-        uint64_t BasicBlockNumber;
+        uint32_t RealBasicBlockNumber;
+        uint32_t BasicBlockNumber;
         std::unordered_map<std::string, DFunction *> RepeatBCFunction;
         std::unordered_map<std::string, DFunction *> RepeatOFunction;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> RepeatSFunction;

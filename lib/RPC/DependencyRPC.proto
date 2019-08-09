@@ -260,6 +260,7 @@ message Corpus {
     Tasks tasks = 7;
     Coverage coverage = 8;
     map<string, Input> new_input = 9;
+    uint32 basic_block_number = 10;
 }
 
 message Task {

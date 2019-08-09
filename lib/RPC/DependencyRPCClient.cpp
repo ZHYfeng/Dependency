@@ -20,7 +20,7 @@ namespace dra {
     DependencyRPCClient::~DependencyRPCClient() = default;
 
 
-    uint64_t DependencyRPCClient::GetVmOffsets() {
+    uint32_t DependencyRPCClient::GetVmOffsets() {
         Empty request;
         Empty reply;
         grpc::ClientContext context;
@@ -33,7 +33,7 @@ namespace dra {
         }
     }
 
-    void DependencyRPCClient::SendBasicBlockNumber(uint64_t BasicBlockNumber) {
+    void DependencyRPCClient::SendBasicBlockNumber(uint32_t BasicBlockNumber) {
         Empty request;
         Empty reply;
         grpc::ClientContext context;
