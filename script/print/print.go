@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
 	pb "./dra"
 	"github.com/golang/protobuf/proto"
@@ -89,7 +90,7 @@ func main() {
 		} else if k == 3 {
 			c1++
 			c1d++
-			fmt.Printf("dependency : %x\n", a)
+			fmt.Printf("ffffffff%x\n", a)
 		} else {
 			fmt.Printf("%v\n", a)
 		}
@@ -99,4 +100,65 @@ func main() {
 	fmt.Printf("result with dra : %d\n", c1)
 	fmt.Printf("result without dra : %d\n", c2)
 	fmt.Printf("result with dra of d : %d\n", c1d)
+
+	path := "./coverage.txt"
+	_ = os.Remove(path)
+	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+	var num1 int64
+	time1 := 0.0
+	for _, t := range coverage1.Time {
+		num1 = t.Num
+		for ; t.Time > time1; time1 = time1 + 60 {
+			_, _ = f.WriteString(fmt.Sprintf("%f %d\n", time1, num1))
+		}
+	}
+	_, _ = f.WriteString(fmt.Sprintf("%f %d\n", time1, num1))
+	time1 = 0.0
+	num1 = 0
+	for _, t := range coverage2.Time {
+		num1 = t.Num
+		for ; t.Time > time1; time1 = time1 + 60 {
+			_, _ = f.WriteString(fmt.Sprintf("%f %d\n", time1, num1))
+		}
+	}
+	_, _ = f.WriteString(fmt.Sprintf("%f %d\n", time1, num1))
+
+	data := "./result-with-dra/data.bin"
+	in, err = ioutil.ReadFile(data)
+	if err != nil {
+		log.Fatalln("Error reading file:", err)
+	}
+	corpus := &pb.Corpus{}
+	if err := proto.Unmarshal(in, corpus); err != nil {
+		log.Fatalln("Failed to parse coverage1:", err)
+	}
+	unpath := "./un.txt"
+	_ = os.Remove(unpath)
+	uf, _ := os.OpenFile(unpath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+	for _, u := range corpus.UncoveredAddress {
+		_, ok := coverage1.Coverage[u.UncoveredAddress]
+		if ok {
+			// fmt.Printf("find  : %x\n", u.UncoveredAddress)
+		} else {
+			uf.WriteString(fmt.Sprintf("ffffffff%x\nffffffff%x\n", u.ConditionAddress, u.UncoveredAddress))
+		}
+	}
+
+	// for _, i := range corpus.Input {
+	// 	for u, bit := range i.UncoveredAddress {
+	// 		uf.WriteString(fmt.Sprintf("ffffffff%x : %b\n", u, bit))
+	// 	}
+	// }
+
+	// for _, i := range corpus.UncoveredAddress {
+	// 	for u, bit := range i.Input {
+	// 		uf.WriteString(fmt.Sprintf("%s : %b\n", u, bit))
+	// 	}
+	// }
+
+	// for _, t := range corpus.Tasks.Task {
+	// 	uf.WriteString(fmt.Sprintf("%b : %b\n", t.Index, t.WriteIndex))
+	// }
 }
