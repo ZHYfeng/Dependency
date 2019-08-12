@@ -237,13 +237,19 @@ namespace dra {
                         return true;
                     }
                 } else {
+#if DEBUG_ERR
                     std::cerr << "isDriver not have parent f : " << std::hex << address << "\n";
+#endif
                 }
             } else {
+#if DEBUG_ERR
                 std::cerr << "isDriver not have parent bb : " << std::hex << address << "\n";
+#endif
             }
         } else {
+#if DEBUG_ERR
             std::cerr << "isDriver not find trace_pc_address : " << std::hex << address << "\n";
+#endif
         }
         return false;
     }

@@ -34,6 +34,8 @@ service DependencyRPC {
     }
     rpc SendLog (Empty) returns (Empty) {
     }
+    rpc sendStat (Statistic) returns (Empty) {
+    }
 }
 
 
@@ -212,7 +214,7 @@ message Input {
     map<uint32, Call> call = 13;
     
     // for dependency
-    bool dependency = 21;
+    FuzzingStat stat = 21;
     // uncovered address, index by bits
     map<uint32, uint32> uncovered_address = 22;
     // write address, index by bits
@@ -258,9 +260,35 @@ message Corpus {
     map<uint32, WriteAddress> write_address = 5;
     map<uint64, IoctlCmd> ioctl_cmd = 6;
     Tasks tasks = 7;
-    Coverage coverage = 8;
     map<string, Input> new_input = 9;
+}
+
+enum FuzzingStat {
+    StatGenerate = 0;
+    StatFuzz = 1;
+    StatCandidate = 2;
+    StatTriage = 3;
+    StatMinimize = 4;
+    StatSmash = 5;
+    StatHint = 6;
+    StatSeed = 7;
+    StatDependency = 8;
+}
+
+message Statistic {
+    FuzzingStat name = 1;
+    
+    uint64 executeNum = 11;
+    double time = 12;
+    uint64 newTestCaseNum = 13;
+    uint64 newAddressNum = 14;
+}
+
+message Statistics {
+    uint64 signalNum = 1;
     uint32 basic_block_number = 10;
+    Coverage coverage = 8;
+    map<int32, Statistic> stat = 11;
 }
 
 message Task {
@@ -289,6 +317,7 @@ message Tasks {
 message Time {
     double time = 1;
     int64 num = 2;
+    int64 executeNum = 3;
 }
 
 message Coverage {
