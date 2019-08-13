@@ -137,3 +137,15 @@ func (d *DRPCClient) SSendLog() {
 	d.logMu.Unlock()
 	return
 }
+
+func (d *DRPCClient) SendStat(stat *Statistic) (*Empty, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+	log.Logf(1, "Dependency gRPC sendStat stat : %v", stat)
+	reply, err := d.c.SendStat(ctx, stat, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
+	if err != nil {
+		log.Fatalf("Dependency gRPC could not sendStat: %v", err)
+	}
+	log.Logf(1, "Dependency gRPC sendStat reply.Name : %v", reply.Name)
+	return reply, nil
+}

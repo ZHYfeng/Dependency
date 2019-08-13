@@ -72,41 +72,60 @@ func (proc *Proc) loop() {
 		generatePeriod = 2
 	}
 	for i := 0; ; i++ {
+		ts := time.Now()
+		var statName pb.FuzzingStat
+
 		log.Logf(1, "loop : %v", i)
 		item := proc.fuzzer.workQueue.dequeue()
 		log.Logf(1, "item := proc.fuzzer.workQueue.dequeue()")
 		if item != nil {
 			switch item := item.(type) {
 			case *WorkTriage:
+				statName = pb.FuzzingStat_StatTriage
 				proc.triageInput(item)
 			case *WorkCandidate:
+				statName = pb.FuzzingStat_StatCandidate
 				proc.execute(proc.execOpts, item.p, item.flags, StatCandidate)
 			case *WorkSmash:
+				statName = pb.FuzzingStat_StatSmash
 				proc.smashInput(item)
 			case *WorkDependency:
+				statName = pb.FuzzingStat_StatDependency
 				proc.dependencyMutate(item)
 			default:
 				log.Fatalf("unknown work type: %#v", item)
 			}
-			continue
+		} else {
+			ct := proc.fuzzer.choiceTable
+			corpus := proc.fuzzer.corpusSnapshot()
+			if len(corpus) == 0 || i%generatePeriod == 0 {
+				statName = pb.FuzzingStat_StatGenerate
+				// Generate a new prog.
+				p := proc.fuzzer.target.Generate(proc.rnd, programLength, ct)
+				log.Logf(1, "#%v: generated", proc.pid)
+				proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
+			} else {
+				statName = pb.FuzzingStat_StatFuzz
+				// Mutate an existing prog.
+				log.Logf(1, "#%v: mutated", proc.pid)
+				p := corpus[proc.rnd.Intn(len(corpus))].Clone()
+				p.Mutate(proc.rnd, programLength, ct, corpus)
+				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+				//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+				//proc.fuzzer.checkNewCoverage(p, info)
+			}
 		}
 
-		ct := proc.fuzzer.choiceTable
-		corpus := proc.fuzzer.corpusSnapshot()
-		if len(corpus) == 0 || i%generatePeriod == 0 {
-			// Generate a new prog.
-			p := proc.fuzzer.target.Generate(proc.rnd, programLength, ct)
-			log.Logf(1, "#%v: generated", proc.pid)
-			proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
-		} else {
-			// Mutate an existing prog.
-			log.Logf(1, "#%v: mutated", proc.pid)
-			p := corpus[proc.rnd.Intn(len(corpus))].Clone()
-			p.Mutate(proc.rnd, programLength, ct, corpus)
-			proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-			//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-			//proc.fuzzer.checkNewCoverage(p, info)
+		te := time.Now()
+		elapsed := te.Sub(ts)
+		s := &pb.Statistic{
+			Name:           statName,
+			ExecuteNum:     0,
+			Time:           elapsed.Seconds(),
+			NewTestCaseNum: 0,
+			NewAddressNum:  0,
 		}
+		_, _ = proc.fuzzer.dManager.SendStat(s)
 	}
 }
 
@@ -208,10 +227,10 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	}
 
 	input := pb.Input{
-		Sig:        sig.String(),
-		Program:    []byte{},
-		Call:       make(map[uint32]*pb.Call),
-		Dependency: false,
+		Sig:     sig.String(),
+		Program: []byte{},
+		Call:    make(map[uint32]*pb.Call),
+		Stat:    pb.FuzzingStat_StatTriage,
 	}
 
 	for _, c := range data {
@@ -233,8 +252,11 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	}
 
 	for _, c := range item.p.Comments {
+		i, ok := pb.FuzzingStat_value[c]
+		if ok {
+			input.Stat = pb.FuzzingStat(i)
+		}
 		if c == "StatDependency" {
-			input.Dependency = true
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : \n%s", data))
 		}
 	}
@@ -318,8 +340,9 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	for _, callIndex := range calls {
 		if stat == StatDependency {
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new input from StatDependency : \n%s", p.Serialize()))
-			p.Comments = append(p.Comments, "StatDependency")
 		}
+		p.Comments = []string{pb.FuzzingStat_name[int32(stat)]}
+		//p.Comments = append(p.Comments, pb.FuzzingStat_name[int32(stat)])
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}
 	if extra {

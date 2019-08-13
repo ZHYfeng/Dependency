@@ -319,12 +319,29 @@ func (fuzzer *Fuzzer) pollLoop() {
 			if !fuzzer.poll(needCandidates, stats) {
 				lastPoll = time.Now()
 			}
-		}
 
+			for i, n := range stats {
+				for ii, nn := range statNames {
+					if nn == i {
+						s := &pb.Statistic{
+							Name:           pb.FuzzingStat(ii),
+							ExecuteNum:     n,
+							Time:           0,
+							NewTestCaseNum: 0,
+							NewAddressNum:  0,
+						}
+						_, _ = fuzzer.dManager.SendStat(s)
+						break
+					}
+				}
+
+			}
+		}
 	}
 }
 
 func (fuzzer *Fuzzer) poll(needCandidates bool, stats map[string]uint64) bool {
+
 	a := &rpctype.PollArgs{
 		Name:           fuzzer.name,
 		NeedCandidates: needCandidates,

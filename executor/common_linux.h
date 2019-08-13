@@ -818,6 +818,9 @@ static long syz_extract_tcp_res(volatile long a0, volatile long a1, volatile lon
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <linux/cdrom.h>
+#include <sys/ioctl.h>
+#include <limits.h>
 
 static long syz_open_dev(volatile long a0, volatile long a1, volatile long a2)
 {
@@ -837,7 +840,18 @@ static long syz_open_dev(volatile long a0, volatile long a1, volatile long a2)
 			*hash = '0' + (char)(a1 % 10); // 10 devices should be enough for everyone.
 			a1 /= 10;
 		}
-		return open(buf, a2, 0);
+
+		if(buf[5] == 'c' && buf[6] == 'd' && buf[7] == 'r' && buf[8] == 'o' && buf[9] == 'm'){
+			char name[12] = "/dev/cdrom";
+        	int r0 = open(name, 0x800);	//open with mode 0x800
+        	int result = ioctl(r0, CDROM_DRIVE_STATUS, CDSL_NONE);	//check the cd drive status
+        	if(result == CDS_TRAY_OPEN)	//if the tray is open
+        		ioctl(r0, CDROMCLOSETRAY);	//close it
+        	return r0;
+		} else {
+		    return open(buf, a2, 0);
+		}
+
 	}
 }
 #endif

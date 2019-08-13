@@ -28,7 +28,6 @@ type Server struct {
 	Port    int
 	Address string
 
-	mu               *sync.Mutex
 	inputMu          *sync.RWMutex
 	uncoveredMu      *sync.RWMutex
 	coveredMu        *sync.RWMutex
@@ -39,6 +38,9 @@ type Server struct {
 	coverageMu       *sync.RWMutex
 	newInputMu       *sync.Mutex
 	corpusDependency *Corpus
+
+	statMu *sync.RWMutex
+	stat   *Statistics
 
 	fuzzerMu *sync.Mutex
 	fuzzers  map[string]*syzFuzzer
@@ -52,10 +54,55 @@ type Server struct {
 	timeStart time.Time
 }
 
+func CloneStatistic(s *Statistic) *Statistic {
+
+	d := &Statistic{
+		Name:           s.Name,
+		ExecuteNum:     s.ExecuteNum,
+		Time:           s.Time,
+		NewTestCaseNum: s.NewTestCaseNum,
+		NewAddressNum:  s.NewAddressNum,
+	}
+
+	return d
+}
+
+func (m *Statistic) MergeStatistic(d *Statistic) {
+
+	if m.Name != d.Name {
+		return
+	}
+
+	m.ExecuteNum = m.ExecuteNum + d.ExecuteNum
+	m.Time = m.Time + d.Time
+	m.NewTestCaseNum = m.NewTestCaseNum + d.NewTestCaseNum
+	m.NewAddressNum = m.NewAddressNum + d.NewAddressNum
+
+	return
+}
+
+func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, error) {
+	ss.statMu.Lock()
+	stat := CloneStatistic(request)
+
+	s, ok := ss.stat.Stat[int32(stat.Name)]
+	if ok {
+		s.MergeStatistic(stat)
+	} else {
+		ss.stat.Stat[int32(stat.Name)] = stat
+	}
+	ss.statMu.Unlock()
+
+	go ss.writeStatisticsToDisk()
+
+	reply := &Empty{}
+	return reply, nil
+}
+
 func (ss Server) SendBasicBlockNumber(ctx context.Context, request *Empty) (*Empty, error) {
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
-	ss.corpusDependency.BasicBlockNumber = request.Address
+	ss.statMu.Lock()
+	defer ss.statMu.Unlock()
+	ss.stat.BasicBlockNumber = request.Address
 
 	reply := &Empty{}
 	return reply, nil
@@ -79,7 +126,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 		}
 	}()
 
-	go ss.writeToDisk()
+	go ss.writeCorpusToDisk()
 
 	reply := &Empty{}
 
@@ -158,8 +205,8 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencyt
 	//if f, ok := ss.fuzzers[request.Name]; ok {
 	//if _, ok := f.task.Task[request.Input.Sig]; ok {
 	//	delete(f.corpusDI, request.Input.Sig)
-	//	ss.mu.Lock()
-	//	defer ss.mu.Unlock()
+	//	ss.statMu.Lock()
+	//	defer ss.statMu.Unlock()
 	//	if ok := ss.checkDependencyInput(input); ok {
 	//		//ss.corpusDependency.Input[input.Sig] = input
 	//	} else {
@@ -170,7 +217,6 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencyt
 	//	log.Fatalf("ReturnDependencyInput : ", request.Name)
 	//}
 	reply := &Empty{}
-	//ss.writeToDisk()
 
 	return reply, nil
 }
@@ -188,15 +234,14 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 	//	return reply, nil
 	//}
 	//}
-	//ss.writeToDisk()
 
 	return reply, nil
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
 	log.Logf(1, "(ss Server) SendWriteAddress")
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
+	ss.statMu.Lock()
+	defer ss.statMu.Unlock()
 	//a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
 	//if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
 	//	for _, wwa := range request.WriteAddress {
@@ -212,7 +257,6 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 	//} else {
 	//	log.Fatalf("SendWriteAddress : ", request.Condition.ConditionAddress)
 	//}
-	//ss.writeToDisk()
 
 	return &Empty{}, nil
 }
@@ -292,8 +336,8 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 		return reply, nil
 	}
 
-	ss.mu.Lock()
-	defer ss.mu.Unlock()
+	ss.statMu.Lock()
+	defer ss.statMu.Unlock()
 
 	ci := CloneInput(request)
 	ss.addInput(ci)
@@ -320,8 +364,8 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	//}
 	//}
 	//
-	//	ss.mu.Lock()
-	//	defer ss.mu.Unlock()
+	//	ss.statMu.Lock()
+	//	defer ss.statMu.Unlock()
 	//i := 0
 	//for s, c := range ss.corpusDependency.CorpusDependencyInput {
 	//	if i < taskNum {
@@ -339,8 +383,6 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 	//	log.Fatalf("syz_fuzzer %v is not connected", request.Name)
 	//}
 
-	//ss.writeToDisk()
-
 	//for i := 0; i < 50 && len(f.corpusDependencyInput) > 0; i++ {
 	//	last := len(f.corpusDependencyInput) - 1
 	//	reply.DependencyInput = append(reply.DependencyInput, cloneDependencyInput(&f.corpusDependencyInput[last]))
@@ -356,11 +398,10 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	log.Logf(1, "(ss Server) SendNewInput")
 
 	reply := &Empty{}
-	input := CloneInput(request)
 
-	go ss.addNewInput(input)
+	go ss.addNewInput(CloneInput(request))
 
-	go ss.addCoveredAddress(input)
+	go ss.addCoveredAddress(CloneInput(request))
 
 	return reply, nil
 }
@@ -579,37 +620,50 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 
 func (ss *Server) addCoveredAddress(input *Input) {
 	var isDependency uint32
-	if input.Dependency {
+	if input.Stat == FuzzingStat_StatDependency {
 		isDependency = 1
 	} else {
 		isDependency = 0
 	}
-
+	var newAddressNum uint64
+	newAddressNum = 0
 	ss.coverageMu.Lock()
-	defer ss.coverageMu.Unlock()
 	for _, call := range input.Call {
 		for a := range call.Address {
-			ss.corpusDependency.Coverage.Coverage[a] = isDependency
+			_, ok := ss.stat.Coverage.Coverage[a]
+			if !ok {
+				newAddressNum++
+				ss.stat.Coverage.Coverage[a] = isDependency
+			}
 			go ss.checkUncoveredAddress(a)
 		}
 	}
-
 	t := time.Now()
 	elapsed := t.Sub(ss.timeStart)
-	ss.corpusDependency.Coverage.Time = append(ss.corpusDependency.Coverage.Time, &Time{
+	ss.stat.Coverage.Time = append(ss.stat.Coverage.Time, &Time{
 		Time: elapsed.Seconds(),
-		Num:  int64(len(ss.corpusDependency.Coverage.Coverage)),
+		Num:  int64(len(ss.stat.Coverage.Coverage)),
 	})
+	ss.coverageMu.Unlock()
 
-	out, err := proto.Marshal(ss.corpusDependency.Coverage)
-	if err != nil {
-		log.Fatalf("Failed to encode coverage:", err)
+	ss.statMu.Lock()
+	s, ok := ss.stat.Stat[int32(input.Stat)]
+	if ok {
+		s.NewTestCaseNum++
+		s.NewAddressNum = s.NewAddressNum + newAddressNum
+	} else {
+		ss.stat.Stat[int32(input.Stat)] = &Statistic{
+			Name:           input.Stat,
+			ExecuteNum:     0,
+			Time:           0,
+			NewTestCaseNum: 1,
+			NewAddressNum:  newAddressNum,
+		}
 	}
-	path := "coverage.bin"
-	_ = os.Remove(path)
-	if err := ioutil.WriteFile(path, out, 0644); err != nil {
-		log.Fatalf("Failed to write coverage:", err)
-	}
+	ss.statMu.Unlock()
+
+	go ss.writeStatisticsToDisk()
+
 	return
 }
 
@@ -632,7 +686,7 @@ func CloneInput(s *Input) *Input {
 		Sig:              s.Sig,
 		Program:          []byte{},
 		Call:             make(map[uint32]*Call),
-		Dependency:       s.Dependency,
+		Stat:             s.Stat,
 		UncoveredAddress: map[uint32]uint32{},
 		WriteAddress:     map[uint32]uint32{},
 	}
@@ -705,7 +759,7 @@ func (m *Input) MergeInput(d *Input) {
 
 func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 	ss.coverageMu.RLock()
-	_, ok := ss.corpusDependency.Coverage.Coverage[s.UncoveredAddress]
+	_, ok := ss.stat.Coverage.Coverage[s.UncoveredAddress]
 	ss.coverageMu.RUnlock()
 	if ok {
 		return
@@ -1236,7 +1290,6 @@ func CloneCorpus(s *Corpus) *Corpus {
 		WriteAddress:     map[uint32]*WriteAddress{},
 		IoctlCmd:         map[uint64]*IoctlCmd{},
 		Tasks:            CloneTasks(s.Tasks),
-		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
 		NewInput:         map[string]*Input{},
 	}
 
@@ -1262,6 +1315,12 @@ func CloneCorpus(s *Corpus) *Corpus {
 	return d
 }
 
+func (ss *Server) SyncSignal(signalNum uint64) {
+	ss.statMu.Lock()
+	defer ss.statMu.Unlock()
+	ss.stat.SignalNum = signalNum
+}
+
 // RunDependencyRPCServer
 func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
@@ -1272,13 +1331,10 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		WriteAddress:     map[uint32]*WriteAddress{},
 		IoctlCmd:         map[uint64]*IoctlCmd{},
 		Tasks:            &Tasks{Name: "", Task: []*Task{}},
-		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
 		NewInput:         map[string]*Input{},
-		BasicBlockNumber: 0,
 	}
 	ss.fuzzers = make(map[string]*syzFuzzer)
 
-	ss.mu = &sync.Mutex{}
 	ss.inputMu = &sync.RWMutex{}
 	ss.uncoveredMu = &sync.RWMutex{}
 	ss.coveredMu = &sync.RWMutex{}
@@ -1291,6 +1347,14 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.corpusMu = &sync.Mutex{}
 	ss.tmu = &sync.Mutex{}
 	ss.logMu = &sync.Mutex{}
+
+	ss.stat = &Statistics{
+		SignalNum:        0,
+		BasicBlockNumber: 0,
+		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
+		Stat:             map[int32]*Statistic{},
+	}
+	ss.statMu = &sync.RWMutex{}
 
 	ss.taskIndex = 0
 	ss.corpus = corpus
@@ -1312,7 +1376,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	}()
 }
 
-func (ss *Server) writeToDisk() {
+func (ss *Server) writeCorpusToDisk() {
 
 	ss.inputMu.RLock()
 	defer ss.inputMu.RUnlock()
@@ -1339,4 +1403,21 @@ func (ss *Server) writeToDisk() {
 	}
 
 	// [END marshal_proto]
+}
+
+func (ss *Server) writeStatisticsToDisk() {
+	ss.statMu.Lock()
+	defer ss.statMu.Unlock()
+	ss.coverageMu.Lock()
+	defer ss.coverageMu.Unlock()
+
+	out, err := proto.Marshal(ss.stat)
+	if err != nil {
+		log.Fatalf("Failed to encode coverage:", err)
+	}
+	path := "statistics.bin"
+	_ = os.Remove(path)
+	if err := ioutil.WriteFile(path, out, 0644); err != nil {
+		log.Fatalf("Failed to write coverage:", err)
+	}
 }

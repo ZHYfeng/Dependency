@@ -86,6 +86,7 @@ type Manager struct {
 	// Maps file name to modification time.
 	usedFiles map[string]time.Time
 	dprot     int
+	ss        *dra.Server
 }
 
 const (
@@ -177,6 +178,7 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 		needMoreRepros:   make(chan chan bool),
 		reproRequest:     make(chan chan map[string]bool),
 		usedFiles:        make(map[string]time.Time),
+		ss:               &dra.Server{},
 	}
 
 	log.Logf(0, "loading corpus...")
@@ -190,14 +192,13 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	mgr.collectUsedFiles()
 
 	// Create gRPC server.
-	ss := &dra.Server{}
-	ss.Address = mgr.cfg.DRPC
-	ss.RunDependencyRPCServer(&mgr.corpus)
-	mgr.dprot = ss.Port
+	mgr.ss.Address = mgr.cfg.DRPC
+	mgr.ss.RunDependencyRPCServer(&mgr.corpus)
+	mgr.dprot = mgr.ss.Port
 
 	vmlinux := filepath.Join(mgr.cfg.KernelObj, mgr.sysTarget.KernelObject)
 	VMOFFset, _ := getVMOffset(vmlinux, mgr.cfg.TargetOS)
-	ss.SetAddress(VMOFFset)
+	mgr.ss.SetAddress(VMOFFset)
 
 	// Create RPC server for fuzzers.
 	mgr.port, err = startRPCServer(mgr)
@@ -230,6 +231,7 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 
 			log.Logf(0, "VMs %v, executed %v, cover %v, crashes %v, repro %v",
 				numFuzzing, executed, signal, crashes, numReproducing)
+			mgr.ss.SyncSignal(signal)
 		}
 	}()
 

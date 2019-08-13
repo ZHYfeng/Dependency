@@ -37,6 +37,23 @@ func (proc *Proc) getCall(sc *pb.IoctlCmd) (res *prog.Syscall) {
 	return
 }
 
+func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
+	log.Logf(1, "#%v: collecting comparisons", proc.pid)
+	// First execute the original program to dump comparisons from KCOV.
+	info := proc.execute(proc.execOptsComps, p, ProgNormal, StatDependency)
+	if info == nil {
+		return
+	}
+
+	// Then mutate the initial program for every match between
+	// a syscall argument and a comparison operand.
+	// Execute each of such mutants to check if it gives new coverage.
+	p.MutateWithHints(call, info.Calls[call].Comps, func(p *prog.Prog) {
+		log.Logf(1, "#%v: executing comparison hint", proc.pid)
+		proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
+	})
+}
+
 func (proc *Proc) dependencyMutate(item *WorkDependency) {
 
 	log.Logf(1, "#%v: DependencyMutate", proc.pid)
@@ -111,7 +128,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	}
 
 	if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
-		proc.executeHintSeed(p, int(idx))
+		proc.executeDependencyHintSeed(p, int(idx))
 	}
 
 	//count := len(item.task.UncoveredAddress)
