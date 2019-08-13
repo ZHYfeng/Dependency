@@ -181,7 +181,7 @@ namespace dra {
 
                     } else {
                         this->uncover[final_address]->covered = true;
-                        if (input->dependency() == true) {
+                        if (input->stat() == StatDependency) {
                             this->uncover[final_address]->covered_by_dependency = true;
                         }
                     }
