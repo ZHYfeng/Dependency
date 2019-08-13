@@ -224,6 +224,8 @@ namespace dra {
 
     bool DataManagement::isDriver(unsigned long long int address) {
 
+        return true;
+
         if (this->Address2BB.find(address) != this->Address2BB.end()) {
             if (this->Address2BB[address]->parent != nullptr) {
                 auto b = this->Address2BB[address]->parent;
@@ -235,6 +237,8 @@ namespace dra {
                         return true;
                     } else if (f->Path.find("sound/") == 0) {
                         return true;
+                    } else if (f->Path.find("kvm/") == 0) {
+
                     }
                 } else {
 #if DEBUG_ERR
