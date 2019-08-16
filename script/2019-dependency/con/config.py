@@ -33,7 +33,7 @@ def generate_dev_dir():
                 c = json.load(df)
                 df.close()
                 c["enable_syscalls"] = dev.dev[d]["enable_syscalls"]
-                f = open(d + ".json", "w")
+                f = open("built-in" + ".json", "w")
                 json.dump(c, f, indent=4)
                 f.close()
 
