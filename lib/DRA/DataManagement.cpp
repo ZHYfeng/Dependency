@@ -370,13 +370,11 @@ namespace dra {
 
     bool DataManagement::check_uncovered_address(Condition *u) {
         bool res = false;
-        if (this->isDriver(u->uncovered_address())) {
-            if (this->Address2BB.find(u->condition_address()) != this->Address2BB.end()) {
-                res = true;
-            } else {
-                std::cerr << "can not find condition_address : " << std::hex << u->condition_address()
-                          << std::endl;
-            }
+        if (this->Address2BB.find(u->condition_address()) != this->Address2BB.end()) {
+            res = true;
+        } else {
+            std::cerr << "can not find condition_address : " << std::hex << u->condition_address()
+                      << std::endl;
         }
 
         return res;
