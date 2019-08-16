@@ -1,0 +1,21 @@
+{
+        "name": "linux",
+        "target": "linux/amd64",
+        "http": "127.0.0.1:22222",
+        "drpc": "127.0.0.1:22223",
+        "workdir": "/home/yuh/data/git/work/result/result-with-dra/workdir",
+        "kernel_obj": "/home/yuh/data/benchmark/linux/13-linux-clang-np",
+        "image": "/home/yuh/data/benchmark/linux/img/stretch.img",
+        "sshkey": "/home/yuh/data/benchmark/linux/img/stretch.id_rsa",
+        "syzkaller": "/home/yuh/data/git/gopath/src/github.com/google/syzkaller",
+        "procs": 1,
+        "suppressions": [],
+        "enable_syscalls": [],
+        "type": "qemu",
+        "vm": {
+                "count": 1,
+                "cpu": 1,
+                "mem": 2048,
+                "kernel": "/home/yuh/data/benchmark/linux/13-linux-clang-np/arch/x86/boot/bzImage"
+        }
+}
