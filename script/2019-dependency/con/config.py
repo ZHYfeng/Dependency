@@ -28,21 +28,21 @@ def generate_dev_dir():
             os.makedirs(path)
             os.chdir(path)
 
-            df = open(dev.path_default_json, "r")
-            c = json.load(df)
-            df.close()
-            c["enable_syscalls"] = dev.dev[d]["enable_syscalls"]
+            if not os.path.exists(d + ".json"):
+                df = open(dev.path_default_json, "r")
+                c = json.load(df)
+                df.close()
+                c["enable_syscalls"] = dev.dev[d]["enable_syscalls"]
+                f = open(d + ".json", "w")
+                json.dump(c, f, indent=4)
+                f.close()
 
-            read_s(dev.dev[d]["path_s"])
-            if os.path.exists(dev.dev[d]["file_bc"]):
+            if not os.path.exists("./built-in.s"):
+                read_s(dev.dev[d]["path_s"])
+            if not os.path.exists("./built-in.bc"):
                 shutil.copy(dev.dev[d]["file_bc"], "./built-in.bc")
-            print(dev.dev[d]["file_taint"])
-            if os.path.exists(dev.dev[d]["file_taint"]):
+            if not os.path.exists("./built-in.taint"):
                 shutil.copy(dev.dev[d]["file_taint"], "./built-in.taint")
-
-            f = open(d + ".json", "w")
-            json.dump(c, f, indent=4)
-            f.close()
 
 
 if __name__ == "__main__":
