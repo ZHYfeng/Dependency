@@ -131,7 +131,6 @@ namespace dra {
 
     void DataManagement::setVmOffsets(unsigned long long int vmOffsets) {
         this->vmOffsets = (vmOffsets << 32);
-        std::cout << "GetVmOffsets : " << std::hex << this->vmOffsets << std::endl;
     }
 
     DInput *DataManagement::getInput(Input *input) {
