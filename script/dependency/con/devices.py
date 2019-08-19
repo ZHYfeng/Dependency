@@ -92,7 +92,7 @@ dev = {
         "path_s": [
             os.path.join(path_linux_bc, "block/"),
         ],
-        "file_taint": os.path.join(path_taint, "2839"),
+        "file_taint": os.path.join(path_taint, "taint_info_blkdev_ioctl_serialize"),
     },
     "dev_cdrom": {
         "enable_syscalls": [
