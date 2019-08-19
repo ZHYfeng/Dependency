@@ -392,7 +392,7 @@ dev = {
             os.path.join(path_linux_bc, "virt/kvm"),
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
-        "file_taint": os.path.join(path_taint, "drivers/dma-buf"),
+        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
     },
     "dev_loop": {
         "enable_syscalls": [
