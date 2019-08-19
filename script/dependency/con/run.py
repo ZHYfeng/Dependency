@@ -95,8 +95,8 @@ class Process:
         f = open(os.path.join(self.path, file_json), "r")
         c = json.load(f)
         f.close()
-        c["http"] = "127.0.0.1:" + get_open_port()
-        self.drpc = "127.0.0.1:" + get_open_port()
+        c["http"] = "127.0.0.1:" + str(get_open_port())
+        self.drpc = "127.0.0.1:" + str(get_open_port())
         c["drpc"] = self.drpc
         f = open(os.path.join(self.path, file_json), "w")
         json.dump(c, f, indent=4)
