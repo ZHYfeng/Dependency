@@ -2,8 +2,7 @@ import json
 import os
 import shutil
 
-import devices
-
+from ..con import devices
 
 def read_s(paths):
     ctx_s = ""

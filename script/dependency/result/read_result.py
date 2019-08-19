@@ -1,4 +1,4 @@
-from script.dependency.dra import DependencyRPC_pb2
+from ..dra import DependencyRPC_pb2
 
 
 def read_stat(file_name):
