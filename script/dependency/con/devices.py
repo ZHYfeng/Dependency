@@ -27,12 +27,11 @@ dev = {
             "ioctl$ASHMEM_GET_PIN_STATUS",
             "ioctl$ASHMEM_PURGE_ALL_CACHES",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/staging/android/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/staging/android"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_ashmem_ioctl_serialize"),
     },
     "dev_binder": {
         "enable_syscalls": [
@@ -89,12 +88,11 @@ dev = {
             "ioctl$IOC_PR_PREEMPT_ABORT",
             "ioctl$IOC_PR_CLEAR",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "block/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "block/"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "2839"),
     },
     "dev_cdrom": {
         "enable_syscalls": [
@@ -144,12 +142,11 @@ dev = {
             "ioctl$CDROM_NEXT_WRITABLE",
             "ioctl$CDROM_LAST_WRITTEN",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/cdrom/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/cdrom"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_cdrom_ioctl_serialize"),
     },
     "dev_dri": {
         "enable_syscalls": [
@@ -267,12 +264,11 @@ dev = {
             "ioctl$I2C_RDWR",
             "ioctl$I2C_SMBUS",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/i2c/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/i2c"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_i2cdev_ioctl_serialize"),
     },
     "dev_input": {
         "enable_syscalls": [
@@ -317,12 +313,11 @@ dev = {
             "ioctl$EVIOCSABS2F",
             "ioctl$EVIOCSABS3F",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/input/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/input"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_evdev_ioctl_handler_serialize"),
     },
     "dev_ion": {
         "enable_syscalls": [
@@ -331,12 +326,12 @@ dev = {
             "ioctl$ION_IOC_HEAP_QUERY",
             "ioctl$DMA_BUF_IOCTL_SYNC",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/staging/android/ion/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/staging/android/ion"),
+            os.path.join(path_linux_bc, "drivers/dma-buf"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_ion_ioctl_serialize"),
     },
     "dev_kvm": {
         "enable_syscalls": [
@@ -397,7 +392,7 @@ dev = {
             os.path.join(path_linux_bc, "virt/kvm"),
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "drivers/dma-buf"),
     },
     "dev_loop": {
         "enable_syscalls": [
@@ -417,12 +412,11 @@ dev = {
             "ioctl$LOOP_CTL_ADD",
             "ioctl$LOOP_CTL_REMOVE",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/block/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/block"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_lo_ioctl_serialize"),
     },
     "dev_nbd": {
         "enable_syscalls": [
@@ -444,12 +438,11 @@ dev = {
             "sendmsg$NBD_CMD_STATUS",
             "socketpair$nbd",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/block/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/block"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_nbd_ioctl_serialize"),
     },
     "dev_net_tun": {
         "enable_syscalls": [
@@ -482,12 +475,11 @@ dev = {
             "ioctl$TUNSETVNETBE",
             "syz_open_dev$loop",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/net/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/net"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info___tun_chr_ioctl_serialize"),
     },
     "dev_ppp": {
         "enable_syscalls": [
@@ -513,12 +505,11 @@ dev = {
             "ioctl$PPPIOCSFLAGS1",
             "ioctl$PPPIOCGFLAGS1",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/net/ppp/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/net/ppp"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_ppp_ioctl_serialize"),
     },
     "dev_ptmx": {
         "enable_syscalls": [
@@ -655,12 +646,11 @@ dev = {
             "ioctl$RNDZAPENTCNT",
             "ioctl$RNDCLEARPOOL",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/char/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/char"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_random_ioctl_serialize"),
     },
     "dev_rfkill": {
         "enable_syscalls": [
@@ -703,12 +693,11 @@ dev = {
             "ioctl$RTC_VL_READ",
             "ioctl$RTC_VL_CLR",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/rtc/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/rtc"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_rtc_dev_ioctl_serialize"),
     },
     "dev_sg": {
         "enable_syscalls": [
@@ -748,12 +737,11 @@ dev = {
             "ioctl$SCSI_IOCTL_PROBE_HOST",
             "ioctl$SCSI_IOCTL_GET_IDLUN",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/scsi/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/scsi"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_sg_ioctl_serialize"),
     },
     "dev_snd_control": {
         "enable_syscalls": [
@@ -783,12 +771,11 @@ dev = {
             "ioctl$SNDRV_CTL_IOCTL_RAWMIDI_INFO",
             "ioctl$SNDRV_CTL_IOCTL_RAWMIDI_PREFER_SUBDEVICE",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "sound/core/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "sound/core"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_snd_ctl_ioctl_serialize"),
     },
     "dev_snd_seq": {
         "enable_syscalls": [
@@ -826,12 +813,11 @@ dev = {
             "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_CLIENT",
             "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_PORT",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "sound/core/seq/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "sound/core/seq"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_snd_seq_ioctl_serialize"),
     },
     "dev_snd_timer": {
         "enable_syscalls": [
@@ -851,12 +837,11 @@ dev = {
             "ioctl$SNDRV_TIMER_IOCTL_CONTINUE",
             "ioctl$SNDRV_TIMER_IOCTL_PAUSE",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "sound/core/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "sound/core"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info___snd_timer_user_ioctl_serialize"),
     },
     "dev_sr": {
         "enable_syscalls": [
@@ -867,7 +852,7 @@ dev = {
             os.path.join(path_linux_bc, "virt/kvm"),
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_uinput_ioctl_handler_serialize"),
     },
     "dev_uhid": {
         "enable_syscalls": [
@@ -880,12 +865,11 @@ dev = {
             "write$UHID_GET_REPORT_REPLY",
             "write$UHID_SET_REPORT_REPLY",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/input/misc/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/input/misc"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_uinput_ioctl_handler_serialize"),
     },
     "dev_uinput": {
         "enable_syscalls": [
