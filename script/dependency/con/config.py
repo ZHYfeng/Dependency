@@ -20,7 +20,7 @@ def read_s(paths):
 
 def generate_dev_dir():
     for d in devices.dev:
-        path = devices.path_result + "/" + d
+        path = os.path.join(devices.path_result, d)
         print(path)
         # if os.path.exists(path):
         # shutil.rmtree(path)
