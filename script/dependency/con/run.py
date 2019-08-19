@@ -56,15 +56,22 @@ class Process:
         self.drpc = "0"
         self.index = 0
 
-    def execute_with_dra(self):
-        path = os.path.join(path_root, name_with_dra, str(self.index))
+    def execute(self, dra=True):
+        if dra:
+            name = name_with_dra
+        else:
+            name = name_without_dra
+
+        path = os.path.join(path_root, name, str(self.index))
         while os.path.exists(path):
             self.index = self.index + 1
-            path = os.path.join(path_root, name_with_dra, str(self.index))
+            path = os.path.join(path_root, name, str(self.index))
         os.makedirs(path)
+
         print(os.path.join(path, "img"))
-        shutil.copytree(path_image, os.path.join(path, "img"))
-        print(os.path.join(path, "img"))
+        cmd_cp_img = "cp -rf " + path_image + os.path.join(path, "img")
+        p_cp_img = subprocess.Popen(cmd_cp_img, shell=True, preexec_fn=os.setsid)
+        p_cp_img.wait()
 
         f = open(os.path.join(path_root, file_json), "r")
         c = json.load(f)
@@ -77,30 +84,10 @@ class Process:
         f = open(os.path.join(path, file_json), "w")
         json.dump(c, f, indent=4)
         f.close()
+
         self.execute_syzkaller()
-        self.execute_dra()
-
-    def execute_without_dra(self):
-        path = os.path.join(path_root, name_without_dra, str(self.index))
-        while os.path.exists(path):
-            self.index = self.index + 1
-            path = os.path.join(path_root, name_without_dra, str(self.index))
-        os.makedirs(path)
-
-        shutil.copytree(path_image, os.path.join(path, "img"))
-
-        f = open(os.path.join(path_root, file_json), "r")
-        c = json.load(f)
-        f.close()
-
-        c["workdir"] = os.path.join(path, path_workdir)
-        c["image"] = os.path.join(path, "img", file_image)
-        c["sshkey"] = os.path.join(path, "img", file_ssh_key)
-
-        f = open(os.path.join(path, file_json), "w")
-        json.dump(c, f, indent=4)
-        f.close()
-        self.execute_syzkaller()
+        if dra:
+            self.execute_dra()
 
     def execute_syzkaller(self):
         f = open(os.path.join(path_root, str(self.index), file_json), "r")
@@ -131,7 +118,7 @@ class Process:
 def main():
     tasks = [Process() for i in range(number_execute)]
     for i in tasks:
-        i.execute_with_dra()
+        i.execute()
 
     time.sleep(time_run)
 
