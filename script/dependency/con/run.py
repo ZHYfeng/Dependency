@@ -62,8 +62,9 @@ class Process:
             self.index = self.index + 1
             path = os.path.join(path_root, name_with_dra, str(self.index))
         os.makedirs(path)
-
+        print(os.path.join(path, "img"))
         shutil.copytree(path_image, os.path.join(path, "img"))
+        print(os.path.join(path, "img"))
 
         f = open(os.path.join(path_root, file_json), "r")
         c = json.load(f)
