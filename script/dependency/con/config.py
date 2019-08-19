@@ -4,6 +4,7 @@ import shutil
 
 from ..con import devices
 
+
 def read_s(paths):
     ctx_s = ""
     for path in paths:
