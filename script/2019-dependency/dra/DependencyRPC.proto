@@ -34,7 +34,8 @@ service DependencyRPC {
     }
     rpc SendLog (Empty) returns (Empty) {
     }
-    rpc sendStat (Statistic) returns (Empty) {}
+    rpc sendStat (Statistic) returns (Empty) {
+    }
 }
 
 

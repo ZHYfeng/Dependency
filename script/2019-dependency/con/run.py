@@ -4,10 +4,9 @@ import multiprocessing
 import os.path
 import shutil
 import signal
-import subprocess
-import sys
-import time
 import socket
+import subprocess
+import time
 
 total_cpu = multiprocessing.cpu_count() - 6
 
@@ -49,7 +48,6 @@ def get_open_port():
 
 class Process:
     def __init__(self):
-
         self.cmd_dra = dra_path + " -asm=./built-in.s" + " -objdump=" + file_vmlinux_objdump \
                        + " -staticRes=./built-in.taint" + "./built-in.bc" + " 2>&1 1>" + file_log_dra
         self.cmd_syzkaller = file_syzkaller + " -config=./built-in.json" + " 2>&1 1>" + file_log_syzkaller
@@ -82,6 +80,7 @@ tasks = [Process() for i in range(total_cpu)]
 
 def main():
     print("")
+
 
 if __name__ == "__main__":
     main()
