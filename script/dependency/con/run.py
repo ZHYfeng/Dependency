@@ -30,7 +30,7 @@ file_json = name_driver + ".json"
 
 path_workdir = "workdir"
 
-path_image = "/home/yuh/data/benchmark/linux/img"
+path_image = "/home/yuh/data/benchmark/linux/image"
 file_image = "stretch.img"
 file_ssh_key = "stretch.id_rsa"
 
@@ -71,8 +71,12 @@ class Process:
         os.makedirs(self.path)
 
         print(os.path.join(path, "img"))
-        cmd_cp_img = "cp -rf " + path_image + os.path.join(self.path, "img")
+        cmd_cp_img = "cp -rf " + path_image + " " + os.path.join(self.path, "img")
         p_cp_img = subprocess.Popen(cmd_cp_img, shell=True, preexec_fn=os.setsid)
+        p_cp_img.wait()
+
+        cmd_cp_built_in = "cp ./built-in.* " + self.path
+        p_cp_img = subprocess.Popen(cmd_cp_built_in, shell=True, preexec_fn=os.setsid)
         p_cp_img.wait()
 
         f = open(os.path.join(path_root, file_json), "r")
@@ -87,6 +91,7 @@ class Process:
         json.dump(c, f, indent=4)
         f.close()
 
+        os.chdir(self.path)
         self.execute_syzkaller()
         if dra:
             self.execute_dra()
@@ -102,14 +107,14 @@ class Process:
         json.dump(c, f, indent=4)
         f.close()
 
-        self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>&1 1>" + file_log_syzkaller
+        self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2"
         self.t0 = time.time()
         self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True, preexec_fn=os.setsid)
 
     def execute_dra(self):
         self.cmd_dra = path_dra + " -asm=" + file_asm + " -objdump=" + file_vmlinux_objdump \
                        + " -staticRes=" + file_taint + " -port=" + self.drpc \
-                       + file_bc + " 2>&1 1>" + file_log_dra
+                       + file_bc + " 1>" + file_log_dra + " 2>&1"
         self.p_dra = subprocess.Popen(self.cmd_dra, shell=True, preexec_fn=os.setsid)
 
     def close(self):
@@ -123,6 +128,7 @@ def main():
         i.execute()
 
     time.sleep(time_run)
+    # time.sleep(30)
 
     for i in tasks:
         i.close()
