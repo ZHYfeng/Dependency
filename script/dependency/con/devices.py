@@ -1,14 +1,15 @@
 import os
 
-path_root = "/home/yhao/git/work"
+path_root = "/home/yuh/data/git/work"
+# path_root = "/home/yhao/git/work"
 path_result = os.path.join(path_root, "result")
 path_taint = os.path.join(path_root, "script/dependency/taint_info")
 path_default_json = os.path.join(path_root, "script/dependency/con/default.json")
 name_run = "run.py"
 path_default_run = os.path.join(path_root, "script/dependency/con", name_run)
 
-# linux_bc_dir = "/home/yuh/data/benchmark/linux/16-linux-clang-np"
-path_linux_bc = "/home/yhao/benchmark/linux/16-linux-clang-np-bc-f"
+path_linux_bc = "/home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f"
+# path_linux_bc = "/home/yhao/benchmark/linux/16-linux-clang-np-bc-f"
 path_linux = "/home/yuh/data/benchmark/linux/13-linux-clang-np"
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 

@@ -8,8 +8,7 @@ import socket
 import subprocess
 import time
 
-total_cpu = multiprocessing.cpu_count() - 6
-
+number_execute = 6
 path_root = os.getcwd()
 
 path_syzkaller = "/home/yuh/data/git/gopath/src/github.com/google/syzkaller"
@@ -105,12 +104,15 @@ class Process:
         os.killpg(os.getpgid(self.p_dra.pid), signal.SIGTERM)
 
 
-tasks = [Process() for i in range(total_cpu)]
-
-
 def main():
-    print(path_root)
-    print(get_open_port())
+    tasks = [Process() for i in range(number_execute)]
+    for i in tasks:
+        i.execute()
+
+    time.sleep(time)
+
+    for i in tasks:
+        i.close()
 
 
 if __name__ == "__main__":
