@@ -55,6 +55,7 @@ class Process:
         self.cmd_syzkaller = ""
         self.drpc = "0"
         self.index = 0
+        self.path = ""
 
     def execute(self, dra=True):
         if dra:
@@ -66,10 +67,11 @@ class Process:
         while os.path.exists(path):
             self.index = self.index + 1
             path = os.path.join(path_root, name, str(self.index))
-        os.makedirs(path)
+        self.path = path
+        os.makedirs(self.path)
 
         print(os.path.join(path, "img"))
-        cmd_cp_img = "cp -rf " + path_image + os.path.join(path, "img")
+        cmd_cp_img = "cp -rf " + path_image + os.path.join(self.path, "img")
         p_cp_img = subprocess.Popen(cmd_cp_img, shell=True, preexec_fn=os.setsid)
         p_cp_img.wait()
 
@@ -77,11 +79,11 @@ class Process:
         c = json.load(f)
         f.close()
 
-        c["workdir"] = os.path.join(path, path_workdir)
-        c["image"] = os.path.join(path, "img", file_image)
-        c["sshkey"] = os.path.join(path, "img", file_ssh_key)
+        c["workdir"] = os.path.join(self.path, path_workdir)
+        c["image"] = os.path.join(self.path, "img", file_image)
+        c["sshkey"] = os.path.join(self.path, "img", file_ssh_key)
 
-        f = open(os.path.join(path, file_json), "w")
+        f = open(os.path.join(self.path, file_json), "w")
         json.dump(c, f, indent=4)
         f.close()
 
@@ -90,13 +92,13 @@ class Process:
             self.execute_dra()
 
     def execute_syzkaller(self):
-        f = open(os.path.join(path_root, str(self.index), file_json), "r")
+        f = open(os.path.join(self.path, file_json), "r")
         c = json.load(f)
         f.close()
         c["http"] = "127.0.0.1:" + get_open_port()
         self.drpc = "127.0.0.1:" + get_open_port()
         c["drpc"] = self.drpc
-        f = open(os.path.join(path_root, str(self.index), file_json), "w")
+        f = open(os.path.join(self.path, file_json), "w")
         json.dump(c, f, indent=4)
         f.close()
 
