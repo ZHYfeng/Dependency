@@ -10,6 +10,8 @@ import time
 
 number_execute = 6
 path_root = os.getcwd()
+name_with_dra = "result-with-dra"
+name_without_dra = "result-without-dra"
 
 path_syzkaller = "/home/yuh/data/git/gopath/src/github.com/google/syzkaller"
 file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
@@ -35,7 +37,7 @@ file_ssh_key = "stretch.id_rsa"
 file_log_syzkaller = "log_syzkaller.txt"
 file_log_dra = "log_dra.txt"
 
-time = 1 * 24 * 60 * 60  # second
+time_run = 1 * 24 * 60 * 60  # second
 
 
 def get_open_port():
@@ -53,30 +55,51 @@ class Process:
         self.cmd_syzkaller = ""
         self.drpc = "0"
         self.index = 0
-        while os.path.exists(str(self.index)):
-            self.index = self.index + 1
-        os.makedirs(str(self.index))
 
-        shutil.copytree(path_image, os.path.join(path_root, str(self.index), "img"))
+    def execute_with_dra(self):
+        path = os.path.join(path_root, name_with_dra, str(self.index))
+        while os.path.exists(path):
+            self.index = self.index + 1
+            path = os.path.join(path_root, name_with_dra, str(self.index))
+        os.makedirs(path)
+
+        shutil.copytree(path_image, os.path.join(path, "img"))
 
         f = open(os.path.join(path_root, file_json), "r")
         c = json.load(f)
         f.close()
 
-        c["workdir"] = os.path.join(path_root, str(self.index), path_workdir)
-        c["image"] = os.path.join(path_root, str(self.index), "img", file_image)
-        c["sshkey"] = os.path.join(path_root, str(self.index), "img", file_ssh_key)
+        c["workdir"] = os.path.join(path, path_workdir)
+        c["image"] = os.path.join(path, "img", file_image)
+        c["sshkey"] = os.path.join(path, "img", file_ssh_key)
 
-        f = open(os.path.join(path_root, str(self.index), file_json), "w")
+        f = open(os.path.join(path, file_json), "w")
         json.dump(c, f, indent=4)
         f.close()
-        f = open(os.path.join(path_root, file_json), "w")
-        json.dump(c, f, indent=4)
-        f.close()
-
-    def execute(self):
         self.execute_syzkaller()
         self.execute_dra()
+
+    def execute_without_dra(self):
+        path = os.path.join(path_root, name_without_dra, str(self.index))
+        while os.path.exists(path):
+            self.index = self.index + 1
+            path = os.path.join(path_root, name_without_dra, str(self.index))
+        os.makedirs(path)
+
+        shutil.copytree(path_image, os.path.join(path, "img"))
+
+        f = open(os.path.join(path_root, file_json), "r")
+        c = json.load(f)
+        f.close()
+
+        c["workdir"] = os.path.join(path, path_workdir)
+        c["image"] = os.path.join(path, "img", file_image)
+        c["sshkey"] = os.path.join(path, "img", file_ssh_key)
+
+        f = open(os.path.join(path, file_json), "w")
+        json.dump(c, f, indent=4)
+        f.close()
+        self.execute_syzkaller()
 
     def execute_syzkaller(self):
         f = open(os.path.join(path_root, str(self.index), file_json), "r")
@@ -91,7 +114,7 @@ class Process:
 
         self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>&1 1>" + file_log_syzkaller
         self.t0 = time.time()
-        # self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True, preexec_fn=os.setsid)
+        self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True, preexec_fn=os.setsid)
 
     def execute_dra(self):
         self.cmd_dra = path_dra + " -asm=" + file_asm + " -objdump=" + file_vmlinux_objdump \
@@ -107,9 +130,9 @@ class Process:
 def main():
     tasks = [Process() for i in range(number_execute)]
     for i in tasks:
-        i.execute()
+        i.execute_with_dra()
 
-    time.sleep(time)
+    time.sleep(time_run)
 
     for i in tasks:
         i.close()

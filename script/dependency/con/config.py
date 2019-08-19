@@ -2,7 +2,7 @@ import json
 import os
 import shutil
 
-from script.dependency.con import devices
+import devices
 
 
 def read_s(paths):
@@ -28,7 +28,7 @@ def generate_dev_dir():
             os.makedirs(path)
         os.chdir(path)
 
-        if not os.path.exists(d + ".json"):
+        if not os.path.exists("built-in.json"):
             df = open(devices.path_default_json, "r")
             c = json.load(df)
             df.close()
@@ -43,8 +43,10 @@ def generate_dev_dir():
             shutil.copy(devices.dev[d]["file_bc"], "./built-in.bc")
         if not os.path.exists("./built-in.taint"):
             shutil.copy(devices.dev[d]["file_taint"], "./built-in.taint")
-        if not os.path.exists(devices.name_run):
-            shutil.copy(devices.path_default_run, devices.name_run)
+        if not os.path.exists(devices.name_with_dra):
+            os.makedirs(devices.name_with_dra)
+        if not os.path.exists(devices.name_without_dra):
+            os.makedirs(devices.name_without_dra)
 
 
 if __name__ == "__main__":

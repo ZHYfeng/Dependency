@@ -7,7 +7,8 @@ path_taint = os.path.join(path_root, "script/dependency/taint_info")
 path_default_json = os.path.join(path_root, "script/dependency/con/default.json")
 name_run = "run.py"
 path_default_run = os.path.join(path_root, "script/dependency/con", name_run)
-
+name_with_dra = "result-with-dra"
+name_without_dra = "result-without-dra"
 path_linux_bc = "/home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f"
 # path_linux_bc = "/home/yhao/benchmark/linux/16-linux-clang-np-bc-f"
 path_linux = "/home/yuh/data/benchmark/linux/13-linux-clang-np"
