@@ -1,0 +1,36 @@
+2019/08/20 02:26:00 vm-0 syz_fuzzer : #0: DependencyMutate
+2019/08/20 02:26:00 vm-0 syz_fuzzer : DependencyMutate program : 
+r0 = openat$rtc(0xffffffffffffff9c, &(0x7f00000003c0)='/dev/rtc0\x00', 0x0, 0x0)
+ioctl$RTC_WKALM_SET(r0, 0x4028700f, &(0x7f0000000440)={0x1, 0x0, {0x0, 0x0, 0x0, 0x16, 0x0, 0x600000}})
+
+2019/08/20 02:26:00 vm-0 syz_fuzzer : index  : 0 write index : 1
+2019/08/20 02:26:00 vm-0 syz_fuzzer : usefulCall program : 
+r0 = syz_open_dev$rtc(&(0x7f0000000000)='/dev/rtc#\x00', 0x0, 0x0)
+ioctl$RTC_UIE_ON(r0, 0x7003)
+
+2019/08/20 02:26:00 vm-0 syz_fuzzer : final program : 
+r0 = syz_open_dev$rtc(&(0x7f0000000000)='/dev/rtc#\x00', 0x0, 0x0)
+ioctl$RTC_UIE_ON(r0, 0x7003)
+r1 = openat$rtc(0xffffffffffffff9c, &(0x7f00000003c0)='/dev/rtc0\x00', 0x0, 0x0)
+ioctl$RTC_WKALM_SET(r1, 0x4028700f, &(0x7f0000000440)={0x1, 0x0, {0x0, 0x0, 0x0, 0x16, 0x0, 0x600000}})
+
+2019/08/20 02:26:00 vm-0 syz_fuzzer : write input could arrive at write address : 2241659099
+2019/08/20 02:26:00 vm-0 syz_fuzzer : final input could arrive at write address : 2241659099
+2019/08/20 02:26:02 vm-0 syz_fuzzer : new input from StatDependency : 
+r0 = syz_open_dev$rtc(&(0x7f0000000000)='/dev/rtc#\x00', 0x0, 0x0)
+ioctl$RTC_UIE_ON(r0, 0x7003)
+r1 = openat$rtc(0xffffffffffffff9c, &(0x7f00000003c0)='/dev/rtc0\x00', 0xf6ffffff00000000, 0x0)
+ioctl$RTC_WKALM_SET(r1, 0x4028700f, &(0x7f0000000440)={0x1, 0x0, {0x0, 0x0, 0x0, 0x16, 0x0, 0x600000}})
+
+2019/08/20 02:26:03 vm-0 syz_fuzzer : new input from StatDependency : 
+r0 = syz_open_dev$rtc(&(0x7f0000000000)='/dev/rtc#\x00', 0x0, 0x0)
+ioctl$RTC_UIE_ON(r0, 0x7003)
+r1 = openat$rtc(0xffffffffffffff9c, &(0x7f00000003c0)='/dev/rtc0\x00', 0x800000010102, 0x0)
+ioctl$RTC_WKALM_SET(r1, 0x4028700f, &(0x7f0000000440)={0x1, 0x0, {0x0, 0x0, 0x0, 0x16, 0x0, 0x600000}})
+
+2019/08/20 02:26:03 vm-0 syz_fuzzer : new input from StatDependency : 
+r0 = syz_open_dev$rtc(&(0x7f0000000000)='/dev/rtc#\x00', 0x0, 0x0)
+ioctl$RTC_UIE_ON(r0, 0x7003)
+r1 = openat$rtc(0xffffffffffffff9c, &(0x7f00000003c0)='/dev/rtc0\x00', 0x3a1000, 0x0)
+ioctl$RTC_WKALM_SET(r1, 0x4028700f, &(0x7f0000000440)={0x1, 0x0, {0x0, 0x0, 0x0, 0x16, 0x0, 0x600000}})
+
