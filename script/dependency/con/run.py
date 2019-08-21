@@ -5,6 +5,7 @@ import signal
 import socket
 import subprocess
 import time
+import sys
 
 number_execute = 6
 path_root = os.getcwd()
@@ -134,6 +135,8 @@ class Process:
 
 def main():
     dra = True
+    if len(sys.argv) > 1:
+        dra = False
     tasks = [Process() for i in range(number_execute)]
     for i in tasks:
         i.execute(dra)
