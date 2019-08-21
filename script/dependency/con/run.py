@@ -36,6 +36,7 @@ file_ssh_key = "stretch.id_rsa"
 file_log_run = "log_run.txt"
 file_log_syzkaller = "log_syzkaller.txt"
 file_log_dra = "log_dra.txt"
+file_run = "run.sh"
 
 time_run = 1 * 24 * 60 * 60  # second
 
@@ -57,7 +58,7 @@ class Process:
         self.index = 0
         self.path = ""
 
-    def execute(self, dra=True):
+    def execute(self, run_f, dra=True):
         if dra:
             name = name_with_dra
         else:
@@ -92,12 +93,13 @@ class Process:
         json.dump(c, f, indent=4)
         f.close()
 
+        run_f.write("cd " + path + "\n")
         os.chdir(self.path)
-        self.execute_syzkaller()
+        self.execute_syzkaller(run_f)
         if dra:
-            self.execute_dra()
+            self.execute_dra(run_f)
 
-    def execute_syzkaller(self):
+    def execute_syzkaller(self, run_f):
         f = open(os.path.join(self.path, file_json), "r")
         c = json.load(f)
         f.close()
@@ -110,18 +112,20 @@ class Process:
 
         self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2 &"
         self.t0 = time.time()
-        # self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True)
+        self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True)
+        run_f.write(self.cmd_syzkaller + "\n")
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_syzkaller + "\n")
         # f.write("siyzkaller pid : " + str(self.p_syzkaller.pid) + "\n")
         f.close()
 
-    def execute_dra(self):
+    def execute_dra(self, run_f):
         self.cmd_dra = path_dra + " -asm=" + file_asm + " -objdump=" + file_vmlinux_objdump \
                        + " -staticRes=" + file_taint + " -port=" + self.drpc \
                        + " " + file_bc + " 1>" + file_log_dra + " 2>&1 &"
 
-        # self.p_dra = subprocess.Popen(self.cmd_dra, shell=True)
+        self.p_dra = subprocess.Popen(self.cmd_dra, shell=True)
+        run_f.write(self.cmd_dra + "\n")
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_dra + "\n")
         # f.write("dra pid : " + str(self.p_dra.pid) + "\n")
@@ -134,15 +138,23 @@ class Process:
 
 
 def main():
+    run_f = open(os.path.join(path_root, file_run), "a")
+    run_f.write("#!/bin/sh\n\n")
+
     dra = True
     if len(sys.argv) > 1:
         dra = False
     tasks = [Process() for i in range(number_execute)]
     for i in tasks:
-        i.execute(dra)
+        i.execute(run_f, dra)
 
-    time.sleep(time_run)
-    # time.sleep(300)
+    run_f.close()
+    cmd_ch = "chmod a+x " + file_run
+    p_ch = subprocess.Popen(cmd_ch, shell=True, preexec_fn=os.setsid)
+    p_ch.wait()
+
+    # time.sleep(time_run)
+    time.sleep(30)
 
     for i in tasks:
         i.close(dra)
