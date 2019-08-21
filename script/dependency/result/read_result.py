@@ -10,7 +10,8 @@ name_dev = "dev_"
 name_with_dra = "result-with-dra"
 name_without_dra = "result-without-dra"
 name_stat = "statistics.bin"
-
+length = 1 * 24 * 60
+time_run = length * 60  # second
 
 def read_stat(file_stat):
     # Read the existing Statistics.
@@ -99,7 +100,6 @@ def deal_results(path):
     x_axises = []
     y_axises = []
     labels = []
-    length = 0
     if os.path.exists(path):
         for (dir_path, dir_names, file_names) in os.walk(path):
             for file_name in file_names:
@@ -109,8 +109,6 @@ def deal_results(path):
                     x_axises.append(x)
                     y_axises.append(y)
                     labels.append(dir_path)
-                    if length < len(x):
-                        length = len(x)
 
     x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
 
@@ -128,7 +126,6 @@ def deal_dev(dir_path, dir_name):
     x_axises = []
     y_axises = []
     labels = []
-    length = 0
 
     path_with_dra = os.path.join(dir_path, dir_name, name_with_dra)
     if os.path.exists(path_with_dra):
@@ -137,8 +134,6 @@ def deal_dev(dir_path, dir_name):
         x_axises.append(x)
         y_axises.append(y)
         labels.append(name_with_dra)
-        if length < len(x):
-            length = len(x)
 
     path_without_dra = os.path.join(dir_path, dir_name, name_without_dra)
     if os.path.exists(path_without_dra):
@@ -147,8 +142,6 @@ def deal_dev(dir_path, dir_name):
         x_axises.append(x)
         y_axises.append(y)
         labels.append(name_without_dra)
-        if length < len(x):
-            length = len(x)
 
     x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
     x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
