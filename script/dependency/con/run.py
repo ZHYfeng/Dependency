@@ -114,7 +114,7 @@ class Process:
         self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True)
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_syzkaller + "\n")
-        f.write("siyzkaller pid : " + self.p_syzkaller.pid + "\n")
+        f.write("siyzkaller pid : " + str(self.p_syzkaller.pid) + "\n")
         f.close()
 
     def execute_dra(self):
@@ -125,7 +125,7 @@ class Process:
         self.p_dra = subprocess.Popen(self.cmd_dra, shell=True)
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_dra + "\n")
-        f.write("dra pid : " + self.p_dra.pid + "\n")
+        f.write("dra pid : " + str(self.p_dra.pid) + "\n")
         f.close()
 
     def close(self, dra=True):
@@ -135,13 +135,13 @@ class Process:
 
 
 def main():
-    dra = False
+    dra = True
     tasks = [Process() for i in range(number_execute)]
     for i in tasks:
         i.execute(dra)
 
     # time.sleep(time_run)
-    time.sleep(30)
+    time.sleep(300)
 
     for i in tasks:
         i.close(dra)
