@@ -1,8 +1,10 @@
 import json
 import os
 import shutil
+import sys
 
-from ..con import devices
+sys.path.append(os.getcwd())
+from script.dependency.con import devices
 
 
 def read_s(paths):
@@ -29,7 +31,7 @@ def generate_dev_dir():
         os.chdir(path)
 
         if not os.path.exists("built-in.json"):
-            df = open(devices.path_default_json, "r")
+            df = open(devices.file_default_json, "r")
             c = json.load(df)
             df.close()
             c["enable_syscalls"] = devices.dev[d]["enable_syscalls"]
@@ -47,8 +49,8 @@ def generate_dev_dir():
             os.makedirs(devices.name_with_dra)
         if not os.path.exists(devices.name_without_dra):
             os.makedirs(devices.name_without_dra)
-        # if not os.path.exists(devices.name_run):
-        shutil.copy(devices.path_default_run, devices.name_run)
+        if not os.path.exists(devices.name_run):
+            shutil.copy(devices.path_default_run, devices.name_run)
 
 
 if __name__ == "__main__":

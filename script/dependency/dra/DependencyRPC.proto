@@ -34,8 +34,7 @@ service DependencyRPC {
     }
     rpc SendLog (Empty) returns (Empty) {
     }
-    rpc sendStat (Statistic) returns (Empty) {
-    }
+    rpc sendStat (Statistic) returns (Empty) {}
 }
 
 
@@ -264,15 +263,16 @@ message Corpus {
 }
 
 enum FuzzingStat {
-    StatGenerate = 0;
-    StatFuzz = 1;
-    StatCandidate = 2;
-    StatTriage = 3;
-    StatMinimize = 4;
-    StatSmash = 5;
-    StatHint = 6;
-    StatSeed = 7;
-    StatDependency = 8;
+    StatDefault = 0;
+    StatGenerate = 1;
+    StatFuzz = 2;
+    StatCandidate = 3;
+    StatTriage = 4;
+    StatMinimize = 5;
+    StatSmash = 6;
+    StatHint = 7;
+    StatSeed = 8;
+    StatDependency = 9;
 }
 
 message Statistic {
