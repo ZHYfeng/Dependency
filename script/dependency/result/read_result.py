@@ -123,13 +123,14 @@ def deal_results(path):
     return stats, x_axis, y_axis
 
 
-def deal_dev(path):
+def deal_dev(dir_path, dir_name):
     stats = []
     x_axises = []
     y_axises = []
     labels = []
     length = 0
-    path_with_dra = os.path.join(path, name_with_dra)
+
+    path_with_dra = os.path.join(dir_path, dir_name, name_with_dra)
     if os.path.exists(path_with_dra):
         s, x, y = deal_results(path_with_dra)
         stats.append(s)
@@ -139,7 +140,7 @@ def deal_dev(path):
         if length < len(x):
             length = len(x)
 
-    path_without_dra = os.path.join(path, name_without_dra)
+    path_without_dra = os.path.join(dir_path, dir_name, name_without_dra)
     if os.path.exists(path_without_dra):
         s, x, y = deal_results(path_without_dra)
         stats.append(s)
@@ -151,7 +152,7 @@ def deal_dev(path):
 
     x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
     x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
-    file_figure_all = os.path.join(path, "all.pdf")
+    file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
     plot_results(file_figure_all, x_axis, y_axises, labels)
 
 
@@ -164,8 +165,7 @@ def get_stat_file(path):
         for dir_name in dir_names:
             if dir_name.startswith(name_dev):
                 is_dev = True
-                path_dev = os.path.join(dir_path, dir_name)
-                deal_dev(path_dev)
+                deal_dev(dir_path, dir_name)
         if is_dev:
             break
 
