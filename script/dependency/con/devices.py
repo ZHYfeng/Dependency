@@ -629,12 +629,11 @@ dev = {
             "ioctl$TIOCMIWAIT",
             "ioctl$TIOCGICOUNT",
         ],
-        "file_bc": os.path.join(path_linux_bc, "arch/x86/kvm/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "drivers/tty/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "virt/kvm"),
-            os.path.join(path_linux_bc, "arch/x86/kvm"),
+            os.path.join(path_linux_bc, "drivers/tty"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_tty_ioctl_serialize"),
     },
     "dev_random": {
         "enable_syscalls": [
