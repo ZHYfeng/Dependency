@@ -70,6 +70,7 @@ func CloneStatistic(s *Statistic) *Statistic {
 func (m *Statistic) MergeStatistic(d *Statistic) {
 
 	if m.Name != d.Name {
+		log.Fatalf("MergeStatistic with error name")
 		return
 	}
 
