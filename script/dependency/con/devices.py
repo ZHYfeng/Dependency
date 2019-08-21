@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 import os
 
 path_root = "/home/yuh/data/git/work"

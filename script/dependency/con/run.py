@@ -1,11 +1,11 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 import json
 import os.path
 import signal
 import socket
 import subprocess
-import time
 import sys
+import time
 
 number_execute = 6
 path_root = os.getcwd()
@@ -57,6 +57,7 @@ class Process:
         self.drpc = "0"
         self.index = 0
         self.path = ""
+        self.processes = []
 
     def execute(self, run_f, dra=True):
         if dra:
@@ -112,38 +113,34 @@ class Process:
 
         self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2 &"
         self.t0 = time.time()
-        self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True, start_new_session=True)
-        run_f.write(self.cmd_syzkaller + "\n")
-        run_f.write("PID += $!\n")
-        f = open(os.path.join(self.path, file_log_run), "a")
-        f.write(self.cmd_syzkaller + "\n")
-        # f.write("siyzkaller pid : " + str(self.p_syzkaller.pid) + "\n")
-        f.close()
+        self.real_execute(self.cmd_syzkaller, run_f)
 
     def execute_dra(self, run_f):
         self.cmd_dra = path_dra + " -asm=" + file_asm + " -objdump=" + file_vmlinux_objdump \
                        + " -staticRes=" + file_taint + " -port=" + self.drpc \
                        + " " + file_bc + " 1>" + file_log_dra + " 2>&1 &"
+        self.real_execute(self.cmd_dra, run_f)
 
-        self.p_dra = subprocess.Popen(self.cmd_dra, shell=True, start_new_session=True)
-        run_f.write(self.cmd_dra + "\n")
-        run_f.write("PID += $!\n")
+    def real_execute(self, cmd, run_f):
+        p = subprocess.Popen(cmd, shell=True, start_new_session=True)
+        self.processes.append(p)
+        run_f.write(cmd + "\n")
+        run_f.write("PID+=(\"$!\")\n")
         f = open(os.path.join(self.path, file_log_run), "a")
-        f.write(self.cmd_dra + "\n")
-        # f.write("dra pid : " + str(self.p_dra.pid) + "\n")
+        f.write(cmd + "\n")
+        f.write("dra pid : " + str(p.pid) + "\n")
         f.close()
 
-    def close(self, dra=True):
-        os.killpg(os.getpgid(self.p_syzkaller.pid), signal.SIGTERM)
-        if dra:
-            os.killpg(os.getpgid(self.p_dra.pid), signal.SIGTERM)
+    def close(self):
+        for p in self.processes:
+            os.killpg(os.getpgid(p.pid), signal.SIGTERM)
 
 
 def main():
     path_run = os.path.join(path_root, file_run)
     run_f = open(path_run, "a")
-    run_f.write("#!/bin/sh\n\n")
-    run_f.write("PID = ()\n")
+    run_f.write("#!/bin/bash\n\n")
+    run_f.write("PID=()\n")
 
     dra = True
     if len(sys.argv) > 1:
@@ -152,8 +149,8 @@ def main():
     for i in tasks:
         i.execute(run_f, dra)
 
-    run_f.write("sleep " + str(time_run))
-    run_f.write("kill $PID ")
+    run_f.write("sleep " + str(time_run) + "\n")
+    run_f.write("kill -SIGKILL ${PID[@]}")
     run_f.close()
 
     cmd_ch = "chmod a+x " + path_run
@@ -164,7 +161,7 @@ def main():
     time.sleep(30)
 
     for i in tasks:
-        i.close(dra)
+        i.close()
 
 
 if __name__ == "__main__":
