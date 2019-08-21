@@ -108,10 +108,9 @@ class Process:
         json.dump(c, f, indent=4)
         f.close()
 
-        self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2"
+        self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2 &"
         self.t0 = time.time()
         # self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True)
-        os.system(self.cmd_syzkaller)
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_syzkaller + "\n")
         # f.write("siyzkaller pid : " + str(self.p_syzkaller.pid) + "\n")
@@ -120,21 +119,18 @@ class Process:
     def execute_dra(self):
         self.cmd_dra = path_dra + " -asm=" + file_asm + " -objdump=" + file_vmlinux_objdump \
                        + " -staticRes=" + file_taint + " -port=" + self.drpc \
-                       + " " + file_bc + " 1>" + file_log_dra + " 2>&1"
+                       + " " + file_bc + " 1>" + file_log_dra + " 2>&1 &"
 
         # self.p_dra = subprocess.Popen(self.cmd_dra, shell=True)
-        os.system(self.cmd_dra)
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_dra + "\n")
         # f.write("dra pid : " + str(self.p_dra.pid) + "\n")
         f.close()
 
     def close(self, dra=True):
-        os.system("killall dra")
-        os.system("killall syz-manager")
-        # os.killpg(os.getpgid(self.p_syzkaller.pid), signal.SIGTERM)
-        # if dra:
-        #     os.killpg(os.getpgid(self.p_dra.pid), signal.SIGTERM)
+        os.killpg(os.getpgid(self.p_syzkaller.pid), signal.SIGTERM)
+        if dra:
+            os.killpg(os.getpgid(self.p_dra.pid), signal.SIGTERM)
 
 
 def main():
