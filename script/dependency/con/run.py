@@ -1,8 +1,6 @@
 #! /usr/bin/python
 import json
-import multiprocessing
 import os.path
-import shutil
 import signal
 import socket
 import subprocess
@@ -140,8 +138,8 @@ def main():
     for i in tasks:
         i.execute(dra)
 
-    # time.sleep(time_run)
-    time.sleep(300)
+    time.sleep(time_run)
+    # time.sleep(300)
 
     for i in tasks:
         i.close(dra)
