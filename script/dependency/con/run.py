@@ -112,8 +112,9 @@ class Process:
 
         self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2 &"
         self.t0 = time.time()
-        self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True)
+        self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True, start_new_session=True)
         run_f.write(self.cmd_syzkaller + "\n")
+        run_f.write("PID += $!\n")
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_syzkaller + "\n")
         # f.write("siyzkaller pid : " + str(self.p_syzkaller.pid) + "\n")
@@ -124,8 +125,9 @@ class Process:
                        + " -staticRes=" + file_taint + " -port=" + self.drpc \
                        + " " + file_bc + " 1>" + file_log_dra + " 2>&1 &"
 
-        self.p_dra = subprocess.Popen(self.cmd_dra, shell=True)
+        self.p_dra = subprocess.Popen(self.cmd_dra, shell=True, start_new_session=True)
         run_f.write(self.cmd_dra + "\n")
+        run_f.write("PID += $!\n")
         f = open(os.path.join(self.path, file_log_run), "a")
         f.write(self.cmd_dra + "\n")
         # f.write("dra pid : " + str(self.p_dra.pid) + "\n")
@@ -138,8 +140,10 @@ class Process:
 
 
 def main():
-    run_f = open(os.path.join(path_root, file_run), "a")
+    path_run = os.path.join(path_root, file_run)
+    run_f = open(path_run, "a")
     run_f.write("#!/bin/sh\n\n")
+    run_f.write("PID = ()\n")
 
     dra = True
     if len(sys.argv) > 1:
@@ -148,8 +152,11 @@ def main():
     for i in tasks:
         i.execute(run_f, dra)
 
+    run_f.write("sleep " + str(time_run))
+    run_f.write("kill $PID ")
     run_f.close()
-    cmd_ch = "chmod a+x " + file_run
+
+    cmd_ch = "chmod a+x " + path_run
     p_ch = subprocess.Popen(cmd_ch, shell=True, preexec_fn=os.setsid)
     p_ch.wait()
 
