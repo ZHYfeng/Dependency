@@ -34,6 +34,7 @@ path_image = "/home/yuh/data/benchmark/linux/image"
 file_image = "stretch.img"
 file_ssh_key = "stretch.id_rsa"
 
+file_log_run = "log_run.txt"
 file_log_syzkaller = "log_syzkaller.txt"
 file_log_dra = "log_dra.txt"
 
@@ -110,13 +111,21 @@ class Process:
 
         self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2"
         self.t0 = time.time()
-        self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True, preexec_fn=os.setsid)
+        f = open(os.path.join(self.path, file_log_run), "a")
+        f.write(self.cmd_syzkaller)
+        f.close()
+        # self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller, shell=True, preexec_fn=os.setsid)
+        self.p_syzkaller = subprocess.Popen(self.cmd_syzkaller)
 
     def execute_dra(self):
         self.cmd_dra = path_dra + " -asm=" + file_asm + " -objdump=" + file_vmlinux_objdump \
                        + " -staticRes=" + file_taint + " -port=" + self.drpc \
-                       + file_bc + " 1>" + file_log_dra + " 2>&1"
-        self.p_dra = subprocess.Popen(self.cmd_dra, shell=True, preexec_fn=os.setsid)
+                       + " " + file_bc + " 1>" + file_log_dra + " 2>&1"
+        f = open(os.path.join(self.path, file_log_run), "a")
+        f.write(self.cmd_dra)
+        f.close()
+        # self.p_dra = subprocess.Popen(self.cmd_dra, shell=True, preexec_fn=os.setsid)
+        self.p_dra = subprocess.Popen(self.cmd_dra)
 
     def close(self, dra=True):
         os.killpg(os.getpgid(self.p_syzkaller.pid), signal.SIGTERM)
