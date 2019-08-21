@@ -36,7 +36,7 @@ file_ssh_key = "stretch.id_rsa"
 file_log_run = "log_run.txt"
 file_log_syzkaller = "log_syzkaller.txt"
 file_log_dra = "log_dra.txt"
-file_run = "run.sh"
+file_run = "run.bash"
 
 time_run = 1 * 24 * 60 * 60  # second
 
@@ -137,28 +137,32 @@ class Process:
 
 
 def main():
-    path_run = os.path.join(path_root, file_run)
+    dra = True
+    if len(sys.argv) > 1:
+        dra = False
+
+    if dra:
+        path_run = os.path.join(path_root, name_with_dra, file_run)
+    else:
+        path_run = os.path.join(path_root, name_without_dra, file_run)
     run_f = open(path_run, "a")
     run_f.write("#!/bin/bash\n\n")
     run_f.write("PID=()\n")
 
-    dra = True
-    if len(sys.argv) > 1:
-        dra = False
     tasks = [Process() for i in range(number_execute)]
     for i in tasks:
         i.execute(run_f, dra)
 
     run_f.write("sleep " + str(time_run) + "\n")
-    run_f.write("kill -SIGKILL ${PID[@]}")
+    run_f.write("kill -SIGKILL ${PID[@]}\n")
     run_f.close()
 
     cmd_ch = "chmod a+x " + path_run
     p_ch = subprocess.Popen(cmd_ch, shell=True, preexec_fn=os.setsid)
     p_ch.wait()
 
-    # time.sleep(time_run)
-    time.sleep(30)
+    time.sleep(time_run)
+    # time.sleep(30)
 
     for i in tasks:
         i.close()
