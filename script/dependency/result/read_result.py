@@ -92,13 +92,13 @@ def deal_result(dir_path, file_name):
 
 def expansion_axis(length, x_axises, y_axises):
     for x in x_axises:
-        max_time = x[len(x) - 1]
+        max_time = x[-1]
         for i in range(length - len(x)):
             max_time = max_time + 60
             x.append(max_time)
 
     for y in y_axises:
-        max_num = y[len(y) - 1]
+        max_num = y[-1]
         for i in range(length - len(y)):
             y.append(max_num)
     return x_axises, y_axises
