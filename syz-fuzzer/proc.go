@@ -341,7 +341,7 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 		if stat == StatDependency {
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new input from StatDependency : \n%s", p.Serialize()))
 		}
-		p.Comments = []string{pb.FuzzingStat_name[int32(stat)]}
+		p.Comments = []string{pb.FuzzingStat_name[int32(stat)+1]}
 		//p.Comments = append(p.Comments, pb.FuzzingStat_name[int32(stat)])
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}
