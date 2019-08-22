@@ -108,24 +108,24 @@ def stat_deal(stat):
     s_copy(r.stat[pb.StatTriage], stat.stat[pb.StatTriage])
     s_add(r.stat[pb.StatTriage], stat.stat[pb.StatMinimize])
     s_copy(r.stat[pb.StatSmash], stat.stat[pb.StatSmash])
-    s_add(r.stat[pb.StatHint], stat.stat[pb.StatHint])
-    s_add(r.stat[pb.StatSeed], stat.stat[pb.StatSeed])
+    s_add(r.stat[pb.StatSmash], stat.stat[pb.StatHint])
+    s_add(r.stat[pb.StatSmash], stat.stat[pb.StatSeed])
     s_copy(r.stat[pb.StatDependency], stat.stat[pb.StatDependency])
     return r
 
 
 def get_average(stats):
     r = pb.Statistics()
-    for stats in stats:
-        for s in stats.stat:
-            r.stat[s].name = stats.stat[s].name
-            s_add(r.stat[s], stats.stat[s])
+    for stat in stats:
+        for s in stat.stat:
+            r.stat[s].name = stat.stat[s].name
+            s_add(r.stat[s], stat.stat[s])
     length = len(stats)
     for s in r.stat:
-        r.stat[s].executeNum /= length
-        r.stat[s].time /= length
-        r.stat[s].newTestCaseNum /= length
-        r.stat[s].newAddressNum /= length
+        r.stat[s].executeNum = int(r.stat[s].executeNum/length)
+        r.stat[s].time = int(r.stat[s].time/length)
+        r.stat[s].newTestCaseNum = int(r.stat[s].newTestCaseNum/length)
+        r.stat[s].newAddressNum = int(r.stat[s].newAddressNum/length)
     return r
 
 
@@ -139,7 +139,10 @@ def result_deal(dir_path, file_name):
 
 def expansion_axis(length, x_axises, y_axises):
     for x in x_axises:
-        max_time = x[-1]
+        if len(x) != 0:
+            max_time = x[-1]
+        else:
+            max_time = 0
         for i in range(length - len(x)):
             max_time = max_time + 60
             x.append(max_time)
