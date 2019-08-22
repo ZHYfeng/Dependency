@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 sys.path.append(os.getcwd())
 from script.dependency.dra import DependencyRPC_pb2 as pb
 
+do_figure = True
+
 name_dev = "dev_"
 name_with_dra = "result-with-dra"
 name_without_dra = "result-without-dra"
@@ -14,16 +16,18 @@ name_stat = "statistics.bin"
 length = 1 * 24 * 60
 time_run = length * 60  # second
 
-def read_stat(file_stat):
+
+def read_stat(dir_path, file_name):
     # Read the existing Statistics.
+    file_stat = os.path.join(dir_path, file_name)
     stat = pb.Statistics()
     f = open(file_stat, "rb")
     stat.ParseFromString(f.read())
     f.close()
-    # print(stat.coverage)
-    # for i in stat.stat:
-    #     print(i)
-    #     print(stat.stat[i])
+    file_result = os.path.join(dir_path, file_name)
+    f = open(file_result, "w")
+    f.write(stat)
+    f.close()
 
     return stat
 
@@ -41,6 +45,8 @@ def read_results(path):
 
 
 def plot_result(name, x_axis, y_axis):
+    if not do_figure:
+        return
     f = plt.figure()
     plt.plot(x_axis, y_axis)
     plt.xlabel('time:second')
@@ -50,6 +56,8 @@ def plot_result(name, x_axis, y_axis):
 
 
 def plot_results(name, x_axis, y_axises, labels):
+    if not do_figure:
+        return
     f = plt.figure()
     for i in range(len(labels)):
         plt.plot(x_axis, y_axises[i], label=labels[i])
@@ -74,8 +82,7 @@ def get_time_coverage(stat):
 
 
 def deal_result(dir_path, file_name):
-    file = os.path.join(dir_path, file_name)
-    stat = read_stat(file)
+    stat = read_stat(dir_path, file_name)
     x_axis, y_axis = get_time_coverage(stat)
     file_figure = os.path.join(dir_path, "coverage.pdf")
     plot_result(file_figure, x_axis, y_axis)
@@ -180,5 +187,6 @@ def get_stat_file(path):
 
 
 if __name__ == "__main__":
-    print(sys.path)
+    if len(sys.argv) > 1:
+        do_figure = False
     get_stat_file(sys.argv[1])
