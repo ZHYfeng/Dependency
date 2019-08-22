@@ -18,7 +18,7 @@ length = 1 * 24 * 60
 time_run = length * 60  # second
 
 
-def read_stat(dir_path, file_name):
+def stat_read(dir_path, file_name):
     # Read the existing Statistics.
     file_stat = os.path.join(dir_path, file_name)
     stat = pb.Statistics()
@@ -28,6 +28,7 @@ def read_stat(dir_path, file_name):
     file_result = os.path.join(dir_path, name_stat_result)
     f = open(file_result, "w")
     f.write(str(stat))
+    f.write(str(stat_deal(stat)))
     f.close()
 
     return stat
@@ -40,7 +41,7 @@ def read_results(path):
             for file_name in file_names:
                 if file_name.startswith(name_stat):
                     path_dev = os.path.join(dir_path, file_name)
-                    stats.append(read_stat(path_dev))
+                    stats.append(stat_read(path_dev))
 
     return stats
 
@@ -70,7 +71,7 @@ def plot_results(name, x_axis, y_axises, labels):
     f.savefig(fname=name, bbox_inches='tight', format="pdf")
 
 
-def get_time_coverage(stat):
+def stat_get_time_coverage(stat):
     x_axis = []
     y_axis = []
     t0 = 0
@@ -82,9 +83,55 @@ def get_time_coverage(stat):
     return x_axis, y_axis
 
 
-def deal_result(dir_path, file_name):
-    stat = read_stat(dir_path, file_name)
-    x_axis, y_axis = get_time_coverage(stat)
+def s_add(stat1: pb.Statistic, stat2: pb.Statistic) -> pb.Statistic:
+    stat1.executeNum += stat2.executeNum
+    stat1.time += stat2.time
+    stat1.newTestCaseNum += stat2.newTestCaseNum
+    stat1.newAddressNum += stat2.newAddressNum
+    return stat1
+
+
+def s_copy(stat1: pb.Statistic, stat2: pb.Statistic) -> pb.Statistic:
+    stat1.name = stat2.name
+    stat1.executeNum = stat2.executeNum
+    stat1.time = stat2.time
+    stat1.newTestCaseNum = stat2.newTestCaseNum
+    stat1.newAddressNum = stat2.newAddressNum
+    return stat1
+
+
+def stat_deal(stat):
+    r = pb.Statistics()
+    s_copy(r.stat[pb.StatGenerate], stat.stat[pb.StatGenerate])
+    s_copy(r.stat[pb.StatFuzz], stat.stat[pb.StatFuzz])
+    s_copy(r.stat[pb.StatCandidate], stat.stat[pb.StatCandidate])
+    s_copy(r.stat[pb.StatTriage], stat.stat[pb.StatTriage])
+    s_add(r.stat[pb.StatTriage], stat.stat[pb.StatMinimize])
+    s_copy(r.stat[pb.StatSmash], stat.stat[pb.StatSmash])
+    s_add(r.stat[pb.StatHint], stat.stat[pb.StatHint])
+    s_add(r.stat[pb.StatSeed], stat.stat[pb.StatSeed])
+    s_copy(r.stat[pb.StatDependency], stat.stat[pb.StatDependency])
+    return r
+
+
+def get_average(stats):
+    r = pb.Statistics()
+    for stats in stats:
+        for s in stats.stat:
+            r.stat[s].name = stats.stat[s].name
+            s_add(r.stat[s], stats.stat[s])
+    length = len(stats)
+    for s in r.stat:
+        r.stat[s].executeNum /= length
+        r.stat[s].time /= length
+        r.stat[s].newTestCaseNum /= length
+        r.stat[s].newAddressNum /= length
+    return r
+
+
+def result_deal(dir_path, file_name):
+    stat = stat_read(dir_path, file_name)
+    x_axis, y_axis = stat_get_time_coverage(stat)
     file_figure = os.path.join(dir_path, "coverage.pdf")
     plot_result(file_figure, x_axis, y_axis)
     return stat, x_axis, y_axis
@@ -113,14 +160,20 @@ def deal_results(path):
         for (dir_path, dir_names, file_names) in os.walk(path):
             for file_name in file_names:
                 if file_name.startswith(name_stat):
-                    s, x, y = deal_result(dir_path, file_name)
+                    s, x, y = result_deal(dir_path, file_name)
                     stats.append(s)
                     x_axises.append(x)
                     y_axises.append(y)
                     labels.append(dir_path)
 
-    x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
+    stat = get_average(stats)
+    file_result = os.path.join(path, name_stat_result)
+    f = open(file_result, "w")
+    f.write(str(stat))
+    f.write(str(stat_deal(stat)))
+    f.close()
 
+    x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
     x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
     y_axis = [sum(e) / len(e) for e in zip(*y_axises)]
     file_figure_average = os.path.join(path, "coverage.pdf")
@@ -182,7 +235,7 @@ def get_stat_file(path):
         for file_name in file_names:
             if file_name.startswith(name_stat):
                 is_result = True
-                deal_result(dir_path, file_name)
+                result_deal(dir_path, file_name)
         if is_result:
             break
 
