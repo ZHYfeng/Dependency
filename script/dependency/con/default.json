@@ -10,8 +10,10 @@
   "syzkaller": "/home/yuh/data/git/gopath/src/github.com/google/syzkaller",
   "procs": 2,
   "suppressions": [
-    "hang",
     "UBSAN: Undefined behaviour in ./include/linux/log2.h:LINE"
+  ],
+  "ignores": [
+    "hang"
   ],
   "enable_syscalls": [],
   "type": "qemu",
