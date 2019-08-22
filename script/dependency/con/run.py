@@ -7,17 +7,18 @@ import subprocess
 import sys
 import time
 
+path_root = "/home/yuh/data"
 number_execute = 6
-path_root = os.getcwd()
+path_current = os.getcwd()
 name_with_dra = "result-with-dra"
 name_without_dra = "result-without-dra"
-
-path_syzkaller = "/home/yuh/data/git/gopath/src/github.com/google/syzkaller"
+path_git = os.path.join(path_root, "git")
+path_syzkaller = os.path.join(path_git, "gopath/src/github.com/google/syzkaller")
 file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
 
-path_dra = "/home/yuh/data/git/2018_dependency/build/tools/DRA/dra"
+path_dra = os.path.join(path_git, "2018_dependency/build/tools/DRA/dra")
 
-path_linux = "/home/yuh/data/benchmark/linux/13-linux-clang-np"
+path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
 
@@ -29,7 +30,7 @@ file_json = name_driver + ".json"
 
 path_workdir = "workdir"
 
-path_image = "/home/yuh/data/benchmark/linux/image"
+path_image = path_linux = os.path.join(path_root, "benchmark/linux/image")
 file_image = "stretch.img"
 file_ssh_key = "stretch.id_rsa"
 
@@ -65,10 +66,10 @@ class Process:
         else:
             name = name_without_dra
 
-        path = os.path.join(path_root, name, str(self.index))
+        path = os.path.join(path_current, name, str(self.index))
         while os.path.exists(path):
             self.index = self.index + 1
-            path = os.path.join(path_root, name, str(self.index))
+            path = os.path.join(path_current, name, str(self.index))
         self.path = path
         os.makedirs(self.path)
 
@@ -82,7 +83,7 @@ class Process:
             p_cp_built_in = subprocess.Popen(cmd_cp_built_in, shell=True, preexec_fn=os.setsid)
             p_cp_built_in.wait()
 
-        f = open(os.path.join(path_root, file_json), "r")
+        f = open(os.path.join(path_current, file_json), "r")
         c = json.load(f)
         f.close()
 
@@ -142,9 +143,9 @@ def main():
         dra = False
 
     if dra:
-        path_run = os.path.join(path_root, name_with_dra, file_run)
+        path_run = os.path.join(path_current, name_with_dra, file_run)
     else:
-        path_run = os.path.join(path_root, name_without_dra, file_run)
+        path_run = os.path.join(path_current, name_without_dra, file_run)
     run_f = open(path_run, "a")
     run_f.write("#!/bin/bash\n\n")
     run_f.write("PID=()\n")

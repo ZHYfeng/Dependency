@@ -16,9 +16,11 @@ def read_s(paths):
                 if file_name.endswith(".s"):
                     f = open(os.path.join(dir_path, file_name), "r")
                     ctx_s = ctx_s + "\n" + f.read()
+                    f.close()
     f = open("built-in" + ".s", "w")
     f.write(ctx_s)
     f.close()
+    # cat    `find - name    "*.s"    ` >> built - in.s
 
 
 def generate_dev_dir():
