@@ -15,6 +15,12 @@ path_linux_bc = os.path.join(path_root, "benchmark/linux/16-linux-clang-np-bc-f"
 path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 
+name_driver = "built-in"
+file_taint = name_driver + ".taint"
+file_asm = name_driver + ".s"
+file_bc = name_driver + ".bc"
+file_json = name_driver + ".json"
+
 dev = {
     "dev_ashmem": {
         "enable_syscalls": [
