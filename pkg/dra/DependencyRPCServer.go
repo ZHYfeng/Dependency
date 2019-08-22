@@ -1283,7 +1283,8 @@ func (m *Task) MergeTask(s *Task) {
 	return
 }
 
-func CloneCorpus(s *Corpus) *Corpus {
+func (ss *Server) CloneCorpus(s *Corpus) *Corpus {
+	ss.taskMu.RLock()
 	d := &Corpus{
 		Input:            map[string]*Input{},
 		UncoveredAddress: map[uint32]*UncoveredAddress{},
@@ -1293,22 +1294,26 @@ func CloneCorpus(s *Corpus) *Corpus {
 		Tasks:            CloneTasks(s.Tasks),
 		NewInput:         map[string]*Input{},
 	}
+	ss.taskMu.RUnlock()
 
+	ss.inputMu.RLock()
 	for i, ss := range s.Input {
 		d.Input[i] = CloneInput(ss)
 	}
-
+	ss.inputMu.RUnlock()
+	ss.uncoveredMu.RLock()
 	for i, ss := range s.UncoveredAddress {
 		d.UncoveredAddress[i] = CloneUncoverAddress(ss)
 	}
 	for i, ss := range s.CoveredAddress {
 		d.CoveredAddress[i] = CloneUncoverAddress(ss)
 	}
-
+	ss.uncoveredMu.RUnlock()
+	ss.writeMu.RLock()
 	for i, ss := range s.WriteAddress {
 		d.WriteAddress[i] = CloneWriteAddress(ss)
 	}
-
+	ss.writeMu.RUnlock()
 	for i, ss := range s.IoctlCmd {
 		d.IoctlCmd[i] = CloneIoctlCmd(ss)
 	}
@@ -1379,15 +1384,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 func (ss *Server) writeCorpusToDisk() {
 
-	ss.inputMu.RLock()
-	defer ss.inputMu.RUnlock()
-	ss.uncoveredMu.RLock()
-	defer ss.uncoveredMu.RUnlock()
-	ss.writeMu.RLock()
-	defer ss.writeMu.RUnlock()
-	ss.taskMu.RLock()
-	defer ss.taskMu.RUnlock()
-	cc := CloneCorpus(ss.corpusDependency)
+	cc := ss.CloneCorpus(ss.corpusDependency)
 
 	ss.tmu.Lock()
 	defer ss.tmu.Unlock()
