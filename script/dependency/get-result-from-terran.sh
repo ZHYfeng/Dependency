@@ -1,7 +1,3 @@
-#!/bin/sh
+#!/bin/bash
 
-scp yuh@terran.cs.ucr.edu:/data/yhao/git/work/result/result-with-dra/result-cpp.log .
-scp yuh@terran.cs.ucr.edu:/data/yhao/git/work/result/result-with-dra/result-syzkaller.log .
-scp yuh@terran.cs.ucr.edu:/data/yhao/git/work/result/result-with-dra/dependency.log .
-scp yuh@terran.cs.ucr.edu:/data/yhao/git/work/result/result-with-dra/cover_uncover.txt .
-scp yuh@terran.cs.ucr.edu:/data/yhao/git/work/result/result-with-dra/data.bin .
+scp -r yuh@terran.cs.ucr.edu:/home/yuh/data/git/work/result /home/yhao/data/git/work/result
