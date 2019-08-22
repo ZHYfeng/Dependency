@@ -324,7 +324,7 @@ func (fuzzer *Fuzzer) pollLoop() {
 				for ii, nn := range statNames {
 					if nn == i {
 						s := &pb.Statistic{
-							Name:           pb.FuzzingStat(ii),
+							Name:           pb.FuzzingStat(ii + 1),
 							ExecuteNum:     n,
 							Time:           0,
 							NewTestCaseNum: 0,
