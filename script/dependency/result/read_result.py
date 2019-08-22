@@ -13,6 +13,7 @@ name_dev = "dev_"
 name_with_dra = "result-with-dra"
 name_without_dra = "result-without-dra"
 name_stat = "statistics.bin"
+name_stat_result = "statistics.txt"
 length = 1 * 24 * 60
 time_run = length * 60  # second
 
@@ -24,9 +25,9 @@ def read_stat(dir_path, file_name):
     f = open(file_stat, "rb")
     stat.ParseFromString(f.read())
     f.close()
-    file_result = os.path.join(dir_path, file_name)
+    file_result = os.path.join(dir_path, name_stat_result)
     f = open(file_result, "w")
-    f.write(stat)
+    f.write(str(stat))
     f.close()
 
     return stat
