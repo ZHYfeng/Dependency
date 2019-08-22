@@ -175,7 +175,7 @@ func (ss Server) pickTask() *Tasks {
 			}
 			t := ss.corpusDependency.Tasks.Task[ss.taskIndex]
 			ss.taskIndex++
-			if t.TaskStatus == TaskStatus_untested && len(t.UncoveredAddress) > 0 {
+			if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing) && len(t.UncoveredAddress) > 0 {
 				i++
 				t.TaskStatus = TaskStatus_testing
 				tasks.Task = append(tasks.Task, t)
