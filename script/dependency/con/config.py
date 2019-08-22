@@ -14,7 +14,6 @@ def read_s(paths):
         for (dir_path, dir_names, file_names) in os.walk(path):
             for file_name in file_names:
                 if file_name.endswith(".s") and file_name != devices.file_asm:
-                    print(os.path.join(dir_path, file_name))
                     f = open(os.path.join(dir_path, file_name), "r")
                     ctx_s = ctx_s + "\n" + f.read()
                     f.close()
