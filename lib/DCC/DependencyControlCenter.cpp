@@ -297,6 +297,7 @@ namespace dra {
         if ((this->staticResult.find(b) != this->staticResult.end()) &&
             (this->staticResult[b].find(idx) != this->staticResult[b].end())) {
             res = this->staticResult[b][idx];
+            dra::outputTime("get useful static analysis result from cache");
         } else {
             sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
             if (write_basicblock == nullptr) {
