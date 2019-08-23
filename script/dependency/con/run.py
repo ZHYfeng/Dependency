@@ -123,7 +123,8 @@ class Process:
         self.real_execute(self.cmd_dra, run_f)
 
     def real_execute(self, cmd, run_f):
-        p = subprocess.Popen(cmd, shell=True, start_new_session=True)
+        p = subprocess.Popen(cmd, shell=True)
+        # p = subprocess.Popen(cmd, shell=True, start_new_session=True)
         self.processes.append(p)
         run_f.write(cmd + "\n")
         run_f.write("PID+=(\"$!\")\n")
