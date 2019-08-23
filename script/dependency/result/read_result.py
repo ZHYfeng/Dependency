@@ -153,7 +153,10 @@ def expansion_axis(length, x_axises, y_axises):
             x.append(max_time)
 
     for y in y_axises:
-        max_num = y[-1]
+        if len(y) != 0:
+            max_num = y[-1]
+        else:
+            max_num = 0
         for i in range(length - len(y)):
             y.append(max_num)
     return x_axises, y_axises
