@@ -3,6 +3,7 @@ import os
 import sys
 
 import matplotlib.pyplot as plt
+
 sys.path.append(os.getcwd())
 from script.dependency.dra import DependencyRPC_pb2 as pb
 
@@ -70,7 +71,8 @@ def plot_results(name, x_axis, y_axises, labels):
     plt.xlabel('time:second')
     plt.ylabel('coverage:address number')
     plt.title(name)
-    plt.legend()
+    if len(labels) != 0:
+        plt.legend()
     f.savefig(fname=name, bbox_inches='tight', format="pdf")
 
 
