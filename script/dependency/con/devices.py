@@ -1,9 +1,10 @@
 #! /usr/bin/python3
 import os
 
-path_root = "/home/yuh/data"
-# path_root = "/home/yhao/"
-path_git_work = os.path.join(path_root, "git/work")
+# path_root = "/home/yuh/data"
+path_root = "/home/yhao"
+path_git = os.path.join(path_root, "git")
+path_git_work = os.path.join(path_git, "work")
 path_result = os.path.join(path_git_work, "result")
 path_taint = os.path.join(path_git_work, "script/dependency/taint_info")
 file_default_json = os.path.join(path_git_work, "script/dependency/con/default.json")
@@ -14,6 +15,9 @@ name_without_dra = "result-without-dra"
 path_linux_bc = os.path.join(path_root, "benchmark/linux/16-linux-clang-np-bc-f")
 path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
+
+path_syzkaller = os.path.join(path_git, "gopath/src/github.com/google/syzkaller")
+file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
 
 name_driver = "built-in"
 file_taint = name_driver + ".taint"

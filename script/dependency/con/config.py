@@ -38,6 +38,9 @@ def generate_dev_dir():
             c = json.load(df)
             df.close()
             c["enable_syscalls"] = devices.dev[d]["enable_syscalls"]
+            c["syzkaller"] = devices.path_syzkaller
+            c["kernel_obj"] = devices.path_linux
+            c["vm"]["kernel"] = devices.path_kernel
             f = open("built-in" + ".json", "w")
             json.dump(c, f, indent=4)
             f.close()

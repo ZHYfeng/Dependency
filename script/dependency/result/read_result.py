@@ -51,7 +51,7 @@ def read_results(path):
 
 
 def plot_result(name, x_axis, y_axis):
-    if not do_figure:
+    if not do_figure or len(y_axis) == 0:
         return
     f = plt.figure()
     plt.plot(x_axis, y_axis)
@@ -59,10 +59,11 @@ def plot_result(name, x_axis, y_axis):
     plt.ylabel('coverage:address number')
     plt.title(name)
     f.savefig(fname=name, bbox_inches='tight', format="pdf")
+    plt.close(f)
 
 
 def plot_results(name, x_axis, y_axises, labels):
-    if not do_figure:
+    if not do_figure or len(y_axises) == 0:
         return
     f = plt.figure()
     for i in range(len(labels)):
@@ -74,6 +75,7 @@ def plot_results(name, x_axis, y_axises, labels):
     if len(labels) != 0:
         plt.legend()
     f.savefig(fname=name, bbox_inches='tight', format="pdf")
+    plt.close(f)
 
 
 def stat_get_time_coverage(stat):
@@ -196,6 +198,8 @@ def deal_results(path):
     x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
     x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
     y_axis = [sum(e) / len(e) for e in zip(*y_axises)]
+    if len(y_axises) == 0:
+        return stats, x_axis, y_axis
     file_figure_average = os.path.join(path, "coverage.pdf")
     plot_result(file_figure_average, x_axis, y_axis)
     file_figure_all = os.path.join(path, "all.pdf")

@@ -7,8 +7,9 @@ import subprocess
 import sys
 import time
 
-path_root = "/home/yuh/data"
-number_execute = 6
+# path_root = "/home/yuh/data"
+path_root = "/home/yhao"
+number_execute = 1
 path_current = os.getcwd()
 name_with_dra = "result-with-dra"
 name_without_dra = "result-without-dra"
