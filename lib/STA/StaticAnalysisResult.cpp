@@ -716,12 +716,28 @@ namespace sta {
         while (!tags.empty()) {
             ID_TY tgt = *(tags.begin());
             std::set<ID_TY> group;
+            std::set<ID_TY> temp;
             for (auto it = tags.begin(); it != tags.end(); ++it) {
                 if (this->isSameTypedTag(tgt, *it)) {
                     group.insert(*it);
-                    tags.erase(it);
+                } else {
+                    temp.insert(*it);
                 }
             }
+
+            tags.clear();
+            for (auto it : temp) {
+                tags.insert(it);
+            }
+            temp.clear();
+
+
+//            for (auto it = tags.begin(); it != tags.end(); ++it) {
+//                if (this->isSameTypedTag(tgt, *it)) {
+//                    group.insert(*it);
+//                    tags.erase(it);
+//                }
+//            }
 #if DEBUG_TAG_GROUP
             std::cout << "+ ";
             for (auto &x : group) {
