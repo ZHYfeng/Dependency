@@ -94,7 +94,7 @@ func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, erro
 	}
 	ss.statMu.Unlock()
 
-	go ss.writeStatisticsToDisk()
+	ss.writeStatisticsToDisk()
 
 	reply := &Empty{}
 	return reply, nil
@@ -113,21 +113,21 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 	log.Logf(1, "(ss Server) ReturnTasks")
 	tasks := CloneTasks(request)
 
-	go func() {
-		for _, task := range tasks.Task {
-			for _, t := range ss.corpusDependency.Tasks.Task {
-				if t.Sig == task.Sig && t.Index == task.Index &&
-					t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
-					ss.taskMu.Lock()
-					t.MergeTask(task)
-					ss.taskMu.Unlock()
-					break
-				}
+	//go func() {
+	for _, task := range tasks.Task {
+		for _, t := range ss.corpusDependency.Tasks.Task {
+			if t.Sig == task.Sig && t.Index == task.Index &&
+				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
+				ss.taskMu.Lock()
+				t.MergeTask(task)
+				ss.taskMu.Unlock()
+				break
 			}
 		}
-	}()
+	}
+	//}()
 
-	go ss.writeCorpusToDisk()
+	ss.writeCorpusToDisk()
 
 	reply := &Empty{}
 
@@ -400,9 +400,9 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 
 	reply := &Empty{}
 
-	go ss.addNewInput(CloneInput(request))
+	ss.addNewInput(CloneInput(request))
 
-	go ss.addCoveredAddress(CloneInput(request))
+	ss.addCoveredAddress(CloneInput(request))
 
 	return reply, nil
 }
@@ -636,7 +636,7 @@ func (ss *Server) addCoveredAddress(input *Input) {
 				newAddressNum++
 				ss.stat.Coverage.Coverage[a] = isDependency
 			}
-			go ss.checkUncoveredAddress(a)
+			ss.checkUncoveredAddress(a)
 		}
 	}
 	t := time.Now()
@@ -663,7 +663,7 @@ func (ss *Server) addCoveredAddress(input *Input) {
 	}
 	ss.statMu.Unlock()
 
-	go ss.writeStatisticsToDisk()
+	ss.writeStatisticsToDisk()
 
 	return
 }
