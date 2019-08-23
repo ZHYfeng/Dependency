@@ -12,7 +12,7 @@
 
 #include "DependencyRPC.grpc.pb.h"
 
-#define DEBUG_RPC 0
+#define DEBUG_RPC 1
 
 namespace dra {
 
