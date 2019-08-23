@@ -34,9 +34,9 @@ path_image = path_linux = os.path.join(path_root, "benchmark/linux/image")
 file_image = "stretch.img"
 file_ssh_key = "stretch.id_rsa"
 
-file_log_run = "log_run.txt"
-file_log_syzkaller = "log_syzkaller.txt"
-file_log_dra = "log_dra.txt"
+file_log_run = "log_run.bash"
+file_log_syzkaller = "log_syzkaller.log"
+file_log_dra = "log_dra.log"
 file_run = "run.bash"
 
 time_run = 1 * 24 * 60 * 60  # second
@@ -128,8 +128,9 @@ class Process:
         run_f.write(cmd + "\n")
         run_f.write("PID+=(\"$!\")\n")
         f = open(os.path.join(self.path, file_log_run), "a")
+        f.write("#!/bin/bash\n\n")
         f.write(cmd + "\n")
-        f.write("dra pid : " + str(p.pid) + "\n")
+        f.write("#dra pid : " + str(p.pid) + "\n")
         f.close()
 
     def close(self):

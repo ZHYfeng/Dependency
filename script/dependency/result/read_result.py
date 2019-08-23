@@ -3,7 +3,6 @@ import os
 import sys
 
 import matplotlib.pyplot as plt
-
 sys.path.append(os.getcwd())
 from script.dependency.dra import DependencyRPC_pb2 as pb
 
@@ -18,6 +17,10 @@ length = 1 * 24 * 60
 time_run = length * 60  # second
 
 
+def stat_print(f, stat):
+    f.write(str(stat))
+
+
 def stat_read(dir_path, file_name):
     # Read the existing Statistics.
     file_stat = os.path.join(dir_path, file_name)
@@ -27,8 +30,8 @@ def stat_read(dir_path, file_name):
     f.close()
     file_result = os.path.join(dir_path, name_stat_result)
     f = open(file_result, "w")
-    f.write(str(stat))
-    f.write(str(stat_deal(stat)))
+    stat_print(f, stat)
+    stat_print(f, stat_deal(stat))
     f.close()
 
     return stat
@@ -122,10 +125,10 @@ def get_average(stats):
             s_add(r.stat[s], stat.stat[s])
     length = len(stats)
     for s in r.stat:
-        r.stat[s].executeNum = int(r.stat[s].executeNum/length)
-        r.stat[s].time = int(r.stat[s].time/length)
-        r.stat[s].newTestCaseNum = int(r.stat[s].newTestCaseNum/length)
-        r.stat[s].newAddressNum = int(r.stat[s].newAddressNum/length)
+        r.stat[s].executeNum = int(r.stat[s].executeNum / length)
+        r.stat[s].time = int(r.stat[s].time / length)
+        r.stat[s].newTestCaseNum = int(r.stat[s].newTestCaseNum / length)
+        r.stat[s].newAddressNum = int(r.stat[s].newAddressNum / length)
     return r
 
 
@@ -154,6 +157,15 @@ def expansion_axis(length, x_axises, y_axises):
     return x_axises, y_axises
 
 
+def result_get_from_sub_dir(stats, x_axises, y_axises, labels, path, name_label):
+    if os.path.exists(path):
+        s, x, y = deal_results(path)
+        stats.append(s)
+        x_axises.append(x)
+        y_axises.append(y)
+        labels.append(name_label)
+
+
 def deal_results(path):
     stats = []
     x_axises = []
@@ -172,8 +184,8 @@ def deal_results(path):
     stat = get_average(stats)
     file_result = os.path.join(path, name_stat_result)
     f = open(file_result, "w")
-    f.write(str(stat))
-    f.write(str(stat_deal(stat)))
+    stat_print(f, stat)
+    stat_print(f, stat_deal(stat))
     f.close()
 
     x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
@@ -192,21 +204,13 @@ def deal_dev(dir_path, dir_name):
     y_axises = []
     labels = []
 
-    path_with_dra = os.path.join(dir_path, dir_name, name_with_dra)
-    if os.path.exists(path_with_dra):
-        s, x, y = deal_results(path_with_dra)
-        stats.append(s)
-        x_axises.append(x)
-        y_axises.append(y)
-        labels.append(name_with_dra)
+    path_dev = os.path.join(dir_path, dir_name)
 
-    path_without_dra = os.path.join(dir_path, dir_name, name_without_dra)
-    if os.path.exists(path_without_dra):
-        s, x, y = deal_results(path_without_dra)
-        stats.append(s)
-        x_axises.append(x)
-        y_axises.append(y)
-        labels.append(name_without_dra)
+    path_with_dra = os.path.join(path_dev, name_with_dra)
+    result_get_from_sub_dir(stats, x_axises, y_axises, labels, path_with_dra, name_with_dra)
+
+    path_without_dra = os.path.join(path_dev, name_without_dra)
+    result_get_from_sub_dir(stats, x_axises, y_axises, labels, path_without_dra, name_without_dra)
 
     x_axises, y_axises = expansion_axis(length, x_axises, y_axises)
     x_axis = [sum(e) / len(e) for e in zip(*x_axises)]

@@ -9,13 +9,19 @@
   "sshkey": "/home/yuh/data/benchmark/linux/img/stretch.id_rsa",
   "syzkaller": "/home/yuh/data/git/gopath/src/github.com/google/syzkaller",
   "procs": 2,
+  "sandbox": "setuid",
+  "cover": true,
+  "reproduce": false,
+  "enable_syscalls": [],
+  "disable_syscalls": [],
   "suppressions": [
+    "hang",
     "UBSAN: Undefined behaviour in ./include/linux/log2.h:LINE"
   ],
   "ignores": [
-    "hang"
+    "hang",
+    "UBSAN: Undefined behaviour in ./include/linux/log2.h:LINE"
   ],
-  "enable_syscalls": [],
   "type": "qemu",
   "vm": {
     "count": 2,
