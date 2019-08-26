@@ -823,9 +823,9 @@ dev = {
             "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_CLIENT",
             "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_PORT",
         ],
-        "file_bc": os.path.join(path_linux_bc, "sound/core/seq/built-in.bc"),
+        "file_bc": os.path.join(path_linux_bc, "sound/core/built-in.bc"),
         "path_s": [
-            os.path.join(path_linux_bc, "sound/core/seq"),
+            os.path.join(path_linux_bc, "sound/core"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_snd_seq_ioctl_serialize"),
     },

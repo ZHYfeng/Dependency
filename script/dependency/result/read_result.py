@@ -82,11 +82,17 @@ def stat_get_time_coverage(stat):
     x_axis = []
     y_axis = []
     t0 = 0
+    num = 0
     for i in stat.coverage.time:
-        if i.time > t0:
+        while i.time > t0:
             t0 = t0 + 60
             x_axis.append(t0)
-            y_axis.append(i.num)
+            if i.time > t0:
+                y_axis.append(num)
+            else:
+                num = i.num
+                y_axis.append(num)
+
     return x_axis, y_axis
 
 
