@@ -110,10 +110,10 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	if checkWriteAddress1 {
 		task.CheckWriteAddress = true
 		log.Logf(1, "write program could arrive at write address : %d", task.WriteAddress)
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could arrive at write address : %d", task.WriteAddress))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could arrive at write address : %x", task.WriteAddress))
 	} else {
 		log.Logf(1, "write program could not arrive at write address : %d", task.WriteAddress)
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could not arrive at write address : %d", task.WriteAddress))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could not arrive at write address : %x", task.WriteAddress))
 	}
 
 	info = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
@@ -121,10 +121,10 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	if checkWriteAddress2 {
 		task.CheckWriteAddressFinal = true
 		log.Logf(1, "final program could arrive at write address : %d", task.WriteAddress)
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could arrive at write address : %d", task.WriteAddress))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could arrive at write address : %x", task.WriteAddress))
 	} else {
 		log.Logf(1, "final program could not arrive at write address : %d", task.WriteAddress)
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %d", task.WriteAddress))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %x", task.WriteAddress))
 	}
 
 	if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {

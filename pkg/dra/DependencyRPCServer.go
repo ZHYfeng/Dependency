@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	taskNum = 4
+	taskNum = 100
 )
 
 type syzFuzzer struct {
@@ -84,18 +84,18 @@ func (m *Statistic) MergeStatistic(d *Statistic) {
 
 func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, error) {
 
-	go func() {
-		ss.statMu.Lock()
-		stat := CloneStatistic(request)
-		s, ok := ss.stat.Stat[int32(stat.Name)]
-		if ok {
-			s.MergeStatistic(stat)
-		} else {
-			ss.stat.Stat[int32(stat.Name)] = stat
-		}
-		ss.statMu.Unlock()
-		ss.writeStatisticsToDisk()
-	}()
+	//go func() {
+	ss.statMu.Lock()
+	stat := CloneStatistic(request)
+	s, ok := ss.stat.Stat[int32(stat.Name)]
+	if ok {
+		s.MergeStatistic(stat)
+	} else {
+		ss.stat.Stat[int32(stat.Name)] = stat
+	}
+	ss.statMu.Unlock()
+	ss.writeStatisticsToDisk()
+	//}()
 
 	reply := &Empty{}
 	return reply, nil
@@ -112,27 +112,27 @@ func (ss Server) SendBasicBlockNumber(ctx context.Context, request *Empty) (*Emp
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
 	log.Logf(1, "(ss Server) ReturnTasks")
 	tasks := CloneTasks(request)
-	go func() {
-		isFound := false
-		ss.taskMu.RLock()
-		for _, task := range tasks.Task {
-			for _, t := range ss.corpusDependency.Tasks.Task {
-				if t.Sig == task.Sig && t.Index == task.Index &&
-					t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
-					isFound = true
-					ss.taskMu.RUnlock()
-					ss.taskMu.Lock()
-					t.MergeTask(task)
-					ss.taskMu.Unlock()
-					break
-				}
+	//go func() {
+	isFound := false
+	ss.taskMu.RLock()
+	for _, task := range tasks.Task {
+		for _, t := range ss.corpusDependency.Tasks.Task {
+			if t.Sig == task.Sig && t.Index == task.Index &&
+				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
+				isFound = true
+				ss.taskMu.RUnlock()
+				ss.taskMu.Lock()
+				t.MergeTask(task)
+				ss.taskMu.Unlock()
+				break
 			}
 		}
-		if !isFound {
-			ss.taskMu.RUnlock()
-		}
-		ss.writeCorpusToDisk()
-	}()
+	}
+	if !isFound {
+		ss.taskMu.RUnlock()
+	}
+	ss.writeCorpusToDisk()
+	//}()
 
 	reply := &Empty{}
 
@@ -142,14 +142,14 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
 	log.Logf(1, "(ss Server) SendDependency")
 	d := CloneDependency(request)
-	go func() {
-		for _, wa := range d.WriteAddress {
-			ss.addWriteAddress(wa)
-		}
-		ss.addUncoveredAddress(d.UncoveredAddress)
-		ss.addInput(d.Input)
-		ss.addInputTask(d.Input)
-	}()
+	//go func() {
+	for _, wa := range d.WriteAddress {
+		ss.addWriteAddress(wa)
+	}
+	ss.addUncoveredAddress(d.UncoveredAddress)
+	ss.addInput(d.Input)
+	ss.addInputTask(d.Input)
+	//}()
 
 	reply := &Empty{}
 
@@ -270,14 +270,14 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 	log.Logf(1, "(ss Server) SendLog")
-	go func() {
-		ss.logMu.Lock()
-		defer ss.logMu.Unlock()
+	//go func() {
+	ss.logMu.Lock()
+	defer ss.logMu.Unlock()
 
-		f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-		defer f.Close()
-		_, _ = f.WriteString(fmt.Sprintf(request.Name))
-	}()
+	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	defer f.Close()
+	_, _ = f.WriteString(fmt.Sprintf(request.Name))
+	//}()
 
 	reply := &Empty{}
 	return reply, nil
@@ -346,7 +346,8 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 	}
 
 	ci := CloneInput(request)
-	go ss.addInput(ci)
+	//go ss.addInput(ci)
+	ss.addInput(ci)
 
 	reply.Name = "success"
 	return reply, nil
@@ -405,11 +406,11 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 
 	reply := &Empty{}
 
-	go func() {
-		ss.addNewInput(CloneInput(request))
+	//go func() {
+	ss.addNewInput(CloneInput(request))
 
-		ss.addCoveredAddress(CloneInput(request))
-	}()
+	ss.addCoveredAddress(CloneInput(request))
+	//}()
 
 	return reply, nil
 }
