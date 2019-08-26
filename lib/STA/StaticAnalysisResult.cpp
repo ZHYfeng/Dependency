@@ -662,11 +662,17 @@ namespace sta {
                     current_time = std::time(NULL);
                     std::cout << std::ctime(&current_time) << "*time : getBBFromStr for (auto &it : *f->function) {" << std::endl;
 #endif
-                    for (auto &it : *f->function) {
-                        auto name = getBBStrID(&it);
-                        if (name == bb) {
-                            bbb = &it;
-                            return bbb;
+                    if (f->function == nullptr) {
+                        std::cout << "get the function without bc function" << std::endl;
+                        std::cout << "path : " << path << std::endl;
+                        std::cout << "func : " << func << std::endl;
+                    } else {
+                        for (auto &it : *f->function) {
+                            auto name = getBBStrID(&it);
+                            if (name == bb) {
+                                bbb = &it;
+                                return bbb;
+                            }
                         }
                     }
 #if DEBUG_TIME
