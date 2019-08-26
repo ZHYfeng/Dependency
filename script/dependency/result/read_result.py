@@ -238,28 +238,38 @@ def get_stat_file(path):
     is_results = False
     is_result = False
 
-    for (dir_path, dir_names, file_names) in os.walk(path):
-        for dir_name in dir_names:
-            if dir_name.startswith(name_dev):
-                is_dev = True
-                deal_dev(dir_path, dir_name)
-        if is_dev:
-            break
+    dir_name = os.path.basename(path)
+    dir_path = os.path.dirname(path)
+    if dir_name.startswith(name_dev):
+        deal_dev(dir_path, dir_name)
+    elif dir_name.startswith(name_with_dra) or dir_name.startswith(name_without_dra):
+        path_results = os.path.join(dir_path, dir_name)
+        deal_results(path_results)
+    elif dir_name.startswith(name_stat):
+        result_deal(dir_path, dir_name)
+    else:
+        for (dir_path, dir_names, file_names) in os.walk(path):
+            for dir_name in dir_names:
+                if dir_name.startswith(name_dev):
+                    is_dev = True
+                    deal_dev(dir_path, dir_name)
+            if is_dev:
+                break
 
-        for dir_name in dir_names:
-            if dir_name.startswith(name_with_dra) or dir_name.startswith(name_without_dra):
-                is_dev = True
-                path_results = os.path.join(dir_path, dir_name)
-                deal_results(path_results)
-        if is_results:
-            break
+            for dir_name in dir_names:
+                if dir_name.startswith(name_with_dra) or dir_name.startswith(name_without_dra):
+                    is_dev = True
+                    path_results = os.path.join(dir_path, dir_name)
+                    deal_results(path_results)
+            if is_results:
+                break
 
-        for file_name in file_names:
-            if file_name.startswith(name_stat):
-                is_result = True
-                result_deal(dir_path, file_name)
-        if is_result:
-            break
+            for file_name in file_names:
+                if file_name.startswith(name_stat):
+                    is_result = True
+                    result_deal(dir_path, file_name)
+            if is_result:
+                break
 
 
 if __name__ == "__main__":
