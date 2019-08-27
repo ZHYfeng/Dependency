@@ -8,7 +8,7 @@
   "image": "/home/yuh/data/benchmark/linux/img/stretch.img",
   "sshkey": "/home/yuh/data/benchmark/linux/img/stretch.id_rsa",
   "syzkaller": "/home/yuh/data/git/gopath/src/github.com/google/syzkaller",
-  "procs": 2,
+  "procs": 1,
   "sandbox": "namespace",
   "cover": true,
   "reproduce": false,
@@ -24,9 +24,9 @@
   ],
   "type": "qemu",
   "vm": {
-    "count": 2,
+    "count": 1,
     "cpu": 1,
-    "mem": 2048,
+    "mem": 4096,
     "kernel": "/home/yuh/data/benchmark/linux/13-linux-clang-np/arch/x86/boot/bzImage"
   }
 }
