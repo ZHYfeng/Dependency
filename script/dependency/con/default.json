@@ -9,7 +9,7 @@
   "sshkey": "/home/yuh/data/benchmark/linux/img/stretch.id_rsa",
   "syzkaller": "/home/yuh/data/git/gopath/src/github.com/google/syzkaller",
   "procs": 1,
-  "sandbox": "setuid",
+  "sandbox": "none",
   "cover": true,
   "reproduce": false,
   "enable_syscalls": [],
