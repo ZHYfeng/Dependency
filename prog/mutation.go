@@ -707,7 +707,7 @@ func (p *Prog) MutateIoctl1Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 	return true
 }
 
-func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx uint32, ct *ChoiceTable) bool {
+func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 	r := newRand(p.Target, rs)
 	c := p.Calls[idx]
 	if len(c.Args) == 0 {

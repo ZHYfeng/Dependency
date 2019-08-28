@@ -42,12 +42,13 @@ func (d *DRPCClient) Connect(name *string) {
 // SendNewInput ...
 func (d *DRPCClient) SendNewInput(input *Input) {
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
 
 	_, err := d.c.SendNewInput(ctx, input, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
-		log.Fatalf("Dependency gRPC could not SendNewInput: %v", err)
+		log.Logf(0, "Dependency gRPC could not SendNewInput: %v", err)
+		//log.Fatalf("Dependency gRPC could not SendNewInput: %v", err)
 	}
 }
 

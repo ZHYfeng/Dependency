@@ -7,6 +7,7 @@ import (
 	"github.com/google/syzkaller/pkg/hash"
 	"github.com/google/syzkaller/pkg/ipc"
 	"github.com/google/syzkaller/pkg/log"
+	"github.com/google/syzkaller/pkg/signal"
 	"github.com/google/syzkaller/prog"
 	"strings"
 )
@@ -90,7 +91,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	log.Logf(1, "usefulCall program : \n%s", wdata)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("usefulCall program : \n%s", wdata))
 
-	idx := task.Index
+	idx := int(task.Index)
 
 	// need combine open
 	p.Calls = append(p.Calls[:idx], append(usefulCall, p.Calls[idx:]...)...)
@@ -101,12 +102,10 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	log.Logf(1, "final program : \n%s", data)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("final program : \n%s", data))
 
-	idx = idx + task.WriteIndex + 1
+	idx = idx + int(task.WriteIndex) + 1
 
-	var info *ipc.ProgInfo
-
-	info = proc.execute(proc.execOptsCover, wp, ProgNormal, StatDependency)
-	checkWriteAddress1 := checkAddress(task.WriteAddress, info.Calls[task.WriteIndex].Cover)
+	infoWrite := proc.execute(proc.execOptsCover, wp, ProgNormal, StatDependency)
+	checkWriteAddress1 := checkAddress(task.WriteAddress, infoWrite.Calls[task.WriteIndex].Cover)
 	if checkWriteAddress1 {
 		task.CheckWriteAddress = true
 		log.Logf(1, "write program could arrive at write address : %d", task.WriteAddress)
@@ -116,8 +115,8 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could not arrive at write address : %x", task.WriteAddress))
 	}
 
-	info = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
-	checkWriteAddress2 := checkAddress(task.WriteAddress, info.Calls[task.WriteIndex].Cover)
+	infoFinal := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
+	checkWriteAddress2 := checkAddress(task.WriteAddress, infoFinal.Calls[task.WriteIndex].Cover)
 	if checkWriteAddress2 {
 		task.CheckWriteAddressFinal = true
 		log.Logf(1, "final program could arrive at write address : %d", task.WriteAddress)
@@ -126,16 +125,37 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 		log.Logf(1, "final program could not arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %x", task.WriteAddress))
 	}
+	prio := signalPrio(p, &infoFinal.Calls[idx], int(idx))
+	inputSignal := signal.FromRaw(infoFinal.Calls[idx].Signal, prio)
+	newSignal := proc.fuzzer.corpusSignalDiff(inputSignal)
 
 	if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
 		proc.executeDependencyHintSeed(p, int(idx))
 	}
 
+	p, idx = prog.Minimize(p, int(idx), false,
+		func(p1 *prog.Prog, call1 int) bool {
+			minimizeAttempts := 3
+			for i := 0; i < minimizeAttempts; i++ {
+				log.Logf(3, "minimizeAttempts")
+				info := proc.execute(proc.execOptsNoCollide, p1, ProgNormal, StatMinimize)
+				if !reexecutionSuccess(info, &infoFinal.Calls[idx], call1) {
+					// The call was not executed or failed.
+					continue
+				}
+				thisSignal, _ := getSignalAndCover(p1, info, call1)
+				if newSignal.Intersection(thisSignal).Len() == newSignal.Len() {
+					return true
+				}
+			}
+			return false
+		})
+
 	//count := len(item.task.UncoveredAddress)
 	for i := 0; i < 40; i++ {
-		info = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
+		infoWrite = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 		cov := cover.Cover{}
-		cov.Merge(info.Calls[idx].Cover)
+		cov.Merge(infoWrite.Calls[idx].Cover)
 
 		for u, r := range task.UncoveredAddress {
 			checkConditionAddress := checkAddressMap(r.ConditionAddress, cov)

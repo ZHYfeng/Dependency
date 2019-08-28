@@ -15,7 +15,8 @@ import (
 )
 
 const (
-	taskNum = 100
+	taskNum    = 100
+	debugLevel = 2
 )
 
 type syzFuzzer struct {
@@ -110,7 +111,7 @@ func (ss Server) SendBasicBlockNumber(ctx context.Context, request *Empty) (*Emp
 }
 
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
-	log.Logf(1, "(ss Server) ReturnTasks")
+	log.Logf(debugLevel, "(ss Server) ReturnTasks")
 	tasks := CloneTasks(request)
 	//go func() {
 	isFound := false
@@ -140,7 +141,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 }
 
 func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
-	log.Logf(1, "(ss Server) SendDependency")
+	log.Logf(debugLevel, "(ss Server) SendDependency")
 	d := CloneDependency(request)
 	//go func() {
 	for _, wa := range d.WriteAddress {
@@ -157,7 +158,7 @@ func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empt
 }
 
 func (ss Server) GetTasks(context.Context, *Empty) (*Tasks, error) {
-	log.Logf(1, "(ss Server) GetTasks")
+	log.Logf(debugLevel, "(ss Server) GetTasks")
 
 	tasks := ss.pickTask()
 
@@ -205,7 +206,7 @@ func (ss Server) pickTask() *Tasks {
 }
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencytask) (*Empty, error) {
-	log.Logf(1, "(ss Server) ReturnDependencyInput")
+	log.Logf(debugLevel, "(ss Server) ReturnDependencyInput")
 	//input := CloneInput(request.Input)
 	ss.fuzzerMu.Lock()
 	defer ss.fuzzerMu.Unlock()
@@ -229,7 +230,7 @@ func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencyt
 }
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
-	log.Logf(1, "(ss Server) GetCondition")
+	log.Logf(debugLevel, "(ss Server) GetCondition")
 	reply := &Conditions{
 		//Condition: map[uint64]*Condition{},
 		Condition: []*Condition{},
@@ -246,7 +247,7 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
-	log.Logf(1, "(ss Server) SendWriteAddress")
+	log.Logf(debugLevel, "(ss Server) SendWriteAddress")
 	ss.statMu.Lock()
 	defer ss.statMu.Unlock()
 	//a := request.Condition.ConditionAddress<<32 + request.Condition.Successor
@@ -269,7 +270,7 @@ func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) 
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
-	log.Logf(1, "(ss Server) SendLog")
+	log.Logf(debugLevel, "(ss Server) SendLog")
 	//go func() {
 	ss.logMu.Lock()
 	defer ss.logMu.Unlock()
@@ -284,7 +285,7 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
-	log.Logf(1, "(ss Server) Connect")
+	log.Logf(debugLevel, "(ss Server) Connect")
 	ss.fuzzerMu.Lock()
 	defer ss.fuzzerMu.Unlock()
 
@@ -303,7 +304,7 @@ func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
 }
 
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
-	log.Logf(1, "(ss Server) GetNewInput")
+	log.Logf(debugLevel, "(ss Server) GetNewInput")
 
 	reply := &Inputs{
 		//Input: map[string]*Input{},
@@ -334,7 +335,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 }
 
 func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empty, error) {
-	log.Logf(1, "(ss Server) SendDependencyInput")
+	log.Logf(debugLevel, "(ss Server) SendDependencyInput")
 	reply := &Empty{}
 
 	if len(request.Program) == 0 {
@@ -355,7 +356,7 @@ func (ss Server) SendDependencyInput(ctx context.Context, request *Input) (*Empt
 
 //
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
-	log.Logf(1, "(ss Server) GetDependencyInput")
+	log.Logf(debugLevel, "(ss Server) GetDependencyInput")
 	reply := &Inputs{
 		//Input: map[string]*Input{},
 		Input: []*Input{},
@@ -402,7 +403,7 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
-	log.Logf(1, "(ss Server) SendNewInput")
+	log.Logf(debugLevel, "(ss Server) SendNewInput")
 
 	reply := &Empty{}
 
@@ -577,10 +578,12 @@ func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
 
 func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 	ss.uncoveredMu.RLock()
-	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	u1, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return
 	}
+	u := CloneUncoverAddress(u1)
+	ss.uncoveredMu.RUnlock()
 
 	ss.inputMu.Lock()
 	for sig, _ := range u.Input {
@@ -589,7 +592,6 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 			log.Fatalf("deleteUncoveredAddress not find sig")
 			continue
 		} else {
-			delete(u.Input, sig)
 		}
 		_, ok1 := input.UncoveredAddress[uncoveredAddress]
 		if !ok1 {
@@ -608,7 +610,6 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 			log.Fatalf("deleteUncoveredAddress not find wa")
 			continue
 		} else {
-			delete(u.WriteAddress, wa)
 		}
 		_, ok1 := waa.UncoveredAddress[uncoveredAddress]
 		if !ok1 {
@@ -619,7 +620,6 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 	}
 	ss.writeMu.Unlock()
 
-	ss.uncoveredMu.RUnlock()
 	ss.uncoveredMu.Lock()
 	delete(ss.corpusDependency.UncoveredAddress, uncoveredAddress)
 	ss.uncoveredMu.Unlock()
@@ -655,11 +655,11 @@ func (ss *Server) addCoveredAddress(input *Input) {
 		Num:  int64(len(ss.stat.Coverage.Coverage)),
 	})
 	ss.coverageMu.Unlock()
-
+	log.Logf(debugLevel, "(ss Server) addCoveredAddress : checkUncoveredAddress")
 	for _, a := range aa {
 		ss.checkUncoveredAddress(a)
 	}
-
+	log.Logf(debugLevel, "(ss Server) addCoveredAddress : ss.statMu.Lock()")
 	ss.statMu.Lock()
 	s, ok := ss.stat.Stat[int32(input.Stat)]
 	if ok {
@@ -675,9 +675,9 @@ func (ss *Server) addCoveredAddress(input *Input) {
 		}
 	}
 	ss.statMu.Unlock()
-
+	log.Logf(debugLevel, "(ss Server) addCoveredAddress : writeStatisticsToDisk")
 	ss.writeStatisticsToDisk()
-
+	log.Logf(debugLevel, "(ss Server) addCoveredAddress : writeStatisticsToDisk")
 	return
 }
 
