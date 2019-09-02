@@ -60,6 +60,9 @@ type Server struct {
 
 	inputMu *sync.Mutex
 	input   *Inputs
+
+	coveredInputMu *sync.Mutex
+	coveredInput   *Inputs
 }
 
 func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
@@ -283,6 +286,9 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.inputMu = &sync.Mutex{}
 	ss.input = &Inputs{Input: []*Input{}}
 
+	ss.coveredInputMu = &sync.Mutex{}
+	ss.coveredInput = &Inputs{Input: []*Input{}}
+
 	lis, err := net.Listen("tcp", ss.Address)
 	log.Logf(0, "drpc on tcp : %s", ss.Address)
 	if err != nil {
@@ -299,6 +305,17 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 }
 
 func (ss *Server) Update() {
+
+	// deal covered input
+	ss.coveredInputMu.Lock()
+	coveredInput := append([]*Input{}, ss.coveredInput.Input...)
+	ss.coveredInput = &Inputs{Input: []*Input{}}
+	ss.coveredInputMu.Unlock()
+
+	for _, i := range coveredInput {
+		ss.addCoveredAddress(i)
+	}
+
 	// deal new input
 	ss.inputMu.Lock()
 	input := append([]*Input{}, ss.input.Input...)
@@ -306,7 +323,6 @@ func (ss *Server) Update() {
 	ss.inputMu.Unlock()
 
 	for _, i := range input {
-		ss.addCoveredAddress(i)
 		ss.addInput(i)
 	}
 
