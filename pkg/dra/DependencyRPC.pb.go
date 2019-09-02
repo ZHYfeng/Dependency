@@ -388,7 +388,7 @@ func (m *Call) GetAddress() map[uint32]uint32 {
 }
 
 type Inputs struct {
-	// map<string, input> input = 1;
+	// map<string, Input> input = 1;
 	Input                []*Input `protobuf:"bytes,1,rep,name=input,proto3" json:"input,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -1625,7 +1625,7 @@ func (m *Task) GetCheckWriteAddressFinal() bool {
 
 type Tasks struct {
 	Name                 string   `protobuf:"bytes,41,opt,name=name,proto3" json:"name,omitempty"`
-	Task                 []*Task  `protobuf:"bytes,1,rep,name=newTask,proto3" json:"newTask,omitempty"`
+	Task                 []*Task  `protobuf:"bytes,1,rep,name=task,proto3" json:"task,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1795,10 +1795,10 @@ func init() {
 	proto.RegisterType((*UncoveredAddress)(nil), "dra.UncoveredAddress")
 	proto.RegisterMapType((map[string]uint32)(nil), "dra.UncoveredAddress.InputEntry")
 	proto.RegisterMapType((map[uint32]*WriteAddressAttributes)(nil), "dra.UncoveredAddress.WriteAddressEntry")
-	proto.RegisterType((*Input)(nil), "dra.input")
-	proto.RegisterMapType((map[uint32]*Call)(nil), "dra.input.CallEntry")
-	proto.RegisterMapType((map[uint32]uint32)(nil), "dra.input.UncoveredAddressEntry")
-	proto.RegisterMapType((map[uint32]uint32)(nil), "dra.input.WriteAddressEntry")
+	proto.RegisterType((*Input)(nil), "dra.Input")
+	proto.RegisterMapType((map[uint32]*Call)(nil), "dra.Input.CallEntry")
+	proto.RegisterMapType((map[uint32]uint32)(nil), "dra.Input.UncoveredAddressEntry")
+	proto.RegisterMapType((map[uint32]uint32)(nil), "dra.Input.WriteAddressEntry")
 	proto.RegisterType((*Dependency)(nil), "dra.Dependency")
 	proto.RegisterType((*RecursiveIoctlCmd)(nil), "dra.RecursiveIoctlCmd")
 	proto.RegisterType((*RecursiveWriteAddress)(nil), "dra.RecursiveWriteAddress")
