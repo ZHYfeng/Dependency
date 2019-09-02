@@ -169,6 +169,10 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	log.Logf(debugLevel, "(ss Server) SendNewInput newInput : %v", r)
 	ss.newInputMu.Unlock()
 
+	ss.coveredInputMu.Lock()
+	ss.coveredInput.Input = append(ss.coveredInput.Input, r)
+	ss.coveredInputMu.Unlock()
+
 	return reply, nil
 }
 
