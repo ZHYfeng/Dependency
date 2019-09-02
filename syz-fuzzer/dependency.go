@@ -202,7 +202,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 		Task: []*pb.Task{},
 	}
 	tasks.Task = append(tasks.Task, task)
-	go proc.fuzzer.dManager.ReturnTasks(tasks)
+	proc.fuzzer.dManager.ReturnTasks(tasks)
 
 	return
 }

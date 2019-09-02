@@ -125,7 +125,7 @@ func (proc *Proc) loop() {
 			NewTestCaseNum: 0,
 			NewAddressNum:  0,
 		}
-		go proc.fuzzer.dManager.SendStat(s)
+		proc.fuzzer.dManager.SendStat(s)
 	}
 }
 
@@ -261,7 +261,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		}
 	}
 
-	go proc.fuzzer.dManager.SendNewInput(&input)
+	proc.fuzzer.dManager.SendNewInput(&input)
 }
 
 func reexecutionSuccess(info *ipc.ProgInfo, oldInfo *ipc.CallInfo, call int) bool {

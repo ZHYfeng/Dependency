@@ -232,6 +232,7 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 			log.Logf(0, "VMs %v, executed %v, cover %v, crashes %v, repro %v",
 				numFuzzing, executed, signal, crashes, numReproducing)
 			mgr.ss.SyncSignal(signal)
+			mgr.ss.Update()
 		}
 	}()
 
