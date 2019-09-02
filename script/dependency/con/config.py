@@ -57,6 +57,8 @@ def generate_dev_dir():
             os.makedirs(devices.name_without_dra)
         if not os.path.exists(devices.name_run):
             shutil.copy(devices.path_default_run, devices.name_run)
+        if not os.path.exists(devices.name_run_bash):
+            shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
 
 
 if __name__ == "__main__":
