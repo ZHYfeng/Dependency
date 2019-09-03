@@ -118,6 +118,14 @@ namespace dra {
                     uncoveredAddress->set_condition_address(syzkallerConditionAddress);
                     uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
 
+                    if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
+                        DBasicBlock *db = DM.Address2BB[u->uncovered_address()]->parent;
+                        std::set<llvm::BasicBlock *> bbs;
+                        this->STA._get_all_successors(db->basicBlock, bbs);
+                        uncoveredAddress->set_bbcount(bbs.size());
+                    }
+
+
                     (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
                     (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
 
@@ -413,6 +421,7 @@ namespace dra {
         res->set_write_address(write_address);
         res->set_repeat(write_basicblock->repeat);
         res->set_prio(write_basicblock->prio);
+
         return res;
     }
 
