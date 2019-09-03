@@ -715,7 +715,7 @@ func (p *Prog) MutateIoctl3Arg(rs rand.Source, idx int, ct *ChoiceTable) bool {
 	}
 	s := analyze(ct, p, c)
 	updateSizes := true
-	for stop, ok := false, false; !stop; stop = ok && r.oneOf(3) {
+	for stop, ok := false, false; !stop; stop = ok && r.oneOf(4) {
 		ok = true
 		ma := &mutationArgs{target: p.Target}
 		ForeachArg(c, ma.collectArg)

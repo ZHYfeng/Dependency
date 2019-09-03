@@ -138,7 +138,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 			minimizeAttempts := 3
 			for i := 0; i < minimizeAttempts; i++ {
 				log.Logf(3, "minimizeAttempts")
-				info := proc.execute(proc.execOptsNoCollide, p1, ProgNormal, StatMinimize)
+				info := proc.execute(proc.execOptsNoCollide, p1, ProgNormal, StatDependency)
 				if !reexecutionSuccess(info, &infoFinal.Calls[idx], call1) {
 					// The call was not executed or failed.
 					continue
@@ -153,7 +153,15 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 
 	//count := len(item.task.UncoveredAddress)
 	for i := 0; i < 40; i++ {
-		infoWrite = proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
+		p0c := p.Clone()
+
+		if len(task.UncoveredAddress) > 0 {
+			p0c.MutateIoctl3Arg(proc.rnd, idx, ct)
+		} else {
+			break
+		}
+
+		infoWrite = proc.execute(proc.execOptsCover, p0c, ProgNormal, StatDependency)
 		cov := cover.Cover{}
 		cov.Merge(infoWrite.Calls[idx].Cover)
 
@@ -172,7 +180,7 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 
 			r := pb.CloneRunTimeData(task.UncoveredAddress[u])
 			task.CoveredAddress[u] = r
-			data := p.Serialize()
+			data := p0c.Serialize()
 
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("program : \n%s", data))
 			for _, c := range data {
@@ -185,11 +193,6 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 			delete(task.UncoveredAddress, u)
 		}
 
-		if len(task.UncoveredAddress) > 0 {
-			p.MutateIoctl3Arg(proc.rnd, idx, ct)
-		} else {
-			break
-		}
 	}
 
 	if len(task.UncoveredAddress) == 0 {

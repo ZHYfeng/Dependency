@@ -47,7 +47,7 @@ type Server struct {
 	timeStart time.Time
 
 	logMu *sync.Mutex
-	log   string
+	log   *Empty
 
 	statMu  *sync.Mutex
 	newStat *newStats
@@ -223,7 +223,10 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 	ss.logMu.Lock()
 	defer ss.logMu.Unlock()
 
-	ss.log = ss.log + request.Name
+	var name = make([]uint8, len(request.Name))
+	copy(name, request.Name)
+
+	ss.log.Name = ss.log.Name + string(name)
 
 	reply := &Empty{}
 	return reply, nil
@@ -276,7 +279,10 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.timeStart = time.Now()
 
 	ss.logMu = &sync.Mutex{}
-	ss.log = ""
+	ss.log = &Empty{
+		Address: 0,
+		Name:    "",
+	}
 
 	ss.statMu = &sync.Mutex{}
 	ss.newStat = &newStats{newStat: []*Statistic{}}
@@ -340,20 +346,6 @@ func (ss *Server) Update() {
 		ss.addInputTask(d.Input)
 	}
 
-	// get new tasks
-	var task []*Task
-	for _, t := range ss.corpusDependency.Tasks.Task {
-		if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing) && len(t.UncoveredAddress) > 0 {
-			t.TaskStatus = TaskStatus_testing
-			task = append(task, t)
-		}
-	}
-	for _, f := range ss.fuzzers {
-		f.taskMu.Lock()
-		f.newTask.Task = append([]*Task{}, task...)
-		f.taskMu.Unlock()
-	}
-
 	// deal retrun tasks
 	var returnTask []*Task
 	for _, f := range ss.fuzzers {
@@ -372,12 +364,26 @@ func (ss *Server) Update() {
 		}
 	}
 
+	// get new tasks
+	var task []*Task
+	for _, t := range ss.corpusDependency.Tasks.Task {
+		if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing) && len(t.UncoveredAddress) > 0 {
+			t.TaskStatus = TaskStatus_testing
+			task = append(task, t)
+		}
+	}
+	for _, f := range ss.fuzzers {
+		f.taskMu.Lock()
+		f.newTask.Task = append([]*Task{}, task...)
+		f.taskMu.Unlock()
+	}
+
 	ss.logMu.Lock()
-	templog := ss.log
-	ss.log = ""
+	var templog = ss.log.Name
+	ss.log.Name = ""
 	ss.logMu.Unlock()
 	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-	_, _ = f.WriteString(templog)
+	_, _ = f.WriteString(string(templog))
 	f.Close()
 
 	ss.statMu.Lock()
