@@ -274,6 +274,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		BasicBlockNumber: 0,
 		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
 		Stat:             map[int32]*Statistic{},
+		UsefulInput:      []*UsefulInput{},
 	}
 
 	ss.corpus = corpus

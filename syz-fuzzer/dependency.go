@@ -263,10 +263,10 @@ func (proc *Proc) dependencyMutate(item *WorkDependency) {
 	if checkWriteAddress3 {
 		task.CheckWriteAddressFinal = true
 		log.Logf(1, "remove program could arrive at write address : %d", task.WriteAddress)
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could arrive at write address : %x", task.WriteAddress))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove input could arrive at write address : %x", task.WriteAddress))
 	} else {
 		log.Logf(1, "remove program could not arrive at write address : %d", task.WriteAddress)
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %x", task.WriteAddress))
+		proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove input could not arrive at write address : %x", task.WriteAddress))
 	}
 
 	if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {

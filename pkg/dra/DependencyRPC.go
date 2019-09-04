@@ -541,7 +541,9 @@ func (ss *Server) addCoveredAddress(input *Input) {
 	for _, call := range input.Call {
 		for a := range call.Address {
 			_, ok := ss.stat.Coverage.Coverage[a]
-			if !ok {
+			if ok {
+
+			} else {
 				newAddressNum++
 				ss.stat.Coverage.Coverage[a] = isDependency
 			}
@@ -571,6 +573,15 @@ func (ss *Server) addCoveredAddress(input *Input) {
 			NewAddressNum:  newAddressNum,
 		}
 	}
+
+	usefulInput := &UsefulInput{
+		Input:      input,
+		Time:       elapsed.Seconds(),
+		Num:        newAddressNum,
+		NewAddress: aa,
+	}
+	ss.stat.UsefulInput = append(ss.stat.UsefulInput, usefulInput)
+
 	return
 }
 
