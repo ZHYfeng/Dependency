@@ -55,6 +55,24 @@ func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
 	})
 }
 
+func dealAddress(open string) string {
+	res := ""
+	add := true
+	for i, c := range open {
+		if c == '&' && open[i+1] == '(' {
+			add = false
+		}
+		if add {
+			res = res + string(c)
+		} else {
+			if c == ')' {
+				add = true
+			}
+		}
+	}
+	return res
+}
+
 func removeSameResource(p []byte, idx int) ([]byte, int) {
 	var calls []string
 	var i = 0
@@ -76,9 +94,10 @@ func removeSameResource(p []byte, idx int) ([]byte, int) {
 			res := call[:j]
 			res = res + ","
 			open := call[j:]
-			fmt.Printf("open : %s\n", open)
+			open = dealAddress(open)
 			for k := i + 1; k < len(calls); k++ {
-				if strings.Contains(calls[k], open) {
+				call := dealAddress(calls[k])
+				if strings.Contains(call, open) {
 					if strings.Index(calls[k], " = ") != -1 {
 						rres := calls[k][:strings.Index(calls[k], " = ")]
 						rres = rres + ","
