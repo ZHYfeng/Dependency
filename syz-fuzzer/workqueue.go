@@ -100,7 +100,7 @@ func (wq *WorkQueue) enqueue(item interface{}) {
 
 func (wq *WorkQueue) dequeue() (item interface{}) {
 	wq.mu.RLock()
-	if len(wq.triageCandidate)+len(wq.candidate)+len(wq.triage)+len(wq.smash)+len(wq.dependency) == 0 {
+	if len(wq.triageCandidate)+len(wq.candidate)+len(wq.triage)+len(wq.smash) == 0 {
 		wq.mu.RUnlock()
 		return nil
 	}
@@ -124,10 +124,6 @@ func (wq *WorkQueue) dequeue() (item interface{}) {
 		last := len(wq.smash) - 1
 		item = wq.smash[last]
 		wq.smash = wq.smash[:last]
-	} else if len(wq.dependency) != 0 {
-		last := len(wq.dependency) - 1
-		item = wq.dependency[last]
-		wq.dependency = wq.dependency[:last]
 	}
 	wq.mu.Unlock()
 	if wantCandidates {
@@ -135,6 +131,21 @@ func (wq *WorkQueue) dequeue() (item interface{}) {
 		case wq.needCandidates <- struct{}{}:
 		default:
 		}
+	}
+	return item
+}
+
+func (wq *WorkQueue) dequeueDependency() (item *WorkDependency) {
+	wq.mu.RLock()
+	if len(wq.dependency) == 0 {
+		wq.mu.RUnlock()
+		return nil
+	} else {
+		wq.mu.RUnlock()
+		wq.mu.Lock()
+		last := len(wq.dependency) - 1
+		item = wq.dependency[last]
+		wq.dependency = wq.dependency[:last]
 	}
 	return item
 }

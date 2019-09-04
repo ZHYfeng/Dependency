@@ -89,30 +89,36 @@ func (proc *Proc) loop() {
 			case *WorkSmash:
 				statName = pb.FuzzingStat_StatSmash
 				proc.smashInput(item)
-			case *WorkDependency:
-				statName = pb.FuzzingStat_StatDependency
-				proc.dependencyMutate(item)
 			default:
 				log.Fatalf("unknown work type: %#v", item)
 			}
 		} else {
-			ct := proc.fuzzer.choiceTable
-			corpus := proc.fuzzer.corpusSnapshot()
-			if len(corpus) == 0 || i%generatePeriod == 0 {
-				statName = pb.FuzzingStat_StatGenerate
-				// Generate a new prog.
-				p := proc.fuzzer.target.Generate(proc.rnd, programLength, ct)
-				log.Logf(1, "#%v: generated", proc.pid)
-				proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
+			r := rand.New(proc.rnd)
+			n := 3
+			m := 1
+			if r.Intn(n) < m {
+				item := proc.fuzzer.workQueue.dequeueDependency()
+				statName = pb.FuzzingStat_StatDependency
+				proc.dependencyMutate(item)
 			} else {
-				statName = pb.FuzzingStat_StatFuzz
-				// Mutate an existing prog.
-				log.Logf(1, "#%v: mutated", proc.pid)
-				p := corpus[proc.rnd.Intn(len(corpus))].Clone()
-				p.Mutate(proc.rnd, programLength, ct, corpus)
-				proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-				//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
-				//proc.fuzzer.checkNewCoverage(p, info)
+				ct := proc.fuzzer.choiceTable
+				corpus := proc.fuzzer.corpusSnapshot()
+				if len(corpus) == 0 || i%generatePeriod == 0 {
+					statName = pb.FuzzingStat_StatGenerate
+					// Generate a new prog.
+					p := proc.fuzzer.target.Generate(proc.rnd, programLength, ct)
+					log.Logf(1, "#%v: generated", proc.pid)
+					proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
+				} else {
+					statName = pb.FuzzingStat_StatFuzz
+					// Mutate an existing prog.
+					log.Logf(1, "#%v: mutated", proc.pid)
+					p := corpus[proc.rnd.Intn(len(corpus))].Clone()
+					p.Mutate(proc.rnd, programLength, ct, corpus)
+					proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+					//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
+					//proc.fuzzer.checkNewCoverage(p, info)
+				}
 			}
 		}
 
@@ -125,7 +131,7 @@ func (proc *Proc) loop() {
 			NewTestCaseNum: 0,
 			NewAddressNum:  0,
 		}
-		proc.fuzzer.dManager.SendStat(s)
+		_, _ = proc.fuzzer.dManager.SendStat(s)
 	}
 }
 

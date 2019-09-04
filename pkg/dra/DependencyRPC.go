@@ -331,6 +331,7 @@ func CloneTask(s *Task) *Task {
 		WriteIndex:             s.WriteIndex,
 		WriteProgram:           []byte{},
 		WriteAddress:           s.WriteAddress,
+		Priority:               s.Priority,
 		UncoveredAddress:       map[uint32]*RunTimeData{},
 		CoveredAddress:         map[uint32]*RunTimeData{},
 		TaskStatus:             s.TaskStatus,
