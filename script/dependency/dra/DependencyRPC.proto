@@ -301,6 +301,8 @@ message Task {
     bytes write_program = 13;
     uint32 write_address = 14;
 
+    uint32 priority = 15;
+
     // uncovered address, priority
     map<uint32, runTimeData> uncovered_address = 21;
     map<uint32, runTimeData> covered_address = 23;
