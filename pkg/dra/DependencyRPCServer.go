@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"net"
 	"os"
+	"sort"
 	"sync"
 	"time"
 )
@@ -363,6 +364,10 @@ func (ss *Server) Update() {
 			}
 		}
 	}
+
+	sort.Slice(ss.corpusDependency.Tasks.Task, func(i, j int) bool {
+		return ss.corpusDependency.Tasks.Task[i].Priority > ss.corpusDependency.Tasks.Task[j].Priority
+	})
 
 	// get new tasks
 	var task []*Task

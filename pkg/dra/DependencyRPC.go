@@ -689,6 +689,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		WriteIndex:             writeIndex,
 		WriteProgram:           []byte{},
 		WriteAddress:           writeAddress,
+		Priority:               0,
 		UncoveredAddress:       map[uint32]*RunTimeData{},
 		CoveredAddress:         map[uint32]*RunTimeData{},
 		TaskStatus:             TaskStatus_untested,
@@ -732,6 +733,8 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		RightBranchAddress:      []uint32{},
 	}
 
+	task.Priority = task.UncoveredAddress[uncoveredAddress].Priority
+
 	return task
 }
 
@@ -750,6 +753,7 @@ func (ss *Server) addTask(task *Task) {
 	for _, t := range ss.corpusDependency.Tasks.Task {
 		if t.Sig == task.Sig && t.Index == task.Index &&
 			t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
+			t.updatePriority(task.Priority)
 			if r, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 				t.UncoveredAddress[uncoveredAddress].Priority = ss.updatePriority(r.Priority, dr.Priority)
 			} else {
@@ -760,6 +764,11 @@ func (ss *Server) addTask(task *Task) {
 		}
 	}
 	ss.corpusDependency.Tasks.Task = append(ss.corpusDependency.Tasks.Task, task)
+}
+
+func (t *Task) updatePriority(p1 uint32) {
+	t.Priority = t.Priority + p1
+	return
 }
 
 func (ss *Server) updatePriority(p1 uint32, p2 uint32) uint32 {
@@ -779,7 +788,7 @@ func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint
 		log.Fatalf("getPriority not find writeAddress")
 	}
 	pp := waa.Prio
-	priority := pp + bbcount
+	priority := pp * bbcount
 	return priority
 }
 
