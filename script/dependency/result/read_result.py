@@ -83,7 +83,7 @@ def axis_plot(name, x_axis, y_axis):
     plt.close(f)
 
 
-def axises_plot(name, x_axis, y_axises, labels, line_styles, colors, title = ""):
+def axises_plot(name, x_axis, y_axises, labels, line_styles, colors, title=""):
     if not do_figure or len(y_axises) == 0:
         return
     f = plt.figure()
@@ -214,6 +214,40 @@ def result_get_from_sub_dir(stats, x_axises, y_axises, y_axises_statistics, labe
             line_styles.append(llss)
 
 
+def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
+    res = ""
+    res += "condition address : " + hex(uncovered_address.condition_address + 0xffffffff00000000 - 5) + "\n"
+    res += "uncovered address : " + hex(uncovered_address.uncovered_address + 0xffffffff00000000 - 5) + "\n"
+    for w in uncovered_address.write_address:
+        res += "write address : " + hex(w + 0xffffffff00000000 - 5) + "\n"
+    res += "\n"
+    return res
+
+
+def all_data_deal(path, data):
+    real_uncovered_address = {}
+    temp_uncovered_address = []
+    max_uncovered_address = {}
+    for d in data:
+        for u in d.uncovered_address:
+            if u not in temp_uncovered_address:
+                max_uncovered_address[u] = d.uncovered_address[u]
+                temp_uncovered_address.append(u)
+    for d in data:
+        for u in temp_uncovered_address:
+            if u not in d.uncovered_address:
+                temp_uncovered_address.remove(u)
+
+    for u in temp_uncovered_address:
+        real_uncovered_address[u] = max_uncovered_address[u]
+
+    file_result = os.path.join(path, name_data_result)
+    f = open(file_result, "w")
+    for u in real_uncovered_address:
+        f.write(uncovered_address_str(real_uncovered_address[u]))
+    f.close()
+
+
 def results_deal(path):
     stats = []
     x_axises = []
@@ -298,20 +332,7 @@ def results_deal(path):
         file_figure_all = os.path.join(path, "all.pdf")
         axises_plot(file_figure_all, x_axis, y_axises, labels, line_styles, colors)
 
-        uncovered_address = []
-        for d in data:
-            for u in d.uncovered_address:
-                if not u in uncovered_address:
-                    uncovered_address.append(u)
-        for d in data:
-            for u in uncovered_address:
-                if not u in d.uncovered_address:
-                    uncovered_address.remove(u)
-
-        file_result = os.path.join(path, name_data_result)
-        f = open(file_result, "w")
-        f.write(str(uncovered_address))
-        f.close()
+        all_data_deal(path, data)
 
     return stats, x_axises, y_axises, y_axises_statistics, labels_statistics, line_styles_statistics
 
@@ -364,7 +385,6 @@ def dev_deal(dir_path, dir_name):
     for y in y_axises_without_dra:
         max_coverage_without_dra.append(max(y))
     statistic, p_value = scipy.stats.mannwhitneyu(max_coverage_with_dra, max_coverage_without_dra)
-    print(statistic)
 
     x_axises, y_axises = axis_expansion(length, x_axises, y_axises)
     x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
