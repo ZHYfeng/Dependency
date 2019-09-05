@@ -2,6 +2,7 @@ package dra
 
 import (
 	"context"
+	"github.com/golang/protobuf/proto"
 	"github.com/google/syzkaller/pkg/log"
 	"google.golang.org/grpc"
 	"sync"
@@ -65,7 +66,8 @@ func (d *DRPCClient) GetTasks(name string) *Tasks {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not SendNewInput: %v", err)
 	}
-	return CloneTasks(replay)
+	res := proto.Clone(replay).(*Tasks)
+	return res
 }
 
 func (d *DRPCClient) ReturnTasks(task *Tasks) {
@@ -94,7 +96,7 @@ func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
 	reply := &Inputs{}
 	for _, i := range dInputs.Input {
 		//reply.input[i.Sig] = CloneInput(i)
-		reply.Input = append(reply.Input, CloneInput(i))
+		reply.Input = append(reply.Input, proto.Clone(i).(*Input))
 	}
 	return reply
 }

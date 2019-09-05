@@ -159,7 +159,7 @@ func (m *UncoveredAddress) MergeUncoveredAddress(d *UncoveredAddress) {
 		if _, ok := m.WriteAddress[i]; ok {
 
 		} else {
-			m.WriteAddress[i] = CloneWriteAddressAttributes(c)
+			m.WriteAddress[i] = proto.Clone(c).(*WriteAddressAttributes)
 		}
 	}
 
@@ -183,7 +183,7 @@ func CloneWriteAddress(s *WriteAddress) *WriteAddress {
 		IoctlCmd:         map[uint64]uint32{},
 		Input:            map[string]uint32{},
 
-		RunTimeDate: CloneRunTimeData(s.RunTimeDate),
+		RunTimeDate: proto.Clone(s.RunTimeDate).(*RunTimeData),
 	}
 
 	for i, c := range s.UncoveredAddress {
@@ -206,7 +206,7 @@ func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
 		if _, ok := m.UncoveredAddress[i]; ok {
 
 		} else {
-			m.UncoveredAddress[i] = CloneWriteAddressAttributes(c)
+			m.UncoveredAddress[i] = proto.Clone(c).(*WriteAddressAttributes)
 		}
 	}
 
@@ -243,7 +243,7 @@ func CloneIoctlCmd(s *IoctlCmd) *IoctlCmd {
 	d := &IoctlCmd{
 		Name:        s.Name,
 		Cmd:         s.Cmd,
-		RunTimeDate: CloneRunTimeData(s.RunTimeDate),
+		RunTimeDate: proto.Clone(s.RunTimeDate).(*RunTimeData),
 
 		WriteAddress: map[uint32]uint32{},
 	}
@@ -368,7 +368,7 @@ func (m *Task) MergeTask(s *Task) {
 	m.CheckWriteAddressFinal = s.CheckWriteAddressFinal || m.CheckWriteAddressFinal
 
 	for u, p := range s.CoveredAddress {
-		m.CoveredAddress[u] = CloneRunTimeData(p)
+		m.CoveredAddress[u] = proto.Clone(p).(*RunTimeData)
 	}
 
 	for u := range m.UncoveredAddress {
@@ -437,7 +437,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 		indexBits := uint32(1 << index)
 		for a := range call.Address {
 			if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
-				cwa := CloneWriteAddress(wa)
+				cwa := proto.Clone(wa).(*WriteAddress)
 				var usefulIndexBits uint32
 				waIndex, ok := wa.Input[sig]
 				if ok {
@@ -492,7 +492,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 	if !ok {
 		return
 	}
-	u := CloneUncoverAddress(u1)
+	u := proto.Clone(u1).(*UncoveredAddress)
 
 	for sig, _ := range u.Input {
 		input, ok := ss.corpusDependency.Input[sig]
@@ -769,7 +769,7 @@ func (ss *Server) addTask(task *Task) {
 			if r, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 				t.UncoveredAddress[uncoveredAddress].Priority = ss.updatePriority(r.Priority, dr.Priority)
 			} else {
-				t.UncoveredAddress[uncoveredAddress] = CloneRunTimeData(dr)
+				t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
 				t.TaskStatus = TaskStatus_untested
 			}
 			return

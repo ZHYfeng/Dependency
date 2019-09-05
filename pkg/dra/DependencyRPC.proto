@@ -34,7 +34,8 @@ service DependencyRPC {
     }
     rpc SendLog (Empty) returns (Empty) {
     }
-    rpc sendStat (Statistic) returns (Empty) {}
+    rpc sendStat (Statistic) returns (Empty) {
+    }
 }
 
 
@@ -317,6 +318,11 @@ message Task {
     taskStatus task_status = 24;
     bool check_write_address = 25;
     bool check_write_address_final = 26;
+    bool check_write_address_remove = 27;
+    uint32 final_idx = 28;
+    uint32 final_write_idx = 29;
+    uint32 remove_idx = 30;
+    uint32 remove_write_idx = 31;
 }
 
 message Tasks {

@@ -57,20 +57,22 @@ func TestRemoveSameResource(t *testing.T) {
 				"ioctl$KVM_SET_USER_MEMORY_REGION(r1, 0x4020ae46, &(0x7f0000000000)={0x0, 0x0, 0x0, 0x2000, &(0x7f0000ffb000/0x2000)=nil})\n"),
 	}
 	idxs := [][]int{
-		{8, 5},
-		{3, 2},
-		{8, 6},
+		{0, 0, 1, 1, 2, 3, 1, 4, 5},
+		{0, 1, 0, 2},
+		{0, 1, 0, 1, 2, 3, 4, 5, 6},
 	}
 
 	for ti, test := range tests {
 		test := test
 		t.Run(fmt.Sprint(ti), func(t *testing.T) {
-			result, idx := removeSameResource(test, idxs[ti][0])
+			result, idx := removeSameResource(test)
 			if !bytes.Equal(result, results[ti]) {
 				t.Fatalf("result: \n%s", result)
 			}
-			if idx != idxs[ti][1] {
-				t.Fatalf("idxs: %v", idx)
+			for i, ii := range idxs[ti] {
+				if ii != idx[i] {
+					t.Fatalf("idx: %v", idx)
+				}
 			}
 		})
 	}

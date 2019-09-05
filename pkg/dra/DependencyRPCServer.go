@@ -2,6 +2,7 @@ package dra
 
 import (
 	"context"
+	"github.com/golang/protobuf/proto"
 	"github.com/google/syzkaller/pkg/log"
 	"github.com/google/syzkaller/pkg/rpctype"
 	"google.golang.org/grpc"
@@ -13,6 +14,7 @@ import (
 )
 
 const (
+	startTime  = 21600
 	taskNum    = 100
 	debugLevel = 2
 )
@@ -104,7 +106,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 
 func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
 	log.Logf(debugLevel, "(ss Server) SendDependency")
-	d := CloneDependency(request)
+	d := proto.Clone(request).(*Dependency)
 
 	ss.dependencyMu.Lock()
 	ss.newDependency.newDependency = append(ss.newDependency.newDependency, d)
@@ -161,7 +163,7 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	log.Logf(debugLevel, "(ss Server) SendNewInput")
 
 	reply := &Empty{}
-	r := CloneInput(request)
+	r := proto.Clone(request).(*Input)
 
 	ss.newInputMu.Lock()
 	ss.newInput.Input = append(ss.newInput.Input, r)
@@ -188,7 +190,7 @@ func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
 	log.Logf(debugLevel, "(ss Server) ReturnTasks")
-	tasks := CloneTasks(request)
+	tasks := proto.Clone(request).(*Tasks)
 
 	f, ok := ss.fuzzers[tasks.Name]
 	if ok {
@@ -235,7 +237,7 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 
 func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, error) {
 
-	stat := CloneStatistic(request)
+	stat := proto.Clone(request).(*Statistic)
 	ss.statMu.Lock()
 	ss.newStat.newStat = append(ss.newStat.newStat, stat)
 	ss.statMu.Unlock()
@@ -371,17 +373,21 @@ func (ss *Server) Update() {
 	})
 
 	// get new tasks
-	var task []*Task
-	for _, t := range ss.corpusDependency.Tasks.Task {
-		if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing) && len(t.UncoveredAddress) > 0 {
-			t.TaskStatus = TaskStatus_testing
-			task = append(task, t)
+	t := time.Now()
+	elapsed := t.Sub(ss.timeStart)
+	if elapsed.Seconds() > startTime {
+		var task []*Task
+		for _, t := range ss.corpusDependency.Tasks.Task {
+			if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing) && len(t.UncoveredAddress) > 0 {
+				t.TaskStatus = TaskStatus_testing
+				task = append(task, t)
+			}
 		}
-	}
-	for _, f := range ss.fuzzers {
-		f.taskMu.Lock()
-		f.newTask.Task = append([]*Task{}, task...)
-		f.taskMu.Unlock()
+		for _, f := range ss.fuzzers {
+			f.taskMu.Lock()
+			f.newTask.Task = append([]*Task{}, task...)
+			f.taskMu.Unlock()
+		}
 	}
 
 	ss.logMu.Lock()
