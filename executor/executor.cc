@@ -831,8 +831,8 @@ void write_coverage_signal(cover_t* cov, uint32* signal_count_pos, uint32* cover
 	uint32 cover_size = cov->size;
 	if (flag_dedup_cover) {
 		cover_data_t* end = cover_data + cover_size;
-		std::sort(cover_data, end);
-		cover_size = std::unique(cover_data, end) - cover_data;
+		// std::sort(cover_data, end);
+		// cover_size = std::unique(cover_data, end) - cover_data;
 	}
 	// Truncate PCs to uint32 assuming that they fit into 32-bits.
 	// True for x86_64 and arm64 without KASLR.
