@@ -8,19 +8,6 @@ import (
 	"time"
 )
 
-func CloneStatistic(s *Statistic) *Statistic {
-
-	d := &Statistic{
-		Name:           s.Name,
-		ExecuteNum:     s.ExecuteNum,
-		Time:           s.Time,
-		NewTestCaseNum: s.NewTestCaseNum,
-		NewAddressNum:  s.NewAddressNum,
-	}
-
-	return d
-}
-
 func (m *Statistic) MergeStatistic(d *Statistic) {
 
 	if m.Name != d.Name {
@@ -34,56 +21,6 @@ func (m *Statistic) MergeStatistic(d *Statistic) {
 	m.NewAddressNum = m.NewAddressNum + d.NewAddressNum
 
 	return
-}
-
-func CloneDependency(s *Dependency) *Dependency {
-	d := &Dependency{
-		Input:            CloneInput(s.Input),
-		UncoveredAddress: CloneUncoverAddress(s.UncoveredAddress),
-		WriteAddress:     []*WriteAddress{},
-	}
-
-	for _, wa := range s.WriteAddress {
-		d.WriteAddress = append(d.WriteAddress, CloneWriteAddress(wa))
-	}
-
-	return d
-}
-
-func CloneInput(s *Input) *Input {
-	d := &Input{
-		Sig:              s.Sig,
-		Program:          []byte{},
-		Call:             make(map[uint32]*Call),
-		Stat:             s.Stat,
-		UncoveredAddress: map[uint32]uint32{},
-		WriteAddress:     map[uint32]uint32{},
-	}
-
-	for _, c := range s.Program {
-		d.Program = append(d.Program, c)
-	}
-
-	for i, u := range s.Call {
-		u1 := &Call{
-			Address: make(map[uint32]uint32),
-			Idx:     u.Idx,
-		}
-		for aa := range u.Address {
-			u1.Address[aa] = 0
-		}
-		d.Call[i] = u1
-	}
-
-	for i, c := range s.UncoveredAddress {
-		d.UncoveredAddress[i] = c
-	}
-
-	for i, c := range s.WriteAddress {
-		d.WriteAddress[i] = c
-	}
-
-	return d
 }
 
 func (m *Input) MergeInput(d *Input) {
@@ -109,6 +46,9 @@ func (m *Input) MergeInput(d *Input) {
 		if index, ok := m.UncoveredAddress[i]; ok {
 			m.UncoveredAddress[i] = index | c
 		} else {
+			if m.UncoveredAddress == nil {
+				m.UncoveredAddress = map[uint32]uint32{}
+			}
 			m.UncoveredAddress[i] = c
 		}
 	}
@@ -117,32 +57,14 @@ func (m *Input) MergeInput(d *Input) {
 		if index, ok := m.WriteAddress[i]; ok {
 			m.WriteAddress[i] = index | c
 		} else {
+			if m.WriteAddress == nil {
+				m.WriteAddress = map[uint32]uint32{}
+			}
 			m.WriteAddress[i] = c
 		}
 	}
 
 	return
-}
-
-func CloneUncoverAddress(s *UncoveredAddress) *UncoveredAddress {
-	d := &UncoveredAddress{
-		ConditionAddress:   s.ConditionAddress,
-		UncoveredAddress:   s.UncoveredAddress,
-		RightBranchAddress: []uint32{},
-		Input:              map[string]uint32{},
-		WriteAddress:       map[uint32]*WriteAddressAttributes{},
-		RunTimeDate:        CloneRunTimeData(s.RunTimeDate),
-	}
-
-	for i, c := range s.Input {
-		d.Input[i] = c
-	}
-
-	for i, c := range s.WriteAddress {
-		d.WriteAddress[i] = CloneWriteAddressAttributes(c)
-	}
-
-	return d
 }
 
 func (m *UncoveredAddress) MergeUncoveredAddress(d *UncoveredAddress) {
@@ -151,6 +73,9 @@ func (m *UncoveredAddress) MergeUncoveredAddress(d *UncoveredAddress) {
 		if index, ok := m.Input[i]; ok {
 			m.Input[i] = index | c
 		} else {
+			if m.Input == nil {
+				m.Input = map[string]uint32{}
+			}
 			m.Input[i] = c
 		}
 	}
@@ -159,45 +84,14 @@ func (m *UncoveredAddress) MergeUncoveredAddress(d *UncoveredAddress) {
 		if _, ok := m.WriteAddress[i]; ok {
 
 		} else {
+			if m.WriteAddress == nil {
+				m.WriteAddress = map[uint32]*WriteAddressAttributes{}
+			}
 			m.WriteAddress[i] = proto.Clone(c).(*WriteAddressAttributes)
 		}
 	}
 
 	return
-}
-
-func CloneWriteAddressAttributes(s *WriteAddressAttributes) *WriteAddressAttributes {
-	d := &WriteAddressAttributes{
-		WriteAddress: s.WriteAddress,
-		Repeat:       s.Repeat,
-		Prio:         s.Prio,
-	}
-	return d
-}
-
-func CloneWriteAddress(s *WriteAddress) *WriteAddress {
-	d := &WriteAddress{
-		WriteAddress:     s.WriteAddress,
-		ConditionAddress: s.ConditionAddress,
-		UncoveredAddress: map[uint32]*WriteAddressAttributes{},
-		IoctlCmd:         map[uint64]uint32{},
-		Input:            map[string]uint32{},
-
-		RunTimeDate: proto.Clone(s.RunTimeDate).(*RunTimeData),
-	}
-
-	for i, c := range s.UncoveredAddress {
-		d.UncoveredAddress[i] = CloneWriteAddressAttributes(c)
-	}
-
-	for i, c := range s.IoctlCmd {
-		d.IoctlCmd[i] = c
-	}
-
-	for i, c := range s.Input {
-		d.Input[i] = c
-	}
-	return d
 }
 
 func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
@@ -206,6 +100,9 @@ func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
 		if _, ok := m.UncoveredAddress[i]; ok {
 
 		} else {
+			if m.UncoveredAddress == nil {
+				m.UncoveredAddress = map[uint32]*WriteAddressAttributes{}
+			}
 			m.UncoveredAddress[i] = proto.Clone(c).(*WriteAddressAttributes)
 		}
 	}
@@ -214,6 +111,9 @@ func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
 		if ii, ok := m.IoctlCmd[i]; ok {
 			m.IoctlCmd[i] = ii | c
 		} else {
+			if m.IoctlCmd == nil {
+				m.IoctlCmd = map[uint64]uint32{}
+			}
 			m.IoctlCmd[i] = c
 		}
 	}
@@ -222,85 +122,14 @@ func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
 		if index, ok := m.Input[i]; ok {
 			m.Input[i] = index | c
 		} else {
+			if m.Input == nil {
+				m.Input = map[string]uint32{}
+			}
 			m.Input[i] = c
 		}
 	}
 
 	return
-}
-
-func CloneIoctlCmdInput(s *IoctlCmdInput) *IoctlCmdInput {
-	d := &IoctlCmdInput{
-		Sig:          s.Sig,
-		Index:        s.Index,
-		Cmd:          s.Cmd,
-		WriteAddress: s.WriteAddress,
-	}
-	return d
-}
-
-func CloneIoctlCmd(s *IoctlCmd) *IoctlCmd {
-	d := &IoctlCmd{
-		Name:        s.Name,
-		Cmd:         s.Cmd,
-		RunTimeDate: proto.Clone(s.RunTimeDate).(*RunTimeData),
-
-		WriteAddress: map[uint32]uint32{},
-	}
-
-	for i, c := range s.WriteAddress {
-		d.WriteAddress[i] = c
-	}
-
-	return d
-}
-
-func CloneCondition(c *Condition) *Condition {
-	c1 := &Condition{
-		ConditionAddress:            c.ConditionAddress,
-		SyzkallerConditionAddress:   c.SyzkallerConditionAddress,
-		UncoveredAddress:            c.UncoveredAddress,
-		SyzkallerUncoveredAddress:   c.SyzkallerUncoveredAddress,
-		Idx:                         c.Idx,
-		Successor:                   c.Successor,
-		RightBranchAddress:          []uint64{},
-		SyzkallerRightBranchAddress: []uint32{},
-	}
-
-	for _, a := range c.RightBranchAddress {
-		c1.RightBranchAddress = append(c1.RightBranchAddress, a)
-	}
-
-	for _, a := range c.SyzkallerRightBranchAddress {
-		c1.SyzkallerRightBranchAddress = append(c1.SyzkallerRightBranchAddress, a)
-	}
-	return c1
-}
-
-func CloneRunTimeData(d *RunTimeData) *RunTimeData {
-	d1 := &RunTimeData{
-		Program:                 []byte{},
-		TaskStatus:              d.TaskStatus,
-		RcursiveCount:           d.RcursiveCount,
-		Priority:                d.Priority,
-		Idx:                     d.Idx,
-		CheckCondition:          d.CheckCondition,
-		ConditionAddress:        d.ConditionAddress,
-		CheckAddress:            d.CheckAddress,
-		Address:                 d.Address,
-		CheckRightBranchAddress: d.CheckRightBranchAddress,
-		RightBranchAddress:      []uint32{},
-	}
-
-	for _, c := range d.Program {
-		d1.Program = append(d1.Program, c)
-	}
-
-	for _, a := range d.RightBranchAddress {
-		d1.RightBranchAddress = append(d1.RightBranchAddress, a)
-	}
-
-	return d1
 }
 
 func (m *RunTimeData) MergeRunTimeData(d *RunTimeData) {
@@ -309,53 +138,6 @@ func (m *RunTimeData) MergeRunTimeData(d *RunTimeData) {
 	}
 
 	return
-}
-
-func CloneTasks(s *Tasks) *Tasks {
-	d := &Tasks{
-		Name: s.Name,
-		Task: []*Task{},
-	}
-	for _, t := range s.Task {
-		d.Task = append(d.Task, CloneTask(t))
-	}
-	return d
-}
-
-func CloneTask(s *Task) *Task {
-	d := &Task{
-		Sig:                    s.Sig,
-		Index:                  s.Index,
-		Program:                []byte{},
-		WriteSig:               s.WriteSig,
-		WriteIndex:             s.WriteIndex,
-		WriteProgram:           []byte{},
-		WriteAddress:           s.WriteAddress,
-		Priority:               s.Priority,
-		UncoveredAddress:       map[uint32]*RunTimeData{},
-		CoveredAddress:         map[uint32]*RunTimeData{},
-		TaskStatus:             s.TaskStatus,
-		CheckWriteAddress:      s.CheckWriteAddress,
-		CheckWriteAddressFinal: s.CheckWriteAddressFinal,
-	}
-
-	for _, c := range s.Program {
-		d.Program = append(d.Program, c)
-	}
-
-	for _, c := range s.WriteProgram {
-		d.WriteProgram = append(d.WriteProgram, c)
-	}
-
-	for u, p := range s.UncoveredAddress {
-		d.UncoveredAddress[u] = CloneRunTimeData(p)
-	}
-
-	for u, p := range s.CoveredAddress {
-		d.CoveredAddress[u] = CloneRunTimeData(p)
-	}
-
-	return d
 }
 
 func (m *Task) MergeTask(s *Task) {
@@ -367,6 +149,9 @@ func (m *Task) MergeTask(s *Task) {
 	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress
 	m.CheckWriteAddressFinal = s.CheckWriteAddressFinal || m.CheckWriteAddressFinal
 
+	if m.CoveredAddress == nil {
+		m.CoveredAddress = map[uint32]*RunTimeData{}
+	}
 	for u, p := range s.CoveredAddress {
 		m.CoveredAddress[u] = proto.Clone(p).(*RunTimeData)
 	}
@@ -446,6 +231,9 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 						wa.Input[sig] = waIndex | indexBits
 					}
 				} else {
+					if wa.Input == nil {
+						wa.Input = map[string]uint32{}
+					}
 					usefulIndexBits = indexBits
 					wa.Input[sig] = indexBits
 				}
@@ -454,6 +242,9 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 				if iIndex, ok := input.WriteAddress[a]; ok {
 					input.WriteAddress[a] = iIndex | indexBits
 				} else {
+					if input.WriteAddress == nil {
+						input.WriteAddress = map[uint32]uint32{}
+					}
 					input.WriteAddress[a] = indexBits
 				}
 			} else {
@@ -470,6 +261,9 @@ func (ss *Server) addUncoveredAddressMapInput(s *Input) {
 			if i2, ok := u2.Input[sig]; ok {
 				u2.Input[sig] = i2 | i1
 			} else {
+				if u2.Input == nil {
+					u2.Input = map[string]uint32{}
+				}
 				u2.Input[sig] = i1
 			}
 		}
@@ -626,6 +420,9 @@ func (ss *Server) addWriteAddress(s *WriteAddress) {
 			if ok1 {
 				waInput.WriteAddress[s.WriteAddress] = indexBits2 | indexBits1
 			} else {
+				if waInput.WriteAddress == nil {
+					waInput.WriteAddress = map[uint32]uint32{}
+				}
 				waInput.WriteAddress[s.WriteAddress] = indexBits1
 			}
 		} else {
@@ -769,6 +566,9 @@ func (ss *Server) addTask(task *Task) {
 			if r, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 				t.UncoveredAddress[uncoveredAddress].Priority = ss.updatePriority(r.Priority, dr.Priority)
 			} else {
+				if t.UncoveredAddress == nil {
+					t.UncoveredAddress = map[uint32]*RunTimeData{}
+				}
 				t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
 				t.TaskStatus = TaskStatus_untested
 			}
@@ -796,7 +596,6 @@ func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint
 	bbcount := u.Bbcount
 	waa, ok := u.WriteAddress[writeAddress]
 	if !ok {
-
 		log.Fatalf("getPriority not find writeAddress")
 	}
 	pp := waa.Prio
