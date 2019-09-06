@@ -98,8 +98,10 @@ func (proc *Proc) loop() {
 			m := 1
 			if r.Intn(n) < m {
 				item := proc.fuzzer.workQueue.dequeueDependency()
-				statName = pb.FuzzingStat_StatDependency
-				proc.dependency(item)
+				if item != nil {
+					statName = pb.FuzzingStat_StatDependency
+					proc.dependency(item)
+				}
 			} else {
 				ct := proc.fuzzer.choiceTable
 				corpus := proc.fuzzer.corpusSnapshot()
