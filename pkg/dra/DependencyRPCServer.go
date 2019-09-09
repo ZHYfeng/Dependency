@@ -14,8 +14,7 @@ import (
 )
 
 const (
-	//startTime  = 21600
-	startTime  = 0
+	startTime  = 21600
 	taskNum    = 100
 	DebugLevel = 2
 )
