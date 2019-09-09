@@ -5,7 +5,7 @@ import shutil
 import sys
 
 sys.path.append(os.getcwd())
-from script.dependency.con import devices
+from con import devices
 
 
 def read_s(paths):
