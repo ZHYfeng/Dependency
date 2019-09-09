@@ -351,7 +351,7 @@ func (ss *Server) addCoveredAddress(input *Input) {
 		Time: elapsed.Seconds(),
 		Num:  int64(len(ss.stat.Coverage.Coverage)),
 	})
-	log.Logf(debugLevel, "(ss Server) addCoveredAddress : checkUncoveredAddress")
+	log.Logf(DebugLevel, "(ss Server) addCoveredAddress : checkUncoveredAddress")
 	for _, a := range aa {
 		ss.checkUncoveredAddress(a)
 	}

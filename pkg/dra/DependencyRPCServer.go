@@ -16,7 +16,7 @@ import (
 const (
 	startTime  = 21600
 	taskNum    = 100
-	debugLevel = 2
+	DebugLevel = 2
 )
 
 type syzFuzzer struct {
@@ -81,7 +81,7 @@ func (ss Server) SendBasicBlockNumber(ctx context.Context, request *Empty) (*Emp
 }
 
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
-	log.Logf(debugLevel, "(ss Server) GetNewInput")
+	log.Logf(DebugLevel, "(ss Server) GetNewInput")
 
 	reply := &Inputs{
 		Input: []*Input{},
@@ -89,7 +89,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 
 	ss.newInputMu.Lock()
 	last := len(ss.newInput.Input)
-	log.Logf(debugLevel, "(ss Server) GetNewInput len of newInput : %v", last)
+	log.Logf(DebugLevel, "(ss Server) GetNewInput len of newInput : %v", last)
 	if last > 0 {
 		last = last - 1
 		reply.Input = append(reply.Input, ss.newInput.Input[last])
@@ -105,7 +105,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 }
 
 func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
-	log.Logf(debugLevel, "(ss Server) SendDependency")
+	log.Logf(DebugLevel, "(ss Server) SendDependency")
 	d := proto.Clone(request).(*Dependency)
 
 	ss.dependencyMu.Lock()
@@ -118,7 +118,7 @@ func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empt
 }
 
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
-	log.Logf(debugLevel, "(ss Server) GetCondition")
+	log.Logf(DebugLevel, "(ss Server) GetCondition")
 	reply := &Conditions{
 		//Condition: map[uint64]*Condition{},
 		Condition: []*Condition{},
@@ -128,13 +128,13 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 }
 
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
-	log.Logf(debugLevel, "(ss Server) SendWriteAddress")
+	log.Logf(DebugLevel, "(ss Server) SendWriteAddress")
 
 	return &Empty{}, nil
 }
 
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
-	log.Logf(debugLevel, "(ss Server) Connect")
+	log.Logf(DebugLevel, "(ss Server) Connect")
 
 	name := request.Name
 	ss.fuzzerMu.Lock()
@@ -160,7 +160,7 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
-	log.Logf(debugLevel, "(ss Server) SendNewInput")
+	log.Logf(DebugLevel, "(ss Server) SendNewInput")
 
 	reply := &Empty{}
 	r := proto.Clone(request).(*Input)
@@ -168,8 +168,8 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	ss.newInputMu.Lock()
 	ss.newInput.Input = append(ss.newInput.Input, r)
 	last := len(ss.newInput.Input)
-	log.Logf(debugLevel, "(ss Server) SendNewInput len of newInput : %v", last)
-	log.Logf(debugLevel, "(ss Server) SendNewInput newInput : %v", r)
+	log.Logf(DebugLevel, "(ss Server) SendNewInput len of newInput : %v", last)
+	log.Logf(DebugLevel, "(ss Server) SendNewInput newInput : %v", r)
 	ss.newInputMu.Unlock()
 
 	ss.coveredInputMu.Lock()
@@ -180,7 +180,7 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 }
 
 func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
-	log.Logf(debugLevel, "(ss Server) GetTasks")
+	log.Logf(DebugLevel, "(ss Server) GetTasks")
 
 	name := request.Name
 	tasks := ss.pickTask(name)
@@ -189,7 +189,7 @@ func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 }
 
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
-	log.Logf(debugLevel, "(ss Server) ReturnTasks")
+	log.Logf(DebugLevel, "(ss Server) ReturnTasks")
 	tasks := proto.Clone(request).(*Tasks)
 
 	f, ok := ss.fuzzers[tasks.Name]
@@ -206,7 +206,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 }
 
 func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
-	log.Logf(debugLevel, "(ss Server) GetDependencyInput")
+	log.Logf(DebugLevel, "(ss Server) GetDependencyInput")
 	reply := &Inputs{
 		Input: []*Input{},
 	}
@@ -214,14 +214,14 @@ func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Input
 }
 
 func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencytask) (*Empty, error) {
-	log.Logf(debugLevel, "(ss Server) ReturnDependencyInput")
+	log.Logf(DebugLevel, "(ss Server) ReturnDependencyInput")
 	reply := &Empty{}
 
 	return reply, nil
 }
 
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
-	log.Logf(debugLevel, "(ss Server) SendLog")
+	log.Logf(DebugLevel, "(ss Server) SendLog")
 
 	ss.logMu.Lock()
 	defer ss.logMu.Unlock()

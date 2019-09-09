@@ -39,7 +39,7 @@ func (proc *Proc) getCall(sc *pb.IoctlCmd) (res *prog.Syscall) {
 }
 
 func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
-	log.Logf(1, "#%v: collecting comparisons", proc.pid)
+	log.Logf(pb.DebugLevel, "#%v: collecting comparisons", proc.pid)
 	// First execute the original program to dump comparisons from KCOV.
 	info := proc.execute(proc.execOptsComps, p, ProgNormal, StatDependency)
 	if info == nil {
@@ -50,7 +50,7 @@ func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
 	// a syscall argument and a comparison operand.
 	// Execute each of such mutants to check if it gives new coverage.
 	p.MutateWithHints(call, info.Calls[call].Comps, func(p *prog.Prog) {
-		log.Logf(1, "#%v: executing comparison hint", proc.pid)
+		log.Logf(pb.DebugLevel, "#%v: executing comparison hint", proc.pid)
 		proc.execute(proc.execOpts, p, ProgNormal, StatDependency)
 	})
 }
@@ -132,6 +132,8 @@ func removeSameResource(p []byte) ([]byte, []int) {
 }
 
 func (proc *Proc) dependencyMutateWriteInputCheckWriteAddress(task *pb.Task) *prog.Prog {
+
+	log.Logf(pb.DebugLevel, "write program : \n%s", task.WriteProgram)
 	wp, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.WriteProgram: %v", err)
@@ -142,10 +144,10 @@ func (proc *Proc) dependencyMutateWriteInputCheckWriteAddress(task *pb.Task) *pr
 	checkWriteAddress1 := checkAddress(task.WriteAddress, infoWrite.Calls[idx].Cover)
 	if checkWriteAddress1 {
 		task.CheckWriteAddress = true
-		log.Logf(1, "write program could arrive at write address : %d", task.WriteAddress)
+		log.Logf(pb.DebugLevel, "write program could arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could arrive at write address : %x", task.WriteAddress))
 	} else {
-		log.Logf(1, "write program could not arrive at write address : %d", task.WriteAddress)
+		log.Logf(pb.DebugLevel, "write program could not arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write input could not arrive at write address : %x", task.WriteAddress))
 	}
 	return wp
@@ -173,14 +175,18 @@ func (proc *Proc) dependencyMutateFinalInputCheckWriteAddress(task *pb.Task, wp 
 	task.FinalIdx = uint32(idx)
 	task.FinalWriteIdx = task.FinalIdx - 1
 
+	data := p.Serialize()
+	log.Logf(pb.DebugLevel, "final program : \n%s", data)
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("final program : \n%s", data))
+
 	infoFinal := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 	checkWriteAddress2 := checkAddress(task.WriteAddress, infoFinal.Calls[idx-1].Cover)
 	if checkWriteAddress2 {
 		task.CheckWriteAddressFinal = true
-		log.Logf(1, "final program could arrive at write address : %d", task.WriteAddress)
+		log.Logf(pb.DebugLevel, "final program could arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could arrive at write address : %x", task.WriteAddress))
 	} else {
-		log.Logf(1, "final program could not arrive at write address : %d", task.WriteAddress)
+		log.Logf(pb.DebugLevel, "final program could not arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %x", task.WriteAddress))
 	}
 	return p
@@ -194,7 +200,7 @@ func (proc *Proc) dependencyMutateRemoveInputCheckWriteAddress(task *pb.Task, da
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
 	}
-	log.Logf(1, "remove program : \n%s", removeData)
+	log.Logf(pb.DebugLevel, "remove program : \n%s", removeData)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove program : \n%s", removeData))
 	writeIdx := removeIdx[task.FinalIdx-1]
 	task.RemoveWriteIdx = uint32(writeIdx)
@@ -203,10 +209,10 @@ func (proc *Proc) dependencyMutateRemoveInputCheckWriteAddress(task *pb.Task, da
 	checkWriteAddress3 := checkAddress(task.WriteAddress, info.Calls[writeIdx].Cover)
 	if checkWriteAddress3 {
 		task.CheckWriteAddressRemove = true
-		log.Logf(1, "remove program could arrive at write address : %d", task.WriteAddress)
+		log.Logf(pb.DebugLevel, "remove program could arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove input could arrive at write address : %x", task.WriteAddress))
 	} else {
-		log.Logf(1, "remove program could not arrive at write address : %d", task.WriteAddress)
+		log.Logf(pb.DebugLevel, "remove program could not arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove input could not arrive at write address : %x", task.WriteAddress))
 	}
 	return removeP
@@ -255,25 +261,25 @@ func (proc *Proc) dependencyMutateParameter(task *pb.Task, p *prog.Prog) {
 
 func (proc *Proc) dependency(item *WorkDependency) {
 
-	log.Logf(1, "#%v: DependencyMutate", proc.pid)
+	log.Logf(pb.DebugLevel, "#%v: DependencyMutate", proc.pid)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("#%v: DependencyMutate", proc.pid))
+
 	task := item.task
-	log.Logf(1, "DependencyMutate program : \n%s", task.Program)
+	log.Logf(pb.DebugLevel, "DependencyMutate program : \n%s", task.Program)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate program : \n%s", task.Program))
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("index  : %d write index : %d", task.Index, task.WriteIndex))
+	proc.fuzzer.dManager.SSendLog()
 
 	wp := proc.dependencyMutateWriteInputCheckWriteAddress(task)
-	wdata := wp.Serialize()
-	log.Logf(1, "usefulCall program : \n%s", wdata)
-	proc.fuzzer.dManager.SendLog(fmt.Sprintf("usefulCall program : \n%s", wdata))
 	if task.CheckWriteAddress {
 		p := proc.dependencyMutateFinalInputCheckWriteAddress(task, wp)
 		data := p.Serialize()
-		log.Logf(1, "final program : \n%s", data)
-		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final program : \n%s", data))
 		if task.CheckWriteAddressFinal {
 			writeIdx := int(task.FinalWriteIdx)
 			idx := int(task.FinalIdx)
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("final index  : %d final write index : %d",
+				task.FinalWriteIdx, task.FinalIdx))
+			proc.fuzzer.dManager.SSendLog()
 			if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
 				proc.executeDependencyHintSeed(p, writeIdx)
 				proc.executeDependencyHintSeed(p, idx)
@@ -284,6 +290,9 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		if task.CheckWriteAddressRemove {
 			removeWriteIdx := int(task.RemoveWriteIdx)
 			removeIdx := int(task.RemoveIdx)
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("final index  : %d final write index : %d",
+				task.RemoveWriteIdx, task.RemoveIdx))
+			proc.fuzzer.dManager.SSendLog()
 			if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
 				proc.executeDependencyHintSeed(removeP, removeWriteIdx)
 				proc.executeDependencyHintSeed(removeP, removeIdx)
@@ -311,11 +320,11 @@ func (proc *Proc) dependency(item *WorkDependency) {
 //
 //func (proc *Proc) dependency(item *WorkDependency) {
 //
-//	log.Logf(1, "#%v: DependencyMutate", proc.pid)
+//	log.Logf(pb.DebugLevel, "#%v: DependencyMutate", proc.pid)
 //	proc.fuzzer.dManager.SendLog(fmt.Sprintf("#%v: DependencyMutate", proc.pid))
 //
 //	dependencyInput := item.dependencyInput
-//	log.Logf(1, "DependencyMutate program : \n%s", dependencyInput.Program)
+//	log.Logf(pb.DebugLevel, "DependencyMutate program : \n%s", dependencyInput.Program)
 //	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate program : \n%s", dependencyInput.Program))
 //
 //	for _, u := range dependencyInput.UncoveredAddress {
@@ -539,11 +548,11 @@ func (proc *Proc) dependency(item *WorkDependency) {
 //	//	mini := 1
 //	//	wa.Repeat = uint32(proc.rnd.Int31n(int32(programLength-len(p.Calls))-int32(mini)) + int32(mini))
 //	//}
-//	// log.Logf(1, "repeat : %v", wa.Repeat)
+//	// log.Logf(pb.DebugLevel, "repeat : %v", wa.Repeat)
 //
 //	//	for _, wi := range wa.WriteInput {
 //	//
-//	//		log.Logf(1, "write program : \n%s", wi.Program)
+//	//		log.Logf(pb.DebugLevel, "write program : \n%s", wi.Program)
 //	//		proc.fuzzer.dManager.SendLog(fmt.Sprintf("write program : \n%s", wi.Program))
 //	//
 //	//		wp, err := proc.fuzzer.target.Deserialize(wi.Program, prog.NonStrict)
@@ -557,7 +566,7 @@ func (proc *Proc) dependency(item *WorkDependency) {
 //	//		p0.Splice(wp, u.Idx, programLength)
 //	//
 //	//		data := p0.Serialize()
-//	//		log.Logf(1, "test case with write program : \n%s", data)
+//	//		log.Logf(pb.DebugLevel, "test case with write program : \n%s", data)
 //	//		proc.fuzzer.dManager.SendLog(fmt.Sprintf("test case with write program : \n%s", data))
 //	//
 //	//		info := proc.execute(proc.execOptsCover, p0, ProgNormal, StatDependency)
@@ -782,12 +791,12 @@ func checkAddressesMap(Address map[uint32]uint32, cover cover.Cover) (res bool) 
 //			return true
 //		}
 //	}
-//	log.Logf(1, "every critical condition is right but we can not arrive at write address")
+//	log.Logf(pb.DebugLevel, "every critical condition is right but we can not arrive at write address")
 //	return false
 //}
 
 func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(Task *pb.Task) {
-	log.Logf(1, "dependencyInput : %v", Task)
+	log.Logf(pb.DebugLevel, "dependencyInput : %v", Task)
 	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
 
 	//d := pb.CloneInput(dependencyInput)
@@ -876,7 +885,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	}
 
 	//for _, cc := range info.Calls {
-	//	log.Logf(1, "Dependency gRPC checkNewCoverage address : %v", cc.Cover)
+	//	log.Logf(pb.DebugLevel, "Dependency gRPC checkNewCoverage address : %v", cc.Cover)
 	//}
 
 	fuzzer.coverMu.Unlock()
