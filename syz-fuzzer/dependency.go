@@ -186,9 +186,11 @@ func (proc *Proc) dependencyMutateFinalInputCheckWriteAddress(task *pb.Task, wp 
 		log.Logf(pb.DebugLevel, "final program could arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could arrive at write address : %x", task.WriteAddress))
 	} else {
+		task.CheckWriteAddressFinal = false
 		log.Logf(pb.DebugLevel, "final program could not arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("final input could not arrive at write address : %x", task.WriteAddress))
 	}
+	proc.fuzzer.dManager.SSendLog()
 	return p
 }
 
@@ -212,6 +214,7 @@ func (proc *Proc) dependencyMutateRemoveInputCheckWriteAddress(task *pb.Task, da
 		log.Logf(pb.DebugLevel, "remove program could arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove input could arrive at write address : %x", task.WriteAddress))
 	} else {
+		task.CheckWriteAddressRemove = false
 		log.Logf(pb.DebugLevel, "remove program could not arrive at write address : %d", task.WriteAddress)
 		proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove input could not arrive at write address : %x", task.WriteAddress))
 	}
@@ -267,6 +270,7 @@ func (proc *Proc) dependency(item *WorkDependency) {
 	task := item.task
 	log.Logf(pb.DebugLevel, "DependencyMutate program : \n%s", task.Program)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyMutate program : \n%s", task.Program))
+	log.Logf(pb.DebugLevel, "index  : %d write index : %d", task.Index, task.WriteIndex)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("index  : %d write index : %d", task.Index, task.WriteIndex))
 	proc.fuzzer.dManager.SSendLog()
 
@@ -277,10 +281,11 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		if task.CheckWriteAddressFinal {
 			writeIdx := int(task.FinalWriteIdx)
 			idx := int(task.FinalIdx)
+			log.Logf(pb.DebugLevel, "final index  : %d final write index : %d", task.FinalIdx, task.FinalWriteIdx)
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("final index  : %d final write index : %d",
 				task.FinalWriteIdx, task.FinalIdx))
 			proc.fuzzer.dManager.SSendLog()
-			if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
+			if !proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
 				proc.executeDependencyHintSeed(p, writeIdx)
 				proc.executeDependencyHintSeed(p, idx)
 			}
@@ -290,12 +295,15 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		if task.CheckWriteAddressRemove {
 			removeWriteIdx := int(task.RemoveWriteIdx)
 			removeIdx := int(task.RemoveIdx)
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("final index  : %d final write index : %d",
+			log.Logf(pb.DebugLevel, "remove index  : %d remove write index : %d", task.RemoveIdx, task.RemoveWriteIdx)
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove index  : %d remove write index : %d",
 				task.RemoveWriteIdx, task.RemoveIdx))
 			proc.fuzzer.dManager.SSendLog()
-			if proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
-				proc.executeDependencyHintSeed(removeP, removeWriteIdx)
-				proc.executeDependencyHintSeed(removeP, removeIdx)
+			if removeIdx > removeWriteIdx {
+				if !proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
+					proc.executeDependencyHintSeed(removeP, removeWriteIdx)
+					proc.executeDependencyHintSeed(removeP, removeIdx)
+				}
 			}
 		}
 	} else {

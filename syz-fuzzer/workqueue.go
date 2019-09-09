@@ -146,7 +146,9 @@ func (wq *WorkQueue) dequeueDependency() (item *WorkDependency) {
 		last := len(wq.dependency) - 1
 		item = wq.dependency[last]
 		wq.dependency = wq.dependency[:last]
+		wq.mu.Unlock()
 	}
+
 	return item
 }
 

@@ -74,11 +74,9 @@ func (proc *Proc) loop() {
 	for i := 0; ; i++ {
 		ts := time.Now()
 		var statName pb.FuzzingStat
-
 		log.Logf(1, "loop : %v", i)
-		item := proc.fuzzer.workQueue.dequeue()
-		log.Logf(1, "item := proc.fuzzer.workQueue.dequeue()")
-		if item != nil {
+
+		if item := proc.fuzzer.workQueue.dequeue(); item != nil {
 			switch item := item.(type) {
 			case *WorkTriage:
 				statName = pb.FuzzingStat_StatTriage

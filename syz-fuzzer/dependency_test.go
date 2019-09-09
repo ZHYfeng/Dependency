@@ -34,6 +34,11 @@ func TestRemoveSameResource(t *testing.T) {
 				"ioctl$KVM_CREATE_PIT2(r1, 0x4040ae77, &(0x7f0000000100))\n" +
 				"ioctl$KVM_SET_PIT2(r1, 0xae71, &(0x7f0000000080))\n" +
 				"ioctl$KVM_SET_USER_MEMORY_REGION(r1, 0x4020ae46, &(0x7f0000000000)={0x0, 0x0, 0x0, 0x2000, &(0x7f0000ffb000/0x2000)=nil})\n"),
+		[]byte(
+			"r0 = openat$ptmx(0xffffffffffffff9c, &(0x7f0000000000)='/dev/ptmx\x00', 0x802, 0x0)\n" +
+				"ioctl$TIOCSETD(r0, 0x5423, &(0x7f0000000040))\n" +
+				"r1 = openat$ptmx(0xffffffffffffff9c, &(0x7f0000000000)='/dev/ptmx\x00', 0x802, 0x0)\n" +
+				"ioctl$TCFLSH(r1, 0x40045436, 0x2)\n"),
 	}
 	results := [][]byte{
 		[]byte(
@@ -55,11 +60,16 @@ func TestRemoveSameResource(t *testing.T) {
 				"ioctl$KVM_CREATE_PIT2(r1, 0x4040ae77, &(0x7f0000000100))\n" +
 				"ioctl$KVM_SET_PIT2(r1, 0xae71, &(0x7f0000000080))\n" +
 				"ioctl$KVM_SET_USER_MEMORY_REGION(r1, 0x4020ae46, &(0x7f0000000000)={0x0, 0x0, 0x0, 0x2000, &(0x7f0000ffb000/0x2000)=nil})\n"),
+		[]byte(
+			"r0 = openat$ptmx(0xffffffffffffff9c, &(0x7f0000000000)='/dev/ptmx\x00', 0x802, 0x0)\n" +
+				"ioctl$TIOCSETD(r0, 0x5423, &(0x7f0000000040))\n" +
+				"ioctl$TCFLSH(r0, 0x40045436, 0x2)\n"),
 	}
 	idxs := [][]int{
 		{0, 0, 1, 1, 2, 3, 1, 4, 5},
 		{0, 1, 0, 2},
 		{0, 1, 0, 1, 2, 3, 4, 5, 6},
+		{0, 1, 0, 2},
 	}
 
 	for ti, test := range tests {
@@ -76,5 +86,4 @@ func TestRemoveSameResource(t *testing.T) {
 			}
 		})
 	}
-
 }
