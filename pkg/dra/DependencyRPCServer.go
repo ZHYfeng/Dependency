@@ -2,6 +2,7 @@ package dra
 
 import (
 	"context"
+	"fmt"
 	"github.com/golang/protobuf/proto"
 	"github.com/google/syzkaller/pkg/log"
 	"github.com/google/syzkaller/pkg/rpctype"
@@ -201,7 +202,23 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 		log.Fatalf("ReturnTasks with error name")
 	}
 	reply := &Empty{}
+	return reply, nil
+}
 
+func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) (*Empty, error) {
+	ss.logMu.Lock()
+	defer ss.logMu.Unlock()
+	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput : %x\n", request.NewPath.Address)
+	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput : %x\n", request.UnstablePath.Address)
+	newPathIdx, unstablePathIdx, idx := CheckPath(request.NewPath.Address, request.UnstablePath.Address)
+	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput newPathIdx: %v unstablePathIdx : %v idx : %v\n",
+		newPathIdx, unstablePathIdx, idx)
+	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput different address: %x\n",
+		request.NewPath.Address[idx+newPathIdx])
+	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput different address: %x\n",
+		request.UnstablePath.Address[idx+unstablePathIdx])
+
+	reply := &Empty{}
 	return reply, nil
 }
 

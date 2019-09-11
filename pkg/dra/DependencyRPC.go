@@ -626,3 +626,66 @@ func (ss *Server) writeStatisticsToDisk() {
 		log.Fatalf("Failed to write coverage:", err)
 	}
 }
+
+func CheckPath(newPath []uint32, unstablePath []uint32) (int, int, int) {
+
+	var l = 0
+	var newPathIdx = 0
+	var unstablePathIdx = 0
+	var idx = 0
+
+	l1 := len(newPath)
+	l2 := len(unstablePath)
+
+	if l1 < l2 {
+		l = l1
+	} else {
+		l = l2
+	}
+
+	for i := 0; i < l; i++ {
+		if newPath[i] == unstablePath[i] {
+			newPathIdx = i
+			unstablePathIdx = i
+			break
+		} else {
+			for j := 0; j < i; j++ {
+				if newPath[i] == unstablePath[j] {
+					newPathIdx = i
+					unstablePathIdx = j
+					break
+				} else if unstablePath[i] == newPath[j] {
+					unstablePathIdx = i
+					newPathIdx = j
+					break
+				}
+			}
+		}
+
+		if newPath[newPathIdx] == unstablePath[unstablePathIdx] {
+			break
+		}
+	}
+	if newPathIdx == 0 && unstablePathIdx == 0 && newPath[0] != unstablePath[0] {
+		log.Logf(0, "newPath : %x\n", newPath)
+		log.Logf(0, "unstablePath : %x\n", unstablePath)
+		log.Fatalf("checkPath : can not find the address")
+	}
+
+	l1 = l1 - newPathIdx
+	l2 = l2 - unstablePathIdx
+
+	if l1 < l2 {
+		l = l1
+	} else {
+		l = l2
+	}
+
+	for i := 0; i < l; i++ {
+		if newPath[i+newPathIdx] != unstablePath[i+unstablePathIdx] {
+			idx = i
+			break
+		}
+	}
+	return newPathIdx, unstablePathIdx, idx
+}

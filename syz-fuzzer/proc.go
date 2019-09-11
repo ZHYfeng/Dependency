@@ -108,7 +108,8 @@ func (proc *Proc) loop() {
 					// Generate a new prog.
 					p := proc.fuzzer.target.Generate(proc.rnd, programLength, ct)
 					log.Logf(1, "#%v: generated", proc.pid)
-					proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
+					//proc.execute(proc.execOpts, p, ProgNormal, StatGenerate)
+					proc.execute(proc.execOptsCover, p, ProgNormal, StatGenerate)
 				} else {
 					statName = pb.FuzzingStat_StatFuzz
 					// Mutate an existing prog.
@@ -166,7 +167,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			// The call was not executed or failed.
 			notexecuted++
 			if notexecuted > signalRuns/2+1 {
-				return // if happens too often, give up
+				return // if happens too often, gi ve up
 			}
 			continue
 		}
@@ -175,26 +176,25 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		// Without !minimized check manager starts losing some considerable amount
 		// of coverage after each restart. Mechanics of this are not completely clear.
 		if newSignal.Empty() && item.flags&ProgMinimized == 0 {
-			return
+			//if _, _, idx := pb.CheckPath(item.info.Cover, thisCover); idx !=0 {
+			//	unstableInput := &pb.UnstableInput{}
+			//	unstableInput.NewPath = &pb.Path{}
+			//	unstableInput.NewPath.Address = make([]uint32, len(item.info.Cover))
+			//	copy(unstableInput.NewPath.Address, item.info.Cover)
+			//	unstableInput.UnstablePath = &pb.Path{}
+			//	unstableInput.UnstablePath.Address = make([]uint32, len(thisCover))
+			//	copy(unstableInput.UnstablePath.Address, thisCover)
+			//	unstableInput.Idx = int32(item.call)
+			//	data := item.p.Serialize()
+			//	unstableInput.Program = make([]byte, len(data))
+			//	copy(unstableInput.Program, data)
+			//	sig := hash.Hash(data)
+			//	unstableInput.Sig = sig.String()
+			//	proc.fuzzer.dManager.SendUnstableInput(unstableInput)
+			//}
+			//return
 		}
 		inputCover.Merge(thisCover)
-
-		//proc.fuzzer.checkNewCoverage(item.p, info)
-		//for i, c := range info.Calls {
-		//	ii := uint32(i)
-		//	if cc, ok := input.Call[ii]; !ok {
-		//		cc = &pb.Call{
-		//			Idx:     ii,
-		//			Address: make(map[uint32]uint32),
-		//		}
-		//		input.Call[ii] = cc
-		//	}
-		//	cc := input.Call[ii]
-		//	for _, a := range c.Cover {
-		//		cc.Address[a] = 0
-		//	}
-		//
-		//}
 	}
 	if item.flags&ProgMinimized == 0 {
 		item.p, item.call = prog.Minimize(item.p, item.call, false,
@@ -344,21 +344,16 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	info := proc.executeRaw(execOpts, p, stat)
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
+		//info := proc.executeRaw(proc.execOptsCover, p, stat)
 		if stat == StatDependency {
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new input from StatDependency : \n%s", p.Serialize()))
 		}
 		p.Comments = []string{pb.FuzzingStat_name[int32(stat)+1]}
-		//p.Comments = append(p.Comments, pb.FuzzingStat_name[int32(stat)])
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}
 	if extra {
 		proc.enqueueCallTriage(p, flags, -1, info.Extra)
 	}
-
-	//ccalls := proc.fuzzer.checkNewCoverage(p, info)
-	//for _, callIndex := range ccalls {
-	//	proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
-	//}
 
 	return info
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	pb "github.com/google/syzkaller/pkg/dra"
 	"testing"
 )
 
@@ -83,6 +84,23 @@ func TestRemoveSameResource(t *testing.T) {
 				if ii != idx[i] {
 					t.Fatalf("idx: %v", idx)
 				}
+			}
+		})
+	}
+}
+func TestCheckPath(t *testing.T) {
+	t.Parallel()
+	tests := [][][]uint32{
+		{{0x44f9dade, 0xe7a93944, 0x6e1608f, 0x2099698c, 0xe432dbda, 0xb7491474, 0x282f1b47, 0x144f7b47, 0x81006cf3},
+			{0x81006cf3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}},
+	}
+	results := []int{0}
+
+	for ti, test := range tests {
+		t.Run(fmt.Sprint(ti), func(t *testing.T) {
+			_, _, idx := pb.CheckPath(test[0], test[1])
+			if idx != results[ti] {
+				t.Fatalf("idx: %v", idx)
 			}
 		})
 	}
