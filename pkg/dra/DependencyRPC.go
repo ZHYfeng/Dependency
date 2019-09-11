@@ -140,6 +140,15 @@ func (m *RunTimeData) MergeRunTimeData(d *RunTimeData) {
 	return
 }
 
+func (ss Server) reducePriority(m *Task) {
+	for _, task := range ss.corpusDependency.Tasks.Task {
+		if task.WriteSig == m.WriteSig && task.WriteAddress == m.WriteAddress &&
+			task.WriteIndex == m.WriteIndex {
+			task.reducePriority()
+		}
+	}
+}
+
 func (m *Task) reducePriority() {
 	m.Priority = m.Priority / 2
 }
@@ -161,10 +170,6 @@ func (m *Task) MergeTask(s *Task) {
 	}
 	if m.TaskStatus == TaskStatus_testing {
 		m.TaskStatus = s.TaskStatus
-	}
-
-	if s.TaskStatus == TaskStatus_unstable {
-		m.reducePriority()
 	}
 
 	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress

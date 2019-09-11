@@ -380,6 +380,11 @@ func (ss *Server) Update() {
 		for _, t := range ss.corpusDependency.Tasks.Task {
 			if t.Sig == task.Sig && t.Index == task.Index &&
 				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
+
+				if task.TaskStatus == TaskStatus_unstable && t.TaskStatus == TaskStatus_testing {
+					ss.reducePriority(task)
+				}
+
 				t.MergeTask(task)
 				break
 			}
@@ -396,10 +401,15 @@ func (ss *Server) Update() {
 	if elapsed.Seconds() > startTime {
 		var task []*Task
 		for _, t := range ss.corpusDependency.Tasks.Task {
-			if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing ||
-				t.TaskStatus == TaskStatus_unstable) && len(t.UncoveredAddress) > 0 {
-				t.TaskStatus = TaskStatus_testing
-				task = append(task, t)
+			if len(t.UncoveredAddress) > 0 {
+				if t.TaskStatus == TaskStatus_untested {
+					t.TaskStatus = TaskStatus_testing
+					task = append(task, t)
+				} else if t.TaskStatus == TaskStatus_testing {
+					task = append(task, t)
+				} else if t.TaskStatus == TaskStatus_unstable {
+					task = append(task, t)
+				}
 			}
 		}
 		for _, f := range ss.fuzzers {
