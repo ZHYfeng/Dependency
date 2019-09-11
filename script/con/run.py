@@ -7,8 +7,7 @@ import subprocess
 import sys
 import time
 
-# path_root = "/home/yuh/data"
-path_root = "/home/yhao"
+path_root = "/home/yuh/data"
 number_execute = 1
 path_current = os.getcwd()
 name_with_dra = "result-with-dra"
@@ -40,8 +39,8 @@ file_log_syzkaller = "log_syzkaller.log"
 file_log_dra = "log_dra.log"
 file_run = "run.bash"
 
-time_run = 1 * 24 * 60 * 60  # second
-# time_run = 1 * 12 * 60 * 60  # second
+# time_run = 1 * 24 * 60 * 60  # second
+time_run = 1 * 12 * 60 * 60  # second
 
 
 def get_open_port():

@@ -1,8 +1,7 @@
 #! /usr/bin/python3
 import os
 
-# path_root = "/home/yuh/data"
-path_root = "/home/yhao"
+path_root = "/home/yuh/data"
 path_git = os.path.join(path_root, "git")
 path_git_work = os.path.join(path_git, "work")
 path_result = os.path.join(path_git_work, "result")
