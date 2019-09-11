@@ -5,6 +5,7 @@
 notice: remove the default protobuf and install new!
 
 ```shell
+sudo apt -y install autoconf automake libtool curl make g++ unzip
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
 git submodule update --init --recursive
@@ -19,12 +20,12 @@ sudo ldconfig
 ## Install gRPC C++
 
 ```shell
-sudo apt-get install build-essential autoconf libtool pkg-config libgflags-dev libgtest-dev libc++-dev
+sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev libgtest-dev libc++-dev
 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
 git submodule update --init
 // remove the  -Werror in Makefile line 356
-make
+make HAS_SYSTEM_PROTOBUF=false
 sudo make install
 sudo ldconfig
 ```
