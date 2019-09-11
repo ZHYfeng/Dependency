@@ -41,6 +41,7 @@ file_log_dra = "log_dra.log"
 file_run = "run.bash"
 
 time_run = 1 * 24 * 60 * 60  # second
+# time_run = 1 * 12 * 60 * 60  # second
 
 
 def get_open_port():

@@ -12,8 +12,8 @@ from dra import DependencyRPC_pb2 as pb
 do_figure = True
 confidence = 0.95
 name_dev = "dev_"
-name_with_dra = "result-with-dra"
-name_without_dra = "result-without-dra"
+name_with_dra = "01-result-with-dra"
+name_without_dra = "02-result-without-dra"
 name_stat = "statistics.bin"
 name_stat_result = "statistics.txt"
 name_data = "data.bin"

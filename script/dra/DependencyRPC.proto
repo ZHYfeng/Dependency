@@ -54,16 +54,8 @@ message Condition {
     uint32 idx = 5;
     uint64 successor = 6;
 
-    //    map<uint64, uint32> right_branch_address = 7;
-    //    map<uint32, uint32> syzkaller_right_branch_address = 8;
-    //    map<uint64, uint32> wrong_branch_address = 9;
-    //    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
-
     repeated uint64 right_branch_address = 7;
     repeated uint32 syzkaller_right_branch_address = 8;
-    //    repeated uint64 wrong_branch_address = 9;
-    //    repeated uint32 syzkaller_wrong_branch_address = 10;
-
 }
 
 
