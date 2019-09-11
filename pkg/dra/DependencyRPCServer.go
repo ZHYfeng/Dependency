@@ -15,7 +15,8 @@ import (
 )
 
 const (
-	startTime  = 21600
+	//startTime  = 21600
+	startTime  = 0
 	taskNum    = 100
 	DebugLevel = 2
 )
@@ -395,7 +396,8 @@ func (ss *Server) Update() {
 	if elapsed.Seconds() > startTime {
 		var task []*Task
 		for _, t := range ss.corpusDependency.Tasks.Task {
-			if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing) && len(t.UncoveredAddress) > 0 {
+			if (t.TaskStatus == TaskStatus_untested || t.TaskStatus == TaskStatus_testing ||
+				t.TaskStatus == TaskStatus_unstable) && len(t.UncoveredAddress) > 0 {
 				t.TaskStatus = TaskStatus_testing
 				task = append(task, t)
 			}

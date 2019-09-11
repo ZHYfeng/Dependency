@@ -103,6 +103,7 @@ enum taskStatus {
     out = 3;
     covered = 4;
     testing = 5;
+    unstable = 6;
 }
 
 message runTimeData {

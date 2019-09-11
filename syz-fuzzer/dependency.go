@@ -312,6 +312,8 @@ func (proc *Proc) dependency(item *WorkDependency) {
 
 	if len(task.UncoveredAddress) == 0 {
 		task.TaskStatus = pb.TaskStatus_covered
+	} else if !task.CheckWriteAddress {
+		task.TaskStatus = pb.TaskStatus_unstable
 	} else {
 		task.TaskStatus = pb.TaskStatus_tested
 	}

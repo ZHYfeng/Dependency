@@ -140,14 +140,11 @@ func (m *RunTimeData) MergeRunTimeData(d *RunTimeData) {
 	return
 }
 
+func (m *Task) reducePriority() {
+	m.Priority = m.Priority / 2
+}
+
 func (m *Task) MergeTask(s *Task) {
-
-	if m.TaskStatus == TaskStatus_testing {
-		m.TaskStatus = s.TaskStatus
-	}
-
-	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress
-	m.CheckWriteAddressFinal = s.CheckWriteAddressFinal || m.CheckWriteAddressFinal
 
 	if m.CoveredAddress == nil {
 		m.CoveredAddress = map[uint32]*RunTimeData{}
@@ -162,6 +159,17 @@ func (m *Task) MergeTask(s *Task) {
 			delete(m.UncoveredAddress, u)
 		}
 	}
+	if m.TaskStatus == TaskStatus_testing {
+		m.TaskStatus = s.TaskStatus
+	}
+
+	if s.TaskStatus == TaskStatus_unstable {
+		m.reducePriority()
+	}
+
+	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress
+	m.CheckWriteAddressFinal = s.CheckWriteAddressFinal || m.CheckWriteAddressFinal
+	m.CheckWriteAddressRemove = s.CheckWriteAddressRemove || m.CheckWriteAddressRemove
 
 	return
 }
