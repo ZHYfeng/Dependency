@@ -259,7 +259,7 @@ message Corpus {
     map<uint32, UncoveredAddress> covered_address = 2;
     map<uint32, WriteAddress> write_address = 5;
     map<uint64, IoctlCmd> ioctl_cmd = 6;
-    Tasks tasks = 7;
+    map<uint32, Tasks> tasks = 7;
     map<string, Input> new_input = 9;
 }
 
@@ -309,9 +309,9 @@ message Task {
     uint32 write_index = 12;
     bytes write_program = 13;
     uint32 write_address = 14;
-
+    
     uint32 priority = 15;
-
+    
     // uncovered address, priority
     map<uint32, runTimeData> uncovered_address = 21;
     map<uint32, runTimeData> covered_address = 23;
