@@ -420,7 +420,7 @@ namespace dra {
         unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
         res->set_write_address(write_address);
         res->set_repeat(write_basicblock->repeat);
-        res->set_prio(write_basicblock->prio);
+        res->set_prio(write_basicblock->prio + 100);
 
         return res;
     }
