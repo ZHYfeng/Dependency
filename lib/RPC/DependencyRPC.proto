@@ -28,6 +28,8 @@ service DependencyRPC {
     }
     rpc ReturnTasks (Tasks) returns (Empty) {
     }
+    rpc SendUnstableInput (UnstableInput) returns (Empty) {
+    }
     rpc GetDependencyInput (Empty) returns (Inputs) {
     }
     rpc ReturnDependencyInput (Dependencytask) returns (Empty) {
@@ -66,12 +68,10 @@ message Condition {
     
 }
 
-
 message Conditions {
     //    map<uint64, Condition> condition = 10;
     repeated Condition condition = 10;
 }
-
 
 message WriteAddresses {
     Condition condition = 1;
@@ -79,13 +79,11 @@ message WriteAddresses {
     repeated WriteAddress write_address = 4;
 }
 
-
 message Call {
     uint32 idx = 1;
     map<uint32, uint32> address = 2;
     //    repeated uint32 address = 2;
 }
-
 
 message Inputs {
     // map<string, Input> input = 1;
@@ -196,15 +194,20 @@ message UncoveredAddress {
     
     runTimeData run_time_date = 8;
     
-    //    map<uint64, uint32> right_branch_address = 7;
-    //    map<uint32, uint32> syzkaller_right_branch_address = 8;
-    //    map<uint64, uint32> wrong_branch_address = 9;
-    //    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
+}
+
+message Path {
+    repeated uint32 address = 1;
+}
+
+message UnstableInput {
+    Path new_path = 1;
+    Path unstable_path = 2;
+    int32 idx = 3;
     
-    //    repeated uint64 right_branch_address = 7;
-    //    repeated uint32 right_branch_address = 8;
-    //    repeated uint64 wrong_branch_address = 9;
-    //    repeated uint32 syzkaller_wrong_branch_address = 10;
+    string sig = 11; // hash value for each input from syzkaller
+    bytes program = 12;
+    
 }
 
 message Input {
@@ -259,7 +262,7 @@ message Corpus {
     map<uint32, UncoveredAddress> covered_address = 2;
     map<uint32, WriteAddress> write_address = 5;
     map<uint64, IoctlCmd> ioctl_cmd = 6;
-    map<uint32, Tasks> tasks = 7;
+    Tasks tasks = 7;
     map<string, Input> new_input = 9;
 }
 
