@@ -334,7 +334,6 @@ func (fuzzer *Fuzzer) pollLoop() {
 						break
 					}
 				}
-
 			}
 		}
 	}
