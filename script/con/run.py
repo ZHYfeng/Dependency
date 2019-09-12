@@ -144,10 +144,11 @@ class Process:
     def close(self):
         for p in self.processes:
             os.killpg(os.getpgid(p.pid), signal.SIGTERM)
-            cmd_rm_img = "rm -rf " + os.path.join(self.path, "img") \
-                         + " " + file_taint + " " + file_asm + " " + file_bc
-            p_rm_img = subprocess.Popen(cmd_rm_img, shell=True, preexec_fn=os.setsid)
-            p_rm_img.wait()
+
+        cmd_rm_img = "rm -rf " + os.path.join(self.path, "img") \
+                     + " " + file_taint + " " + file_asm + " " + file_bc
+        p_rm_img = subprocess.Popen(cmd_rm_img, shell=True, preexec_fn=os.setsid)
+        p_rm_img.wait()
 
 
 def main():
@@ -175,8 +176,8 @@ def main():
     p_ch = subprocess.Popen(cmd_ch, shell=True, preexec_fn=os.setsid)
     p_ch.wait()
 
-    time.sleep(time_run)
-    # time.sleep(30)
+    # time.sleep(time_run)
+    time.sleep(30)
 
     for i in tasks:
         i.close()
