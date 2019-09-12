@@ -176,8 +176,8 @@ def main():
     p_ch = subprocess.Popen(cmd_ch, shell=True, preexec_fn=os.setsid)
     p_ch.wait()
 
-    # time.sleep(time_run)
-    time.sleep(30)
+    time.sleep(time_run)
+    # time.sleep(30)
 
     for i in tasks:
         i.close()
