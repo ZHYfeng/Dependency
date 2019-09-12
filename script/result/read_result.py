@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import scipy.stats
 
 sys.path.append(os.getcwd())
-from dra import DependencyRPC_pb2 as pb
+from script.dra import DependencyRPC_pb2 as pb
 
 do_figure = True
 confidence = 0.95
