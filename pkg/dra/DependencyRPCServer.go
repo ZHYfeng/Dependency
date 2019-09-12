@@ -384,8 +384,15 @@ func (ss *Server) Update() {
 				if task.TaskStatus == TaskStatus_unstable && t.TaskStatus == TaskStatus_testing {
 					ss.reducePriority(task)
 				}
-
 				t.MergeTask(task)
+				for u := range t.UncoveredAddress {
+					_, ok := ss.corpusDependency.UncoveredAddress[u]
+					if ok {
+
+					} else {
+						delete(t.UncoveredAddress, u)
+					}
+				}
 				break
 			}
 		}
@@ -401,6 +408,14 @@ func (ss *Server) Update() {
 	if elapsed.Seconds() > startTime {
 		var task []*Task
 		for _, t := range ss.corpusDependency.Tasks.Task {
+			for u := range t.UncoveredAddress {
+				_, ok := ss.corpusDependency.UncoveredAddress[u]
+				if ok {
+
+				} else {
+					delete(t.UncoveredAddress, u)
+				}
+			}
 			if len(t.UncoveredAddress) > 0 {
 				if t.TaskStatus == TaskStatus_untested {
 					t.TaskStatus = TaskStatus_testing

@@ -73,7 +73,7 @@ func dealAddress(open string) string {
 	return res
 }
 
-func removeSameResource(p []byte) ([]byte, []int) {
+func removeSameResource(p []byte) ([]byte, []uint32) {
 	var calls []string
 	var i = 0
 	var j = 0
@@ -86,7 +86,7 @@ func removeSameResource(p []byte) ([]byte, []int) {
 			calls = append(calls, "")
 		}
 	}
-	var newIdx = make([]int, len(calls))
+	var newIdx = make([]uint32, len(calls))
 
 	for i, call := range calls {
 		if strings.Index(call, " = ") != -1 {
@@ -105,7 +105,7 @@ func removeSameResource(p []byte) ([]byte, []int) {
 							calls[h] = strings.ReplaceAll(calls[h], rres, res)
 						}
 						calls[k] = ""
-						newIdx[k] = i
+						newIdx[k] = uint32(i)
 					}
 				}
 			}
@@ -113,7 +113,8 @@ func removeSameResource(p []byte) ([]byte, []int) {
 	}
 
 	var pc []byte
-	idx := 0
+	var idx uint32
+	idx = 0
 	for i, call := range calls {
 		if call != "" {
 			callb := []byte(call)
@@ -153,7 +154,7 @@ func (proc *Proc) dependencyMutateWriteInputCheckWriteAddress(task *pb.Task) *pr
 	return wp
 }
 
-func (proc *Proc) dependencyMutateFinalInputCheckWriteAddress(task *pb.Task, wp *prog.Prog) *prog.Prog {
+func (proc *Proc) dependencyMutateFinalInputCheckWriteAddress(task *pb.Task, wp *prog.Prog, idx int) *prog.Prog {
 	p, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
@@ -169,18 +170,17 @@ func (proc *Proc) dependencyMutateFinalInputCheckWriteAddress(task *pb.Task, wp 
 			break
 		}
 	}
-	idx := int(task.Index)
 	p.Calls = append(p.Calls[:idx], append(usefulCall, p.Calls[idx:]...)...)
-	idx = idx + int(task.WriteIndex) + 1
-	task.FinalIdx = uint32(idx)
-	task.FinalWriteIdx = task.FinalIdx - 1
+	task.FinalIdx = task.Index + task.WriteIndex + 1
+	task.FinalWriteIdx = uint32(idx) + task.WriteIndex
+	idx = int(task.FinalIdx)
 
 	data := p.Serialize()
 	log.Logf(pb.DebugLevel, "final program : \n%s", data)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("final program : \n%s", data))
 
 	infoFinal := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
-	checkWriteAddress2 := checkAddress(task.WriteAddress, infoFinal.Calls[idx-1].Cover)
+	checkWriteAddress2 := checkAddress(task.WriteAddress, infoFinal.Calls[task.FinalWriteIdx].Cover)
 	if checkWriteAddress2 {
 		task.CheckWriteAddressFinal = true
 		log.Logf(pb.DebugLevel, "final program could arrive at write address : %d", task.WriteAddress)
@@ -195,17 +195,17 @@ func (proc *Proc) dependencyMutateFinalInputCheckWriteAddress(task *pb.Task, wp 
 }
 
 func (proc *Proc) dependencyMutateRemoveInputCheckWriteAddress(task *pb.Task, data []byte) *prog.Prog {
-	idx := int(task.FinalIdx)
+	idx := task.FinalIdx
 	removeData, removeIdx := removeSameResource(data)
-	task.RemoveIdx = uint32(removeIdx[idx])
+	task.RemoveIdx = removeIdx[idx]
 	removeP, err := proc.fuzzer.target.Deserialize(removeData, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
 	}
 	log.Logf(pb.DebugLevel, "remove program : \n%s", removeData)
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove program : \n%s", removeData))
-	writeIdx := removeIdx[task.FinalIdx-1]
-	task.RemoveWriteIdx = uint32(writeIdx)
+	writeIdx := removeIdx[task.FinalWriteIdx]
+	task.RemoveWriteIdx = writeIdx
 
 	info := proc.execute(proc.execOptsCover, removeP, ProgNormal, StatDependency)
 	checkWriteAddress3 := checkAddress(task.WriteAddress, info.Calls[writeIdx].Cover)
@@ -276,33 +276,36 @@ func (proc *Proc) dependency(item *WorkDependency) {
 
 	wp := proc.dependencyMutateWriteInputCheckWriteAddress(task)
 	if task.CheckWriteAddress {
-		p := proc.dependencyMutateFinalInputCheckWriteAddress(task, wp)
-		data := p.Serialize()
-		if task.CheckWriteAddressFinal {
-			writeIdx := int(task.FinalWriteIdx)
-			idx := int(task.FinalIdx)
-			log.Logf(pb.DebugLevel, "final index  : %d final write index : %d", task.FinalIdx, task.FinalWriteIdx)
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("final index  : %d final write index : %d",
-				task.FinalWriteIdx, task.FinalIdx))
-			proc.fuzzer.dManager.SSendLog()
-			if !proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
-				proc.executeDependencyHintSeed(p, writeIdx)
-				proc.executeDependencyHintSeed(p, idx)
-			}
-		}
-
-		removeP := proc.dependencyMutateRemoveInputCheckWriteAddress(task, data)
-		if task.CheckWriteAddressRemove {
-			removeWriteIdx := int(task.RemoveWriteIdx)
-			removeIdx := int(task.RemoveIdx)
-			log.Logf(pb.DebugLevel, "remove index  : %d remove write index : %d", task.RemoveIdx, task.RemoveWriteIdx)
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove index  : %d remove write index : %d",
-				task.RemoveWriteIdx, task.RemoveIdx))
-			proc.fuzzer.dManager.SSendLog()
-			if removeIdx > removeWriteIdx {
+		indexes := []int{0, int(task.Index)}
+		for _, i := range indexes {
+			p := proc.dependencyMutateFinalInputCheckWriteAddress(task, wp, i)
+			data := p.Serialize()
+			if task.CheckWriteAddressFinal {
+				writeIdx := int(task.FinalWriteIdx)
+				idx := int(task.FinalIdx)
+				log.Logf(pb.DebugLevel, "final index  : %d final write index : %d", task.FinalIdx, task.FinalWriteIdx)
+				proc.fuzzer.dManager.SendLog(fmt.Sprintf("final index  : %d final write index : %d",
+					task.FinalWriteIdx, task.FinalIdx))
+				proc.fuzzer.dManager.SSendLog()
 				if !proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
-					proc.executeDependencyHintSeed(removeP, removeWriteIdx)
-					proc.executeDependencyHintSeed(removeP, removeIdx)
+					proc.executeDependencyHintSeed(p, writeIdx)
+					proc.executeDependencyHintSeed(p, idx)
+				}
+			}
+
+			removeP := proc.dependencyMutateRemoveInputCheckWriteAddress(task, data)
+			if task.CheckWriteAddressRemove {
+				removeWriteIdx := int(task.RemoveWriteIdx)
+				removeIdx := int(task.RemoveIdx)
+				log.Logf(pb.DebugLevel, "remove index  : %d remove write index : %d", task.RemoveIdx, task.RemoveWriteIdx)
+				proc.fuzzer.dManager.SendLog(fmt.Sprintf("remove index  : %d remove write index : %d",
+					task.RemoveWriteIdx, task.RemoveIdx))
+				proc.fuzzer.dManager.SSendLog()
+				if removeIdx > removeWriteIdx {
+					if !proc.fuzzer.comparisonTracingEnabled && item.call != -1 {
+						proc.executeDependencyHintSeed(removeP, removeWriteIdx)
+						proc.executeDependencyHintSeed(removeP, removeIdx)
+					}
 				}
 			}
 		}

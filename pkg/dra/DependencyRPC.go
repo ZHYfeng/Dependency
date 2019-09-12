@@ -331,6 +331,8 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 			delete(waa.UncoveredAddress, uncoveredAddress)
 		}
 	}
+
+	ss.corpusDependency.CoveredAddress[uncoveredAddress] = u
 	delete(ss.corpusDependency.UncoveredAddress, uncoveredAddress)
 
 	return
