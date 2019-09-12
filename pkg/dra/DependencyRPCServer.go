@@ -384,6 +384,9 @@ func (ss *Server) Update() {
 				if task.TaskStatus == TaskStatus_unstable && t.TaskStatus == TaskStatus_testing {
 					ss.reducePriority(task)
 				}
+				if task.TaskStatus == TaskStatus_tested {
+					ss.reducePriority(task)
+				}
 				t.MergeTask(task)
 				for u := range t.UncoveredAddress {
 					_, ok := ss.corpusDependency.UncoveredAddress[u]
