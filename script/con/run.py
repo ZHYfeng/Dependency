@@ -8,7 +8,7 @@ import sys
 import time
 
 path_root = "/home/yuh/data"
-number_execute = 1
+number_execute = 6
 path_current = os.getcwd()
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
