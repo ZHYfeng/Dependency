@@ -27,8 +27,8 @@ def generate_dev_dir():
     for d in devices.dev:
         path = os.path.join(devices.path_result, d)
         print(path)
-        if os.path.exists(path):
-            shutil.rmtree(path)
+        # if os.path.exists(path):
+        #     shutil.rmtree(path)
         if not os.path.exists(path):
             os.makedirs(path)
         os.chdir(path)
