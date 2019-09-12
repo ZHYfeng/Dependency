@@ -92,8 +92,8 @@ func (proc *Proc) loop() {
 			}
 		} else {
 			r := rand.New(proc.rnd)
-			n := 3
-			m := 1
+			n := 4
+			m := 3
 			if r.Intn(n) < m {
 				item := proc.fuzzer.workQueue.dequeueDependency()
 				if item != nil {
