@@ -10,8 +10,8 @@ import time
 path_root = "/home/yuh/data"
 number_execute = 1
 path_current = os.getcwd()
-name_with_dra = "result-with-dra"
-name_without_dra = "result-without-dra"
+name_with_dra = "01-result-with-dra"
+name_without_dra = "02-result-without-dra"
 path_git = os.path.join(path_root, "git")
 path_syzkaller = os.path.join(path_git, "gopath/src/github.com/google/syzkaller")
 file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
@@ -28,9 +28,10 @@ file_asm = name_driver + ".s"
 file_bc = name_driver + ".bc"
 file_json = name_driver + ".json"
 
-path_workdir = "workdir"
+name_workdir = "workdir"
+path_workdir = os.path.join(path_current, name_workdir)
 
-path_image = path_linux = os.path.join(path_root, "benchmark/linux/image")
+path_image = os.path.join(path_root, "benchmark/linux/image")
 file_image = "stretch.img"
 file_ssh_key = "stretch.id_rsa"
 
@@ -73,11 +74,16 @@ class Process:
             path = os.path.join(path_current, name, str(self.index))
         self.path = path
         os.makedirs(self.path)
+        print(self.path)
 
-        print(os.path.join(path, "img"))
         cmd_cp_img = "cp -rf " + path_image + " " + os.path.join(self.path, "img")
         p_cp_img = subprocess.Popen(cmd_cp_img, shell=True, preexec_fn=os.setsid)
         p_cp_img.wait()
+
+        if os.path.exists(path_workdir):
+            cmd_cp_corpus = "cp -rf " + path_workdir + " " + os.path.join(self.path, name_workdir)
+            p_cp_corpus = subprocess.Popen(cmd_cp_corpus, shell=True, preexec_fn=os.setsid)
+            p_cp_corpus.wait()
 
         if dra:
             cmd_cp_built_in = "cp ./built-in.* " + self.path
@@ -88,7 +94,7 @@ class Process:
         c = json.load(f)
         f.close()
 
-        c["workdir"] = os.path.join(self.path, path_workdir)
+        c["workdir"] = os.path.join(self.path, name_workdir)
         c["image"] = os.path.join(self.path, "img", file_image)
         c["sshkey"] = os.path.join(self.path, "img", file_ssh_key)
 
