@@ -3,3 +3,11 @@
 built-in*
 *img*
 *workdir*
+
+*.synctex.gz
+*.out
+*.log
+*.bbl
+*.blg
+*.cut
+*.aux
