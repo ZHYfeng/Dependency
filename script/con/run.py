@@ -144,9 +144,8 @@ class Process:
     def close(self):
         for p in self.processes:
             os.killpg(os.getpgid(p.pid), signal.SIGTERM)
-
-        cmd_rm_img = "rm -rf " + os.path.join(self.path, "img") \
-                     + " " + file_taint + " " + file_asm + " " + file_bc
+        os.chdir(self.path)
+        cmd_rm_img = "rm -rf img " + file_taint + " " + file_asm + " " + file_bc
         p_rm_img = subprocess.Popen(cmd_rm_img, shell=True, preexec_fn=os.setsid)
         p_rm_img.wait()
 

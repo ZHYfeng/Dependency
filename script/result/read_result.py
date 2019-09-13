@@ -48,8 +48,7 @@ def data_read(dir_path):
         f = open(file_data, "rb")
         data.ParseFromString(f.read())
         f.close()
-
-        data_deal(dir_path, data)
+        # data_deal(dir_path, data)
     return data
 
 
@@ -197,9 +196,10 @@ def axis_expansion(length, x_axises, y_axises):
     return x_axises, y_axises
 
 
-def result_get_from_sub_dir(stats, x_axises, y_axises, y_axises_statistics, labels, line_styles, path, name_label):
+def result_get_from_sub_dir(stats, x_axises, y_axises, y_axises_statistics, labels, line_styles, path, name_label,
+                            data):
     if os.path.exists(path):
-        s, x, y, ys, l, ls = results_deal(path)
+        s, x, y, ys, l, ls, d = results_deal(path)
         for ss in s:
             stats.append(ss)
         for xx in x:
@@ -212,6 +212,8 @@ def result_get_from_sub_dir(stats, x_axises, y_axises, y_axises_statistics, labe
             labels.append(name_label + '-' + ll)
         for llss in ls:
             line_styles.append(llss)
+        for dd in d:
+            data.append(dd)
 
 
 def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
@@ -334,7 +336,7 @@ def results_deal(path):
 
         all_data_deal(path, data)
 
-    return stats, x_axises, y_axises, y_axises_statistics, labels_statistics, line_styles_statistics
+    return stats, x_axises, y_axises, y_axises_statistics, labels_statistics, line_styles_statistics, data
 
 
 def dev_deal(dir_path, dir_name):
@@ -345,30 +347,35 @@ def dev_deal(dir_path, dir_name):
     line_styles = []
     colors = []
 
+    stat_with_dra = []
     y_axises_statistic_with_dra = []
     y_axises_with_dra = []
     labels_with_dra = []
     line_styles_with_dra = []
     colors_with_dra = []
+    data_with_dra = []
 
+    stat_without_dra = []
     y_axises_statistic_without_dra = []
     y_axises_without_dra = []
     labels_without_dra = []
     line_styles_without_dra = []
     colors_without_dra = []
+    data_without_dra = []
 
     path_dev = os.path.join(dir_path, dir_name)
 
     path_with_dra = os.path.join(path_dev, name_with_dra)
-    result_get_from_sub_dir(stats, x_axises, y_axises_with_dra, y_axises_statistic_with_dra, labels_with_dra,
-                            line_styles_with_dra, path_with_dra, name_with_dra)
+    result_get_from_sub_dir(stat_with_dra, x_axises, y_axises_with_dra, y_axises_statistic_with_dra, labels_with_dra,
+                            line_styles_with_dra, path_with_dra, name_with_dra, data_with_dra)
     l = len(labels_with_dra)
     for i in range(l):
         colors_with_dra.append('C0')
 
     path_without_dra = os.path.join(path_dev, name_without_dra)
-    result_get_from_sub_dir(stats, x_axises, y_axises_without_dra, y_axises_statistic_without_dra, labels_without_dra,
-                            line_styles_without_dra, path_without_dra, name_without_dra)
+    result_get_from_sub_dir(stat_without_dra, x_axises, y_axises_without_dra, y_axises_statistic_without_dra,
+                            labels_without_dra,
+                            line_styles_without_dra, path_without_dra, name_without_dra, data_without_dra)
     l = len(labels_without_dra)
     for i in range(l):
         colors_without_dra.append('C1')
@@ -390,6 +397,54 @@ def dev_deal(dir_path, dir_name):
     x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
     file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
     axises_plot(file_figure_all, x_axis, y_axises, labels, line_styles, colors, " pvalue = " + str(p_value))
+
+    get_coverage(path_dev, stat_with_dra, stat_without_dra)
+
+
+def get_coverage(path_dev, stat_with_dra, stat_without_dra):
+    max_coverage_with_dra = {}
+    for s in stat_with_dra:
+        for a in s.coverage.coverage:
+            if a not in max_coverage_with_dra:
+                max_coverage_with_dra[a] = 0
+            else:
+                max_coverage_with_dra[a] = max_coverage_with_dra[a] + 1
+    max_coverage_without_dra = {}
+    for s in stat_without_dra:
+        for a in s.coverage.coverage:
+            if a not in max_coverage_without_dra:
+                max_coverage_without_dra[a] = 0
+            else:
+                max_coverage_without_dra[a] = max_coverage_without_dra[a] + 1
+
+    unique_coverage_with_dra = {}
+    for a in max_coverage_with_dra:
+        if a not in max_coverage_without_dra:
+            unique_coverage_with_dra[a] = max_coverage_with_dra[a]
+
+    unique_coverage_without_dra = {}
+    for a in max_coverage_without_dra:
+        if a not in max_coverage_with_dra:
+            unique_coverage_without_dra[a] = max_coverage_without_dra[a]
+
+    max_coverage = {}
+    for a in max_coverage_without_dra:
+        max_coverage[a] = max_coverage_without_dra[a]
+    for a in max_coverage_with_dra:
+        if a not in max_coverage:
+            max_coverage[a] = 0
+        else:
+            max_coverage[a] = max_coverage[a] + max_coverage_with_dra[a]
+
+    file_result = os.path.join(path_dev, name_data_result)
+    f = open(file_result, "w")
+    f.write("unique_coverage_with_dra : " + str(len(unique_coverage_with_dra)))
+    f.write(str(unique_coverage_with_dra))
+    f.write("unique_coverage_without_dra : " + str(len(unique_coverage_without_dra)))
+    f.write(str(unique_coverage_without_dra))
+    f.write("max_coverage : " + str(len(max_coverage)))
+
+    f.close()
 
 
 def get_stat_file(path):
