@@ -35,32 +35,49 @@ def generate_dev_dir():
             os.makedirs(path)
         os.chdir(path)
 
-        if not os.path.exists("built-in.json"):
-            df = open(devices.file_default_json, "r")
-            c = json.load(df)
-            df.close()
-            c["enable_syscalls"] = devices.dev[d]["enable_syscalls"]
-            c["syzkaller"] = devices.path_syzkaller
-            c["kernel_obj"] = devices.path_linux
-            c["vm"]["kernel"] = devices.path_kernel
-            f = open("built-in" + ".json", "w")
-            json.dump(c, f, indent=4)
-            f.close()
-
-        if not os.path.exists(devices.file_asm):
-            read_s(devices.dev[d]["path_s"])
-        if not os.path.exists(devices.file_bc):
-            shutil.copy(devices.dev[d]["file_bc"], devices.file_bc)
-        if not os.path.exists(devices.file_taint):
-            shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
+        # if not os.path.exists("built-in.json"):
+        #     df = open(devices.file_default_json, "r")
+        #     c = json.load(df)
+        #     df.close()
+        #     c["enable_syscalls"] = devices.dev[d]["enable_syscalls"]
+        #     c["syzkaller"] = devices.path_syzkaller
+        #     c["kernel_obj"] = devices.path_linux
+        #     c["vm"]["kernel"] = devices.path_kernel
+        #     f = open("built-in" + ".json", "w")
+        #     json.dump(c, f, indent=4)
+        #     f.close()
+        #
+        # if not os.path.exists(devices.file_asm):
+        #     read_s(devices.dev[d]["path_s"])
+        # if not os.path.exists(devices.file_bc):
+        #     shutil.copy(devices.dev[d]["file_bc"], devices.file_bc)
+        # if not os.path.exists(devices.file_taint):
+        #     shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
         if not os.path.exists(devices.name_with_dra):
             os.makedirs(devices.name_with_dra)
         if not os.path.exists(devices.name_without_dra):
             os.makedirs(devices.name_without_dra)
-        if not os.path.exists(devices.name_run):
-            shutil.copy(devices.path_default_run, devices.name_run)
-        if not os.path.exists(devices.name_run_bash):
-            shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
+        # if not os.path.exists(devices.name_run):
+        #     shutil.copy(devices.path_default_run, devices.name_run)
+        # if not os.path.exists(devices.name_run_bash):
+        #     shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
+
+        df = open(devices.file_default_json, "r")
+        c = json.load(df)
+        df.close()
+        c["enable_syscalls"] = devices.dev[d]["enable_syscalls"]
+        c["syzkaller"] = devices.path_syzkaller
+        c["kernel_obj"] = devices.path_linux
+        c["vm"]["kernel"] = devices.path_kernel
+        f = open("built-in" + ".json", "w")
+        json.dump(c, f, indent=4)
+        f.close()
+
+        read_s(devices.dev[d]["path_s"])
+        shutil.copy(devices.dev[d]["file_bc"], devices.file_bc)
+        shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
+        shutil.copy(devices.path_default_run, devices.name_run)
+        shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
 
 
 if __name__ == "__main__":
