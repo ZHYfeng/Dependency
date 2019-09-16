@@ -7,20 +7,19 @@ import subprocess
 import sys
 import time
 
-path_root = "/home/yuh/data"
+path_root = "~/data"
 number_execute = 6
 path_current = os.getcwd()
-name_with_dra = "01-result-with-dra"
-name_without_dra = "02-result-without-dra"
 path_git = os.path.join(path_root, "git")
 path_syzkaller = os.path.join(path_git, "gopath/src/github.com/google/syzkaller")
 file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
-
 path_dra = os.path.join(path_git, "2018_dependency/build/tools/DRA/dra")
-
 path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
+
+name_with_dra = "01-result-with-dra"
+name_without_dra = "02-result-without-dra"
 
 name_driver = "built-in"
 file_taint = name_driver + ".taint"

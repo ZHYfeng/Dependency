@@ -24,6 +24,8 @@ def read_s(paths):
 
 
 def generate_dev_dir():
+    if len(sys.argv) > 1:
+        devices.path_result = sys.argv[1]
     for d in devices.dev:
         path = os.path.join(devices.path_result, d)
         print(path)
