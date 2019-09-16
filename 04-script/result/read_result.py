@@ -5,7 +5,6 @@ import sys
 
 import matplotlib.pyplot as plt
 import scipy.stats
-
 from result import DependencyRPC_pb2 as pb
 
 do_figure = True
@@ -483,9 +482,3 @@ def get_stat_file(path):
                     result_deal(dir_path)
             if is_result:
                 break
-
-
-if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        do_figure = False
-    get_stat_file(sys.argv[1])

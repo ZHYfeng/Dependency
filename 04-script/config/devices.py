@@ -9,11 +9,11 @@ path_git_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_depen
 path_result = os.path.join(path_git_repo, "06-result")
 path_git_script = os.path.join(path_git_repo, "04-script")
 path_taint = os.path.join(path_git_script, "taint_info")
-file_default_json = os.path.join(path_git_script, "con/default.json")
+file_default_json = os.path.join(path_git_script, "config/default.json")
 name_run = "run.py"
-path_default_run = os.path.join(path_git_script, "con", name_run)
+path_default_run = os.path.join(path_git_script, "config", name_run)
 name_run_bash = "run.bash"
-path_default_run_bash = os.path.join(path_git_script, "con", name_run_bash)
+path_default_run_bash = os.path.join(path_git_script, "config", name_run_bash)
 
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"

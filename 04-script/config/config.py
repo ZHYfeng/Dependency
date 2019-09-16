@@ -4,8 +4,7 @@ import os
 import shutil
 import sys
 
-sys.path.append(os.getcwd())
-from con import devices
+from config import devices
 
 
 def read_s(paths):
@@ -24,8 +23,6 @@ def read_s(paths):
 
 
 def generate_dev_dir():
-    if len(sys.argv) > 1:
-        devices.path_result = sys.argv[1]
     for d in devices.dev:
         path = os.path.join(devices.path_result, d)
         print(path)
@@ -78,7 +75,3 @@ def generate_dev_dir():
         shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
         shutil.copy(devices.path_default_run, devices.name_run)
         shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
-
-
-if __name__ == "__main__":
-    generate_dev_dir()
