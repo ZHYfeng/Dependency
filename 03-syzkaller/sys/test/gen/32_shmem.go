@@ -3,8 +3,8 @@
 
 package gen
 
-import . "github.com/google/syzkaller/prog"
-import . "github.com/google/syzkaller/sys/test"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/test"
 
 func init() {
 	RegisterTarget(&Target{OS: "test", Arch: "32_shmem", Revision: revision_32_shmem, PtrSize: 4, PageSize: 8192, NumPages: 2048, DataOffset: 536870912, Syscalls: syscalls_32_shmem, Resources: resources_32_shmem, Structs: structDescs_32_shmem, Consts: consts_32_shmem}, InitTarget)

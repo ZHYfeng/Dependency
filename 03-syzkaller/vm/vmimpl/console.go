@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/google/syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
 	"golang.org/x/sys/unix"
 )
 

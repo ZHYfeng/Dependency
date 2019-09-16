@@ -36,7 +36,7 @@
 workdir*
 */build
 */cmake-build-debug
-*/bin/
+*/bin
 *.pyc
 
 # IDE

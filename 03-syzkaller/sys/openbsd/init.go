@@ -4,8 +4,8 @@
 package openbsd
 
 import (
-	"github.com/google/syzkaller/prog"
-	"github.com/google/syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
 )
 
 func InitTarget(target *prog.Target) {

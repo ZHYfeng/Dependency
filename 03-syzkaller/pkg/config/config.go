@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/google/syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
 )
 
 func LoadFile(filename string, cfg interface{}) error {

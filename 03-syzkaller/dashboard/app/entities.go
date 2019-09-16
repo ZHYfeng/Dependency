@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/google/syzkaller/dashboard/dashapi"
-	"github.com/google/syzkaller/pkg/hash"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
 	"golang.org/x/net/context"
 	db "google.golang.org/appengine/datastore"
 )

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
 	"github.com/golang/protobuf/proto"
-	"github.com/google/syzkaller/pkg/cover"
-	pb "github.com/google/syzkaller/pkg/dra"
-	"github.com/google/syzkaller/pkg/hash"
-	"github.com/google/syzkaller/pkg/ipc"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/prog"
 	"strings"
 )
 

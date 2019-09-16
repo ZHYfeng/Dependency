@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
 )
 
 // Image creates a disk image for the specified OS/ARCH/VM.

@@ -2,8 +2,8 @@ package dra
 
 import (
 	"context"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
 	"github.com/golang/protobuf/proto"
-	"github.com/google/syzkaller/pkg/log"
 	"google.golang.org/grpc"
 	"sync"
 	"time"

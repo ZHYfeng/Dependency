@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/syzkaller/prog"
-	_ "github.com/google/syzkaller/sys"
-	"github.com/google/syzkaller/tools/syz-trace2syz/parser"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/tools/syz-trace2syz/parser"
 )
 
 func TestParse(t *testing.T) {

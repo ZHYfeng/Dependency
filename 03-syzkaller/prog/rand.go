@@ -12,8 +12,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/google/syzkaller/pkg/ifuzz"
-	_ "github.com/google/syzkaller/pkg/ifuzz/generated" // pull in generated instruction descriptions
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ifuzz"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ifuzz/generated" // pull in generated instruction descriptions
 )
 
 type randGen struct {

@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/google/syzkaller/pkg/symbolizer"
-	"github.com/google/syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/symbolizer"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
 	"github.com/ianlancetaylor/demangle"
 )
 

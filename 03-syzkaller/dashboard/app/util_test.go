@@ -24,8 +24,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/dashboard/dashapi"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/syzkaller/dashboard/dashapi"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/aetest"

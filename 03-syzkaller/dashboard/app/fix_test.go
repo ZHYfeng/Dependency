@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/dashboard/dashapi"
 )
 
 // Basic scenario of marking a bug as fixed by a particular commit,

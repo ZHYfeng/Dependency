@@ -4,7 +4,7 @@
 package main
 
 import (
-	"github.com/google/syzkaller/pkg/compiler"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/compiler"
 )
 
 type windows struct{}

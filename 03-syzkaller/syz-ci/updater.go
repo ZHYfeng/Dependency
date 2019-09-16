@@ -12,12 +12,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/google/syzkaller/dashboard/dashapi"
-	"github.com/google/syzkaller/pkg/instance"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/pkg/osutil"
-	"github.com/google/syzkaller/pkg/vcs"
-	"github.com/google/syzkaller/sys"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/instance"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/vcs"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
 )
 
 const (

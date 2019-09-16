@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/syzkaller/prog"
-	_ "github.com/google/syzkaller/sys"
-	"github.com/google/syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
 )
 
 func TestGenerate(t *testing.T) {

@@ -12,8 +12,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/google/syzkaller/pkg/compiler"
-	"github.com/google/syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/compiler"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
 )
 
 func extract(info *compiler.ConstInfo, cc string, args []string, addSource string, declarePrintf bool) (

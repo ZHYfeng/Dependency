@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/google/syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
 )
 
 // Options control various aspects of source generation.

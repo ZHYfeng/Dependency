@@ -11,8 +11,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/google/syzkaller/prog"
-	"github.com/google/syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
 )
 
 func Write(p *prog.Prog, opts Options) ([]byte, error) {

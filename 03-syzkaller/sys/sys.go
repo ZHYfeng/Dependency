@@ -8,14 +8,14 @@ import (
 	"time"
 
 	// Import all targets, so that users only need to import sys.
-	_ "github.com/google/syzkaller/sys/akaros/gen"
-	_ "github.com/google/syzkaller/sys/freebsd/gen"
-	_ "github.com/google/syzkaller/sys/fuchsia/gen"
-	_ "github.com/google/syzkaller/sys/linux/gen"
-	_ "github.com/google/syzkaller/sys/netbsd/gen"
-	_ "github.com/google/syzkaller/sys/openbsd/gen"
-	_ "github.com/google/syzkaller/sys/test/gen"
-	_ "github.com/google/syzkaller/sys/windows/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/akaros/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/freebsd/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/fuchsia/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/linux/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/netbsd/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/openbsd/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/test/gen"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/windows/gen"
 )
 
 var (

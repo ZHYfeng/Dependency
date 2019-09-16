@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/google/syzkaller/pkg/mgrconfig"
-	"github.com/google/syzkaller/pkg/symbolizer"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/symbolizer"
 )
 
 func TestLinuxIgnores(t *testing.T) {

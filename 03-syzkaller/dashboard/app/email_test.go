@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/syzkaller/pkg/email"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/email"
 )
 
 func TestEmailReport(t *testing.T) {

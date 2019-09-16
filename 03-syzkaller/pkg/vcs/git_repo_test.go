@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/syzkaller/pkg/osutil"
 )
 
 func init() {

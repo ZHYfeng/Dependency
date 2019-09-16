@@ -6,9 +6,9 @@ package ipcconfig
 import (
 	"flag"
 
-	"github.com/google/syzkaller/pkg/ipc"
-	"github.com/google/syzkaller/prog"
-	"github.com/google/syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
 )
 
 var (

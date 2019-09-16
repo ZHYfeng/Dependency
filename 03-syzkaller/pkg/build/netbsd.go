@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/syzkaller/pkg/mgrconfig"
-	"github.com/google/syzkaller/pkg/osutil"
-	"github.com/google/syzkaller/pkg/report"
-	"github.com/google/syzkaller/vm"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/report"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/vm"
 )
 
 type netbsd struct{}

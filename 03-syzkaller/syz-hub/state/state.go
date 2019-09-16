@@ -12,11 +12,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/google/syzkaller/pkg/db"
-	"github.com/google/syzkaller/pkg/hash"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/pkg/osutil"
-	"github.com/google/syzkaller/prog"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/db"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
 )
 
 // State holds all internal syz-hub state including corpus,

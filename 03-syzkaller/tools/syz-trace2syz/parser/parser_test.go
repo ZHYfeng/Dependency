@@ -6,7 +6,7 @@ package parser
 import (
 	"testing"
 
-	_ "github.com/google/syzkaller/sys"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
 )
 
 func TestParseLoopBasic(t *testing.T) {

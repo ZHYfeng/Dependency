@@ -14,20 +14,20 @@ import (
 	"os"
 	"time"
 
-	"github.com/google/syzkaller/pkg/mgrconfig"
-	"github.com/google/syzkaller/pkg/osutil"
-	"github.com/google/syzkaller/pkg/report"
-	"github.com/google/syzkaller/vm/vmimpl"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/report"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/vmimpl"
 
 	// Import all VM implementations, so that users only need to import vm.
-	_ "github.com/google/syzkaller/vm/adb"
-	_ "github.com/google/syzkaller/vm/gce"
-	_ "github.com/google/syzkaller/vm/gvisor"
-	_ "github.com/google/syzkaller/vm/isolated"
-	_ "github.com/google/syzkaller/vm/kvm"
-	_ "github.com/google/syzkaller/vm/odroid"
-	_ "github.com/google/syzkaller/vm/qemu"
-	_ "github.com/google/syzkaller/vm/vmm"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/adb"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/gce"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/gvisor"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/isolated"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/kvm"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/odroid"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/qemu"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/vmm"
 )
 
 type Pool struct {

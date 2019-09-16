@@ -14,18 +14,18 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/google/syzkaller/pkg/hash"
-	"github.com/google/syzkaller/pkg/host"
-	"github.com/google/syzkaller/pkg/ipc"
-	"github.com/google/syzkaller/pkg/ipc/ipcconfig"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/pkg/osutil"
-	"github.com/google/syzkaller/pkg/rpctype"
-	"github.com/google/syzkaller/pkg/signal"
-	"github.com/google/syzkaller/prog"
-	_ "github.com/google/syzkaller/sys"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/host"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc/ipcconfig"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/signal"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
 
-	pb "github.com/google/syzkaller/pkg/dra"
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 )
 
 type Fuzzer struct {

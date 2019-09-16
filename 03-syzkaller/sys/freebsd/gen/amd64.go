@@ -3,8 +3,8 @@
 
 package gen
 
-import . "github.com/google/syzkaller/prog"
-import . "github.com/google/syzkaller/sys/freebsd"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/freebsd"
 
 func init() {
 	RegisterTarget(&Target{OS: "freebsd", Arch: "amd64", Revision: revision_amd64, PtrSize: 8, PageSize: 4096, NumPages: 4096, DataOffset: 536870912, Syscalls: syscalls_amd64, Resources: resources_amd64, Structs: structDescs_amd64, Consts: consts_amd64}, InitTarget)

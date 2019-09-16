@@ -12,12 +12,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/syzkaller/pkg/csource"
-	. "github.com/google/syzkaller/pkg/ipc"
-	"github.com/google/syzkaller/pkg/ipc/ipcconfig"
-	"github.com/google/syzkaller/pkg/osutil"
-	"github.com/google/syzkaller/prog"
-	_ "github.com/google/syzkaller/sys"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/csource"
+	. "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc/ipcconfig"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
 )
 
 const timeout = 10 * time.Second

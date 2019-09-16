@@ -9,10 +9,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/syzkaller/pkg/config"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/pkg/rpctype"
-	"github.com/google/syzkaller/syz-hub/state"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/config"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/syz-hub/state"
 )
 
 var (

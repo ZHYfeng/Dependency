@@ -2,7 +2,7 @@
 
 package gen
 
-import . "github.com/google/syzkaller/prog"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
 
 var Target_32 = &Target{OS: "test", Arch: "32", Revision: revision_32, PtrSize: 4, PageSize: 8192, NumPages: 2048, DataOffset: 536870912, Syscalls: syscalls_32, Resources: resources_32, Structs: structDescs_32, Consts: consts_32}
 

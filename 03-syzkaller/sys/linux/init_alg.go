@@ -6,7 +6,7 @@ package linux
 import (
 	"math/rand"
 
-	"github.com/google/syzkaller/prog"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
 )
 
 func (arch *arch) generateSockaddrAlg(g *prog.Gen, typ0 prog.Type, old prog.Arg) (

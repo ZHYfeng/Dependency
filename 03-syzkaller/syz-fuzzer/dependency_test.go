@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	pb "github.com/google/syzkaller/pkg/dra"
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"testing"
 )
 

@@ -3,8 +3,8 @@
 
 package gen
 
-import . "github.com/google/syzkaller/prog"
-import . "github.com/google/syzkaller/sys/fuchsia"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/fuchsia"
 
 func init() {
 	RegisterTarget(&Target{OS: "fuchsia", Arch: "arm64", Revision: revision_arm64, PtrSize: 8, PageSize: 4096, NumPages: 4096, DataOffset: 536870912, Syscalls: syscalls_arm64, Resources: resources_arm64, Structs: structDescs_arm64, Consts: consts_arm64}, InitTarget)

@@ -13,14 +13,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/google/syzkaller/pkg/cover"
-	pb "github.com/google/syzkaller/pkg/dra"
-	"github.com/google/syzkaller/pkg/hash"
-	"github.com/google/syzkaller/pkg/ipc"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/pkg/rpctype"
-	"github.com/google/syzkaller/pkg/signal"
-	"github.com/google/syzkaller/prog"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/signal"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
 )
 
 const (

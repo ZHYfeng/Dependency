@@ -2,8 +2,8 @@ package proggen
 
 import (
 	"bytes"
-	"github.com/google/syzkaller/prog"
-	"github.com/google/syzkaller/tools/syz-trace2syz/parser"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/tools/syz-trace2syz/parser"
 	"strconv"
 	"unicode"
 )

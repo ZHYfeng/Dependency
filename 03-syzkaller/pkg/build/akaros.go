@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/google/syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
 )
 
 type akaros struct{}

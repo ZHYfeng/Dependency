@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/google/syzkaller/pkg/symbolizer"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/symbolizer"
 )
 
 func TestOpenbsdSymbolizeLine(t *testing.T) {

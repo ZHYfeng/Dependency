@@ -3,9 +3,9 @@ package dra
 import (
 	"context"
 	"fmt"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
 	"github.com/golang/protobuf/proto"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/pkg/rpctype"
 	"google.golang.org/grpc"
 	"net"
 	"os"

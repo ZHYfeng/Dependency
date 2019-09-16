@@ -6,7 +6,7 @@ package report
 import (
 	"regexp"
 
-	"github.com/google/syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
 )
 
 type stub struct {

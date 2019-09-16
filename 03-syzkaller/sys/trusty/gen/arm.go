@@ -3,8 +3,8 @@
 
 package gen
 
-import . "github.com/google/syzkaller/prog"
-import . "github.com/google/syzkaller/sys/trusty"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/trusty"
 
 func init() {
 	RegisterTarget(&Target{OS: "trusty", Arch: "arm", Revision: revision_arm, PtrSize: 4, PageSize: 4096, NumPages: 4096, DataOffset: 536870912, Syscalls: syscalls_arm, Resources: resources_arm, Structs: structDescs_arm, Consts: consts_arm}, InitTarget)

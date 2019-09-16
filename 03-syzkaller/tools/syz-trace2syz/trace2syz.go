@@ -15,12 +15,12 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/google/syzkaller/pkg/db"
-	"github.com/google/syzkaller/pkg/log"
-	"github.com/google/syzkaller/pkg/osutil"
-	"github.com/google/syzkaller/prog"
-	_ "github.com/google/syzkaller/sys"
-	"github.com/google/syzkaller/tools/syz-trace2syz/proggen"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/db"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/tools/syz-trace2syz/proggen"
 )
 
 var (

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/google/syzkaller/pkg/compiler"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/compiler"
 )
 
 type akaros struct{}

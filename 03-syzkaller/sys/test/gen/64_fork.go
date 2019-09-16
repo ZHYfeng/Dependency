@@ -3,8 +3,8 @@
 
 package gen
 
-import . "github.com/google/syzkaller/prog"
-import . "github.com/google/syzkaller/sys/test"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+import . "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/test"
 
 func init() {
 	RegisterTarget(&Target{OS: "test", Arch: "64_fork", Revision: revision_64_fork, PtrSize: 8, PageSize: 8192, NumPages: 2048, DataOffset: 536870912, Syscalls: syscalls_64_fork, Resources: resources_64_fork, Structs: structDescs_64_fork, Consts: consts_64_fork}, InitTarget)

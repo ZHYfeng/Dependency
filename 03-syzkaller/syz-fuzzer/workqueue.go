@@ -6,9 +6,9 @@ package main
 import (
 	"sync"
 
-	pb "github.com/google/syzkaller/pkg/dra"
-	"github.com/google/syzkaller/pkg/ipc"
-	"github.com/google/syzkaller/prog"
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
 )
 
 // WorkQueue holds global non-fuzzing work items (see the Work* structs below).
