@@ -30,8 +30,15 @@
 *.exe
 *.out
 *.app
-/build/
-/cmake-build-debug/
+*.swp
+*~
+*.cfg
+workdir*
+*/build
+*/cmake-build-debug
+*/bin/
+
+# IDE
 */workspace.xml
 .vscode/*
 *.pb.*
