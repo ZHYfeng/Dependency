@@ -1,23 +1,27 @@
 #! /usr/bin/python3
 import os
 
-path_root = "~/data"
+path_home = os.path.expanduser("~")
+path_root = os.path.join(path_home, "data")
 path_git = os.path.join(path_root, "git")
-path_git_work = os.path.join(path_git, "work")
-path_result = os.path.join(path_git_work, "result")
-path_taint = os.path.join(path_git_work, "script/taint_info")
-file_default_json = os.path.join(path_git_work, "script/con/default.json")
+path_git_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+
+path_result = os.path.join(path_git_repo, "06-result")
+path_git_script = os.path.join(path_git_repo, "04-script")
+path_taint = os.path.join(path_git_script, "taint_info")
+file_default_json = os.path.join(path_git_script, "con/default.json")
 name_run = "run.py"
-path_default_run = os.path.join(path_git_work, "script/con", name_run)
+path_default_run = os.path.join(path_git_script, "con", name_run)
 name_run_bash = "run.bash"
-path_default_run_bash = os.path.join(path_git_work, "script/con", name_run_bash)
+path_default_run_bash = os.path.join(path_git_script, "con", name_run_bash)
+
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
 path_linux_bc = os.path.join(path_root, "benchmark/linux/16-linux-clang-np-bc-f")
 path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 
-path_syzkaller = os.path.join(path_git, "gopath/src/github.com/google/syzkaller")
+path_syzkaller = os.path.join(path_git_repo, "03-syzkaller")
 file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
 
 name_driver = "built-in"

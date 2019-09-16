@@ -43,7 +43,7 @@ workdir*
 */workspace.xml
 .vscode/*
 *.pb.*
-/result/*
+06-result/*
 
 built-in*
 *img*

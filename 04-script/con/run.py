@@ -7,13 +7,14 @@ import subprocess
 import sys
 import time
 
-path_root = "~/data"
+path_home = os.path.expanduser("~")
+path_root = os.path.join(path_home, "data")
 number_execute = 6
 path_current = os.getcwd()
 path_git = os.path.join(path_root, "git")
-path_syzkaller = os.path.join(path_git, "gopath/src/github.com/google/syzkaller")
-file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
-path_dra = os.path.join(path_git, "2018_dependency/build/tools/DRA/dra")
+path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018-dependency")
+path_dra = os.path.join(path_repo, "02-dependency/build/tools/DRA/dra")
+path_syzkaller = os.path.join(path_repo, "03-syzkaller/bin/syz-manager")
 path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
@@ -118,7 +119,7 @@ class Process:
         json.dump(c, f, indent=4)
         f.close()
 
-        self.cmd_syzkaller = file_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2 &"
+        self.cmd_syzkaller = path_syzkaller + " -config=./" + file_json + " 2>" + file_log_syzkaller + " 1>&2 &"
         self.t0 = time.time()
         self.real_execute(self.cmd_syzkaller, run_f)
 
