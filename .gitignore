@@ -37,8 +37,23 @@ workdir*
 */build
 */cmake-build-debug
 */bin/
+*.pyc
 
 # IDE
 */workspace.xml
 .vscode/*
 *.pb.*
+/result/*
+
+built-in*
+*img*
+*workdir*
+
+# Latex
+*.synctex.gz
+*.out
+*.log
+*.bbl
+*.blg
+*.cut
+*.aux
