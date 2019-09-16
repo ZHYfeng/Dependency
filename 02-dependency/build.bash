@@ -1,6 +1,5 @@
 #!/bin/bash
 export LLVM_DIR=/home/yuh/data/build/llvm-7.0.0.src/build
-git pull
 cd ./lib/RPC/ || exit
 ./build-protoc.sh
 cd ../../
