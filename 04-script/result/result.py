@@ -5,71 +5,26 @@ import sys
 
 import matplotlib.pyplot as plt
 import scipy.stats
-from result import DependencyRPC_pb2 as pb
 
-do_figure = True
-confidence = 0.95
-name_dev = "dev_"
-name_with_dra = "01-result-with-dra"
-name_without_dra = "02-result-without-dra"
-name_stat = "statistics.bin"
-name_stat_result = "statistics.txt"
-name_data = "data.bin"
-name_data_result = "data.txt"
-length = 1 * 24 * 60
-time_run = length * 60  # second
+from result import data
+from result import statistics
+from result import default
 
+class device:
+    def __init__(self, dir_path):
+        self.results_with_dra = results()
+        self.results_without_dra = results()
 
-def stat_print(f, stat):
-    f.write(str(stat))
+class results:
+    def __init__(self, dir_path):
+        self.results = []
 
 
-def stat_read(dir_path):
-    file_stat = os.path.join(dir_path, name_stat)
-    stat = pb.Statistics()
-    f = open(file_stat, "rb")
-    stat.ParseFromString(f.read())
-    f.close()
-    file_result = os.path.join(dir_path, name_stat_result)
-    f = open(file_result, "w")
-    stat_print(f, stat)
-    stat_print(f, stat_deal(stat))
-    f.close()
-
-    return stat
-
-
-def data_read(dir_path):
-    file_data = os.path.join(dir_path, name_data)
-    data = pb.Corpus()
-    if os.path.exists(file_data):
-        f = open(file_data, "rb")
-        data.ParseFromString(f.read())
-        f.close()
-        # data_deal(dir_path, data)
-    return data
-
-
-def data_deal(dir_path, data):
-    file_result = os.path.join(dir_path, name_data_result)
-    f = open(file_result, "w")
-    f.write(str(data))
-    f.close()
-
-
-def stats_read(path):
-    stats = []
-    if os.path.exists(path):
-        for (dir_path, dir_names, file_names) in os.walk(path):
-            for file_name in file_names:
-                if file_name.startswith(name_stat):
-                    stats.append(stat_read(dir_path))
-
-    return stats
-
+class result:
+    def __init__(self, dir_path):
 
 def axis_plot(name, x_axis, y_axis):
-    if not do_figure or len(y_axis) == 0:
+    if not default.do_figure or len(y_axis) == 0:
         return
     f = plt.figure()
     plt.plot(x_axis, y_axis)
@@ -100,78 +55,6 @@ def axises_plot(name, x_axis, y_axises, labels, line_styles, colors, title=""):
     plt.close(f)
 
 
-def stat_get_time_coverage(stat):
-    x_axis = []
-    y_axis = []
-    t0 = 0
-    num = 0
-    for i in stat.coverage.time:
-        while i.time > t0:
-            t0 = t0 + 60
-            x_axis.append(t0)
-            if i.time > t0:
-                y_axis.append(num)
-            else:
-                num = i.num
-                y_axis.append(num)
-
-    return x_axis, y_axis
-
-
-def s_add(stat1: pb.Statistic, stat2: pb.Statistic) -> pb.Statistic:
-    stat1.executeNum += stat2.executeNum
-    stat1.time += stat2.time
-    stat1.newTestCaseNum += stat2.newTestCaseNum
-    stat1.newAddressNum += stat2.newAddressNum
-    return stat1
-
-
-def s_copy(stat1: pb.Statistic, stat2: pb.Statistic) -> pb.Statistic:
-    stat1.name = stat2.name
-    stat1.executeNum = stat2.executeNum
-    stat1.time = stat2.time
-    stat1.newTestCaseNum = stat2.newTestCaseNum
-    stat1.newAddressNum = stat2.newAddressNum
-    return stat1
-
-
-def stat_deal(stat):
-    r = pb.Statistics()
-    s_copy(r.stat[pb.StatGenerate], stat.stat[pb.StatGenerate])
-    s_copy(r.stat[pb.StatFuzz], stat.stat[pb.StatFuzz])
-    s_copy(r.stat[pb.StatCandidate], stat.stat[pb.StatCandidate])
-    s_copy(r.stat[pb.StatTriage], stat.stat[pb.StatTriage])
-    s_add(r.stat[pb.StatTriage], stat.stat[pb.StatMinimize])
-    s_copy(r.stat[pb.StatSmash], stat.stat[pb.StatSmash])
-    s_add(r.stat[pb.StatSmash], stat.stat[pb.StatHint])
-    s_add(r.stat[pb.StatSmash], stat.stat[pb.StatSeed])
-    s_copy(r.stat[pb.StatDependency], stat.stat[pb.StatDependency])
-    return r
-
-
-def stats_get_average(stats):
-    r = pb.Statistics()
-    for stat in stats:
-        for s in stat.stat:
-            r.stat[s].name = stat.stat[s].name
-            s_add(r.stat[s], stat.stat[s])
-    s_length = len(stats)
-    for s in r.stat:
-        r.stat[s].executeNum = int(r.stat[s].executeNum / s_length)
-        r.stat[s].time = int(r.stat[s].time / s_length)
-        r.stat[s].newTestCaseNum = int(r.stat[s].newTestCaseNum / s_length)
-        r.stat[s].newAddressNum = int(r.stat[s].newAddressNum / s_length)
-    return r
-
-
-def result_deal(dir_path):
-    stat = stat_read(dir_path)
-    x_axis, y_axis = stat_get_time_coverage(stat)
-    file_figure = os.path.join(dir_path, "coverage.pdf")
-    axis_plot(file_figure, x_axis, y_axis)
-
-    data = data_read(dir_path)
-    return stat, x_axis, y_axis, data
 
 
 def axis_expansion(length, x_axises, y_axises):
@@ -224,28 +107,7 @@ def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
     return res
 
 
-def all_data_deal(path, data):
-    real_uncovered_address = {}
-    temp_uncovered_address = []
-    max_uncovered_address = {}
-    for d in data:
-        for u in d.uncovered_address:
-            if u not in temp_uncovered_address:
-                max_uncovered_address[u] = d.uncovered_address[u]
-                temp_uncovered_address.append(u)
-    for d in data:
-        for u in temp_uncovered_address:
-            if u not in d.uncovered_address:
-                temp_uncovered_address.remove(u)
 
-    for u in temp_uncovered_address:
-        real_uncovered_address[u] = max_uncovered_address[u]
-
-    file_result = os.path.join(path, name_data_result)
-    f = open(file_result, "w")
-    for u in real_uncovered_address:
-        f.write(uncovered_address_str(real_uncovered_address[u]))
-    f.close()
 
 
 def results_deal(path):
@@ -482,3 +344,13 @@ def get_stat_file(path):
                     result_deal(dir_path)
             if is_result:
                 break
+
+
+def result_deal(dir_path):
+    stat = statistics.statistic(dir_path)
+    x_axis, y_axis = stat_get_time_coverage(stat)
+    file_figure = os.path.join(dir_path, "coverage.pdf")
+    axis_plot(file_figure, x_axis, y_axis)
+
+    data = data_read(dir_path)
+    return stat, x_axis, y_axis, data
