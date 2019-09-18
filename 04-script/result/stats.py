@@ -20,7 +20,7 @@ class stats:
 
     def get_average(self):
         for ss in self.statistics:
-            for s in ss.stat:
+            for s in ss.stat.stat:
                 self.stat.stat.stat[s].name = ss.stat[s].name
                 s_add(self.stat.stat[s], ss.stat[s])
         s_length = len(self.statistics)
