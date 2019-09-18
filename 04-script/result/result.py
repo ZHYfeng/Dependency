@@ -113,6 +113,8 @@ class results:
                         self.statistics.statistics.append(r.stat)
                         self.axises.axises.append(r.axis)
 
+        print(self.axises)
+
         file_result = os.path.join(self.dir_path, default.name_stat_result)
         f = open(file_result, "w")
         self.statistics.get_average()
