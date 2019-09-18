@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "[*] Trying to generate protoc"
 protoc --cpp_out=../02-dependency/lib/RPC ./a2l.proto
 protoc --cpp_out=../02-dependency/lib/RPC ./DependencyRPC.proto
 
