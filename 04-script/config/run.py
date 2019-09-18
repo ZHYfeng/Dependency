@@ -12,7 +12,7 @@ path_root = os.path.join(path_home, "data")
 number_execute = 6
 path_current = os.getcwd()
 path_git = os.path.join(path_root, "git")
-path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018-dependency")
+path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
 path_dra = os.path.join(path_repo, "02-dependency/build/tools/DRA/dra")
 path_syzkaller = os.path.join(path_repo, "03-syzkaller/bin/syz-manager")
 path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
@@ -144,6 +144,8 @@ class Process:
     def close(self):
         for p in self.processes:
             os.killpg(os.getpgid(p.pid), signal.SIGTERM)
+
+    def remove(self):
         os.chdir(self.path)
         cmd_rm_img = "rm -rf img " + file_taint + " " + file_asm + " " + file_bc
         p_rm_img = subprocess.Popen(cmd_rm_img, shell=True, preexec_fn=os.setsid)
@@ -177,6 +179,9 @@ def main():
 
     time.sleep(time_run)
     # time.sleep(30)
+
+    for i in tasks:
+        i.remove()
 
     for i in tasks:
         i.close()

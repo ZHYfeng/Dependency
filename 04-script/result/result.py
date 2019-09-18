@@ -39,6 +39,8 @@ class device:
         max_coverage_without_dra = []
         for a in self.results_without_dra.axises.axises:
             max_coverage_without_dra.append(max(a.y_axis))
+        print(max_coverage_with_dra)
+        print(max_coverage_without_dra)
         self.statistic, self.p_value = scipy.stats.mannwhitneyu(max_coverage_with_dra, max_coverage_without_dra)
 
         file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
