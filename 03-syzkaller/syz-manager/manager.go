@@ -191,7 +191,7 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	mgr.initHTTP()
 	mgr.collectUsedFiles()
 
-	// Create gRPC server.
+	//Create gRPC server.
 	mgr.ss.Address = mgr.cfg.DRPC
 	mgr.ss.Dependency = mgr.cfg.Dependency
 	mgr.ss.RunDependencyRPCServer(&mgr.corpus)

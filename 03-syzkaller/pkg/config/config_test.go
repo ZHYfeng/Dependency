@@ -22,15 +22,16 @@ func TestLoad(t *testing.T) {
 		More NestedNested
 	}
 	type Config struct {
-		Foo int
-		Bar string
-		Baz string `json:"-"`
-		Raw json.RawMessage
-		Qux []string
-		Box Nested
-		Boq *Nested
-		Arr []Nested
-		T   time.Time
+		Foo        int
+		Bar        string
+		Baz        string `json:"-"`
+		Raw        json.RawMessage
+		Qux        []string
+		Box        Nested
+		Boq        *Nested
+		Arr        []Nested
+		T          time.Time
+		Dependency bool `json:"dependency"`
 	}
 
 	tests := []struct {
@@ -168,6 +169,13 @@ func TestLoad(t *testing.T) {
 			`{"t": "2000-01-02T03:04:05Z"}`,
 			Config{
 				T: time.Date(2000, 1, 2, 3, 4, 5, 0, time.UTC),
+			},
+			"",
+		},
+		{
+			`{"dependency": false}`,
+			Config{
+				Dependency: false,
 			},
 			"",
 		},

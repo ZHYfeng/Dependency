@@ -24,9 +24,9 @@ type Config struct {
 	Target string `json:"target"`
 	// TCP address to serve HTTP stats page (e.g. "localhost:50000").
 	HTTP string `json:"http"`
-	// TCP address to serve gRPC for dependency.
+	//// TCP address to serve gRPC for dependency.
 	DRPC string `json:"drpc"`
-	// enable dependency
+	//// enable dependency
 	Dependency bool `json:"dependency"`
 	// TCP address to serve RPC for fuzzer processes (optional).
 	RPC     string `json:"rpc,omitempty"`
