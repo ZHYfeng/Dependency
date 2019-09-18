@@ -26,6 +26,8 @@ type Config struct {
 	HTTP string `json:"http"`
 	// TCP address to serve gRPC for dependency.
 	DRPC string `json:"drpc"`
+	// enable dependency
+	Dependency bool `json:"dependency"`
 	// TCP address to serve RPC for fuzzer processes (optional).
 	RPC     string `json:"rpc,omitempty"`
 	Workdir string `json:"workdir"`

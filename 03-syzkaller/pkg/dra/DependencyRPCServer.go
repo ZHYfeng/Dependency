@@ -37,9 +37,10 @@ type Dependencys struct {
 
 // server is used to implement dra.DependencyServer.
 type Server struct {
-	address uint32
-	Port    int
-	Address string
+	address    uint32
+	Port       int
+	Address    string
+	Dependency bool
 
 	taskIndex        int
 	corpusDependency *Corpus
@@ -358,7 +359,7 @@ func (ss *Server) Update() {
 		ss.addInput(i)
 	}
 
-	// deal dependency
+	// deal Dependency
 	for _, d := range ss.newDependency.newDependency {
 		for _, wa := range d.WriteAddress {
 			ss.addWriteAddress(wa)
@@ -408,7 +409,7 @@ func (ss *Server) Update() {
 	// get new tasks
 	t := time.Now()
 	elapsed := t.Sub(ss.timeStart)
-	if elapsed.Seconds() > startTime {
+	if ss.Dependency && elapsed.Seconds() > startTime {
 		var task []*Task
 		for _, t := range ss.corpusDependency.Tasks.Task {
 			for u := range t.UncoveredAddress {
@@ -441,7 +442,7 @@ func (ss *Server) Update() {
 	var templog = ss.log.Name
 	ss.log.Name = ""
 	ss.logMu.Unlock()
-	f, _ := os.OpenFile("./dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	f, _ := os.OpenFile("./Dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(string(templog))
 	f.Close()
 
