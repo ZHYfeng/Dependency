@@ -125,8 +125,8 @@ class result:
         self.dir_path = dir_path
         self.data = data.data(self.dir_path)
         self.stat = stats.stat(self.dir_path)
-        self.x_axis, self.y_axis = self.stat.get_time_coverage()
-        self.axis = axis.axis(self.dir_path, self.x_axis, self.y_axis, '-')
+        self.stat.get_time_coverage()
+        self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
 
 
 def get_stat_file(path):

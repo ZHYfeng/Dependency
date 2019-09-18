@@ -6,7 +6,7 @@ from result import default
 class stats:
     def __init__(self, dir_path):
         self.dir_path = dir_path
-        self.statistics: [stat] = []
+        self.statistics = []
         self.stat = stat()
 
     def read(self):
@@ -36,6 +36,8 @@ class stat:
         self.dir_path = dir_path
         self.stat = pb.Statistics()
         self.stat_deal = pb.Statistics()
+        self.x_axis = []
+        self.y_axis = []
 
     def read(self):
         file_stat = os.path.join(self.dir_path, default.name_stat)
@@ -52,19 +54,17 @@ class stat:
             # f.close()
 
     def get_time_coverage(self):
-        x_axis = []
-        y_axis = []
         t0 = 0
         num = 0
         for i in self.stat.coverage.time:
             while i.time > t0:
                 t0 = t0 + 60
-                x_axis.append(t0)
+                self.x_axis.append(t0)
                 if i.time > t0:
-                    y_axis.append(num)
+                    self.y_axis.append(num)
                 else:
                     num = i.num
-                    y_axis.append(num)
+                    self.y_axis.append(num)
 
     def deal(self):
         s_copy(self.stat_deal.stat[pb.StatGenerate], self.stat.stat[pb.StatGenerate])
