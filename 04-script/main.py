@@ -1,9 +1,8 @@
 import sys
-import argparse
 
 from config import config
-from result import result
 from result import default
+from result import result
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -15,4 +14,3 @@ if __name__ == "__main__":
             if len(sys.argv) > 3:
                 default.do_figure = False
             result.get_stat_file(sys.argv[2])
-

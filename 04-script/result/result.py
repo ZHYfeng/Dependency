@@ -1,13 +1,12 @@
 #! /usr/bin/python3
 import os
-import statistics
-import sys
 
 import scipy.stats
-from result import data
-from result import stats
-from result import default
+
 from result import axis
+from result import data
+from result import default
+from result import stats
 
 
 class device:

@@ -1,7 +1,9 @@
 import os
 import statistics
+
 import matplotlib.pyplot as plt
 import scipy.stats
+
 from result import default
 
 

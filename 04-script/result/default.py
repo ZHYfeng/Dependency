@@ -7,5 +7,6 @@ name_stat = "statistics.bin"
 name_stat_result = "statistics.txt"
 name_data = "data.bin"
 name_data_result = "data.txt"
+name_basic = "basic"
 length = 1 * 24 * 60
 time_run = length * 60  # second
