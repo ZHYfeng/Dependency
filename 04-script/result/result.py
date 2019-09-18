@@ -3,308 +3,130 @@ import os
 import statistics
 import sys
 
-import matplotlib.pyplot as plt
 import scipy.stats
-
 from result import data
-from result import statistics
+from result import stats
 from result import default
+from result import axis
+
 
 class device:
-    def __init__(self, dir_path):
-        self.results_with_dra = results()
-        self.results_without_dra = results()
+    def __init__(self, dir_path, dir_name):
+        self.dir_path = dir_path
+        self.path_dev = os.path.join(self.dir_path, dir_name)
+
+        self.path_with_dra = os.path.join(self.path_dev, default.name_with_dra)
+        self.results_with_dra = results(self.path_with_dra, 'C0')
+        self.results_with_dra.deal()
+        self.path_without_dra = os.path.join(self.path_dev, default.name_without_dra)
+        self.results_without_dra = results(self.path_without_dra, 'C1')
+        self.results_without_dra.deal()
+
+        self.axises = axis.axises(self.path_dev)
+        self.axises.x_axis = self.results_with_dra.axises.x_axis
+        self.axises.y_axises = self.results_with_dra.axises.y_axises_statistics \
+                               + self.results_without_dra.axises.y_axises_statistics
+        self.axises.labels = self.results_with_dra.axises.labels_statistics \
+                             + self.results_without_dra.axises.labels_statistics
+        self.axises.line_styles = self.results_with_dra.axises.line_styles_statistics \
+                                  + self.results_without_dra.axises.line_styles_statistics
+        self.axises.colors = self.results_with_dra.axises.colors_statistics \
+                             + self.results_without_dra.axises.colors_statistics
+
+        max_coverage_with_dra = []
+        for a in self.results_with_dra.axises.axises:
+            max_coverage_with_dra.append(max(a.y_axis))
+        max_coverage_without_dra = []
+        for a in self.results_without_dra.axises.axises:
+            max_coverage_without_dra.append(max(a.y_axis))
+        self.statistic, self.p_value = scipy.stats.mannwhitneyu(max_coverage_with_dra, max_coverage_without_dra)
+
+        file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
+        title = " pvalue = " + str(self.p_value)
+        self.axises.plot(name=file_figure_all, title=title)
+
+        self.get_coverage()
+
+    def get_coverage(self):
+        max_coverage_with_dra = {}
+        for s in self.results_with_dra.statistics.statistics:
+            for a in s.coverage.coverage:
+                if a not in max_coverage_with_dra:
+                    max_coverage_with_dra[a] = 0
+                else:
+                    max_coverage_with_dra[a] = max_coverage_with_dra[a] + 1
+        max_coverage_without_dra = {}
+        for s in self.results_without_dra.statistics.statistics:
+            for a in s.coverage.coverage:
+                if a not in max_coverage_without_dra:
+                    max_coverage_without_dra[a] = 0
+                else:
+                    max_coverage_without_dra[a] = max_coverage_without_dra[a] + 1
+
+        unique_coverage_with_dra = {}
+        for a in max_coverage_with_dra:
+            if a not in max_coverage_without_dra:
+                unique_coverage_with_dra[a] = max_coverage_with_dra[a]
+
+        unique_coverage_without_dra = {}
+        for a in max_coverage_without_dra:
+            if a not in max_coverage_with_dra:
+                unique_coverage_without_dra[a] = max_coverage_without_dra[a]
+
+        max_coverage = {}
+        for a in max_coverage_without_dra:
+            max_coverage[a] = max_coverage_without_dra[a]
+        for a in max_coverage_with_dra:
+            if a not in max_coverage:
+                max_coverage[a] = 0
+            else:
+                max_coverage[a] = max_coverage[a] + max_coverage_with_dra[a]
+
+        file_result = os.path.join(self.path_dev, default.name_data_result)
+        f = open(file_result, "w")
+        f.write("unique_coverage_with_dra : " + str(len(unique_coverage_with_dra)) + "\n")
+        f.write(str(unique_coverage_with_dra))
+        f.write("unique_coverage_without_dra : " + str(len(unique_coverage_without_dra)) + "\n")
+        f.write(str(unique_coverage_without_dra))
+        f.write("max_coverage : " + str(len(max_coverage)) + "\n")
+
+        f.close()
+
 
 class results:
-    def __init__(self, dir_path):
+    def __init__(self, dir_path, color=''):
+        self.dir_path = dir_path
+        self.color = color
         self.results = []
+        self.statistics = stats.stats(self.dir_path)
+        self.axises = axis.axises(self.dir_path, self.color)
+
+    def deal(self):
+        if os.path.exists(self.dir_path):
+            for (dir_path, dir_names, file_names) in os.walk(self.dir_path):
+                for file_name in file_names:
+                    if file_name.startswith(default.name_stat):
+                        r = result(dir_path)
+                        self.results.append(r)
+                        self.statistics.statistics.append(r.stat)
+                        self.axises.axises.append(r.axis)
+
+        file_result = os.path.join(self.dir_path, default.name_stat_result)
+        f = open(file_result, "w")
+        self.statistics.get_average()
+        f.write(self.statistics.stat.stat)
+        self.statistics.stat.deal()
+        f.write(self.statistics.stat.stat_deal)
+        f.close()
 
 
 class result:
     def __init__(self, dir_path):
-
-def axis_plot(name, x_axis, y_axis):
-    if not default.do_figure or len(y_axis) == 0:
-        return
-    f = plt.figure()
-    plt.plot(x_axis, y_axis)
-    plt.xlabel('time:second')
-    plt.ylabel('coverage:address number')
-    plt.title(name)
-    f.savefig(fname=name, bbox_inches='tight', format="pdf")
-    plt.close(f)
-
-
-def axises_plot(name, x_axis, y_axises, labels, line_styles, colors, title=""):
-    if not do_figure or len(y_axises) == 0:
-        return
-    f = plt.figure()
-    if len(colors) == 0:
-        for i in range(len(labels)):
-            plt.plot(x_axis, y_axises[i], label=labels[i], linestyle=line_styles[i])
-    else:
-        for i in range(len(labels)):
-            plt.plot(x_axis, y_axises[i], label=labels[i], linestyle=line_styles[i], color=colors[i])
-
-    plt.xlabel('time:second')
-    plt.ylabel('coverage:address number')
-    plt.title(name + title)
-    if len(labels) != 0:
-        plt.legend()
-    f.savefig(fname=name, bbox_inches='tight', format="pdf")
-    plt.close(f)
-
-
-
-
-def axis_expansion(length, x_axises, y_axises):
-    for x in x_axises:
-        if len(x) != 0:
-            max_time = x[-1]
-        else:
-            max_time = 0
-        for i in range(length - len(x)):
-            max_time = max_time + 60
-            x.append(max_time)
-
-    for y in y_axises:
-        if len(y) != 0:
-            max_num = y[-1]
-        else:
-            max_num = 0
-        for i in range(length - len(y)):
-            y.append(max_num)
-    return x_axises, y_axises
-
-
-def result_get_from_sub_dir(stats, x_axises, y_axises, y_axises_statistics, labels, line_styles, path, name_label,
-                            data):
-    if os.path.exists(path):
-        s, x, y, ys, l, ls, d = results_deal(path)
-        for ss in s:
-            stats.append(ss)
-        for xx in x:
-            x_axises.append(xx)
-        for yy in y:
-            y_axises.append(yy)
-        for yyss in ys:
-            y_axises_statistics.append(yyss)
-        for ll in l:
-            labels.append(name_label + '-' + ll)
-        for llss in ls:
-            line_styles.append(llss)
-        for dd in d:
-            data.append(dd)
-
-
-def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
-    res = ""
-    res += "condition address : " + hex(uncovered_address.condition_address + 0xffffffff00000000 - 5) + "\n"
-    res += "uncovered address : " + hex(uncovered_address.uncovered_address + 0xffffffff00000000 - 5) + "\n"
-    for w in uncovered_address.write_address:
-        res += "write address : " + hex(w + 0xffffffff00000000 - 5) + "\n"
-    res += "\n"
-    return res
-
-
-
-
-
-def results_deal(path):
-    stats = []
-    x_axises = []
-    y_axises = []
-    data = []
-    labels = []
-    line_styles = []
-    colors = []
-
-    if os.path.exists(path):
-        for (dir_path, dir_names, file_names) in os.walk(path):
-            for file_name in file_names:
-                if file_name.startswith(name_stat):
-                    s, x, y, d = result_deal(dir_path)
-                    stats.append(s)
-                    x_axises.append(x)
-                    y_axises.append(y)
-                    data.append(d)
-                    labels.append(dir_path)
-                    line_styles.append('-')
-
-    stat = stats_get_average(stats)
-    file_result = os.path.join(path, name_stat_result)
-    f = open(file_result, "w")
-    stat_print(f, stat)
-    stat_print(f, stat_deal(stat))
-    f.close()
-
-    y_axises_statistics = []
-    labels_statistics = []
-    line_styles_statistics = []
-    colors_statistics = []
-
-    x_axises, y_axises = axis_expansion(length, x_axises, y_axises)
-    x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
-
-    y_axis_mean = [statistics.mean(e) for e in zip(*y_axises)]
-    y_axises_statistics.append(y_axis_mean)
-    labels_statistics.append("mean")
-    line_styles_statistics.append(':')
-    colors_statistics.append('C0')
-
-    y_axis_median = [statistics.median(e) for e in zip(*y_axises)]
-    y_axises_statistics.append(y_axis_median)
-    labels_statistics.append("median")
-    line_styles_statistics.append('-')
-    colors_statistics.append('C0')
-
-    y_axis_max = [max(e) for e in zip(*y_axises)]
-    y_axises_statistics.append(y_axis_max)
-    labels_statistics.append("max")
-    line_styles_statistics.append('--')
-    colors_statistics.append('C0')
-
-    y_axis_min = [min(e) for e in zip(*y_axises)]
-    y_axises_statistics.append(y_axis_min)
-    labels_statistics.append("min")
-    line_styles_statistics.append('--')
-    colors_statistics.append('C0')
-
-    y_axis_confidence_intervals_start = [
-        scipy.mean(e) - scipy.stats.sem(e) * scipy.stats.t.ppf((1 + confidence) / 2, len(e) - 1) for e in
-        zip(*y_axises)]
-    y_axises_statistics.append(y_axis_confidence_intervals_start)
-    labels_statistics.append("ci_start")
-    line_styles_statistics.append('-.')
-    colors_statistics.append('C0')
-
-    y_axis_confidence_intervals_end = [
-        scipy.mean(e) + scipy.stats.sem(e) * scipy.stats.t.ppf((1 + confidence) / 2, len(e) - 1) for e in
-        zip(*y_axises)]
-    y_axises_statistics.append(y_axis_confidence_intervals_end)
-    labels_statistics.append("ci_end")
-    line_styles_statistics.append('-.')
-    colors_statistics.append('C0')
-
-    if not len(y_axises) == 0:
-        file_figure_average = os.path.join(path, "coverage.pdf")
-        axises_plot(file_figure_average, x_axis, y_axises_statistics, labels_statistics, line_styles_statistics,
-                    colors_statistics)
-
-        file_figure_all = os.path.join(path, "all.pdf")
-        axises_plot(file_figure_all, x_axis, y_axises, labels, line_styles, colors)
-
-        all_data_deal(path, data)
-
-    return stats, x_axises, y_axises, y_axises_statistics, labels_statistics, line_styles_statistics, data
-
-
-def dev_deal(dir_path, dir_name):
-    stats = []
-    x_axises = []
-    y_axises = []
-    labels = []
-    line_styles = []
-    colors = []
-
-    stat_with_dra = []
-    y_axises_statistic_with_dra = []
-    y_axises_with_dra = []
-    labels_with_dra = []
-    line_styles_with_dra = []
-    colors_with_dra = []
-    data_with_dra = []
-
-    stat_without_dra = []
-    y_axises_statistic_without_dra = []
-    y_axises_without_dra = []
-    labels_without_dra = []
-    line_styles_without_dra = []
-    colors_without_dra = []
-    data_without_dra = []
-
-    path_dev = os.path.join(dir_path, dir_name)
-
-    path_with_dra = os.path.join(path_dev, name_with_dra)
-    result_get_from_sub_dir(stat_with_dra, x_axises, y_axises_with_dra, y_axises_statistic_with_dra, labels_with_dra,
-                            line_styles_with_dra, path_with_dra, name_with_dra, data_with_dra)
-    l = len(labels_with_dra)
-    for i in range(l):
-        colors_with_dra.append('C0')
-
-    path_without_dra = os.path.join(path_dev, name_without_dra)
-    result_get_from_sub_dir(stat_without_dra, x_axises, y_axises_without_dra, y_axises_statistic_without_dra,
-                            labels_without_dra,
-                            line_styles_without_dra, path_without_dra, name_without_dra, data_without_dra)
-    l = len(labels_without_dra)
-    for i in range(l):
-        colors_without_dra.append('C1')
-
-    y_axises = y_axises_statistic_with_dra + y_axises_statistic_without_dra
-    labels = labels_with_dra + labels_without_dra
-    line_styles = line_styles_with_dra + line_styles_without_dra
-    colors = colors_with_dra + colors_without_dra
-
-    max_coverage_with_dra = []
-    for y in y_axises_with_dra:
-        max_coverage_with_dra.append(max(y))
-    max_coverage_without_dra = []
-    for y in y_axises_without_dra:
-        max_coverage_without_dra.append(max(y))
-    statistic, p_value = scipy.stats.mannwhitneyu(max_coverage_with_dra, max_coverage_without_dra)
-
-    x_axises, y_axises = axis_expansion(length, x_axises, y_axises)
-    x_axis = [sum(e) / len(e) for e in zip(*x_axises)]
-    file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
-    axises_plot(file_figure_all, x_axis, y_axises, labels, line_styles, colors, " pvalue = " + str(p_value))
-
-    get_coverage(path_dev, stat_with_dra, stat_without_dra)
-
-
-def get_coverage(path_dev, stat_with_dra, stat_without_dra):
-    max_coverage_with_dra = {}
-    for s in stat_with_dra:
-        for a in s.coverage.coverage:
-            if a not in max_coverage_with_dra:
-                max_coverage_with_dra[a] = 0
-            else:
-                max_coverage_with_dra[a] = max_coverage_with_dra[a] + 1
-    max_coverage_without_dra = {}
-    for s in stat_without_dra:
-        for a in s.coverage.coverage:
-            if a not in max_coverage_without_dra:
-                max_coverage_without_dra[a] = 0
-            else:
-                max_coverage_without_dra[a] = max_coverage_without_dra[a] + 1
-
-    unique_coverage_with_dra = {}
-    for a in max_coverage_with_dra:
-        if a not in max_coverage_without_dra:
-            unique_coverage_with_dra[a] = max_coverage_with_dra[a]
-
-    unique_coverage_without_dra = {}
-    for a in max_coverage_without_dra:
-        if a not in max_coverage_with_dra:
-            unique_coverage_without_dra[a] = max_coverage_without_dra[a]
-
-    max_coverage = {}
-    for a in max_coverage_without_dra:
-        max_coverage[a] = max_coverage_without_dra[a]
-    for a in max_coverage_with_dra:
-        if a not in max_coverage:
-            max_coverage[a] = 0
-        else:
-            max_coverage[a] = max_coverage[a] + max_coverage_with_dra[a]
-
-    file_result = os.path.join(path_dev, name_data_result)
-    f = open(file_result, "w")
-    f.write("unique_coverage_with_dra : " + str(len(unique_coverage_with_dra)))
-    f.write(str(unique_coverage_with_dra))
-    f.write("unique_coverage_without_dra : " + str(len(unique_coverage_without_dra)))
-    f.write(str(unique_coverage_without_dra))
-    f.write("max_coverage : " + str(len(max_coverage)))
-
-    f.close()
+        self.dir_path = dir_path
+        self.data = data.data(self.dir_path)
+        self.stat = stats.stat(self.dir_path)
+        self.x_axis, self.y_axis = self.stat.get_time_coverage()
+        self.axis = axis.axis(self.dir_path, self.x_axis, self.y_axis, '-')
 
 
 def get_stat_file(path):
@@ -314,43 +136,33 @@ def get_stat_file(path):
 
     dir_name = os.path.basename(path)
     dir_path = os.path.dirname(path)
-    if dir_name.startswith(name_dev):
-        dev_deal(dir_path, dir_name)
-    elif dir_name.startswith(name_with_dra) or dir_name.startswith(name_without_dra):
+    if dir_name.startswith(default.name_dev):
+        device(dir_path, dir_name)
+    elif dir_name.startswith(default.name_with_dra) or dir_name.startswith(default.name_without_dra):
         path_results = os.path.join(dir_path, dir_name)
-        results_deal(path_results)
-    elif dir_name.startswith(name_stat):
-        result_deal(dir_path)
+        results(path_results)
+    elif dir_name.startswith(default.name_stat):
+        result(dir_path)
     else:
         for (dir_path, dir_names, file_names) in os.walk(path):
             for dir_name in dir_names:
-                if dir_name.startswith(name_dev):
+                if dir_name.startswith(default.name_dev):
                     is_dev = True
-                    dev_deal(dir_path, dir_name)
+                    device(dir_path, dir_name)
             if is_dev:
                 break
 
             for dir_name in dir_names:
-                if dir_name.startswith(name_with_dra) or dir_name.startswith(name_without_dra):
+                if dir_name.startswith(default.name_with_dra) or dir_name.startswith(default.name_without_dra):
                     is_dev = True
                     path_results = os.path.join(dir_path, dir_name)
-                    results_deal(path_results)
+                    results(path_results)
             if is_results:
                 break
 
             for file_name in file_names:
-                if file_name.startswith(name_stat):
+                if file_name.startswith(default.name_stat):
                     is_result = True
-                    result_deal(dir_path)
+                    result(dir_path)
             if is_result:
                 break
-
-
-def result_deal(dir_path):
-    stat = statistics.statistic(dir_path)
-    x_axis, y_axis = stat_get_time_coverage(stat)
-    file_figure = os.path.join(dir_path, "coverage.pdf")
-    axis_plot(file_figure, x_axis, y_axis)
-
-    data = data_read(dir_path)
-    return stat, x_axis, y_axis, data

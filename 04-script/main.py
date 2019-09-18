@@ -3,6 +3,7 @@ import argparse
 
 from config import config
 from result import result
+from result import default
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -12,6 +13,6 @@ if __name__ == "__main__":
             config.generate_dev_dir()
         if sys.argv[1] == "read" and len(sys.argv) > 2:
             if len(sys.argv) > 3:
-                result.do_figure = False
+                default.do_figure = False
             result.get_stat_file(sys.argv[2])
 
