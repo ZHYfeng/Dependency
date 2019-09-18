@@ -22,13 +22,13 @@ class stats:
         for ss in self.statistics:
             for s in ss.stat.stat:
                 self.stat.stat.stat[s].name = ss.stat[s].name
-                s_add(self.stat.stat[s], ss.stat[s])
+                s_add(self.stat.stat.stat[s], ss.stat.stat[s])
         s_length = len(self.statistics)
-        for s in self.stat.stat:
-            self.stat.stat[s].executeNum = int(self.stat.stat[s].executeNum / s_length)
-            self.stat.stat[s].time = int(self.stat.stat[s].time / s_length)
-            self.stat.stat[s].newTestCaseNum = int(self.stat.stat[s].newTestCaseNum / s_length)
-            self.stat.stat[s].newAddressNum = int(self.stat.stat[s].newAddressNum / s_length)
+        for s in self.stat.stat.stat:
+            self.stat.stat.stat[s].executeNum = int(self.stat.stat.stat[s].executeNum / s_length)
+            self.stat.stat.stat[s].time = int(self.stat.stat.stat[s].time / s_length)
+            self.stat.stat.stat[s].newTestCaseNum = int(self.stat.stat.stat[s].newTestCaseNum / s_length)
+            self.stat.stat.stat[s].newAddressNum = int(self.stat.stat.stat[s].newAddressNum / s_length)
 
 
 class stat:
