@@ -39,8 +39,6 @@ class device:
         max_coverage_without_dra = []
         for a in self.results_without_dra.axises.axises:
             max_coverage_without_dra.append(max(a.y_axis))
-        print(max_coverage_with_dra)
-        print(max_coverage_without_dra)
         self.statistic, self.p_value = scipy.stats.mannwhitneyu(max_coverage_with_dra, max_coverage_without_dra)
 
         file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
@@ -52,14 +50,14 @@ class device:
     def get_coverage(self):
         max_coverage_with_dra = {}
         for s in self.results_with_dra.statistics.statistics:
-            for a in s.coverage.coverage:
+            for a in s.real_stat.coverage.coverage:
                 if a not in max_coverage_with_dra:
                     max_coverage_with_dra[a] = 0
                 else:
                     max_coverage_with_dra[a] = max_coverage_with_dra[a] + 1
         max_coverage_without_dra = {}
         for s in self.results_without_dra.statistics.statistics:
-            for a in s.coverage.coverage:
+            for a in s.real_stat.coverage.coverage:
                 if a not in max_coverage_without_dra:
                     max_coverage_without_dra[a] = 0
                 else:
@@ -113,14 +111,12 @@ class results:
                         self.statistics.statistics.append(r.stat)
                         self.axises.axises.append(r.axis)
 
-        print(self.axises)
-
         file_result = os.path.join(self.dir_path, default.name_stat_result)
         f = open(file_result, "w")
         self.statistics.get_average()
-        f.write(str(self.statistics.stat.stat))
-        self.statistics.stat.deal()
-        f.write(str(self.statistics.stat.stat_deal))
+        f.write(str(self.statistics.deal.real_stat))
+        self.statistics.deal.deal()
+        f.write(str(self.statistics.deal.real_stat))
         f.close()
 
 
@@ -129,6 +125,7 @@ class result:
         self.dir_path = dir_path
         self.data = data.data(self.dir_path)
         self.stat = stats.stat(self.dir_path)
+        self.stat.read()
         self.stat.get_time_coverage()
         self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
 
