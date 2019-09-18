@@ -2,6 +2,7 @@
   "name": "linux",
   "target": "linux/amd64",
   "http": "127.0.0.1:22222",
+  "dependency" : true,
   "drpc": "127.0.0.1:22223",
   "workdir": "/home/yuh/data/git/work/result/result-with-dra/workdir",
   "kernel_obj": "/home/yuh/data/benchmark/linux/13-linux-clang-np",

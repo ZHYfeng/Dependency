@@ -104,17 +104,17 @@ class Process:
 
         run_f.write("cd " + path + "\n")
         os.chdir(self.path)
-        self.execute_syzkaller(run_f)
-        if dra:
-            self.execute_dra(run_f)
+        self.execute_syzkaller(run_f, dra)
+        self.execute_dra(run_f)
 
-    def execute_syzkaller(self, run_f):
+    def execute_syzkaller(self, run_f, dra=True):
         f = open(os.path.join(self.path, file_json), "r")
         c = json.load(f)
         f.close()
         c["http"] = "127.0.0.1:" + str(get_open_port())
         self.drpc = "127.0.0.1:" + str(get_open_port())
         c["drpc"] = self.drpc
+        c["dependency"] = dra
         f = open(os.path.join(self.path, file_json), "w")
         json.dump(c, f, indent=4)
         f.close()
