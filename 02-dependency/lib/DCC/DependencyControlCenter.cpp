@@ -94,45 +94,51 @@ namespace dra {
                     this->DM.uncover[u->uncovered_address()]->belong_to_Driver = true;
                 }
 
-                sta::MODS *write_basicblock = get_write_basicblock(u);
-                if (write_basicblock == nullptr) {
+                Dependency *dependency = new Dependency();
+                Input *input = dependency->mutable_input();
+                input->set_sig(dInput->sig);
+                input->set_program(dInput->program);
 
-                } else {
-
-                    Dependency *dependency = new Dependency();
-                    Input *input = dependency->mutable_input();
-                    input->set_sig(dInput->sig);
-                    input->set_program(dInput->program);
-
-                    unsigned long long int syzkallerConditionAddress = DM.getSyzkallerAddress(u->condition_address());
-                    unsigned long long int syzkallerUncoveredAddress = DM.getSyzkallerAddress(u->uncovered_address());
+                unsigned long long int syzkallerConditionAddress = DM.getSyzkallerAddress(u->condition_address());
+                unsigned long long int syzkallerUncoveredAddress = DM.getSyzkallerAddress(u->uncovered_address());
 #if DEBUG
-                    outputTime("");
+                outputTime("");
                     std::cout << "condition trace_pc_address : " << std::hex << u->condition_address() << "\n";
                     std::cout << "uncovered trace_pc_address : " << std::hex << u->uncovered_address() << "\n";
                     std::cout << "condition getSyzkallerAddress : " << std::hex << syzkallerConditionAddress << "\n";
                     std::cout << "uncovered getSyzkallerAddress : " << std::hex << syzkallerUncoveredAddress << "\n";
 #endif
 
-                    UncoveredAddress *uncoveredAddress = dependency->mutable_uncovered_address();
-                    uncoveredAddress->set_condition_address(syzkallerConditionAddress);
-                    uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
+                UncoveredAddress *uncoveredAddress = dependency->mutable_uncovered_address();
+                uncoveredAddress->set_condition_address(syzkallerConditionAddress);
+                uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
 
-                    if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
-                        DBasicBlock *db = DM.Address2BB[u->uncovered_address()]->parent;
-                        std::set<llvm::BasicBlock *> bbs;
-                        this->STA._get_all_successors(db->basicBlock, bbs);
-                        uncoveredAddress->set_bbcount(bbs.size());
-                    }
+                if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
+                    DBasicBlock *db = DM.Address2BB[u->uncovered_address()]->parent;
+                    std::set<llvm::BasicBlock *> bbs;
+                    this->STA._get_all_successors(db->basicBlock, bbs);
+                    uncoveredAddress->set_bbcount(bbs.size());
+                }
 
 
-                    (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
-                    (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
+                (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
+                (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
 
-                    set_runtime_data(uncoveredAddress->mutable_run_time_date(), input->program(), u->idx(),
-                                     syzkallerConditionAddress, syzkallerUncoveredAddress);
+                set_runtime_data(uncoveredAddress->mutable_run_time_date(), input->program(), u->idx(),
+                                 syzkallerConditionAddress, syzkallerUncoveredAddress);
 
-//                    (*dependency->mutable_uncovered_address())[syzkallerUncoveredAddress] = *uncoveredAddress;
+                sta::MODS *write_basicblock = get_write_basicblock(u);
+                if (write_basicblock == nullptr) {
+
+                    uncoveredAddress->set_kind(UncoveredAddressKind::Outside);
+
+                } else if (write_basicblock->size() == 0) {
+
+                    uncoveredAddress->set_kind(UncoveredAddressKind::InputRelated);
+
+                } else if (!write_basicblock->empty()) {
+
+                    uncoveredAddress->set_kind(UncoveredAddressKind::DependnecyRelated);
 
                     if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
                         this->DM.uncover[u->uncovered_address()]->related_to_gv = true;
@@ -167,10 +173,9 @@ namespace dra {
 //                        }
 
                     }
-
-                    this->send_dependency(dependency);
-                    dependency->Clear();
                 }
+                this->send_dependency(dependency);
+                dependency->Clear();
             }
         }
 
@@ -314,6 +319,7 @@ namespace dra {
             } else if (write_basicblock->size() == 0) {
                 // unrelated to gv
                 dra::outputTime("allBasicblock->size() == 0");
+                res = write_basicblock;
             } else if (!write_basicblock->empty()) {
                 dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
                 res = write_basicblock;

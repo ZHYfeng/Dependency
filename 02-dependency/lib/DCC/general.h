@@ -11,7 +11,7 @@
 #include <iostream>
 #include <llvm/IR/BasicBlock.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define DEBUG_ERR 1
 
 namespace dra {
