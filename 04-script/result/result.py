@@ -114,9 +114,9 @@ class results:
         file_result = os.path.join(self.dir_path, default.name_stat_result)
         f = open(file_result, "w")
         self.statistics.get_average()
-        f.write(self.statistics.stat.stat)
+        f.write(str(self.statistics.stat.stat))
         self.statistics.stat.deal()
-        f.write(self.statistics.stat.stat_deal)
+        f.write(str(self.statistics.stat.stat_deal))
         f.close()
 
 
