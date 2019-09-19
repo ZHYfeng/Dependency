@@ -74,3 +74,4 @@ def generate_dev_dir():
         shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
         shutil.copy(devices.path_default_run, devices.name_run)
         shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
+        shutil.copy(devices.path_default_remove_bash, devices.name_remove_bash)
