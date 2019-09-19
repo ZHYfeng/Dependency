@@ -808,18 +808,6 @@ func checkAddressesMap(Address map[uint32]uint32, cover cover.Cover) (res bool) 
 //	return false
 //}
 
-func (fuzzer *Fuzzer) addDInputFromAnotherFuzzer(Task *pb.Task) {
-	log.Logf(pb.DebugLevel, "dependencyInput : %v", Task)
-	//fuzzer.dManager.SendLog(fmt.Sprintf("dependencyInput : %v", dependencyInput))
-
-	//d := pb.CloneInput(dependencyInput)
-	fuzzer.workQueue.enqueue(&WorkDependency{
-		task: Task,
-		call: int(Task.Index),
-	})
-
-}
-
 //func (fuzzer *Fuzzer) corpusSigSnapshot() []string {
 //	fuzzer.corpusDMu.RLock()
 //	defer fuzzer.corpusDMu.RUnlock()

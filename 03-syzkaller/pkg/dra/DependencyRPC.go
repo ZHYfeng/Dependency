@@ -195,22 +195,28 @@ func (m *Task) MergeTask(s *Task) {
 func (ss Server) pickTask(name string) *Tasks {
 	tasks := &Tasks{
 		Name: name,
+		Kind: TaskKind_Normal,
 		Task: []*Task{},
 	}
 
 	f, ok := ss.fuzzers[name]
 	if ok {
 		f.taskMu.Lock()
+		if len(f.highTasks.Task) > 0 {
+			tasks.Kind = TaskKind_High
+			tasks.Task = append(tasks.Task, f.highTasks.Task...)
+			f.highTasks.Task = []*Task{}
+		} else {
+			last := len(f.newTask.Task)
+			if last > 0 {
+				if last > taskNum {
+					last = taskNum
+				} else {
 
-		last := len(f.newTask.Task)
-		if last > 0 {
-			if last > taskNum {
-				last = taskNum
-			} else {
-
+				}
+				tasks.Task = append(tasks.Task, f.newTask.Task[:last]...)
+				f.newTask.Task = f.newTask.Task[last:]
 			}
-			tasks.Task = append(tasks.Task, f.newTask.Task[:last]...)
-			f.newTask.Task = f.newTask.Task[last:]
 		}
 		f.taskMu.Unlock()
 	}
@@ -472,7 +478,7 @@ func (ss *Server) addInputTask(d *Input) {
 				return
 			}
 			for writeSig, indexBits := range wa.Input {
-				ss.addTasks(sig, inputIndexBits, writeSig, indexBits, w, u)
+				ss.addTasks(sig, inputIndexBits, writeSig, indexBits, w, u, false)
 			}
 		}
 	}
@@ -486,13 +492,13 @@ func (ss *Server) addWriteAddressTask(wa *WriteAddress, writeSig string, indexBi
 			return
 		}
 		for sig, inputIndexBits := range ua.Input {
-			ss.addTasks(sig, inputIndexBits, writeSig, indexBits, wa.WriteAddress, u)
+			ss.addTasks(sig, inputIndexBits, writeSig, indexBits, wa.WriteAddress, u, true)
 		}
 	}
 }
 
 func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
-	writeIndexBits uint32, writeAddress uint32, uncoveredAddress uint32) {
+	writeIndexBits uint32, writeAddress uint32, uncoveredAddress uint32, high bool) {
 
 	var i uint32
 	var index []uint32
@@ -510,7 +516,10 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 
 	for _, i := range index {
 		for _, wi := range writeIndex {
-			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress))
+			if high {
+				ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.HighTask)
+			}
+			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.Tasks)
 		}
 	}
 	return
@@ -575,7 +584,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 	return task
 }
 
-func (ss *Server) addTask(task *Task) {
+func (ss *Server) addTask(task *Task, tasks *Tasks) {
 	var uncoveredAddress uint32
 	var dr *RunTimeData
 	if len(task.UncoveredAddress) == 1 {
@@ -587,7 +596,7 @@ func (ss *Server) addTask(task *Task) {
 		log.Fatalf("addTask more than one uncovered address")
 	}
 
-	for _, t := range ss.corpusDependency.Tasks.Task {
+	for _, t := range tasks.Task {
 		if t.Sig == task.Sig && t.Index == task.Index &&
 			t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
 			t.updatePriority(task.Priority)
@@ -603,7 +612,7 @@ func (ss *Server) addTask(task *Task) {
 			return
 		}
 	}
-	ss.corpusDependency.Tasks.Task = append(ss.corpusDependency.Tasks.Task, task)
+	tasks.Task = append(tasks.Task, task)
 }
 
 func (t *Task) updatePriority(p1 uint32) {

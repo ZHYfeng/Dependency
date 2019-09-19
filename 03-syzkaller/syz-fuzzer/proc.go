@@ -84,6 +84,9 @@ func (proc *Proc) loop() {
 			case *WorkCandidate:
 				statName = pb.FuzzingStat_StatCandidate
 				proc.execute(proc.execOpts, item.p, item.flags, StatCandidate)
+			case *WorkDependency:
+				statName = pb.FuzzingStat_StatDependency
+				proc.dependency(item)
 			case *WorkSmash:
 				statName = pb.FuzzingStat_StatSmash
 				proc.smashInput(item)
@@ -93,7 +96,7 @@ func (proc *Proc) loop() {
 		} else {
 			r := rand.New(proc.rnd)
 			n := 4
-			m := 3
+			m := 2
 			if r.Intn(n) < m {
 				item := proc.fuzzer.workQueue.dequeueDependency()
 				if item != nil {

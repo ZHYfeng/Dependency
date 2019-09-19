@@ -17,14 +17,15 @@ import (
 const (
 	//startTime  = 21600
 	startTime  = 0
-	taskNum    = 100
+	taskNum    = 20
 	DebugLevel = 2
 )
 
 type syzFuzzer struct {
 	taskMu     *sync.Mutex
-	newTask    Tasks
-	returnTask Tasks
+	highTasks  *Tasks
+	newTask    *Tasks
+	returnTask *Tasks
 }
 
 type newStats struct {
@@ -147,11 +148,15 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	if !ok {
 		ss.fuzzers[name] = &syzFuzzer{
 			taskMu: &sync.Mutex{},
-			newTask: Tasks{
+			highTasks: &Tasks{
 				Name: name,
 				Task: []*Task{},
 			},
-			returnTask: Tasks{
+			newTask: &Tasks{
+				Name: name,
+				Task: []*Task{},
+			},
+			returnTask: &Tasks{
 				Name: name,
 				Task: []*Task{},
 			},
@@ -284,6 +289,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		WriteAddress:     map[uint32]*WriteAddress{},
 		IoctlCmd:         map[uint64]*IoctlCmd{},
 		Tasks:            &Tasks{Name: "", Task: []*Task{}},
+		HighTask:         &Tasks{Name: "", Task: []*Task{}},
 		NewInput:         map[string]*Input{},
 	}
 
@@ -410,31 +416,44 @@ func (ss *Server) Update() {
 	t := time.Now()
 	elapsed := t.Sub(ss.timeStart)
 	if ss.Dependency && elapsed.Seconds() > startTime {
-		var task []*Task
-		for _, t := range ss.corpusDependency.Tasks.Task {
-			for u := range t.UncoveredAddress {
-				_, ok := ss.corpusDependency.UncoveredAddress[u]
-				if ok {
 
-				} else {
-					delete(t.UncoveredAddress, u)
+		if len(ss.corpusDependency.HighTask.Task) != 0 {
+			for _, f := range ss.fuzzers {
+				f.taskMu.Lock()
+				f.highTasks.Task = append(f.highTasks.Task, ss.corpusDependency.HighTask.Task...)
+				f.taskMu.Unlock()
+			}
+			ss.corpusDependency.HighTask.Task = []*Task{}
+		} else {
+			var task []*Task
+			for _, t := range ss.corpusDependency.Tasks.Task {
+				for u := range t.UncoveredAddress {
+					_, ok := ss.corpusDependency.UncoveredAddress[u]
+					if ok {
+
+					} else {
+						delete(t.UncoveredAddress, u)
+					}
+				}
+				if len(t.UncoveredAddress) > 0 {
+					if t.TaskStatus == TaskStatus_untested {
+						t.TaskStatus = TaskStatus_testing
+						task = append(task, t)
+					} else if t.TaskStatus == TaskStatus_testing {
+						task = append(task, t)
+					} else if t.TaskStatus == TaskStatus_unstable {
+						task = append(task, t)
+					}
+					if len(task) > taskNum {
+						break
+					}
 				}
 			}
-			if len(t.UncoveredAddress) > 0 {
-				if t.TaskStatus == TaskStatus_untested {
-					t.TaskStatus = TaskStatus_testing
-					task = append(task, t)
-				} else if t.TaskStatus == TaskStatus_testing {
-					task = append(task, t)
-				} else if t.TaskStatus == TaskStatus_unstable {
-					task = append(task, t)
-				}
+			for _, f := range ss.fuzzers {
+				f.taskMu.Lock()
+				f.newTask.Task = append([]*Task{}, task...)
+				f.taskMu.Unlock()
 			}
-		}
-		for _, f := range ss.fuzzers {
-			f.taskMu.Lock()
-			f.newTask.Task = append([]*Task{}, task...)
-			f.taskMu.Unlock()
 		}
 	}
 
@@ -444,7 +463,7 @@ func (ss *Server) Update() {
 	ss.logMu.Unlock()
 	f, _ := os.OpenFile("./Dependency.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(string(templog))
-	f.Close()
+	_ = f.Close()
 
 	ss.statMu.Lock()
 	newStat := append([]*Statistic{}, ss.newStat.newStat...)

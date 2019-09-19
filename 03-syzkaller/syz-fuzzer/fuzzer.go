@@ -282,10 +282,20 @@ func (fuzzer *Fuzzer) pollLoop() {
 		//sig := hash.Hash(data)
 		//fuzzer.dManager.SendDependencyInput(sig.String())
 		log.Logf(0, "len(fuzzer.workQueue.dependency) %v", len(fuzzer.workQueue.dependency))
-		if len(fuzzer.workQueue.dependency) == 0 {
-			newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
+		newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
+		if newDependencyTasks.Kind == pb.TaskKind_High {
 			for _, Task := range newDependencyTasks.Task {
-				fuzzer.addDInputFromAnotherFuzzer(Task)
+				fuzzer.workQueue.enqueue(&WorkDependency{
+					task: Task,
+					call: int(Task.Index),
+				})
+			}
+		} else {
+			for _, Task := range newDependencyTasks.Task {
+				fuzzer.workQueue.addDependency(&WorkDependency{
+					task: Task,
+					call: int(Task.Index),
+				})
 			}
 		}
 		fuzzer.dManager.SSendLog()

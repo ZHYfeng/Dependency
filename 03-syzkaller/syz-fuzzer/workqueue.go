@@ -21,6 +21,7 @@ type WorkQueue struct {
 	candidate       []*WorkCandidate
 	triage          []*WorkTriage
 	smash           []*WorkSmash
+	high            []*WorkDependency
 	dependency      []*WorkDependency
 
 	procs          int
@@ -77,6 +78,12 @@ func newWorkQueue(procs int, needCandidates chan struct{}) *WorkQueue {
 	}
 }
 
+func (wq *WorkQueue) addDependency(task *WorkDependency) {
+	wq.mu.Lock()
+	defer wq.mu.Unlock()
+	wq.dependency = append(wq.dependency, task)
+}
+
 func (wq *WorkQueue) enqueue(item interface{}) {
 	wq.mu.Lock()
 	defer wq.mu.Unlock()
@@ -92,7 +99,7 @@ func (wq *WorkQueue) enqueue(item interface{}) {
 	case *WorkSmash:
 		wq.smash = append(wq.smash, item)
 	case *WorkDependency:
-		wq.dependency = append(wq.dependency, item)
+		wq.high = append(wq.high, item)
 	default:
 		panic("unknown work type")
 	}
@@ -100,7 +107,7 @@ func (wq *WorkQueue) enqueue(item interface{}) {
 
 func (wq *WorkQueue) dequeue() (item interface{}) {
 	wq.mu.RLock()
-	if len(wq.triageCandidate)+len(wq.candidate)+len(wq.triage)+len(wq.smash) == 0 {
+	if len(wq.triageCandidate)+len(wq.candidate)+len(wq.triage)+len(wq.high)+len(wq.smash) == 0 {
 		wq.mu.RUnlock()
 		return nil
 	}
@@ -120,6 +127,10 @@ func (wq *WorkQueue) dequeue() (item interface{}) {
 		last := len(wq.triage) - 1
 		item = wq.triage[last]
 		wq.triage = wq.triage[:last]
+	} else if len(wq.high) != 0 {
+		last := len(wq.high) - 1
+		item = wq.high[last]
+		wq.high = wq.high[:last]
 	} else if len(wq.smash) != 0 {
 		last := len(wq.smash) - 1
 		item = wq.smash[last]
