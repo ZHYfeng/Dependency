@@ -113,7 +113,7 @@ namespace dra {
                 uncoveredAddress->set_condition_address(syzkallerConditionAddress);
                 uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
 
-                if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
+                if (this->DM.Address2BB.find(u->uncovered_address()) != this->DM.Address2BB.end()) {
                     DBasicBlock *db = DM.Address2BB[u->uncovered_address()]->parent;
                     std::set<llvm::BasicBlock *> bbs;
                     this->STA._get_all_successors(db->basicBlock, bbs);
@@ -186,7 +186,7 @@ namespace dra {
         if (dependency != nullptr) {
 #if DEBUG_RPC
             auto ua = dependency->uncovered_address();
-            std::cout << "uncover condition address : " << ua.condition_address() << std::endl;
+            std::cout << "uncover condition address : " << std::hex << ua.condition_address() << std::endl;
             for (auto wa : dependency->write_address()) {
                 std::cout << "wa program : " << std::endl;
                 std::cout << wa.run_time_date().program();
