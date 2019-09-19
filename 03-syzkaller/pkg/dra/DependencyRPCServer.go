@@ -418,9 +418,23 @@ func (ss *Server) Update() {
 	if ss.Dependency && elapsed.Seconds() > startTime {
 
 		if len(ss.corpusDependency.HighTask.Task) != 0 {
+			var task []*Task
+			for _, t := range ss.corpusDependency.HighTask.Task {
+				for u := range t.UncoveredAddress {
+					_, ok := ss.corpusDependency.UncoveredAddress[u]
+					if ok {
+
+					} else {
+						delete(t.UncoveredAddress, u)
+					}
+				}
+				if len(t.UncoveredAddress) > 0 {
+					task = append(task, t)
+				}
+			}
 			for _, f := range ss.fuzzers {
 				f.taskMu.Lock()
-				f.highTasks.Task = append(f.highTasks.Task, ss.corpusDependency.HighTask.Task...)
+				f.highTasks.Task = append(f.highTasks.Task, task...)
 				f.taskMu.Unlock()
 			}
 			ss.corpusDependency.HighTask.Task = []*Task{}
