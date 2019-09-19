@@ -272,6 +272,7 @@ message Corpus {
     map<uint32, WriteAddress> write_address = 5;
     map<uint64, IoctlCmd> ioctl_cmd = 6;
     Tasks tasks = 7;
+    Tasks high_task = 8;
     map<string, Input> new_input = 9;
 }
 
@@ -337,8 +338,15 @@ message Task {
     uint32 remove_write_idx = 31;
 }
 
+enum TaskKind {
+    Normal = 0;
+    High = 1;
+}
+
+
 message Tasks {
     string name = 41;
+    TaskKind kind = 42;
     repeated Task task = 1;
 }
 
