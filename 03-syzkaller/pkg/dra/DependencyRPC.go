@@ -599,7 +599,6 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 	for _, t := range tasks.Task {
 		if t.Sig == task.Sig && t.Index == task.Index &&
 			t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
-			t.updatePriority(task.Priority)
 			if r, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 				t.UncoveredAddress[uncoveredAddress].Priority = ss.updatePriority(r.Priority, dr.Priority)
 			} else {
@@ -609,6 +608,7 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 				t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
 				t.TaskStatus = TaskStatus_untested
 			}
+			t.updatePriority(task.Priority)
 			return
 		}
 	}
