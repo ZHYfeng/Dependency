@@ -16,19 +16,32 @@ def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
 
 class data:
     def __init__(self, dir_path):
-        self.data = pb.Corpus()
+        self.real_data = pb.Corpus()
         self.dir_path = dir_path
+        self.uncovered_address_input = []
+        self.uncovered_address_dependency = []
+
+        self.read()
 
     def read(self):
         file_data = os.path.join(self.dir_path, default.name_data)
         if os.path.exists(file_data):
             f = open(file_data, "rb")
-            self.data.ParseFromString(f.read())
+            self.real_data.ParseFromString(f.read())
             f.close()
-            # data_deal(dir_path, data)
+
+            self.deal()
 
     def deal(self):
-        file_result = os.path.join(self.dir_path, default.name_data_result)
-        f = open(file_result, "w")
-        f.write(str(self.data))
-        f.close()
+
+        for a in self.real_data.uncovered_address:
+            kind = self.real_data.uncovered_address[a].kind
+            if kind == pb.InputRelated:
+                self.uncovered_address_input.append(a)
+            elif kind == pb.DependnecyRelated:
+                self.uncovered_address_dependency.append(a)
+
+        # file_result = os.path.join(self.dir_path, default.name_data_result)
+        # f = open(file_result, "w")
+        # f.write(str(self.real_data))
+        # f.close()
