@@ -108,25 +108,29 @@ class axises:
         self.y_axises_statistics.append(y_axis_mean)
         self.labels_statistics.append("mean")
         self.line_styles_statistics.append(':')
-        self.colors_statistics.append('C0')
+        if not self.color == '':
+            self.colors_statistics.append(self.color)
 
         y_axis_median = [statistics.median(e) for e in zip(*self.y_axises)]
         self.y_axises_statistics.append(y_axis_median)
         self.labels_statistics.append("median")
         self.line_styles_statistics.append('-')
-        self.colors_statistics.append(self.color)
+        if not self.color == '':
+            self.colors_statistics.append(self.color)
 
         y_axis_max = [max(e) for e in zip(*self.y_axises)]
         self.y_axises_statistics.append(y_axis_max)
         self.labels_statistics.append("max")
         self.line_styles_statistics.append('--')
-        self.colors_statistics.append(self.color)
+        if not self.color == '':
+            self.colors_statistics.append(self.color)
 
         y_axis_min = [min(e) for e in zip(*self.y_axises)]
         self.y_axises_statistics.append(y_axis_min)
         self.labels_statistics.append("min")
         self.line_styles_statistics.append('--')
-        self.colors_statistics.append(self.color)
+        if not self.color == '':
+            self.colors_statistics.append(self.color)
 
         y_axis_confidence_intervals_start = [
             scipy.mean(e) - scipy.stats.sem(e) * scipy.stats.t.ppf((1 + default.confidence) / 2, len(e) - 1) for e in
@@ -134,7 +138,8 @@ class axises:
         self.y_axises_statistics.append(y_axis_confidence_intervals_start)
         self.labels_statistics.append("ci_start")
         self.line_styles_statistics.append('-.')
-        self.colors_statistics.append(self.color)
+        if not self.color == '':
+            self.colors_statistics.append(self.color)
 
         y_axis_confidence_intervals_end = [
             scipy.mean(e) + scipy.stats.sem(e) * scipy.stats.t.ppf((1 + default.confidence) / 2, len(e) - 1) for e in
@@ -142,7 +147,8 @@ class axises:
         self.y_axises_statistics.append(y_axis_confidence_intervals_end)
         self.labels_statistics.append("ci_end")
         self.line_styles_statistics.append('-.')
-        self.colors_statistics.append(self.color)
+        if not self.color == '':
+            self.colors_statistics.append(self.color)
 
         if not len(self.y_axises) == 0:
             file_figure_average = os.path.join(self.dir_path, "coverage.pdf")
