@@ -68,7 +68,7 @@ class axises:
 
     def plot(self, name, y_axises=None, labels=None, line_styles=None, colors=None, title=""):
         if y_axises is None:
-            y_axises = self.axises
+            y_axises = self.y_axises
         if labels is None:
             labels = self.labels
         if line_styles is None:
