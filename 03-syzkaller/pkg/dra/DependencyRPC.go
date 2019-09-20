@@ -254,7 +254,6 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 		indexBits := uint32(1 << index)
 		for a := range call.Address {
 			if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
-				cwa := proto.Clone(wa).(*WriteAddress)
 				var usefulIndexBits uint32
 				waIndex, ok := wa.Input[sig]
 				if ok {
@@ -269,7 +268,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 					usefulIndexBits = indexBits
 					wa.Input[sig] = indexBits
 				}
-				ss.addWriteAddressTask(cwa, sig, usefulIndexBits)
+				ss.addWriteAddressTask(wa, sig, usefulIndexBits)
 				input := ss.corpusDependency.Input[sig]
 				if iIndex, ok := input.WriteAddress[a]; ok {
 					input.WriteAddress[a] = iIndex | indexBits
@@ -403,13 +402,15 @@ func (ss *Server) addCoveredAddress(input *Input) {
 		}
 	}
 
-	usefulInput := &UsefulInput{
-		Input:      input,
-		Time:       elapsed.Seconds(),
-		Num:        newAddressNum,
-		NewAddress: aa,
+	if newAddressNum > 100 {
+		usefulInput := &UsefulInput{
+			Input:      input,
+			Time:       elapsed.Seconds(),
+			Num:        newAddressNum,
+			NewAddress: aa,
+		}
+		ss.stat.UsefulInput = append(ss.stat.UsefulInput, usefulInput)
 	}
-	ss.stat.UsefulInput = append(ss.stat.UsefulInput, usefulInput)
 
 	return
 }
@@ -460,7 +461,7 @@ func (ss *Server) addWriteAddress(s *WriteAddress) {
 				waInput.WriteAddress[s.WriteAddress] = indexBits1
 			}
 		} else {
-			log.Fatalf("addWriteAddress not find sig")
+			log.Logf(0, "addWriteAddress not find sig")
 		}
 	}
 }

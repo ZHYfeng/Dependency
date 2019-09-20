@@ -350,23 +350,27 @@ func (ss *Server) Update() {
 	coveredInput := append([]*Input{}, ss.coveredInput.Input...)
 	ss.coveredInput = &Inputs{Input: []*Input{}}
 	ss.coveredInputMu.Unlock()
-
 	for _, i := range coveredInput {
 		ss.addCoveredAddress(i)
 	}
+	coveredInput = nil
 
 	// deal new input
 	ss.inputMu.Lock()
 	input := append([]*Input{}, ss.input.Input...)
 	ss.input = &Inputs{Input: []*Input{}}
 	ss.inputMu.Unlock()
-
 	for _, i := range input {
 		ss.addInput(i)
 	}
+	input = nil
 
 	// deal Dependency
-	for _, d := range ss.newDependency.newDependency {
+	ss.dependencyMu.Lock()
+	newDependency := append([]*Dependency{}, ss.newDependency.newDependency...)
+	ss.newDependency.newDependency = []*Dependency{}
+	ss.dependencyMu.Unlock()
+	for _, d := range newDependency {
 		for _, wa := range d.WriteAddress {
 			ss.addWriteAddress(wa)
 		}
@@ -374,6 +378,7 @@ func (ss *Server) Update() {
 		ss.addInput(d.Input)
 		ss.addInputTask(d.Input)
 	}
+	newDependency = nil
 
 	// deal retrun tasks
 	var returnTask []*Task
@@ -407,68 +412,72 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-
 	sort.Slice(ss.corpusDependency.Tasks.Task, func(i, j int) bool {
 		return ss.corpusDependency.Tasks.Task[i].Priority > ss.corpusDependency.Tasks.Task[j].Priority
 	})
+	returnTask = nil
 
 	// get new tasks
-	t := time.Now()
-	elapsed := t.Sub(ss.timeStart)
-	if ss.Dependency && elapsed.Seconds() > startTime {
+	if ss.Dependency {
+		t := time.Now()
+		elapsed := t.Sub(ss.timeStart)
+		if elapsed.Seconds() > startTime {
+			if len(ss.corpusDependency.HighTask.Task) != 0 {
+				var task []*Task
+				for _, t := range ss.corpusDependency.HighTask.Task {
+					for u := range t.UncoveredAddress {
+						_, ok := ss.corpusDependency.UncoveredAddress[u]
+						if ok {
 
-		if len(ss.corpusDependency.HighTask.Task) != 0 {
-			var task []*Task
-			for _, t := range ss.corpusDependency.HighTask.Task {
-				for u := range t.UncoveredAddress {
-					_, ok := ss.corpusDependency.UncoveredAddress[u]
-					if ok {
-
-					} else {
-						delete(t.UncoveredAddress, u)
+						} else {
+							delete(t.UncoveredAddress, u)
+						}
 					}
-				}
-				if len(t.UncoveredAddress) > 0 {
-					task = append(task, t)
-				}
-			}
-			for _, f := range ss.fuzzers {
-				f.taskMu.Lock()
-				f.highTasks.Task = append(f.highTasks.Task, task...)
-				f.taskMu.Unlock()
-			}
-			ss.corpusDependency.HighTask.Task = []*Task{}
-		} else {
-			var task []*Task
-			for _, t := range ss.corpusDependency.Tasks.Task {
-				for u := range t.UncoveredAddress {
-					_, ok := ss.corpusDependency.UncoveredAddress[u]
-					if ok {
-
-					} else {
-						delete(t.UncoveredAddress, u)
-					}
-				}
-				if len(t.UncoveredAddress) > 0 {
-					if t.TaskStatus == TaskStatus_untested {
-						t.TaskStatus = TaskStatus_testing
-						task = append(task, t)
-					} else if t.TaskStatus == TaskStatus_testing {
-						task = append(task, t)
-					} else if t.TaskStatus == TaskStatus_unstable {
+					if len(t.UncoveredAddress) > 0 {
 						task = append(task, t)
 					}
-					if len(task) > taskNum {
-						break
+				}
+				ss.corpusDependency.HighTask.Task = []*Task{}
+				for _, f := range ss.fuzzers {
+					f.taskMu.Lock()
+					f.highTasks.Task = append(f.highTasks.Task, task...)
+					f.taskMu.Unlock()
+				}
+				ss.corpusDependency.HighTask.Task = []*Task{}
+			} else {
+				var task []*Task
+				for _, t := range ss.corpusDependency.Tasks.Task {
+					for u := range t.UncoveredAddress {
+						_, ok := ss.corpusDependency.UncoveredAddress[u]
+						if ok {
+
+						} else {
+							delete(t.UncoveredAddress, u)
+						}
+					}
+					if len(t.UncoveredAddress) > 0 {
+						if t.TaskStatus == TaskStatus_untested {
+							t.TaskStatus = TaskStatus_testing
+							task = append(task, t)
+						} else if t.TaskStatus == TaskStatus_testing {
+							task = append(task, t)
+						} else if t.TaskStatus == TaskStatus_unstable {
+							task = append(task, t)
+						}
+						if len(task) > taskNum {
+							break
+						}
 					}
 				}
-			}
-			for _, f := range ss.fuzzers {
-				f.taskMu.Lock()
-				f.newTask.Task = append([]*Task{}, task...)
-				f.taskMu.Unlock()
+				for _, f := range ss.fuzzers {
+					f.taskMu.Lock()
+					f.newTask.Task = append([]*Task{}, task...)
+					f.taskMu.Unlock()
+				}
 			}
 		}
+	} else {
+		ss.corpusDependency.HighTask.Task = []*Task{}
 	}
 
 	ss.logMu.Lock()
@@ -483,7 +492,6 @@ func (ss *Server) Update() {
 	newStat := append([]*Statistic{}, ss.newStat.newStat...)
 	ss.newStat = &newStats{newStat: []*Statistic{}}
 	ss.statMu.Unlock()
-
 	for _, stat := range newStat {
 		s, ok := ss.stat.Stat[int32(stat.Name)]
 		if ok {
@@ -492,8 +500,8 @@ func (ss *Server) Update() {
 			ss.stat.Stat[int32(stat.Name)] = stat
 		}
 	}
+	newStat = nil
 
 	ss.writeStatisticsToDisk()
 	ss.writeCorpusToDisk()
-
 }
