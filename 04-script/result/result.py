@@ -109,9 +109,9 @@ class device:
 
         f = open(self.file_result, "a")
         f.write("unique_coverage_with_dra : " + str(len(unique_coverage_with_dra)) + "\n")
-        f.write(str(unique_coverage_with_dra))
+        f.write(str(unique_coverage_with_dra) + "\n")
         f.write("unique_coverage_without_dra : " + str(len(unique_coverage_without_dra)) + "\n")
-        f.write(str(unique_coverage_without_dra))
+        f.write(str(unique_coverage_without_dra) + "\n")
         f.write("max_coverage : " + str(len(max_coverage)) + "\n")
         f.close()
 
@@ -146,6 +146,8 @@ class results:
                         self.results.append(r)
                         self.statistics.statistics.append(r.stat)
                         self.axises.axises.append(r.axis)
+
+        self.axises.deal()
 
         file_result = os.path.join(self.dir_path, default.name_data_result)
         f = open(file_result, "w")
