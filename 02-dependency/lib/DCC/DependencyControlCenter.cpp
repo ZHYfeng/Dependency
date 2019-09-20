@@ -173,10 +173,7 @@ namespace dra {
 //                        }
 
                     }
-                }
-                if (uncoveredAddress->kind() == UncoveredAddressKind::Outside) {
 
-                } else {
                     this->send_dependency(dependency);
                 }
                 dependency->Clear();
