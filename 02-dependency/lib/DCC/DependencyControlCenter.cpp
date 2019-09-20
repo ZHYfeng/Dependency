@@ -173,8 +173,9 @@ namespace dra {
 //                        }
 
                     }
+
+                    this->send_dependency(dependency);
                 }
-                this->send_dependency(dependency);
                 dependency->Clear();
             }
         }
