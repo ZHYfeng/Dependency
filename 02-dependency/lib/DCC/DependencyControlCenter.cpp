@@ -115,9 +115,11 @@ namespace dra {
 
                 if (this->DM.Address2BB.find(u->uncovered_address()) != this->DM.Address2BB.end()) {
                     DBasicBlock *db = DM.Address2BB[u->uncovered_address()]->parent;
-                    std::set<llvm::BasicBlock *> bbs;
-                    this->STA._get_all_successors(db->basicBlock, bbs);
-                    uncoveredAddress->set_bbcount(bbs.size());
+//                    std::set<llvm::BasicBlock *> bbs;
+//                    this->STA._get_all_successors(db->basicBlock, bbs);
+//                    uint32_t bbcount = bbs.size();
+                    uint32_t bbcount = db->get_all_uncovered_basicblock_number();
+                    uncoveredAddress->set_bbcount(bbcount);
                 }
 
 

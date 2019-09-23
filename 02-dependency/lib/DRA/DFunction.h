@@ -79,6 +79,10 @@ namespace dra {
 
         void set_critical_condition();
 
+        uint32_t get_basicblock_number();
+
+        void get_function_call(std::set<llvm::Function *> &res);
+
     public:
         bool Objudump;
         bool AsmSourceCode;
@@ -107,6 +111,8 @@ namespace dra {
         std::set<llvm::BasicBlock *> order;
 
         bool critical_condition;
+
+        bool uncovered_basicblock;
 
     };
 

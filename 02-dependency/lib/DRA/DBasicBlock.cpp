@@ -12,6 +12,7 @@
 
 #include <llvm/IR/Instructions.h>
 #include "llvm/IR/CFG.h"
+#include "llvm/IR/CallSite.h"
 #include <iostream>
 
 #include "DFunction.h"
@@ -28,6 +29,7 @@ namespace dra {
         state = CoverKind::untest;
         tracr_num = 0;
         this->lastInput = nullptr;
+        this->basicblock_number = 1;
     }
 
     DBasicBlock::~DBasicBlock() = default;
@@ -335,6 +337,58 @@ namespace dra {
         std::string bbname = bb->getName().str();
         DBasicBlock *db = this->parent->BasicBlock[bbname];
         return db;
+    }
+
+    uint32_t DBasicBlock::get_uncovered_basicblock_number() {
+        if (this->state == CoverKind::cover) {
+            return 0;
+        } else {
+            uint32_t basicblock_number = 1;
+            return basicblock_number;
+        }
+    }
+
+    void DBasicBlock::get_function_call(std::set<llvm::Function *> &res) {
+        for (auto i : this->InstIR) {
+            if (i->i->getOpcode() == llvm::Instruction::Call) {
+                llvm::CallSite cs(i->i);
+                llvm::Function *f = cs.getCalledFunction();
+                if (f != nullptr && f != this->parent->function) {
+                    res.insert(f);
+                }
+            }
+        }
+        return;
+    }
+
+    uint32_t DBasicBlock::get_all_uncovered_basicblock_number() {
+        std::set<llvm::Function *> fcs;
+        std::set<llvm::Function *> newfc;
+        fcs.insert(this->parent->function);
+        this->basicblock_number = 1;
+        for (auto b : this->arrive) {
+            if (b.first->state != CoverKind::cover) {
+                this->basicblock_number++;
+            }
+            b.first->get_function_call(newfc);
+        }
+        while (!newfc.empty()) {
+            std::set<llvm::Function *> res;
+            for (auto f : newfc) {
+                fcs.insert(f);
+                DFunction *df = this->parent->parent->get_DF_from_f(f);
+                this->basicblock_number += df->get_basicblock_number();
+                df->get_function_call(res);
+            }
+            newfc.clear();
+            for (auto f : res) {
+                if (fcs.find(f) == fcs.end()) {
+                    newfc.insert(f);
+                    fcs.insert(f);
+                }
+            }
+        }
+        return this->basicblock_number;
     }
 
 } /* namespace dra */

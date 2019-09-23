@@ -71,6 +71,12 @@ namespace dra {
 
         DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
 
+        uint32_t get_uncovered_basicblock_number();
+
+        void get_function_call(std::set<llvm::Function *> &res);
+
+        uint32_t get_all_uncovered_basicblock_number();
+
     public:
         bool IR;
         bool AsmSourceCode;
@@ -82,6 +88,7 @@ namespace dra {
         uint64_t tracr_num;
         uint64_t trace_pc_address;
         uint64_t trace_cmp_address;
+        uint32_t basicblock_number;
 
         std::vector<DAInstruction *> InstASM;
         std::vector<DLInstruction *> InstIR;

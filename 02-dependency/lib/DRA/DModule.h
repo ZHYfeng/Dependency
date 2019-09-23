@@ -52,6 +52,12 @@ namespace dra {
 
         DFunction *CreatFunction(std::string Path, std::string FunctionName, FunctionKind kind);
 
+        DFunction *get_DF_from_f(llvm::Function *b);
+
+        DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
+
+        DBasicBlock *get_DB_from_i(llvm::Instruction *i);
+
     public:
         std::unique_ptr<llvm::Module> module;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;

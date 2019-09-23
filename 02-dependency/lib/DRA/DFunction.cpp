@@ -44,6 +44,7 @@ namespace dra {
         BasicBlockNum = 0;
 
         critical_condition = false;
+        this->uncovered_basicblock = false;
     }
 
     DFunction::~DFunction() = default;
@@ -257,6 +258,23 @@ namespace dra {
         for (auto db : this->BasicBlock) {
             db.second->set_critical_condition();
         }
+    }
+
+    uint32_t DFunction::get_basicblock_number() {
+        uint64_t uncovered_basicblock_number = 0;
+        for (auto b : this->BasicBlock) {
+            if (b.second->state != CoverKind::cover) {
+                uncovered_basicblock_number += b.second->get_uncovered_basicblock_number();
+            }
+        }
+        return 0;
+    }
+
+    void DFunction::get_function_call(std::set<llvm::Function *> &res) {
+        for (auto b : this->BasicBlock) {
+            b.second->get_function_call(res);
+        }
+        return;
     }
 
 } /* namespace dra */

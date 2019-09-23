@@ -339,32 +339,11 @@ namespace dra {
     }
 
     DBasicBlock *DataManagement::get_DB_from_bb(llvm::BasicBlock *b) {
-        llvm::BasicBlock *bb = dra::getRealBB(b);
-        std::string Path = dra::getFileName(bb->getParent());
-        std::string FunctionName = dra::getFunctionName(bb->getParent());
-        std::string bbname = bb->getName().str();
-        if (this->Modules->Function.find(Path) != this->Modules->Function.end()) {
-            auto p = this->Modules->Function[Path];
-            if (p.find(FunctionName) != p.end()) {
-                auto f = p[FunctionName];
-                if (f->BasicBlock.find(bbname) != f->BasicBlock.end()) {
-                    DBasicBlock *db = f->BasicBlock[bbname];
-                    return db;
-                } else {
-                    std::cerr << "get_DB_from_bb can not find bbname : " << bbname << std::endl;
-                }
-            } else {
-                std::cerr << "get_DB_from_bb can not find FunctionName : " << FunctionName << std::endl;
-            }
-        } else {
-            std::cerr << "get_DB_from_bb can not find Path : " << Path << std::endl;
-        }
-        return nullptr;
+        return this->Modules->get_DB_from_bb(b);
     }
 
     DBasicBlock *DataManagement::get_DB_from_i(llvm::Instruction *i) {
-        llvm::BasicBlock *bb = i->getParent();
-        return get_DB_from_bb(bb);
+        return this->Modules->get_DB_from_i(i);
     }
 
     bool DataManagement::check_uncovered_address(Condition *u) {

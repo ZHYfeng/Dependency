@@ -566,4 +566,50 @@ namespace dra {
         return function;
     }
 
+    DFunction *DModule::get_DF_from_f(llvm::Function *f) {
+        std::string Path = dra::getFileName(f);
+        std::string FunctionName = dra::getFunctionName(f);
+        if (this->Function.find(Path) != this->Function.end()) {
+            auto p = this->Function[Path];
+            if (p.find(FunctionName) != p.end()) {
+                auto f = p[FunctionName];
+                return f;
+            } else {
+                std::cerr << "get_DB_from_bb can not find FunctionName : " << FunctionName << std::endl;
+            }
+        } else {
+            std::cerr << "get_DF_from_f can not find Path : " << Path << std::endl;
+        }
+        return nullptr;
+    }
+
+    DBasicBlock *DModule::get_DB_from_bb(llvm::BasicBlock *b) {
+        llvm::BasicBlock *bb = dra::getRealBB(b);
+        std::string Path = dra::getFileName(bb->getParent());
+        std::string FunctionName = dra::getFunctionName(bb->getParent());
+        std::string bbname = bb->getName().str();
+        if (this->Function.find(Path) != this->Function.end()) {
+            auto p = this->Function[Path];
+            if (p.find(FunctionName) != p.end()) {
+                auto f = p[FunctionName];
+                if (f->BasicBlock.find(bbname) != f->BasicBlock.end()) {
+                    DBasicBlock *db = f->BasicBlock[bbname];
+                    return db;
+                } else {
+                    std::cerr << "get_DB_from_bb can not find bbname : " << bbname << std::endl;
+                }
+            } else {
+                std::cerr << "get_DB_from_bb can not find FunctionName : " << FunctionName << std::endl;
+            }
+        } else {
+            std::cerr << "get_DB_from_bb can not find Path : " << Path << std::endl;
+        }
+        return nullptr;
+    }
+
+    DBasicBlock *DModule::get_DB_from_i(llvm::Instruction *i) {
+        llvm::BasicBlock *bb = i->getParent();
+        return get_DB_from_bb(bb);
+    }
+
 } /* namespace dra */
