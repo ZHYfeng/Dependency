@@ -68,6 +68,9 @@ type Server struct {
 	newInputMu *sync.Mutex
 	newInput   *Inputs
 
+	needInputMu *sync.Mutex
+	needInput   *Inputs
+
 	inputMu *sync.Mutex
 	input   *Inputs
 
@@ -173,7 +176,7 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
-	log.Logf(DebugLevel, "(ss Server) SendNewInput")
+	log.Logf(DebugLevel, "(ss Server) SendNeedInput")
 
 	reply := &Empty{}
 	r := proto.Clone(request).(*Input)
@@ -181,8 +184,8 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	ss.newInputMu.Lock()
 	ss.newInput.Input = append(ss.newInput.Input, r)
 	last := len(ss.newInput.Input)
-	log.Logf(DebugLevel, "(ss Server) SendNewInput len of newInput : %v", last)
-	log.Logf(DebugLevel, "(ss Server) SendNewInput newInput : %v", r)
+	log.Logf(DebugLevel, "(ss Server) SendNeedInput len of newInput : %v", last)
+	log.Logf(DebugLevel, "(ss Server) SendNeedInput newInput : %v", r)
 	ss.newInputMu.Unlock()
 
 	ss.coveredInputMu.Lock()
@@ -286,6 +289,17 @@ func (ss Server) GetNeed(ctx context.Context, request *Empty) (*Empty, error) {
 	return reply, nil
 }
 
+func (ss Server) SendNeedInput(ctx context.Context, request *Input) (*Empty, error) {
+	reply := &Empty{}
+	r := proto.Clone(request).(*Input)
+
+	ss.needInputMu.Lock()
+	ss.needInput.Input = append(ss.needInput.Input, r)
+	ss.needInputMu.Unlock()
+
+	return reply, nil
+}
+
 func (ss *Server) SetAddress(address uint32) {
 	ss.address = address
 }
@@ -340,6 +354,9 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.newInputMu = &sync.Mutex{}
 	ss.newInput = &Inputs{Input: []*Input{}}
 
+	ss.needInputMu = &sync.Mutex{}
+	ss.needInput = &Inputs{Input: []*Input{}}
+
 	ss.inputMu = &sync.Mutex{}
 	ss.input = &Inputs{Input: []*Input{}}
 
@@ -392,6 +409,16 @@ func (ss *Server) Update() {
 		ss.needWriteaddress = false
 	}
 	input = nil
+
+	// deal need input
+	ss.needInputMu.Lock()
+	needInput := append([]*Input{}, ss.needInput.Input...)
+	ss.needInput = &Inputs{Input: []*Input{}}
+	ss.needInputMu.Unlock()
+	for _, i := range needInput {
+		ss.addInput(i)
+	}
+	needInput = nil
 
 	// deal Dependency
 	ss.dependencyMu.Lock()

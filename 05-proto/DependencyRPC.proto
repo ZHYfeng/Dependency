@@ -40,6 +40,8 @@ service DependencyRPC {
     }
     rpc GetNeed (Empty) returns (Empty) {
     }
+    rpc SendNeedInput (Input) returns (Empty) {
+    }
 }
 
 

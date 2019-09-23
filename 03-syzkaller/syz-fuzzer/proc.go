@@ -363,7 +363,7 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 		n := 100
 		m := 1
 		if r.Intn(n) < m {
-			proc.SendNewInput(p, info)
+			proc.SendNeedInput(p, info)
 		}
 	}
 

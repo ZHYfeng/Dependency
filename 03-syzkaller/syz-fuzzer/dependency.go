@@ -882,7 +882,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	}
 
 	if tflags {
-		//fuzzer.dManager.SendNewInput(input)
+		//fuzzer.dManager.SendNeedInput(input)
 	}
 
 	//for _, cc := range info.Calls {
@@ -893,7 +893,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	return
 }
 
-func (proc *Proc) SendNewInput(p *prog.Prog, info *ipc.ProgInfo) {
+func (proc *Proc) SendNeedInput(p *prog.Prog, info *ipc.ProgInfo) {
 	data := p.Serialize()
 	sig := hash.Hash(data)
 	input := pb.Input{
@@ -931,5 +931,5 @@ func (proc *Proc) SendNewInput(p *prog.Prog, info *ipc.ProgInfo) {
 		}
 	}
 
-	proc.fuzzer.dManager.SendNewInput(&input)
+	proc.fuzzer.dManager.SendNeedInput(&input)
 }
