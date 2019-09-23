@@ -538,7 +538,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		WriteIndex:             writeIndex,
 		WriteProgram:           []byte{},
 		WriteAddress:           writeAddress,
-		Priority:               1,
+		Priority:               10,
 		UncoveredAddress:       map[uint32]*RunTimeData{},
 		CoveredAddress:         map[uint32]*RunTimeData{},
 		TaskStatus:             TaskStatus_untested,
