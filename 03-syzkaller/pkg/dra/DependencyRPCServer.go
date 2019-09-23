@@ -415,7 +415,7 @@ func (ss *Server) Update() {
 		}
 	}
 	sort.Slice(ss.corpusDependency.Tasks.Task, func(i, j int) bool {
-		return ss.corpusDependency.Tasks.Task[i].Priority > ss.corpusDependency.Tasks.Task[j].Priority
+		return ss.corpusDependency.Tasks.Task[i].getRealPriority() > ss.corpusDependency.Tasks.Task[j].getRealPriority()
 	})
 	returnTask = nil
 

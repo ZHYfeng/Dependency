@@ -4,6 +4,7 @@ import (
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
 	"github.com/golang/protobuf/proto"
 	"io/ioutil"
+	"math"
 	"os"
 	"time"
 )
@@ -159,11 +160,11 @@ func (ss Server) reducePriority(m *Task) {
 }
 
 func (m *Task) increasePriority() {
-	m.Priority = m.Priority * 2
+	m.Priority++
 }
 
 func (m *Task) reducePriority() {
-	m.Priority = m.Priority / 2
+	m.Priority--
 }
 
 func (m *Task) MergeTask(s *Task) {
@@ -537,7 +538,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		WriteIndex:             writeIndex,
 		WriteProgram:           []byte{},
 		WriteAddress:           writeAddress,
-		Priority:               0,
+		Priority:               1,
 		UncoveredAddress:       map[uint32]*RunTimeData{},
 		CoveredAddress:         map[uint32]*RunTimeData{},
 		TaskStatus:             TaskStatus_untested,
@@ -581,8 +582,6 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		RightBranchAddress:      []uint32{},
 	}
 
-	task.Priority = task.UncoveredAddress[uncoveredAddress].Priority
-
 	return task
 }
 
@@ -601,8 +600,8 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 	for _, t := range tasks.Task {
 		if t.Sig == task.Sig && t.Index == task.Index &&
 			t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
-			if r, ok := t.UncoveredAddress[uncoveredAddress]; ok {
-				t.UncoveredAddress[uncoveredAddress].Priority = ss.updatePriority(r.Priority, dr.Priority)
+			if _, ok := t.UncoveredAddress[uncoveredAddress]; ok {
+				t.UncoveredAddress[uncoveredAddress].updatePriority(dr.Priority)
 			} else {
 				if t.UncoveredAddress == nil {
 					t.UncoveredAddress = map[uint32]*RunTimeData{}
@@ -617,14 +616,23 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 	tasks.Task = append(tasks.Task, task)
 }
 
-func (t *Task) updatePriority(p1 uint32) {
-	t.Priority = t.Priority + p1
+func (m *Task) updatePriority(p1 int32) {
+	m.Priority = m.Priority + p1
 	return
 }
 
-func (ss *Server) updatePriority(p1 uint32, p2 uint32) uint32 {
-	priority := p1 + p2
-	return priority
+func (m *Task) getRealPriority() float64 {
+	var p uint32
+	for _, r := range m.UncoveredAddress {
+		p += r.Priority
+	}
+	res := float64(p) * (math.Pow(2, float64(m.Priority)))
+	return res
+}
+
+func (m *RunTimeData) updatePriority(p1 uint32) {
+	m.Priority += p1
+	return
 }
 
 func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint32 {
