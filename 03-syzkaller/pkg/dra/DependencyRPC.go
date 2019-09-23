@@ -34,7 +34,7 @@ func (m *Input) MergeInput(d *Input) {
 				Address: make(map[uint32]uint32),
 				Idx:     u.Idx,
 			}
-			d.Call[i] = call
+			m.Call[i] = call
 		}
 
 		for a := range u.Address {
@@ -269,14 +269,16 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 					wa.Input[sig] = indexBits
 				}
 				ss.addWriteAddressTask(wa, sig, usefulIndexBits)
-				input := ss.corpusDependency.Input[sig]
-				if iIndex, ok := input.WriteAddress[a]; ok {
-					input.WriteAddress[a] = iIndex | indexBits
-				} else {
-					if input.WriteAddress == nil {
-						input.WriteAddress = map[uint32]uint32{}
+				input, ok := ss.corpusDependency.Input[sig]
+				if ok {
+					if iIndex, ok := input.WriteAddress[a]; ok {
+						input.WriteAddress[a] = iIndex | indexBits
+					} else {
+						if input.WriteAddress == nil {
+							input.WriteAddress = map[uint32]uint32{}
+						}
+						input.WriteAddress[a] = indexBits
 					}
-					input.WriteAddress[a] = indexBits
 				}
 			} else {
 			}
@@ -313,11 +315,10 @@ func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
 }
 
 func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
-	u1, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return
 	}
-	u := proto.Clone(u1).(*UncoveredAddress)
 
 	for sig, _ := range u.Input {
 		input, ok := ss.corpusDependency.Input[sig]

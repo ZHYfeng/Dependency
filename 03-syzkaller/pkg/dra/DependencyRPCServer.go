@@ -443,7 +443,7 @@ func (ss *Server) Update() {
 					f.highTasks.Task = append(f.highTasks.Task, task...)
 					f.taskMu.Unlock()
 				}
-				ss.corpusDependency.HighTask.Task = []*Task{}
+				task = nil
 			} else {
 				var task []*Task
 				for _, t := range ss.corpusDependency.Tasks.Task {
@@ -474,6 +474,7 @@ func (ss *Server) Update() {
 					f.newTask.Task = append([]*Task{}, task...)
 					f.taskMu.Unlock()
 				}
+				task = nil
 			}
 		}
 	} else {
