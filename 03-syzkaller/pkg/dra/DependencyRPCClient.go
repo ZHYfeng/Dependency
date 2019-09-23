@@ -164,3 +164,15 @@ func (d *DRPCClient) SendStat(stat *Statistic) (*Empty, error) {
 	log.Logf(1, "Dependency gRPC sendStat reply.Name : %v", reply.Name)
 	return reply, nil
 }
+
+func (d *DRPCClient) GetNeed() (*Empty, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+	request := &Empty{}
+	r, err := d.c.GetNeed(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
+	if err != nil {
+		log.Fatalf("Dependency gRPC could not sendStat: %v", err)
+	}
+	reply := proto.Clone(r).(*Empty)
+	return reply, nil
+}

@@ -892,3 +892,44 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	fuzzer.coverMu.Unlock()
 	return
 }
+
+func (proc *Proc) SendNewInput(p *prog.Prog, info *ipc.ProgInfo) {
+	data := p.Serialize()
+	sig := hash.Hash(data)
+	input := pb.Input{
+		Sig:     sig.String(),
+		Program: []byte{},
+		Call:    make(map[uint32]*pb.Call),
+		Stat:    pb.FuzzingStat_StatTriage,
+	}
+
+	for _, c := range data {
+		input.Program = append(input.Program, c)
+	}
+
+	//log.Logf(2, "data :\n%s", data)
+	//log.Logf(2, "input.Program :\n%s", input.Program)
+
+	for i, c := range info.Calls {
+		cc := &pb.Call{
+			Idx:     uint32(i),
+			Address: make(map[uint32]uint32),
+		}
+		input.Call[uint32(i)] = cc
+		for _, a := range c.Cover {
+			cc.Address[a] = 0
+		}
+	}
+
+	for _, c := range p.Comments {
+		i, ok := pb.FuzzingStat_value[c]
+		if ok {
+			input.Stat = pb.FuzzingStat(i)
+		}
+		if c == "StatDependency" {
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : \n%s", data))
+		}
+	}
+
+	proc.fuzzer.dManager.SendNewInput(&input)
+}

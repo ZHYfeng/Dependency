@@ -38,6 +38,8 @@ service DependencyRPC {
     }
     rpc sendStat (Statistic) returns (Empty) {
     }
+    rpc GetNeed (Empty) returns (Empty) {
+    }
 }
 
 

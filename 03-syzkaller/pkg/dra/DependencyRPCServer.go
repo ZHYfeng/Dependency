@@ -17,6 +17,7 @@ import (
 const (
 	//startTime  = 21600
 	startTime  = 0
+	newTime    = 600
 	taskNum    = 20
 	DebugLevel = 2
 )
@@ -50,8 +51,10 @@ type Server struct {
 	fuzzerMu *sync.Mutex
 	fuzzers  map[string]*syzFuzzer
 
-	corpus    *map[string]rpctype.RPCInput
-	timeStart time.Time
+	corpus           *map[string]rpctype.RPCInput
+	timeStart        time.Time
+	timeNew          time.Time
+	needWriteaddress bool
 
 	logMu *sync.Mutex
 	log   *Empty
@@ -272,6 +275,17 @@ func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, erro
 	return reply, nil
 }
 
+func (ss Server) GetNeed(ctx context.Context, request *Empty) (*Empty, error) {
+
+	reply := &Empty{}
+	if ss.needWriteaddress {
+		reply.Address = 1
+	} else {
+		reply.Address = 0
+	}
+	return reply, nil
+}
+
 func (ss *Server) SetAddress(address uint32) {
 	ss.address = address
 }
@@ -308,6 +322,8 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	ss.corpus = corpus
 	ss.timeStart = time.Now()
+	ss.timeNew = time.Now()
+	ss.needWriteaddress = false
 
 	ss.logMu = &sync.Mutex{}
 	ss.log = &Empty{
@@ -364,6 +380,16 @@ func (ss *Server) Update() {
 	ss.inputMu.Unlock()
 	for _, i := range input {
 		ss.addInput(i)
+	}
+	if len(input) == 0 {
+		t := time.Now()
+		elapsed := t.Sub(ss.timeNew)
+		if elapsed.Seconds() > newTime {
+			ss.needWriteaddress = true
+		}
+	} else {
+		ss.timeNew = time.Now()
+		ss.needWriteaddress = false
 	}
 	input = nil
 

@@ -358,6 +358,15 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 		proc.enqueueCallTriage(p, flags, -1, info.Extra)
 	}
 
+	if proc.fuzzer.need {
+		r := rand.New(proc.rnd)
+		n := 100
+		m := 1
+		if r.Intn(n) < m {
+			proc.SendNewInput(p, info)
+		}
+	}
+
 	return info
 }
 

@@ -57,6 +57,7 @@ type Fuzzer struct {
 	logMu sync.Mutex
 
 	dManager *pb.DRPCClient
+	need     bool
 	//corpusDMu        sync.RWMutex
 	//corpusSig        []string
 	//corpusDependency map[string]*prog.Prog
@@ -246,6 +247,7 @@ func main() {
 		comparisonTracingEnabled: r.CheckResult.Features[host.FeatureComparisons].Enabled,
 		corpusHashes:             make(map[hash.Sig]struct{}),
 		dManager:                 dManager,
+		need:                     false,
 		//corpusSig:                []string{},
 		//corpusDependency:         make(map[string]*prog.Prog),
 		cover: make(map[int]*pb.Call),
@@ -299,6 +301,12 @@ func (fuzzer *Fuzzer) pollLoop() {
 			}
 		}
 		fuzzer.dManager.SSendLog()
+		e, _ := fuzzer.dManager.GetNeed()
+		if e.Address == 0 {
+			fuzzer.need = false
+		} else {
+			fuzzer.need = true
+		}
 
 		poll := false
 		select {
