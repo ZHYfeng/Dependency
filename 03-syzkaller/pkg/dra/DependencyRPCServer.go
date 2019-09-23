@@ -102,7 +102,9 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	ss.newInputMu.Unlock()
 
 	ss.inputMu.Lock()
-	ss.input.Input = append(ss.input.Input, reply.Input...)
+	for _, i := range reply.Input {
+		ss.input.Input = append(ss.input.Input, proto.Clone(i).(*Input))
+	}
 	ss.inputMu.Unlock()
 
 	return reply, nil
@@ -440,7 +442,9 @@ func (ss *Server) Update() {
 				ss.corpusDependency.HighTask.Task = []*Task{}
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
-					f.highTasks.Task = append(f.highTasks.Task, task...)
+					for _, t := range task {
+						f.highTasks.Task = append(f.highTasks.Task, proto.Clone(t).(*Task))
+					}
 					f.taskMu.Unlock()
 				}
 				task = nil
@@ -471,7 +475,9 @@ func (ss *Server) Update() {
 				}
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
-					f.newTask.Task = append([]*Task{}, task...)
+					for _, t := range task {
+						f.highTasks.Task = append(f.highTasks.Task, proto.Clone(t).(*Task))
+					}
 					f.taskMu.Unlock()
 				}
 				task = nil
