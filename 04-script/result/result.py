@@ -8,6 +8,7 @@ from result import axis
 from result import data
 from result import default
 from result import stats
+from result.data import uncovered_address_str
 
 
 class device:
@@ -108,6 +109,8 @@ class device:
                 max_coverage[a] = max_coverage[a] + self.results_with_dra.max_coverage[a]
 
         f = open(self.file_result, "a")
+        f.write("=====================================================\n")
+        f.write("coverage:\n")
         f.write("unique_coverage_with_dra : " + str(len(unique_coverage_with_dra)) + "\n")
         f.write(str(unique_coverage_with_dra) + "\n")
         f.write("unique_coverage_without_dra : " + str(len(unique_coverage_without_dra)) + "\n")
@@ -132,6 +135,7 @@ class results:
         self.max_coverage = {}
         self.uncovered_address_input = []
         self.uncovered_address_dependency = []
+        self.max_uncoverage = {}
 
         self.deal_results()
         self.get_uncovered_address()
@@ -149,8 +153,9 @@ class results:
 
         self.axises.deal()
 
-        file_result = os.path.join(self.dir_path, default.name_data_result)
-        f = open(file_result, "w")
+        f = open(self.file_result, "a")
+        f.write("=====================================================\n")
+        f.write("stat:\n")
         self.statistics.get_average()
         f.write(str(self.statistics.processed_stat.real_stat))
         self.statistics.processed_stat.deal_stat()
@@ -160,11 +165,25 @@ class results:
     def get_uncovered_address(self):
         for r in self.results:
             for a in r.data.real_data.uncovered_address:
+                self.max_uncoverage[a] = r.data.real_data.uncovered_address[a]
                 kind = r.data.real_data.uncovered_address[a].kind
                 if kind == pb.InputRelated:
                     self.uncovered_address_input.append(a)
                 elif kind == pb.DependnecyRelated:
                     self.uncovered_address_dependency.append(a)
+
+        for a in self.max_uncoverage:
+            for r in self.results:
+                if a not in r.data.real_data.uncovered_address:
+                    self.max_uncoverage.pop(a)
+                    break
+
+        f = open(self.file_result, "a")
+        f.write("=====================================================\n")
+        f.write("uncovered address:\n")
+        for a in self.max_uncoverage:
+            f.write(uncovered_address_str(self.max_uncoverage[a]))
+        f.close()
 
     def get_max_coverage(self):
         for s in self.statistics.statistics:

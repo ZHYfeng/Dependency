@@ -25,10 +25,13 @@ class stats:
                 s_add(self.processed_stat.real_stat.stat[s], ss.real_stat.stat[s])
         s_length = len(self.statistics)
         for s in self.processed_stat.real_stat.stat:
-            self.processed_stat.real_stat.stat[s].executeNum = int(self.processed_stat.real_stat.stat[s].executeNum / s_length)
+            self.processed_stat.real_stat.stat[s].executeNum = int(
+                self.processed_stat.real_stat.stat[s].executeNum / s_length)
             self.processed_stat.real_stat.stat[s].time = int(self.processed_stat.real_stat.stat[s].time / s_length)
-            self.processed_stat.real_stat.stat[s].newTestCaseNum = int(self.processed_stat.real_stat.stat[s].newTestCaseNum / s_length)
-            self.processed_stat.real_stat.stat[s].newAddressNum = int(self.processed_stat.real_stat.stat[s].newAddressNum / s_length)
+            self.processed_stat.real_stat.stat[s].newTestCaseNum = int(
+                self.processed_stat.real_stat.stat[s].newTestCaseNum / s_length)
+            self.processed_stat.real_stat.stat[s].newAddressNum = int(
+                self.processed_stat.real_stat.stat[s].newAddressNum / s_length)
 
 
 class stat:
@@ -82,6 +85,8 @@ class stat:
         s_copy(self.processed_stat.stat[pb.StatDependency], self.real_stat.stat[pb.StatDependency])
 
         f = open(self.file_result, "a")
+        f.write("=====================================================\n")
+        f.write("useful input :" + "\n")
         for ui in self.real_stat.useful_input:
             if ui.num > 100:
                 f.write("program : " + str(ui.input.program) + "\n")
