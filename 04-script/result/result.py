@@ -50,9 +50,9 @@ class device:
 
         self.get_coverage()
 
-        self.path_basic = os.path.join(self.dir_path, default.name_basic)
-        if os.path.exists(self.path_basic):
-            self.basic = result(self.path_basic)
+        self.path_base = os.path.join(self.dir_path, default.name_base)
+        if os.path.exists(self.path_base):
+            self.basic = result(self.path_base)
 
             self.ca_uca_dep_with_dra = {}
             self.ca_uca_dep_without_dra = {}

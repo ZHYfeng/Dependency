@@ -6,6 +6,6 @@ name_without_dra = "02-result-without-dra"
 name_stat = "statistics.bin"
 name_data = "data.bin"
 name_data_result = "data.txt"
-name_basic = "basic"
+name_base = "base"
 length = 1 * 24 * 60
 time_run = length * 60  # second
