@@ -75,16 +75,16 @@ class device:
             f.write("basic:\n")
             f.write("number of uncovered address : " + str(len(self.basic.data.real_data.uncovered_address)) + "\n")
             f.write("number of uncovered address by dependency : "
-                    + str(len(self.basic.data.uncovered_address_dependency)))
+                    + str(len(self.basic.data.uncovered_address_dependency)) + "\n")
             f.write("number of uncovered address by dependency covered by syzkaller with dra: "
-                    + str(len(self.ca_uca_dep_with_dra)))
+                    + str(len(self.ca_uca_dep_with_dra)) + "\n")
             f.write("number of uncovered address by dependency covered by syzkaller without dra: "
-                    + str(len(self.ca_uca_dep_without_dra)))
-            f.write("number of uncovered address by input : " + str(len(self.basic.data.uncovered_address_input)))
+                    + str(len(self.ca_uca_dep_without_dra)) + "\n")
+            f.write("number of uncovered address by input : " + str(len(self.basic.data.uncovered_address_input)) + "\n")
             f.write("number of uncovered address by input covered by syzkaller with dra: "
-                    + str(len(self.ca_uca_input_with_dra)))
+                    + str(len(self.ca_uca_input_with_dra)) + "\n")
             f.write("number of uncovered address by input covered by syzkaller without dra: "
-                    + str(len(self.ca_uca_input_without_dra)))
+                    + str(len(self.ca_uca_input_without_dra)) + "\n")
             f.close()
         else:
             print("base not exist: " + self.path_base + "\n")
