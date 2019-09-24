@@ -172,11 +172,15 @@ class results:
                 elif kind == pb.DependnecyRelated:
                     self.uncovered_address_dependency.append(a)
 
+        remove_address = []
         for a in self.max_uncoverage:
             for r in self.results:
                 if a not in r.data.real_data.uncovered_address:
-                    self.max_uncoverage.pop(a)
+                    remove_address.append(a)
                     break
+
+        for a in remove_address:
+            self.max_uncoverage.pop(a)
 
         f = open(self.file_result, "a")
         f.write("=====================================================\n")
