@@ -80,11 +80,16 @@ class device:
                     + str(len(self.ca_uca_dep_with_dra)) + "\n")
             f.write("number of uncovered address by dependency covered by syzkaller without dra: "
                     + str(len(self.ca_uca_dep_without_dra)) + "\n")
-            f.write("number of uncovered address by input : " + str(len(self.basic.data.uncovered_address_input)) + "\n")
+            f.write(
+                "number of uncovered address by input : " + str(len(self.basic.data.uncovered_address_input)) + "\n")
             f.write("number of uncovered address by input covered by syzkaller with dra: "
                     + str(len(self.ca_uca_input_with_dra)) + "\n")
             f.write("number of uncovered address by input covered by syzkaller without dra: "
                     + str(len(self.ca_uca_input_without_dra)) + "\n")
+
+            for a in self.basic.data.uncovered_address_dependency:
+                f.write(uncovered_address_str(self.basic.data.uncovered_address_dependency[a]))
+
             f.close()
         else:
             print("base not exist: " + self.path_base + "\n")
@@ -186,7 +191,7 @@ class results:
 
         f = open(self.file_result, "a")
         f.write("=====================================================\n")
-        f.write("uncovered address:\n")
+        f.write("uncovered address: " + str(len(self.max_uncoverage)) + "\n")
         for a in self.max_uncoverage:
             f.write(uncovered_address_str(self.max_uncoverage[a]))
         f.close()
