@@ -87,7 +87,7 @@ class device:
                     + str(len(self.ca_uca_input_without_dra)))
             f.close()
         else:
-            print("base not exist.\n")
+            print("base not exist: " + self.path_base + "\n")
 
     def get_coverage(self):
 
