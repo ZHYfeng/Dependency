@@ -50,7 +50,7 @@ class device:
 
         self.get_coverage()
 
-        self.path_base = os.path.join(self.dir_path, default.name_base)
+        self.path_base = os.path.join(self.path_dev, default.name_base)
         if os.path.exists(self.path_base):
             self.basic = result(self.path_base)
 
