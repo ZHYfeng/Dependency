@@ -409,19 +409,25 @@ namespace dra {
                                             auto *inst = function->InstASM.at(CallInstNum);
                                             inst->SInst = Inst;
                                             inst->BasicBlockName = BasicBlockName;
-                                            inst->parent = function->BasicBlock[BasicBlockName];
-                                            function->BasicBlock[BasicBlockName]->InstASM.push_back(inst);
-                                            if (Inst.find("__sanitizer_cov_trace") <= Inst.size()) {
-                                                if (Inst.find("_pc") <= Inst.size()) {
-                                                    (function->BasicBlock[BasicBlockName])->trace_pc_address = inst->address;
-                                                } else if (Inst.find("_cmp") <= Inst.size()) {
+                                            if (function->BasicBlock.find(BasicBlockName) !=
+                                                function->BasicBlock.end()) {
+                                                inst->parent = function->BasicBlock[BasicBlockName];
+                                                function->BasicBlock[BasicBlockName]->InstASM.push_back(inst);
+                                                if (Inst.find("__sanitizer_cov_trace") <= Inst.size()) {
+                                                    if (Inst.find("_pc") <= Inst.size()) {
+                                                        (function->BasicBlock[BasicBlockName])->trace_pc_address = inst->address;
+                                                    } else if (Inst.find("_cmp") <= Inst.size()) {
 
-                                                }
-                                                (function->BasicBlock[BasicBlockName])->tracr_num++;
-                                                trace_num++;
+                                                    }
+                                                    (function->BasicBlock[BasicBlockName])->tracr_num++;
+                                                    trace_num++;
 #if DEBUG_ASM
-                                                std::cout << "o inst :" << inst->OInst << std::endl;
+                                                    std::cout << "o inst :" << inst->OInst << std::endl;
 #endif
+                                                }
+                                            } else {
+                                                std::cerr << "error basic block name : " << BasicBlockName << std::endl;
+                                                std::cerr << "function name : " << function->FunctionName << std::endl;
                                             }
                                             CallInstNum++;
                                         } else if (Inst.at(0) == 'c') {

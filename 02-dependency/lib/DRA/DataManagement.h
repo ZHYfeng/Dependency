@@ -87,11 +87,11 @@ namespace dra {
 
     public:
         dra::DModule *Modules;
-        std::unordered_map<unsigned long long int, DAInstruction *> Address2BB;
+        std::unordered_map<uint64_t, DAInstruction *> Address2BB;
         std::unordered_map<std::string, DInput *> Inputs;
 //        dra::all_data Add_Data;
-        std::map<unsigned long long int, std::time_t> cover;
-        std::map<unsigned long long int, uncover_info *> uncover;
+        std::map<uint64_t, std::time_t> cover;
+        std::map<uint64_t, uncover_info *> uncover;
         // std::vector<coverage *> time;
         unsigned long long int vmOffsets;
 

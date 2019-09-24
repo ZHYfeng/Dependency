@@ -11,6 +11,7 @@
 #include <utility>
 #include <grpcpp/grpcpp.h>
 #include <llvm/IR/DebugInfoMetadata.h>
+#include <sstream>
 #include "../DRA/DFunction.h"
 #include "general.h"
 
@@ -32,8 +33,10 @@ namespace dra {
 
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
-        this->port = port_address;
-        this->setRPCConnection(this->port);
+        if (!port_address.empty()) {
+            this->port = port_address;
+            this->setRPCConnection(this->port);
+        }
     }
 
     void DependencyControlCenter::run() {
@@ -432,6 +435,47 @@ namespace dra {
         res->set_prio(write_basicblock->prio + 100);
 
         return res;
+    }
+
+    void DependencyControlCenter::check() {
+        auto *coutbuf = std::cout.rdbuf();
+        while (true) {
+            std::cout.rdbuf(coutbuf);
+            std::cout << "address : ";
+            uint64_t address;
+            std::cin >> std::hex >> address;
+            std::stringstream stream;
+            stream << std::hex << address;
+            std::string result(stream.str());
+            std::ofstream out("0x" + result + ".txt");
+            std::cout.rdbuf(out.rdbuf());
+            std::cout << "address : " << std::hex << address << std::endl;
+
+            if (this->DM.Address2BB.find(address) != this->DM.Address2BB.end()) {
+                DBasicBlock *db = DM.Address2BB[address]->parent;
+                if (db == nullptr) {
+                    std::cout << "db == nullptr" << std::endl;
+                    continue;
+                } else {
+                    db->dump();
+
+                    uint64_t idx = 0;
+                    llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
+                    sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
+                    if (write_basicblock == nullptr) {
+                        std::cout << "no taint or out side" << std::endl;
+                    } else if (write_basicblock->empty()) {
+                        std::cout << "unrelated to gv" << std::endl;
+                    } else if (!write_basicblock->empty()) {
+                        std::cout << "write address : " << write_basicblock->size() << std::endl;
+                        for (auto &x : *write_basicblock) {
+                            DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
+                            tdb->dump();
+                        }
+                    }
+                }
+            }
+        }
     }
 
 } /* namespace dra */
