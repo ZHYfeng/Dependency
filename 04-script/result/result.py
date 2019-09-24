@@ -86,6 +86,8 @@ class device:
             f.write("number of uncovered address by input covered by syzkaller without dra: "
                     + str(len(self.ca_uca_input_without_dra)))
             f.close()
+        else:
+            print("base not exist.\n")
 
     def get_coverage(self):
 
