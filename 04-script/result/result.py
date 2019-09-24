@@ -88,7 +88,7 @@ class device:
                     + str(len(self.ca_uca_input_without_dra)) + "\n")
 
             for a in self.basic.data.uncovered_address_dependency:
-                f.write(uncovered_address_str(self.basic.data.uncovered_address_dependency[a]))
+                f.write(uncovered_address_str(self.basic.data.real_data.uncovered_address[a]))
 
             f.close()
         else:
