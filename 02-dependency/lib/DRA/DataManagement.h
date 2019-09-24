@@ -33,9 +33,9 @@ namespace dra {
         uncover_info();
 
     public:
-        std::time_t time;
+        std::time_t time{};
         unsigned long long int address;
-        unsigned long long int condition_address;
+        unsigned long long int condition_address{};
         bool belong_to_Driver;
         bool related_to_gv;
         bool covered;

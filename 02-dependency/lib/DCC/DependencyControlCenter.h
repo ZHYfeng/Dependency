@@ -22,7 +22,8 @@ namespace dra {
 
         virtual ~DependencyControlCenter();
 
-        void init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename, const std::string &staticRes, std::string port);
+        void init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
+                  const std::string &staticRes, const std::string &port_address);
 
         void run();
 
@@ -45,17 +46,18 @@ namespace dra {
         void set_runtime_data(runTimeData *r, std::string program, uint32_t idx, uint32_t condition, uint32_t address);
 
         void test_sta();
+
         void test_rpc();
 
     private:
-        DependencyRPCClient *client;
+        DependencyRPCClient *client{};
         std::string port;
         DataManagement DM;
         sta::StaticAnalysisResult STA;
 
-        std::time_t start_time;
+        std::time_t start_time{};
 
-        std::map<llvm::BasicBlock *, std::map<uint64_t , sta::MODS *>> staticResult;
+        std::map<llvm::BasicBlock *, std::map<uint64_t, sta::MODS *>> staticResult;
 
     };
 

@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
     std::cout << "staticRes : " << staticRes << std::endl;
 #endif
 
-    dra::DependencyControlCenter *dcc = new dra::DependencyControlCenter();
+    auto *dcc = new dra::DependencyControlCenter();
 
     dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes, port);
     dcc->run();

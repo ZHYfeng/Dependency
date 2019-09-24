@@ -176,14 +176,14 @@ namespace dra {
                     stream << std::hex << final_address;
                     outputTime("new cover trace_pc_address " + stream.str());
 
-                    if (this->uncover.find(final_address) == this->uncover.end()) {
-
-                    } else {
-                        this->uncover[final_address]->covered = true;
-                        if (input->stat() == StatDependency) {
-                            this->uncover[final_address]->covered_by_dependency = true;
-                        }
-                    }
+//                    if (this->uncover.find(final_address) == this->uncover.end()) {
+//
+//                    } else {
+//                        this->uncover[final_address]->covered = true;
+//                        if (input->stat() == StatDependency) {
+//                            this->uncover[final_address]->covered_by_dependency = true;
+//                        }
+//                    }
 
                 } else {
                 }
@@ -194,14 +194,14 @@ namespace dra {
         for (auto ua : dInput->dUncoveredAddress) {
             if (this->cover.find(ua->uncovered_address()) == this->cover.end()) {
                 temp.push_back(ua);
-                if (this->uncover.find(ua->uncovered_address()) == this->uncover.end()) {
-                    auto current_time = std::time(NULL);
-                    auto ui = new uncover_info();
-                    ui->time = current_time;
-                    ui->address = ua->uncovered_address();
-                    ui->condition_address = ua->condition_address();
-                    this->uncover[ua->uncovered_address()] = ui;
-                }
+//                if (this->uncover.find(ua->uncovered_address()) == this->uncover.end()) {
+//                    auto current_time = std::time(nullptr);
+//                    auto ui = new uncover_info();
+//                    ui->time = current_time;
+//                    ui->address = ua->uncovered_address();
+//                    ui->condition_address = ua->condition_address();
+//                    this->uncover[ua->uncovered_address()] = ui;
+//                }
             } else {
                 delete ua;
             }

@@ -22,17 +22,17 @@ namespace dra {
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
-    void DependencyControlCenter::init(std::string objdump, std::string AssemblySourceCode, std::string InputFilename,
-                                       const std::string &staticRes, std::string port) {
+    void DependencyControlCenter::init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
+                                       const std::string &staticRes, const std::string &port_address) {
 
-        DM.initializeModule(std::move(objdump), std::move(AssemblySourceCode), std::move(InputFilename));
+        DM.initializeModule(std::move(obj_dump), std::move(AssemblySourceCode), std::move(InputFilename));
         dra::outputTime("initializeModule");
         dra::outputTime("RealBasicBlockNumber : " + std::to_string(this->DM.Modules->RealBasicBlockNumber));
         dra::outputTime("BasicBlockNumber : " + std::to_string(this->DM.Modules->BasicBlockNumber));
 
         //Deserialize the static analysis results.
         this->STA.initStaticRes(staticRes, &this->DM);
-        this->port = port;
+        this->port = port_address;
         this->setRPCConnection(this->port);
     }
 
@@ -90,9 +90,9 @@ namespace dra {
 
             if (this->DM.check_uncovered_address(u)) {
 
-                if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
-                    this->DM.uncover[u->uncovered_address()]->belong_to_Driver = true;
-                }
+//                if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
+//                    this->DM.uncover[u->uncovered_address()]->belong_to_Driver = true;
+//                }
 
                 Dependency *dependency = new Dependency();
                 Input *input = dependency->mutable_input();
@@ -142,9 +142,9 @@ namespace dra {
 
                     uncoveredAddress->set_kind(UncoveredAddressKind::DependnecyRelated);
 
-                    if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
-                        this->DM.uncover[u->uncovered_address()]->related_to_gv = true;
-                    }
+//                    if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
+//                        this->DM.uncover[u->uncovered_address()]->related_to_gv = true;
+//                    }
 
                     for (auto &x : *write_basicblock) {
 //                        WriteAddress *writeAddress = new WriteAddress;
