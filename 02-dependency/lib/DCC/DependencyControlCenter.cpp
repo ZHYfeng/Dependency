@@ -437,40 +437,67 @@ namespace dra {
         return res;
     }
 
-    void DependencyControlCenter::check() {
-        auto *coutbuf = std::cout.rdbuf();
-        while (true) {
-            std::cout.rdbuf(coutbuf);
-            std::cout << "address : ";
-            uint64_t address;
-            std::cin >> std::hex >> address;
-            std::stringstream stream;
-            stream << std::hex << address;
-            std::string result(stream.str());
-            std::ofstream out("0x" + result + ".txt");
-            std::cout.rdbuf(out.rdbuf());
-            std::cout << "address : " << std::hex << address << std::endl;
+    void DependencyControlCenter::check(const std::string &file) {
+        std::string Line;
+        std::stringstream ss;
+        std::ifstream objdumpFile(file);
+//        auto *coutbuf = std::cout.rdbuf();
+        if (objdumpFile.is_open()) {
+            while (getline(objdumpFile, Line)) {
+                uint64_t condition_address = 0, not_covered_address = 0;
+                uint64_t s = Line.find('&');
+                if (s < Line.size()) {
+                    ss.str("");
+                    for (unsigned long i = 0; i < s; i++) {
+                        ss << Line.at(i);
+                    }
+                    condition_address = std::stoul(ss.str(), nullptr, 16);
+                    ss.str("");
+                    for (unsigned long i = s + 1; i < Line.size(); i++) {
+                        ss << Line.at(i);
+                    }
+                    not_covered_address = std::stoul(ss.str(), nullptr, 16);
+                }
 
-            if (this->DM.Address2BB.find(address) != this->DM.Address2BB.end()) {
-                DBasicBlock *db = DM.Address2BB[address]->parent;
-                if (db == nullptr) {
-                    std::cout << "db == nullptr" << std::endl;
-                    continue;
-                } else {
-                    db->dump();
+                std::stringstream stream;
+                stream << std::hex << condition_address;
+                std::string result(stream.str());
+                std::ofstream out("0x" + result + ".txt");
+                std::cout.rdbuf(out.rdbuf());
 
-                    uint64_t idx = 0;
-                    llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
-                    sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
-                    if (write_basicblock == nullptr) {
-                        std::cout << "no taint or out side" << std::endl;
-                    } else if (write_basicblock->empty()) {
-                        std::cout << "unrelated to gv" << std::endl;
-                    } else if (!write_basicblock->empty()) {
-                        std::cout << "write address : " << write_basicblock->size() << std::endl;
-                        for (auto &x : *write_basicblock) {
-                            DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
-                            tdb->dump();
+                std::cout << "not covered address address : " << std::hex << not_covered_address << std::endl;
+                if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
+                    DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
+                    if (db == nullptr) {
+                        std::cout << "db == nullptr" << std::endl;
+                        continue;
+                    } else {
+                        db->dump();
+                    }
+                }
+
+                std::cout << "condition address : " << std::hex << condition_address << std::endl;
+                if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
+                    DBasicBlock *db = DM.Address2BB[condition_address]->parent;
+                    if (db == nullptr) {
+                        std::cout << "db == nullptr" << std::endl;
+                        continue;
+                    } else {
+                        db->dump();
+
+                        uint64_t idx = 0;
+                        llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
+                        sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
+                        if (write_basicblock == nullptr) {
+                            std::cout << "no taint or out side" << std::endl;
+                        } else if (write_basicblock->empty()) {
+                            std::cout << "unrelated to gv" << std::endl;
+                        } else if (!write_basicblock->empty()) {
+                            std::cout << "write address : " << write_basicblock->size() << std::endl;
+                            for (auto &x : *write_basicblock) {
+                                DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
+                                tdb->dump();
+                            }
                         }
                     }
                 }

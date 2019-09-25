@@ -27,7 +27,7 @@ namespace dra {
 
         void run();
 
-        void check();
+        void check(const std::string &file);
 
         void setRPCConnection(std::string port);
 
