@@ -85,17 +85,14 @@ namespace dra {
         std::cout << Path << " : ";
         std::cout << FunctionName << " : ";
 
-        const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
         int line = 1;
-        if (&debugInfo == nullptr) {
-
-        } else {
-            int line = debugInfo->getLine();
+        if(inst->hasMetadata()){
+            const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
+            line = debugInfo->getLine();
             int column = debugInfo->getColumn();
             std::cout << std::dec << line << " : ";
             std::cout << column << " : ";
         }
-
 
         std::string BasicBlockName = getRealBB(b)->getName();
         std::cout << BasicBlockName << " : ";
