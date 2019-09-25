@@ -96,7 +96,7 @@ class Device:
 
             os.chdir(self.path_dev)
             print(self.path_dev)
-            cmd_rm_0x = "re -rf 0x*"
+            cmd_rm_0x = "rm -rf 0x*"
             p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
             p_rm_0x.wait()
             cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
