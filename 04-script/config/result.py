@@ -110,8 +110,8 @@ class Device:
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
                     name = not_covered_address_file_name(self.basic.data.real_data.uncovered_address[a])
-                    print(name)
                     not_covered_address_file = os.path.join(self.path_dev, name)
+                    print(not_covered_address_file)
                     ff = open(not_covered_address_file, "a")
                     ff.write(self.basic.data.not_covered_address_tasks_str(a))
                     ff.close()
