@@ -72,7 +72,11 @@ namespace dra {
     }
 
     void dump_inst(llvm::Instruction *inst) {
+        if (inst != nullptr) {
 
+        } else {
+            return;
+        }
         auto b = inst->getParent();
         auto f = b->getParent();
 

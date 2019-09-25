@@ -329,12 +329,7 @@ namespace dra {
     void DataManagement::dump_ctxs(std::vector<llvm::Instruction *> *ctx) {
         std::cout << "call chain : " << std::dec << ctx->size() << "\n";
         for (auto inst : *ctx) {
-            if (inst != nullptr) {
-                dra::dump_inst(inst);
-            } else {
-                std::cerr << "nullptr in ctx" << std::endl;
-            }
-
+            dra::dump_inst(inst);
         }
     }
 
