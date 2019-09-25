@@ -4,7 +4,8 @@ import os
 import scipy.stats
 import subprocess
 from config import default, DependencyRPC_pb2 as pb, stats, data, axis
-from config.data import uncovered_address_str, not_covered_address_str
+from config.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name, \
+    not_covered_address_tasks_str
 
 
 class Device:
@@ -100,6 +101,15 @@ class Device:
             print(cmd_a2i)
             p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
             p_a2i_img.wait()
+
+            for a in self.basic.data.uncovered_address_dependency:
+                if a not in self.ca_uca_dep_with_dra and a not in self.ca_uca_dep_without_dra:
+                    name = not_covered_address_file_name(self.basic.data.real_data.uncovered_address[a])
+                    not_covered_address_file = os.path.join(self.path_dev, name)
+                    ff = open(not_covered_address_file, "a")
+                    ff.write(self.basic.data.not_covered_address_tasks_str(a))
+                    ff.close()
+
 
         else:
             print("base not exist: " + self.path_base + "\n")

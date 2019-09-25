@@ -19,6 +19,27 @@ def not_covered_address_str(uncovered_address: pb.UncoveredAddress):
     return res
 
 
+def not_covered_address_file_name(uncovered_address: pb.UncoveredAddress):
+    res = hex(uncovered_address.condition_address + 0xffffffff00000000 - 5) + ".txt"
+    return res
+
+
+def task_str(task: pb.Task):
+    res = ""
+    res += "-------------------------------------------\n"
+    res += "priority : " + task.priority
+    res += "condition program : " + task.index + " : " + task.sig + "\n"
+    res += task.program
+    res += "write address : " + task.write_address + "\n"
+    res += "write program : " + task.write_index + " : " + task.write_sig + "\n"
+    res += task.write_program
+    res += "check_write_address : " + task.check_write_address + "\n"
+    res += "check_write_address_final : " + task.check_write_address_final + "\n"
+    res += "check_write_address_remove : " + task.check_write_address_remove + "\n"
+    res += "-------------------------------------------\n"
+    return res
+
+
 class data:
     def __init__(self, dir_path):
         self.real_data = pb.Corpus()
@@ -50,3 +71,15 @@ class data:
         # f = open(file_result, "w")
         # f.write(str(self.real_data))
         # f.close()
+
+    def not_covered_address_tasks_str(self, not_covered_address):
+
+        tasks = []
+        for t in self.real_data.tasks:
+            if not_covered_address in t.uncovered_address:
+                tasks.append(t)
+
+        res = "# tasks : " + str(len(tasks)) + "\n"
+        for t in tasks:
+            res += task_str(t)
+        return res
