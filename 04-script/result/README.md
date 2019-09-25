@@ -2,7 +2,7 @@
 
 ## requirement
 
-```shell
+```shell script
 sudo apt install python3-tk
 python3 -m pip install --user matplotlib
 python3 -m pip install --user python3-protobuf

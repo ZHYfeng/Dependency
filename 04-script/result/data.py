@@ -14,6 +14,12 @@ def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
     return res
 
 
+def not_covered_address_str(uncovered_address: pb.UncoveredAddress):
+    res = hex(uncovered_address.condition_address + 0xffffffff00000000 - 5) + "&" + hex(
+        uncovered_address.uncovered_address + 0xffffffff00000000 - 5) + "\n"
+    return res
+
+
 class data:
     def __init__(self, dir_path):
         self.real_data = pb.Corpus()

@@ -8,7 +8,7 @@ from result import axis
 from result import data
 from result import default
 from result import stats
-from result.data import uncovered_address_str
+from result.data import uncovered_address_str, not_covered_address_str
 
 
 class device:
@@ -87,10 +87,12 @@ class device:
             f.write("number of uncovered address by input covered by syzkaller without dra: "
                     + str(len(self.ca_uca_input_without_dra)) + "\n")
 
-            f = open(self.file_result, "a")
+            not_covered_address_file = os.path.join(self.path_dev, "not_covered.txt")
+            ff = open(not_covered_address_file, "a")
             for a in self.basic.data.uncovered_address_dependency:
-                f.write(uncovered_address_str(self.basic.data.real_data.uncovered_address[a]))
+                f.write(not_covered_address_str(self.basic.data.real_data.uncovered_address[a]))
                 if a in self.ca_uca_dep_with_dra and a in self.ca_uca_dep_without_dra:
+                    ff.write()
 
 
             f.close()
