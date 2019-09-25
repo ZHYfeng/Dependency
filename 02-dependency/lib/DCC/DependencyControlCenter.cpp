@@ -462,7 +462,6 @@ namespace dra {
                     stream << std::hex << condition_address;
                     std::string result(stream.str());
                     std::ofstream out("0x" + result + ".txt");
-                    std::cout.rdbuf(coutbuf);
                     std::cout << "0x" + result + ".txt" << std::endl;
                     std::cout.rdbuf(out.rdbuf());
 
@@ -502,9 +501,11 @@ namespace dra {
                             }
                         }
                     }
+                    std::cout.rdbuf(coutbuf);
                 }
             }
         }
+        objdumpFile.close();
     }
 
 } /* namespace dra */
