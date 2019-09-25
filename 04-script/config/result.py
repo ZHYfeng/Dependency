@@ -84,10 +84,10 @@ class Device:
                     + str(len(self.ca_uca_input_without_dra)) + "\n")
 
             not_covered_address_file = os.path.join(self.path_dev, "not_covered.txt")
-            ff = open(not_covered_address_file, "a")
+            ff = open(not_covered_address_file, "w")
             for a in self.basic.data.uncovered_address_dependency:
                 f.write(uncovered_address_str(self.basic.data.real_data.uncovered_address[a]))
-                if a in self.ca_uca_dep_with_dra and a in self.ca_uca_dep_without_dra:
+                if a not in self.ca_uca_dep_with_dra and a not in self.ca_uca_dep_without_dra:
                     ff.write(not_covered_address_str(self.basic.data.real_data.uncovered_address[a]))
 
             ff.close()
