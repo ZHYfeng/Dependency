@@ -465,7 +465,7 @@ namespace dra {
                     std::cout << "0x" + result + ".txt" << std::endl;
                     std::cout.rdbuf(out.rdbuf());
 
-                    std::cout << "not covered address address : " << std::hex << not_covered_address << std::endl;
+                    std::cout << "# not covered address address : " << std::hex << not_covered_address << std::endl;
                     if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
                         DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
                         if (db == nullptr) {
@@ -476,7 +476,7 @@ namespace dra {
                         }
                     }
 
-                    std::cout << "condition address : " << std::hex << condition_address << std::endl;
+                    std::cout << "# condition address : " << std::hex << condition_address << std::endl;
                     if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
                         DBasicBlock *db = DM.Address2BB[condition_address]->parent;
                         if (db == nullptr) {
@@ -489,14 +489,17 @@ namespace dra {
                             llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
                             sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
                             if (write_basicblock == nullptr) {
-                                std::cout << "no taint or out side" << std::endl;
+                                std::cout << "# no taint or out side" << std::endl;
                             } else if (write_basicblock->empty()) {
-                                std::cout << "unrelated to gv" << std::endl;
+                                std::cout << "# unrelated to gv" << std::endl;
                             } else if (!write_basicblock->empty()) {
-                                std::cout << "write address : " << write_basicblock->size() << std::endl;
+                                std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 for (auto &x : *write_basicblock) {
                                     DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
                                     tdb->dump();
+                                    std::cout << "repeat : " << x->repeat << std::endl;
+                                    std::cout << "priority : " << x->prio + 100 << std::endl;
+                                    std::cout << "--------------------------------------------" << std::endl;
                                 }
                             }
                         }

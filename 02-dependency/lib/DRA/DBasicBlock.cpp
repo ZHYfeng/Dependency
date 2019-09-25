@@ -241,13 +241,13 @@ namespace dra {
 
         std::cout << "--------------------------------------------" << std::endl;
         if (parent != nullptr) {
-            std::cout << "Path :" << parent->Path << std::endl;
-            std::cout << "FunctionName :" << parent->FunctionName << std::endl;
+            std::cout << "Path : " << parent->Path << std::endl;
+            std::cout << "FunctionName : " << parent->FunctionName << std::endl;
         }
-        std::cout << "basicblock name :" << name << std::endl;
-        std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
-        std::cout << "IR :" << IR << std::endl;
-        std::cout << "CoverKind :" << state << std::endl;
+        std::cout << "basicblock name : " << name << std::endl;
+        std::cout << "AsmSourceCode : " << AsmSourceCode << std::endl;
+        std::cout << "IR : " << IR << std::endl;
+        std::cout << "CoverKind : " << state << std::endl;
         std::cout << "trace_pc_address : 0x" << std::hex << trace_pc_address << std::endl;
         dump_inst(this->basicBlock->getTerminator());
 
