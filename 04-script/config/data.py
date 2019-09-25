@@ -27,7 +27,7 @@ def not_covered_address_file_name(uncovered_address: pb.UncoveredAddress):
 def task_str(task: pb.Task):
     res = ""
     res += "*******************************************\n"
-    res += "task_status : " + str(task.task_status) + "\n"
+    res += "task_status : " + pb.taskStatus.Name(task.task_status) + "\n"
     res += "priority : " + str(task.priority) + "\n"
     res += "condition program : " + str(task.index) + " : " + task.sig + "\n"
     res += str(task.program, default.encoding)
