@@ -113,7 +113,10 @@ class Device:
                     not_covered_address_file = os.path.join(self.path_dev, name)
                     print(not_covered_address_file)
                     ff = open(not_covered_address_file, "a")
-                    ff.write(self.basic.data.not_covered_address_tasks_str(a))
+                    for r in self.results_with_dra.results:
+                        if a in r.data.real_data.uncovered_address:
+                            ff.write(r.data.not_covered_address_tasks_str(a))
+                            break
                     ff.close()
 
 
