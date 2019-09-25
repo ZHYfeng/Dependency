@@ -96,6 +96,7 @@ class Device:
             os.chdir(self.path_dev)
             cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
                       + " -staticRes=" + default.file_taint + " " + default.file_bc
+            print(self.path_dev)
             print(cmd_a2i)
             p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
             p_a2i_img.wait()
