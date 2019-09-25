@@ -87,8 +87,11 @@ class device:
             f.write("number of uncovered address by input covered by syzkaller without dra: "
                     + str(len(self.ca_uca_input_without_dra)) + "\n")
 
+            f = open(self.file_result, "a")
             for a in self.basic.data.uncovered_address_dependency:
                 f.write(uncovered_address_str(self.basic.data.real_data.uncovered_address[a]))
+                if a in self.ca_uca_dep_with_dra and a in self.ca_uca_dep_without_dra:
+
 
             f.close()
         else:
