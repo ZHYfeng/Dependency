@@ -1,8 +1,7 @@
 import sys
 
-from config import config
+from config import config, result
 from config import default
-from result import result
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

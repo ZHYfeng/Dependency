@@ -3,12 +3,8 @@ import os
 
 import scipy.stats
 import subprocess
-from result import DependencyRPC_pb2 as pb
-from result import axis
-from result import data
-from ..config import default
-from result import stats
-from result.data import uncovered_address_str, not_covered_address_str
+from config import default, DependencyRPC_pb2 as pb, stats, data, axis
+from config.data import uncovered_address_str, not_covered_address_str
 
 
 class Device:

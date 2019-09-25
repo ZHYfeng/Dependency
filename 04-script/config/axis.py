@@ -4,7 +4,7 @@ import statistics
 import matplotlib.pyplot as plt
 import scipy.stats
 
-from ..config import default
+from config import default
 
 
 class axis:
