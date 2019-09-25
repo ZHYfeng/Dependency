@@ -4,7 +4,7 @@ import statistics
 import matplotlib.pyplot as plt
 import scipy.stats
 
-from result import default
+from ..config import default
 
 
 class axis:
@@ -133,7 +133,7 @@ class axises:
             self.colors_statistics.append(self.color)
 
         # y_axis_confidence_intervals_start = [
-        #     scipy.mean(e) - scipy.stats.sem(e) * scipy.stats.t.ppf((1 + default.confidence) / 2, len(e) - 1) for e in
+        #     scipy.mean(e) - scipy.stats.sem(e) * scipy.stats.t.ppf((1 + devices.confidence) / 2, len(e) - 1) for e in
         #     zip(*self.y_axises)]
         # self.y_axises_statistics.append(y_axis_confidence_intervals_start)
         # self.labels_statistics.append("ci_start")
@@ -142,7 +142,7 @@ class axises:
         #     self.colors_statistics.append(self.color)
         #
         # y_axis_confidence_intervals_end = [
-        #     scipy.mean(e) + scipy.stats.sem(e) * scipy.stats.t.ppf((1 + default.confidence) / 2, len(e) - 1) for e in
+        #     scipy.mean(e) + scipy.stats.sem(e) * scipy.stats.t.ppf((1 + devices.confidence) / 2, len(e) - 1) for e in
         #     zip(*self.y_axises)]
         # self.y_axises_statistics.append(y_axis_confidence_intervals_end)
         # self.labels_statistics.append("ci_end")

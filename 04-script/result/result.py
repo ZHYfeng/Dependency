@@ -2,16 +2,16 @@
 import os
 
 import scipy.stats
-
+import subprocess
 from result import DependencyRPC_pb2 as pb
 from result import axis
 from result import data
-from result import default
+from ..config import default
 from result import stats
 from result.data import uncovered_address_str, not_covered_address_str
 
 
-class device:
+class Device:
     def __init__(self, dir_path, dir_name):
         self.dir_path = dir_path
         self.path_dev = os.path.join(self.dir_path, dir_name)
@@ -90,12 +90,19 @@ class device:
             not_covered_address_file = os.path.join(self.path_dev, "not_covered.txt")
             ff = open(not_covered_address_file, "a")
             for a in self.basic.data.uncovered_address_dependency:
-                f.write(not_covered_address_str(self.basic.data.real_data.uncovered_address[a]))
+                f.write(uncovered_address_str(self.basic.data.real_data.uncovered_address[a]))
                 if a in self.ca_uca_dep_with_dra and a in self.ca_uca_dep_without_dra:
-                    ff.write()
+                    ff.write(not_covered_address_str(self.basic.data.real_data.uncovered_address[a]))
 
-
+            ff.close()
             f.close()
+
+            os.chdir(self.path_dev)
+            cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
+                      + " -staticRes=" + default.file_taint + " " + default.file_bc
+            p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
+            p_a2i_img.wait()
+
         else:
             print("base not exist: " + self.path_base + "\n")
 
@@ -230,7 +237,7 @@ def get_stat_file(path):
     dir_name = os.path.basename(path)
     dir_path = os.path.dirname(path)
     if dir_name.startswith(default.name_dev):
-        device(dir_path, dir_name)
+        Device(dir_path, dir_name)
     elif dir_name.startswith(default.name_with_dra) or dir_name.startswith(default.name_without_dra):
         path_results = os.path.join(dir_path, dir_name)
         results(path_results)
@@ -241,7 +248,7 @@ def get_stat_file(path):
             for dir_name in dir_names:
                 if dir_name.startswith(default.name_dev):
                     is_dev = True
-                    device(dir_path, dir_name)
+                    Device(dir_path, dir_name)
             if is_dev:
                 break
 

@@ -3,7 +3,7 @@ import json
 import os
 import shutil
 
-from config import devices
+from config import default
 
 
 def read_s(paths):
@@ -11,7 +11,7 @@ def read_s(paths):
     for path in paths:
         for (dir_path, dir_names, file_names) in os.walk(path):
             for file_name in file_names:
-                if file_name.endswith(".s") and file_name != devices.file_asm:
+                if file_name.endswith(".s") and file_name != default.file_asm:
                     f = open(os.path.join(dir_path, file_name), "r")
                     ctx_s = ctx_s + "\n" + f.read()
                     f.close()
@@ -22,8 +22,8 @@ def read_s(paths):
 
 
 def generate_dev_dir():
-    for d in devices.dev:
-        path = os.path.join(devices.path_result, d)
+    for d in default.dev:
+        path = os.path.join(default.path_result, d)
         print(path)
         # if os.path.exists(path):
         #     shutil.rmtree(path)
@@ -49,29 +49,30 @@ def generate_dev_dir():
         #     shutil.copy(devices.dev[d]["file_bc"], devices.file_bc)
         # if not os.path.exists(devices.file_taint):
         #     shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
-        if not os.path.exists(devices.name_with_dra):
-            os.makedirs(devices.name_with_dra)
-        if not os.path.exists(devices.name_without_dra):
-            os.makedirs(devices.name_without_dra)
+        if not os.path.exists(default.name_with_dra):
+            os.makedirs(default.name_with_dra)
+        if not os.path.exists(default.name_without_dra):
+            os.makedirs(default.name_without_dra)
         # if not os.path.exists(devices.name_run):
         #     shutil.copy(devices.path_default_run, devices.name_run)
         # if not os.path.exists(devices.name_run_bash):
         #     shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
 
-        df = open(devices.file_default_json, "r")
+        df = open(default.file_default_json, "r")
         c = json.load(df)
         df.close()
-        c["enable_syscalls"] = devices.dev[d]["enable_syscalls"]
-        c["syzkaller"] = devices.path_syzkaller
-        c["kernel_obj"] = devices.path_linux
-        c["vm"]["kernel"] = devices.path_kernel
+        c["enable_syscalls"] = default.dev[d]["enable_syscalls"]
+        c["syzkaller"] = default.path_syzkaller
+        c["kernel_obj"] = default.path_linux
+        c["vm"]["kernel"] = default.path_kernel
         f = open("built-in" + ".json", "w")
         json.dump(c, f, indent=4)
         f.close()
 
-        read_s(devices.dev[d]["path_s"])
-        shutil.copy(devices.dev[d]["file_bc"], devices.file_bc)
-        shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
-        shutil.copy(devices.path_default_run, devices.name_run)
-        shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
-        shutil.copy(devices.path_default_remove_bash, devices.name_remove_bash)
+        read_s(default.dev[d]["path_s"])
+        shutil.copy(default.dev[d]["file_bc"], default.file_bc)
+        shutil.copy(default.dev[d]["file_taint"], default.file_taint)
+        shutil.copy(default.path_default_run, default.name_run)
+        shutil.copy(default.path_default, default.name_default)
+        shutil.copy(default.path_default_run_bash, default.name_run_bash)
+        shutil.copy(default.path_default_remove_bash, default.name_remove_bash)

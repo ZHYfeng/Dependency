@@ -1,7 +1,7 @@
 import os
 
 from result import DependencyRPC_pb2 as pb
-from result import default
+from ..config import default
 
 
 def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
@@ -47,7 +47,7 @@ class data:
             elif kind == pb.DependnecyRelated:
                 self.uncovered_address_dependency.append(a)
 
-        # file_result = os.path.join(self.dir_path, default.name_data_result)
+        # file_result = os.path.join(self.dir_path, devices.name_data_result)
         # f = open(file_result, "w")
         # f.write(str(self.real_data))
         # f.close()

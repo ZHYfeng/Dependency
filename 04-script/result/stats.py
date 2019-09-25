@@ -1,7 +1,7 @@
 import os
 
 from result import DependencyRPC_pb2 as pb
-from result import default
+from ..config import default
 
 
 class stats:
@@ -54,7 +54,7 @@ class stat:
             f.close()
             self.deal_stat()
 
-            # file_result = os.path.join(self.dir_path, default.name_stat_result)
+            # file_result = os.path.join(self.dir_path, devices.name_stat_result)
             # f = open(file_result, "w")
             # f.write(str(self.real_stat))
             # f.write(str(self.deal_stat))

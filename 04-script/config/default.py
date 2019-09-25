@@ -10,6 +10,8 @@ path_result = os.path.join(path_git_repo, "06-result")
 path_git_script = os.path.join(path_git_repo, "04-script")
 path_taint = os.path.join(path_git_script, "taint_info")
 file_default_json = os.path.join(path_git_script, "config/default.json")
+name_default = "default.py"
+path_default = os.path.join(path_git_script, "config", name_default)
 name_run = "run.py"
 path_default_run = os.path.join(path_git_script, "config", name_run)
 name_run_bash = "run.bash"
@@ -32,6 +34,46 @@ file_taint = name_driver + ".taint"
 file_asm = name_driver + ".s"
 file_bc = name_driver + ".bc"
 file_json = name_driver + ".json"
+
+path_home = os.path.expanduser("~")
+path_root = os.path.join(path_home, "data")
+number_execute = 6
+path_current = os.getcwd()
+path_git = os.path.join(path_root, "git")
+path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_dra = os.path.join(path_repo, "02-dependency/build/tools/DRA/dra")
+path_syzkaller = os.path.join(path_repo, "03-syzkaller/bin/syz-manager")
+path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
+file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
+
+name_workdir = "workdir"
+path_workdir = os.path.join(path_current, name_workdir)
+
+path_image = os.path.join(path_root, "benchmark/linux/image")
+file_image = "stretch.img"
+file_ssh_key = "stretch.id_rsa"
+
+file_log_run = "log_run.bash"
+file_log_syzkaller = "log_syzkaller.log"
+file_log_dra = "log_dra.log"
+file_run = "run.bash"
+
+
+length = 1 * 24 * 60
+time_run = length * 60  # second
+
+do_figure = True
+confidence = 0.95
+name_dev = "dev_"
+name_stat = "statistics.bin"
+name_data = "data.bin"
+name_data_result = "data.txt"
+name_base = "base"
+path_home = os.path.expanduser("~")
+path_root = os.path.join(path_home, "data")
+path_git = os.path.join(path_root, "git")
+path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_a2i = os.path.join(path_repo, "02-dependency/build/tools/A2I/a2i")
 
 dev = {
     "dev_ashmem": {
