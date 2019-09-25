@@ -4,8 +4,7 @@ import os
 import scipy.stats
 import subprocess
 from config import default, DependencyRPC_pb2 as pb, stats, data, axis
-from config.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name, \
-    not_covered_address_tasks_str
+from config.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name
 
 
 class Device:
