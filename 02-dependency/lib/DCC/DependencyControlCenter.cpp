@@ -502,6 +502,7 @@ namespace dra {
                         }
                     }
                     std::cout.rdbuf(coutbuf);
+                    out.close();
                 }
             }
         }
