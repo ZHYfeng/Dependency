@@ -4,8 +4,7 @@ import os
 import scipy.stats
 import subprocess
 from config import default, DependencyRPC_pb2 as pb, stats, data, axis
-from config.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name, \
-    not_covered_address_tasks_str
+from config.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name
 
 
 class Device:
@@ -96,7 +95,7 @@ class Device:
 
             os.chdir(self.path_dev)
             cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                      + " -staticRes=" + default.file_taint + " " + default.file_bc
+                    + " -staticRes=" + default.file_taint + " " + default.file_bc
             print(self.path_dev)
             print(cmd_a2i)
             p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)

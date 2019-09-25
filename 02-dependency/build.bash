@@ -4,6 +4,6 @@ echo "[*] Trying to Run Cmake"
 rm -rf build
 mkdir build
 cd build || exit
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Debug ..
 echo "[*] Trying to make"
 make -j8
