@@ -73,7 +73,7 @@ namespace dra {
 
     void dump_inst(llvm::Instruction *inst) {
         if (inst != nullptr) {
-
+            inst->dump();
         } else {
             return;
         }
