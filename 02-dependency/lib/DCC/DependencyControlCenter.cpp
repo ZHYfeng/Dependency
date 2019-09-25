@@ -441,7 +441,7 @@ namespace dra {
         std::string Line;
         std::stringstream ss;
         std::ifstream objdumpFile(file);
-//        auto *coutbuf = std::cout.rdbuf();
+        auto *coutbuf = std::cout.rdbuf();
         if (objdumpFile.is_open()) {
             while (getline(objdumpFile, Line)) {
                 uint64_t condition_address = 0, not_covered_address = 0;
@@ -462,6 +462,8 @@ namespace dra {
                     stream << std::hex << condition_address;
                     std::string result(stream.str());
                     std::ofstream out("0x" + result + ".txt");
+                    std::cout.rdbuf(coutbuf);
+                    std::cout << "0x" + result + ".txt" << std::endl;
                     std::cout.rdbuf(out.rdbuf());
 
                     std::cout << "not covered address address : " << std::hex << not_covered_address << std::endl;
