@@ -1,7 +1,7 @@
 import sys
 
 from config import config
-from result import default
+from config import default
 from result import result
 
 if __name__ == "__main__":
