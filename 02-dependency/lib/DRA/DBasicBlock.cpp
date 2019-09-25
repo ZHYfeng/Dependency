@@ -238,8 +238,7 @@ namespace dra {
     }
 
     void DBasicBlock::dump() {
-
-        std::cout << "--------------------------------------------" << std::endl;
+        std::cout << "********************************************" << std::endl;
         if (parent != nullptr) {
             std::cout << "Path : " << parent->Path << std::endl;
             std::cout << "FunctionName : " << parent->FunctionName << std::endl;
