@@ -499,6 +499,11 @@ namespace dra {
                                     tdb->dump();
                                     std::cout << "repeat : " << x->repeat << std::endl;
                                     std::cout << "priority : " << x->prio + 100 << std::endl;
+                                    std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
+                                    for (auto c: *cmd_ctx) {
+                                        std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
+                                        this->DM.dump_ctxs(&c->ctx);
+                                    }
                                     std::cout << "--------------------------------------------" << std::endl;
                                 }
                             }
