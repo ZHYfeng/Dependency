@@ -457,46 +457,46 @@ namespace dra {
                         ss << Line.at(i);
                     }
                     not_covered_address = std::stoul(ss.str(), nullptr, 16);
-                }
 
-                std::stringstream stream;
-                stream << std::hex << condition_address;
-                std::string result(stream.str());
-                std::ofstream out("0x" + result + ".txt");
-                std::cout.rdbuf(out.rdbuf());
+                    std::stringstream stream;
+                    stream << std::hex << condition_address;
+                    std::string result(stream.str());
+                    std::ofstream out("0x" + result + ".txt");
+                    std::cout.rdbuf(out.rdbuf());
 
-                std::cout << "not covered address address : " << std::hex << not_covered_address << std::endl;
-                if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
-                    DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
-                    if (db == nullptr) {
-                        std::cout << "db == nullptr" << std::endl;
-                        continue;
-                    } else {
-                        db->dump();
+                    std::cout << "not covered address address : " << std::hex << not_covered_address << std::endl;
+                    if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
+                        DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
+                        if (db == nullptr) {
+                            std::cout << "db == nullptr" << std::endl;
+                            continue;
+                        } else {
+                            db->dump();
+                        }
                     }
-                }
 
-                std::cout << "condition address : " << std::hex << condition_address << std::endl;
-                if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
-                    DBasicBlock *db = DM.Address2BB[condition_address]->parent;
-                    if (db == nullptr) {
-                        std::cout << "db == nullptr" << std::endl;
-                        continue;
-                    } else {
-                        db->dump();
+                    std::cout << "condition address : " << std::hex << condition_address << std::endl;
+                    if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
+                        DBasicBlock *db = DM.Address2BB[condition_address]->parent;
+                        if (db == nullptr) {
+                            std::cout << "db == nullptr" << std::endl;
+                            continue;
+                        } else {
+                            db->dump();
 
-                        uint64_t idx = 0;
-                        llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
-                        sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
-                        if (write_basicblock == nullptr) {
-                            std::cout << "no taint or out side" << std::endl;
-                        } else if (write_basicblock->empty()) {
-                            std::cout << "unrelated to gv" << std::endl;
-                        } else if (!write_basicblock->empty()) {
-                            std::cout << "write address : " << write_basicblock->size() << std::endl;
-                            for (auto &x : *write_basicblock) {
-                                DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
-                                tdb->dump();
+                            uint64_t idx = 0;
+                            llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
+                            sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
+                            if (write_basicblock == nullptr) {
+                                std::cout << "no taint or out side" << std::endl;
+                            } else if (write_basicblock->empty()) {
+                                std::cout << "unrelated to gv" << std::endl;
+                            } else if (!write_basicblock->empty()) {
+                                std::cout << "write address : " << write_basicblock->size() << std::endl;
+                                for (auto &x : *write_basicblock) {
+                                    DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
+                                    tdb->dump();
+                                }
                             }
                         }
                     }
