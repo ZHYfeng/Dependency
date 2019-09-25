@@ -1,8 +1,9 @@
 #! /usr/bin/python3
 import os
+import subprocess
 
 import scipy.stats
-import subprocess
+
 from config import default, DependencyRPC_pb2 as pb, stats, data, axis
 from config.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name
 
@@ -95,14 +96,15 @@ class Device:
 
             os.chdir(self.path_dev)
             cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                    + " -staticRes=" + default.file_taint + " " + default.file_bc
+                      + " -staticRes=" + default.file_taint + " " + default.file_bc
             print(self.path_dev)
             print(cmd_a2i)
             p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
             p_a2i_img.wait()
 
             for a in self.basic.data.uncovered_address_dependency:
-                if a not in self.ca_uca_dep_with_dra and a not in self.ca_uca_dep_without_dra:
+                if a in self.results_with_dra.uncovered_address_dependency and \
+                        a in self.results_without_dra.uncovered_address_dependency:
                     name = not_covered_address_file_name(self.basic.data.real_data.uncovered_address[a])
                     not_covered_address_file = os.path.join(self.path_dev, name)
                     ff = open(not_covered_address_file, "a")

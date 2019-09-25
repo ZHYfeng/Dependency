@@ -25,21 +25,27 @@ def not_covered_address_file_name(uncovered_address: pb.UncoveredAddress):
 
 
 def task_str(task: pb.Task):
-    encoding = 'utf-8'
     res = ""
     res += "-------------------------------------------\n"
     res += "task_status : " + str(task.task_status) + "\n"
     res += "priority : " + str(task.priority) + "\n"
     res += "condition program : " + str(task.index) + " : " + task.sig + "\n"
-    res += str(task.program, encoding)
+    res += str(task.program, default.encoding)
     res += "write address : " + str(task.write_address) + "\n"
     res += "write program : " + str(task.write_index) + " : " + task.write_sig + "\n"
-    res += str(task.write_program, encoding)
+    res += str(task.write_program, default.encoding)
     res += "check_write_address : " + str(task.check_write_address) + "\n"
     res += "check_write_address_final : " + str(task.check_write_address_final) + "\n"
     res += "check_write_address_remove : " + str(task.check_write_address_remove) + "\n"
     res += "-------------------------------------------\n"
     return res
+
+
+def input_str(i : pb.Input):
+    res = ""
+    res += "-------------------------------------------\n"
+    res += str(i.program, default.encoding)
+    res += "-------------------------------------------\n"
 
 
 class data:
@@ -75,13 +81,43 @@ class data:
         # f.close()
 
     def not_covered_address_tasks_str(self, not_covered_address):
+        res = ""
+        not_covered = self.real_data.uncovered_address[not_covered_address]
+
+        res += "# input : " + str(len(not_covered.input)) + "\n"
+        for i in not_covered.input:
+            if i in self.real_data.input:
+                res += input_str(self.real_data.input[i])
+            else:
+                res += "-------------------------------------------\n"
+                res += "not find input : " + str(i) + "\n"
+            res += "index : " + bin(not_covered.input[i]) + "\n"
+            res += "-------------------------------------------\n"
+
+        res += "# write : " + str(len(not_covered.write_address)) + "\n"
+        for w in not_covered.write_address:
+            res += "## write address : " + hex(w + 0xffffffff00000000 - 5) + "\n"
+            if w in self.real_data.write_address:
+                write_address = self.real_data.write_address[w]
+                for i in write_address.input:
+                    if i in self.real_data.input:
+                        res += input_str(self.real_data.input[i])
+                    else:
+                        res += "-------------------------------------------\n"
+                        res += "not find write input : " + str(i) + "\n"
+                    res += "index : " + bin(write_address.input[i]) + "\n"
+                    res += "-------------------------------------------\n"
+            else:
+                res += "-------------------------------------------\n"
+                res += "not find write address : " + str(w) + "\n"
+            res += "-------------------------------------------\n"
 
         tasks = []
         for t in self.real_data.tasks.task:
             if not_covered_address in t.uncovered_address:
                 tasks.append(t)
 
-        res = "# tasks : " + str(len(tasks)) + "\n"
+        res += "# tasks : " + str(len(tasks)) + "\n"
         for t in tasks:
             res += task_str(t)
         return res

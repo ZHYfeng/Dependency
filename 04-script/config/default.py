@@ -1,6 +1,8 @@
 #! /usr/bin/python3
 import os
 
+encoding = 'utf-8'
+
 path_home = os.path.expanduser("~")
 path_root = os.path.join(path_home, "data")
 path_git = os.path.join(path_root, "git")
