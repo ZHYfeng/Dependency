@@ -46,6 +46,7 @@ def input_str(i : pb.Input):
     res += "-------------------------------------------\n"
     res += str(i.program, default.encoding)
     res += "-------------------------------------------\n"
+    return res
 
 
 class data:
