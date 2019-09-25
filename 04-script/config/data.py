@@ -26,7 +26,7 @@ def not_covered_address_file_name(uncovered_address: pb.UncoveredAddress):
 
 def task_str(task: pb.Task):
     res = ""
-    res += "-------------------------------------------\n"
+    res += "*******************************************\n"
     res += "task_status : " + str(task.task_status) + "\n"
     res += "priority : " + str(task.priority) + "\n"
     res += "condition program : " + str(task.index) + " : " + task.sig + "\n"
@@ -43,9 +43,8 @@ def task_str(task: pb.Task):
 
 def input_str(i : pb.Input):
     res = ""
-    res += "-------------------------------------------\n"
+    res += "*******************************************\n"
     res += str(i.program, default.encoding)
-    res += "-------------------------------------------\n"
     return res
 
 
@@ -90,7 +89,7 @@ class data:
             if i in self.real_data.input:
                 res += input_str(self.real_data.input[i])
             else:
-                res += "-------------------------------------------\n"
+                res += "*******************************************\n"
                 res += "not find input : " + str(i) + "\n"
             res += "index : " + bin(not_covered.input[i]) + "\n"
             res += "-------------------------------------------\n"
@@ -104,12 +103,12 @@ class data:
                     if i in self.real_data.input:
                         res += input_str(self.real_data.input[i])
                     else:
-                        res += "-------------------------------------------\n"
+                        res += "*******************************************\n"
                         res += "not find write input : " + str(i) + "\n"
                     res += "index : " + bin(write_address.input[i]) + "\n"
                     res += "-------------------------------------------\n"
             else:
-                res += "-------------------------------------------\n"
+                res += "*******************************************\n"
                 res += "not find write address : " + str(w) + "\n"
             res += "-------------------------------------------\n"
 
