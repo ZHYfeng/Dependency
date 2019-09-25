@@ -86,6 +86,7 @@ namespace dra {
         std::cout << FunctionName << " : ";
 
         const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
+        int line = 1;
         if (&debugInfo == nullptr) {
 
         } else {
