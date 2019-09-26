@@ -41,10 +41,10 @@ def task_str(task: pb.Task):
     return res
 
 
-def input_str(i : pb.Input):
+def input_str(i: pb.Input):
     res = ""
     res += "*******************************************\n"
-    res += "sig : " + str(i.sig, default.encoding)
+    res += "sig : " + i.sig
     res += str(i.program, default.encoding)
     return res
 
