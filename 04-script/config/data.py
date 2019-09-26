@@ -44,6 +44,7 @@ def task_str(task: pb.Task):
 def input_str(i : pb.Input):
     res = ""
     res += "*******************************************\n"
+    res += "sig : " + str(i.sig, default.encoding)
     res += str(i.program, default.encoding)
     return res
 
