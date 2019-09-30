@@ -483,7 +483,7 @@ namespace dra {
                             std::cout << "db == nullptr" << std::endl;
                             continue;
                         } else {
-                            db->dump();
+                            db->real_dump();
 
                             uint64_t idx = 0;
                             llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
@@ -496,7 +496,7 @@ namespace dra {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 for (auto &x : *write_basicblock) {
                                     DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
-                                    tdb->dump();
+                                    tdb->real_dump();
                                     std::cout << "repeat : " << x->repeat << std::endl;
                                     std::cout << "priority : " << x->prio + 100 << std::endl;
                                     std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();

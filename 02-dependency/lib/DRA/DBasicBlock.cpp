@@ -260,7 +260,33 @@ namespace dra {
             std::cout << i.first->program;
         }
         std::cout << "--------------------------------------------" << std::endl;
+    }
 
+    void DBasicBlock::real_dump() {
+        std::cout << "********************************************" << std::endl;
+        if (parent != nullptr) {
+            std::cout << "Path : " << parent->Path << std::endl;
+            std::cout << "FunctionName : " << parent->FunctionName << std::endl;
+        }
+        std::cout << "basicblock name : " << name << std::endl;
+        std::cout << "AsmSourceCode : " << AsmSourceCode << std::endl;
+        std::cout << "IR : " << IR << std::endl;
+        std::cout << "CoverKind : " << state << std::endl;
+        std::cout << "trace_pc_address : 0x" << std::hex << trace_pc_address << std::endl;
+        dump_inst(this->basicBlock->getTerminator());
+
+        std::string ld;
+        llvm::raw_string_ostream rso(ld);
+        for (auto bb = this->basicBlock; !bb->hasName(); bb = this->basicBlock->getNextNode()) {
+            this->basicBlock->print(rso);
+        }
+        std::cout << ld;
+
+        for (auto i : this->input) {
+            std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
+            std::cout << i.first->program;
+        }
+        std::cout << "--------------------------------------------" << std::endl;
     }
 
     // not work if there is a switch with more than 64 cases.

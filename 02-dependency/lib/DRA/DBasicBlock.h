@@ -63,6 +63,8 @@ namespace dra {
 
         void dump();
 
+        void real_dump();
+
         bool set_arrive(dra::DBasicBlock *db);
 
         void set_critical_condition();
