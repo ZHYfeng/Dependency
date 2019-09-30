@@ -273,13 +273,14 @@ namespace dra {
         std::cout << "IR : " << IR << std::endl;
         std::cout << "CoverKind : " << state << std::endl;
         std::cout << "trace_pc_address : 0x" << std::hex << trace_pc_address << std::endl;
-        dump_inst(this->basicBlock->getTerminator());
 
         std::string ld;
         llvm::raw_string_ostream rso(ld);
-        for (auto bb = this->basicBlock; !bb->hasName(); bb = this->basicBlock->getNextNode()) {
+        auto bb = this->basicBlock;
+        for (; !bb->hasName(); bb = this->basicBlock->getNextNode()) {
             this->basicBlock->print(rso);
         }
+        dump_inst(bb->getTerminator());
         std::cout << ld;
 
         for (auto i : this->input) {
