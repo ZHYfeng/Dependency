@@ -276,12 +276,14 @@ namespace dra {
 
         std::string ld;
         llvm::raw_string_ostream rso(ld);
-        auto bb = this->basicBlock;
-        for (; !bb->hasName(); bb = this->basicBlock->getNextNode()) {
+        this->basicBlock->print(rso);
+        auto bb = this->basicBlock->getNextNode();
+        for (; !bb->hasName(); bb = bb->getNextNode()) {
             bb->print(rso);
         }
         dump_inst(bb->getTerminator());
         std::cout << ld;
+
 
         for (auto i : this->input) {
             std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
