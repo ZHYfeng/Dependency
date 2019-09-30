@@ -278,10 +278,12 @@ namespace dra {
         llvm::raw_string_ostream rso(ld);
         this->basicBlock->print(rso);
         auto bb = this->basicBlock->getNextNode();
+        auto inst = this->basicBlock->getTerminator();
         for (; bb != nullptr && !bb->hasName(); bb = bb->getNextNode()) {
             bb->print(rso);
+            inst = bb->getTerminator();
         }
-        dump_inst(bb->getTerminator());
+        dump_inst(inst);
         std::cout << ld;
 
 
