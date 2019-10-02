@@ -35,7 +35,7 @@
 *.cfg
 workdir*
 */build
-*/cmake-build-debug
+*/cmake-build-debug*
 */bin
 *.pyc
 
