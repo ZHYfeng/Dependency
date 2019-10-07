@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS "-std=gnu++11 -O3 -pthread -I/usr/local/include")
 
+
+
 if (DEFINED ENV{LLVM_DIR})
     find_package(LLVM REQUIRED CONFIG)
     list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
