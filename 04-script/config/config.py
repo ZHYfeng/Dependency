@@ -32,31 +32,31 @@ def generate_dev_dir():
         os.chdir(path)
 
         # if not os.path.exists("built-in.json"):
-        #     df = open(devices.file_default_json, "r")
+        #     df = open(default.file_default_json, "r")
         #     c = json.load(df)
         #     df.close()
-        #     c["enable_syscalls"] = devices.dev[d]["enable_syscalls"]
-        #     c["syzkaller"] = devices.path_syzkaller
-        #     c["kernel_obj"] = devices.path_linux
-        #     c["vm"]["kernel"] = devices.path_kernel
+        #     c["enable_syscalls"] = default.dev[d]["enable_syscalls"]
+        #     c["syzkaller"] = default.path_syzkaller
+        #     c["kernel_obj"] = default.path_linux
+        #     c["vm"]["kernel"] = default.path_kernel
         #     f = open("built-in" + ".json", "w")
         #     json.dump(c, f, indent=4)
         #     f.close()
-        #
-        # if not os.path.exists(devices.file_asm):
-        #     read_s(devices.dev[d]["path_s"])
-        # if not os.path.exists(devices.file_bc):
-        #     shutil.copy(devices.dev[d]["file_bc"], devices.file_bc)
-        # if not os.path.exists(devices.file_taint):
-        #     shutil.copy(devices.dev[d]["file_taint"], devices.file_taint)
-        if not os.path.exists(default.name_with_dra):
-            os.makedirs(default.name_with_dra)
-        if not os.path.exists(default.name_without_dra):
-            os.makedirs(default.name_without_dra)
-        # if not os.path.exists(devices.name_run):
-        #     shutil.copy(devices.path_default_run, devices.name_run)
-        # if not os.path.exists(devices.name_run_bash):
-        #     shutil.copy(devices.path_default_run_bash, devices.name_run_bash)
+        
+        # if not os.path.exists(default.file_asm):
+        #     read_s(default.dev[d]["path_s"])
+        # if not os.path.exists(default.file_bc):
+        #     shutil.copy(default.dev[d]["file_bc"], default.file_bc)
+        # if not os.path.exists(default.file_taint):
+        #     shutil.copy(default.dev[d]["file_taint"], default.file_taint)
+        # if not os.path.exists(default.name_with_dra):
+        #     os.makedirs(default.name_with_dra)
+        # if not os.path.exists(default.name_without_dra):
+        #     os.makedirs(default.name_without_dra)
+        # if not os.path.exists(default.name_run):
+        #     shutil.copy(default.path_default_run, default.name_run)
+        # if not os.path.exists(default.name_run_bash):
+        #     shutil.copy(default.path_default_run_bash, default.name_run_bash)
 
         df = open(default.file_default_json, "r")
         c = json.load(df)

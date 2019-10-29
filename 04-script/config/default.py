@@ -24,8 +24,8 @@ path_default_remove_bash = os.path.join(path_git_script, "config", name_remove_b
 
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
-path_linux_bc = os.path.join(path_root, "benchmark/linux/16-linux-clang-np-bc-f")
-path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
+path_linux_bc = os.path.join(path_root, "benchmark/linux/18-linux-clang-np-bc-f")
+path_linux = os.path.join(path_root, "benchmark/linux/17-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 
 path_syzkaller = os.path.join(path_git_repo, "03-syzkaller")
@@ -45,7 +45,6 @@ path_git = os.path.join(path_root, "git")
 path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
 path_dra = os.path.join(path_repo, "02-dependency/build/tools/DRA/dra")
 path_syzkaller = os.path.join(path_repo, "03-syzkaller/bin/syz-manager")
-path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
 
 name_workdir = "workdir"

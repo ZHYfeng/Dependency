@@ -53,5 +53,20 @@ sudo rm -fr ./cover_uncover.txt dependency.log result-cpp.log result-syzkaller.l
 ## run a2i
 
 ```shell script
-/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/build/tools/A2I/a2i -asm=built-in.s -objdump=/home/yuh/data/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=built-in.taint built-in.bc
+/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/build/tools/A2I/a2i -asm=built-in.s -objdump=/home/yuh/data/benchmark/linux/17-linux-clang-np/vmlinux.objdump -staticRes=built-in.taint built-in.bc
+```
+
+## prepare kernel
+```shell script
+
+llvm-link -o built-in.bc arch/x86/kernel/head64.bc arch/x86/kernel/ebda.bc arch/x86/kernel/platform-quirks.bc init/built-in.bc usr/built-in.bc arch/x86/built-in.bc kernel/built-in.bc certs/built-in.bc mm/built-in.bc fs/built-in.bc ipc/built-in.bc security/built-in.bc crypto/built-in.bc block/built-in.bc lib/built-in.bc arch/x86/lib/built-in.bc drivers/built-in.bc sound/built-in.bc firmware/built-in.bc arch/x86/pci/built-in.bc arch/x86/power/built-in.bc arch/x86/video/built-in.bc net/built-in.bc virt/built-in.bc
+llvm-dis built-in.bc
+rm -rf built-in.s
+cat `find -name "*.s"` >> built-in.s
+/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/build/tools/A2L/a2l -objdump=vmlinux.objdump
+```
+
+```shell script
+python3 ./main.py generate ~/data/work
+python3 ./main.py read ~/data/work
 ```
