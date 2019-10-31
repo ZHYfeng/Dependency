@@ -87,6 +87,9 @@ func (proc *Proc) loop() {
 			case *WorkDependency:
 				statName = pb.FuzzingStat_StatDependency
 				proc.dependency(item)
+			case *WorkBoot:
+				statName = pb.FuzzingStat_StatDependency
+				proc.dependencyBoot(item)
 			case *WorkSmash:
 				statName = pb.FuzzingStat_StatSmash
 				proc.smashInput(item)

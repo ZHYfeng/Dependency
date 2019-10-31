@@ -24,9 +24,11 @@ const (
 
 type syzFuzzer struct {
 	taskMu     *sync.Mutex
+	bootTasks  *Tasks
 	highTasks  *Tasks
 	newTask    *Tasks
 	returnTask *Tasks
+	returnBootTask *Task
 }
 
 type newStats struct {
@@ -156,6 +158,10 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	if !ok {
 		ss.fuzzers[name] = &syzFuzzer{
 			taskMu: &sync.Mutex{},
+			bootTasks: &Tasks{
+				Name: name,
+				Task: []*Task{},
+			},
 			highTasks: &Tasks{
 				Name: name,
 				Task: []*Task{},
@@ -165,6 +171,10 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 				Task: []*Task{},
 			},
 			returnTask: &Tasks{
+				Name: name,
+				Task: []*Task{},
+			},
+			returnBootTask: &Tasks{
 				Name: name,
 				Task: []*Task{},
 			},
@@ -195,11 +205,22 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	return reply, nil
 }
 
+// GetTasks ...
 func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 	log.Logf(DebugLevel, "(ss Server) GetTasks")
 
 	name := request.Name
 	tasks := ss.pickTask(name)
+
+	return tasks, nil
+}
+
+// GetBootTasks for the tasks need to be tested when boot 
+func (ss Server) GetBootTasks(ctx context.Context, request *Empty) (*Tasks, error) {
+	log.Logf(DebugLevel, "(ss Server) GetTasks")
+
+	name := request.Name
+	tasks := ss.pickBootTask(name)
 
 	return tasks, nil
 }
@@ -210,9 +231,15 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 
 	f, ok := ss.fuzzers[tasks.Name]
 	if ok {
-		f.taskMu.Lock()
-		f.returnTask.Task = append(f.returnTask.Task, tasks.Task...)
-		f.taskMu.Unlock()
+		if tasks.Kind == TaskKind_Normal || tasks.Kind == TaskKind_High {
+			f.taskMu.Lock()
+			f.returnTask.Task = append(f.returnTask.Task, tasks.Task...)
+			f.taskMu.Unlock()
+		} else if tasks.Kind == TaskKind_Boot {
+			f.taskMu.Lock()
+			f.returnBootTask.Task = append(f.returnBootTask.Task, tasks.Task...)
+			f.taskMu.Unlock()
+		}
 	} else {
 		log.Fatalf("ReturnTasks with error name")
 	}
@@ -435,7 +462,7 @@ func (ss *Server) Update() {
 	}
 	newDependency = nil
 
-	// deal retrun tasks
+	// deal return tasks
 	var returnTask []*Task
 	for _, f := range ss.fuzzers {
 		f.taskMu.Lock()
@@ -444,6 +471,7 @@ func (ss *Server) Update() {
 		f.taskMu.Unlock()
 	}
 	for _, task := range returnTask {
+		if task.
 		for _, t := range ss.corpusDependency.Tasks.Task {
 			if t.Sig == task.Sig && t.Index == task.Index &&
 				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {

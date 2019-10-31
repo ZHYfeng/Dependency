@@ -70,6 +70,24 @@ func (d *DRPCClient) GetTasks(name string) *Tasks {
 	return res
 }
 
+// GetBootTasks ...
+func (d *DRPCClient) GetBootTasks(name string) *Tasks {
+	// Contact the server and print out its response.
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+
+	request := &Empty{
+		Name: name,
+	}
+
+	replay, err := d.c.GetBootTasks(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
+	if err != nil {
+		log.Fatalf("Dependency gRPC could not SendNeedInput: %v", err)
+	}
+	res := proto.Clone(replay).(*Tasks)
+	return res
+}
+
 func (d *DRPCClient) ReturnTasks(task *Tasks) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)

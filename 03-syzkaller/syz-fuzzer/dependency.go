@@ -322,6 +322,47 @@ func (proc *Proc) dependency(item *WorkDependency) {
 	}
 	tasks := &pb.Tasks{
 		Name: proc.fuzzer.name,
+		Kind: pb.TaskKind_Normal,
+		Task: []*pb.Task{},
+	}
+	tasks.Task = append(tasks.Task, task)
+	proc.fuzzer.dManager.ReturnTasks(tasks)
+
+	return
+}
+
+func (proc *Proc) dependencyBoot(item *WorkBoot) {
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("#%v: DependencyBoot", proc.pid))
+	task := item.task
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyBoot program : \n%s", task.Program))
+	proc.fuzzer.dManager.SendLog(fmt.Sprintf("index  : %d write index : %d", task.Index, task.WriteIndex))
+	proc.fuzzer.dManager.SSendLog()
+	wp, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("dependency failed to deserialize program from task.WriteProgram: %v", err)
+	}
+	idx := int(task.Index)
+	infoWrite := proc.execute(proc.execOptsCover, wp, ProgNormal, StatDependency)
+	for UncoveredAddress := range task.UncoveredAddress {
+		checkUncoveredAddress := checkAddress(UncoveredAddress, infoWrite.Calls[idx].Cover)
+		if checkUncoveredAddress {
+			task.CoveredAddress[UncoveredAddress] = task.UncoveredAddress[UncoveredAddress]
+			proc.fuzzer.dManager.SendLog(fmt.Sprintf("dependency boot could arrive at uncovered address : %x", UncoveredAddress))
+		}
+	}
+
+	for address := range task.CoveredAddress {
+		delete(task.UncoveredAddress, address)
+	}
+
+	if len(task.UncoveredAddress) == 0 {
+		task.TaskStatus = pb.TaskStatus_covered
+	} else {
+		task.TaskStatus = pb.TaskStatus_tested
+	}
+	tasks := &pb.Tasks{
+		Name: proc.fuzzer.name,
+		Kind: pb.TaskKind_Boot,
 		Task: []*pb.Task{},
 	}
 	tasks.Task = append(tasks.Task, task)

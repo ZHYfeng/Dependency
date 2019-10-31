@@ -225,6 +225,28 @@ func (ss Server) pickTask(name string) *Tasks {
 	return tasks
 }
 
+// TODO: 
+func (ss Server) pickBootTask(name string) *Tasks {
+	tasks := &Tasks{
+		Name: name,
+		Kind: TaskKind_Normal,
+		Task: []*Task{},
+	}
+
+	f, ok := ss.fuzzers[name]
+	if ok {
+		f.taskMu.Lock()
+		if len(f.bootTasks.Task) > 0 {
+			tasks.Kind = TaskKind_Boot
+			tasks.Task = append(tasks.Task, f.bootTasks.Task...)
+			f.bootTasks.Task = []*Task{}
+		}
+		f.taskMu.Unlock()
+	}
+
+	return tasks
+}
+
 func (ss *Server) addNewInput(s *Input) {
 	if i, ok := ss.corpusDependency.NewInput[s.Sig]; ok {
 		i.MergeInput(s)
@@ -309,9 +331,8 @@ func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
 	_, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return false
-	} else {
-		ss.deleteUncoveredAddress(uncoveredAddress)
 	}
+	ss.deleteUncoveredAddress(uncoveredAddress)
 	return true
 }
 
@@ -321,7 +342,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 		return
 	}
 
-	for sig, _ := range u.Input {
+	for sig := range u.Input {
 		input, ok := ss.corpusDependency.Input[sig]
 		if !ok {
 			log.Fatalf("deleteUncoveredAddress not find sig")
@@ -653,27 +674,28 @@ func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint
 func (ss *Server) writeCorpusToDisk() {
 	out, err := proto.Marshal(ss.corpusDependency)
 	if err != nil {
-		log.Fatalf("Failed to encode address:", err)
+		log.Fatalf("Failed to encode address: %s", err)
 	}
 	path := "data.bin"
 	_ = os.Remove(path)
 	if err := ioutil.WriteFile(path, out, 0644); err != nil {
-		log.Fatalf("Failed to write corpusDependency:", err)
+		log.Fatalf("Failed to write corpusDependency: %s", err)
 	}
 }
 
 func (ss *Server) writeStatisticsToDisk() {
 	out, err := proto.Marshal(ss.stat)
 	if err != nil {
-		log.Fatalf("Failed to encode coverage:", err)
+		log.Fatalf("Failed to encode coverage: %s", err)
 	}
 	path := "statistics.bin"
 	_ = os.Remove(path)
 	if err := ioutil.WriteFile(path, out, 0644); err != nil {
-		log.Fatalf("Failed to write coverage:", err)
+		log.Fatalf("Failed to write coverage: %s", err)
 	}
 }
 
+// CheckPath ...
 func CheckPath(newPath []uint32, unstablePath []uint32) (int, int, int) {
 
 	var l = 0

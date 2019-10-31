@@ -26,6 +26,8 @@ service DependencyRPC {
     }
     rpc GetTasks (Empty) returns (Tasks) {
     }
+    rpc GetBootTasks (Empty) returns (Tasks) {
+    }
     rpc ReturnTasks (Tasks) returns (Empty) {
     }
     rpc SendUnstableInput (UnstableInput) returns (Empty) {
@@ -345,6 +347,7 @@ message Task {
 enum TaskKind {
     Normal = 0;
     High = 1;
+    Boot = 2;
 }
 
 
