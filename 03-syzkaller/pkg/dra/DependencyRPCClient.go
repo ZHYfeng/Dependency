@@ -55,6 +55,7 @@ func (d *DRPCClient) SendNewInput(input *Input) {
 	}
 }
 
+// GetTasks : get task from syz-manager
 func (d *DRPCClient) GetTasks(name string) *Tasks {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
@@ -90,6 +91,7 @@ func (d *DRPCClient) GetBootTasks(name string) *Tasks {
 	return res
 }
 
+// ReturnTasks : return the task to syz-manager
 func (d *DRPCClient) ReturnTasks(task *Tasks) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
@@ -102,6 +104,7 @@ func (d *DRPCClient) ReturnTasks(task *Tasks) {
 	return
 }
 
+// SendUnstableInput : send unstable input to syz-manager
 func (d *DRPCClient) SendUnstableInput(unstableInput *UnstableInput) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
@@ -123,6 +126,7 @@ func (d *DRPCClient) SendLog(log string) {
 	return
 }
 
+// SSendLog : real send log to syz-manager
 func (d *DRPCClient) SSendLog() {
 	// Contact the server and print out its response.
 	d.logMu.Lock()
@@ -137,6 +141,7 @@ func (d *DRPCClient) SSendLog() {
 	return
 }
 
+// SendStat : send stat information to syz-manager
 func (d *DRPCClient) SendStat(stat *Statistic) (*Empty, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
@@ -149,6 +154,7 @@ func (d *DRPCClient) SendStat(stat *Statistic) (*Empty, error) {
 	return reply, nil
 }
 
+// GetNeed : to know whether syz-manager needs input
 func (d *DRPCClient) GetNeed() (*Empty, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
@@ -161,6 +167,7 @@ func (d *DRPCClient) GetNeed() (*Empty, error) {
 	return reply, nil
 }
 
+// SendNeedInput : send random input to syz -manager
 func (d *DRPCClient) SendNeedInput(input *Input) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
