@@ -323,9 +323,10 @@ func (proc *Proc) dependency(item *WorkDependency) {
 	tasks := &pb.Tasks{
 		Name: proc.fuzzer.name,
 		Kind: pb.TaskKind_Normal,
-		Task: []*pb.Task{},
+		Task:  map[string]*pb.Task{},
+		Tasks: []*pb.Task{},
 	}
-	tasks.Task = append(tasks.Task, task)
+	tasks.Tasks = append(tasks.Tasks, task)
 	proc.fuzzer.dManager.ReturnTasks(tasks)
 
 	return
@@ -363,9 +364,10 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 	tasks := &pb.Tasks{
 		Name: proc.fuzzer.name,
 		Kind: pb.TaskKind_Boot,
-		Task: []*pb.Task{},
+		Task:  map[string]*pb.Task{},
+		Tasks: []*pb.Task{},
 	}
-	tasks.Task = append(tasks.Task, task)
+	tasks.Tasks = append(tasks.Tasks, task)
 	proc.fuzzer.dManager.ReturnTasks(tasks)
 
 	return

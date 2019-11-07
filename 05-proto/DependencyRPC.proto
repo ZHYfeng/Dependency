@@ -311,6 +311,7 @@ message Task {
     uint32 write_address = 14;
 
     int32 priority = 15;
+    string hash = 16;
 
     // uncovered address, priority
     map<uint32, runTimeData> uncovered_address = 21;
@@ -335,7 +336,8 @@ enum TaskKind {
 message Tasks {
     string name = 41;
     TaskKind kind = 42;
-    repeated Task task = 1;
+    map<string, Task> task = 1;
+    repeated Task tasks = 2;
 }
 
 message Time {

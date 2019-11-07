@@ -1,12 +1,14 @@
 package dra
 
 import (
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/golang/protobuf/proto"
 	"io/ioutil"
 	"math"
 	"os"
+	"strconv"
 	"time"
+
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/golang/protobuf/proto"
 )
 
 func (m *Statistic) mergeStatistic(d *Statistic) {
@@ -209,56 +211,36 @@ func (m *Task) mergeTask(s *Task) {
 }
 
 func (ss Server) pickTask(name string) *Tasks {
-	tasks := &Tasks{
-		Name: name,
-		Kind: TaskKind_Normal,
-		Task: []*Task{},
-	}
-
+	var tasks *Tasks
 	f, ok := ss.fuzzers[name]
 	if ok {
 		f.taskMu.Lock()
 		if len(f.highTasks.Task) > 0 {
+			tasks = f.highTasks.pop(len(f.highTasks.Task))
 			tasks.Kind = TaskKind_High
-			tasks.Task = append(tasks.Task, f.highTasks.Task...)
-			f.highTasks.Task = []*Task{}
 		} else {
 			last := len(f.newTask.Task)
-			if last > 0 {
-				if last > taskNum {
-					last = taskNum
-				} else {
-
-				}
-				tasks.Task = append(tasks.Task, f.newTask.Task[:last]...)
-				f.newTask.Task = f.newTask.Task[last:]
+			if last > taskNum {
+				last = taskNum
 			}
+			tasks = f.newTask.pop(last)
 		}
 		f.taskMu.Unlock()
 	}
-
 	return tasks
 }
 
 // TODO:
 func (ss Server) pickBootTask(name string) *Tasks {
-	tasks := &Tasks{
-		Name: name,
-		Kind: TaskKind_Normal,
-		Task: []*Task{},
-	}
-
+	var tasks *Tasks
 	f, ok := ss.fuzzers[name]
 	if ok {
 		f.taskMu.Lock()
-		if len(f.bootTasks.Task) > 0 {
-			tasks.Kind = TaskKind_Boot
-			tasks.Task = append(tasks.Task, f.bootTasks.Task...)
-			f.bootTasks.Task = []*Task{}
-		}
+		last := len(f.bootTasks.Task)
+		tasks = f.bootTasks.pop(last)
+		tasks.Kind = TaskKind_Boot
 		f.taskMu.Unlock()
 	}
-
 	return tasks
 }
 
@@ -519,6 +501,11 @@ func (ss *Server) addInputTask(d *Input) {
 			for writeSig, indexBits := range wa.Input {
 				ss.addTasks(sig, inputIndexBits, writeSig, indexBits, w, u, false)
 			}
+			for name := range wa.FileOperationsFunction {
+				if name == "init" {
+					// ss.add
+				}
+			}
 		}
 	}
 
@@ -564,6 +551,13 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	return
 }
 
+func (m *Task) getHash() string {
+	if m.Hash == "" {
+		m.Hash = m.Sig + strconv.FormatInt(int64(m.Index), 10) + m.WriteSig + strconv.FormatInt(int64(m.WriteIndex), 10)
+	}
+	return m.Hash
+}
+
 func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex uint32,
 	writeAddress uint32, uncoveredAddress uint32) *Task {
 	task := &Task{
@@ -575,12 +569,15 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		WriteProgram:           []byte{},
 		WriteAddress:           writeAddress,
 		Priority:               10,
+		Hash:                   "",
 		UncoveredAddress:       map[uint32]*RunTimeData{},
 		CoveredAddress:         map[uint32]*RunTimeData{},
 		TaskStatus:             TaskStatus_untested,
 		CheckWriteAddress:      false,
 		CheckWriteAddressFinal: false,
 	}
+
+	task.Hash = task.getHash()
 
 	input, ok := ss.corpusDependency.Input[sig]
 	if !ok {
@@ -633,23 +630,73 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 		log.Fatalf("addTask more than one uncovered address")
 	}
 
-	for _, t := range tasks.Task {
-		if t.Sig == task.Sig && t.Index == task.Index &&
-			t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
-			if _, ok := t.UncoveredAddress[uncoveredAddress]; ok {
-				t.UncoveredAddress[uncoveredAddress].updatePriority(dr.Priority)
-			} else {
-				if t.UncoveredAddress == nil {
-					t.UncoveredAddress = map[uint32]*RunTimeData{}
-				}
-				t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
-				t.TaskStatus = TaskStatus_untested
+	hash := task.getHash()
+	if t, ok := tasks.Task[hash]; ok {
+		if _, ok := t.UncoveredAddress[uncoveredAddress]; ok {
+			t.UncoveredAddress[uncoveredAddress].updatePriority(dr.Priority)
+		} else {
+			if t.UncoveredAddress == nil {
+				t.UncoveredAddress = map[uint32]*RunTimeData{}
 			}
-			t.updatePriority(task.Priority)
-			return
+			t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
+			t.TaskStatus = TaskStatus_untested
 		}
+		t.updatePriority(task.Priority)
+		return
 	}
-	tasks.Task = append(tasks.Task, task)
+	tasks.addTask(task)
+}
+
+func (m *Tasks) addTask(t *Task) {
+	if m.Task == nil {
+		m.Task = map[string]*Task{}
+	}
+	if m.Tasks == nil {
+		m.Tasks = []*Task{}
+	}
+	if len(m.Task) != len(m.Tasks) {
+		log.Fatalf("%s : len(m.Task) != len(m.Tasks)", m.Name)
+	}
+	if _, ok := m.Task[t.getHash()]; ok {
+
+	} else {
+		m.Task[t.getHash()] = t
+		m.Tasks = append(m.Tasks, t)
+	}
+}
+
+func (m *Tasks) addTasks(t *Tasks) {
+	for _, tt := range t.Task {
+		m.addTask(tt)
+	}
+	for _, tt := range t.Tasks {
+		m.addTask(tt)
+	}
+}
+
+func (m *Tasks) emptyTask() {
+	m.Task = map[string]*Task{}
+	m.Tasks = []*Task{}
+}
+
+func (m *Tasks) pop(number int) *Tasks {
+	tasks := &Tasks{
+		Name:  m.Name,
+		Kind:  TaskKind_Normal,
+		Task:  map[string]*Task{},
+		Tasks: []*Task{},
+	}
+	temp := []*Task{}
+	if number > len(m.Tasks) {
+		log.Fatalf("%s : number > len(m.Tasks)", m.Name)
+	}
+	temp = append(temp, m.Tasks[:number]...)
+	m.Tasks = m.Tasks[number:]
+	for _, t := range temp {
+		delete(m.Task, t.getHash())
+		tasks.addTask(t)
+	}
+	return tasks
 }
 
 func (m *Task) updatePriority(p1 int32) {

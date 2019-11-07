@@ -169,24 +169,29 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 		ss.fuzzers[name] = &syzFuzzer{
 			taskMu: &sync.Mutex{},
 			bootTasks: &Tasks{
-				Name: name,
-				Task: []*Task{},
+				Name:  name,
+				Task:  map[string]*Task{},
+				Tasks: []*Task{},
 			},
 			highTasks: &Tasks{
-				Name: name,
-				Task: []*Task{},
+				Name:  name,
+				Task:  map[string]*Task{},
+				Tasks: []*Task{},
 			},
 			newTask: &Tasks{
-				Name: name,
-				Task: []*Task{},
+				Name:  name,
+				Task:  map[string]*Task{},
+				Tasks: []*Task{},
 			},
 			returnTask: &Tasks{
-				Name: name,
-				Task: []*Task{},
+				Name:  name,
+				Task:  map[string]*Task{},
+				Tasks: []*Task{},
 			},
 			returnBootTask: &Tasks{
-				Name: name,
-				Task: []*Task{},
+				Name:  name,
+				Task:  map[string]*Task{},
+				Tasks: []*Task{},
 			},
 		}
 	} else {
@@ -245,11 +250,11 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 	if ok {
 		if tasks.Kind == TaskKind_Normal || tasks.Kind == TaskKind_High {
 			f.taskMu.Lock()
-			f.returnTask.Task = append(f.returnTask.Task, tasks.Task...)
+			f.returnTask.addTasks(tasks)
 			f.taskMu.Unlock()
 		} else if tasks.Kind == TaskKind_Boot {
 			f.taskMu.Lock()
-			f.returnBootTask.Task = append(f.returnBootTask.Task, tasks.Task...)
+			f.returnBootTask.addTasks(tasks)
 			f.taskMu.Unlock()
 		}
 	} else {
@@ -349,8 +354,8 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		CoveredAddress:   map[uint32]*UncoveredAddress{},
 		WriteAddress:     map[uint32]*WriteAddress{},
 		FileOperations:   map[string]*FileOperations{},
-		Tasks:            &Tasks{Name: "", Task: []*Task{}},
-		HighTask:         &Tasks{Name: "", Task: []*Task{}},
+		Tasks:            &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
+		HighTask:         &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
 		NewInput:         map[string]*Input{},
 	}
 
@@ -468,39 +473,34 @@ func (ss *Server) Update() {
 	newDependency = nil
 
 	// deal return tasks
-	var returnTask []*Task
+	returnTask := &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}}
 	for _, f := range ss.fuzzers {
 		f.taskMu.Lock()
-		returnTask = append(returnTask, f.returnTask.Task...)
-		f.returnTask.Task = []*Task{}
+		returnTask.addTasks(f.returnTask)
+		f.returnTask.emptyTask()
 		f.taskMu.Unlock()
 	}
-	for _, task := range returnTask {
-		for _, t := range ss.corpusDependency.Tasks.Task {
-			if t.Sig == task.Sig && t.Index == task.Index &&
-				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
+	for hash, task := range returnTask.Task {
+		if t, ok := ss.corpusDependency.Tasks.Task[hash]; ok {
+			if task.TaskStatus == TaskStatus_unstable && t.TaskStatus == TaskStatus_testing {
+				ss.reducePriority(task)
+			}
+			if task.TaskStatus == TaskStatus_tested {
+				ss.reducePriority(task)
+			}
+			t.mergeTask(task)
+			for u := range t.UncoveredAddress {
+				_, ok := ss.corpusDependency.UncoveredAddress[u]
+				if ok {
 
-				if task.TaskStatus == TaskStatus_unstable && t.TaskStatus == TaskStatus_testing {
-					ss.reducePriority(task)
+				} else {
+					delete(t.UncoveredAddress, u)
 				}
-				if task.TaskStatus == TaskStatus_tested {
-					ss.reducePriority(task)
-				}
-				t.mergeTask(task)
-				for u := range t.UncoveredAddress {
-					_, ok := ss.corpusDependency.UncoveredAddress[u]
-					if ok {
-
-					} else {
-						delete(t.UncoveredAddress, u)
-					}
-				}
-				break
 			}
 		}
 	}
 	sort.Slice(ss.corpusDependency.Tasks.Task, func(i, j int) bool {
-		return ss.corpusDependency.Tasks.Task[i].getRealPriority() > ss.corpusDependency.Tasks.Task[j].getRealPriority()
+		return ss.corpusDependency.Tasks.Tasks[i].getRealPriority() > ss.corpusDependency.Tasks.Tasks[j].getRealPriority()
 	})
 	returnTask = nil
 
@@ -524,11 +524,11 @@ func (ss *Server) Update() {
 						task = append(task, t)
 					}
 				}
-				ss.corpusDependency.HighTask.Task = []*Task{}
+				ss.corpusDependency.HighTask.emptyTask()
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
 					for _, t := range task {
-						f.highTasks.Task = append(f.highTasks.Task, proto.Clone(t).(*Task))
+						f.highTasks.addTask(proto.Clone(t).(*Task))
 					}
 					f.taskMu.Unlock()
 				}
@@ -561,7 +561,7 @@ func (ss *Server) Update() {
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
 					for _, t := range task {
-						f.highTasks.Task = append(f.highTasks.Task, proto.Clone(t).(*Task))
+						f.newTask.addTask(proto.Clone(t).(*Task))
 					}
 					f.taskMu.Unlock()
 				}
@@ -569,7 +569,8 @@ func (ss *Server) Update() {
 			}
 		}
 	} else {
-		ss.corpusDependency.HighTask.Task = []*Task{}
+		ss.corpusDependency.HighTask.emptyTask()
+		ss.corpusDependency.Tasks.emptyTask()
 	}
 
 	ss.logMu.Lock()
