@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-func (proc *Proc) getCall(sc *pb.IoctlCmd) (res *prog.Syscall) {
+func (proc *Proc) getCall(sc *pb.FileOperationsFunction) (res *prog.Syscall) {
 	// only work for ioctl
 	for n, c := range proc.fuzzer.target.SyscallMap {
 		ok := strings.HasPrefix(n, sc.Name)

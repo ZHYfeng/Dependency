@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// DRPCClient : the RPC client
 type DRPCClient struct {
 	c    DependencyRPCClient
 	I    []*Input
@@ -18,6 +19,7 @@ type DRPCClient struct {
 	logMu sync.RWMutex
 }
 
+// RunDependencyRPCClient : run the client
 func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(*address, grpc.WithInsecure())
@@ -29,6 +31,7 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	d.Connect(name)
 }
 
+// Connect : connect to syz-manager 
 func (d *DRPCClient) Connect(name *string) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
@@ -40,7 +43,7 @@ func (d *DRPCClient) Connect(name *string) {
 	return
 }
 
-// SendNeedInput ...
+// SendNewInput ...
 func (d *DRPCClient) SendNewInput(input *Input) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
@@ -48,8 +51,7 @@ func (d *DRPCClient) SendNewInput(input *Input) {
 
 	_, err := d.c.SendNewInput(ctx, input, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
-		log.Logf(0, "Dependency gRPC could not SendNeedInput: %v", err)
-		//log.Fatalf("Dependency gRPC could not SendNeedInput: %v", err)
+		log.Logf(0, "Dependency gRPC could not SendNewInput: %v", err)
 	}
 }
 
@@ -64,7 +66,7 @@ func (d *DRPCClient) GetTasks(name string) *Tasks {
 
 	replay, err := d.c.GetTasks(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
-		log.Fatalf("Dependency gRPC could not SendNeedInput: %v", err)
+		log.Fatalf("Dependency gRPC could not GetTasks: %v", err)
 	}
 	res := proto.Clone(replay).(*Tasks)
 	return res
@@ -82,7 +84,7 @@ func (d *DRPCClient) GetBootTasks(name string) *Tasks {
 
 	replay, err := d.c.GetBootTasks(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
-		log.Fatalf("Dependency gRPC could not SendNeedInput: %v", err)
+		log.Fatalf("Dependency gRPC could not GetBootTasks: %v", err)
 	}
 	res := proto.Clone(replay).(*Tasks)
 	return res
@@ -95,7 +97,7 @@ func (d *DRPCClient) ReturnTasks(task *Tasks) {
 	task.Name = *d.name
 	_, err := d.c.ReturnTasks(ctx, task, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
-		log.Fatalf("Dependency gRPC could not SendNeedInput: %v", err)
+		log.Fatalf("Dependency gRPC could not ReturnTasks: %v", err)
 	}
 	return
 }
@@ -107,47 +109,11 @@ func (d *DRPCClient) SendUnstableInput(unstableInput *UnstableInput) {
 
 	_, err := d.c.SendUnstableInput(ctx, unstableInput, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
-		log.Logf(0, "Dependency gRPC could not SendNeedInput: %v", err)
-		//log.Fatalf("Dependency gRPC could not SendNeedInput: %v", err)
+		log.Logf(0, "Dependency gRPC could not SendUnstableInput: %v", err)
 	}
 }
 
-func (d *DRPCClient) GetDependencyInput(name string) *Inputs {
-	// Contact the server and print out its response.
-	request := &Empty{
-		Name: name,
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
-	defer cancel()
-	dInputs, err := d.c.GetDependencyInput(ctx, request, grpc.MaxCallRecvMsgSize(0x7fffffffffffffff))
-	if err != nil {
-		log.Fatalf("Dependency gRPC could not GetDependencyInput: %v", err)
-	}
-	reply := &Inputs{}
-	for _, i := range dInputs.Input {
-		//reply.input[i.Sig] = CloneInput(i)
-		reply.Input = append(reply.Input, proto.Clone(i).(*Input))
-	}
-	return reply
-}
-
-// SendDependencyInput is
-func (d *DRPCClient) ReturnDependencyInput(input *Input) (*Empty, error) {
-	request := &Dependencytask{
-		Input: input,
-		Name:  *d.name,
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
-	defer cancel()
-	reply, err := d.c.ReturnDependencyInput(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
-	if err != nil {
-		log.Fatalf("Dependency gRPC could not ReturnDependencyInput: %v", err)
-	}
-	log.Logf(1, "Dependency gRPC ReturnDependencyInput reply.Name : %v", reply.Name)
-	return reply, nil
-}
-
-// SendNeedInput ...
+// SendLog ...
 func (d *DRPCClient) SendLog(log string) {
 	// Contact the server and print out its response.
 	d.logMu.Lock()

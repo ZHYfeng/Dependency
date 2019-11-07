@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (m *Statistic) MergeStatistic(d *Statistic) {
+func (m *Statistic) mergeStatistic(d *Statistic) {
 
 	if m.Name != d.Name {
 		log.Fatalf("MergeStatistic with error name")
@@ -24,8 +24,7 @@ func (m *Statistic) MergeStatistic(d *Statistic) {
 	return
 }
 
-func (m *Input) MergeInput(d *Input) {
-
+func (m *Input) mergeInput(d *Input) {
 	for i, u := range d.Call {
 		var call *Call
 		if c, ok := m.Call[i]; ok {
@@ -68,8 +67,7 @@ func (m *Input) MergeInput(d *Input) {
 	return
 }
 
-func (m *UncoveredAddress) MergeUncoveredAddress(d *UncoveredAddress) {
-
+func (m *UncoveredAddress) mergeUncoveredAddress(d *UncoveredAddress) {
 	for i, c := range d.Input {
 		if index, ok := m.Input[i]; ok {
 			m.Input[i] = index | c
@@ -95,7 +93,25 @@ func (m *UncoveredAddress) MergeUncoveredAddress(d *UncoveredAddress) {
 	return
 }
 
-func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
+func (m *FileOperations) mergeFileOperations(d *FileOperations) {
+	if m.Name != d.Name {
+		log.Fatalf("mergeFileOperations with error name")
+		return
+	}
+
+	for i, c := range d.FileOperationsFunction {
+		if _, ok := m.FileOperationsFunction[i]; ok {
+			proto.Merge(m.FileOperationsFunction[i], c)
+		} else {
+			if m.FileOperationsFunction == nil {
+				m.FileOperationsFunction = map[int64]*FileOperationsFunction{}
+			}
+			m.FileOperationsFunction[i] = c
+		}
+	}
+}
+
+func (m *WriteAddress) mergeWriteAddress(d *WriteAddress) {
 
 	for i, c := range d.UncoveredAddress {
 		if _, ok := m.UncoveredAddress[i]; ok {
@@ -108,14 +124,14 @@ func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
 		}
 	}
 
-	for i, c := range d.IoctlCmd {
-		if ii, ok := m.IoctlCmd[i]; ok {
-			m.IoctlCmd[i] = ii | c
+	for i, c := range d.FileOperationsFunction {
+		if _, ok := m.FileOperationsFunction[i]; ok {
+			m.FileOperationsFunction[i].mergeFileOperations(c)
 		} else {
-			if m.IoctlCmd == nil {
-				m.IoctlCmd = map[uint64]uint32{}
+			if m.FileOperationsFunction == nil {
+				m.FileOperationsFunction = map[string]*FileOperations{}
 			}
-			m.IoctlCmd[i] = c
+			m.FileOperationsFunction[i] = c
 		}
 	}
 
@@ -133,7 +149,7 @@ func (m *WriteAddress) MergeWriteAddress(d *WriteAddress) {
 	return
 }
 
-func (m *RunTimeData) MergeRunTimeData(d *RunTimeData) {
+func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 	if d == nil {
 		return
 	}
@@ -167,8 +183,7 @@ func (m *Task) reducePriority() {
 	m.Priority--
 }
 
-func (m *Task) MergeTask(s *Task) {
-
+func (m *Task) mergeTask(s *Task) {
 	if m.CoveredAddress == nil {
 		m.CoveredAddress = map[uint32]*RunTimeData{}
 	}
@@ -225,7 +240,7 @@ func (ss Server) pickTask(name string) *Tasks {
 	return tasks
 }
 
-// TODO: 
+// TODO:
 func (ss Server) pickBootTask(name string) *Tasks {
 	tasks := &Tasks{
 		Name: name,
@@ -249,7 +264,7 @@ func (ss Server) pickBootTask(name string) *Tasks {
 
 func (ss *Server) addNewInput(s *Input) {
 	if i, ok := ss.corpusDependency.NewInput[s.Sig]; ok {
-		i.MergeInput(s)
+		i.mergeInput(s)
 	} else {
 		ss.corpusDependency.NewInput[s.Sig] = s
 	}
@@ -259,7 +274,7 @@ func (ss *Server) addNewInput(s *Input) {
 
 func (ss *Server) addInput(s *Input) {
 	if i, ok := ss.corpusDependency.Input[s.Sig]; ok {
-		i.MergeInput(s)
+		i.mergeInput(s)
 	} else {
 		ss.corpusDependency.Input[s.Sig] = s
 	}
@@ -358,7 +373,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 		}
 	}
 
-	for wa, _ := range u.WriteAddress {
+	for wa := range u.WriteAddress {
 		waa, ok := ss.corpusDependency.WriteAddress[wa]
 		if !ok {
 			log.Fatalf("deleteUncoveredAddress not find wa")
@@ -445,7 +460,7 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 	}
 
 	if i, ok := ss.corpusDependency.UncoveredAddress[s.UncoveredAddress]; ok {
-		i.MergeUncoveredAddress(s)
+		i.mergeUncoveredAddress(s)
 	} else {
 		ss.corpusDependency.UncoveredAddress[s.UncoveredAddress] = s
 	}
@@ -466,7 +481,7 @@ func (ss *Server) addWriteAddressMapUncoveredAddress(s *UncoveredAddress) {
 
 func (ss *Server) addWriteAddress(s *WriteAddress) {
 	if i, ok := ss.corpusDependency.WriteAddress[s.WriteAddress]; ok {
-		i.MergeWriteAddress(s)
+		i.mergeWriteAddress(s)
 	} else {
 		ss.corpusDependency.WriteAddress[s.WriteAddress] = s
 	}

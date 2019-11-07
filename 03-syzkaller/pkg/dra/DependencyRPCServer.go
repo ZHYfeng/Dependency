@@ -3,17 +3,19 @@ package dra
 import (
 	"context"
 	"fmt"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
-	"github.com/golang/protobuf/proto"
-	"google.golang.org/grpc"
 	"net"
 	"os"
 	"sort"
 	"sync"
 	"time"
+
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
+	"github.com/golang/protobuf/proto"
+	"google.golang.org/grpc"
 )
 
+// useful const
 const (
 	//startTime  = 21600
 	startTime  = 0
@@ -23,23 +25,23 @@ const (
 )
 
 type syzFuzzer struct {
-	taskMu     *sync.Mutex
-	bootTasks  *Tasks
-	highTasks  *Tasks
-	newTask    *Tasks
-	returnTask *Tasks
-	returnBootTask *Task
+	taskMu         *sync.Mutex
+	bootTasks      *Tasks
+	highTasks      *Tasks
+	newTask        *Tasks
+	returnTask     *Tasks
+	returnBootTask *Tasks
 }
 
 type newStats struct {
 	newStat []*Statistic
 }
 
-type Dependencys struct {
+type dependencys struct {
 	newDependency []*Dependency
 }
 
-// server is used to implement dra.DependencyServer.
+// Server is used to implement dra.DependencyServer.
 type Server struct {
 	address    uint32
 	Port       int
@@ -65,11 +67,12 @@ type Server struct {
 	newStat *newStats
 
 	dependencyMu  *sync.Mutex
-	newDependency *Dependencys
+	newDependency *dependencys
 
 	newInputMu *sync.Mutex
 	newInput   *Inputs
 
+	// not new input, it is random picked inputs which used as new input.
 	needInputMu *sync.Mutex
 	needInput   *Inputs
 
@@ -80,18 +83,21 @@ type Server struct {
 	coveredInput   *Inputs
 }
 
-func (ss Server) GetVmOffsets(context.Context, *Empty) (*Empty, error) {
+// GetVMOffsets is to send the offset address in vmlinux to dra
+func (ss Server) GetVMOffsets(context.Context, *Empty) (*Empty, error) {
 	reply := &Empty{}
 	reply.Address = ss.address
 	return reply, nil
 }
 
+// SendBasicBlockNumber is to get the basic block number from dra
 func (ss Server) SendBasicBlockNumber(ctx context.Context, request *Empty) (*Empty, error) {
 	ss.stat.BasicBlockNumber = request.Address
 	reply := &Empty{}
 	return reply, nil
 }
 
+// GetNewInput is to send new input ro dra
 func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	log.Logf(DebugLevel, "(ss Server) GetNewInput")
 
@@ -118,6 +124,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	return reply, nil
 }
 
+// SendDependency is to get depednency information from dra
 func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendDependency")
 	d := proto.Clone(request).(*Dependency)
@@ -131,6 +138,7 @@ func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empt
 	return reply, nil
 }
 
+// GetCondition is to send condition to dra
 func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 	log.Logf(DebugLevel, "(ss Server) GetCondition")
 	reply := &Conditions{
@@ -141,12 +149,14 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 	return reply, nil
 }
 
+// SendWriteAddress is to get write address for the condition from dra
 func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendWriteAddress")
 
 	return &Empty{}, nil
 }
 
+// Connect is to connect with syz-fuzzer
 func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) Connect")
 
@@ -185,8 +195,9 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	return &Empty{}, nil
 }
 
+// SendNewInput is get new input from syz-fuzzer
 func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
-	log.Logf(DebugLevel, "(ss Server) SendNeedInput")
+	log.Logf(DebugLevel, "(ss Server) SendNewInput")
 
 	reply := &Empty{}
 	r := proto.Clone(request).(*Input)
@@ -194,8 +205,8 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 	ss.newInputMu.Lock()
 	ss.newInput.Input = append(ss.newInput.Input, r)
 	last := len(ss.newInput.Input)
-	log.Logf(DebugLevel, "(ss Server) SendNeedInput len of newInput : %v", last)
-	log.Logf(DebugLevel, "(ss Server) SendNeedInput newInput : %v", r)
+	log.Logf(DebugLevel, "(ss Server) SendNewInput len of newInput : %v", last)
+	log.Logf(DebugLevel, "(ss Server) SendNewInput newInput : %v", r)
 	ss.newInputMu.Unlock()
 
 	ss.coveredInputMu.Lock()
@@ -215,7 +226,7 @@ func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 	return tasks, nil
 }
 
-// GetBootTasks for the tasks need to be tested when boot 
+// GetBootTasks for the tasks need to be tested when boot
 func (ss Server) GetBootTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 	log.Logf(DebugLevel, "(ss Server) GetTasks")
 
@@ -225,6 +236,7 @@ func (ss Server) GetBootTasks(ctx context.Context, request *Empty) (*Tasks, erro
 	return tasks, nil
 }
 
+// ReturnTasks is to retrun the tasks from syz-fuzzer
 func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) ReturnTasks")
 	tasks := proto.Clone(request).(*Tasks)
@@ -247,6 +259,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 	return reply, nil
 }
 
+// SendUnstableInput is get unstable input from syz-fuzzer
 func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) (*Empty, error) {
 	ss.logMu.Lock()
 	defer ss.logMu.Unlock()
@@ -264,21 +277,7 @@ func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) 
 	return reply, nil
 }
 
-func (ss Server) GetDependencyInput(ctx context.Context, request *Empty) (*Inputs, error) {
-	log.Logf(DebugLevel, "(ss Server) GetDependencyInput")
-	reply := &Inputs{
-		Input: []*Input{},
-	}
-	return reply, nil
-}
-
-func (ss Server) ReturnDependencyInput(ctx context.Context, request *Dependencytask) (*Empty, error) {
-	log.Logf(DebugLevel, "(ss Server) ReturnDependencyInput")
-	reply := &Empty{}
-
-	return reply, nil
-}
-
+// SendLog is to get log from syz-fuzzer
 func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendLog")
 
@@ -294,6 +293,7 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 	return reply, nil
 }
 
+// SendStat is to get stat from suz-fuzzer
 func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, error) {
 
 	stat := proto.Clone(request).(*Statistic)
@@ -305,6 +305,7 @@ func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, erro
 	return reply, nil
 }
 
+// GetNeed is to random get input from syz-fuzzer, not new input but used as new input.
 func (ss Server) GetNeed(ctx context.Context, request *Empty) (*Empty, error) {
 
 	reply := &Empty{}
@@ -316,6 +317,7 @@ func (ss Server) GetNeed(ctx context.Context, request *Empty) (*Empty, error) {
 	return reply, nil
 }
 
+// SendNeedInput is to random get input from syz-fuzzer, not new input but used as new input.
 func (ss Server) SendNeedInput(ctx context.Context, request *Input) (*Empty, error) {
 	reply := &Empty{}
 	r := proto.Clone(request).(*Input)
@@ -327,15 +329,17 @@ func (ss Server) SendNeedInput(ctx context.Context, request *Input) (*Empty, err
 	return reply, nil
 }
 
+// SetAddress is to set the port address for Server
 func (ss *Server) SetAddress(address uint32) {
 	ss.address = address
 }
 
+// SyncSignal is to sync the number of signal
 func (ss *Server) SyncSignal(signalNum uint64) {
 	ss.stat.SignalNum = signalNum
 }
 
-// RunDependencyRPCServer
+// RunDependencyRPCServer : run the server
 func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.taskIndex = 0
 
@@ -344,7 +348,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		UncoveredAddress: map[uint32]*UncoveredAddress{},
 		CoveredAddress:   map[uint32]*UncoveredAddress{},
 		WriteAddress:     map[uint32]*WriteAddress{},
-		IoctlCmd:         map[uint64]*IoctlCmd{},
+		FileOperations:   map[string]*FileOperations{},
 		Tasks:            &Tasks{Name: "", Task: []*Task{}},
 		HighTask:         &Tasks{Name: "", Task: []*Task{}},
 		NewInput:         map[string]*Input{},
@@ -376,7 +380,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.newStat = &newStats{newStat: []*Statistic{}}
 
 	ss.dependencyMu = &sync.Mutex{}
-	ss.newDependency = &Dependencys{newDependency: []*Dependency{}}
+	ss.newDependency = &dependencys{newDependency: []*Dependency{}}
 
 	ss.newInputMu = &sync.Mutex{}
 	ss.newInput = &Inputs{Input: []*Input{}}
@@ -405,6 +409,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	}()
 }
 
+// Update : update the information in the server
 func (ss *Server) Update() {
 
 	// deal covered input
@@ -471,7 +476,6 @@ func (ss *Server) Update() {
 		f.taskMu.Unlock()
 	}
 	for _, task := range returnTask {
-		if task.
 		for _, t := range ss.corpusDependency.Tasks.Task {
 			if t.Sig == task.Sig && t.Index == task.Index &&
 				t.WriteSig == task.WriteSig && t.WriteIndex == task.WriteIndex {
@@ -482,7 +486,7 @@ func (ss *Server) Update() {
 				if task.TaskStatus == TaskStatus_tested {
 					ss.reducePriority(task)
 				}
-				t.MergeTask(task)
+				t.mergeTask(task)
 				for u := range t.UncoveredAddress {
 					_, ok := ss.corpusDependency.UncoveredAddress[u]
 					if ok {
@@ -583,7 +587,7 @@ func (ss *Server) Update() {
 	for _, stat := range newStat {
 		s, ok := ss.stat.Stat[int32(stat.Name)]
 		if ok {
-			s.MergeStatistic(stat)
+			s.mergeStatistic(stat)
 		} else {
 			ss.stat.Stat[int32(stat.Name)] = stat
 		}

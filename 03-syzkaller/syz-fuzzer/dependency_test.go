@@ -66,7 +66,7 @@ func TestRemoveSameResource(t *testing.T) {
 				"ioctl$TIOCSETD(r0, 0x5423, &(0x7f0000000040))\n" +
 				"ioctl$TCFLSH(r0, 0x40045436, 0x2)\n"),
 	}
-	idxs := [][]int{
+	idxs := [][]uint32{
 		{0, 0, 1, 1, 2, 3, 1, 4, 5},
 		{0, 1, 0, 2},
 		{0, 1, 0, 1, 2, 3, 4, 5, 6},

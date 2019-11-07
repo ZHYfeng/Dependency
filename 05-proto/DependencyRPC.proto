@@ -6,7 +6,7 @@ package dra;
 service DependencyRPC {
 
     // DRA and syz-manager
-    rpc GetVmOffsets (Empty) returns (Empty) {
+    rpc GetVMOffsets (Empty) returns (Empty) {
     }
     rpc SendBasicBlockNumber (Empty) returns (Empty) {
     }
@@ -32,10 +32,7 @@ service DependencyRPC {
     }
     rpc SendUnstableInput (UnstableInput) returns (Empty) {
     }
-    rpc GetDependencyInput (Empty) returns (Inputs) {
-    }
-    rpc ReturnDependencyInput (Dependencytask) returns (Empty) {
-    }
+
     rpc SendLog (Empty) returns (Empty) {
     }
     rpc sendStat (Statistic) returns (Empty) {
@@ -131,21 +128,11 @@ message runTimeData {
     repeated uint32 right_branch_address = 16;
 }
 
-message IoctlCmdInput {
-
-    string sig = 1;
-    // bits
-    uint32 index = 2;
-
-    uint64 cmd = 11;
-
-    uint32 write_address = 21;
-
-}
-
-message IoctlCmd {
+message FileOperationsFunction {
     string name = 1;
-    uint64 cmd = 2;
+    string file_operations_name = 2;
+    file_operations_kind kind = 3;
+    uint64 cmd = 4;
 
     //    repeated Condition critical_condition = 4;
     //    map<uint32, Condition> critical_condition = 4;
@@ -154,15 +141,32 @@ message IoctlCmd {
 
     //    repeated WriteAddress write_address = 11;
     map<uint32, uint32> write_address = 11;
-    // sig, write address
-    //    map<string, IoctlCmdInput> input = 12;
+}
+
+message FileOperations {
+    string name = 1;
+    //cmd or 0, function
+    map<int64, FileOperationsFunction> file_operations_function = 3;
+}
+
+enum file_operations_kind {
+    default = 0;
+    init = 1;
+    llseek = 2;
+    read = 3;
+    write = 4;
+    poll = 9;
+    unlocked_ioctl = 10;
+    mmap = 12;
+    open = 14;
+    release = 16;
 }
 
 message WriteAddress {
 
     // the address writes to global variable
     uint32 write_address = 2;
-    // the address of condition is related to this global variable
+    // the address of condition which is related to this global variable
     uint32 condition_address = 3;
 
     //    map<uint32, Input> write_input = 4;
@@ -172,8 +176,8 @@ message WriteAddress {
 
     // uncovered address,
     map<uint32, writeAddressAttributes> uncovered_address = 23;
-    // cmd,
-    map<uint64, uint32> ioctl_cmd = 24;
+    // file_operations name, file_operations_function index
+    map<string, FileOperations> file_operations_function = 24;
     // sig, index by bits
     map<string, uint32> input = 25;
 
@@ -248,35 +252,12 @@ message Dependency {
 
 }
 
-message RecursiveIoctlCmd {
-    IoctlCmd ioctl_cmd = 1;
-    repeated Condition critical_condition = 2;
-    runTimeData run_time_data = 3;
-    repeated RecursiveWriteAddress write_address = 11;
-}
-
-message RecursiveWriteAddress {
-    WriteAddress write_address = 1;
-    runTimeData run_time_data = 3;
-    repeated RecursiveIoctlCmd ioctl_cmd = 4;
-}
-
-
-message RecursiveDependency {
-
-    Input input = 1;
-    UncoveredAddress uncovered_address = 2;
-    runTimeData run_time_data = 3;
-    repeated RecursiveWriteAddress write_address = 11;
-
-}
-
 message Corpus {
     map<string, Input> input = 1;
     map<uint32, UncoveredAddress> uncovered_address = 4;
     map<uint32, UncoveredAddress> covered_address = 2;
     map<uint32, WriteAddress> write_address = 5;
-    map<uint64, IoctlCmd> ioctl_cmd = 6;
+    map<string, FileOperations> file_operations = 6;
     Tasks tasks = 7;
     Tasks high_task = 8;
     map<string, Input> new_input = 9;
