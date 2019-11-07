@@ -31,48 +31,53 @@ def generate_dev_dir():
             os.makedirs(path)
         os.chdir(path)
 
-        # if not os.path.exists("built-in.json"):
-        #     df = open(default.file_default_json, "r")
-        #     c = json.load(df)
-        #     df.close()
-        #     c["enable_syscalls"] = default.dev[d]["enable_syscalls"]
-        #     c["syzkaller"] = default.path_syzkaller
-        #     c["kernel_obj"] = default.path_linux
-        #     c["vm"]["kernel"] = default.path_kernel
-        #     f = open("built-in" + ".json", "w")
-        #     json.dump(c, f, indent=4)
-        #     f.close()
+        if not os.path.exists("built-in.json"):
+            df = open(default.file_default_json, "r")
+            c = json.load(df)
+            df.close()
+            c["enable_syscalls"] = default.dev[d]["enable_syscalls"]
+            c["syzkaller"] = default.path_syzkaller
+            c["kernel_obj"] = default.path_linux
+            c["vm"]["kernel"] = default.path_kernel
+            f = open("built-in" + ".json", "w")
+            json.dump(c, f, indent=4)
+            f.close()
+
+        # df = open(default.file_default_json, "r")
+        # c = json.load(df)
+        # df.close()
+        # c["enable_syscalls"] = default.dev[d]["enable_syscalls"]
+        # c["syzkaller"] = default.path_syzkaller
+        # c["kernel_obj"] = default.path_linux
+        # c["vm"]["kernel"] = default.path_kernel
+        # f = open("built-in" + ".json", "w")
+        # json.dump(c, f, indent=4)
+        # f.close()
         
-        # if not os.path.exists(default.file_asm):
-        #     read_s(default.dev[d]["path_s"])
-        # if not os.path.exists(default.file_bc):
-        #     shutil.copy(default.dev[d]["file_bc"], default.file_bc)
-        # if not os.path.exists(default.file_taint):
-        #     shutil.copy(default.dev[d]["file_taint"], default.file_taint)
-        # if not os.path.exists(default.name_with_dra):
-        #     os.makedirs(default.name_with_dra)
-        # if not os.path.exists(default.name_without_dra):
-        #     os.makedirs(default.name_without_dra)
-        # if not os.path.exists(default.name_run):
-        #     shutil.copy(default.path_default_run, default.name_run)
-        # if not os.path.exists(default.name_run_bash):
-        #     shutil.copy(default.path_default_run_bash, default.name_run_bash)
+        if not os.path.exists(default.file_asm):
+            read_s(default.dev[d]["path_s"])
+        if not os.path.exists(default.file_bc):
+            shutil.copy(default.dev[d]["file_bc"], default.file_bc)
+        if not os.path.exists(default.file_taint):
+            shutil.copy(default.dev[d]["file_taint"], default.file_taint)
+        if not os.path.exists(default.name_with_dra):
+            os.makedirs(default.name_with_dra)
+        if not os.path.exists(default.name_without_dra):
+            os.makedirs(default.name_without_dra)
+        if not os.path.exists(default.name_run):
+            shutil.copy(default.path_default_run, default.name_run)
+        if not os.path.exists(default.name_run_bash):
+            shutil.copy(default.path_default_run_bash, default.name_run_bash)
 
-        df = open(default.file_default_json, "r")
-        c = json.load(df)
-        df.close()
-        c["enable_syscalls"] = default.dev[d]["enable_syscalls"]
-        c["syzkaller"] = default.path_syzkaller
-        c["kernel_obj"] = default.path_linux
-        c["vm"]["kernel"] = default.path_kernel
-        f = open("built-in" + ".json", "w")
-        json.dump(c, f, indent=4)
-        f.close()
+        # read_s(default.dev[d]["path_s"])
+        # shutil.copy(default.dev[d]["file_bc"], default.file_bc)
+        # shutil.copy(default.dev[d]["file_taint"], default.file_taint)
+        # shutil.copy(default.path_default_run, default.name_run)
+        # shutil.copy(default.path_default, default.name_default)
+        # shutil.copy(default.path_default_run_bash, default.name_run_bash)
+        # shutil.copy(default.path_default_remove_bash, default.name_remove_bash)
 
-        read_s(default.dev[d]["path_s"])
-        shutil.copy(default.dev[d]["file_bc"], default.file_bc)
-        shutil.copy(default.dev[d]["file_taint"], default.file_taint)
-        shutil.copy(default.path_default_run, default.name_run)
-        shutil.copy(default.path_default, default.name_default)
-        shutil.copy(default.path_default_run_bash, default.name_run_bash)
-        shutil.copy(default.path_default_remove_bash, default.name_remove_bash)
+        ff = open("function" + ".json", "w")
+        if "function" in default.dev[d]:
+            json.dump(default.dev[d]["function"], ff, indent=4, sort_keys=True)
+        ff.close()

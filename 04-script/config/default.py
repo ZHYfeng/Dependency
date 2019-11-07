@@ -6,7 +6,8 @@ encoding = 'utf-8'
 path_home = os.path.expanduser("~")
 path_root = os.path.join(path_home, "data")
 path_git = os.path.join(path_root, "git")
-path_git_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_git_repo = os.path.join(
+    path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
 
 path_result = os.path.join(path_git_repo, "06-result")
 path_git_script = os.path.join(path_git_repo, "04-script")
@@ -20,11 +21,13 @@ name_run_bash = "run.bash"
 path_default_run_bash = os.path.join(path_git_script, "config", name_run_bash)
 
 name_remove_bash = "remove.bash"
-path_default_remove_bash = os.path.join(path_git_script, "config", name_remove_bash)
+path_default_remove_bash = os.path.join(
+    path_git_script, "config", name_remove_bash)
 
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
-path_linux_bc = os.path.join(path_root, "benchmark/linux/18-linux-clang-np-bc-f")
+path_linux_bc = os.path.join(
+    path_root, "benchmark/linux/18-linux-clang-np-bc-f")
 path_linux = os.path.join(path_root, "benchmark/linux/17-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 
@@ -42,7 +45,8 @@ path_root = os.path.join(path_home, "data")
 number_execute = 6
 path_current = os.getcwd()
 path_git = os.path.join(path_root, "git")
-path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_repo = os.path.join(
+    path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
 path_dra = os.path.join(path_repo, "02-dependency/build/tools/DRA/dra")
 path_syzkaller = os.path.join(path_repo, "03-syzkaller/bin/syz-manager")
 file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
@@ -73,7 +77,8 @@ name_base = "base"
 path_home = os.path.expanduser("~")
 path_root = os.path.join(path_home, "data")
 path_git = os.path.join(path_root, "git")
-path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_repo = os.path.join(
+    path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
 path_a2i = os.path.join(path_repo, "02-dependency/build/tools/A2I/a2i")
 
 dev = {
@@ -94,6 +99,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/staging/android"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_ashmem_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_binder": {
         "enable_syscalls": [
@@ -111,6 +180,70 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_block": {
         "enable_syscalls": [
@@ -155,6 +288,23 @@ dev = {
             os.path.join(path_linux_bc, "block/"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_blkdev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "",
+                "argument": {
+                },
+            },
+            "def_blk_fops": {
+                "unlocked_ioctl": {
+                    "name": "blkdev_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+            },
+        },
     },
     "dev_cdrom": {
         "enable_syscalls": [
@@ -209,6 +359,23 @@ dev = {
             os.path.join(path_linux_bc, "drivers/cdrom"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_cdrom_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "cdrom_init",
+                "argument": {
+                },
+            },
+            "cdrom_device_ops": {
+                "unlocked_ioctl": {
+                    "name": "cdrom_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+            },
+        },
     },
     "dev_dri": {
         "enable_syscalls": [
@@ -276,6 +443,23 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "",
+                "argument": {
+                },
+            },
+            "example_drm_fops": {
+                "unlocked_ioctl": {
+                    "name": "drm_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+            },
+        },
     },
     "dev_floppy": {
         "enable_syscalls": [
@@ -312,6 +496,70 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_i2c": {
         "enable_syscalls": [
@@ -331,6 +579,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/i2c"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_i2cdev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_input": {
         "enable_syscalls": [
@@ -380,6 +692,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/input"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_evdev_ioctl_handler_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_ion": {
         "enable_syscalls": [
@@ -394,6 +770,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/dma-buf"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_ion_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_kvm": {
         "enable_syscalls": [
@@ -512,6 +952,105 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "vmx_init",
+                "argument": {
+                },
+            },
+            "kvm_vcpu_fops": {
+                "release": {
+                    "name": "kvm_vcpu_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "kvm_vcpu_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "mmap": {
+                    "name": "kvm_vcpu_mmap",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+                "llseek": {
+                    "name": "noop_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+            },
+            "kvm_device_fops": {
+                "release": {
+                    "name": "kvm_vcpu_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "kvm_vcpu_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+            },
+            "kvm_vm_fops": {
+                "release": {
+                    "name": "kvm_vm_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "kvm_vm_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "noop_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+            },
+            "kvm_chardev_ops": {
+                "unlocked_ioctl": {
+                    "name": "kvm_dev_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "noop_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+            },
+        },
     },
     "dev_loop": {
         "enable_syscalls": [
@@ -536,6 +1075,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/block"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_lo_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_nbd": {
         "enable_syscalls": [
@@ -562,6 +1165,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/block"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_nbd_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_net_tun": {
         "enable_syscalls": [
@@ -599,6 +1266,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/net"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info___tun_chr_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "tun_init",
+                "argument": {
+                },
+            },
+            "tun_fops": {
+                "release": {
+                    "name": "tun_chr_close",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "tun_chr_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "tun_chr_read_iter",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "tun_chr_write_iter",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "tun_chr_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "tun_chr_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_ppp": {
         "enable_syscalls": [
@@ -629,6 +1360,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/net/ppp"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_ppp_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_ptmx": {
         "enable_syscalls": [
@@ -753,6 +1548,30 @@ dev = {
             os.path.join(path_linux_bc, "drivers/tty"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_tty_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "n_tty_init",
+                "argument": {
+                },
+            },
+            "tty_fops": {
+                "unlocked_ioctl": {
+                    "name": "tty_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "open": {
+                    "name": "tty_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+            },
+        },
     },
     "dev_random": {
         "enable_syscalls": [
@@ -769,6 +1588,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/char"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_random_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_rfkill": {
         "enable_syscalls": [
@@ -783,6 +1666,70 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_rtc": {
         "enable_syscalls": [
@@ -816,6 +1763,30 @@ dev = {
             os.path.join(path_linux_bc, "drivers/rtc"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_rtc_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "rtc_dev_init",
+                "argument": {
+                },
+            },
+            "rtc_dev_fops": {
+                "unlocked_ioctl": {
+                    "name": "rtc_dev_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "open": {
+                    "name": "rtc_dev_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+            },
+        },
     },
     "dev_sg": {
         "enable_syscalls": [
@@ -860,6 +1831,30 @@ dev = {
             os.path.join(path_linux_bc, "drivers/scsi"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_sg_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "init_sg",
+                "argument": {
+                },
+            },
+            "sg_fops": {
+                "unlocked_ioctl": {
+                    "name": "sg_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "open": {
+                    "name": "sg_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+            },
+        },
     },
     "dev_snd_control": {
         "enable_syscalls": [
@@ -894,6 +1889,37 @@ dev = {
             os.path.join(path_linux_bc, "sound/core"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_snd_ctl_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_ctl_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_ctl_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_ctl_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+            },
+        },
     },
     "dev_snd_seq": {
         "enable_syscalls": [
@@ -936,6 +1962,70 @@ dev = {
             os.path.join(path_linux_bc, "sound/core"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_snd_seq_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_snd_timer": {
         "enable_syscalls": [
@@ -960,6 +2050,70 @@ dev = {
             os.path.join(path_linux_bc, "sound/core"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info___snd_timer_user_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_sr": {
         "enable_syscalls": [
@@ -970,7 +2124,71 @@ dev = {
             os.path.join(path_linux_bc, "virt/kvm"),
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_uinput_ioctl_handler_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_uinput_iotl_handler_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_uhid": {
         "enable_syscalls": [
@@ -988,6 +2206,70 @@ dev = {
             os.path.join(path_linux_bc, "drivers/input/misc"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_uinput_ioctl_handler_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_uinput": {
         "enable_syscalls": [
@@ -1022,6 +2304,70 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_userio": {
         "enable_syscalls": [
@@ -1036,6 +2382,70 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
     "dev_video4linux": {
         "enable_syscalls": [
@@ -1160,5 +2570,69 @@ dev = {
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
+        "function": {
+            "init": {
+                "name": "snd_sequencer_device_init",
+                "argument": {
+                },
+            },
+            "snd_seq_f_ops": {
+                "release": {
+                    "name": "snd_seq_release",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "unlocked_ioctl": {
+                    "name": "snd_seq_ioctl",
+                    "argument": {
+                        "0": "file",
+                        "1": "const",
+                        "2": "user",
+                    },
+                },
+                "llseek": {
+                    "name": "no_llseek",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                    },
+                },
+                "read": {
+                    "name": "snd_seq_read",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "write": {
+                    "name": "snd_seq_write",
+                    "argument": {
+                        "0": "file",
+                        "1": "user",
+                        "2": "user",
+                        "3": "user",
+                    },
+                },
+                "open": {
+                    "name": "snd_seq_open",
+                    "argument": {
+                        "0": "system",
+                        "1": "file",
+                    },
+                },
+                "poll": {
+                    "name": "snd_seq_poll",
+                    "argument": {
+                        "0": "file",
+                        "1": "system",
+                    },
+                },
+            },
+        },
     },
 }
