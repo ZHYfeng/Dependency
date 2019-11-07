@@ -22,4 +22,4 @@ cd ..
 # cd ..
 
 echo "[*] Trying to generate work dir"
-python3 04-script/main.py generate ~/data/work
+python3 04-script/main.py generate ~/data/work1
