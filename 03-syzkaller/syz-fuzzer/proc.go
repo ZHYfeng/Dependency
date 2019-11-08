@@ -258,7 +258,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			Address: make(map[uint32]uint32),
 		}
 		input.Call[uint32(item.call)] = cc
-		for a, _ := range inputCover {
+		for a := range inputCover {
 			cc.Address[a] = 0
 		}
 	}

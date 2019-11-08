@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
@@ -9,7 +11,6 @@ import (
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
 	"github.com/golang/protobuf/proto"
-	"strings"
 )
 
 func (proc *Proc) getCall(sc *pb.FileOperationsFunction) (res *prog.Syscall) {
@@ -321,8 +322,8 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		task.TaskStatus = pb.TaskStatus_tested
 	}
 	tasks := &pb.Tasks{
-		Name: proc.fuzzer.name,
-		Kind: pb.TaskKind_Normal,
+		Name:  proc.fuzzer.name,
+		Kind:  pb.TaskKind_Normal,
 		Task:  map[string]*pb.Task{},
 		Tasks: []*pb.Task{},
 	}
@@ -338,12 +339,29 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("DependencyBoot program : \n%s", task.Program))
 	proc.fuzzer.dManager.SendLog(fmt.Sprintf("index  : %d write index : %d", task.Index, task.WriteIndex))
 	proc.fuzzer.dManager.SSendLog()
-	wp, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
+	p, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.WriteProgram: %v", err)
 	}
 	idx := int(task.Index)
-	infoWrite := proc.execute(proc.execOptsCover, wp, ProgNormal, StatDependency)
+	var index []int
+	for i := 0; i < 32; i++ {
+		if (1<<uint(i))&task.WriteIndex > 0 {
+			index = append(index, i)
+		}
+	}
+	l := len(p.Calls)
+	for i := idx + 1; i < l; i++ {
+		p.RemoveCall(i)
+	}
+	for ii, i := range index {
+		if i >= l-1 {
+			break
+		}
+		p.RemoveCall(i-ii)
+	}
+
+	infoWrite := proc.execute(proc.execOptsCover, p, ProgNormal, StatDependency)
 	for UncoveredAddress := range task.UncoveredAddress {
 		checkUncoveredAddress := checkAddress(UncoveredAddress, infoWrite.Calls[idx].Cover)
 		if checkUncoveredAddress {
@@ -351,19 +369,45 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 			proc.fuzzer.dManager.SendLog(fmt.Sprintf("dependency boot could arrive at uncovered address : %x", UncoveredAddress))
 		}
 	}
+	data := p.Serialize()
+	for _, c := range  data{
+		task.WriteProgram = append(task.WriteProgram, c)
+	}
 
 	for address := range task.CoveredAddress {
 		delete(task.UncoveredAddress, address)
 	}
 
-	if len(task.UncoveredAddress) == 0 {
+	if len(task.CoveredAddress) != 0 {
 		task.TaskStatus = pb.TaskStatus_covered
+		input := pb.Input{
+			Sig:     task.Sig,
+			Program: []byte{},
+			Call:    make(map[uint32]*pb.Call),
+			Stat:    pb.FuzzingStat_StatTriage,
+		}
+		
+		for _, c := range  data{
+			input.Program = append(input.Program, c)
+		}
+		if item.call != -1 {
+			cc := &pb.Call{
+				Idx:     uint32(item.call),
+				Address: make(map[uint32]uint32),
+			}
+			input.Call[uint32(item.call)] = cc
+			for _, a := range infoWrite.Calls[idx].Cover {
+				cc.Address[a] = 0
+			}
+		}
+		input.Stat = pb.FuzzingStat_StatDependencyBoot
+		proc.fuzzer.dManager.SendBootInput(&input)
 	} else {
 		task.TaskStatus = pb.TaskStatus_tested
 	}
 	tasks := &pb.Tasks{
-		Name: proc.fuzzer.name,
-		Kind: pb.TaskKind_Boot,
+		Name:  proc.fuzzer.name,
+		Kind:  pb.TaskKind_Boot,
 		Task:  map[string]*pb.Task{},
 		Tasks: []*pb.Task{},
 	}
@@ -869,18 +913,17 @@ func (fuzzer *Fuzzer) checkIsCovered(id int, address uint32) (res bool) {
 		call := c.Address
 		if _, ok := call[address]; !ok {
 			return false
-		} else {
-			return true
 		}
-	} else {
-		fuzzer.cover[id] = &pb.Call{
-			Idx:     0,
-			Address: make(map[uint32]uint32),
-		}
-		call := fuzzer.cover[id].Address
-		call[address] = 0
-		return false
+		return true
 	}
+
+	fuzzer.cover[id] = &pb.Call{
+		Idx:     0,
+		Address: make(map[uint32]uint32),
+	}
+	call := fuzzer.cover[id].Address
+	call[address] = 0
+	return false
 }
 
 func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls []int) {
@@ -936,6 +979,7 @@ func (fuzzer *Fuzzer) checkNewCoverage(p *prog.Prog, info *ipc.ProgInfo) (calls 
 	return
 }
 
+// SendNeedInput :
 func (proc *Proc) SendNeedInput(p *prog.Prog, info *ipc.ProgInfo) {
 	data := p.Serialize()
 	sig := hash.Hash(data)

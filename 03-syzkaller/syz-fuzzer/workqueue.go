@@ -23,7 +23,7 @@ type WorkQueue struct {
 	smash           []*WorkSmash
 	high            []*WorkDependency
 	dependency      []*WorkDependency
-	boot			[]*WorkBoot
+	boot            []*WorkBoot
 
 	procs          int
 	needCandidates chan struct{}
@@ -163,14 +163,14 @@ func (wq *WorkQueue) dequeueDependency() (item *WorkDependency) {
 	if len(wq.dependency) == 0 {
 		wq.mu.RUnlock()
 		return nil
-	} else {
-		wq.mu.RUnlock()
-		wq.mu.Lock()
-		last := len(wq.dependency) - 1
-		item = wq.dependency[last]
-		wq.dependency = wq.dependency[:last]
-		wq.mu.Unlock()
 	}
+
+	wq.mu.RUnlock()
+	wq.mu.Lock()
+	last := len(wq.dependency) - 1
+	item = wq.dependency[last]
+	wq.dependency = wq.dependency[:last]
+	wq.mu.Unlock()
 
 	return item
 }

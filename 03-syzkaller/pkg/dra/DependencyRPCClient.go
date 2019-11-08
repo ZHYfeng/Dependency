@@ -104,6 +104,18 @@ func (d *DRPCClient) ReturnTasks(task *Tasks) {
 	return
 }
 
+// SendBootInput ...
+func (d *DRPCClient) SendBootInput(input *Input) {
+	// Contact the server and print out its response.
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+
+	_, err := d.c.SendBootInput(ctx, input, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
+	if err != nil {
+		log.Logf(0, "Dependency gRPC could not SendNewInput: %v", err)
+	}
+}
+
 // SendUnstableInput : send unstable input to syz-manager
 func (d *DRPCClient) SendUnstableInput(unstableInput *UnstableInput) {
 	// Contact the server and print out its response.

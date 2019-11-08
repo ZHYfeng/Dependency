@@ -160,20 +160,14 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 }
 
 func (ss Server) increasePriority(m *Task) {
-	for _, task := range ss.corpusDependency.Tasks.Task {
-		if task.WriteSig == m.WriteSig && task.WriteAddress == m.WriteAddress &&
-			task.WriteIndex == m.WriteIndex {
-			task.increasePriority()
-		}
+	if t, ok := ss.corpusDependency.Tasks.Task[m.getHash()]; ok {
+		t.increasePriority()
 	}
 }
 
 func (ss Server) reducePriority(m *Task) {
-	for _, task := range ss.corpusDependency.Tasks.Task {
-		if task.WriteSig == m.WriteSig && task.WriteAddress == m.WriteAddress &&
-			task.WriteIndex == m.WriteIndex {
-			task.reducePriority()
-		}
+	if t, ok := ss.corpusDependency.Tasks.Task[m.getHash()]; ok {
+		t.reducePriority()
 	}
 }
 
@@ -230,7 +224,7 @@ func (ss Server) pickTask(name string) *Tasks {
 	return tasks
 }
 
-// TODO:
+// pickBootTask : pick one task once
 func (ss Server) pickBootTask(name string) *Tasks {
 	var tasks *Tasks
 	f, ok := ss.fuzzers[name]
@@ -264,7 +258,7 @@ func (ss *Server) addInput(s *Input) {
 	ss.addWriteAddressMapInput(s)
 	ss.addUncoveredAddressMapInput(s)
 
-	ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
+	// ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
 	return
 }
 
@@ -378,7 +372,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 
 func (ss *Server) addCoveredAddress(input *Input) {
 	var isDependency uint32
-	if input.Stat == FuzzingStat_StatDependency {
+	if input.Stat == FuzzingStat_StatDependency || input.Stat == FuzzingStat_StatDependencyBoot {
 		isDependency = 1
 	} else {
 		isDependency = 0
@@ -503,7 +497,7 @@ func (ss *Server) addInputTask(d *Input) {
 			}
 			for name := range wa.FileOperationsFunction {
 				if name == "init" {
-					// ss.add
+					ss.addBootTasks(sig, inputIndexBits, u)
 				}
 			}
 		}
@@ -547,6 +541,41 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 			}
 			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.Tasks)
 		}
+	}
+	return
+}
+
+func (ss *Server) addBootTasks(sig string, indexBits uint32, uncoveredAddress uint32) {
+	input, ok := ss.corpusDependency.Input[sig]
+	if !ok {
+		log.Fatalf("addBootTasks do not find sig")
+	}
+	ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	if !ok {
+		log.Fatalf("addBootTasks do not find uncovered address")
+	}
+
+	var writeIndexBits uint32
+	writeIndexBits = 0
+	for i, c := range input.Call {
+		for a := range c.Address {
+			for wa := range ua.WriteAddress {
+				if wa == a {
+					writeIndexBits = writeIndexBits | (1 << i)
+				}
+			}
+		}
+	}
+
+	var i uint32
+	var index []uint32
+	for i = 0; i < 32; i++ {
+		if (1<<i)&indexBits > 0 {
+			index = append(index, i)
+		}
+	}
+	for _, i := range index {
+		ss.addTask(ss.getTask(sig, i, sig, writeIndexBits, uncoveredAddress, uncoveredAddress), ss.corpusDependency.BootTask)
 	}
 	return
 }

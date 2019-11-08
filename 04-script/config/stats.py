@@ -82,6 +82,7 @@ class stat:
         s_add(self.processed_stat.stat[pb.StatSmash], self.real_stat.stat[pb.StatHint])
         s_add(self.processed_stat.stat[pb.StatSmash], self.real_stat.stat[pb.StatSeed])
         s_copy(self.processed_stat.stat[pb.StatDependency], self.real_stat.stat[pb.StatDependency])
+        s_copy(self.processed_stat.stat[pb.StatDependency], self.real_stat.stat[pb.StatDependencyBoot])
 
         f = open(self.file_result, "a")
         f.write("=====================================================\n")

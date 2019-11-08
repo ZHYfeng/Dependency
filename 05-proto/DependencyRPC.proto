@@ -30,9 +30,8 @@ service DependencyRPC {
     }
     rpc ReturnTasks (Tasks) returns (Empty) {
     }
-    rpc SendUnstableInput (UnstableInput) returns (Empty) {
-    }
-
+    rpc SendBootInput (Input) returns (Empty) {}
+    rpc SendUnstableInput (UnstableInput) returns (Empty) {}
     rpc SendLog (Empty) returns (Empty) {
     }
     rpc sendStat (Statistic) returns (Empty) {
@@ -260,7 +259,8 @@ message Corpus {
     map<string, FileOperations> file_operations = 6;
     Tasks tasks = 7;
     Tasks high_task = 8;
-    map<string, Input> new_input = 9;
+    Tasks boot_task = 9;
+    map<string, Input> new_input = 11;
 }
 
 message UsefulInput {
@@ -281,6 +281,7 @@ enum FuzzingStat {
     StatHint = 7;
     StatSeed = 8;
     StatDependency = 9;
+    StatDependencyBoot = 10;
 }
 
 message Statistic {

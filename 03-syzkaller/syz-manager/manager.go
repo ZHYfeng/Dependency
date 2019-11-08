@@ -556,7 +556,7 @@ func (mgr *Manager) runInstance(index int) (*Crash, error) {
 	cmd := instance.FuzzerCmd(fuzzerBin, executorBin, fmt.Sprintf("vm-%v", index),
 		mgr.cfg.TargetOS, mgr.cfg.TargetArch, fwdAddr, fwddAddr, mgr.cfg.Sandbox, procs, fuzzerV,
 		mgr.cfg.Cover, *flagDebug, false, false)
-	outc, errc, err := inst.Run(time.Hour, mgr.vmStop, cmd)
+	outc, errc, err := inst.Run(time.Hour/2, mgr.vmStop, cmd)
 	if err != nil {
 		return nil, fmt.Errorf("failed to run fuzzer: %v", err)
 	}

@@ -20,6 +20,7 @@ const (
 	//startTime  = 21600
 	startTime  = 0
 	newTime    = 600
+	bootTime   = 300
 	taskNum    = 20
 	DebugLevel = 2
 )
@@ -59,6 +60,7 @@ type Server struct {
 	timeStart        time.Time
 	timeNew          time.Time
 	needWriteaddress bool
+	needboot         bool
 
 	logMu *sync.Mutex
 	log   *Empty
@@ -264,6 +266,17 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 	return reply, nil
 }
 
+// SendBootInput is get new input from syz-fuzzer
+func (ss Server) SendBootInput(ctx context.Context, request *Input) (*Empty, error) {
+	log.Logf(DebugLevel, "(ss Server) SendBootInput")
+	reply := &Empty{}
+	r := proto.Clone(request).(*Input)
+	ss.coveredInputMu.Lock()
+	ss.coveredInput.Input = append(ss.coveredInput.Input, r)
+	ss.coveredInputMu.Unlock()
+	return reply, nil
+}
+
 // SendUnstableInput is get unstable input from syz-fuzzer
 func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) (*Empty, error) {
 	ss.logMu.Lock()
@@ -356,6 +369,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		FileOperations:   map[string]*FileOperations{},
 		Tasks:            &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
 		HighTask:         &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
+		BootTask:         &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
 		NewInput:         map[string]*Input{},
 	}
 
@@ -441,11 +455,20 @@ func (ss *Server) Update() {
 		if elapsed.Seconds() > newTime {
 			ss.needWriteaddress = true
 		}
+		if elapsed.Seconds() > bootTime {
+			ss.needboot = true
+		}
 	} else {
 		ss.timeNew = time.Now()
 		ss.needWriteaddress = false
+		ss.needboot = false
 	}
 	input = nil
+
+	// reboot the qemu
+	if ss.needboot {
+		ss.needboot = false
+	}
 
 	// deal need input
 	ss.needInputMu.Lock()
@@ -499,7 +522,7 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-	sort.Slice(ss.corpusDependency.Tasks.Task, func(i, j int) bool {
+	sort.Slice(ss.corpusDependency.Tasks.Tasks, func(i, j int) bool {
 		return ss.corpusDependency.Tasks.Tasks[i].getRealPriority() > ss.corpusDependency.Tasks.Tasks[j].getRealPriority()
 	})
 	returnTask = nil
@@ -571,6 +594,74 @@ func (ss *Server) Update() {
 	} else {
 		ss.corpusDependency.HighTask.emptyTask()
 		ss.corpusDependency.Tasks.emptyTask()
+	}
+
+	// deal return boot tasks
+	returnBootTask := &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}}
+	for _, f := range ss.fuzzers {
+		f.taskMu.Lock()
+		returnBootTask.addTasks(f.returnBootTask)
+		f.returnBootTask.emptyTask()
+		f.taskMu.Unlock()
+	}
+	for hash, task := range returnBootTask.Task {
+		if t, ok := ss.corpusDependency.BootTask.Task[hash]; ok {
+			if task.TaskStatus == TaskStatus_covered {
+				t.mergeTask(task)
+			} else {
+				t.TaskStatus = TaskStatus_tested
+			}
+			t.mergeTask(task)
+			for u := range t.UncoveredAddress {
+				_, ok := ss.corpusDependency.UncoveredAddress[u]
+				if ok {
+
+				} else {
+					delete(t.UncoveredAddress, u)
+				}
+			}
+		}
+	}
+	sort.Slice(ss.corpusDependency.BootTask.Tasks, func(i, j int) bool {
+		return ss.corpusDependency.BootTask.Tasks[i].getRealPriority() > ss.corpusDependency.BootTask.Tasks[j].getRealPriority()
+	})
+	returnBootTask = nil
+
+	// get boot tasks
+	if ss.Dependency {
+		t := time.Now()
+		elapsed := t.Sub(ss.timeStart)
+		if elapsed.Seconds() > startTime {
+			if len(ss.corpusDependency.BootTask.Task) != 0 {
+				var task []*Task
+				for _, t := range ss.corpusDependency.BootTask.Task {
+					if t.TaskStatus == TaskStatus_untested {
+						for u := range t.UncoveredAddress {
+							_, ok := ss.corpusDependency.UncoveredAddress[u]
+							if ok {
+
+							} else {
+								delete(t.UncoveredAddress, u)
+							}
+						}
+						if len(t.UncoveredAddress) > 0 {
+							task = append(task, t)
+							t.TaskStatus = TaskStatus_testing
+						}
+					}
+				}
+				for _, f := range ss.fuzzers {
+					f.taskMu.Lock()
+					for _, t := range task {
+						f.bootTasks.addTask(proto.Clone(t).(*Task))
+					}
+					f.taskMu.Unlock()
+				}
+				task = nil
+			}
+		}
+	} else {
+		ss.corpusDependency.BootTask.emptyTask()
 	}
 
 	ss.logMu.Lock()
