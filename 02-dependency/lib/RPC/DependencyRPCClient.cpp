@@ -24,7 +24,7 @@ namespace dra {
         Empty request;
         Empty reply;
         grpc::ClientContext context;
-        grpc::Status status = stub_->GetVmOffsets(&context, request, &reply);
+        grpc::Status status = stub_->GetVMOffsets(&context, request, &reply);
         if (status.ok()) {
             return reply.address();
         } else {

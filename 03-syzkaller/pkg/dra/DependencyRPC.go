@@ -128,10 +128,10 @@ func (m *WriteAddress) mergeWriteAddress(d *WriteAddress) {
 
 	for i, c := range d.FileOperationsFunction {
 		if _, ok := m.FileOperationsFunction[i]; ok {
-			m.FileOperationsFunction[i].mergeFileOperations(c)
+			m.FileOperationsFunction[i] = m.FileOperationsFunction[i] | c
 		} else {
 			if m.FileOperationsFunction == nil {
-				m.FileOperationsFunction = map[string]*FileOperations{}
+				m.FileOperationsFunction = map[string]uint32{}
 			}
 			m.FileOperationsFunction[i] = c
 		}

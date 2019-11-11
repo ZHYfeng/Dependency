@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x13\x44\x65pendencyRPC.proto\x12\x03\x64ra\"&\n\x05\x45mpty\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\"\xf1\x01\n\tCondition\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\x04\x12#\n\x1bsyzkaller_condition_address\x18\x02 \x01(\r\x12\x19\n\x11uncovered_address\x18\x03 \x01(\x04\x12#\n\x1bsyzkaller_uncovered_address\x18\x04 \x01(\r\x12\x0b\n\x03idx\x18\x05 \x01(\r\x12\x11\n\tsuccessor\x18\x06 \x01(\x04\x12\x1c\n\x14right_branch_address\x18\x07 \x03(\x04\x12&\n\x1esyzkaller_right_branch_address\x18\x08 \x03(\r\"/\n\nConditions\x12!\n\tcondition\x18\n \x03(\x0b\x32\x0e.dra.Condition\"]\n\x0eWriteAddresses\x12!\n\tcondition\x18\x01 \x01(\x0b\x32\x0e.dra.Condition\x12(\n\rwrite_address\x18\x04 \x03(\x0b\x32\x11.dra.WriteAddress\"l\n\x04\x43\x61ll\x12\x0b\n\x03idx\x18\x01 \x01(\r\x12\'\n\x07\x61\x64\x64ress\x18\x02 \x03(\x0b\x32\x16.dra.Call.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"#\n\x06Inputs\x12\x19\n\x05input\x18\x01 \x03(\x0b\x32\n.dra.Input\"9\n\x0e\x44\x65pendencytask\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x0c\n\x04name\x18) \x01(\t\"\x94\x02\n\x0brunTimeData\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12$\n\x0btask_status\x18\x03 \x01(\x0e\x32\x0f.dra.taskStatus\x12\x16\n\x0ercursive_count\x18\x04 \x01(\r\x12\x10\n\x08priority\x18\x05 \x01(\r\x12\x0b\n\x03idx\x18\n \x01(\r\x12\x16\n\x0e\x63heckCondition\x18\x0b \x01(\x08\x12\x19\n\x11\x63ondition_address\x18\x0c \x01(\r\x12\x14\n\x0c\x63heckAddress\x18\r \x01(\x08\x12\x0f\n\x07\x61\x64\x64ress\x18\x0e \x01(\r\x12\x1f\n\x17\x63heckRightBranchAddress\x18\x0f \x01(\x08\x12\x1c\n\x14right_branch_address\x18\x10 \x03(\r\"\x9e\x02\n\x16\x46ileOperationsFunction\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1c\n\x14\x66ile_operations_name\x18\x02 \x01(\t\x12\'\n\x04kind\x18\x03 \x01(\x0e\x32\x19.dra.file_operations_kind\x12\x0b\n\x03\x63md\x18\x04 \x01(\x04\x12\'\n\rrun_time_date\x18\x05 \x01(\x0b\x32\x10.dra.runTimeData\x12\x44\n\rwrite_address\x18\x0b \x03(\x0b\x32-.dra.FileOperationsFunction.WriteAddressEntry\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xcd\x01\n\x0e\x46ileOperations\x12\x0c\n\x04name\x18\x01 \x01(\t\x12Q\n\x18\x66ile_operations_function\x18\x03 \x03(\x0b\x32/.dra.FileOperations.FileOperationsFunctionEntry\x1aZ\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\x03\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.FileOperationsFunction:\x02\x38\x01\"\x83\x04\n\x0cWriteAddress\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x03 \x01(\r\x12\x42\n\x11uncovered_address\x18\x17 \x03(\x0b\x32\'.dra.WriteAddress.UncoveredAddressEntry\x12O\n\x18\x66ile_operations_function\x18\x18 \x03(\x0b\x32-.dra.WriteAddress.FileOperationsFunctionEntry\x12+\n\x05input\x18\x19 \x03(\x0b\x32\x1c.dra.WriteAddress.InputEntry\x12\'\n\rrun_time_date\x18\x0b \x01(\x0b\x32\x10.dra.runTimeData\x1aT\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\x1aR\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dra.FileOperations:\x02\x38\x01\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"M\n\x16writeAddressAttributes\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x0e\n\x06repeat\x18\x07 \x01(\r\x12\x0c\n\x04prio\x18\x06 \x01(\r\"\xba\x03\n\x10UncoveredAddress\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\r\x12\x19\n\x11uncovered_address\x18\x02 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x03 \x03(\r\x12\x0f\n\x07\x62\x62\x63ount\x18\x04 \x01(\r\x12\'\n\x04kind\x18\x05 \x01(\x0e\x32\x19.dra.UncoveredAddressKind\x12/\n\x05input\x18\x16 \x03(\x0b\x32 .dra.UncoveredAddress.InputEntry\x12>\n\rwrite_address\x18\x17 \x03(\x0b\x32\'.dra.UncoveredAddress.WriteAddressEntry\x12\'\n\rrun_time_date\x18\x08 \x01(\x0b\x32\x10.dra.runTimeData\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1aP\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\"\x17\n\x04Path\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x03(\r\"y\n\rUnstableInput\x12\x1b\n\x08new_path\x18\x01 \x01(\x0b\x32\t.dra.Path\x12 \n\runstable_path\x18\x02 \x01(\x0b\x32\t.dra.Path\x12\x0b\n\x03idx\x18\x03 \x01(\x05\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\"\x81\x03\n\x05Input\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\"\n\x04\x63\x61ll\x18\r \x03(\x0b\x32\x14.dra.Input.CallEntry\x12\x1e\n\x04stat\x18\x15 \x01(\x0e\x32\x10.dra.FuzzingStat\x12;\n\x11uncovered_address\x18\x16 \x03(\x0b\x32 .dra.Input.UncoveredAddressEntry\x12\x33\n\rwrite_address\x18\x19 \x03(\x0b\x32\x1c.dra.Input.WriteAddressEntry\x1a\x36\n\tCallEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Call:\x02\x38\x01\x1a\x37\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\x83\x01\n\nDependency\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x30\n\x11uncovered_address\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress\x12(\n\rwrite_address\x18\x03 \x03(\x0b\x32\x11.dra.WriteAddress\"\xc7\x06\n\x06\x43orpus\x12%\n\x05input\x18\x01 \x03(\x0b\x32\x16.dra.Corpus.InputEntry\x12<\n\x11uncovered_address\x18\x04 \x03(\x0b\x32!.dra.Corpus.UncoveredAddressEntry\x12\x38\n\x0f\x63overed_address\x18\x02 \x03(\x0b\x32\x1f.dra.Corpus.CoveredAddressEntry\x12\x34\n\rwrite_address\x18\x05 \x03(\x0b\x32\x1d.dra.Corpus.WriteAddressEntry\x12\x38\n\x0f\x66ile_operations\x18\x06 \x03(\x0b\x32\x1f.dra.Corpus.FileOperationsEntry\x12\x19\n\x05tasks\x18\x07 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\thigh_task\x18\x08 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\tboot_task\x18\t \x01(\x0b\x32\n.dra.Tasks\x12,\n\tnew_input\x18\x0b \x03(\x0b\x32\x19.dra.Corpus.NewInputEntry\x1a\x38\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x1aN\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1aL\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1a\x46\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dra.WriteAddress:\x02\x38\x01\x1aJ\n\x13\x46ileOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dra.FileOperations:\x02\x38\x01\x1a;\n\rNewInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\"X\n\x0bUsefulInput\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x0c\n\x04time\x18\x02 \x01(\x01\x12\x0b\n\x03num\x18\x03 \x01(\x04\x12\x13\n\x0bnew_address\x18\x04 \x03(\r\"|\n\tStatistic\x12\x1e\n\x04name\x18\x01 \x01(\x0e\x32\x10.dra.FuzzingStat\x12\x12\n\nexecuteNum\x18\x0b \x01(\x04\x12\x0c\n\x04time\x18\x0c \x01(\x01\x12\x16\n\x0enewTestCaseNum\x18\r \x01(\x04\x12\x15\n\rnewAddressNum\x18\x0e \x01(\x04\"\xea\x01\n\nStatistics\x12\x11\n\tsignalNum\x18\x01 \x01(\x04\x12\x1a\n\x12\x62\x61sic_block_number\x18\n \x01(\r\x12\x1f\n\x08\x63overage\x18\x08 \x01(\x0b\x32\r.dra.Coverage\x12\'\n\x04stat\x18\x0b \x03(\x0b\x32\x19.dra.Statistics.StatEntry\x12&\n\x0cuseful_input\x18\x0c \x03(\x0b\x32\x10.dra.UsefulInput\x1a;\n\tStatEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.dra.Statistic:\x02\x38\x01\"\x95\x05\n\x04Task\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07program\x18\x03 \x01(\x0c\x12\x11\n\twrite_sig\x18\x0b \x01(\t\x12\x13\n\x0bwrite_index\x18\x0c \x01(\r\x12\x15\n\rwrite_program\x18\r \x01(\x0c\x12\x15\n\rwrite_address\x18\x0e \x01(\r\x12\x10\n\x08priority\x18\x0f \x01(\x05\x12\x0c\n\x04hash\x18\x10 \x01(\t\x12:\n\x11uncovered_address\x18\x15 \x03(\x0b\x32\x1f.dra.Task.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32\x1d.dra.Task.CoveredAddressEntry\x12$\n\x0btask_status\x18\x18 \x01(\x0e\x32\x0f.dra.taskStatus\x12\x1b\n\x13\x63heck_write_address\x18\x19 \x01(\x08\x12!\n\x19\x63heck_write_address_final\x18\x1a \x01(\x08\x12\"\n\x1a\x63heck_write_address_remove\x18\x1b \x01(\x08\x12\x11\n\tfinal_idx\x18\x1c \x01(\r\x12\x17\n\x0f\x66inal_write_idx\x18\x1d \x01(\r\x12\x12\n\nremove_idx\x18\x1e \x01(\r\x12\x18\n\x10remove_write_idx\x18\x1f \x01(\r\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xa8\x01\n\x05Tasks\x12\x0c\n\x04name\x18) \x01(\t\x12\x1b\n\x04kind\x18* \x01(\x0e\x32\r.dra.TaskKind\x12\"\n\x04task\x18\x01 \x03(\x0b\x32\x14.dra.Tasks.TaskEntry\x12\x18\n\x05tasks\x18\x02 \x03(\x0b\x32\t.dra.Task\x1a\x36\n\tTaskEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Task:\x02\x38\x01\"5\n\x04Time\x12\x0c\n\x04time\x18\x01 \x01(\x01\x12\x0b\n\x03num\x18\x02 \x01(\x03\x12\x12\n\nexecuteNum\x18\x03 \x01(\x03\"\x83\x01\n\x08\x43overage\x12-\n\x08\x63overage\x18\x01 \x03(\x0b\x32\x1b.dra.Coverage.CoverageEntry\x12\x17\n\x04time\x18\x02 \x03(\x0b\x32\t.dra.Time\x1a/\n\rCoverageEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01*f\n\ntaskStatus\x12\x0c\n\x08untested\x10\x00\x12\r\n\trecursive\x10\x01\x12\n\n\x06tested\x10\x02\x12\x07\n\x03out\x10\x03\x12\x0b\n\x07\x63overed\x10\x04\x12\x0b\n\x07testing\x10\x05\x12\x0c\n\x08unstable\x10\x06*\x8d\x01\n\x14\x66ile_operations_kind\x12\x0b\n\x07\x64\x65\x66\x61ult\x10\x00\x12\x08\n\x04init\x10\x01\x12\n\n\x06llseek\x10\x02\x12\x08\n\x04read\x10\x03\x12\t\n\x05write\x10\x04\x12\x08\n\x04poll\x10\t\x12\x12\n\x0eunlocked_ioctl\x10\n\x12\x08\n\x04mmap\x10\x0c\x12\x08\n\x04open\x10\x0e\x12\x0b\n\x07release\x10\x10*W\n\x14UncoveredAddressKind\x12\x0b\n\x07Outside\x10\x00\x12\x10\n\x0cInputRelated\x10\x01\x12\x15\n\x11\x44\x65pendnecyRelated\x10\x02\x12\t\n\x05Other\x10\x03*\xca\x01\n\x0b\x46uzzingStat\x12\x0f\n\x0bStatDefault\x10\x00\x12\x10\n\x0cStatGenerate\x10\x01\x12\x0c\n\x08StatFuzz\x10\x02\x12\x11\n\rStatCandidate\x10\x03\x12\x0e\n\nStatTriage\x10\x04\x12\x10\n\x0cStatMinimize\x10\x05\x12\r\n\tStatSmash\x10\x06\x12\x0c\n\x08StatHint\x10\x07\x12\x0c\n\x08StatSeed\x10\x08\x12\x12\n\x0eStatDependency\x10\t\x12\x16\n\x12StatDependencyBoot\x10\n**\n\x08TaskKind\x12\n\n\x06Normal\x10\x00\x12\x08\n\x04High\x10\x01\x12\x08\n\x04\x42oot\x10\x02\x32\xf5\x05\n\rDependencyRPC\x12(\n\x0cGetVMOffsets\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12\x30\n\x14SendBasicBlockNumber\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0bGetNewInput\x12\n.dra.Empty\x1a\x0b.dra.Inputs\"\x00\x12/\n\x0eSendDependency\x12\x0f.dra.Dependency\x1a\n.dra.Empty\"\x00\x12-\n\x0cGetCondition\x12\n.dra.Empty\x1a\x0f.dra.Conditions\"\x00\x12\x35\n\x10SendWriteAddress\x12\x13.dra.WriteAddresses\x1a\n.dra.Empty\"\x00\x12#\n\x07\x43onnect\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0cSendNewInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12$\n\x08GetTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12(\n\x0cGetBootTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12\'\n\x0bReturnTasks\x12\n.dra.Tasks\x1a\n.dra.Empty\"\x00\x12)\n\rSendBootInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12\x35\n\x11SendUnstableInput\x12\x12.dra.UnstableInput\x1a\n.dra.Empty\"\x00\x12#\n\x07SendLog\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x08sendStat\x12\x0e.dra.Statistic\x1a\n.dra.Empty\"\x00\x12#\n\x07GetNeed\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12)\n\rSendNeedInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x13\x44\x65pendencyRPC.proto\x12\x03\x64ra\"&\n\x05\x45mpty\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\"\xf1\x01\n\tCondition\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\x04\x12#\n\x1bsyzkaller_condition_address\x18\x02 \x01(\r\x12\x19\n\x11uncovered_address\x18\x03 \x01(\x04\x12#\n\x1bsyzkaller_uncovered_address\x18\x04 \x01(\r\x12\x0b\n\x03idx\x18\x05 \x01(\r\x12\x11\n\tsuccessor\x18\x06 \x01(\x04\x12\x1c\n\x14right_branch_address\x18\x07 \x03(\x04\x12&\n\x1esyzkaller_right_branch_address\x18\x08 \x03(\r\"/\n\nConditions\x12!\n\tcondition\x18\n \x03(\x0b\x32\x0e.dra.Condition\"]\n\x0eWriteAddresses\x12!\n\tcondition\x18\x01 \x01(\x0b\x32\x0e.dra.Condition\x12(\n\rwrite_address\x18\x04 \x03(\x0b\x32\x11.dra.WriteAddress\"l\n\x04\x43\x61ll\x12\x0b\n\x03idx\x18\x01 \x01(\r\x12\'\n\x07\x61\x64\x64ress\x18\x02 \x03(\x0b\x32\x16.dra.Call.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"#\n\x06Inputs\x12\x19\n\x05input\x18\x01 \x03(\x0b\x32\n.dra.Input\"9\n\x0e\x44\x65pendencytask\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x0c\n\x04name\x18) \x01(\t\"\x94\x02\n\x0brunTimeData\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12$\n\x0btask_status\x18\x03 \x01(\x0e\x32\x0f.dra.taskStatus\x12\x16\n\x0ercursive_count\x18\x04 \x01(\r\x12\x10\n\x08priority\x18\x05 \x01(\r\x12\x0b\n\x03idx\x18\n \x01(\r\x12\x16\n\x0e\x63heckCondition\x18\x0b \x01(\x08\x12\x19\n\x11\x63ondition_address\x18\x0c \x01(\r\x12\x14\n\x0c\x63heckAddress\x18\r \x01(\x08\x12\x0f\n\x07\x61\x64\x64ress\x18\x0e \x01(\r\x12\x1f\n\x17\x63heckRightBranchAddress\x18\x0f \x01(\x08\x12\x1c\n\x14right_branch_address\x18\x10 \x03(\r\"\x9e\x02\n\x16\x46ileOperationsFunction\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1c\n\x14\x66ile_operations_name\x18\x02 \x01(\t\x12\'\n\x04kind\x18\x03 \x01(\x0e\x32\x19.dra.file_operations_kind\x12\x0b\n\x03\x63md\x18\x04 \x01(\x04\x12\'\n\rrun_time_date\x18\x05 \x01(\x0b\x32\x10.dra.runTimeData\x12\x44\n\rwrite_address\x18\x0b \x03(\x0b\x32-.dra.FileOperationsFunction.WriteAddressEntry\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xcd\x01\n\x0e\x46ileOperations\x12\x0c\n\x04name\x18\x01 \x01(\t\x12Q\n\x18\x66ile_operations_function\x18\x03 \x03(\x0b\x32/.dra.FileOperations.FileOperationsFunctionEntry\x1aZ\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\x03\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.FileOperationsFunction:\x02\x38\x01\"\xee\x03\n\x0cWriteAddress\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x03 \x01(\r\x12\x42\n\x11uncovered_address\x18\x17 \x03(\x0b\x32\'.dra.WriteAddress.UncoveredAddressEntry\x12O\n\x18\x66ile_operations_function\x18\x18 \x03(\x0b\x32-.dra.WriteAddress.FileOperationsFunctionEntry\x12+\n\x05input\x18\x19 \x03(\x0b\x32\x1c.dra.WriteAddress.InputEntry\x12\'\n\rrun_time_date\x18\x0b \x01(\x0b\x32\x10.dra.runTimeData\x1aT\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\x1a=\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"M\n\x16writeAddressAttributes\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x0e\n\x06repeat\x18\x07 \x01(\r\x12\x0c\n\x04prio\x18\x06 \x01(\r\"\xba\x03\n\x10UncoveredAddress\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\r\x12\x19\n\x11uncovered_address\x18\x02 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x03 \x03(\r\x12\x0f\n\x07\x62\x62\x63ount\x18\x04 \x01(\r\x12\'\n\x04kind\x18\x05 \x01(\x0e\x32\x19.dra.UncoveredAddressKind\x12/\n\x05input\x18\x16 \x03(\x0b\x32 .dra.UncoveredAddress.InputEntry\x12>\n\rwrite_address\x18\x17 \x03(\x0b\x32\'.dra.UncoveredAddress.WriteAddressEntry\x12\'\n\rrun_time_date\x18\x08 \x01(\x0b\x32\x10.dra.runTimeData\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1aP\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\"\x17\n\x04Path\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x03(\r\"y\n\rUnstableInput\x12\x1b\n\x08new_path\x18\x01 \x01(\x0b\x32\t.dra.Path\x12 \n\runstable_path\x18\x02 \x01(\x0b\x32\t.dra.Path\x12\x0b\n\x03idx\x18\x03 \x01(\x05\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\"\x81\x03\n\x05Input\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\"\n\x04\x63\x61ll\x18\r \x03(\x0b\x32\x14.dra.Input.CallEntry\x12\x1e\n\x04stat\x18\x15 \x01(\x0e\x32\x10.dra.FuzzingStat\x12;\n\x11uncovered_address\x18\x16 \x03(\x0b\x32 .dra.Input.UncoveredAddressEntry\x12\x33\n\rwrite_address\x18\x19 \x03(\x0b\x32\x1c.dra.Input.WriteAddressEntry\x1a\x36\n\tCallEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Call:\x02\x38\x01\x1a\x37\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\x83\x01\n\nDependency\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x30\n\x11uncovered_address\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress\x12(\n\rwrite_address\x18\x03 \x03(\x0b\x32\x11.dra.WriteAddress\"\xc7\x06\n\x06\x43orpus\x12%\n\x05input\x18\x01 \x03(\x0b\x32\x16.dra.Corpus.InputEntry\x12<\n\x11uncovered_address\x18\x04 \x03(\x0b\x32!.dra.Corpus.UncoveredAddressEntry\x12\x38\n\x0f\x63overed_address\x18\x02 \x03(\x0b\x32\x1f.dra.Corpus.CoveredAddressEntry\x12\x34\n\rwrite_address\x18\x05 \x03(\x0b\x32\x1d.dra.Corpus.WriteAddressEntry\x12\x38\n\x0f\x66ile_operations\x18\x06 \x03(\x0b\x32\x1f.dra.Corpus.FileOperationsEntry\x12\x19\n\x05tasks\x18\x07 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\thigh_task\x18\x08 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\tboot_task\x18\t \x01(\x0b\x32\n.dra.Tasks\x12,\n\tnew_input\x18\x0b \x03(\x0b\x32\x19.dra.Corpus.NewInputEntry\x1a\x38\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x1aN\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1aL\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1a\x46\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dra.WriteAddress:\x02\x38\x01\x1aJ\n\x13\x46ileOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dra.FileOperations:\x02\x38\x01\x1a;\n\rNewInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\"X\n\x0bUsefulInput\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x0c\n\x04time\x18\x02 \x01(\x01\x12\x0b\n\x03num\x18\x03 \x01(\x04\x12\x13\n\x0bnew_address\x18\x04 \x03(\r\"|\n\tStatistic\x12\x1e\n\x04name\x18\x01 \x01(\x0e\x32\x10.dra.FuzzingStat\x12\x12\n\nexecuteNum\x18\x0b \x01(\x04\x12\x0c\n\x04time\x18\x0c \x01(\x01\x12\x16\n\x0enewTestCaseNum\x18\r \x01(\x04\x12\x15\n\rnewAddressNum\x18\x0e \x01(\x04\"\xea\x01\n\nStatistics\x12\x11\n\tsignalNum\x18\x01 \x01(\x04\x12\x1a\n\x12\x62\x61sic_block_number\x18\n \x01(\r\x12\x1f\n\x08\x63overage\x18\x08 \x01(\x0b\x32\r.dra.Coverage\x12\'\n\x04stat\x18\x0b \x03(\x0b\x32\x19.dra.Statistics.StatEntry\x12&\n\x0cuseful_input\x18\x0c \x03(\x0b\x32\x10.dra.UsefulInput\x1a;\n\tStatEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.dra.Statistic:\x02\x38\x01\"\x95\x05\n\x04Task\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07program\x18\x03 \x01(\x0c\x12\x11\n\twrite_sig\x18\x0b \x01(\t\x12\x13\n\x0bwrite_index\x18\x0c \x01(\r\x12\x15\n\rwrite_program\x18\r \x01(\x0c\x12\x15\n\rwrite_address\x18\x0e \x01(\r\x12\x10\n\x08priority\x18\x0f \x01(\x05\x12\x0c\n\x04hash\x18\x10 \x01(\t\x12:\n\x11uncovered_address\x18\x15 \x03(\x0b\x32\x1f.dra.Task.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32\x1d.dra.Task.CoveredAddressEntry\x12$\n\x0btask_status\x18\x18 \x01(\x0e\x32\x0f.dra.taskStatus\x12\x1b\n\x13\x63heck_write_address\x18\x19 \x01(\x08\x12!\n\x19\x63heck_write_address_final\x18\x1a \x01(\x08\x12\"\n\x1a\x63heck_write_address_remove\x18\x1b \x01(\x08\x12\x11\n\tfinal_idx\x18\x1c \x01(\r\x12\x17\n\x0f\x66inal_write_idx\x18\x1d \x01(\r\x12\x12\n\nremove_idx\x18\x1e \x01(\r\x12\x18\n\x10remove_write_idx\x18\x1f \x01(\r\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xa8\x01\n\x05Tasks\x12\x0c\n\x04name\x18) \x01(\t\x12\x1b\n\x04kind\x18* \x01(\x0e\x32\r.dra.TaskKind\x12\"\n\x04task\x18\x01 \x03(\x0b\x32\x14.dra.Tasks.TaskEntry\x12\x18\n\x05tasks\x18\x02 \x03(\x0b\x32\t.dra.Task\x1a\x36\n\tTaskEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Task:\x02\x38\x01\"5\n\x04Time\x12\x0c\n\x04time\x18\x01 \x01(\x01\x12\x0b\n\x03num\x18\x02 \x01(\x03\x12\x12\n\nexecuteNum\x18\x03 \x01(\x03\"\x83\x01\n\x08\x43overage\x12-\n\x08\x63overage\x18\x01 \x03(\x0b\x32\x1b.dra.Coverage.CoverageEntry\x12\x17\n\x04time\x18\x02 \x03(\x0b\x32\t.dra.Time\x1a/\n\rCoverageEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01*f\n\ntaskStatus\x12\x0c\n\x08untested\x10\x00\x12\r\n\trecursive\x10\x01\x12\n\n\x06tested\x10\x02\x12\x07\n\x03out\x10\x03\x12\x0b\n\x07\x63overed\x10\x04\x12\x0b\n\x07testing\x10\x05\x12\x0c\n\x08unstable\x10\x06*\x8d\x01\n\x14\x66ile_operations_kind\x12\x0b\n\x07\x64\x65\x66\x61ult\x10\x00\x12\x08\n\x04init\x10\x01\x12\n\n\x06llseek\x10\x02\x12\x08\n\x04read\x10\x03\x12\t\n\x05write\x10\x04\x12\x08\n\x04poll\x10\t\x12\x12\n\x0eunlocked_ioctl\x10\n\x12\x08\n\x04mmap\x10\x0c\x12\x08\n\x04open\x10\x0e\x12\x0b\n\x07release\x10\x10*W\n\x14UncoveredAddressKind\x12\x0b\n\x07Outside\x10\x00\x12\x10\n\x0cInputRelated\x10\x01\x12\x15\n\x11\x44\x65pendnecyRelated\x10\x02\x12\t\n\x05Other\x10\x03*\xca\x01\n\x0b\x46uzzingStat\x12\x0f\n\x0bStatDefault\x10\x00\x12\x10\n\x0cStatGenerate\x10\x01\x12\x0c\n\x08StatFuzz\x10\x02\x12\x11\n\rStatCandidate\x10\x03\x12\x0e\n\nStatTriage\x10\x04\x12\x10\n\x0cStatMinimize\x10\x05\x12\r\n\tStatSmash\x10\x06\x12\x0c\n\x08StatHint\x10\x07\x12\x0c\n\x08StatSeed\x10\x08\x12\x12\n\x0eStatDependency\x10\t\x12\x16\n\x12StatDependencyBoot\x10\n**\n\x08TaskKind\x12\n\n\x06Normal\x10\x00\x12\x08\n\x04High\x10\x01\x12\x08\n\x04\x42oot\x10\x02\x32\xf5\x05\n\rDependencyRPC\x12(\n\x0cGetVMOffsets\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12\x30\n\x14SendBasicBlockNumber\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0bGetNewInput\x12\n.dra.Empty\x1a\x0b.dra.Inputs\"\x00\x12/\n\x0eSendDependency\x12\x0f.dra.Dependency\x1a\n.dra.Empty\"\x00\x12-\n\x0cGetCondition\x12\n.dra.Empty\x1a\x0f.dra.Conditions\"\x00\x12\x35\n\x10SendWriteAddress\x12\x13.dra.WriteAddresses\x1a\n.dra.Empty\"\x00\x12#\n\x07\x43onnect\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0cSendNewInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12$\n\x08GetTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12(\n\x0cGetBootTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12\'\n\x0bReturnTasks\x12\n.dra.Tasks\x1a\n.dra.Empty\"\x00\x12)\n\rSendBootInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12\x35\n\x11SendUnstableInput\x12\x12.dra.UnstableInput\x1a\n.dra.Empty\"\x00\x12#\n\x07SendLog\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x08sendStat\x12\x0e.dra.Statistic\x1a\n.dra.Empty\"\x00\x12#\n\x07GetNeed\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12)\n\rSendNeedInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x62\x06proto3')
 )
 
 _TASKSTATUS = _descriptor.EnumDescriptor(
@@ -61,8 +61,8 @@ _TASKSTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5469,
-  serialized_end=5571,
+  serialized_start=5448,
+  serialized_end=5550,
 )
 _sym_db.RegisterEnumDescriptor(_TASKSTATUS)
 
@@ -116,8 +116,8 @@ _FILE_OPERATIONS_KIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5574,
-  serialized_end=5715,
+  serialized_start=5553,
+  serialized_end=5694,
 )
 _sym_db.RegisterEnumDescriptor(_FILE_OPERATIONS_KIND)
 
@@ -147,8 +147,8 @@ _UNCOVEREDADDRESSKIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5717,
-  serialized_end=5804,
+  serialized_start=5696,
+  serialized_end=5783,
 )
 _sym_db.RegisterEnumDescriptor(_UNCOVEREDADDRESSKIND)
 
@@ -206,8 +206,8 @@ _FUZZINGSTAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5807,
-  serialized_end=6009,
+  serialized_start=5786,
+  serialized_end=5988,
 )
 _sym_db.RegisterEnumDescriptor(_FUZZINGSTAT)
 
@@ -233,8 +233,8 @@ _TASKKIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6011,
-  serialized_end=6053,
+  serialized_start=5990,
+  serialized_end=6032,
 )
 _sym_db.RegisterEnumDescriptor(_TASKKIND)
 
@@ -940,8 +940,8 @@ _WRITEADDRESS_FILEOPERATIONSFUNCTIONENTRY = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='dra.WriteAddress.FileOperationsFunctionEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -958,7 +958,7 @@ _WRITEADDRESS_FILEOPERATIONSFUNCTIONENTRY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1826,
-  serialized_end=1908,
+  serialized_end=1887,
 )
 
 _WRITEADDRESS_INPUTENTRY = _descriptor.Descriptor(
@@ -994,8 +994,8 @@ _WRITEADDRESS_INPUTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1910,
-  serialized_end=1954,
+  serialized_start=1889,
+  serialized_end=1933,
 )
 
 _WRITEADDRESS = _descriptor.Descriptor(
@@ -1060,7 +1060,7 @@ _WRITEADDRESS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1439,
-  serialized_end=1954,
+  serialized_end=1933,
 )
 
 
@@ -1104,8 +1104,8 @@ _WRITEADDRESSATTRIBUTES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1956,
-  serialized_end=2033,
+  serialized_start=1935,
+  serialized_end=2012,
 )
 
 
@@ -1142,8 +1142,8 @@ _UNCOVEREDADDRESS_INPUTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1910,
-  serialized_end=1954,
+  serialized_start=1889,
+  serialized_end=1933,
 )
 
 _UNCOVEREDADDRESS_WRITEADDRESSENTRY = _descriptor.Descriptor(
@@ -1179,8 +1179,8 @@ _UNCOVEREDADDRESS_WRITEADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2398,
-  serialized_end=2478,
+  serialized_start=2377,
+  serialized_end=2457,
 )
 
 _UNCOVEREDADDRESS = _descriptor.Descriptor(
@@ -1258,8 +1258,8 @@ _UNCOVEREDADDRESS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2036,
-  serialized_end=2478,
+  serialized_start=2015,
+  serialized_end=2457,
 )
 
 
@@ -1289,8 +1289,8 @@ _PATH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2480,
-  serialized_end=2503,
+  serialized_start=2459,
+  serialized_end=2482,
 )
 
 
@@ -1348,8 +1348,8 @@ _UNSTABLEINPUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2505,
-  serialized_end=2626,
+  serialized_start=2484,
+  serialized_end=2605,
 )
 
 
@@ -1386,8 +1386,8 @@ _INPUT_CALLENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2850,
-  serialized_end=2904,
+  serialized_start=2829,
+  serialized_end=2883,
 )
 
 _INPUT_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
@@ -1423,8 +1423,8 @@ _INPUT_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2906,
-  serialized_end=2961,
+  serialized_start=2885,
+  serialized_end=2940,
 )
 
 _INPUT_WRITEADDRESSENTRY = _descriptor.Descriptor(
@@ -1525,8 +1525,8 @@ _INPUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2629,
-  serialized_end=3014,
+  serialized_start=2608,
+  serialized_end=2993,
 )
 
 
@@ -1570,8 +1570,8 @@ _DEPENDENCY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3017,
-  serialized_end=3148,
+  serialized_start=2996,
+  serialized_end=3127,
 )
 
 
@@ -1608,8 +1608,8 @@ _CORPUS_INPUTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3567,
-  serialized_end=3623,
+  serialized_start=3546,
+  serialized_end=3602,
 )
 
 _CORPUS_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
@@ -1645,8 +1645,8 @@ _CORPUS_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3625,
-  serialized_end=3703,
+  serialized_start=3604,
+  serialized_end=3682,
 )
 
 _CORPUS_COVEREDADDRESSENTRY = _descriptor.Descriptor(
@@ -1682,8 +1682,8 @@ _CORPUS_COVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3705,
-  serialized_end=3781,
+  serialized_start=3684,
+  serialized_end=3760,
 )
 
 _CORPUS_WRITEADDRESSENTRY = _descriptor.Descriptor(
@@ -1719,8 +1719,8 @@ _CORPUS_WRITEADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3783,
-  serialized_end=3853,
+  serialized_start=3762,
+  serialized_end=3832,
 )
 
 _CORPUS_FILEOPERATIONSENTRY = _descriptor.Descriptor(
@@ -1756,8 +1756,8 @@ _CORPUS_FILEOPERATIONSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3855,
-  serialized_end=3929,
+  serialized_start=3834,
+  serialized_end=3908,
 )
 
 _CORPUS_NEWINPUTENTRY = _descriptor.Descriptor(
@@ -1793,8 +1793,8 @@ _CORPUS_NEWINPUTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3931,
-  serialized_end=3990,
+  serialized_start=3910,
+  serialized_end=3969,
 )
 
 _CORPUS = _descriptor.Descriptor(
@@ -1879,8 +1879,8 @@ _CORPUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3151,
-  serialized_end=3990,
+  serialized_start=3130,
+  serialized_end=3969,
 )
 
 
@@ -1931,8 +1931,8 @@ _USEFULINPUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3992,
-  serialized_end=4080,
+  serialized_start=3971,
+  serialized_end=4059,
 )
 
 
@@ -1990,8 +1990,8 @@ _STATISTIC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4082,
-  serialized_end=4206,
+  serialized_start=4061,
+  serialized_end=4185,
 )
 
 
@@ -2028,8 +2028,8 @@ _STATISTICS_STATENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4384,
-  serialized_end=4443,
+  serialized_start=4363,
+  serialized_end=4422,
 )
 
 _STATISTICS = _descriptor.Descriptor(
@@ -2086,8 +2086,8 @@ _STATISTICS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4209,
-  serialized_end=4443,
+  serialized_start=4188,
+  serialized_end=4422,
 )
 
 
@@ -2124,8 +2124,8 @@ _TASK_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4961,
-  serialized_end=5034,
+  serialized_start=4940,
+  serialized_end=5013,
 )
 
 _TASK_COVEREDADDRESSENTRY = _descriptor.Descriptor(
@@ -2161,8 +2161,8 @@ _TASK_COVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5036,
-  serialized_end=5107,
+  serialized_start=5015,
+  serialized_end=5086,
 )
 
 _TASK = _descriptor.Descriptor(
@@ -2317,8 +2317,8 @@ _TASK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4446,
-  serialized_end=5107,
+  serialized_start=4425,
+  serialized_end=5086,
 )
 
 
@@ -2355,8 +2355,8 @@ _TASKS_TASKENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5224,
-  serialized_end=5278,
+  serialized_start=5203,
+  serialized_end=5257,
 )
 
 _TASKS = _descriptor.Descriptor(
@@ -2406,8 +2406,8 @@ _TASKS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5110,
-  serialized_end=5278,
+  serialized_start=5089,
+  serialized_end=5257,
 )
 
 
@@ -2451,8 +2451,8 @@ _TIME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5280,
-  serialized_end=5333,
+  serialized_start=5259,
+  serialized_end=5312,
 )
 
 
@@ -2489,8 +2489,8 @@ _COVERAGE_COVERAGEENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5420,
-  serialized_end=5467,
+  serialized_start=5399,
+  serialized_end=5446,
 )
 
 _COVERAGE = _descriptor.Descriptor(
@@ -2526,8 +2526,8 @@ _COVERAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5336,
-  serialized_end=5467,
+  serialized_start=5315,
+  serialized_end=5446,
 )
 
 _CONDITIONS.fields_by_name['condition'].message_type = _CONDITION
@@ -2547,7 +2547,6 @@ _FILEOPERATIONS_FILEOPERATIONSFUNCTIONENTRY.containing_type = _FILEOPERATIONS
 _FILEOPERATIONS.fields_by_name['file_operations_function'].message_type = _FILEOPERATIONS_FILEOPERATIONSFUNCTIONENTRY
 _WRITEADDRESS_UNCOVEREDADDRESSENTRY.fields_by_name['value'].message_type = _WRITEADDRESSATTRIBUTES
 _WRITEADDRESS_UNCOVEREDADDRESSENTRY.containing_type = _WRITEADDRESS
-_WRITEADDRESS_FILEOPERATIONSFUNCTIONENTRY.fields_by_name['value'].message_type = _FILEOPERATIONS
 _WRITEADDRESS_FILEOPERATIONSFUNCTIONENTRY.containing_type = _WRITEADDRESS
 _WRITEADDRESS_INPUTENTRY.containing_type = _WRITEADDRESS
 _WRITEADDRESS.fields_by_name['uncovered_address'].message_type = _WRITEADDRESS_UNCOVEREDADDRESSENTRY
@@ -3030,8 +3029,8 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=6056,
-  serialized_end=6813,
+  serialized_start=6035,
+  serialized_end=6792,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetVMOffsets',

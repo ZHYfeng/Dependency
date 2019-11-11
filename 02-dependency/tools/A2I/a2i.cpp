@@ -20,10 +20,12 @@ llvm::cl::opt<std::string> InputFilename(llvm::cl::Positional, llvm::cl::desc("<
 //The file holding the serialized static analysis results.
 llvm::cl::opt<std::string> staticRes("staticRes", llvm::cl::desc("The path of serialized static analysis results."),
                                      llvm::cl::init("./taint_info_serialize"));
+llvm::cl::opt<std::string> function("function", llvm::cl::desc("The path of function name json."), llvm::cl::init("./built-in.function.json"));
 llvm::cl::opt<std::string> file("file", llvm::cl::desc("The file of uncovered address."),
                                 llvm::cl::init("./not_covered.txt"));
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     llvm::cl::ParseCommandLineOptions(argc, argv, "a2i\n");
 #if DEBUG
@@ -35,7 +37,7 @@ int main(int argc, char **argv) {
 
     auto *dcc = new dra::DependencyControlCenter();
 
-    dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes);
+    dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes, function);
     dcc->check(file);
     return 0;
 }

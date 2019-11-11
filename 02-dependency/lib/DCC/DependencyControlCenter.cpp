@@ -14,6 +14,7 @@
 #include <sstream>
 #include "../DRA/DFunction.h"
 #include "general.h"
+#include "../JSON/json.cpp"
 
 namespace dra {
 
@@ -24,7 +25,7 @@ namespace dra {
     DependencyControlCenter::~DependencyControlCenter() = default;
 
     void DependencyControlCenter::init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
-                                       const std::string &staticRes, const std::string &port_address) {
+                                       const std::string &staticRes, const std::string function, const std::string &port_address) {
 
         DM.initializeModule(std::move(obj_dump), std::move(AssemblySourceCode), std::move(InputFilename));
         dra::outputTime("initializeModule");
@@ -37,6 +38,9 @@ namespace dra {
             this->port = port_address;
             this->setRPCConnection(this->port);
         }
+
+        std::ifstream input_function_json(function);
+        input_function_json >> this->function_json;
     }
 
     void DependencyControlCenter::run() {
@@ -161,7 +165,6 @@ namespace dra {
 
                         set_runtime_data(writeAddress->mutable_run_time_date(), input->program(), u->idx(),
                                          syzkallerConditionAddress, syzkallerUncoveredAddress);
-
 
 //                        std::cout << "writeAddress->mutable_write_syscall()->size() : "
 //                                  << writeAddress->mutable_write_syscall()->size() << std::endl;
@@ -363,12 +366,25 @@ namespace dra {
 #endif
 
         std::vector<sta::cmd_ctx *> *cmd_ctx = write_basicblock->get_cmd_ctx();
-#if DEBUG
         for (auto c: *cmd_ctx) {
+#if DEBUG
             std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
             this->DM.dump_ctxs(&c->ctx);
-        }
 #endif
+            auto ctx = c->ctx;
+            auto inst = ctx.begin();
+            std::string funtion_name = getFunctionName((*inst)->getParent()->getParent());
+            std::string file_operations;
+            std::string kind;
+            this->getFileOperations(&funtion_name, &file_operations, &kind);
+            int index = 0;
+            for(int i = file_operations_kind_MIN;i<file_operations_kind_MAX;i++ ){
+                if(file_operations_kind_Name(i).compare(kind) == 0){
+                    index == i;
+                }
+            }
+            (*writeAddress->mutable_file_operations_function())[file_operations] = 1 << index;
+        }
 
         writeAddress->set_write_address(write_address);
         writeAddress->set_condition_address(condition->syzkaller_condition_address());
@@ -515,6 +531,17 @@ namespace dra {
             }
         }
         objdumpFile.close();
+    }
+
+    void DependencyControlCenter::getFileOperations(std::string *function_name, std::string *file_operations, std::string *kind){
+        for(auto f1 : this->function_json.items()){
+            for(auto f2 : f1.value().items()){
+                if(function_name->compare(f2.value()["name"]) == 0){
+                    file_operations->assign(f1.key());
+                    kind->assign(f2.key());
+                }
+            }
+        }
     }
 
 } /* namespace dra */

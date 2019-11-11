@@ -175,8 +175,8 @@ message WriteAddress {
 
     // uncovered address,
     map<uint32, writeAddressAttributes> uncovered_address = 23;
-    // file_operations name, file_operations_function index
-    map<string, FileOperations> file_operations_function = 24;
+    // file_operations name, file_operations_function index bits
+    map<string, uint32> file_operations_function = 24;
     // sig, index by bits
     map<string, uint32> input = 25;
 

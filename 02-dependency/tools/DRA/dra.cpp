@@ -16,9 +16,11 @@ llvm::cl::opt<std::string> AssemblySourceCode("asm", llvm::cl::desc("The path of
 llvm::cl::opt<std::string> InputFilename(llvm::cl::Positional, llvm::cl::desc("<input bitcode>"), llvm::cl::init("./built-in.bc"));
 //The file holding the serialized static analysis results.
 llvm::cl::opt<std::string> staticRes("staticRes", llvm::cl::desc("The path of serialized static analysis results."), llvm::cl::init("./taint_info_serialize"));
+llvm::cl::opt<std::string> function("function", llvm::cl::desc("The path of function name json."), llvm::cl::init("./built-in.function.json"));
 llvm::cl::opt<std::string> port("port", llvm::cl::desc("The port of grpc."), llvm::cl::init("127.0.0.1:22223"));
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     llvm::cl::ParseCommandLineOptions(argc, argv, "dra\n");
 #if DEBUG
@@ -30,7 +32,7 @@ int main(int argc, char **argv) {
 
     auto *dcc = new dra::DependencyControlCenter();
 
-    dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes, port);
+    dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes, function, port);
     dcc->run();
     return 0;
 }
