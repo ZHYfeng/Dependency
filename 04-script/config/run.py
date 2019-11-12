@@ -6,7 +6,7 @@ import socket
 import subprocess
 import sys
 import time
-from . import default
+import default
 
 
 def get_open_port():
@@ -89,7 +89,7 @@ class Process:
 
     def execute_dra(self, run_f):
         self.cmd_dra = default.path_dra + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                       + " -staticRes=" + default.file_taint + " -port=" + self.drpc \
+                       + " -staticRes=./" + default.file_taint + " -function=./" + default.file_function + " -port=" + self.drpc \
                        + " " + default.file_bc + " 1>" + default.file_log_dra + " 2>&1 &"
         self.real_execute(self.cmd_dra, run_f)
 

@@ -39,6 +39,16 @@ func (m *Input) mergeInput(d *Input) {
 			m.Call[i] = call
 		}
 
+		if(call.Address == nil) {
+			templog := "debug mergeInput :\n"
+			templog += string(m.Program) + "\n" + string(d.Program) + "\n"
+			templog += "index : " + string(i)
+			f, _ := os.OpenFile("./debug.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			_, _ = f.WriteString(string(templog))
+			_ = f.Close()
+			call.Address = make(map[uint32]uint32)
+		}
+		
 		for a := range u.Address {
 			call.Address[a] = 0
 		}

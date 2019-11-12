@@ -39,6 +39,7 @@ file_taint = name_driver + ".taint"
 file_asm = name_driver + ".s"
 file_bc = name_driver + ".bc"
 file_json = name_driver + ".json"
+file_function = name_driver + ".function.json"
 
 path_home = os.path.expanduser("~")
 path_root = os.path.join(path_home, "data")
@@ -101,9 +102,11 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_ashmem_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
-                },
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
+                }
             },
             "snd_seq_f_ops": {
                 "release": {
@@ -182,9 +185,11 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
-                },
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
+                }
             },
             "snd_seq_f_ops": {
                 "release": {
@@ -290,9 +295,11 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_blkdev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "",
-                "argument": {
-                },
+                "init": {
+                    "name": "",
+                    "argument": {
+                    },
+                }
             },
             "def_blk_fops": {
                 "unlocked_ioctl": {
@@ -361,8 +368,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_cdrom_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "cdrom_init",
-                "argument": {
+                "init": {
+                    "name": "cdrom_init",
+                    "argument": {
+                    },
                 },
             },
             "cdrom_device_ops": {
@@ -445,8 +454,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "",
-                "argument": {
+                "init": {
+                    "name": "",
+                    "argument": {
+                    },
                 },
             },
             "example_drm_fops": {
@@ -498,8 +509,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "cdrom_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -581,8 +594,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_i2cdev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "cdrom_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -694,8 +709,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_evdev_ioctl_handler_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "cdrom_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -772,8 +789,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_ion_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "cdrom_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -937,7 +956,7 @@ dev = {
             "ioctl$KVM_SET_VAPIC_ADDR",
             "ioctl$KVM_X86_SETUP_MCE",
             "ioctl$KVM_X86_SET_MCE",
-            "ioctl$KVM_ARM_VCPU_INIT",
+            # "ioctl$KVM_ARM_VCPU_INIT",
             "ioctl$KVM_ARM_SET_DEVICE_ADDR",
             "ioctl$KVM_GET_NESTED_STATE",
             "ioctl$KVM_SET_NESTED_STATE",
@@ -954,8 +973,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "vmx_init",
-                "argument": {
+                "init": {
+                    "name": "vmx_init",
+                    "argument": {
+                    },
                 },
             },
             "kvm_vcpu_fops": {
@@ -1077,8 +1098,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_lo_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "vmx_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -1167,8 +1190,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_nbd_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "vmx_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -1268,8 +1293,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info___tun_chr_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "tun_init",
-                "argument": {
+                "init": {
+                    "name": "tun_init",
+                    "argument": {
+                    },
                 },
             },
             "tun_fops": {
@@ -1362,8 +1389,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_ppp_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "tun_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -1550,8 +1579,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_tty_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "n_tty_init",
-                "argument": {
+                "init": {
+                    "name": "n_tty_init",
+                    "argument": {
+                    },
                 },
             },
             "tty_fops": {
@@ -1590,8 +1621,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_random_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "n_tty_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -1668,8 +1701,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "n_tty_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -1765,8 +1800,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_rtc_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "rtc_dev_init",
-                "argument": {
+                "init": {
+                    "name": "rtc_dev_init",
+                    "argument": {
+                    },
                 },
             },
             "rtc_dev_fops": {
@@ -1833,8 +1870,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_sg_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "init_sg",
-                "argument": {
+                "init": {
+                    "name": "init_sg",
+                    "argument": {
+                    },
                 },
             },
             "sg_fops": {
@@ -1891,8 +1930,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_snd_ctl_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_ctl_f_ops": {
@@ -1925,6 +1966,7 @@ dev = {
         "enable_syscalls": [
             "syz_open_dev$sndseq",
             "write$sndseq",
+            "clock_gettime",
             "ioctl$SNDRV_SEQ_IOCTL_PVERSION",
             "ioctl$SNDRV_SEQ_IOCTL_CLIENT_ID",
             "ioctl$SNDRV_SEQ_IOCTL_SYSTEM_INFO",
@@ -1964,8 +2006,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_snd_seq_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -2052,8 +2096,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info___snd_timer_user_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -2124,11 +2170,13 @@ dev = {
             os.path.join(path_linux_bc, "virt/kvm"),
             os.path.join(path_linux_bc, "arch/x86/kvm"),
         ],
-        "file_taint": os.path.join(path_taint, "taint_info_uinput_iotl_handler_serialize"),
+        "file_taint": os.path.join(path_taint, "taint_info_uinput_ioctl_handler_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -2208,8 +2256,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_uinput_ioctl_handler_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -2306,8 +2356,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -2384,8 +2436,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
@@ -2572,8 +2626,10 @@ dev = {
         "file_taint": os.path.join(path_taint, "taint_info_kvm_dev_ioctl_serialize"),
         "function": {
             "init": {
-                "name": "snd_sequencer_device_init",
-                "argument": {
+                "init": {
+                    "name": "snd_sequencer_device_init",
+                    "argument": {
+                    },
                 },
             },
             "snd_seq_f_ops": {
