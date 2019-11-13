@@ -40,12 +40,12 @@ func (m *Input) mergeInput(d *Input) {
 		}
 
 		if(call.Address == nil) {
-			templog := "debug mergeInput :\n"
-			templog += string(m.Program) + "\n" + string(d.Program) + "\n"
-			templog += "index : " + string(i)
-			f, _ := os.OpenFile("./debug.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-			_, _ = f.WriteString(string(templog))
-			_ = f.Close()
+			// templog := "debug mergeInput :\n"
+			// templog += string(m.Program) + "\n" + string(d.Program) + "\n"
+			// templog += "index : " + strconv.FormatInt(int64(i), 10) + "\n"
+			// f, _ := os.OpenFile("./debug.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			// _, _ = f.WriteString(string(templog))
+			// _ = f.Close()
 			call.Address = make(map[uint32]uint32)
 		}
 		
@@ -220,7 +220,11 @@ func (ss Server) pickTask(name string) *Tasks {
 	if ok {
 		f.taskMu.Lock()
 		if len(f.highTasks.Task) > 0 {
-			tasks = f.highTasks.pop(len(f.highTasks.Task))
+			last := len(f.highTasks.Task)
+			if last > taskNum {
+				last = taskNum
+			}
+			tasks = f.highTasks.pop(last)
 			tasks.Kind = TaskKind_High
 		} else {
 			last := len(f.newTask.Task)

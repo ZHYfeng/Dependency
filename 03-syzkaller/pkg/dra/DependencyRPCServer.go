@@ -548,6 +548,7 @@ func (ss *Server) Update() {
 					}
 				}
 				ss.corpusDependency.HighTask.emptyTask()
+				task = []*Task{}
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
 					for _, t := range task {
