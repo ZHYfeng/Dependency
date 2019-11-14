@@ -60,11 +60,12 @@ class data:
 
     def read(self):
         file_data = os.path.join(self.dir_path, default.name_data)
+        print(file_data)
         if os.path.exists(file_data):
             f = open(file_data, "rb")
             self.real_data.ParseFromString(f.read())
             f.close()
-
+            # print("self.real_data.ParseFromString(f.read())")
             self.deal()
 
     def deal(self):
@@ -114,7 +115,7 @@ class data:
             res += "-------------------------------------------\n"
 
         tasks = []
-        for t in self.real_data.tasks.task:
+        for t in self.real_data.tasks.tasks:
             if not_covered_address in t.uncovered_address:
                 tasks.append(t)
 

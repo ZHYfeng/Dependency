@@ -441,7 +441,8 @@ void DependencyControlCenter::get_write_address(sta::Mod *write_basicblock, Cond
         {
             if (file_operations_kind_Name(i).compare(kind) == 0)
             {
-                index == i;
+                index = i;
+                break;
             }
         }
         (*writeAddress->mutable_file_operations_function())[file_operations] = 1 << index;
@@ -614,7 +615,8 @@ void DependencyControlCenter::check(const std::string &file)
                                     {
                                         if (file_operations_kind_Name(i).compare(kind) == 0)
                                         {
-                                            index == i;
+                                            index = i;
+                                            break;
                                         }
                                     }
                                     std::cout << "funtion_name : " << funtion_name << std::endl;

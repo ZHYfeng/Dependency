@@ -286,7 +286,6 @@ namespace dra {
         dump_inst(inst);
         std::cout << ld;
 
-
         for (auto i : this->input) {
             std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
             std::cout << i.first->program;

@@ -16,12 +16,12 @@ class Device:
         self.file_result = os.path.join(self.path_dev, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
-
+        
         self.path_with_dra = os.path.join(self.path_dev, default.name_with_dra)
         self.results_with_dra = results(self.path_with_dra, 'C0')
         self.path_without_dra = os.path.join(self.path_dev, default.name_without_dra)
         self.results_without_dra = results(self.path_without_dra, 'C1')
-
+        print(self.path_dev)
         self.axises = axis.axises(self.path_dev)
         self.axises.x_axis = self.results_with_dra.axises.x_axis
         self.axises.y_axises = self.results_with_dra.axises.y_axises_statistics \
@@ -46,7 +46,6 @@ class Device:
         self.axises.plot(name=file_figure_all, title=title)
 
         self.get_coverage()
-
         self.path_base = os.path.join(self.path_dev, default.name_base)
         if os.path.exists(self.path_base):
             self.basic = result(self.path_base)
@@ -96,7 +95,7 @@ class Device:
             f.close()
 
             os.chdir(self.path_dev)
-            print(self.path_dev)
+
             cmd_rm_0x = "rm -rf 0x*"
             p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
             p_rm_0x.wait()
@@ -172,7 +171,6 @@ class results:
         self.uncovered_address_input = []
         self.uncovered_address_dependency = []
         self.max_uncoverage = {}
-
         self.deal_results()
         self.get_uncovered_address()
         self.get_max_coverage()
@@ -186,7 +184,6 @@ class results:
                         self.results.append(r)
                         self.statistics.statistics.append(r.stat)
                         self.axises.axises.append(r.axis)
-
         self.axises.deal()
 
         f = open(self.file_result, "a")
@@ -240,9 +237,13 @@ class result:
         self.file_result = os.path.join(self.dir_path, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
+        # print("self.data = data.data(self.dir_path)")
         self.data = data.data(self.dir_path)
+        # print("self.stat = stats.stat(self.dir_path)")
         self.stat = stats.stat(self.dir_path)
+        # print("self.stat.get_time_coverage()")
         self.stat.get_time_coverage()
+        # print("self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')")
         self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
 
 
