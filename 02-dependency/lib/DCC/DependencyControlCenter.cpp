@@ -371,10 +371,11 @@ sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u)
         if (write_basicblock == nullptr)
         {
             // no taint or out side
+            
+#if DEBUG
             dra::outputTime("allBasicblock == nullptr");
-
-            std::cout << "allBasicblock == nullptr : " << std::endl;
-            p->dump();
+            p->real_dump();
+            #endif
         }
         else if (write_basicblock->size() == 0)
         {
@@ -423,7 +424,7 @@ void DependencyControlCenter::get_write_address(sta::Mod *write_basicblock, Cond
     unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
 #if DEBUG
     dra::outputTime("write basicblock : ");
-    db->read_dump();
+    db->real_dump();
 #endif
 
     std::vector<sta::cmd_ctx *> *cmd_ctx = write_basicblock->get_cmd_ctx();
@@ -449,6 +450,11 @@ void DependencyControlCenter::get_write_address(sta::Mod *write_basicblock, Cond
             }
         }
         (*writeAddress->mutable_file_operations_function())[file_operations] = 1 << index;
+
+        if(index != 10){
+            dra::outputTime("write basicblock not ioctl: ");
+            db->real_dump();
+        }
     }
 
     writeAddress->set_write_address(write_address);
@@ -565,7 +571,7 @@ void DependencyControlCenter::check(const std::string &file)
                     }
                     else
                     {
-                        db->dump();
+                        db->real_dump();
                     }
                 }
 

@@ -17,7 +17,7 @@ import (
 
 // useful const
 const (
-	//startTime  = 21600
+	// startTime  = 21600
 	startTime  = 0
 	newTime    = 600
 	bootTime   = 300

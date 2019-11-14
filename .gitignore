@@ -42,7 +42,6 @@ workdir*
 # IDE
 */workspace.xml
 .vscode/*
-*.pb.*
 06-result/*
 
 built-in*
