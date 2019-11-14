@@ -379,16 +379,19 @@ sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u)
         else if (write_basicblock->size() == 0)
         {
             // unrelated to gv
-            dra::outputTime("allBasicblock->size() == 0");
             res = write_basicblock;
-
-            std::cout << "allBasicblock->size() == 0 : " << std::endl;
+            #if DEBUG
+            dra::outputTime("allBasicblock->size() == 0");
             p->dump();
+            #endif
         }
         else if (!write_basicblock->empty())
         {
-            dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
             res = write_basicblock;
+            #if DEBUG
+            dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
+            #endif
+            
         }
 
         this->staticResult[b].insert(std::pair<uint64_t, sta::MODS *>(idx, res));
@@ -420,7 +423,7 @@ void DependencyControlCenter::get_write_address(sta::Mod *write_basicblock, Cond
     unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
 #if DEBUG
     dra::outputTime("write basicblock : ");
-    db->dump();
+    db->read_dump();
 #endif
 
     std::vector<sta::cmd_ctx *> *cmd_ctx = write_basicblock->get_cmd_ctx();

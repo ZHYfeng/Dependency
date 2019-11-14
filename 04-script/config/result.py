@@ -13,25 +13,27 @@ class Device:
         self.dir_path = dir_path
         self.path_dev = os.path.join(self.dir_path, dir_name)
 
-        self.file_result = os.path.join(self.path_dev, default.name_data_result)
+        self.file_result = os.path.join(
+            self.path_dev, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
-        
+
         self.path_with_dra = os.path.join(self.path_dev, default.name_with_dra)
         self.results_with_dra = results(self.path_with_dra, 'C0')
-        self.path_without_dra = os.path.join(self.path_dev, default.name_without_dra)
+        self.path_without_dra = os.path.join(
+            self.path_dev, default.name_without_dra)
         self.results_without_dra = results(self.path_without_dra, 'C1')
         print(self.path_dev)
         self.axises = axis.axises(self.path_dev)
         self.axises.x_axis = self.results_with_dra.axises.x_axis
         self.axises.y_axises = self.results_with_dra.axises.y_axises_statistics \
-                               + self.results_without_dra.axises.y_axises_statistics
+            + self.results_without_dra.axises.y_axises_statistics
         self.axises.labels = self.results_with_dra.axises.labels_statistics \
-                             + self.results_without_dra.axises.labels_statistics
+            + self.results_without_dra.axises.labels_statistics
         self.axises.line_styles = self.results_with_dra.axises.line_styles_statistics \
-                                  + self.results_without_dra.axises.line_styles_statistics
+            + self.results_without_dra.axises.line_styles_statistics
         self.axises.colors = self.results_with_dra.axises.colors_statistics \
-                             + self.results_without_dra.axises.colors_statistics
+            + self.results_without_dra.axises.colors_statistics
 
         max_coverage_with_dra = []
         for a in self.results_with_dra.axises.axises:
@@ -39,7 +41,8 @@ class Device:
         max_coverage_without_dra = []
         for a in self.results_without_dra.axises.axises:
             max_coverage_without_dra.append(max(a.y_axis))
-        self.statistic, self.p_value = scipy.stats.mannwhitneyu(max_coverage_with_dra, max_coverage_without_dra)
+        self.statistic, self.p_value = scipy.stats.mannwhitneyu(
+            max_coverage_with_dra, max_coverage_without_dra)
 
         file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
         title = " pvalue = " + str(self.p_value)
@@ -69,7 +72,8 @@ class Device:
             f = open(self.file_result, "a")
             f.write("=====================================================\n")
             f.write("basic:\n")
-            f.write("number of uncovered address : " + str(len(self.basic.data.real_data.uncovered_address)) + "\n")
+            f.write("number of uncovered address : " +
+                    str(len(self.basic.data.real_data.uncovered_address)) + "\n")
             f.write("number of uncovered address by dependency : "
                     + str(len(self.basic.data.uncovered_address_dependency)) + "\n")
             f.write("number of uncovered address by dependency covered by syzkaller with dra: "
@@ -83,13 +87,16 @@ class Device:
             f.write("number of uncovered address by input covered by syzkaller without dra: "
                     + str(len(self.ca_uca_input_without_dra)) + "\n")
 
-            not_covered_address_file = os.path.join(self.path_dev, "not_covered.txt")
+            not_covered_address_file = os.path.join(
+                self.path_dev, "not_covered.txt")
             ff = open(not_covered_address_file, "w")
             for a in self.basic.data.uncovered_address_dependency:
-                f.write(uncovered_address_str(self.basic.data.real_data.uncovered_address[a]))
+                f.write(uncovered_address_str(
+                    self.basic.data.real_data.uncovered_address[a]))
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
-                    ff.write(not_covered_address_str(self.basic.data.real_data.uncovered_address[a]))
+                    ff.write(not_covered_address_str(
+                        self.basic.data.real_data.uncovered_address[a]))
 
             ff.close()
             f.close()
@@ -97,19 +104,24 @@ class Device:
             os.chdir(self.path_dev)
 
             cmd_rm_0x = "rm -rf 0x*"
-            p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
+            p_rm_0x = subprocess.Popen(
+                cmd_rm_0x, shell=True, preexec_fn=os.setsid)
             p_rm_0x.wait()
             cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                      + " -staticRes=./" + default.file_taint + " -function=./" + default.file_function + " " + default.file_bc
+                + " -staticRes=./" + default.file_taint + " -function=./" + \
+                default.file_function + " " + default.file_bc
             print(cmd_a2i)
-            p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
+            p_a2i_img = subprocess.Popen(
+                cmd_a2i, shell=True, preexec_fn=os.setsid)
             p_a2i_img.wait()
 
             for a in self.basic.data.uncovered_address_dependency:
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
-                    name = not_covered_address_file_name(self.basic.data.real_data.uncovered_address[a])
-                    not_covered_address_file = os.path.join(self.path_dev, name)
+                    name = not_covered_address_file_name(
+                        self.basic.data.real_data.uncovered_address[a])
+                    not_covered_address_file = os.path.join(
+                        self.path_dev, name)
                     print(not_covered_address_file)
                     ff = open(not_covered_address_file, "a")
                     for r in self.results_with_dra.results:
@@ -117,7 +129,6 @@ class Device:
                             ff.write(r.data.not_covered_address_tasks_str(a))
                             break
                     ff.close()
-
 
         else:
             print("base not exist: " + self.path_base + "\n")
@@ -141,14 +152,17 @@ class Device:
             if a not in max_coverage:
                 max_coverage[a] = 0
             else:
-                max_coverage[a] = max_coverage[a] + self.results_with_dra.max_coverage[a]
+                max_coverage[a] = max_coverage[a] + \
+                    self.results_with_dra.max_coverage[a]
 
         f = open(self.file_result, "a")
         f.write("=====================================================\n")
         f.write("coverage:\n")
-        f.write("unique_coverage_with_dra : " + str(len(unique_coverage_with_dra)) + "\n")
+        f.write("unique_coverage_with_dra : " +
+                str(len(unique_coverage_with_dra)) + "\n")
         f.write(str(unique_coverage_with_dra) + "\n")
-        f.write("unique_coverage_without_dra : " + str(len(unique_coverage_without_dra)) + "\n")
+        f.write("unique_coverage_without_dra : " +
+                str(len(unique_coverage_without_dra)) + "\n")
         f.write(str(unique_coverage_without_dra) + "\n")
         f.write("max_coverage : " + str(len(max_coverage)) + "\n")
         f.close()
@@ -159,7 +173,8 @@ class results:
         self.dir_path = dir_path
         self.color = color
 
-        self.file_result = os.path.join(self.dir_path, default.name_data_result)
+        self.file_result = os.path.join(
+            self.dir_path, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
 
@@ -234,7 +249,8 @@ class results:
 class result:
     def __init__(self, dir_path):
         self.dir_path = dir_path
-        self.file_result = os.path.join(self.dir_path, default.name_data_result)
+        self.file_result = os.path.join(
+            self.dir_path, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
         # print("self.data = data.data(self.dir_path)")
@@ -244,7 +260,8 @@ class result:
         # print("self.stat.get_time_coverage()")
         self.stat.get_time_coverage()
         # print("self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')")
-        self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
+        self.axis = axis.axis(
+            self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
 
 
 def get_stat_file(path):

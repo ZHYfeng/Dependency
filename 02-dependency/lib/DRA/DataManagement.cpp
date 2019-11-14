@@ -171,10 +171,11 @@ namespace dra {
                     // c->address = final_address;
                     this->cover[final_address] = current_time;
                     // this->time.push_back(c);
-
+#if DEBUG
                     std::stringstream stream;
                     stream << std::hex << final_address;
                     outputTime("new cover trace_pc_address " + stream.str());
+#endif
 
 //                    if (this->uncover.find(final_address) == this->uncover.end()) {
 //

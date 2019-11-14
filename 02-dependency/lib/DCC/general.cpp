@@ -13,12 +13,10 @@
 namespace dra {
 
     void outputTime(std::string s) {
-#if DEBUG
         time_t current_time;
         current_time = time(nullptr);
         std::cout << ctime(&current_time);
         std::cout << "#time : " << s << std::endl;
-#endif
     }
 
     llvm::BasicBlock *getRealBB(llvm::BasicBlock *b) {

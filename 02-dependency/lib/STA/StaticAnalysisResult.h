@@ -275,7 +275,9 @@ namespace sta {
         //we can store only the ctx pointer and group the cmds associating with a same ctx.
         std::vector<cmd_ctx *> *get_cmd_ctx() {
             if (all_cmd_ctx.empty()) {
+#if DEBUG
                 dra::outputTime("get_cmd_ctx : start");
+#endif
                 for (auto &x : this->mod_inf) {
                     std::set<uint64_t> &cs = x.second[1];
                     for(auto c : cs){
