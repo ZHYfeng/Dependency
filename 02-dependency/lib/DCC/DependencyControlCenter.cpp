@@ -52,7 +52,9 @@ void DependencyControlCenter::run()
 {
     while (true)
     {
+#if DEBUG
         dra::outputTime("wait for get newInput");
+#endif
         Inputs *newInput = client->GetNewInput();
         if (newInput != nullptr)
         {
@@ -61,15 +63,17 @@ void DependencyControlCenter::run()
                 //                    std::cout << "new input : " << input.second.sig() << std::endl;
                 //                    std::cout << input.second.program() << std::endl;
                 //                    DInput *dInput = DM.getInput(&input.second);
-
+#if DEBUG
                 dra::outputTime("new input : " + input.sig());
                 dra::outputTime(input.program());
+#endif
                 DInput *dInput = DM.getInput(&input);
                 get_dependency_input(dInput);
             }
             newInput->Clear();
-
+#if DEBUG
             dra::outputTime("sleep_for 10s");
+#endif
             std::this_thread::sleep_for(std::chrono::seconds(10));
         }
         else
@@ -106,7 +110,9 @@ void DependencyControlCenter::get_dependency_input(DInput *dInput)
     for (auto u : dInput->dUncoveredAddress)
     {
         i++;
+#if DEBUG
         dra::outputTime("uncovered address count : " + std::to_string(i));
+#endif
 
         if (this->DM.check_uncovered_address(u))
         {
@@ -338,8 +344,9 @@ sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u)
     {
         return res;
     }
-
+#if DEBUG
     dra::outputTime("GetAllGlobalWriteBBs : ");
+#endif
 
     int64_t successor = u->successor();
     int64_t idx;
@@ -363,7 +370,9 @@ sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u)
         (this->staticResult[b].find(idx) != this->staticResult[b].end()))
     {
         res = this->staticResult[b][idx];
+#if DEBUG
         dra::outputTime("get useful static analysis result from cache");
+#endif
     }
     else
     {
