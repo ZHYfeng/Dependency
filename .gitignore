@@ -43,7 +43,7 @@ workdir*
 */workspace.xml
 .vscode/*
 06-result/*
-*.idea/*
+*/.idea/*
 built-in*
 *img*
 *workdir*
