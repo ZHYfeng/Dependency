@@ -2,10 +2,7 @@ cmake_minimum_required(VERSION 3.4.3)
 project(2018_dependency CXX)
 
 set(CMAKE_CXX_STANDARD 11)
-
 set(CMAKE_CXX_FLAGS "-std=gnu++11 -O3 -pthread -I/usr/local/include")
-
-
 
 if (DEFINED ENV{LLVM_DIR})
     find_package(LLVM REQUIRED CONFIG)

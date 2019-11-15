@@ -9,6 +9,7 @@
 #define LIB_RPC_DEPENDENCYRPCCLIENT_H_
 
 #include <memory>
+#include <grpcpp/channel.h>
 
 #include "DependencyRPC.grpc.pb.h"
 

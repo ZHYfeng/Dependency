@@ -21,7 +21,7 @@ sudo ldconfig
 
 ```shell
 sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev libgtest-dev libc++-dev
-git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
+git clone -b v1.25.0 https://github.com/grpc/grpc
 cd grpc
 git submodule update --init
 // remove the  -Werror in Makefile line 356
@@ -46,7 +46,7 @@ or
 ```shell
 git clone git@github.com:ZHYfeng/2018_dependency.git
 cd 2018_dependency
-./build.sh
+bash build.bash
 ```
 notice: change LLVM_DIR to your path.
 
