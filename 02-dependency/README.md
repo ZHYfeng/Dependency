@@ -24,7 +24,6 @@ sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev li
 git clone -b v1.25.0 https://github.com/grpc/grpc
 cd grpc
 git submodule update --init
-// remove the  -Werror in Makefile line 356
 make HAS_SYSTEM_PROTOBUF=false
 sudo make install
 sudo ldconfig
