@@ -268,11 +268,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		if ok {
 			input.Stat = pb.FuzzingStat(i)
 		}
-		if c == "StatDependency" {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("real new input from StatDependency : \n%s", data))
-		}
 	}
-
 	proc.fuzzer.dManager.SendNewInput(&input)
 }
 
@@ -351,9 +347,6 @@ func (proc *Proc) execute(execOpts *ipc.ExecOpts, p *prog.Prog, flags ProgTypes,
 	calls, extra := proc.fuzzer.checkNewSignal(p, info)
 	for _, callIndex := range calls {
 		//info := proc.executeRaw(proc.execOptsCover, p, stat)
-		if stat == StatDependency {
-			proc.fuzzer.dManager.SendLog(fmt.Sprintf("new input from StatDependency : \n%s", p.Serialize()))
-		}
 		p.Comments = []string{pb.FuzzingStat_name[int32(stat)+1]}
 		proc.enqueueCallTriage(p, flags, callIndex, info.Calls[callIndex])
 	}

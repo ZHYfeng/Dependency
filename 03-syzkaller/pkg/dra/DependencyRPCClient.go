@@ -78,11 +78,9 @@ func (d *DRPCClient) GetBootTasks(name string) *Tasks {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-
 	request := &Empty{
 		Name: name,
 	}
-
 	replay, err := d.c.GetBootTasks(ctx, request, grpc.MaxCallSendMsgSize(0x7fffffffffffffff))
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not GetBootTasks: %v", err)

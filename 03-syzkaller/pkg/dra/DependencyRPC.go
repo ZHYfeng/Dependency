@@ -243,11 +243,11 @@ func (ss Server) pickBootTask(name string) *Tasks {
 	var tasks *Tasks
 	f, ok := ss.fuzzers[name]
 	if ok {
-		f.taskMu.Lock()
+		f.bootTaskMu.Lock()
 		last := len(f.bootTasks.Task)
 		tasks = f.bootTasks.pop(last)
 		tasks.Kind = TaskKind_Boot
-		f.taskMu.Unlock()
+		f.bootTaskMu.Unlock()
 	}
 	return tasks
 }
@@ -776,28 +776,17 @@ func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint
 	return priority
 }
 
-func (ss *Server) writeCorpusToDisk() {
-	out, err := proto.Marshal(ss.corpusDependency)
+func (ss *Server) writeMessageToDisk(message proto.Message, name string) {
+	out, err := proto.Marshal(message)
 	if err != nil {
 		log.Fatalf("Failed to encode address: %s", err)
 	}
-	path := "data.bin"
-	_ = os.Remove(path)
-	if err := ioutil.WriteFile(path, out, 0644); err != nil {
+	temp := name + ".temp"
+	if err := ioutil.WriteFile(temp, out, 0644); err != nil {
 		log.Fatalf("Failed to write corpusDependency: %s", err)
 	}
-}
-
-func (ss *Server) writeStatisticsToDisk() {
-	out, err := proto.Marshal(ss.stat)
-	if err != nil {
-		log.Fatalf("Failed to encode coverage: %s", err)
-	}
-	path := "statistics.bin"
-	_ = os.Remove(path)
-	if err := ioutil.WriteFile(path, out, 0644); err != nil {
-		log.Fatalf("Failed to write coverage: %s", err)
-	}
+	_ = os.Remove(name)
+	_ = os.Rename(temp, name)
 }
 
 // CheckPath ...

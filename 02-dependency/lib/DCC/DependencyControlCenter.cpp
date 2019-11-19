@@ -361,7 +361,7 @@ sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u)
     else
     {
         idx = 0;
-#if DEBUG_ERR
+#if DEBUG_ERR && DEBUG
         std::cerr << "switch case : " << std::hex << successor << std::endl;
 #endif
     }

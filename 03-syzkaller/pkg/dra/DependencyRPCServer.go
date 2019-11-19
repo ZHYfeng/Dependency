@@ -27,6 +27,7 @@ const (
 
 type syzFuzzer struct {
 	taskMu         *sync.Mutex
+	bootTaskMu     *sync.Mutex
 	bootTasks      *Tasks
 	highTasks      *Tasks
 	newTask        *Tasks
@@ -169,7 +170,8 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	_, ok := ss.fuzzers[name]
 	if !ok {
 		ss.fuzzers[name] = &syzFuzzer{
-			taskMu: &sync.Mutex{},
+			taskMu:     &sync.Mutex{},
+			bootTaskMu: &sync.Mutex{},
 			bootTasks: &Tasks{
 				Name:  name,
 				Task:  map[string]*Task{},
@@ -236,10 +238,8 @@ func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 // GetBootTasks for the tasks need to be tested when boot
 func (ss Server) GetBootTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 	log.Logf(DebugLevel, "(ss Server) GetTasks")
-
 	name := request.Name
 	tasks := ss.pickBootTask(name)
-
 	return tasks, nil
 }
 
@@ -652,11 +652,11 @@ func (ss *Server) Update() {
 					}
 				}
 				for _, f := range ss.fuzzers {
-					f.taskMu.Lock()
+					f.bootTaskMu.Lock()
 					for _, t := range task {
 						f.bootTasks.addTask(proto.Clone(t).(*Task))
 					}
-					f.taskMu.Unlock()
+					f.bootTaskMu.Unlock()
 				}
 				task = nil
 			}
@@ -687,6 +687,6 @@ func (ss *Server) Update() {
 	}
 	newStat = nil
 
-	ss.writeStatisticsToDisk()
-	ss.writeCorpusToDisk()
+	ss.writeMessageToDisk(ss.stat, "statistics.bin")
+	ss.writeMessageToDisk(ss.corpusDependency, "data.bin")
 }
