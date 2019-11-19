@@ -84,7 +84,7 @@ namespace dra {
         std::cout << FunctionName << " : ";
 
         int line = 1;
-        if(inst->hasMetadata()){
+        if (inst->hasMetadata()) {
             const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
             line = debugInfo->getLine();
             int column = debugInfo->getColumn();

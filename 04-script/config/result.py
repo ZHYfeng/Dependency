@@ -93,8 +93,8 @@ class Device:
             for a in self.basic.data.uncovered_address_dependency:
                 f.write(uncovered_address_str(
                     self.basic.data.real_data.uncovered_address[a]))
-                if a in self.results_with_dra.uncovered_address_dependency and \
-                        a in self.results_without_dra.uncovered_address_dependency:
+                if a not in self.results_with_dra.max_coverage and \
+                        a not in self.results_without_dra.max_coverage:
                     ff.write(not_covered_address_str(
                         self.basic.data.real_data.uncovered_address[a]))
 

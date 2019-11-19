@@ -27,8 +27,8 @@ path_default_remove_bash = os.path.join(
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
 path_linux_bc = os.path.join(
-    path_root, "benchmark/linux/18-linux-clang-np-bc-f")
-path_linux = os.path.join(path_root, "benchmark/linux/17-linux-clang-np")
+    path_root, "benchmark/linux/16-linux-clang-np-bc-f")
+path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 
 path_syzkaller = os.path.join(path_git_repo, "03-syzkaller")

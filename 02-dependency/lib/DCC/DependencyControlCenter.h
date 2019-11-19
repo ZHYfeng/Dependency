@@ -23,7 +23,8 @@ namespace dra {
         virtual ~DependencyControlCenter();
 
         void init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
-                                       const std::string &staticRes = "", const std::string function = "", const std::string &port_address = "");
+                  const std::string &staticRes = "", const std::string function = "",
+                  const std::string &port_address = "");
 
         void run();
 
