@@ -30,7 +30,7 @@ namespace sta {
 
     class cmd_ctx {
     public:
-        uint64_t cmd;
+        std::vector<uint64_t> cmd;
         std::vector<llvm::Instruction *> ctx;
     };
 
@@ -279,21 +279,21 @@ namespace sta {
                 dra::outputTime("get_cmd_ctx : start");
 #endif
                 for (auto &x : this->mod_inf) {
+                    cmd_ctx *temp = new cmd_ctx();
+                    if (this->sta->getCtx(x.first, &(temp->ctx))) {
+#if DEBUG
+                        dra::outputTime("getCtx : true");
+#endif
+                    } else {
+#if DEBUG
+                        dra::outputTime("getCtx : false");
+#endif
+                    }
                     std::set<uint64_t> &cs = x.second[1];
                     for(auto c : cs){
-                        cmd_ctx *temp = new cmd_ctx();
-                        temp->cmd = c;
-                        if (this->sta->getCtx(x.first, &(temp->ctx))) {
-#if DEBUG
-                            dra::outputTime("getCtx : true");
-#endif
-                        } else {
-#if DEBUG
-                            dra::outputTime("getCtx : false");
-#endif
-                        }
-                        this->all_cmd_ctx.push_back(temp);
+                        temp->cmd.push_back(c);
                     }
+                    this->all_cmd_ctx.push_back(temp);
                 }
 #if DEBUG
                 std::cout << "cmd size : " << std::dec << all_cmd_ctx.size() << "\n";

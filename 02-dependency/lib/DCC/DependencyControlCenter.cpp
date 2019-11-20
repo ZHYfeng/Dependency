@@ -527,7 +527,9 @@ namespace dra {
                                     std::cout << "priority : " << x->prio + 100 << std::endl;
                                     std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                                     for (auto c : *cmd_ctx) {
-                                        std::cout << "cmd hex: " << std::hex << c->cmd << "\n";
+                                        for(auto cmd : c->cmd){
+                                            std::cout << "cmd hex: " << std::hex << cmd << "\n";
+                                        }
                                         this->DM.dump_ctxs(&c->ctx);
                                         auto ctx = c->ctx;
                                         auto inst = ctx.begin();
