@@ -14,7 +14,6 @@
 #include <sstream>
 #include "../DRA/DFunction.h"
 #include "general.h"
-#include "../JSON/json.cpp"
 
 namespace dra {
 
@@ -25,7 +24,7 @@ namespace dra {
     DependencyControlCenter::~DependencyControlCenter() = default;
 
     void DependencyControlCenter::init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
-                                       const std::string &staticRes, const std::string function,
+                                       const std::string &staticRes, const std::string& function,
                                        const std::string &port_address) {
 
         DM.initializeModule(std::move(obj_dump), std::move(AssemblySourceCode), std::move(InputFilename));
@@ -81,7 +80,7 @@ namespace dra {
         }
     }
 
-    void DependencyControlCenter::setRPCConnection(std::string port) {
+    void DependencyControlCenter::setRPCConnection(const std::string& grpc_port) {
         this->client = new dra::DependencyRPCClient(
                 grpc::CreateChannel(port, grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
@@ -108,7 +107,7 @@ namespace dra {
                 //                    this->DM.uncover[u->uncovered_address()]->belong_to_Driver = true;
                 //                }
 
-                Dependency *dependency = new Dependency();
+                auto *dependency = new Dependency();
                 Input *input = dependency->mutable_input();
                 input->set_sig(dInput->sig);
                 input->set_program(dInput->program);
@@ -145,7 +144,7 @@ namespace dra {
                 sta::MODS *write_basicblock = this->get_write_basicblock(u);
                 if (write_basicblock == nullptr) {
                     uncoveredAddress->set_kind(UncoveredAddressKind::Outside);
-                } else if (write_basicblock->size() == 0) {
+                } else if (write_basicblock->empty()) {
                     uncoveredAddress->set_kind(UncoveredAddressKind::InputRelated);
                 } else if (!write_basicblock->empty()) {
                     uncoveredAddress->set_kind(UncoveredAddressKind::DependnecyRelated);
@@ -202,7 +201,7 @@ namespace dra {
             std::cout << "dependency size : " << dependency->ByteSizeLong() << std::endl;
 #endif
             if (dependency->ByteSizeLong() < 0x7fffffff) {
-                auto reply = client->SendDependency(*dependency);
+                client->SendDependency(*dependency);
             } else {
                 std::cout << "dependency is too big : " << dependency->ByteSizeLong() << std::endl;
             }
@@ -212,7 +211,7 @@ namespace dra {
 
     void DependencyControlCenter::test_sta() {
         auto f = this->DM.Modules->Function["block/blk-core.c"]["blk_flush_plug_list"];
-        for (auto B : f->BasicBlock) {
+        for (const auto& B : f->BasicBlock) {
             auto b = B.second->basicBlock;
             std::cout << "b name : " << B.second->name << std::endl;
 
@@ -245,7 +244,7 @@ namespace dra {
                 if (write_basicblock == nullptr) {
                 } else {
 
-                    WriteAddresses *wa = new WriteAddresses();
+                    auto *wa = new WriteAddresses();
                     //                wa->set_allocated_condition(&condition.second);
                     //                for (auto &x : *write_basicblock) {
                     //                    WriteAddress *writeAddress = new WriteAddress;
@@ -273,7 +272,7 @@ namespace dra {
             std::cout << "send_write_address : " << std::hex << writeAddress->condition().condition_address()
                       << std::endl;
 #endif
-            auto reply = client->SendWriteAddress(*writeAddress);
+            client->SendWriteAddress(*writeAddress);
         } else {
         }
     }
@@ -324,7 +323,7 @@ namespace dra {
                 dra::outputTime("allBasicblock == nullptr");
                 p->real_dump();
 #endif
-            } else if (write_basicblock->size() == 0) {
+            } else if (write_basicblock->empty()) {
                 // unrelated to gv
                 res = write_basicblock;
 #if DEBUG
@@ -345,7 +344,7 @@ namespace dra {
         return res;
     }
 
-    void DependencyControlCenter::set_runtime_data(runTimeData *r, std::string program, uint32_t idx,
+    void DependencyControlCenter::set_runtime_data(runTimeData *r, const std::string& program, uint32_t idx,
                                                    uint32_t condition, uint32_t address) {
         r->set_program(program);
         r->set_task_status(taskStatus::untested);
@@ -383,7 +382,7 @@ namespace dra {
             this->getFileOperations(&funtion_name, &file_operations, &kind);
             int index = 0;
             for (int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
-                if (file_operations_kind_Name(i).compare(kind) == 0) {
+                if (file_operations_kind_Name(i) == kind) {
                     index = i;
                     break;
                 }
@@ -453,7 +452,7 @@ namespace dra {
     }
 
     writeAddressAttributes *DependencyControlCenter::get_write_addresses_adttributes(sta::Mod *write_basicblock) {
-        writeAddressAttributes *res = new writeAddressAttributes();
+        auto *res = new writeAddressAttributes();
         DBasicBlock *db = this->DM.get_DB_from_bb(write_basicblock->B);
         unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
         res->set_write_address(write_address);
@@ -539,7 +538,7 @@ namespace dra {
                                         this->getFileOperations(&funtion_name, &file_operations, &kind);
                                         int index = 0;
                                         for (int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
-                                            if (file_operations_kind_Name(i).compare(kind) == 0) {
+                                            if (file_operations_kind_Name(i) == kind) {
                                                 index = i;
                                                 break;
                                             }
@@ -564,9 +563,9 @@ namespace dra {
 
     void DependencyControlCenter::getFileOperations(std::string *function_name, std::string *file_operations,
                                                     std::string *kind) {
-        for (auto f1 : this->function_json.items()) {
-            for (auto f2 : f1.value().items()) {
-                if (function_name->compare(f2.value()["name"]) == 0) {
+        for (const auto& f1 : this->function_json.items()) {
+            for (const auto& f2 : f1.value().items()) {
+                if (*function_name == f2.value()["name"]) {
                     file_operations->assign(f1.key());
                     kind->assign(f2.key());
                 }

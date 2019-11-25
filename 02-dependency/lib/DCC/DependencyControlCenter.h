@@ -23,14 +23,14 @@ namespace dra {
         virtual ~DependencyControlCenter();
 
         void init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
-                  const std::string &staticRes = "", const std::string function = "",
+                  const std::string &staticRes = "", const std::string& function = "",
                   const std::string &port_address = "");
 
         void run();
 
         void check(const std::string &file);
 
-        void setRPCConnection(std::string port);
+        void setRPCConnection(const std::string& grpc_port);
 
         sta::MODS *get_write_basicblock(Condition *u);
 
@@ -46,11 +46,11 @@ namespace dra {
 
         void send_write_address(WriteAddresses *writeAddress);
 
-        void set_runtime_data(runTimeData *r, std::string program, uint32_t idx, uint32_t condition, uint32_t address);
+        static void set_runtime_data(runTimeData *r, const std::string& program, uint32_t idx, uint32_t condition, uint32_t address);
 
         void test_sta();
 
-        void test_rpc();
+        static void test_rpc();
 
         void getFileOperations(std::string *function_name, std::string *file_operations, std::string *kind);
 
