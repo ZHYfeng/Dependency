@@ -12,4 +12,4 @@ if __name__ == "__main__":
         if sys.argv[1] == "read" and len(sys.argv) > 2:
             if len(sys.argv) > 3:
                 default.do_figure = False
-            result.get_stat_file(sys.argv[2])
+            result.read_results(sys.argv[2])

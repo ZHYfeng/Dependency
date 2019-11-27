@@ -264,7 +264,7 @@ class result:
             self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
 
 
-def get_stat_file(path):
+def read_results(path):
     is_dev = False
     is_results = False
     is_result = False

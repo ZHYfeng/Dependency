@@ -53,7 +53,7 @@ sudo rm -fr ./cover_uncover.txt dependency.log result-cpp.log result-syzkaller.l
 ## run a2i
 
 ```shell script
-/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/build/tools/A2I/a2i -asm=built-in.s -objdump=/home/yuh/data/benchmark/linux/17-linux-clang-np/vmlinux.objdump -staticRes=built-in.taint built-in.bc
+/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/build/tools/A2I/a2i -asm=built-in.s -objdump=/home/yuh/data/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=built-in.taint built-in.bc
 ```
 
 ## prepare kernel

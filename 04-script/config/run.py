@@ -6,6 +6,7 @@ import socket
 import subprocess
 import sys
 import time
+
 import default
 
 
@@ -83,7 +84,7 @@ class Process:
         json.dump(c, f, indent=4)
         f.close()
 
-        self.cmd_syzkaller = default.path_syzkaller + " -config=./" + default.file_json + " 2>" + default.file_log_syzkaller + " 1>&2 &"
+        self.cmd_syzkaller = default.path_syzkaller_manager + " -config=./" + default.file_json + " 2>" + default.file_log_syzkaller + " 1>&2 &"
         self.t0 = time.time()
         self.real_execute(self.cmd_syzkaller, run_f)
 
