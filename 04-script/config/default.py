@@ -49,7 +49,7 @@ path_current = os.getcwd()
 path_git = os.path.join(path_root, "git")
 path_repo = os.path.join(
     path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
-path_dra = os.path.join(path_repo, "02-dependency/build/tools/DRA/dra")
+path_dra = os.path.join(path_repo, "02-dependency/cmake-build-debug/tools/DRA/dra")
 path_syzkaller_manager = os.path.join(path_repo, "03-syzkaller/bin/syz-manager")
 file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
 
