@@ -170,8 +170,7 @@ class Results:
         self.dir_path = dir_path
         self.color = color
 
-        self.file_result = os.path.join(
-            self.dir_path, default.name_data_result)
+        self.file_result = os.path.join(self.dir_path, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
 
@@ -191,7 +190,7 @@ class Results:
         if os.path.exists(self.dir_path):
             for (dir_path, dir_names, file_names) in os.walk(self.dir_path):
                 for file_name in file_names:
-                    if file_name.startswith(default.name_stat):
+                    if file_name == default.name_stat:
                         r = result(dir_path)
                         self.results.append(r)
                         self.statistics.statistics.append(r.stat)
@@ -246,8 +245,7 @@ class Results:
 class result:
     def __init__(self, dir_path):
         self.dir_path = dir_path
-        self.file_result = os.path.join(
-            self.dir_path, default.name_data_result)
+        self.file_result = os.path.join(self.dir_path, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
         # print("self.data = data.data(self.dir_path)")
@@ -257,8 +255,7 @@ class result:
         # print("self.stat.get_time_coverage()")
         self.stat.get_time_coverage()
         # print("self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')")
-        self.axis = axis.axis(
-            self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
+        self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
 
 
 def read_results(path):
