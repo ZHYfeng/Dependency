@@ -1,6 +1,6 @@
 import os
 
-from config import default, DependencyRPC_pb2 as pb
+from default import DependencyRPC_pb2 as pb, default
 
 
 def uncovered_address_str(uncovered_address: pb.UncoveredAddress):

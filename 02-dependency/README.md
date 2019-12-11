@@ -24,6 +24,8 @@ sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev li
 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
 git submodule update --init
+mkdir build
+cd build
 make HAS_SYSTEM_PROTOBUF=false
 make install prefix=~/data/build
 sudo ldconfig

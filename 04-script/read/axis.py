@@ -2,9 +2,8 @@ import os
 import statistics
 
 import matplotlib.pyplot as plt
-import scipy.stats
 
-from config import default
+from default import default
 
 
 class axis:

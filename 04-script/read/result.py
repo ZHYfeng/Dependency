@@ -4,37 +4,44 @@ import subprocess
 
 import scipy.stats
 
-from config import default, DependencyRPC_pb2 as pb, stats, data, axis
-from config.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name
+from default import DependencyRPC_pb2 as pb, default
+from read import data, stats, axis
+from read.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name
 
 
 class Device:
     def __init__(self, dir_path, dir_name):
         self.dir_path = dir_path
+        self.dir_name = dir_name
         self.path_dev = os.path.join(self.dir_path, dir_name)
 
-        self.file_result = os.path.join(
-            self.path_dev, default.name_data_result)
+        self.file_result = os.path.join(self.path_dev, default.name_data_result)
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
 
         self.path_with_dra = os.path.join(self.path_dev, default.name_with_dra)
-        self.results_with_dra = results(self.path_with_dra, 'C0')
-        self.path_without_dra = os.path.join(
-            self.path_dev, default.name_without_dra)
-        self.results_without_dra = results(self.path_without_dra, 'C1')
+        self.results_with_dra = Results(self.path_with_dra, 'C0')
+        self.path_without_dra = os.path.join(self.path_dev, default.name_without_dra)
+        self.results_without_dra = Results(self.path_without_dra, 'C1')
+
         print(self.path_dev)
         self.axises = axis.axises(self.path_dev)
-        self.axises.x_axis = self.results_with_dra.axises.x_axis
-        self.axises.y_axises = self.results_with_dra.axises.y_axises_statistics \
-            + self.results_without_dra.axises.y_axises_statistics
-        self.axises.labels = self.results_with_dra.axises.labels_statistics \
-            + self.results_without_dra.axises.labels_statistics
-        self.axises.line_styles = self.results_with_dra.axises.line_styles_statistics \
-            + self.results_without_dra.axises.line_styles_statistics
-        self.axises.colors = self.results_with_dra.axises.colors_statistics \
-            + self.results_without_dra.axises.colors_statistics
+        self.set_axises()
 
+        self.statistic, self.p_value = 0, 0
+        self.get_mann_withney_utest()
+
+        self.get_coverage()
+        self.get_base()
+
+    def set_axises(self):
+        self.axises.x_axis = self.results_with_dra.axises.x_axis
+        self.axises.y_axises = self.results_with_dra.axises.y_axises_statistics + self.results_without_dra.axises.y_axises_statistics
+        self.axises.labels = self.results_with_dra.axises.labels_statistics + self.results_without_dra.axises.labels_statistics
+        self.axises.line_styles = self.results_with_dra.axises.line_styles_statistics + self.results_without_dra.axises.line_styles_statistics
+        self.axises.colors = self.results_with_dra.axises.colors_statistics + self.results_without_dra.axises.colors_statistics
+
+    def get_mann_withney_utest(self):
         max_coverage_with_dra = []
         for a in self.results_with_dra.axises.axises:
             max_coverage_with_dra.append(max(a.y_axis))
@@ -44,97 +51,11 @@ class Device:
         self.statistic, self.p_value = scipy.stats.mannwhitneyu(
             max_coverage_with_dra, max_coverage_without_dra)
 
-        file_figure_all = os.path.join(dir_path, dir_name, dir_name + ".pdf")
-        title = " pvalue = " + str(self.p_value)
+        file_figure_all = os.path.join(self.dir_path, self.dir_name, self.dir_name + ".pdf")
+        title = "pvalue = " + str(self.p_value)
         self.axises.plot(name=file_figure_all, title=title)
 
-        self.get_coverage()
-        self.path_base = os.path.join(self.path_dev, default.name_base)
-        if os.path.exists(self.path_base):
-            self.basic = result(self.path_base)
-
-            self.ca_uca_dep_with_dra = {}
-            self.ca_uca_dep_without_dra = {}
-            for a in self.basic.data.uncovered_address_dependency:
-                if a in self.results_with_dra.max_coverage:
-                    self.ca_uca_dep_with_dra[a] = self.results_with_dra.max_coverage[a]
-                if a in self.results_without_dra.max_coverage:
-                    self.ca_uca_dep_without_dra[a] = self.results_without_dra.max_coverage[a]
-
-            self.ca_uca_input_with_dra = {}
-            self.ca_uca_input_without_dra = {}
-            for a in self.basic.data.uncovered_address_input:
-                if a in self.results_with_dra.max_coverage:
-                    self.ca_uca_input_with_dra[a] = self.results_with_dra.max_coverage[a]
-                if a in self.results_without_dra.max_coverage:
-                    self.ca_uca_input_without_dra[a] = self.results_without_dra.max_coverage[a]
-
-            f = open(self.file_result, "a")
-            f.write("=====================================================\n")
-            f.write("basic:\n")
-            f.write("number of uncovered address : " +
-                    str(len(self.basic.data.real_data.uncovered_address)) + "\n")
-            f.write("number of uncovered address by dependency : "
-                    + str(len(self.basic.data.uncovered_address_dependency)) + "\n")
-            f.write("number of uncovered address by dependency covered by syzkaller with dra: "
-                    + str(len(self.ca_uca_dep_with_dra)) + "\n")
-            f.write("number of uncovered address by dependency covered by syzkaller without dra: "
-                    + str(len(self.ca_uca_dep_without_dra)) + "\n")
-            f.write(
-                "number of uncovered address by input : " + str(len(self.basic.data.uncovered_address_input)) + "\n")
-            f.write("number of uncovered address by input covered by syzkaller with dra: "
-                    + str(len(self.ca_uca_input_with_dra)) + "\n")
-            f.write("number of uncovered address by input covered by syzkaller without dra: "
-                    + str(len(self.ca_uca_input_without_dra)) + "\n")
-
-            not_covered_address_file = os.path.join(
-                self.path_dev, "not_covered.txt")
-            ff = open(not_covered_address_file, "w")
-            for a in self.basic.data.uncovered_address_dependency:
-                f.write(uncovered_address_str(
-                    self.basic.data.real_data.uncovered_address[a]))
-                if a not in self.results_with_dra.max_coverage and \
-                        a not in self.results_without_dra.max_coverage:
-                    ff.write(not_covered_address_str(
-                        self.basic.data.real_data.uncovered_address[a]))
-
-            ff.close()
-            f.close()
-
-            os.chdir(self.path_dev)
-
-            cmd_rm_0x = "rm -rf 0x*"
-            p_rm_0x = subprocess.Popen(
-                cmd_rm_0x, shell=True, preexec_fn=os.setsid)
-            p_rm_0x.wait()
-            cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                + " -staticRes=./" + default.file_taint + " -function=./" + \
-                default.file_function + " " + default.file_bc
-            print(cmd_a2i)
-            p_a2i_img = subprocess.Popen(
-                cmd_a2i, shell=True, preexec_fn=os.setsid)
-            p_a2i_img.wait()
-
-            for a in self.basic.data.uncovered_address_dependency:
-                if a in self.results_with_dra.uncovered_address_dependency and \
-                        a in self.results_without_dra.uncovered_address_dependency:
-                    name = not_covered_address_file_name(
-                        self.basic.data.real_data.uncovered_address[a])
-                    not_covered_address_file = os.path.join(
-                        self.path_dev, name)
-                    print(not_covered_address_file)
-                    ff = open(not_covered_address_file, "a")
-                    for r in self.results_with_dra.results:
-                        if a in r.data.real_data.uncovered_address:
-                            ff.write(r.data.not_covered_address_tasks_str(a))
-                            break
-                    ff.close()
-
-        else:
-            print("base not exist: " + self.path_base + "\n")
-
     def get_coverage(self):
-
         unique_coverage_with_dra = {}
         for a in self.results_with_dra.max_coverage:
             if a not in self.results_without_dra.max_coverage:
@@ -152,8 +73,7 @@ class Device:
             if a not in max_coverage:
                 max_coverage[a] = 0
             else:
-                max_coverage[a] = max_coverage[a] + \
-                    self.results_with_dra.max_coverage[a]
+                max_coverage[a] = max_coverage[a] + self.results_with_dra.max_coverage[a]
 
         f = open(self.file_result, "a")
         f.write("=====================================================\n")
@@ -167,8 +87,85 @@ class Device:
         f.write("max_coverage : " + str(len(max_coverage)) + "\n")
         f.close()
 
+    def get_base(self):
+        path_base = os.path.join(self.path_dev, default.name_base)
+        if os.path.exists(path_base):
+            basic = result(path_base)
 
-class results:
+            f = open(self.file_result, "a")
+            f.write("=====================================================\n")
+            f.write("basic:\n")
+
+            ca_uca_dep_with_dra = {}
+            ca_uca_dep_without_dra = {}
+            for a in basic.data.uncovered_address_dependency:
+                if a in self.results_with_dra.max_coverage:
+                    ca_uca_dep_with_dra[a] = self.results_with_dra.max_coverage[a]
+                if a in self.results_without_dra.max_coverage:
+                    ca_uca_dep_without_dra[a] = self.results_without_dra.max_coverage[a]
+            f.write("number of uncovered address : " +
+                    str(len(basic.data.real_data.uncovered_address)) + "\n")
+            f.write("number of uncovered address by dependency : "
+                    + str(len(basic.data.uncovered_address_dependency)) + "\n")
+            f.write("number of uncovered address by dependency covered by syzkaller with dra: "
+                    + str(len(ca_uca_dep_with_dra)) + "\n")
+            f.write("number of uncovered address by dependency covered by syzkaller without dra: "
+                    + str(len(ca_uca_dep_without_dra)) + "\n")
+
+            # ca_uca_input_with_dra = {}
+            # ca_uca_input_without_dra = {}
+            # for a in basic.data.uncovered_address_input:
+            #     if a in self.results_with_dra.max_coverage:
+            #         ca_uca_input_with_dra[a] = self.results_with_dra.max_coverage[a]
+            #     if a in self.results_without_dra.max_coverage:
+            #         ca_uca_input_without_dra[a] = self.results_without_dra.max_coverage[a]
+            # f.write("number of uncovered address by input : " + str(len(basic.data.uncovered_address_input)) + "\n")
+            # f.write("number of uncovered address by input covered by syzkaller with dra: "
+            #         + str(len(ca_uca_input_with_dra)) + "\n")
+            # f.write("number of uncovered address by input covered by syzkaller without dra: "
+            #         + str(len(ca_uca_input_without_dra)) + "\n")
+
+            not_covered_address_file = os.path.join(
+                self.path_dev, "not_covered.txt")
+            ff = open(not_covered_address_file, "w")
+            for a in basic.data.uncovered_address_dependency:
+                f.write(uncovered_address_str(basic.data.real_data.uncovered_address[a]))
+                if a not in self.results_with_dra.max_coverage and a not in self.results_without_dra.max_coverage:
+                    ff.write(not_covered_address_str(basic.data.real_data.uncovered_address[a]))
+
+            ff.close()
+            f.close()
+
+            os.chdir(self.path_dev)
+
+            cmd_rm_0x = "rm -rf 0x*"
+            p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
+            p_rm_0x.wait()
+            cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
+                      + " -staticRes=./" + default.file_taint + " -function=./" + \
+                      default.file_function + " " + default.file_bc
+            print(cmd_a2i)
+            p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
+            p_a2i_img.wait()
+
+            for a in basic.data.uncovered_address_dependency:
+                if a in self.results_with_dra.uncovered_address_dependency and \
+                        a in self.results_without_dra.uncovered_address_dependency:
+                    name = not_covered_address_file_name(basic.data.real_data.uncovered_address[a])
+                    not_covered_address_file = os.path.join(self.path_dev, name)
+                    print(not_covered_address_file)
+                    ff = open(not_covered_address_file, "a")
+                    for r in self.results_with_dra.results:
+                        if a in r.data.real_data.uncovered_address:
+                            ff.write(r.data.not_covered_address_tasks_str(a))
+                            break
+                    ff.close()
+
+        else:
+            print("base not exist: " + path_base + "\n")
+
+
+class Results:
     def __init__(self, dir_path, color=''):
         self.dir_path = dir_path
         self.color = color
@@ -241,7 +238,7 @@ class results:
         for s in self.statistics.statistics:
             for a in s.real_stat.coverage.coverage:
                 if a not in self.max_coverage:
-                    self.max_coverage[a] = 0
+                    self.max_coverage[a] = 1
                 else:
                     self.max_coverage[a] = self.max_coverage[a] + 1
 
@@ -275,7 +272,7 @@ def read_results(path):
         Device(dir_path, dir_name)
     elif dir_name.startswith(default.name_with_dra) or dir_name.startswith(default.name_without_dra):
         path_results = os.path.join(dir_path, dir_name)
-        results(path_results)
+        Results(path_results)
     elif dir_name.startswith(default.name_stat):
         result(dir_path)
     else:
@@ -291,7 +288,7 @@ def read_results(path):
                 if dir_name.startswith(default.name_with_dra) or dir_name.startswith(default.name_without_dra):
                     is_dev = True
                     path_results = os.path.join(dir_path, dir_name)
-                    results(path_results)
+                    Results(path_results)
             if is_results:
                 break
 
