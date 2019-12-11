@@ -63,6 +63,7 @@ namespace dra {
                     get_dependency_input(dInput);
                 }
                 newInput->Clear();
+                delete newInput;
 #if DEBUG
                 dra::outputTime("sleep_for 10s");
 #endif
@@ -184,6 +185,7 @@ namespace dra {
                     this->send_dependency(dependency);
                 }
                 dependency->Clear();
+                delete dependency;
             }
         }
     }
@@ -201,7 +203,8 @@ namespace dra {
             std::cout << "dependency size : " << dependency->ByteSizeLong() << std::endl;
 #endif
             if (dependency->ByteSizeLong() < 0x7fffffff) {
-                client->SendDependency(*dependency);
+                auto replay = client->SendDependency(*dependency);
+                delete replay;
             } else {
                 std::cout << "dependency is too big : " << dependency->ByteSizeLong() << std::endl;
             }
@@ -389,10 +392,6 @@ namespace dra {
             }
             (*writeAddress->mutable_file_operations_function())[file_operations] = 1 << index;
 
-            if (index != 10) {
-                dra::outputTime("write basicblock not ioctl: ");
-                db->real_dump();
-            }
         }
 
         writeAddress->set_write_address(write_address);

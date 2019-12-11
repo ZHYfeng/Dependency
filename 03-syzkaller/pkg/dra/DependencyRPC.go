@@ -272,7 +272,7 @@ func (ss *Server) addInput(s *Input) {
 	ss.addWriteAddressMapInput(s)
 	ss.addUncoveredAddressMapInput(s)
 
-	// ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
+	ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
 	return
 }
 
@@ -785,7 +785,9 @@ func (ss *Server) writeMessageToDisk(message proto.Message, name string) {
 	if err := ioutil.WriteFile(temp, out, 0644); err != nil {
 		log.Fatalf("Failed to write corpusDependency: %s", err)
 	}
-	_ = os.Remove(name)
+	old := name + ".old"
+	_ = os.Remove(old)
+	_ = os.Rename(name, old)
 	_ = os.Rename(temp, name)
 }
 

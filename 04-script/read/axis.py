@@ -14,7 +14,7 @@ class axis:
         self.y_axis = y_axis
         self.line_style = line_style
         self.file_figure = os.path.join(self.dir_path, "coverage.pdf")
-        self.expansion(default.length)
+        self.expansion(default.length + 10)
         # self.plot()
 
     def plot(self):

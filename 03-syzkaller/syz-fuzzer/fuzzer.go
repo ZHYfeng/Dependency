@@ -253,15 +253,15 @@ func main() {
 		cover: make(map[int]*pb.Call),
 	}
 
-	newDependencyTasks := fuzzer.dManager.GetBootTasks(fuzzer.name)
-	if newDependencyTasks.Kind == pb.TaskKind_Boot {
-		for _, Task := range newDependencyTasks.Task {
-			fuzzer.workQueue.enqueue(&WorkBoot{
-				task: Task,
-				call: int(Task.Index),
-			})
-		}
-	}
+	//newDependencyTasks := fuzzer.dManager.GetBootTasks(fuzzer.name)
+	//if newDependencyTasks.Kind == pb.TaskKind_Boot {
+	//	for _, Task := range newDependencyTasks.Task {
+	//		fuzzer.workQueue.enqueue(&WorkBoot{
+	//			task: Task,
+	//			call: int(Task.Index),
+	//		})
+	//	}
+	//}
 
 	for i := 0; fuzzer.poll(i == 0, nil); i++ {
 	}

@@ -17,8 +17,8 @@ import (
 
 // useful const
 const (
-	// startTime  = 21600
-	startTime  = 0
+	startTime  = 10800
+	//startTime  = 0
 	newTime    = 600
 	bootTime   = 300
 	taskNum    = 20
@@ -472,13 +472,13 @@ func (ss *Server) Update() {
 
 	// deal need input
 	ss.needInputMu.Lock()
-	needInput := append([]*Input{}, ss.needInput.Input...)
+	//needInput := append([]*Input{}, ss.needInput.Input...)
 	ss.needInput = &Inputs{Input: []*Input{}}
 	ss.needInputMu.Unlock()
-	for _, i := range needInput {
-		ss.addInput(i)
-	}
-	needInput = nil
+	//for _, i := range needInput {
+	//	ss.addInput(i)
+	//}
+	//needInput = nil
 
 	// deal Dependency
 	ss.dependencyMu.Lock()
