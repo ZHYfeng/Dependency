@@ -107,10 +107,16 @@ class Device:
                     str(len(basic.data.real_data.uncovered_address)) + "\n")
             f.write("number of uncovered address by dependency : "
                     + str(len(basic.data.uncovered_address_dependency)) + "\n")
+            count = 0
+            for a in ca_uca_dep_with_dra:
+                count += ca_uca_dep_with_dra[a]
             f.write("number of uncovered address by dependency covered by syzkaller with dra: "
-                    + str(len(ca_uca_dep_with_dra)) + "\n")
+                    + str(len(ca_uca_dep_with_dra)) + " count : " + str(count) + "\n")
+            count = 0
+            for a in ca_uca_dep_without_dra:
+                count += ca_uca_dep_without_dra[a]
             f.write("number of uncovered address by dependency covered by syzkaller without dra: "
-                    + str(len(ca_uca_dep_without_dra)) + "\n")
+                    + str(len(ca_uca_dep_without_dra)) + " count : " + str(count) + "\n")
 
             # ca_uca_input_with_dra = {}
             # ca_uca_input_without_dra = {}
