@@ -78,20 +78,20 @@ namespace dra {
         auto b = inst->getParent();
         auto f = b->getParent();
 
+        unsigned int line = 1;
         std::string Path = dra::getFileName(f);
-        std::string FunctionName = dra::getFunctionName(f);
-        std::cout << Path << " : ";
-        std::cout << FunctionName << " : ";
-
-        int line = 1;
         if (inst->hasMetadata()) {
             const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
+            Path = debugInfo->getFilename().str();
+            std::cout << Path << " : ";
             line = debugInfo->getLine();
-            int column = debugInfo->getColumn();
+            unsigned int column = debugInfo->getColumn();
             std::cout << std::dec << line << " : ";
             std::cout << column << " : ";
         }
 
+        std::string FunctionName = dra::getFunctionName(f);
+        std::cout << FunctionName << " : ";
         std::string BasicBlockName = getRealBB(b)->getName();
         std::cout << BasicBlockName << " : ";
 
