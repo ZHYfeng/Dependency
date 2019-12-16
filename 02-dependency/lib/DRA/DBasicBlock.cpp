@@ -262,7 +262,7 @@ namespace dra {
         std::cout << "--------------------------------------------" << std::endl;
     }
 
-    void DBasicBlock::real_dump() {
+    void DBasicBlock::real_dump(int kind) {
         std::cout << "********************************************" << std::endl;
         if (parent != nullptr) {
             std::cout << "Path : " << parent->Path << std::endl;
@@ -277,13 +277,26 @@ namespace dra {
         std::string ld;
         llvm::raw_string_ostream rso(ld);
         this->basicBlock->print(rso);
-        auto bb = this->basicBlock->getNextNode();
-        auto inst = this->basicBlock->getTerminator();
-        for (; bb != nullptr && !bb->hasName(); bb = bb->getNextNode()) {
+        auto bb = this->basicBlock;
+        auto temp = this->basicBlock;
+        for (; temp != nullptr && !temp->hasName(); temp = bb->getNextNode()) {
+            bb = temp;
             bb->print(rso);
-            inst = bb->getTerminator();
         }
-        dump_inst(inst);
+        // 0 is condition(br), 1 is uncovered branch, 2 is write statement(store)
+        if (kind == 0) {
+            auto inst = bb->getTerminator();
+            dump_inst(inst);
+        } else if (kind == 1) {
+            auto inst = this->basicBlock->getFirstNonPHIOrDbgOrLifetime();
+            dump_inst(inst);
+        } else if (kind == 2) {
+            for (auto &inst : *this->basicBlock) {
+                if (inst.getOpcode() == llvm::Instruction::Store) {
+                    dump_inst(&inst);
+                }
+            }
+        }
         std::cout << ld;
 
         for (auto i : this->input) {

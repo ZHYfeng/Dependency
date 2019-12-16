@@ -63,7 +63,7 @@ namespace dra {
 
         void dump();
 
-        void real_dump();
+        void real_dump(int kind = 0);
 
         bool set_arrive(dra::DBasicBlock *db);
 
