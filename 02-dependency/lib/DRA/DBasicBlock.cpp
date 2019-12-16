@@ -278,7 +278,7 @@ namespace dra {
         llvm::raw_string_ostream rso(ld);
         this->basicBlock->print(rso);
         auto bb = this->basicBlock;
-        auto temp = this->basicBlock;
+        auto temp = bb->getNextNode();
         for (; temp != nullptr && !temp->hasName(); temp = bb->getNextNode()) {
             bb = temp;
             bb->print(rso);
@@ -291,10 +291,17 @@ namespace dra {
             auto inst = this->basicBlock->getFirstNonPHIOrDbgOrLifetime();
             dump_inst(inst);
         } else if (kind == 2) {
-            for (auto &inst : *this->basicBlock) {
-                if (inst.getOpcode() == llvm::Instruction::Store) {
-                    dump_inst(&inst);
+            for (temp = this->basicBlock;;) {
+                for (auto &inst : *temp) {
+                    if (inst.getOpcode() == llvm::Instruction::Store) {
+                        dump_inst(&inst);
+                    }
                 }
+                temp = temp->getNextNode();
+                if (temp == nullptr || temp->hasName()) {
+                    break;
+                }
+
             }
         }
         std::cout << ld;
