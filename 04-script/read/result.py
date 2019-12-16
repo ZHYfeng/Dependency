@@ -131,8 +131,7 @@ class Device:
             # f.write("number of uncovered address by input covered by syzkaller without dra: "
             #         + str(len(ca_uca_input_without_dra)) + "\n")
 
-            not_covered_address_file = os.path.join(
-                self.path_dev, "not_covered.txt")
+            not_covered_address_file = os.path.join(self.path_dev, "not_covered.txt")
             ff = open(not_covered_address_file, "w")
             for a in basic.data.uncovered_address_dependency:
                 f.write(uncovered_address_str(basic.data.real_data.uncovered_address[a]))

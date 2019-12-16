@@ -65,7 +65,6 @@ file_log_syzkaller = "log_syzkaller.log"
 file_log_dra = "log_dra.log"
 file_run = "run.bash"
 
-
 length = 1 * 24 * 60
 time_run = length * 60  # second
 
