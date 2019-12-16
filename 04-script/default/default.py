@@ -78,6 +78,5 @@ name_base = "base"
 path_home = os.path.expanduser("~")
 path_root = os.path.join(path_home, "data")
 path_git = os.path.join(path_root, "git")
-path_repo = os.path.join(
-    path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
-path_a2i = os.path.join(path_repo, "02-dependency/build/tools/A2I/a2i")
+path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_a2i = os.path.join(path_repo, "02-dependency/cmake-build-debug/tools/A2I/a2i")
