@@ -116,8 +116,8 @@ class Device:
             count = 0
             for a in ca_uca_dep_with_dra:
                 for s in self.results_with_dra.statistics.statistics:
-                    if a in s.real_stat.coverage:
-                        if s.real_stat.coverage[a] == 1:
+                    if a in s.real_stat.coverage.coverage:
+                        if s.real_stat.coverage.coverage[a] == 1:
                             count = count + 1
                             break
             f.write("covered by dependency mutate: "
