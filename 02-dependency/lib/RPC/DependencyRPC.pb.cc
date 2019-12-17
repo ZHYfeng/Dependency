@@ -61,14 +61,6 @@ class ConditionDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Condition> _instance;
 } _Condition_default_instance_;
-class ConditionsDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Conditions> _instance;
-} _Conditions_default_instance_;
-class WriteAddressesDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WriteAddresses> _instance;
-} _WriteAddresses_default_instance_;
 class Call_AddressEntry_DoNotUseDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Call_AddressEntry_DoNotUse> _instance;
@@ -241,6 +233,14 @@ class CoverageDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Coverage> _instance;
 } _Coverage_default_instance_;
+class ConditionsDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Conditions> _instance;
+} _Conditions_default_instance_;
+class WriteAddressesDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WriteAddresses> _instance;
+} _WriteAddresses_default_instance_;
 }  // namespace dra
 static void InitDefaultsscc_info_Call_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -957,19 +957,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::dra::Condition, successor_),
   PROTOBUF_FIELD_OFFSET(::dra::Condition, right_branch_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_right_branch_address_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::dra::Conditions, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Conditions, condition_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, condition_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, write_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1085,6 +1072,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, write_address_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, condition_address_),
+  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, kind_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, file_operations_function_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, input_),
@@ -1380,62 +1368,73 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Coverage, coverage_),
   PROTOBUF_FIELD_OFFSET(::dra::Coverage, time_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dra::Conditions, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::dra::Conditions, condition_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, condition_),
+  PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, write_address_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::dra::Empty)},
   { 7, -1, sizeof(::dra::Condition)},
-  { 20, -1, sizeof(::dra::Conditions)},
-  { 26, -1, sizeof(::dra::WriteAddresses)},
-  { 33, 40, sizeof(::dra::Call_AddressEntry_DoNotUse)},
-  { 42, -1, sizeof(::dra::Call)},
-  { 49, -1, sizeof(::dra::Inputs)},
-  { 55, -1, sizeof(::dra::Dependencytask)},
-  { 62, -1, sizeof(::dra::runTimeData)},
-  { 78, 85, sizeof(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse)},
-  { 87, -1, sizeof(::dra::FileOperationsFunction)},
-  { 98, 105, sizeof(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse)},
-  { 107, -1, sizeof(::dra::FileOperations)},
-  { 114, 121, sizeof(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse)},
-  { 123, 130, sizeof(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse)},
-  { 132, 139, sizeof(::dra::WriteAddress_InputEntry_DoNotUse)},
-  { 141, -1, sizeof(::dra::WriteAddress)},
-  { 152, -1, sizeof(::dra::writeAddressAttributes)},
-  { 160, 167, sizeof(::dra::UncoveredAddress_InputEntry_DoNotUse)},
-  { 169, 176, sizeof(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse)},
-  { 178, -1, sizeof(::dra::UncoveredAddress)},
-  { 191, -1, sizeof(::dra::Path)},
-  { 197, -1, sizeof(::dra::UnstableInput)},
-  { 207, 214, sizeof(::dra::Input_CallEntry_DoNotUse)},
-  { 216, 223, sizeof(::dra::Input_UncoveredAddressEntry_DoNotUse)},
-  { 225, 232, sizeof(::dra::Input_WriteAddressEntry_DoNotUse)},
-  { 234, -1, sizeof(::dra::Input)},
-  { 245, -1, sizeof(::dra::Dependency)},
-  { 253, 260, sizeof(::dra::Corpus_InputEntry_DoNotUse)},
-  { 262, 269, sizeof(::dra::Corpus_UncoveredAddressEntry_DoNotUse)},
-  { 271, 278, sizeof(::dra::Corpus_CoveredAddressEntry_DoNotUse)},
-  { 280, 287, sizeof(::dra::Corpus_WriteAddressEntry_DoNotUse)},
-  { 289, 296, sizeof(::dra::Corpus_FileOperationsEntry_DoNotUse)},
-  { 298, 305, sizeof(::dra::Corpus_NewInputEntry_DoNotUse)},
-  { 307, -1, sizeof(::dra::Corpus)},
-  { 321, -1, sizeof(::dra::UsefulInput)},
-  { 330, -1, sizeof(::dra::Statistic)},
-  { 340, 347, sizeof(::dra::Statistics_StatEntry_DoNotUse)},
-  { 349, -1, sizeof(::dra::Statistics)},
-  { 359, 366, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
-  { 368, 375, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
-  { 377, -1, sizeof(::dra::Task)},
-  { 401, 408, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
-  { 410, -1, sizeof(::dra::Tasks)},
-  { 419, -1, sizeof(::dra::Time)},
-  { 427, 434, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
-  { 436, -1, sizeof(::dra::Coverage)},
+  { 20, 27, sizeof(::dra::Call_AddressEntry_DoNotUse)},
+  { 29, -1, sizeof(::dra::Call)},
+  { 36, -1, sizeof(::dra::Inputs)},
+  { 42, -1, sizeof(::dra::Dependencytask)},
+  { 49, -1, sizeof(::dra::runTimeData)},
+  { 65, 72, sizeof(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse)},
+  { 74, -1, sizeof(::dra::FileOperationsFunction)},
+  { 85, 92, sizeof(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse)},
+  { 94, -1, sizeof(::dra::FileOperations)},
+  { 101, 108, sizeof(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse)},
+  { 110, 117, sizeof(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse)},
+  { 119, 126, sizeof(::dra::WriteAddress_InputEntry_DoNotUse)},
+  { 128, -1, sizeof(::dra::WriteAddress)},
+  { 140, -1, sizeof(::dra::writeAddressAttributes)},
+  { 148, 155, sizeof(::dra::UncoveredAddress_InputEntry_DoNotUse)},
+  { 157, 164, sizeof(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse)},
+  { 166, -1, sizeof(::dra::UncoveredAddress)},
+  { 179, -1, sizeof(::dra::Path)},
+  { 185, -1, sizeof(::dra::UnstableInput)},
+  { 195, 202, sizeof(::dra::Input_CallEntry_DoNotUse)},
+  { 204, 211, sizeof(::dra::Input_UncoveredAddressEntry_DoNotUse)},
+  { 213, 220, sizeof(::dra::Input_WriteAddressEntry_DoNotUse)},
+  { 222, -1, sizeof(::dra::Input)},
+  { 233, -1, sizeof(::dra::Dependency)},
+  { 241, 248, sizeof(::dra::Corpus_InputEntry_DoNotUse)},
+  { 250, 257, sizeof(::dra::Corpus_UncoveredAddressEntry_DoNotUse)},
+  { 259, 266, sizeof(::dra::Corpus_CoveredAddressEntry_DoNotUse)},
+  { 268, 275, sizeof(::dra::Corpus_WriteAddressEntry_DoNotUse)},
+  { 277, 284, sizeof(::dra::Corpus_FileOperationsEntry_DoNotUse)},
+  { 286, 293, sizeof(::dra::Corpus_NewInputEntry_DoNotUse)},
+  { 295, -1, sizeof(::dra::Corpus)},
+  { 309, -1, sizeof(::dra::UsefulInput)},
+  { 318, -1, sizeof(::dra::Statistic)},
+  { 328, 335, sizeof(::dra::Statistics_StatEntry_DoNotUse)},
+  { 337, -1, sizeof(::dra::Statistics)},
+  { 347, 354, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
+  { 356, 363, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
+  { 365, -1, sizeof(::dra::Task)},
+  { 389, 396, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
+  { 398, -1, sizeof(::dra::Tasks)},
+  { 407, -1, sizeof(::dra::Time)},
+  { 415, 422, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
+  { 424, -1, sizeof(::dra::Coverage)},
+  { 431, -1, sizeof(::dra::Conditions)},
+  { 437, -1, sizeof(::dra::WriteAddresses)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Empty_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Condition_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Conditions_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_WriteAddresses_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Call_AddressEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Call_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Inputs_default_instance_),
@@ -1479,6 +1478,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Time_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Coverage_CoverageEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Coverage_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Conditions_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_WriteAddresses_default_instance_),
 };
 
 const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -1489,169 +1490,170 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VA
   "dress\030\003 \001(\004\022#\n\033syzkaller_uncovered_addre"
   "ss\030\004 \001(\r\022\013\n\003idx\030\005 \001(\r\022\021\n\tsuccessor\030\006 \001(\004"
   "\022\034\n\024right_branch_address\030\007 \003(\004\022&\n\036syzkal"
-  "ler_right_branch_address\030\010 \003(\r\"/\n\nCondit"
-  "ions\022!\n\tcondition\030\n \003(\0132\016.dra.Condition\""
-  "]\n\016WriteAddresses\022!\n\tcondition\030\001 \001(\0132\016.d"
-  "ra.Condition\022(\n\rwrite_address\030\004 \003(\0132\021.dr"
-  "a.WriteAddress\"l\n\004Call\022\013\n\003idx\030\001 \001(\r\022\'\n\007a"
-  "ddress\030\002 \003(\0132\026.dra.Call.AddressEntry\032.\n\014"
+  "ler_right_branch_address\030\010 \003(\r\"l\n\004Call\022\013"
+  "\n\003idx\030\001 \001(\r\022\'\n\007address\030\002 \003(\0132\026.dra.Call."
+  "AddressEntry\032.\n\014AddressEntry\022\013\n\003key\030\001 \001("
+  "\r\022\r\n\005value\030\002 \001(\r:\0028\001\"#\n\006Inputs\022\031\n\005input\030"
+  "\001 \003(\0132\n.dra.Input\"9\n\016Dependencytask\022\031\n\005i"
+  "nput\030\001 \001(\0132\n.dra.Input\022\014\n\004name\030) \001(\t\"\224\002\n"
+  "\013runTimeData\022\017\n\007program\030\002 \001(\014\022$\n\013task_st"
+  "atus\030\003 \001(\0162\017.dra.taskStatus\022\026\n\016rcursive_"
+  "count\030\004 \001(\r\022\020\n\010priority\030\005 \001(\r\022\013\n\003idx\030\n \001"
+  "(\r\022\026\n\016checkCondition\030\013 \001(\010\022\031\n\021condition_"
+  "address\030\014 \001(\r\022\024\n\014checkAddress\030\r \001(\010\022\017\n\007a"
+  "ddress\030\016 \001(\r\022\037\n\027checkRightBranchAddress\030"
+  "\017 \001(\010\022\034\n\024right_branch_address\030\020 \003(\r\"\236\002\n\026"
+  "FileOperationsFunction\022\014\n\004name\030\001 \001(\t\022\034\n\024"
+  "file_operations_name\030\002 \001(\t\022\'\n\004kind\030\003 \001(\016"
+  "2\031.dra.file_operations_kind\022\013\n\003cmd\030\004 \001(\004"
+  "\022\'\n\rrun_time_date\030\005 \001(\0132\020.dra.runTimeDat"
+  "a\022D\n\rwrite_address\030\013 \003(\0132-.dra.FileOpera"
+  "tionsFunction.WriteAddressEntry\0323\n\021Write"
   "AddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r"
-  ":\0028\001\"#\n\006Inputs\022\031\n\005input\030\001 \003(\0132\n.dra.Inpu"
-  "t\"9\n\016Dependencytask\022\031\n\005input\030\001 \001(\0132\n.dra"
-  ".Input\022\014\n\004name\030) \001(\t\"\224\002\n\013runTimeData\022\017\n\007"
-  "program\030\002 \001(\014\022$\n\013task_status\030\003 \001(\0162\017.dra"
-  ".taskStatus\022\026\n\016rcursive_count\030\004 \001(\r\022\020\n\010p"
-  "riority\030\005 \001(\r\022\013\n\003idx\030\n \001(\r\022\026\n\016checkCondi"
-  "tion\030\013 \001(\010\022\031\n\021condition_address\030\014 \001(\r\022\024\n"
-  "\014checkAddress\030\r \001(\010\022\017\n\007address\030\016 \001(\r\022\037\n\027"
-  "checkRightBranchAddress\030\017 \001(\010\022\034\n\024right_b"
-  "ranch_address\030\020 \003(\r\"\236\002\n\026FileOperationsFu"
-  "nction\022\014\n\004name\030\001 \001(\t\022\034\n\024file_operations_"
-  "name\030\002 \001(\t\022\'\n\004kind\030\003 \001(\0162\031.dra.file_oper"
-  "ations_kind\022\013\n\003cmd\030\004 \001(\004\022\'\n\rrun_time_dat"
-  "e\030\005 \001(\0132\020.dra.runTimeData\022D\n\rwrite_addre"
-  "ss\030\013 \003(\0132-.dra.FileOperationsFunction.Wr"
-  "iteAddressEntry\0323\n\021WriteAddressEntry\022\013\n\003"
-  "key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\315\001\n\016FileOpe"
-  "rations\022\014\n\004name\030\001 \001(\t\022Q\n\030file_operations"
-  "_function\030\003 \003(\0132/.dra.FileOperations.Fil"
-  "eOperationsFunctionEntry\032Z\n\033FileOperatio"
-  "nsFunctionEntry\022\013\n\003key\030\001 \001(\003\022*\n\005value\030\002 "
-  "\001(\0132\033.dra.FileOperationsFunction:\0028\001\"\356\003\n"
-  "\014WriteAddress\022\025\n\rwrite_address\030\002 \001(\r\022\031\n\021"
-  "condition_address\030\003 \001(\r\022B\n\021uncovered_add"
-  "ress\030\027 \003(\0132\'.dra.WriteAddress.UncoveredA"
-  "ddressEntry\022O\n\030file_operations_function\030"
-  "\030 \003(\0132-.dra.WriteAddress.FileOperationsF"
-  "unctionEntry\022+\n\005input\030\031 \003(\0132\034.dra.WriteA"
-  "ddress.InputEntry\022\'\n\rrun_time_date\030\013 \001(\013"
-  "2\020.dra.runTimeData\032T\n\025UncoveredAddressEn"
-  "try\022\013\n\003key\030\001 \001(\r\022*\n\005value\030\002 \001(\0132\033.dra.wr"
-  "iteAddressAttributes:\0028\001\032=\n\033FileOperatio"
-  "nsFunctionEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 "
-  "\001(\r:\0028\001\032,\n\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va"
-  "lue\030\002 \001(\r:\0028\001\"M\n\026writeAddressAttributes\022"
-  "\025\n\rwrite_address\030\002 \001(\r\022\016\n\006repeat\030\007 \001(\r\022\014"
-  "\n\004prio\030\006 \001(\r\"\272\003\n\020UncoveredAddress\022\031\n\021con"
-  "dition_address\030\001 \001(\r\022\031\n\021uncovered_addres"
-  "s\030\002 \001(\r\022\034\n\024right_branch_address\030\003 \003(\r\022\017\n"
-  "\007bbcount\030\004 \001(\r\022\'\n\004kind\030\005 \001(\0162\031.dra.Uncov"
-  "eredAddressKind\022/\n\005input\030\026 \003(\0132 .dra.Unc"
-  "overedAddress.InputEntry\022>\n\rwrite_addres"
-  "s\030\027 \003(\0132\'.dra.UncoveredAddress.WriteAddr"
-  "essEntry\022\'\n\rrun_time_date\030\010 \001(\0132\020.dra.ru"
-  "nTimeData\032,\n\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005"
-  "value\030\002 \001(\r:\0028\001\032P\n\021WriteAddressEntry\022\013\n\003"
-  "key\030\001 \001(\r\022*\n\005value\030\002 \001(\0132\033.dra.writeAddr"
-  "essAttributes:\0028\001\"\027\n\004Path\022\017\n\007address\030\001 \003"
-  "(\r\"y\n\rUnstableInput\022\033\n\010new_path\030\001 \001(\0132\t."
-  "dra.Path\022 \n\runstable_path\030\002 \001(\0132\t.dra.Pa"
-  "th\022\013\n\003idx\030\003 \001(\005\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030"
-  "\014 \001(\014\"\201\003\n\005Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030"
-  "\014 \001(\014\022\"\n\004call\030\r \003(\0132\024.dra.Input.CallEntr"
-  "y\022\036\n\004stat\030\025 \001(\0162\020.dra.FuzzingStat\022;\n\021unc"
-  "overed_address\030\026 \003(\0132 .dra.Input.Uncover"
-  "edAddressEntry\0223\n\rwrite_address\030\031 \003(\0132\034."
-  "dra.Input.WriteAddressEntry\0326\n\tCallEntry"
-  "\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:"
-  "\0028\001\0327\n\025UncoveredAddressEntry\022\013\n\003key\030\001 \001("
-  "\r\022\r\n\005value\030\002 \001(\r:\0028\001\0323\n\021WriteAddressEntr"
-  "y\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\203\001\n\nDe"
-  "pendency\022\031\n\005input\030\001 \001(\0132\n.dra.Input\0220\n\021u"
-  "ncovered_address\030\002 \001(\0132\025.dra.UncoveredAd"
-  "dress\022(\n\rwrite_address\030\003 \003(\0132\021.dra.Write"
-  "Address\"\307\006\n\006Corpus\022%\n\005input\030\001 \003(\0132\026.dra."
-  "Corpus.InputEntry\022<\n\021uncovered_address\030\004"
-  " \003(\0132!.dra.Corpus.UncoveredAddressEntry\022"
-  "8\n\017covered_address\030\002 \003(\0132\037.dra.Corpus.Co"
-  "veredAddressEntry\0224\n\rwrite_address\030\005 \003(\013"
-  "2\035.dra.Corpus.WriteAddressEntry\0228\n\017file_"
-  "operations\030\006 \003(\0132\037.dra.Corpus.FileOperat"
-  "ionsEntry\022\031\n\005tasks\030\007 \001(\0132\n.dra.Tasks\022\035\n\t"
-  "high_task\030\010 \001(\0132\n.dra.Tasks\022\035\n\tboot_task"
-  "\030\t \001(\0132\n.dra.Tasks\022,\n\tnew_input\030\013 \003(\0132\031."
-  "dra.Corpus.NewInputEntry\0328\n\nInputEntry\022\013"
-  "\n\003key\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\002"
-  "8\001\032N\n\025UncoveredAddressEntry\022\013\n\003key\030\001 \001(\r"
-  "\022$\n\005value\030\002 \001(\0132\025.dra.UncoveredAddress:\002"
-  "8\001\032L\n\023CoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022$"
-  "\n\005value\030\002 \001(\0132\025.dra.UncoveredAddress:\0028\001"
-  "\032F\n\021WriteAddressEntry\022\013\n\003key\030\001 \001(\r\022 \n\005va"
-  "lue\030\002 \001(\0132\021.dra.WriteAddress:\0028\001\032J\n\023File"
-  "OperationsEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005value\030\002 "
-  "\001(\0132\023.dra.FileOperations:\0028\001\032;\n\rNewInput"
-  "Entry\022\013\n\003key\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra."
-  "Input:\0028\001\"X\n\013UsefulInput\022\031\n\005input\030\001 \001(\0132"
-  "\n.dra.Input\022\014\n\004time\030\002 \001(\001\022\013\n\003num\030\003 \001(\004\022\023"
-  "\n\013new_address\030\004 \003(\r\"|\n\tStatistic\022\036\n\004name"
-  "\030\001 \001(\0162\020.dra.FuzzingStat\022\022\n\nexecuteNum\030\013"
-  " \001(\004\022\014\n\004time\030\014 \001(\001\022\026\n\016newTestCaseNum\030\r \001"
-  "(\004\022\025\n\rnewAddressNum\030\016 \001(\004\"\352\001\n\nStatistics"
-  "\022\021\n\tsignalNum\030\001 \001(\004\022\032\n\022basic_block_numbe"
-  "r\030\n \001(\r\022\037\n\010coverage\030\010 \001(\0132\r.dra.Coverage"
-  "\022\'\n\004stat\030\013 \003(\0132\031.dra.Statistics.StatEntr"
-  "y\022&\n\014useful_input\030\014 \003(\0132\020.dra.UsefulInpu"
-  "t\032;\n\tStatEntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001"
-  "(\0132\016.dra.Statistic:\0028\001\"\225\005\n\004Task\022\013\n\003sig\030\001"
-  " \001(\t\022\r\n\005index\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\021\n\t"
-  "write_sig\030\013 \001(\t\022\023\n\013write_index\030\014 \001(\r\022\025\n\r"
-  "write_program\030\r \001(\014\022\025\n\rwrite_address\030\016 \001"
-  "(\r\022\020\n\010priority\030\017 \001(\005\022\014\n\004hash\030\020 \001(\t\022:\n\021un"
-  "covered_address\030\025 \003(\0132\037.dra.Task.Uncover"
-  "edAddressEntry\0226\n\017covered_address\030\027 \003(\0132"
-  "\035.dra.Task.CoveredAddressEntry\022$\n\013task_s"
-  "tatus\030\030 \001(\0162\017.dra.taskStatus\022\033\n\023check_wr"
-  "ite_address\030\031 \001(\010\022!\n\031check_write_address"
-  "_final\030\032 \001(\010\022\"\n\032check_write_address_remo"
-  "ve\030\033 \001(\010\022\021\n\tfinal_idx\030\034 \001(\r\022\027\n\017final_wri"
-  "te_idx\030\035 \001(\r\022\022\n\nremove_idx\030\036 \001(\r\022\030\n\020remo"
-  "ve_write_idx\030\037 \001(\r\032I\n\025UncoveredAddressEn"
-  "try\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.ru"
-  "nTimeData:\0028\001\032G\n\023CoveredAddressEntry\022\013\n\003"
-  "key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTimeDa"
-  "ta:\0028\001\"\250\001\n\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004kind\030*"
-  " \001(\0162\r.dra.TaskKind\022\"\n\004task\030\001 \003(\0132\024.dra."
-  "Tasks.TaskEntry\022\030\n\005tasks\030\002 \003(\0132\t.dra.Tas"
-  "k\0326\n\tTaskEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value\030\002 \001"
-  "(\0132\t.dra.Task:\0028\001\"5\n\004Time\022\014\n\004time\030\001 \001(\001\022"
-  "\013\n\003num\030\002 \001(\003\022\022\n\nexecuteNum\030\003 \001(\003\"\203\001\n\010Cov"
-  "erage\022-\n\010coverage\030\001 \003(\0132\033.dra.Coverage.C"
-  "overageEntry\022\027\n\004time\030\002 \003(\0132\t.dra.Time\032/\n"
-  "\rCoverageEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001"
-  "(\r:\0028\001*f\n\ntaskStatus\022\014\n\010untested\020\000\022\r\n\tre"
-  "cursive\020\001\022\n\n\006tested\020\002\022\007\n\003out\020\003\022\013\n\007covere"
-  "d\020\004\022\013\n\007testing\020\005\022\014\n\010unstable\020\006*\215\001\n\024file_"
-  "operations_kind\022\013\n\007default\020\000\022\010\n\004init\020\001\022\n"
-  "\n\006llseek\020\002\022\010\n\004read\020\003\022\t\n\005write\020\004\022\010\n\004poll\020"
-  "\t\022\022\n\016unlocked_ioctl\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020"
-  "\016\022\013\n\007release\020\020*W\n\024UncoveredAddressKind\022\013"
-  "\n\007Outside\020\000\022\020\n\014InputRelated\020\001\022\025\n\021Dependn"
-  "ecyRelated\020\002\022\t\n\005Other\020\003*\312\001\n\013FuzzingStat\022"
-  "\017\n\013StatDefault\020\000\022\020\n\014StatGenerate\020\001\022\014\n\010St"
-  "atFuzz\020\002\022\021\n\rStatCandidate\020\003\022\016\n\nStatTriag"
-  "e\020\004\022\020\n\014StatMinimize\020\005\022\r\n\tStatSmash\020\006\022\014\n\010"
-  "StatHint\020\007\022\014\n\010StatSeed\020\010\022\022\n\016StatDependen"
-  "cy\020\t\022\026\n\022StatDependencyBoot\020\n**\n\010TaskKind"
-  "\022\n\n\006Normal\020\000\022\010\n\004High\020\001\022\010\n\004Boot\020\0022\365\005\n\rDep"
-  "endencyRPC\022(\n\014GetVMOffsets\022\n.dra.Empty\032\n"
-  ".dra.Empty\"\000\0220\n\024SendBasicBlockNumber\022\n.d"
-  "ra.Empty\032\n.dra.Empty\"\000\022(\n\013GetNewInput\022\n."
-  "dra.Empty\032\013.dra.Inputs\"\000\022/\n\016SendDependen"
-  "cy\022\017.dra.Dependency\032\n.dra.Empty\"\000\022-\n\014Get"
-  "Condition\022\n.dra.Empty\032\017.dra.Conditions\"\000"
-  "\0225\n\020SendWriteAddress\022\023.dra.WriteAddresse"
-  "s\032\n.dra.Empty\"\000\022#\n\007Connect\022\n.dra.Empty\032\n"
-  ".dra.Empty\"\000\022(\n\014SendNewInput\022\n.dra.Input"
-  "\032\n.dra.Empty\"\000\022$\n\010GetTasks\022\n.dra.Empty\032\n"
-  ".dra.Tasks\"\000\022(\n\014GetBootTasks\022\n.dra.Empty"
-  "\032\n.dra.Tasks\"\000\022\'\n\013ReturnTasks\022\n.dra.Task"
-  "s\032\n.dra.Empty\"\000\022)\n\rSendBootInput\022\n.dra.I"
-  "nput\032\n.dra.Empty\"\000\0225\n\021SendUnstableInput\022"
-  "\022.dra.UnstableInput\032\n.dra.Empty\"\000\022#\n\007Sen"
-  "dLog\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\010sendSt"
-  "at\022\016.dra.Statistic\032\n.dra.Empty\"\000\022#\n\007GetN"
-  "eed\022\n.dra.Empty\032\n.dra.Empty\"\000\022)\n\rSendNee"
-  "dInput\022\n.dra.Input\032\n.dra.Empty\"\000b\006proto3"
+  ":\0028\001\"\315\001\n\016FileOperations\022\014\n\004name\030\001 \001(\t\022Q\n"
+  "\030file_operations_function\030\003 \003(\0132/.dra.Fi"
+  "leOperations.FileOperationsFunctionEntry"
+  "\032Z\n\033FileOperationsFunctionEntry\022\013\n\003key\030\001"
+  " \001(\003\022*\n\005value\030\002 \001(\0132\033.dra.FileOperations"
+  "Function:\0028\001\"\374\003\n\014WriteAddress\022\025\n\rwrite_a"
+  "ddress\030\002 \001(\r\022\031\n\021condition_address\030\003 \001(\r\022"
+  "\014\n\004kind\030\004 \001(\r\022B\n\021uncovered_address\030\027 \003(\013"
+  "2\'.dra.WriteAddress.UncoveredAddressEntr"
+  "y\022O\n\030file_operations_function\030\030 \003(\0132-.dr"
+  "a.WriteAddress.FileOperationsFunctionEnt"
+  "ry\022+\n\005input\030\031 \003(\0132\034.dra.WriteAddress.Inp"
+  "utEntry\022\'\n\rrun_time_date\030\013 \001(\0132\020.dra.run"
+  "TimeData\032T\n\025UncoveredAddressEntry\022\013\n\003key"
+  "\030\001 \001(\r\022*\n\005value\030\002 \001(\0132\033.dra.writeAddress"
+  "Attributes:\0028\001\032=\n\033FileOperationsFunction"
+  "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:\0028\001\032,\n"
+  "\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:"
+  "\0028\001\"M\n\026writeAddressAttributes\022\025\n\rwrite_a"
+  "ddress\030\002 \001(\r\022\016\n\006repeat\030\007 \001(\r\022\014\n\004prio\030\006 \001"
+  "(\r\"\272\003\n\020UncoveredAddress\022\031\n\021condition_add"
+  "ress\030\001 \001(\r\022\031\n\021uncovered_address\030\002 \001(\r\022\034\n"
+  "\024right_branch_address\030\003 \003(\r\022\017\n\007bbcount\030\004"
+  " \001(\r\022\'\n\004kind\030\005 \001(\0162\031.dra.UncoveredAddres"
+  "sKind\022/\n\005input\030\026 \003(\0132 .dra.UncoveredAddr"
+  "ess.InputEntry\022>\n\rwrite_address\030\027 \003(\0132\'."
+  "dra.UncoveredAddress.WriteAddressEntry\022\'"
+  "\n\rrun_time_date\030\010 \001(\0132\020.dra.runTimeData\032"
+  ",\n\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001("
+  "\r:\0028\001\032P\n\021WriteAddressEntry\022\013\n\003key\030\001 \001(\r\022"
+  "*\n\005value\030\002 \001(\0132\033.dra.writeAddressAttribu"
+  "tes:\0028\001\"\027\n\004Path\022\017\n\007address\030\001 \003(\r\"y\n\rUnst"
+  "ableInput\022\033\n\010new_path\030\001 \001(\0132\t.dra.Path\022 "
+  "\n\runstable_path\030\002 \001(\0132\t.dra.Path\022\013\n\003idx\030"
+  "\003 \001(\005\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030\014 \001(\014\"\201\003\n\005"
+  "Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030\014 \001(\014\022\"\n\004c"
+  "all\030\r \003(\0132\024.dra.Input.CallEntry\022\036\n\004stat\030"
+  "\025 \001(\0162\020.dra.FuzzingStat\022;\n\021uncovered_add"
+  "ress\030\026 \003(\0132 .dra.Input.UncoveredAddressE"
+  "ntry\0223\n\rwrite_address\030\031 \003(\0132\034.dra.Input."
+  "WriteAddressEntry\0326\n\tCallEntry\022\013\n\003key\030\001 "
+  "\001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:\0028\001\0327\n\025Unc"
+  "overedAddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value"
+  "\030\002 \001(\r:\0028\001\0323\n\021WriteAddressEntry\022\013\n\003key\030\001"
+  " \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\203\001\n\nDependency\022\031"
+  "\n\005input\030\001 \001(\0132\n.dra.Input\0220\n\021uncovered_a"
+  "ddress\030\002 \001(\0132\025.dra.UncoveredAddress\022(\n\rw"
+  "rite_address\030\003 \003(\0132\021.dra.WriteAddress\"\307\006"
+  "\n\006Corpus\022%\n\005input\030\001 \003(\0132\026.dra.Corpus.Inp"
+  "utEntry\022<\n\021uncovered_address\030\004 \003(\0132!.dra"
+  ".Corpus.UncoveredAddressEntry\0228\n\017covered"
+  "_address\030\002 \003(\0132\037.dra.Corpus.CoveredAddre"
+  "ssEntry\0224\n\rwrite_address\030\005 \003(\0132\035.dra.Cor"
+  "pus.WriteAddressEntry\0228\n\017file_operations"
+  "\030\006 \003(\0132\037.dra.Corpus.FileOperationsEntry\022"
+  "\031\n\005tasks\030\007 \001(\0132\n.dra.Tasks\022\035\n\thigh_task\030"
+  "\010 \001(\0132\n.dra.Tasks\022\035\n\tboot_task\030\t \001(\0132\n.d"
+  "ra.Tasks\022,\n\tnew_input\030\013 \003(\0132\031.dra.Corpus"
+  ".NewInputEntry\0328\n\nInputEntry\022\013\n\003key\030\001 \001("
+  "\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001\032N\n\025Unco"
+  "veredAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005value\030"
+  "\002 \001(\0132\025.dra.UncoveredAddress:\0028\001\032L\n\023Cove"
+  "redAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005value\030\002 "
+  "\001(\0132\025.dra.UncoveredAddress:\0028\001\032F\n\021WriteA"
+  "ddressEntry\022\013\n\003key\030\001 \001(\r\022 \n\005value\030\002 \001(\0132"
+  "\021.dra.WriteAddress:\0028\001\032J\n\023FileOperations"
+  "Entry\022\013\n\003key\030\001 \001(\t\022\"\n\005value\030\002 \001(\0132\023.dra."
+  "FileOperations:\0028\001\032;\n\rNewInputEntry\022\013\n\003k"
+  "ey\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001\""
+  "X\n\013UsefulInput\022\031\n\005input\030\001 \001(\0132\n.dra.Inpu"
+  "t\022\014\n\004time\030\002 \001(\001\022\013\n\003num\030\003 \001(\004\022\023\n\013new_addr"
+  "ess\030\004 \003(\r\"|\n\tStatistic\022\036\n\004name\030\001 \001(\0162\020.d"
+  "ra.FuzzingStat\022\022\n\nexecuteNum\030\013 \001(\004\022\014\n\004ti"
+  "me\030\014 \001(\001\022\026\n\016newTestCaseNum\030\r \001(\004\022\025\n\rnewA"
+  "ddressNum\030\016 \001(\004\"\352\001\n\nStatistics\022\021\n\tsignal"
+  "Num\030\001 \001(\004\022\032\n\022basic_block_number\030\n \001(\r\022\037\n"
+  "\010coverage\030\010 \001(\0132\r.dra.Coverage\022\'\n\004stat\030\013"
+  " \003(\0132\031.dra.Statistics.StatEntry\022&\n\014usefu"
+  "l_input\030\014 \003(\0132\020.dra.UsefulInput\032;\n\tStatE"
+  "ntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001(\0132\016.dra.S"
+  "tatistic:\0028\001\"\225\005\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005in"
+  "dex\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\021\n\twrite_sig\030"
+  "\013 \001(\t\022\023\n\013write_index\030\014 \001(\r\022\025\n\rwrite_prog"
+  "ram\030\r \001(\014\022\025\n\rwrite_address\030\016 \001(\r\022\020\n\010prio"
+  "rity\030\017 \001(\005\022\014\n\004hash\030\020 \001(\t\022:\n\021uncovered_ad"
+  "dress\030\025 \003(\0132\037.dra.Task.UncoveredAddressE"
+  "ntry\0226\n\017covered_address\030\027 \003(\0132\035.dra.Task"
+  ".CoveredAddressEntry\022$\n\013task_status\030\030 \001("
+  "\0162\017.dra.taskStatus\022\033\n\023check_write_addres"
+  "s\030\031 \001(\010\022!\n\031check_write_address_final\030\032 \001"
+  "(\010\022\"\n\032check_write_address_remove\030\033 \001(\010\022\021"
+  "\n\tfinal_idx\030\034 \001(\r\022\027\n\017final_write_idx\030\035 \001"
+  "(\r\022\022\n\nremove_idx\030\036 \001(\r\022\030\n\020remove_write_i"
+  "dx\030\037 \001(\r\032I\n\025UncoveredAddressEntry\022\013\n\003key"
+  "\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTimeData:"
+  "\0028\001\032G\n\023CoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022"
+  "\037\n\005value\030\002 \001(\0132\020.dra.runTimeData:\0028\001\"\250\001\n"
+  "\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004kind\030* \001(\0162\r.dra"
+  ".TaskKind\022\"\n\004task\030\001 \003(\0132\024.dra.Tasks.Task"
+  "Entry\022\030\n\005tasks\030\002 \003(\0132\t.dra.Task\0326\n\tTaskE"
+  "ntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value\030\002 \001(\0132\t.dra.T"
+  "ask:\0028\001\"5\n\004Time\022\014\n\004time\030\001 \001(\001\022\013\n\003num\030\002 \001"
+  "(\003\022\022\n\nexecuteNum\030\003 \001(\003\"\203\001\n\010Coverage\022-\n\010c"
+  "overage\030\001 \003(\0132\033.dra.Coverage.CoverageEnt"
+  "ry\022\027\n\004time\030\002 \003(\0132\t.dra.Time\032/\n\rCoverageE"
+  "ntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"/\n\n"
+  "Conditions\022!\n\tcondition\030\n \003(\0132\016.dra.Cond"
+  "ition\"]\n\016WriteAddresses\022!\n\tcondition\030\001 \001"
+  "(\0132\016.dra.Condition\022(\n\rwrite_address\030\004 \003("
+  "\0132\021.dra.WriteAddress*f\n\ntaskStatus\022\014\n\010un"
+  "tested\020\000\022\r\n\trecursive\020\001\022\n\n\006tested\020\002\022\007\n\003o"
+  "ut\020\003\022\013\n\007covered\020\004\022\013\n\007testing\020\005\022\014\n\010unstab"
+  "le\020\006*\215\001\n\024file_operations_kind\022\013\n\007default"
+  "\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010\n\004read\020\003\022\t\n\005wr"
+  "ite\020\004\022\010\n\004poll\020\t\022\022\n\016unlocked_ioctl\020\n\022\010\n\004m"
+  "map\020\014\022\010\n\004open\020\016\022\013\n\007release\020\020*W\n\024Uncovere"
+  "dAddressKind\022\013\n\007Outside\020\000\022\020\n\014InputRelate"
+  "d\020\001\022\025\n\021DependnecyRelated\020\002\022\t\n\005Other\020\003*\312\001"
+  "\n\013FuzzingStat\022\017\n\013StatDefault\020\000\022\020\n\014StatGe"
+  "nerate\020\001\022\014\n\010StatFuzz\020\002\022\021\n\rStatCandidate\020"
+  "\003\022\016\n\nStatTriage\020\004\022\020\n\014StatMinimize\020\005\022\r\n\tS"
+  "tatSmash\020\006\022\014\n\010StatHint\020\007\022\014\n\010StatSeed\020\010\022\022"
+  "\n\016StatDependency\020\t\022\026\n\022StatDependencyBoot"
+  "\020\n**\n\010TaskKind\022\n\n\006Normal\020\000\022\010\n\004High\020\001\022\010\n\004"
+  "Boot\020\0022\365\005\n\rDependencyRPC\022(\n\014GetVMOffsets"
+  "\022\n.dra.Empty\032\n.dra.Empty\"\000\0220\n\024SendBasicB"
+  "lockNumber\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\013"
+  "GetNewInput\022\n.dra.Empty\032\013.dra.Inputs\"\000\022/"
+  "\n\016SendDependency\022\017.dra.Dependency\032\n.dra."
+  "Empty\"\000\022-\n\014GetCondition\022\n.dra.Empty\032\017.dr"
+  "a.Conditions\"\000\0225\n\020SendWriteAddress\022\023.dra"
+  ".WriteAddresses\032\n.dra.Empty\"\000\022#\n\007Connect"
+  "\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\014SendNewInp"
+  "ut\022\n.dra.Input\032\n.dra.Empty\"\000\022$\n\010GetTasks"
+  "\022\n.dra.Empty\032\n.dra.Tasks\"\000\022(\n\014GetBootTas"
+  "ks\022\n.dra.Empty\032\n.dra.Tasks\"\000\022\'\n\013ReturnTa"
+  "sks\022\n.dra.Tasks\032\n.dra.Empty\"\000\022)\n\rSendBoo"
+  "tInput\022\n.dra.Input\032\n.dra.Empty\"\000\0225\n\021Send"
+  "UnstableInput\022\022.dra.UnstableInput\032\n.dra."
+  "Empty\"\000\022#\n\007SendLog\022\n.dra.Empty\032\n.dra.Emp"
+  "ty\"\000\022(\n\010sendStat\022\016.dra.Statistic\032\n.dra.E"
+  "mpty\"\000\022#\n\007GetNeed\022\n.dra.Empty\032\n.dra.Empt"
+  "y\"\000\022)\n\rSendNeedInput\022\n.dra.Input\032\n.dra.E"
+  "mpty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -1707,7 +1709,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 6800,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 6814,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 47, 0,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 47, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
@@ -2422,432 +2424,6 @@ void Condition::InternalSwap(Condition* other) {
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Condition::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-void Conditions::InitAsDefaultInstance() {
-}
-class Conditions::_Internal {
- public:
-};
-
-Conditions::Conditions()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.Conditions)
-}
-Conditions::Conditions(const Conditions& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
-      condition_(from.condition_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:dra.Conditions)
-}
-
-void Conditions::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Conditions_DependencyRPC_2eproto.base);
-}
-
-Conditions::~Conditions() {
-  // @@protoc_insertion_point(destructor:dra.Conditions)
-  SharedDtor();
-}
-
-void Conditions::SharedDtor() {
-}
-
-void Conditions::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const Conditions& Conditions::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Conditions_DependencyRPC_2eproto.base);
-  return *internal_default_instance();
-}
-
-
-void Conditions::Clear() {
-// @@protoc_insertion_point(message_clear_start:dra.Conditions)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  condition_.Clear();
-  _internal_metadata_.Clear();
-}
-
-const char* Conditions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // repeated .dra.Condition condition = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_condition(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* Conditions::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:dra.Conditions)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // repeated .dra.Condition condition = 10;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_condition_size()); i < n; i++) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(10, this->_internal_condition(i), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:dra.Conditions)
-  return target;
-}
-
-size_t Conditions::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:dra.Conditions)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .dra.Condition condition = 10;
-  total_size += 1UL * this->_internal_condition_size();
-  for (const auto& msg : this->condition_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void Conditions::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.Conditions)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Conditions* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Conditions>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Conditions)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Conditions)
-    MergeFrom(*source);
-  }
-}
-
-void Conditions::MergeFrom(const Conditions& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:dra.Conditions)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  condition_.MergeFrom(from.condition_);
-}
-
-void Conditions::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.Conditions)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Conditions::CopyFrom(const Conditions& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:dra.Conditions)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Conditions::IsInitialized() const {
-  return true;
-}
-
-void Conditions::InternalSwap(Conditions* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  condition_.InternalSwap(&other->condition_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata Conditions::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-void WriteAddresses::InitAsDefaultInstance() {
-  ::dra::_WriteAddresses_default_instance_._instance.get_mutable()->condition_ = const_cast< ::dra::Condition*>(
-      ::dra::Condition::internal_default_instance());
-}
-class WriteAddresses::_Internal {
- public:
-  static const ::dra::Condition& condition(const WriteAddresses* msg);
-};
-
-const ::dra::Condition&
-WriteAddresses::_Internal::condition(const WriteAddresses* msg) {
-  return *msg->condition_;
-}
-WriteAddresses::WriteAddresses()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.WriteAddresses)
-}
-WriteAddresses::WriteAddresses(const WriteAddresses& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
-      write_address_(from.write_address_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._internal_has_condition()) {
-    condition_ = new ::dra::Condition(*from.condition_);
-  } else {
-    condition_ = nullptr;
-  }
-  // @@protoc_insertion_point(copy_constructor:dra.WriteAddresses)
-}
-
-void WriteAddresses::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_WriteAddresses_DependencyRPC_2eproto.base);
-  condition_ = nullptr;
-}
-
-WriteAddresses::~WriteAddresses() {
-  // @@protoc_insertion_point(destructor:dra.WriteAddresses)
-  SharedDtor();
-}
-
-void WriteAddresses::SharedDtor() {
-  if (this != internal_default_instance()) delete condition_;
-}
-
-void WriteAddresses::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const WriteAddresses& WriteAddresses::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_WriteAddresses_DependencyRPC_2eproto.base);
-  return *internal_default_instance();
-}
-
-
-void WriteAddresses::Clear() {
-// @@protoc_insertion_point(message_clear_start:dra.WriteAddresses)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  write_address_.Clear();
-  if (GetArenaNoVirtual() == nullptr && condition_ != nullptr) {
-    delete condition_;
-  }
-  condition_ = nullptr;
-  _internal_metadata_.Clear();
-}
-
-const char* WriteAddresses::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // .dra.Condition condition = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_condition(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // repeated .dra.WriteAddress write_address = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_write_address(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* WriteAddresses::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:dra.WriteAddresses)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .dra.Condition condition = 1;
-  if (this->has_condition()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        1, _Internal::condition(this), target, stream);
-  }
-
-  // repeated .dra.WriteAddress write_address = 4;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_write_address_size()); i < n; i++) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(4, this->_internal_write_address(i), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:dra.WriteAddresses)
-  return target;
-}
-
-size_t WriteAddresses::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:dra.WriteAddresses)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .dra.WriteAddress write_address = 4;
-  total_size += 1UL * this->_internal_write_address_size();
-  for (const auto& msg : this->write_address_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  // .dra.Condition condition = 1;
-  if (this->has_condition()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *condition_);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void WriteAddresses::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.WriteAddresses)
-  GOOGLE_DCHECK_NE(&from, this);
-  const WriteAddresses* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<WriteAddresses>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.WriteAddresses)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.WriteAddresses)
-    MergeFrom(*source);
-  }
-}
-
-void WriteAddresses::MergeFrom(const WriteAddresses& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:dra.WriteAddresses)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  write_address_.MergeFrom(from.write_address_);
-  if (from.has_condition()) {
-    _internal_mutable_condition()->::dra::Condition::MergeFrom(from._internal_condition());
-  }
-}
-
-void WriteAddresses::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.WriteAddresses)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void WriteAddresses::CopyFrom(const WriteAddresses& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:dra.WriteAddresses)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool WriteAddresses::IsInitialized() const {
-  return true;
-}
-
-void WriteAddresses::InternalSwap(WriteAddresses* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  write_address_.InternalSwap(&other->write_address_);
-  swap(condition_, other->condition_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata WriteAddresses::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -4766,16 +4342,16 @@ WriteAddress::WriteAddress(const WriteAddress& from)
     run_time_date_ = nullptr;
   }
   ::memcpy(&write_address_, &from.write_address_,
-    static_cast<size_t>(reinterpret_cast<char*>(&condition_address_) -
-    reinterpret_cast<char*>(&write_address_)) + sizeof(condition_address_));
+    static_cast<size_t>(reinterpret_cast<char*>(&kind_) -
+    reinterpret_cast<char*>(&write_address_)) + sizeof(kind_));
   // @@protoc_insertion_point(copy_constructor:dra.WriteAddress)
 }
 
 void WriteAddress::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_WriteAddress_DependencyRPC_2eproto.base);
   ::memset(&run_time_date_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&condition_address_) -
-      reinterpret_cast<char*>(&run_time_date_)) + sizeof(condition_address_));
+      reinterpret_cast<char*>(&kind_) -
+      reinterpret_cast<char*>(&run_time_date_)) + sizeof(kind_));
 }
 
 WriteAddress::~WriteAddress() {
@@ -4810,8 +4386,8 @@ void WriteAddress::Clear() {
   }
   run_time_date_ = nullptr;
   ::memset(&write_address_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&condition_address_) -
-      reinterpret_cast<char*>(&write_address_)) + sizeof(condition_address_));
+      reinterpret_cast<char*>(&kind_) -
+      reinterpret_cast<char*>(&write_address_)) + sizeof(kind_));
   _internal_metadata_.Clear();
 }
 
@@ -4833,6 +4409,13 @@ const char* WriteAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 kind = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          kind_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -4915,6 +4498,12 @@ failure:
   if (this->condition_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_condition_address(), target);
+  }
+
+  // uint32 kind = 4;
+  if (this->kind() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_kind(), target);
   }
 
   // .dra.runTimeData run_time_date = 11;
@@ -5102,6 +4691,13 @@ size_t WriteAddress::ByteSizeLong() const {
         this->_internal_condition_address());
   }
 
+  // uint32 kind = 4;
+  if (this->kind() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_kind());
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -5145,6 +4741,9 @@ void WriteAddress::MergeFrom(const WriteAddress& from) {
   if (from.condition_address() != 0) {
     _internal_set_condition_address(from._internal_condition_address());
   }
+  if (from.kind() != 0) {
+    _internal_set_kind(from._internal_kind());
+  }
 }
 
 void WriteAddress::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -5174,6 +4773,7 @@ void WriteAddress::InternalSwap(WriteAddress* other) {
   swap(run_time_date_, other->run_time_date_);
   swap(write_address_, other->write_address_);
   swap(condition_address_, other->condition_address_);
+  swap(kind_, other->kind_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata WriteAddress::GetMetadata() const {
@@ -10562,6 +10162,432 @@ void Coverage::InternalSwap(Coverage* other) {
 }
 
 
+// ===================================================================
+
+void Conditions::InitAsDefaultInstance() {
+}
+class Conditions::_Internal {
+ public:
+};
+
+Conditions::Conditions()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:dra.Conditions)
+}
+Conditions::Conditions(const Conditions& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr),
+      condition_(from.condition_) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:dra.Conditions)
+}
+
+void Conditions::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Conditions_DependencyRPC_2eproto.base);
+}
+
+Conditions::~Conditions() {
+  // @@protoc_insertion_point(destructor:dra.Conditions)
+  SharedDtor();
+}
+
+void Conditions::SharedDtor() {
+}
+
+void Conditions::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const Conditions& Conditions::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Conditions_DependencyRPC_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void Conditions::Clear() {
+// @@protoc_insertion_point(message_clear_start:dra.Conditions)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  condition_.Clear();
+  _internal_metadata_.Clear();
+}
+
+const char* Conditions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // repeated .dra.Condition condition = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_condition(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* Conditions::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dra.Conditions)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .dra.Condition condition = 10;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_condition_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(10, this->_internal_condition(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dra.Conditions)
+  return target;
+}
+
+size_t Conditions::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dra.Conditions)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .dra.Condition condition = 10;
+  total_size += 1UL * this->_internal_condition_size();
+  for (const auto& msg : this->condition_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void Conditions::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:dra.Conditions)
+  GOOGLE_DCHECK_NE(&from, this);
+  const Conditions* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Conditions>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Conditions)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Conditions)
+    MergeFrom(*source);
+  }
+}
+
+void Conditions::MergeFrom(const Conditions& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:dra.Conditions)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  condition_.MergeFrom(from.condition_);
+}
+
+void Conditions::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:dra.Conditions)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Conditions::CopyFrom(const Conditions& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dra.Conditions)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Conditions::IsInitialized() const {
+  return true;
+}
+
+void Conditions::InternalSwap(Conditions* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  condition_.InternalSwap(&other->condition_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata Conditions::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void WriteAddresses::InitAsDefaultInstance() {
+  ::dra::_WriteAddresses_default_instance_._instance.get_mutable()->condition_ = const_cast< ::dra::Condition*>(
+      ::dra::Condition::internal_default_instance());
+}
+class WriteAddresses::_Internal {
+ public:
+  static const ::dra::Condition& condition(const WriteAddresses* msg);
+};
+
+const ::dra::Condition&
+WriteAddresses::_Internal::condition(const WriteAddresses* msg) {
+  return *msg->condition_;
+}
+WriteAddresses::WriteAddresses()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:dra.WriteAddresses)
+}
+WriteAddresses::WriteAddresses(const WriteAddresses& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr),
+      write_address_(from.write_address_) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from._internal_has_condition()) {
+    condition_ = new ::dra::Condition(*from.condition_);
+  } else {
+    condition_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:dra.WriteAddresses)
+}
+
+void WriteAddresses::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_WriteAddresses_DependencyRPC_2eproto.base);
+  condition_ = nullptr;
+}
+
+WriteAddresses::~WriteAddresses() {
+  // @@protoc_insertion_point(destructor:dra.WriteAddresses)
+  SharedDtor();
+}
+
+void WriteAddresses::SharedDtor() {
+  if (this != internal_default_instance()) delete condition_;
+}
+
+void WriteAddresses::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const WriteAddresses& WriteAddresses::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_WriteAddresses_DependencyRPC_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void WriteAddresses::Clear() {
+// @@protoc_insertion_point(message_clear_start:dra.WriteAddresses)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  write_address_.Clear();
+  if (GetArenaNoVirtual() == nullptr && condition_ != nullptr) {
+    delete condition_;
+  }
+  condition_ = nullptr;
+  _internal_metadata_.Clear();
+}
+
+const char* WriteAddresses::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .dra.Condition condition = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_condition(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // repeated .dra.WriteAddress write_address = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_write_address(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* WriteAddresses::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dra.WriteAddresses)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .dra.Condition condition = 1;
+  if (this->has_condition()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::condition(this), target, stream);
+  }
+
+  // repeated .dra.WriteAddress write_address = 4;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_write_address_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, this->_internal_write_address(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dra.WriteAddresses)
+  return target;
+}
+
+size_t WriteAddresses::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dra.WriteAddresses)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .dra.WriteAddress write_address = 4;
+  total_size += 1UL * this->_internal_write_address_size();
+  for (const auto& msg : this->write_address_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // .dra.Condition condition = 1;
+  if (this->has_condition()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *condition_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void WriteAddresses::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:dra.WriteAddresses)
+  GOOGLE_DCHECK_NE(&from, this);
+  const WriteAddresses* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<WriteAddresses>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.WriteAddresses)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.WriteAddresses)
+    MergeFrom(*source);
+  }
+}
+
+void WriteAddresses::MergeFrom(const WriteAddresses& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:dra.WriteAddresses)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  write_address_.MergeFrom(from.write_address_);
+  if (from.has_condition()) {
+    _internal_mutable_condition()->::dra::Condition::MergeFrom(from._internal_condition());
+  }
+}
+
+void WriteAddresses::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:dra.WriteAddresses)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WriteAddresses::CopyFrom(const WriteAddresses& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dra.WriteAddresses)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WriteAddresses::IsInitialized() const {
+  return true;
+}
+
+void WriteAddresses::InternalSwap(WriteAddresses* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  write_address_.InternalSwap(&other->write_address_);
+  swap(condition_, other->condition_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata WriteAddresses::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace dra
 PROTOBUF_NAMESPACE_OPEN
@@ -10570,12 +10596,6 @@ template<> PROTOBUF_NOINLINE ::dra::Empty* Arena::CreateMaybeMessage< ::dra::Emp
 }
 template<> PROTOBUF_NOINLINE ::dra::Condition* Arena::CreateMaybeMessage< ::dra::Condition >(Arena* arena) {
   return Arena::CreateInternal< ::dra::Condition >(arena);
-}
-template<> PROTOBUF_NOINLINE ::dra::Conditions* Arena::CreateMaybeMessage< ::dra::Conditions >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Conditions >(arena);
-}
-template<> PROTOBUF_NOINLINE ::dra::WriteAddresses* Arena::CreateMaybeMessage< ::dra::WriteAddresses >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::WriteAddresses >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::Call_AddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Call_AddressEntry_DoNotUse >(Arena* arena) {
   return Arena::CreateInternal< ::dra::Call_AddressEntry_DoNotUse >(arena);
@@ -10705,6 +10725,12 @@ template<> PROTOBUF_NOINLINE ::dra::Coverage_CoverageEntry_DoNotUse* Arena::Crea
 }
 template<> PROTOBUF_NOINLINE ::dra::Coverage* Arena::CreateMaybeMessage< ::dra::Coverage >(Arena* arena) {
   return Arena::CreateInternal< ::dra::Coverage >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dra::Conditions* Arena::CreateMaybeMessage< ::dra::Conditions >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Conditions >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dra::WriteAddresses* Arena::CreateMaybeMessage< ::dra::WriteAddresses >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::WriteAddresses >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

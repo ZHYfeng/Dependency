@@ -783,297 +783,6 @@ class Condition :
 };
 // -------------------------------------------------------------------
 
-class Conditions :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.Conditions) */ {
- public:
-  Conditions();
-  virtual ~Conditions();
-
-  Conditions(const Conditions& from);
-  Conditions(Conditions&& from) noexcept
-    : Conditions() {
-    *this = ::std::move(from);
-  }
-
-  inline Conditions& operator=(const Conditions& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline Conditions& operator=(Conditions&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const Conditions& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Conditions* internal_default_instance() {
-    return reinterpret_cast<const Conditions*>(
-               &_Conditions_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    2;
-
-  friend void swap(Conditions& a, Conditions& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(Conditions* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline Conditions* New() const final {
-    return CreateMaybeMessage<Conditions>(nullptr);
-  }
-
-  Conditions* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Conditions>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const Conditions& from);
-  void MergeFrom(const Conditions& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(Conditions* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "dra.Conditions";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kConditionFieldNumber = 10,
-  };
-  // repeated .dra.Condition condition = 10;
-  int condition_size() const;
-  private:
-  int _internal_condition_size() const;
-  public:
-  void clear_condition();
-  ::dra::Condition* mutable_condition(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >*
-      mutable_condition();
-  private:
-  const ::dra::Condition& _internal_condition(int index) const;
-  ::dra::Condition* _internal_add_condition();
-  public:
-  const ::dra::Condition& condition(int index) const;
-  ::dra::Condition* add_condition();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >&
-      condition() const;
-
-  // @@protoc_insertion_point(class_scope:dra.Conditions)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition > condition_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_DependencyRPC_2eproto;
-};
-// -------------------------------------------------------------------
-
-class WriteAddresses :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.WriteAddresses) */ {
- public:
-  WriteAddresses();
-  virtual ~WriteAddresses();
-
-  WriteAddresses(const WriteAddresses& from);
-  WriteAddresses(WriteAddresses&& from) noexcept
-    : WriteAddresses() {
-    *this = ::std::move(from);
-  }
-
-  inline WriteAddresses& operator=(const WriteAddresses& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline WriteAddresses& operator=(WriteAddresses&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return GetMetadataStatic().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return GetMetadataStatic().reflection;
-  }
-  static const WriteAddresses& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const WriteAddresses* internal_default_instance() {
-    return reinterpret_cast<const WriteAddresses*>(
-               &_WriteAddresses_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    3;
-
-  friend void swap(WriteAddresses& a, WriteAddresses& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(WriteAddresses* other) {
-    if (other == this) return;
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline WriteAddresses* New() const final {
-    return CreateMaybeMessage<WriteAddresses>(nullptr);
-  }
-
-  WriteAddresses* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<WriteAddresses>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const WriteAddresses& from);
-  void MergeFrom(const WriteAddresses& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  inline void SharedCtor();
-  inline void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(WriteAddresses* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "dra.WriteAddresses";
-  }
-  private:
-  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
-  }
-
-  public:
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kWriteAddressFieldNumber = 4,
-    kConditionFieldNumber = 1,
-  };
-  // repeated .dra.WriteAddress write_address = 4;
-  int write_address_size() const;
-  private:
-  int _internal_write_address_size() const;
-  public:
-  void clear_write_address();
-  ::dra::WriteAddress* mutable_write_address(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >*
-      mutable_write_address();
-  private:
-  const ::dra::WriteAddress& _internal_write_address(int index) const;
-  ::dra::WriteAddress* _internal_add_write_address();
-  public:
-  const ::dra::WriteAddress& write_address(int index) const;
-  ::dra::WriteAddress* add_write_address();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >&
-      write_address() const;
-
-  // .dra.Condition condition = 1;
-  bool has_condition() const;
-  private:
-  bool _internal_has_condition() const;
-  public:
-  void clear_condition();
-  const ::dra::Condition& condition() const;
-  ::dra::Condition* release_condition();
-  ::dra::Condition* mutable_condition();
-  void set_allocated_condition(::dra::Condition* condition);
-  private:
-  const ::dra::Condition& _internal_condition() const;
-  ::dra::Condition* _internal_mutable_condition();
-  public:
-
-  // @@protoc_insertion_point(class_scope:dra.WriteAddresses)
- private:
-  class _Internal;
-
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress > write_address_;
-  ::dra::Condition* condition_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_DependencyRPC_2eproto;
-};
-// -------------------------------------------------------------------
-
 class Call_AddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Call_AddressEntry_DoNotUse, 
     ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
@@ -1096,7 +805,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[4];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[2];
   }
 
   public:
@@ -1146,7 +855,7 @@ class Call :
                &_Call_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    3;
 
   friend void swap(Call& a, Call& b) {
     a.Swap(&b);
@@ -1299,7 +1008,7 @@ class Inputs :
                &_Inputs_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
   friend void swap(Inputs& a, Inputs& b) {
     a.Swap(&b);
@@ -1436,7 +1145,7 @@ class Dependencytask :
                &_Dependencytask_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    5;
 
   friend void swap(Dependencytask& a, Dependencytask& b) {
     a.Swap(&b);
@@ -1588,7 +1297,7 @@ class runTimeData :
                &_runTimeData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    6;
 
   friend void swap(runTimeData& a, runTimeData& b) {
     a.Swap(&b);
@@ -1827,7 +1536,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[9];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[7];
   }
 
   public:
@@ -1877,7 +1586,7 @@ class FileOperationsFunction :
                &_FileOperationsFunction_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    8;
 
   friend void swap(FileOperationsFunction& a, FileOperationsFunction& b) {
     a.Swap(&b);
@@ -2074,7 +1783,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[11];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[9];
   }
 
   public:
@@ -2124,7 +1833,7 @@ class FileOperations :
                &_FileOperations_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    10;
 
   friend void swap(FileOperations& a, FileOperations& b) {
     a.Swap(&b);
@@ -2264,7 +1973,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[13];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[11];
   }
 
   public:
@@ -2296,7 +2005,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[14];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[12];
   }
 
   public:
@@ -2328,7 +2037,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[15];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[13];
   }
 
   public:
@@ -2378,7 +2087,7 @@ class WriteAddress :
                &_WriteAddress_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    14;
 
   friend void swap(WriteAddress& a, WriteAddress& b) {
     a.Swap(&b);
@@ -2449,6 +2158,7 @@ class WriteAddress :
     kRunTimeDateFieldNumber = 11,
     kWriteAddressFieldNumber = 2,
     kConditionAddressFieldNumber = 3,
+    kKindFieldNumber = 4,
   };
   // map<uint32, .dra.writeAddressAttributes> uncovered_address = 23;
   int uncovered_address_size() const;
@@ -2534,6 +2244,15 @@ class WriteAddress :
   void _internal_set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
+  // uint32 kind = 4;
+  void clear_kind();
+  ::PROTOBUF_NAMESPACE_ID::uint32 kind() const;
+  void set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_kind() const;
+  void _internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:dra.WriteAddress)
  private:
   class _Internal;
@@ -2560,6 +2279,7 @@ class WriteAddress :
   ::dra::runTimeData* run_time_date_;
   ::PROTOBUF_NAMESPACE_ID::uint32 write_address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 kind_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -2607,7 +2327,7 @@ class writeAddressAttributes :
                &_writeAddressAttributes_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    15;
 
   friend void swap(writeAddressAttributes& a, writeAddressAttributes& b) {
     a.Swap(&b);
@@ -2739,7 +2459,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[18];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[16];
   }
 
   public:
@@ -2769,7 +2489,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[19];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[17];
   }
 
   public:
@@ -2819,7 +2539,7 @@ class UncoveredAddress :
                &_UncoveredAddress_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    18;
 
   friend void swap(UncoveredAddress& a, UncoveredAddress& b) {
     a.Swap(&b);
@@ -3071,7 +2791,7 @@ class Path :
                &_Path_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    19;
 
   friend void swap(Path& a, Path& b) {
     a.Swap(&b);
@@ -3213,7 +2933,7 @@ class UnstableInput :
                &_UnstableInput_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    20;
 
   friend void swap(UnstableInput& a, UnstableInput& b) {
     a.Swap(&b);
@@ -3391,7 +3111,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[23];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[21];
   }
 
   public:
@@ -3421,7 +3141,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[24];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[22];
   }
 
   public:
@@ -3451,7 +3171,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[25];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[23];
   }
 
   public:
@@ -3501,7 +3221,7 @@ class Input :
                &_Input_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    24;
 
   friend void swap(Input& a, Input& b) {
     a.Swap(&b);
@@ -3738,7 +3458,7 @@ class Dependency :
                &_Dependency_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    25;
 
   friend void swap(Dependency& a, Dependency& b) {
     a.Swap(&b);
@@ -3891,7 +3611,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[28];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[26];
   }
 
   public:
@@ -3921,7 +3641,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[29];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[27];
   }
 
   public:
@@ -3951,7 +3671,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[30];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[28];
   }
 
   public:
@@ -3981,7 +3701,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[31];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[29];
   }
 
   public:
@@ -4013,7 +3733,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[32];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[30];
   }
 
   public:
@@ -4045,7 +3765,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[33];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[31];
   }
 
   public:
@@ -4095,7 +3815,7 @@ class Corpus :
                &_Corpus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    32;
 
   friend void swap(Corpus& a, Corpus& b) {
     a.Swap(&b);
@@ -4408,7 +4128,7 @@ class UsefulInput :
                &_UsefulInput_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    33;
 
   friend void swap(UsefulInput& a, UsefulInput& b) {
     a.Swap(&b);
@@ -4589,7 +4309,7 @@ class Statistic :
                &_Statistic_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    34;
 
   friend void swap(Statistic& a, Statistic& b) {
     a.Swap(&b);
@@ -4741,7 +4461,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[37];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[35];
   }
 
   public:
@@ -4791,7 +4511,7 @@ class Statistics :
                &_Statistics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    36;
 
   friend void swap(Statistics& a, Statistics& b) {
     a.Swap(&b);
@@ -4972,7 +4692,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[39];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[37];
   }
 
   public:
@@ -5002,7 +4722,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[40];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[38];
   }
 
   public:
@@ -5052,7 +4772,7 @@ class Task :
                &_Task_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    39;
 
   friend void swap(Task& a, Task& b) {
     a.Swap(&b);
@@ -5422,7 +5142,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[42];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[40];
   }
 
   public:
@@ -5472,7 +5192,7 @@ class Tasks :
                &_Tasks_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    41;
 
   friend void swap(Tasks& a, Tasks& b) {
     a.Swap(&b);
@@ -5663,7 +5383,7 @@ class Time :
                &_Time_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    42;
 
   friend void swap(Time& a, Time& b) {
     a.Swap(&b);
@@ -5793,7 +5513,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[45];
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[43];
   }
 
   public:
@@ -5843,7 +5563,7 @@ class Coverage :
                &_Coverage_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    44;
 
   friend void swap(Coverage& a, Coverage& b) {
     a.Swap(&b);
@@ -5958,6 +5678,297 @@ class Coverage :
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
       0 > coverage_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Time > time_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_DependencyRPC_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Conditions :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.Conditions) */ {
+ public:
+  Conditions();
+  virtual ~Conditions();
+
+  Conditions(const Conditions& from);
+  Conditions(Conditions&& from) noexcept
+    : Conditions() {
+    *this = ::std::move(from);
+  }
+
+  inline Conditions& operator=(const Conditions& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Conditions& operator=(Conditions&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const Conditions& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const Conditions* internal_default_instance() {
+    return reinterpret_cast<const Conditions*>(
+               &_Conditions_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    45;
+
+  friend void swap(Conditions& a, Conditions& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Conditions* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Conditions* New() const final {
+    return CreateMaybeMessage<Conditions>(nullptr);
+  }
+
+  Conditions* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Conditions>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const Conditions& from);
+  void MergeFrom(const Conditions& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Conditions* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dra.Conditions";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kConditionFieldNumber = 10,
+  };
+  // repeated .dra.Condition condition = 10;
+  int condition_size() const;
+  private:
+  int _internal_condition_size() const;
+  public:
+  void clear_condition();
+  ::dra::Condition* mutable_condition(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >*
+      mutable_condition();
+  private:
+  const ::dra::Condition& _internal_condition(int index) const;
+  ::dra::Condition* _internal_add_condition();
+  public:
+  const ::dra::Condition& condition(int index) const;
+  ::dra::Condition* add_condition();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >&
+      condition() const;
+
+  // @@protoc_insertion_point(class_scope:dra.Conditions)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition > condition_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_DependencyRPC_2eproto;
+};
+// -------------------------------------------------------------------
+
+class WriteAddresses :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.WriteAddresses) */ {
+ public:
+  WriteAddresses();
+  virtual ~WriteAddresses();
+
+  WriteAddresses(const WriteAddresses& from);
+  WriteAddresses(WriteAddresses&& from) noexcept
+    : WriteAddresses() {
+    *this = ::std::move(from);
+  }
+
+  inline WriteAddresses& operator=(const WriteAddresses& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline WriteAddresses& operator=(WriteAddresses&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const WriteAddresses& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const WriteAddresses* internal_default_instance() {
+    return reinterpret_cast<const WriteAddresses*>(
+               &_WriteAddresses_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    46;
+
+  friend void swap(WriteAddresses& a, WriteAddresses& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(WriteAddresses* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline WriteAddresses* New() const final {
+    return CreateMaybeMessage<WriteAddresses>(nullptr);
+  }
+
+  WriteAddresses* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<WriteAddresses>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const WriteAddresses& from);
+  void MergeFrom(const WriteAddresses& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(WriteAddresses* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dra.WriteAddresses";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kWriteAddressFieldNumber = 4,
+    kConditionFieldNumber = 1,
+  };
+  // repeated .dra.WriteAddress write_address = 4;
+  int write_address_size() const;
+  private:
+  int _internal_write_address_size() const;
+  public:
+  void clear_write_address();
+  ::dra::WriteAddress* mutable_write_address(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >*
+      mutable_write_address();
+  private:
+  const ::dra::WriteAddress& _internal_write_address(int index) const;
+  ::dra::WriteAddress* _internal_add_write_address();
+  public:
+  const ::dra::WriteAddress& write_address(int index) const;
+  ::dra::WriteAddress* add_write_address();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >&
+      write_address() const;
+
+  // .dra.Condition condition = 1;
+  bool has_condition() const;
+  private:
+  bool _internal_has_condition() const;
+  public:
+  void clear_condition();
+  const ::dra::Condition& condition() const;
+  ::dra::Condition* release_condition();
+  ::dra::Condition* mutable_condition();
+  void set_allocated_condition(::dra::Condition* condition);
+  private:
+  const ::dra::Condition& _internal_condition() const;
+  ::dra::Condition* _internal_mutable_condition();
+  public:
+
+  // @@protoc_insertion_point(class_scope:dra.WriteAddresses)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress > write_address_;
+  ::dra::Condition* condition_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -6268,152 +6279,6 @@ inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 >
 Condition::mutable_syzkaller_right_branch_address() {
   // @@protoc_insertion_point(field_mutable_list:dra.Condition.syzkaller_right_branch_address)
   return _internal_mutable_syzkaller_right_branch_address();
-}
-
-// -------------------------------------------------------------------
-
-// Conditions
-
-// repeated .dra.Condition condition = 10;
-inline int Conditions::_internal_condition_size() const {
-  return condition_.size();
-}
-inline int Conditions::condition_size() const {
-  return _internal_condition_size();
-}
-inline void Conditions::clear_condition() {
-  condition_.Clear();
-}
-inline ::dra::Condition* Conditions::mutable_condition(int index) {
-  // @@protoc_insertion_point(field_mutable:dra.Conditions.condition)
-  return condition_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >*
-Conditions::mutable_condition() {
-  // @@protoc_insertion_point(field_mutable_list:dra.Conditions.condition)
-  return &condition_;
-}
-inline const ::dra::Condition& Conditions::_internal_condition(int index) const {
-  return condition_.Get(index);
-}
-inline const ::dra::Condition& Conditions::condition(int index) const {
-  // @@protoc_insertion_point(field_get:dra.Conditions.condition)
-  return _internal_condition(index);
-}
-inline ::dra::Condition* Conditions::_internal_add_condition() {
-  return condition_.Add();
-}
-inline ::dra::Condition* Conditions::add_condition() {
-  // @@protoc_insertion_point(field_add:dra.Conditions.condition)
-  return _internal_add_condition();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >&
-Conditions::condition() const {
-  // @@protoc_insertion_point(field_list:dra.Conditions.condition)
-  return condition_;
-}
-
-// -------------------------------------------------------------------
-
-// WriteAddresses
-
-// .dra.Condition condition = 1;
-inline bool WriteAddresses::_internal_has_condition() const {
-  return this != internal_default_instance() && condition_ != nullptr;
-}
-inline bool WriteAddresses::has_condition() const {
-  return _internal_has_condition();
-}
-inline void WriteAddresses::clear_condition() {
-  if (GetArenaNoVirtual() == nullptr && condition_ != nullptr) {
-    delete condition_;
-  }
-  condition_ = nullptr;
-}
-inline const ::dra::Condition& WriteAddresses::_internal_condition() const {
-  const ::dra::Condition* p = condition_;
-  return p != nullptr ? *p : *reinterpret_cast<const ::dra::Condition*>(
-      &::dra::_Condition_default_instance_);
-}
-inline const ::dra::Condition& WriteAddresses::condition() const {
-  // @@protoc_insertion_point(field_get:dra.WriteAddresses.condition)
-  return _internal_condition();
-}
-inline ::dra::Condition* WriteAddresses::release_condition() {
-  // @@protoc_insertion_point(field_release:dra.WriteAddresses.condition)
-  
-  ::dra::Condition* temp = condition_;
-  condition_ = nullptr;
-  return temp;
-}
-inline ::dra::Condition* WriteAddresses::_internal_mutable_condition() {
-  
-  if (condition_ == nullptr) {
-    auto* p = CreateMaybeMessage<::dra::Condition>(GetArenaNoVirtual());
-    condition_ = p;
-  }
-  return condition_;
-}
-inline ::dra::Condition* WriteAddresses::mutable_condition() {
-  // @@protoc_insertion_point(field_mutable:dra.WriteAddresses.condition)
-  return _internal_mutable_condition();
-}
-inline void WriteAddresses::set_allocated_condition(::dra::Condition* condition) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
-  if (message_arena == nullptr) {
-    delete condition_;
-  }
-  if (condition) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
-    if (message_arena != submessage_arena) {
-      condition = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, condition, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  condition_ = condition;
-  // @@protoc_insertion_point(field_set_allocated:dra.WriteAddresses.condition)
-}
-
-// repeated .dra.WriteAddress write_address = 4;
-inline int WriteAddresses::_internal_write_address_size() const {
-  return write_address_.size();
-}
-inline int WriteAddresses::write_address_size() const {
-  return _internal_write_address_size();
-}
-inline void WriteAddresses::clear_write_address() {
-  write_address_.Clear();
-}
-inline ::dra::WriteAddress* WriteAddresses::mutable_write_address(int index) {
-  // @@protoc_insertion_point(field_mutable:dra.WriteAddresses.write_address)
-  return write_address_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >*
-WriteAddresses::mutable_write_address() {
-  // @@protoc_insertion_point(field_mutable_list:dra.WriteAddresses.write_address)
-  return &write_address_;
-}
-inline const ::dra::WriteAddress& WriteAddresses::_internal_write_address(int index) const {
-  return write_address_.Get(index);
-}
-inline const ::dra::WriteAddress& WriteAddresses::write_address(int index) const {
-  // @@protoc_insertion_point(field_get:dra.WriteAddresses.write_address)
-  return _internal_write_address(index);
-}
-inline ::dra::WriteAddress* WriteAddresses::_internal_add_write_address() {
-  return write_address_.Add();
-}
-inline ::dra::WriteAddress* WriteAddresses::add_write_address() {
-  // @@protoc_insertion_point(field_add:dra.WriteAddresses.write_address)
-  return _internal_add_write_address();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >&
-WriteAddresses::write_address() const {
-  // @@protoc_insertion_point(field_list:dra.WriteAddresses.write_address)
-  return write_address_;
 }
 
 // -------------------------------------------------------------------
@@ -7327,6 +7192,26 @@ inline void WriteAddress::_internal_set_condition_address(::PROTOBUF_NAMESPACE_I
 inline void WriteAddress::set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_condition_address(value);
   // @@protoc_insertion_point(field_set:dra.WriteAddress.condition_address)
+}
+
+// uint32 kind = 4;
+inline void WriteAddress::clear_kind() {
+  kind_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 WriteAddress::_internal_kind() const {
+  return kind_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 WriteAddress::kind() const {
+  // @@protoc_insertion_point(field_get:dra.WriteAddress.kind)
+  return _internal_kind();
+}
+inline void WriteAddress::_internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  kind_ = value;
+}
+inline void WriteAddress::set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_kind(value);
+  // @@protoc_insertion_point(field_set:dra.WriteAddress.kind)
 }
 
 // map<uint32, .dra.writeAddressAttributes> uncovered_address = 23;
@@ -10203,6 +10088,152 @@ inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Time >&
 Coverage::time() const {
   // @@protoc_insertion_point(field_list:dra.Coverage.time)
   return time_;
+}
+
+// -------------------------------------------------------------------
+
+// Conditions
+
+// repeated .dra.Condition condition = 10;
+inline int Conditions::_internal_condition_size() const {
+  return condition_.size();
+}
+inline int Conditions::condition_size() const {
+  return _internal_condition_size();
+}
+inline void Conditions::clear_condition() {
+  condition_.Clear();
+}
+inline ::dra::Condition* Conditions::mutable_condition(int index) {
+  // @@protoc_insertion_point(field_mutable:dra.Conditions.condition)
+  return condition_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >*
+Conditions::mutable_condition() {
+  // @@protoc_insertion_point(field_mutable_list:dra.Conditions.condition)
+  return &condition_;
+}
+inline const ::dra::Condition& Conditions::_internal_condition(int index) const {
+  return condition_.Get(index);
+}
+inline const ::dra::Condition& Conditions::condition(int index) const {
+  // @@protoc_insertion_point(field_get:dra.Conditions.condition)
+  return _internal_condition(index);
+}
+inline ::dra::Condition* Conditions::_internal_add_condition() {
+  return condition_.Add();
+}
+inline ::dra::Condition* Conditions::add_condition() {
+  // @@protoc_insertion_point(field_add:dra.Conditions.condition)
+  return _internal_add_condition();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Condition >&
+Conditions::condition() const {
+  // @@protoc_insertion_point(field_list:dra.Conditions.condition)
+  return condition_;
+}
+
+// -------------------------------------------------------------------
+
+// WriteAddresses
+
+// .dra.Condition condition = 1;
+inline bool WriteAddresses::_internal_has_condition() const {
+  return this != internal_default_instance() && condition_ != nullptr;
+}
+inline bool WriteAddresses::has_condition() const {
+  return _internal_has_condition();
+}
+inline void WriteAddresses::clear_condition() {
+  if (GetArenaNoVirtual() == nullptr && condition_ != nullptr) {
+    delete condition_;
+  }
+  condition_ = nullptr;
+}
+inline const ::dra::Condition& WriteAddresses::_internal_condition() const {
+  const ::dra::Condition* p = condition_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::dra::Condition*>(
+      &::dra::_Condition_default_instance_);
+}
+inline const ::dra::Condition& WriteAddresses::condition() const {
+  // @@protoc_insertion_point(field_get:dra.WriteAddresses.condition)
+  return _internal_condition();
+}
+inline ::dra::Condition* WriteAddresses::release_condition() {
+  // @@protoc_insertion_point(field_release:dra.WriteAddresses.condition)
+  
+  ::dra::Condition* temp = condition_;
+  condition_ = nullptr;
+  return temp;
+}
+inline ::dra::Condition* WriteAddresses::_internal_mutable_condition() {
+  
+  if (condition_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dra::Condition>(GetArenaNoVirtual());
+    condition_ = p;
+  }
+  return condition_;
+}
+inline ::dra::Condition* WriteAddresses::mutable_condition() {
+  // @@protoc_insertion_point(field_mutable:dra.WriteAddresses.condition)
+  return _internal_mutable_condition();
+}
+inline void WriteAddresses::set_allocated_condition(::dra::Condition* condition) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete condition_;
+  }
+  if (condition) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      condition = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, condition, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  condition_ = condition;
+  // @@protoc_insertion_point(field_set_allocated:dra.WriteAddresses.condition)
+}
+
+// repeated .dra.WriteAddress write_address = 4;
+inline int WriteAddresses::_internal_write_address_size() const {
+  return write_address_.size();
+}
+inline int WriteAddresses::write_address_size() const {
+  return _internal_write_address_size();
+}
+inline void WriteAddresses::clear_write_address() {
+  write_address_.Clear();
+}
+inline ::dra::WriteAddress* WriteAddresses::mutable_write_address(int index) {
+  // @@protoc_insertion_point(field_mutable:dra.WriteAddresses.write_address)
+  return write_address_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >*
+WriteAddresses::mutable_write_address() {
+  // @@protoc_insertion_point(field_mutable_list:dra.WriteAddresses.write_address)
+  return &write_address_;
+}
+inline const ::dra::WriteAddress& WriteAddresses::_internal_write_address(int index) const {
+  return write_address_.Get(index);
+}
+inline const ::dra::WriteAddress& WriteAddresses::write_address(int index) const {
+  // @@protoc_insertion_point(field_get:dra.WriteAddresses.write_address)
+  return _internal_write_address(index);
+}
+inline ::dra::WriteAddress* WriteAddresses::_internal_add_write_address() {
+  return write_address_.Add();
+}
+inline ::dra::WriteAddress* WriteAddresses::add_write_address() {
+  // @@protoc_insertion_point(field_add:dra.WriteAddresses.write_address)
+  return _internal_add_write_address();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::WriteAddress >&
+WriteAddresses::write_address() const {
+  // @@protoc_insertion_point(field_list:dra.WriteAddresses.write_address)
+  return write_address_;
 }
 
 #ifdef __GNUC__

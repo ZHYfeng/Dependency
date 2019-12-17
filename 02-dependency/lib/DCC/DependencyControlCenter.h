@@ -45,7 +45,7 @@ namespace dra {
         static void set_runtime_data(runTimeData *r, const std::string &program, uint32_t idx, uint32_t condition,
                                      uint32_t address);
 
-        void check_confition_depednency();
+        void check_condition_depednency();
 
         void send_write_address(WriteAddresses *writeAddress);
 

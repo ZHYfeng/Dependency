@@ -38,7 +38,7 @@ class DependencyRPC final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // DMM and syz-manager
+    // DRA and syz-manager
     virtual ::grpc::Status GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty& request, ::dra::Empty* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::dra::Empty>> AsyncGetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::dra::Empty>>(AsyncGetVMOffsetsRaw(context, request, cq));
@@ -162,7 +162,7 @@ class DependencyRPC final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
-      // DMM and syz-manager
+      // DRA and syz-manager
       virtual void GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetVMOffsets(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SendBasicBlockNumber(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
@@ -464,7 +464,7 @@ class DependencyRPC final {
    public:
     Service();
     virtual ~Service();
-    // DMM and syz-manager
+    // DRA and syz-manager
     virtual ::grpc::Status GetVMOffsets(::grpc::ServerContext* context, const ::dra::Empty* request, ::dra::Empty* response);
     virtual ::grpc::Status SendBasicBlockNumber(::grpc::ServerContext* context, const ::dra::Empty* request, ::dra::Empty* response);
     virtual ::grpc::Status GetNewInput(::grpc::ServerContext* context, const ::dra::Empty* request, ::dra::Inputs* response);

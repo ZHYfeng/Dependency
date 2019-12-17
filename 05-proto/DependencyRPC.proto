@@ -30,8 +30,10 @@ service DependencyRPC {
     }
     rpc ReturnTasks (Tasks) returns (Empty) {
     }
-    rpc SendBootInput (Input) returns (Empty) {}
-    rpc SendUnstableInput (UnstableInput) returns (Empty) {}
+    rpc SendBootInput (Input) returns (Empty) {
+    }
+    rpc SendUnstableInput (UnstableInput) returns (Empty) {
+    }
     rpc SendLog (Empty) returns (Empty) {
     }
     rpc sendStat (Statistic) returns (Empty) {
@@ -62,23 +64,11 @@ message Condition {
     //    map<uint32, uint32> syzkaller_right_branch_address = 8;
     //    map<uint64, uint32> wrong_branch_address = 9;
     //    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
-
     repeated uint64 right_branch_address = 7;
     repeated uint32 syzkaller_right_branch_address = 8;
     //    repeated uint64 wrong_branch_address = 9;
     //    repeated uint32 syzkaller_wrong_branch_address = 10;
 
-}
-
-message Conditions {
-    //    map<uint64, Condition> condition = 10;
-    repeated Condition condition = 10;
-}
-
-message WriteAddresses {
-    Condition condition = 1;
-    //    map<uint32, WriteAddress> write_address = 4;
-    repeated WriteAddress write_address = 4;
 }
 
 message Call {
@@ -172,6 +162,9 @@ message WriteAddress {
     //    map<uint32, Syscall> write_syscall = 5;
     //    repeated Input write_input = 4;
     //    repeated Syscall write_syscall = 5;
+    // 0 is undef
+    // 1 is constant
+    uint32 kind = 4;
 
     // uncovered address,
     map<uint32, writeAddressAttributes> uncovered_address = 23;
@@ -350,4 +343,17 @@ message Time {
 message Coverage {
     map<uint32, uint32> coverage = 1;
     repeated Time time = 2;
+}
+
+// old
+
+message Conditions {
+    //    map<uint64, Condition> condition = 10;
+    repeated Condition condition = 10;
+}
+
+message WriteAddresses {
+    Condition condition = 1;
+    //    map<uint32, WriteAddress> write_address = 4;
+    repeated WriteAddress write_address = 4;
 }

@@ -76,7 +76,7 @@ namespace dra {
 //            this->DM.dump_cover();
 //            this->DM.dump_uncover();
 
-            check_confition_depednency();
+            check_condition_depednency();
             if (client->Check() == nullptr) {
                 break;
             }
@@ -396,7 +396,7 @@ namespace dra {
         return res;
     }
 
-    void DependencyControlCenter::check_confition_depednency() {
+    void DependencyControlCenter::check_condition_depednency() {
         dra::Conditions *cs = client->GetCondition();
         if (cs != nullptr) {
             for (auto condition : *cs->mutable_condition()) {
