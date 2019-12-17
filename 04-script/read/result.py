@@ -105,17 +105,28 @@ class Device:
                     ca_uca_dep_without_dra[a] = self.results_without_dra.max_coverage[a]
             f.write("number of uncovered address : " +
                     str(len(basic.data.real_data.uncovered_address)) + "\n")
-            f.write("number of uncovered address by dependency : "
+            f.write("related to dependency: "
                     + str(len(basic.data.uncovered_address_dependency)) + "\n")
             count = 0
             for a in ca_uca_dep_with_dra:
                 count += ca_uca_dep_with_dra[a]
-            f.write("number of uncovered address by dependency covered by syzkaller with dra: "
+            f.write("covered by syzkaller with dra: "
                     + str(len(ca_uca_dep_with_dra)) + " count : " + str(count) + "\n")
+
+            count = 0
+            for a in ca_uca_dep_with_dra:
+                for s in self.results_with_dra.statistics.statistics:
+                    if a in s.real_stat.coverage:
+                        if s.real_stat.coverage[a] == 1:
+                            count = count + 1
+                            break
+            f.write("covered by dependency mutate: "
+                    + str(count) + "\n")
+
             count = 0
             for a in ca_uca_dep_without_dra:
                 count += ca_uca_dep_without_dra[a]
-            f.write("number of uncovered address by dependency covered by syzkaller without dra: "
+            f.write("covered by syzkaller without dra: "
                     + str(len(ca_uca_dep_without_dra)) + " count : " + str(count) + "\n")
 
             # ca_uca_input_with_dra = {}
