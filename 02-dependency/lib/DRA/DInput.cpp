@@ -102,7 +102,7 @@ namespace dra {
 #endif
     }
 
-    void DInput::addUncoveredAddress(unsigned long long int uncoveredAddress, unsigned long long int conditionAddress, int i) {
+    void DInput::addUncoveredAddress(unsigned long long uncoveredAddress, unsigned long long conditionAddress, int i) {
         Condition *d = new Condition();
         d->set_condition_address(conditionAddress);
         d->set_uncovered_address(uncoveredAddress);

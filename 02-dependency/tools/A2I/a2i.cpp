@@ -38,6 +38,6 @@ int main(int argc, char **argv)
     auto *dcc = new dra::DependencyControlCenter();
 
     dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes, function);
-    dcc->check(file);
+    dcc->check_uncovered_addresses_depednency(file);
     return 0;
 }

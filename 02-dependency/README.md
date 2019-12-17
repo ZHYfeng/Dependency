@@ -12,7 +12,7 @@ git submodule update --init --recursive
 ./autogen.sh
 ./configure --prefix=~/data/build
 make
-make check
+make ckeck
 make install
 sudo ldconfig
 ```

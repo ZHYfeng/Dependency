@@ -29,7 +29,7 @@ namespace dra {
 
         void setCover(const std::string &cover, unsigned long long int vmOffsets);
 
-        void addUncoveredAddress(unsigned long long int uncoveredAddress, unsigned long long int conditionAddress, int i);
+        void addUncoveredAddress(unsigned long long uncoveredAddress, unsigned long long conditionAddress, int i);
 
     public:
         std::string sig;

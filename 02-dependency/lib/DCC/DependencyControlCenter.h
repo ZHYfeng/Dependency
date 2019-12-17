@@ -23,30 +23,31 @@ namespace dra {
         virtual ~DependencyControlCenter();
 
         void init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
-                  const std::string &staticRes = "", const std::string& function = "",
+                  const std::string &staticRes = "", const std::string &function = "",
                   const std::string &port_address = "");
 
         void run();
 
-        void check(const std::string &file);
+        void check_uncovered_addresses_depednency(const std::string &file);
 
-        void setRPCConnection(const std::string& grpc_port);
+        void setRPCConnection(const std::string &grpc_port);
 
         sta::MODS *get_write_basicblock(Condition *u);
 
-        void get_dependency_input(DInput *dInput);
+        void ckeck_input_dependency(DInput *dInput);
 
         void send_dependency(Dependency *dependency);
 
         void get_write_address(sta::Mod *write_basicblock, Condition *condition, WriteAddress *writeAddress);
 
-        void get_write_addresses();
-
         writeAddressAttributes *get_write_addresses_adttributes(sta::Mod *write_basicblock);
 
-        void send_write_address(WriteAddresses *writeAddress);
+        static void set_runtime_data(runTimeData *r, const std::string &program, uint32_t idx, uint32_t condition,
+                                     uint32_t address);
 
-        static void set_runtime_data(runTimeData *r, const std::string& program, uint32_t idx, uint32_t condition, uint32_t address);
+        void check_confition_depednency();
+
+        void send_write_address(WriteAddresses *writeAddress);
 
         void test_sta();
 

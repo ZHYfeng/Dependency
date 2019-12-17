@@ -35,6 +35,8 @@ namespace dra {
 
         Empty *SendWriteAddress(const WriteAddresses &request);
 
+        Empty *Check() { return new Empty(); }
+
     private:
         std::unique_ptr<DependencyRPC::Stub> stub_;
     };

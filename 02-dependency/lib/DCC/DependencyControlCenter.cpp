@@ -15,6 +15,7 @@
 #include "../DRA/DFunction.h"
 #include "general.h"
 
+
 namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() {
@@ -24,7 +25,7 @@ namespace dra {
     DependencyControlCenter::~DependencyControlCenter() = default;
 
     void DependencyControlCenter::init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
-                                       const std::string &staticRes, const std::string& function,
+                                       const std::string &staticRes, const std::string &function,
                                        const std::string &port_address) {
 
         DM.initializeModule(std::move(obj_dump), std::move(AssemblySourceCode), std::move(InputFilename));
@@ -45,22 +46,21 @@ namespace dra {
     }
 
     void DependencyControlCenter::run() {
-        while (true) {
+        for (;;) {
 #if DEBUG
             dra::outputTime("wait for get newInput");
 #endif
             Inputs *newInput = client->GetNewInput();
             if (newInput != nullptr) {
                 for (auto &input : *newInput->mutable_input()) {
-                    //                    std::cout << "new input : " << input.second.sig() << std::endl;
-                    //                    std::cout << input.second.program() << std::endl;
-                    //                    DInput *dInput = DM.getInput(&input.second);
+//                    std::cout << "new input : " << input.sig() << std::endl;
+//                    std::cout << input.program() << std::endl;
 #if DEBUG
                     dra::outputTime("new input : " + input.sig());
                     dra::outputTime(input.program());
 #endif
                     DInput *dInput = DM.getInput(&input);
-                    get_dependency_input(dInput);
+                    ckeck_input_dependency(dInput);
                 }
                 newInput->Clear();
                 delete newInput;
@@ -74,14 +74,17 @@ namespace dra {
                 setRPCConnection(this->port);
             }
 
-            //            this->DM.dump_cover();
-            //            this->DM.dump_uncover();
+//            this->DM.dump_cover();
+//            this->DM.dump_uncover();
 
-            get_write_addresses();
+            check_confition_depednency();
+            if (client->Check() == nullptr) {
+                break;
+            }
         }
     }
 
-    void DependencyControlCenter::setRPCConnection(const std::string& grpc_port) {
+    void DependencyControlCenter::setRPCConnection(const std::string &grpc_port) {
         this->client = new dra::DependencyRPCClient(
                 grpc::CreateChannel(port, grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
@@ -90,7 +93,7 @@ namespace dra {
         dra::outputTime("GetVmOffsets");
     }
 
-    void DependencyControlCenter::get_dependency_input(DInput *dInput) {
+    void DependencyControlCenter::ckeck_input_dependency(DInput *dInput) {
 #if DEBUG
         std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
                   << std::endl;
@@ -212,73 +215,6 @@ namespace dra {
         }
     }
 
-    void DependencyControlCenter::test_sta() {
-        auto f = this->DM.Modules->Function["block/blk-core.c"]["blk_flush_plug_list"];
-        for (const auto& B : f->BasicBlock) {
-            auto b = B.second->basicBlock;
-            std::cout << "b name : " << B.second->name << std::endl;
-
-            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b, true);
-            if (allBasicblock == nullptr) {
-                // no taint or out side
-                std::cout << "allBasicblock == nullptr" << std::endl;
-            } else if (allBasicblock->empty()) {
-                // unrelated to gv
-                std::cout << "allBasicblock->size() == 0" << std::endl;
-            } else if (!allBasicblock->empty()) {
-                std::cout << "allBasicblock != nullptr && allBasicblock->size() != 0" << std::endl;
-            }
-        }
-
-        exit(0);
-    }
-
-    void DependencyControlCenter::test_rpc() {
-
-        exit(0);
-    }
-
-    void DependencyControlCenter::get_write_addresses() {
-        dra::Conditions *cs = client->GetCondition();
-        if (cs != nullptr) {
-            for (auto condition : *cs->mutable_condition()) {
-                //            sta::MODS *write_basicblock = get_write_basicblock(&condition.second);
-                sta::MODS *write_basicblock = get_write_basicblock(&condition);
-                if (write_basicblock == nullptr) {
-                } else {
-
-                    auto *wa = new WriteAddresses();
-                    //                wa->set_allocated_condition(&condition.second);
-                    //                for (auto &x : *write_basicblock) {
-                    //                    WriteAddress *writeAddress = new WriteAddress;
-                    //                    get_write_address(x, &condition.second, writeAddress);
-                    //                    (*wa->mutable_write_address())[condition.second.syzkaller_uncovered_address()] = *writeAddress;
-                    //                }
-
-                    wa->set_allocated_condition(&condition);
-                    for (auto &x : *write_basicblock) {
-                        WriteAddress *writeAddress = wa->add_write_address();
-                        get_write_address(x, &condition, writeAddress);
-                    }
-
-                    send_write_address(wa);
-                }
-            }
-            cs->Clear();
-        } else {
-        }
-    }
-
-    void DependencyControlCenter::send_write_address(WriteAddresses *writeAddress) {
-        if (writeAddress != nullptr) {
-#if DEBUG_RPC
-            std::cout << "send_write_address : " << std::hex << writeAddress->condition().condition_address()
-                      << std::endl;
-#endif
-            client->SendWriteAddress(*writeAddress);
-        } else {
-        }
-    }
 
     sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u) {
 
@@ -347,7 +283,7 @@ namespace dra {
         return res;
     }
 
-    void DependencyControlCenter::set_runtime_data(runTimeData *r, const std::string& program, uint32_t idx,
+    void DependencyControlCenter::set_runtime_data(runTimeData *r, const std::string &program, uint32_t idx,
                                                    uint32_t condition, uint32_t address) {
         r->set_program(program);
         r->set_task_status(taskStatus::untested);
@@ -461,7 +397,39 @@ namespace dra {
         return res;
     }
 
-    void DependencyControlCenter::check(const std::string &file) {
+    void DependencyControlCenter::check_confition_depednency() {
+        dra::Conditions *cs = client->GetCondition();
+        if (cs != nullptr) {
+            for (auto condition : *cs->mutable_condition()) {
+                sta::MODS *write_basicblock = get_write_basicblock(&condition);
+                if (write_basicblock == nullptr) {
+                } else {
+                    auto *wa = new WriteAddresses();
+                    wa->set_allocated_condition(&condition);
+                    for (auto &x : *write_basicblock) {
+                        WriteAddress *writeAddress = wa->add_write_address();
+                        get_write_address(x, &condition, writeAddress);
+                    }
+                    send_write_address(wa);
+                }
+            }
+            cs->Clear();
+        } else {
+        }
+    }
+
+    void DependencyControlCenter::send_write_address(WriteAddresses *writeAddress) {
+        if (writeAddress != nullptr) {
+#if DEBUG_RPC
+            std::cout << "send_write_address : " << std::hex << writeAddress->condition().condition_address()
+                      << std::endl;
+#endif
+            client->SendWriteAddress(*writeAddress);
+        } else {
+        }
+    }
+
+    void DependencyControlCenter::check_uncovered_addresses_depednency(const std::string &file) {
         std::string Line;
         std::stringstream ss;
         std::ifstream objdumpFile(file);
@@ -525,7 +493,7 @@ namespace dra {
                                     std::cout << "priority : " << x->prio + 100 << std::endl;
                                     std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
                                     for (auto c : *cmd_ctx) {
-                                        for(auto cmd : c->cmd){
+                                        for (auto cmd : c->cmd) {
                                             std::cout << "cmd hex: " << std::hex << cmd << "\n";
                                         }
                                         this->DM.dump_ctxs(&c->ctx);
@@ -562,14 +530,40 @@ namespace dra {
 
     void DependencyControlCenter::getFileOperations(std::string *function_name, std::string *file_operations,
                                                     std::string *kind) {
-        for (const auto& f1 : this->function_json.items()) {
-            for (const auto& f2 : f1.value().items()) {
+        for (const auto &f1 : this->function_json.items()) {
+            for (const auto &f2 : f1.value().items()) {
                 if (*function_name == f2.value()["name"]) {
                     file_operations->assign(f1.key());
                     kind->assign(f2.key());
                 }
             }
         }
+    }
+
+    void dra::DependencyControlCenter::test_sta() {
+        auto f = this->DM.Modules->Function["block/blk-core.c"]["blk_flush_plug_list"];
+        for (const auto &B : f->BasicBlock) {
+            auto b = B.second->basicBlock;
+            std::cout << "b name : " << B.second->name << std::endl;
+
+            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b, true);
+            if (allBasicblock == nullptr) {
+                // no taint or out side
+                std::cout << "allBasicblock == nullptr" << std::endl;
+            } else if (allBasicblock->empty()) {
+                // unrelated to gv
+                std::cout << "allBasicblock->size() == 0" << std::endl;
+            } else if (!allBasicblock->empty()) {
+                std::cout << "allBasicblock != nullptr && allBasicblock->size() != 0" << std::endl;
+            }
+        }
+
+        exit(0);
+    }
+
+    void dra::DependencyControlCenter::test_rpc() {
+
+        exit(0);
     }
 
 } /* namespace dra */
