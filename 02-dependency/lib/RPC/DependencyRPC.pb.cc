@@ -937,500 +937,501 @@ static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptor
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_DependencyRPC_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Empty, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Empty, address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Empty, name_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Empty, name_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Condition, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Condition, condition_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_condition_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Condition, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Condition, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::Condition, successor_),
-  PROTOBUF_FIELD_OFFSET(::dra::Condition, right_branch_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_right_branch_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_condition_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Condition, uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Condition, idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::Condition, successor_),
+        PROTOBUF_FIELD_OFFSET(::dra::Condition, right_branch_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_right_branch_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Call_AddressEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Call, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Call, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::Call, address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Call, address_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Inputs, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Inputs, input_),
-  ~0u,  // no _has_bits_
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Dependencytask, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Dependencytask, input_),
-  PROTOBUF_FIELD_OFFSET(::dra::Dependencytask, name_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Dependencytask, name_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, program_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, task_status_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, rcursive_count_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, priority_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkcondition_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, condition_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkaddress_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, address_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkrightbranchaddress_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, right_branch_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, task_status_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, rcursive_count_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, priority_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkcondition_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, condition_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkaddress_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, address_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkrightbranchaddress_),
+        PROTOBUF_FIELD_OFFSET(::dra::runTimeData, right_branch_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, name_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, file_operations_name_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, kind_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, cmd_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, run_time_date_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, file_operations_name_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, kind_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, cmd_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, run_time_date_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, write_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperations, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperations, name_),
-  PROTOBUF_FIELD_OFFSET(::dra::FileOperations, file_operations_function_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::FileOperations, file_operations_function_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, condition_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, kind_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, file_operations_function_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, input_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, run_time_date_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, condition_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, kind_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, file_operations_function_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, input_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, run_time_date_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, repeat_),
-  PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, prio_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, repeat_),
+        PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, prio_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, condition_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, right_branch_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, bbcount_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, kind_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, input_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, run_time_date_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::dra::Path, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Path, address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, condition_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, right_branch_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, bbcount_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, kind_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, bbcount2_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, input_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, write_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, run_time_date_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Path, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        PROTOBUF_FIELD_OFFSET(::dra::Path, address_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, new_path_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, unstable_path_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, sig_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, program_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, unstable_path_),
+        PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, sig_),
+        PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, program_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Input_UncoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Input_CallEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Input_UncoveredAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Input_UncoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_UncoveredAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Input_WriteAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_WriteAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Input_UncoveredAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Input_WriteAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input_WriteAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Input_WriteAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input_WriteAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Input_WriteAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Input, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Input, sig_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, program_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, call_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, stat_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, write_address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Input, program_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input, call_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input, stat_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input, uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Input, write_address_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Dependency, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Dependency, input_),
-  PROTOBUF_FIELD_OFFSET(::dra::Dependency, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Dependency, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Dependency, uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Dependency, write_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Corpus, input_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, covered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, file_operations_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, tasks_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, high_task_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, boot_task_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, new_input_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, covered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, write_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, file_operations_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, tasks_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, high_task_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, boot_task_),
+        PROTOBUF_FIELD_OFFSET(::dra::Corpus, new_input_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, input_),
-  PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, time_),
-  PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, num_),
-  PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, new_address_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, time_),
+        PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, num_),
+        PROTOBUF_FIELD_OFFSET(::dra::UsefulInput, new_address_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Statistic, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Statistic, name_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistic, executenum_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistic, time_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistic, newtestcasenum_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistic, newaddressnum_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics_StatEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics_StatEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Statistic, executenum_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistic, time_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistic, newtestcasenum_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistic, newaddressnum_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistics_StatEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistics_StatEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Statistics_StatEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics_StatEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Statistics_StatEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Statistics, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Statistics, signalnum_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics, basic_block_number_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics, coverage_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics, stat_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics, useful_input_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Statistics, basic_block_number_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistics, coverage_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistics, stat_),
+        PROTOBUF_FIELD_OFFSET(::dra::Statistics, useful_input_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  PROTOBUF_FIELD_OFFSET(::dra::Task_CoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task_CoveredAddressEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::dra::Task_CoveredAddressEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task_CoveredAddressEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Task_CoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task_CoveredAddressEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Task_CoveredAddressEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Task, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Task, sig_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, index_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, program_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, kind_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, priority_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, hash_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, write_sig_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, write_index_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, write_program_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, covered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, task_status_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, check_write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, check_write_address_final_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, check_write_address_remove_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, final_idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, final_write_idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, remove_idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, remove_write_idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::Tasks_TaskEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Tasks_TaskEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Task, index_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, program_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, kind_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, priority_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, hash_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, write_sig_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, write_index_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, write_program_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, write_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, uncovered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, covered_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, task_status_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, check_write_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, check_write_address_final_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, check_write_address_remove_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, final_idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, final_write_idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, remove_idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::Task, remove_write_idx_),
+        PROTOBUF_FIELD_OFFSET(::dra::Tasks_TaskEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Tasks_TaskEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Tasks_TaskEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Tasks_TaskEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Tasks_TaskEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Tasks, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Tasks, name_),
-  PROTOBUF_FIELD_OFFSET(::dra::Tasks, kind_),
-  PROTOBUF_FIELD_OFFSET(::dra::Tasks, task_),
-  PROTOBUF_FIELD_OFFSET(::dra::Tasks, tasks_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Tasks, kind_),
+        PROTOBUF_FIELD_OFFSET(::dra::Tasks, task_),
+        PROTOBUF_FIELD_OFFSET(::dra::Tasks, tasks_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Time, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Time, time_),
-  PROTOBUF_FIELD_OFFSET(::dra::Time, num_),
-  PROTOBUF_FIELD_OFFSET(::dra::Time, executenum_),
-  PROTOBUF_FIELD_OFFSET(::dra::Coverage_CoverageEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Coverage_CoverageEntry_DoNotUse, _internal_metadata_),
-  ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::dra::Time, num_),
+        PROTOBUF_FIELD_OFFSET(::dra::Time, executenum_),
+        PROTOBUF_FIELD_OFFSET(::dra::Coverage_CoverageEntry_DoNotUse, _has_bits_),
+        PROTOBUF_FIELD_OFFSET(::dra::Coverage_CoverageEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Coverage_CoverageEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Coverage_CoverageEntry_DoNotUse, value_),
-  0,
-  1,
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Coverage_CoverageEntry_DoNotUse, value_),
+        0,
+        1,
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Coverage, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Coverage, coverage_),
-  PROTOBUF_FIELD_OFFSET(::dra::Coverage, time_),
-  ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::dra::Coverage, time_),
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::Conditions, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Conditions, condition_),
-  ~0u,  // no _has_bits_
+        ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, _internal_metadata_),
-  ~0u,  // no _extensions_
+        ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, condition_),
-  PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, write_address_),
+        PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, write_address_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::dra::Empty)},
-  { 7, -1, sizeof(::dra::Condition)},
-  { 20, 27, sizeof(::dra::Call_AddressEntry_DoNotUse)},
-  { 29, -1, sizeof(::dra::Call)},
-  { 36, -1, sizeof(::dra::Inputs)},
-  { 42, -1, sizeof(::dra::Dependencytask)},
-  { 49, -1, sizeof(::dra::runTimeData)},
-  { 65, 72, sizeof(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse)},
-  { 74, -1, sizeof(::dra::FileOperationsFunction)},
-  { 85, 92, sizeof(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse)},
-  { 94, -1, sizeof(::dra::FileOperations)},
-  { 101, 108, sizeof(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse)},
-  { 110, 117, sizeof(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse)},
-  { 119, 126, sizeof(::dra::WriteAddress_InputEntry_DoNotUse)},
-  { 128, -1, sizeof(::dra::WriteAddress)},
-  { 140, -1, sizeof(::dra::writeAddressAttributes)},
-  { 148, 155, sizeof(::dra::UncoveredAddress_InputEntry_DoNotUse)},
-  { 157, 164, sizeof(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse)},
-  { 166, -1, sizeof(::dra::UncoveredAddress)},
-  { 179, -1, sizeof(::dra::Path)},
-  { 185, -1, sizeof(::dra::UnstableInput)},
-  { 195, 202, sizeof(::dra::Input_CallEntry_DoNotUse)},
-  { 204, 211, sizeof(::dra::Input_UncoveredAddressEntry_DoNotUse)},
-  { 213, 220, sizeof(::dra::Input_WriteAddressEntry_DoNotUse)},
-  { 222, -1, sizeof(::dra::Input)},
-  { 233, -1, sizeof(::dra::Dependency)},
-  { 241, 248, sizeof(::dra::Corpus_InputEntry_DoNotUse)},
-  { 250, 257, sizeof(::dra::Corpus_UncoveredAddressEntry_DoNotUse)},
-  { 259, 266, sizeof(::dra::Corpus_CoveredAddressEntry_DoNotUse)},
-  { 268, 275, sizeof(::dra::Corpus_WriteAddressEntry_DoNotUse)},
-  { 277, 284, sizeof(::dra::Corpus_FileOperationsEntry_DoNotUse)},
-  { 286, 293, sizeof(::dra::Corpus_NewInputEntry_DoNotUse)},
-  { 295, -1, sizeof(::dra::Corpus)},
-  { 309, -1, sizeof(::dra::UsefulInput)},
-  { 318, -1, sizeof(::dra::Statistic)},
-  { 328, 335, sizeof(::dra::Statistics_StatEntry_DoNotUse)},
-  { 337, -1, sizeof(::dra::Statistics)},
-  { 347, 354, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
-  { 356, 363, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
-  { 365, -1, sizeof(::dra::Task)},
-  { 390, 397, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
-  { 399, -1, sizeof(::dra::Tasks)},
-  { 408, -1, sizeof(::dra::Time)},
-  { 416, 423, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
-  { 425, -1, sizeof(::dra::Coverage)},
-  { 432, -1, sizeof(::dra::Conditions)},
-  { 438, -1, sizeof(::dra::WriteAddresses)},
+        {0,   -1,  sizeof(::dra::Empty)},
+        {7,   -1,  sizeof(::dra::Condition)},
+        {20,  27,  sizeof(::dra::Call_AddressEntry_DoNotUse)},
+        {29,  -1,  sizeof(::dra::Call)},
+        {36,  -1,  sizeof(::dra::Inputs)},
+        {42,  -1,  sizeof(::dra::Dependencytask)},
+        {49,  -1,  sizeof(::dra::runTimeData)},
+        {65,  72,  sizeof(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse)},
+        {74,  -1,  sizeof(::dra::FileOperationsFunction)},
+        {85,  92,  sizeof(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse)},
+        {94,  -1,  sizeof(::dra::FileOperations)},
+        {101, 108, sizeof(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse)},
+        {110, 117, sizeof(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse)},
+        {119, 126, sizeof(::dra::WriteAddress_InputEntry_DoNotUse)},
+        {128, -1,  sizeof(::dra::WriteAddress)},
+        {140, -1,  sizeof(::dra::writeAddressAttributes)},
+        {148, 155, sizeof(::dra::UncoveredAddress_InputEntry_DoNotUse)},
+        {157, 164, sizeof(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse)},
+        {166, -1,  sizeof(::dra::UncoveredAddress)},
+        {180, -1,  sizeof(::dra::Path)},
+        {186, -1,  sizeof(::dra::UnstableInput)},
+        {196, 203, sizeof(::dra::Input_CallEntry_DoNotUse)},
+        {205, 212, sizeof(::dra::Input_UncoveredAddressEntry_DoNotUse)},
+        {214, 221, sizeof(::dra::Input_WriteAddressEntry_DoNotUse)},
+        {223, -1,  sizeof(::dra::Input)},
+        {234, -1,  sizeof(::dra::Dependency)},
+        {242, 249, sizeof(::dra::Corpus_InputEntry_DoNotUse)},
+        {251, 258, sizeof(::dra::Corpus_UncoveredAddressEntry_DoNotUse)},
+        {260, 267, sizeof(::dra::Corpus_CoveredAddressEntry_DoNotUse)},
+        {269, 276, sizeof(::dra::Corpus_WriteAddressEntry_DoNotUse)},
+        {278, 285, sizeof(::dra::Corpus_FileOperationsEntry_DoNotUse)},
+        {287, 294, sizeof(::dra::Corpus_NewInputEntry_DoNotUse)},
+        {296, -1,  sizeof(::dra::Corpus)},
+        {310, -1,  sizeof(::dra::UsefulInput)},
+        {319, -1,  sizeof(::dra::Statistic)},
+        {329, 336, sizeof(::dra::Statistics_StatEntry_DoNotUse)},
+        {338, -1,  sizeof(::dra::Statistics)},
+        {348, 355, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
+        {357, 364, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
+        {366, -1,  sizeof(::dra::Task)},
+        {391, 398, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
+        {400, -1,  sizeof(::dra::Tasks)},
+        {409, -1,  sizeof(::dra::Time)},
+        {417, 424, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
+        {426, -1,  sizeof(::dra::Coverage)},
+        {433, -1,  sizeof(::dra::Conditions)},
+        {439, -1,  sizeof(::dra::WriteAddresses)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1484,7 +1485,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\023DependencyRPC.proto\022\003dra\"&\n\005Empty\022\017\n\007a"
+        "\n\023DependencyRPC.proto\022\003dra\"&\n\005Empty\022\017\n\007a"
   "ddress\030\001 \001(\r\022\014\n\004name\030\002 \001(\t\"\361\001\n\tCondition"
   "\022\031\n\021condition_address\030\001 \001(\004\022#\n\033syzkaller"
   "_condition_address\030\002 \001(\r\022\031\n\021uncovered_ad"
@@ -1525,136 +1526,137 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VA
   "ry\022+\n\005input\030\031 \003(\0132\034.dra.WriteAddress.Inp"
   "utEntry\022\'\n\rrun_time_date\030\013 \001(\0132\020.dra.run"
   "TimeData\032T\n\025UncoveredAddressEntry\022\013\n\003key"
-  "\030\001 \001(\r\022*\n\005value\030\002 \001(\0132\033.dra.writeAddress"
-  "Attributes:\0028\001\032=\n\033FileOperationsFunction"
-  "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:\0028\001\032,\n"
-  "\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:"
-  "\0028\001\"M\n\026writeAddressAttributes\022\025\n\rwrite_a"
-  "ddress\030\002 \001(\r\022\016\n\006repeat\030\007 \001(\r\022\014\n\004prio\030\006 \001"
-  "(\r\"\272\003\n\020UncoveredAddress\022\031\n\021condition_add"
-  "ress\030\001 \001(\r\022\031\n\021uncovered_address\030\002 \001(\r\022\034\n"
-  "\024right_branch_address\030\003 \003(\r\022\017\n\007bbcount\030\004"
-  " \001(\r\022\'\n\004kind\030\005 \001(\0162\031.dra.UncoveredAddres"
-  "sKind\022/\n\005input\030\026 \003(\0132 .dra.UncoveredAddr"
-  "ess.InputEntry\022>\n\rwrite_address\030\027 \003(\0132\'."
-  "dra.UncoveredAddress.WriteAddressEntry\022\'"
-  "\n\rrun_time_date\030\010 \001(\0132\020.dra.runTimeData\032"
-  ",\n\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001("
-  "\r:\0028\001\032P\n\021WriteAddressEntry\022\013\n\003key\030\001 \001(\r\022"
-  "*\n\005value\030\002 \001(\0132\033.dra.writeAddressAttribu"
-  "tes:\0028\001\"\027\n\004Path\022\017\n\007address\030\001 \003(\r\"y\n\rUnst"
-  "ableInput\022\033\n\010new_path\030\001 \001(\0132\t.dra.Path\022 "
-  "\n\runstable_path\030\002 \001(\0132\t.dra.Path\022\013\n\003idx\030"
-  "\003 \001(\005\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030\014 \001(\014\"\201\003\n\005"
-  "Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030\014 \001(\014\022\"\n\004c"
-  "all\030\r \003(\0132\024.dra.Input.CallEntry\022\036\n\004stat\030"
-  "\025 \001(\0162\020.dra.FuzzingStat\022;\n\021uncovered_add"
-  "ress\030\026 \003(\0132 .dra.Input.UncoveredAddressE"
-  "ntry\0223\n\rwrite_address\030\031 \003(\0132\034.dra.Input."
-  "WriteAddressEntry\0326\n\tCallEntry\022\013\n\003key\030\001 "
-  "\001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:\0028\001\0327\n\025Unc"
-  "overedAddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value"
-  "\030\002 \001(\r:\0028\001\0323\n\021WriteAddressEntry\022\013\n\003key\030\001"
-  " \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\203\001\n\nDependency\022\031"
-  "\n\005input\030\001 \001(\0132\n.dra.Input\0220\n\021uncovered_a"
-  "ddress\030\002 \001(\0132\025.dra.UncoveredAddress\022(\n\rw"
-  "rite_address\030\003 \003(\0132\021.dra.WriteAddress\"\307\006"
-  "\n\006Corpus\022%\n\005input\030\001 \003(\0132\026.dra.Corpus.Inp"
-  "utEntry\022<\n\021uncovered_address\030\004 \003(\0132!.dra"
-  ".Corpus.UncoveredAddressEntry\0228\n\017covered"
-  "_address\030\002 \003(\0132\037.dra.Corpus.CoveredAddre"
-  "ssEntry\0224\n\rwrite_address\030\005 \003(\0132\035.dra.Cor"
-  "pus.WriteAddressEntry\0228\n\017file_operations"
-  "\030\006 \003(\0132\037.dra.Corpus.FileOperationsEntry\022"
-  "\031\n\005tasks\030\007 \001(\0132\n.dra.Tasks\022\035\n\thigh_task\030"
-  "\010 \001(\0132\n.dra.Tasks\022\035\n\tboot_task\030\t \001(\0132\n.d"
-  "ra.Tasks\022,\n\tnew_input\030\013 \003(\0132\031.dra.Corpus"
-  ".NewInputEntry\0328\n\nInputEntry\022\013\n\003key\030\001 \001("
-  "\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001\032N\n\025Unco"
-  "veredAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005value\030"
-  "\002 \001(\0132\025.dra.UncoveredAddress:\0028\001\032L\n\023Cove"
-  "redAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005value\030\002 "
-  "\001(\0132\025.dra.UncoveredAddress:\0028\001\032F\n\021WriteA"
-  "ddressEntry\022\013\n\003key\030\001 \001(\r\022 \n\005value\030\002 \001(\0132"
-  "\021.dra.WriteAddress:\0028\001\032J\n\023FileOperations"
-  "Entry\022\013\n\003key\030\001 \001(\t\022\"\n\005value\030\002 \001(\0132\023.dra."
-  "FileOperations:\0028\001\032;\n\rNewInputEntry\022\013\n\003k"
-  "ey\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001\""
-  "X\n\013UsefulInput\022\031\n\005input\030\001 \001(\0132\n.dra.Inpu"
-  "t\022\014\n\004time\030\002 \001(\001\022\013\n\003num\030\003 \001(\004\022\023\n\013new_addr"
-  "ess\030\004 \003(\r\"|\n\tStatistic\022\036\n\004name\030\001 \001(\0162\020.d"
-  "ra.FuzzingStat\022\022\n\nexecuteNum\030\013 \001(\004\022\014\n\004ti"
-  "me\030\014 \001(\001\022\026\n\016newTestCaseNum\030\r \001(\004\022\025\n\rnewA"
-  "ddressNum\030\016 \001(\004\"\352\001\n\nStatistics\022\021\n\tsignal"
-  "Num\030\001 \001(\004\022\032\n\022basic_block_number\030\n \001(\r\022\037\n"
-  "\010coverage\030\010 \001(\0132\r.dra.Coverage\022\'\n\004stat\030\013"
-  " \003(\0132\031.dra.Statistics.StatEntry\022&\n\014usefu"
-  "l_input\030\014 \003(\0132\020.dra.UsefulInput\032;\n\tStatE"
-  "ntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001(\0132\016.dra.S"
-  "tatistic:\0028\001\"\243\005\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005in"
-  "dex\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\014\n\004kind\030\004 \001(\r"
-  "\022\020\n\010priority\030\005 \001(\005\022\014\n\004hash\030\006 \001(\t\022\021\n\twrit"
-  "e_sig\030\013 \001(\t\022\023\n\013write_index\030\014 \001(\r\022\025\n\rwrit"
-  "e_program\030\r \001(\014\022\025\n\rwrite_address\030\016 \001(\r\022:"
-  "\n\021uncovered_address\030\025 \003(\0132\037.dra.Task.Unc"
-  "overedAddressEntry\0226\n\017covered_address\030\027 "
-  "\003(\0132\035.dra.Task.CoveredAddressEntry\022$\n\013ta"
-  "sk_status\030\030 \001(\0162\017.dra.taskStatus\022\033\n\023chec"
-  "k_write_address\030\031 \001(\010\022!\n\031check_write_add"
-  "ress_final\030\032 \001(\010\022\"\n\032check_write_address_"
-  "remove\030\033 \001(\010\022\021\n\tfinal_idx\030\034 \001(\r\022\027\n\017final"
-  "_write_idx\030\035 \001(\r\022\022\n\nremove_idx\030\036 \001(\r\022\030\n\020"
-  "remove_write_idx\030\037 \001(\r\032I\n\025UncoveredAddre"
-  "ssEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dr"
-  "a.runTimeData:\0028\001\032G\n\023CoveredAddressEntry"
-  "\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTi"
-  "meData:\0028\001\"\250\001\n\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004ki"
-  "nd\030* \001(\0162\r.dra.TaskKind\022\"\n\004task\030\001 \003(\0132\024."
-  "dra.Tasks.TaskEntry\022\030\n\005tasks\030\002 \003(\0132\t.dra"
-  ".Task\0326\n\tTaskEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value"
-  "\030\002 \001(\0132\t.dra.Task:\0028\001\"5\n\004Time\022\014\n\004time\030\001 "
-  "\001(\001\022\013\n\003num\030\002 \001(\003\022\022\n\nexecuteNum\030\003 \001(\003\"\203\001\n"
-  "\010Coverage\022-\n\010coverage\030\001 \003(\0132\033.dra.Covera"
-  "ge.CoverageEntry\022\027\n\004time\030\002 \003(\0132\t.dra.Tim"
-  "e\032/\n\rCoverageEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value"
-  "\030\002 \001(\r:\0028\001\"/\n\nConditions\022!\n\tcondition\030\n "
-  "\003(\0132\016.dra.Condition\"]\n\016WriteAddresses\022!\n"
-  "\tcondition\030\001 \001(\0132\016.dra.Condition\022(\n\rwrit"
-  "e_address\030\004 \003(\0132\021.dra.WriteAddress*f\n\nta"
-  "skStatus\022\014\n\010untested\020\000\022\r\n\trecursive\020\001\022\n\n"
-  "\006tested\020\002\022\007\n\003out\020\003\022\013\n\007covered\020\004\022\013\n\007testi"
-  "ng\020\005\022\014\n\010unstable\020\006*\215\001\n\024file_operations_k"
-  "ind\022\013\n\007default\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010"
-  "\n\004read\020\003\022\t\n\005write\020\004\022\010\n\004poll\020\t\022\022\n\016unlocke"
-  "d_ioctl\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n\007release"
-  "\020\020*W\n\024UncoveredAddressKind\022\013\n\007Outside\020\000\022"
-  "\020\n\014InputRelated\020\001\022\025\n\021DependnecyRelated\020\002"
-  "\022\t\n\005Other\020\003*\312\001\n\013FuzzingStat\022\017\n\013StatDefau"
-  "lt\020\000\022\020\n\014StatGenerate\020\001\022\014\n\010StatFuzz\020\002\022\021\n\r"
-  "StatCandidate\020\003\022\016\n\nStatTriage\020\004\022\020\n\014StatM"
-  "inimize\020\005\022\r\n\tStatSmash\020\006\022\014\n\010StatHint\020\007\022\014"
-  "\n\010StatSeed\020\010\022\022\n\016StatDependency\020\t\022\026\n\022Stat"
-  "DependencyBoot\020\n**\n\010TaskKind\022\n\n\006Normal\020\000"
-  "\022\010\n\004High\020\001\022\010\n\004Boot\020\0022\365\005\n\rDependencyRPC\022("
-  "\n\014GetVMOffsets\022\n.dra.Empty\032\n.dra.Empty\"\000"
-  "\0220\n\024SendBasicBlockNumber\022\n.dra.Empty\032\n.d"
-  "ra.Empty\"\000\022(\n\013GetNewInput\022\n.dra.Empty\032\013."
-  "dra.Inputs\"\000\022/\n\016SendDependency\022\017.dra.Dep"
-  "endency\032\n.dra.Empty\"\000\022-\n\014GetCondition\022\n."
-  "dra.Empty\032\017.dra.Conditions\"\000\0225\n\020SendWrit"
-  "eAddress\022\023.dra.WriteAddresses\032\n.dra.Empt"
-  "y\"\000\022#\n\007Connect\022\n.dra.Empty\032\n.dra.Empty\"\000"
-  "\022(\n\014SendNewInput\022\n.dra.Input\032\n.dra.Empty"
-  "\"\000\022$\n\010GetTasks\022\n.dra.Empty\032\n.dra.Tasks\"\000"
-  "\022(\n\014GetBootTasks\022\n.dra.Empty\032\n.dra.Tasks"
-  "\"\000\022\'\n\013ReturnTasks\022\n.dra.Tasks\032\n.dra.Empt"
-  "y\"\000\022)\n\rSendBootInput\022\n.dra.Input\032\n.dra.E"
-  "mpty\"\000\0225\n\021SendUnstableInput\022\022.dra.Unstab"
-  "leInput\032\n.dra.Empty\"\000\022#\n\007SendLog\022\n.dra.E"
-  "mpty\032\n.dra.Empty\"\000\022(\n\010sendStat\022\016.dra.Sta"
-  "tistic\032\n.dra.Empty\"\000\022#\n\007GetNeed\022\n.dra.Em"
-  "pty\032\n.dra.Empty\"\000\022)\n\rSendNeedInput\022\n.dra"
-  ".Input\032\n.dra.Empty\"\000b\006proto3"
+        "\030\001 \001(\r\022*\n\005value\030\002 \001(\0132\033.dra.writeAddress"
+        "Attributes:\0028\001\032=\n\033FileOperationsFunction"
+        "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:\0028\001\032,\n"
+        "\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:"
+        "\0028\001\"M\n\026writeAddressAttributes\022\025\n\rwrite_a"
+        "ddress\030\002 \001(\r\022\016\n\006repeat\030\007 \001(\r\022\014\n\004prio\030\006 \001"
+        "(\r\"\314\003\n\020UncoveredAddress\022\031\n\021condition_add"
+        "ress\030\001 \001(\r\022\031\n\021uncovered_address\030\002 \001(\r\022\034\n"
+        "\024right_branch_address\030\003 \003(\r\022\017\n\007bbcount\030\004"
+        " \001(\r\022\'\n\004kind\030\005 \001(\0162\031.dra.UncoveredAddres"
+        "sKind\022\020\n\010bbcount2\030\006 \001(\r\022/\n\005input\030\026 \003(\0132 "
+        ".dra.UncoveredAddress.InputEntry\022>\n\rwrit"
+        "e_address\030\027 \003(\0132\'.dra.UncoveredAddress.W"
+        "riteAddressEntry\022\'\n\rrun_time_date\030\010 \001(\0132"
+        "\020.dra.runTimeData\032,\n\nInputEntry\022\013\n\003key\030\001"
+        " \001(\t\022\r\n\005value\030\002 \001(\r:\0028\001\032P\n\021WriteAddressE"
+        "ntry\022\013\n\003key\030\001 \001(\r\022*\n\005value\030\002 \001(\0132\033.dra.w"
+        "riteAddressAttributes:\0028\001\"\027\n\004Path\022\017\n\007add"
+        "ress\030\001 \003(\r\"y\n\rUnstableInput\022\033\n\010new_path\030"
+        "\001 \001(\0132\t.dra.Path\022 \n\runstable_path\030\002 \001(\0132"
+        "\t.dra.Path\022\013\n\003idx\030\003 \001(\005\022\013\n\003sig\030\013 \001(\t\022\017\n\007"
+        "program\030\014 \001(\014\"\201\003\n\005Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007"
+        "program\030\014 \001(\014\022\"\n\004call\030\r \003(\0132\024.dra.Input."
+        "CallEntry\022\036\n\004stat\030\025 \001(\0162\020.dra.FuzzingSta"
+        "t\022;\n\021uncovered_address\030\026 \003(\0132 .dra.Input"
+        ".UncoveredAddressEntry\0223\n\rwrite_address\030"
+        "\031 \003(\0132\034.dra.Input.WriteAddressEntry\0326\n\tC"
+        "allEntry\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.d"
+        "ra.Call:\0028\001\0327\n\025UncoveredAddressEntry\022\013\n\003"
+        "key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\0323\n\021WriteAdd"
+        "ressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028"
+        "\001\"\203\001\n\nDependency\022\031\n\005input\030\001 \001(\0132\n.dra.In"
+        "put\0220\n\021uncovered_address\030\002 \001(\0132\025.dra.Unc"
+        "overedAddress\022(\n\rwrite_address\030\003 \003(\0132\021.d"
+        "ra.WriteAddress\"\307\006\n\006Corpus\022%\n\005input\030\001 \003("
+        "\0132\026.dra.Corpus.InputEntry\022<\n\021uncovered_a"
+        "ddress\030\004 \003(\0132!.dra.Corpus.UncoveredAddre"
+        "ssEntry\0228\n\017covered_address\030\002 \003(\0132\037.dra.C"
+        "orpus.CoveredAddressEntry\0224\n\rwrite_addre"
+        "ss\030\005 \003(\0132\035.dra.Corpus.WriteAddressEntry\022"
+        "8\n\017file_operations\030\006 \003(\0132\037.dra.Corpus.Fi"
+        "leOperationsEntry\022\031\n\005tasks\030\007 \001(\0132\n.dra.T"
+        "asks\022\035\n\thigh_task\030\010 \001(\0132\n.dra.Tasks\022\035\n\tb"
+        "oot_task\030\t \001(\0132\n.dra.Tasks\022,\n\tnew_input\030"
+        "\013 \003(\0132\031.dra.Corpus.NewInputEntry\0328\n\nInpu"
+        "tEntry\022\013\n\003key\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra"
+        ".Input:\0028\001\032N\n\025UncoveredAddressEntry\022\013\n\003k"
+        "ey\030\001 \001(\r\022$\n\005value\030\002 \001(\0132\025.dra.UncoveredA"
+        "ddress:\0028\001\032L\n\023CoveredAddressEntry\022\013\n\003key"
+        "\030\001 \001(\r\022$\n\005value\030\002 \001(\0132\025.dra.UncoveredAdd"
+        "ress:\0028\001\032F\n\021WriteAddressEntry\022\013\n\003key\030\001 \001"
+        "(\r\022 \n\005value\030\002 \001(\0132\021.dra.WriteAddress:\0028\001"
+        "\032J\n\023FileOperationsEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005"
+        "value\030\002 \001(\0132\023.dra.FileOperations:\0028\001\032;\n\r"
+        "NewInputEntry\022\013\n\003key\030\001 \001(\t\022\031\n\005value\030\002 \001("
+        "\0132\n.dra.Input:\0028\001\"X\n\013UsefulInput\022\031\n\005inpu"
+        "t\030\001 \001(\0132\n.dra.Input\022\014\n\004time\030\002 \001(\001\022\013\n\003num"
+        "\030\003 \001(\004\022\023\n\013new_address\030\004 \003(\r\"|\n\tStatistic"
+        "\022\036\n\004name\030\001 \001(\0162\020.dra.FuzzingStat\022\022\n\nexec"
+        "uteNum\030\013 \001(\004\022\014\n\004time\030\014 \001(\001\022\026\n\016newTestCas"
+        "eNum\030\r \001(\004\022\025\n\rnewAddressNum\030\016 \001(\004\"\352\001\n\nSt"
+        "atistics\022\021\n\tsignalNum\030\001 \001(\004\022\032\n\022basic_blo"
+        "ck_number\030\n \001(\r\022\037\n\010coverage\030\010 \001(\0132\r.dra."
+        "Coverage\022\'\n\004stat\030\013 \003(\0132\031.dra.Statistics."
+        "StatEntry\022&\n\014useful_input\030\014 \003(\0132\020.dra.Us"
+        "efulInput\032;\n\tStatEntry\022\013\n\003key\030\001 \001(\005\022\035\n\005v"
+        "alue\030\002 \001(\0132\016.dra.Statistic:\0028\001\"\243\005\n\004Task\022"
+        "\013\n\003sig\030\001 \001(\t\022\r\n\005index\030\002 \001(\r\022\017\n\007program\030\003"
+        " \001(\014\022\014\n\004kind\030\004 \001(\r\022\020\n\010priority\030\005 \001(\005\022\014\n\004"
+        "hash\030\006 \001(\t\022\021\n\twrite_sig\030\013 \001(\t\022\023\n\013write_i"
+        "ndex\030\014 \001(\r\022\025\n\rwrite_program\030\r \001(\014\022\025\n\rwri"
+        "te_address\030\016 \001(\r\022:\n\021uncovered_address\030\025 "
+        "\003(\0132\037.dra.Task.UncoveredAddressEntry\0226\n\017"
+        "covered_address\030\027 \003(\0132\035.dra.Task.Covered"
+        "AddressEntry\022$\n\013task_status\030\030 \001(\0162\017.dra."
+        "taskStatus\022\033\n\023check_write_address\030\031 \001(\010\022"
+        "!\n\031check_write_address_final\030\032 \001(\010\022\"\n\032ch"
+        "eck_write_address_remove\030\033 \001(\010\022\021\n\tfinal_"
+        "idx\030\034 \001(\r\022\027\n\017final_write_idx\030\035 \001(\r\022\022\n\nre"
+        "move_idx\030\036 \001(\r\022\030\n\020remove_write_idx\030\037 \001(\r"
+        "\032I\n\025UncoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022\037"
+        "\n\005value\030\002 \001(\0132\020.dra.runTimeData:\0028\001\032G\n\023C"
+        "overedAddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value"
+        "\030\002 \001(\0132\020.dra.runTimeData:\0028\001\"\250\001\n\005Tasks\022\014"
+        "\n\004name\030) \001(\t\022\033\n\004kind\030* \001(\0162\r.dra.TaskKin"
+        "d\022\"\n\004task\030\001 \003(\0132\024.dra.Tasks.TaskEntry\022\030\n"
+        "\005tasks\030\002 \003(\0132\t.dra.Task\0326\n\tTaskEntry\022\013\n\003"
+        "key\030\001 \001(\t\022\030\n\005value\030\002 \001(\0132\t.dra.Task:\0028\001\""
+        "5\n\004Time\022\014\n\004time\030\001 \001(\001\022\013\n\003num\030\002 \001(\003\022\022\n\nex"
+        "ecuteNum\030\003 \001(\003\"\203\001\n\010Coverage\022-\n\010coverage\030"
+        "\001 \003(\0132\033.dra.Coverage.CoverageEntry\022\027\n\004ti"
+        "me\030\002 \003(\0132\t.dra.Time\032/\n\rCoverageEntry\022\013\n\003"
+        "key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"/\n\nConditio"
+        "ns\022!\n\tcondition\030\n \003(\0132\016.dra.Condition\"]\n"
+        "\016WriteAddresses\022!\n\tcondition\030\001 \001(\0132\016.dra"
+        ".Condition\022(\n\rwrite_address\030\004 \003(\0132\021.dra."
+        "WriteAddress*f\n\ntaskStatus\022\014\n\010untested\020\000"
+        "\022\r\n\trecursive\020\001\022\n\n\006tested\020\002\022\007\n\003out\020\003\022\013\n\007"
+        "covered\020\004\022\013\n\007testing\020\005\022\014\n\010unstable\020\006*\215\001\n"
+        "\024file_operations_kind\022\013\n\007default\020\000\022\010\n\004in"
+        "it\020\001\022\n\n\006llseek\020\002\022\010\n\004read\020\003\022\t\n\005write\020\004\022\010\n"
+        "\004poll\020\t\022\022\n\016unlocked_ioctl\020\n\022\010\n\004mmap\020\014\022\010\n"
+        "\004open\020\016\022\013\n\007release\020\020*W\n\024UncoveredAddress"
+        "Kind\022\013\n\007Outside\020\000\022\020\n\014InputRelated\020\001\022\025\n\021D"
+        "ependnecyRelated\020\002\022\t\n\005Other\020\003*\312\001\n\013Fuzzin"
+        "gStat\022\017\n\013StatDefault\020\000\022\020\n\014StatGenerate\020\001"
+        "\022\014\n\010StatFuzz\020\002\022\021\n\rStatCandidate\020\003\022\016\n\nSta"
+        "tTriage\020\004\022\020\n\014StatMinimize\020\005\022\r\n\tStatSmash"
+        "\020\006\022\014\n\010StatHint\020\007\022\014\n\010StatSeed\020\010\022\022\n\016StatDe"
+        "pendency\020\t\022\026\n\022StatDependencyBoot\020\n**\n\010Ta"
+        "skKind\022\n\n\006Normal\020\000\022\010\n\004High\020\001\022\010\n\004Boot\020\0022\365"
+        "\005\n\rDependencyRPC\022(\n\014GetVMOffsets\022\n.dra.E"
+        "mpty\032\n.dra.Empty\"\000\0220\n\024SendBasicBlockNumb"
+        "er\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\013GetNewIn"
+        "put\022\n.dra.Empty\032\013.dra.Inputs\"\000\022/\n\016SendDe"
+        "pendency\022\017.dra.Dependency\032\n.dra.Empty\"\000\022"
+        "-\n\014GetCondition\022\n.dra.Empty\032\017.dra.Condit"
+        "ions\"\000\0225\n\020SendWriteAddress\022\023.dra.WriteAd"
+        "dresses\032\n.dra.Empty\"\000\022#\n\007Connect\022\n.dra.E"
+        "mpty\032\n.dra.Empty\"\000\022(\n\014SendNewInput\022\n.dra"
+        ".Input\032\n.dra.Empty\"\000\022$\n\010GetTasks\022\n.dra.E"
+        "mpty\032\n.dra.Tasks\"\000\022(\n\014GetBootTasks\022\n.dra"
+        ".Empty\032\n.dra.Tasks\"\000\022\'\n\013ReturnTasks\022\n.dr"
+        "a.Tasks\032\n.dra.Empty\"\000\022)\n\rSendBootInput\022\n"
+        ".dra.Input\032\n.dra.Empty\"\000\0225\n\021SendUnstable"
+        "Input\022\022.dra.UnstableInput\032\n.dra.Empty\"\000\022"
+        "#\n\007SendLog\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\010"
+        "sendStat\022\016.dra.Statistic\032\n.dra.Empty\"\000\022#"
+        "\n\007GetNeed\022\n.dra.Empty\032\n.dra.Empty\"\000\022)\n\rS"
+        "endNeedInput\022\n.dra.Input\032\n.dra.Empty\"\000b\006"
+        "proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -1710,10 +1712,13 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 6828,
-  &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 47, 0,
-  schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
-  file_level_metadata_DependencyRPC_2eproto, 47, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
+        &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto,
+        "DependencyRPC.proto", 6846,
+        &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs,
+        descriptor_table_DependencyRPC_2eproto_deps, 47, 0,
+        schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
+        file_level_metadata_DependencyRPC_2eproto, 47, file_level_enum_descriptors_DependencyRPC_2eproto,
+        file_level_service_descriptors_DependencyRPC_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -5088,17 +5093,17 @@ UncoveredAddress::UncoveredAddress(const UncoveredAddress& from)
   } else {
     run_time_date_ = nullptr;
   }
-  ::memcpy(&condition_address_, &from.condition_address_,
-    static_cast<size_t>(reinterpret_cast<char*>(&kind_) -
-    reinterpret_cast<char*>(&condition_address_)) + sizeof(kind_));
+    ::memcpy(&condition_address_, &from.condition_address_,
+             static_cast<size_t>(reinterpret_cast<char *>(&bbcount2_) -
+                                 reinterpret_cast<char *>(&condition_address_)) + sizeof(bbcount2_));
   // @@protoc_insertion_point(copy_constructor:dra.UncoveredAddress)
 }
 
 void UncoveredAddress::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UncoveredAddress_DependencyRPC_2eproto.base);
-  ::memset(&run_time_date_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&kind_) -
-      reinterpret_cast<char*>(&run_time_date_)) + sizeof(kind_));
+    ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UncoveredAddress_DependencyRPC_2eproto.base);
+    ::memset(&run_time_date_, 0, static_cast<size_t>(
+                                         reinterpret_cast<char *>(&bbcount2_) -
+                                         reinterpret_cast<char *>(&run_time_date_)) + sizeof(bbcount2_));
 }
 
 UncoveredAddress::~UncoveredAddress() {
@@ -5131,11 +5136,11 @@ void UncoveredAddress::Clear() {
   if (GetArenaNoVirtual() == nullptr && run_time_date_ != nullptr) {
     delete run_time_date_;
   }
-  run_time_date_ = nullptr;
-  ::memset(&condition_address_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&kind_) -
-      reinterpret_cast<char*>(&condition_address_)) + sizeof(kind_));
-  _internal_metadata_.Clear();
+    run_time_date_ = nullptr;
+    ::memset(&condition_address_, 0, static_cast<size_t>(
+                                             reinterpret_cast<char *>(&bbcount2_) -
+                                             reinterpret_cast<char *>(&condition_address_)) + sizeof(bbcount2_));
+    _internal_metadata_.Clear();
 }
 
 const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -5172,26 +5177,33 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
       // uint32 bbcount = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          bbcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
+            bbcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+            CHK_(ptr);
         } else goto handle_unusual;
-        continue;
-      // .dra.UncoveredAddressKind kind = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-          _internal_set_kind(static_cast<::dra::UncoveredAddressKind>(val));
-        } else goto handle_unusual;
-        continue;
-      // .dra.runTimeData run_time_date = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
-          ptr = ctx->ParseMessage(_internal_mutable_run_time_date(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // map<string, uint32> input = 22;
+            continue;
+            // .dra.UncoveredAddressKind kind = 5;
+        case 5:
+            if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+                ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+                CHK_(ptr);
+                _internal_set_kind(static_cast<::dra::UncoveredAddressKind>(val));
+            } else goto handle_unusual;
+            continue;
+            // uint32 bbcount2 = 6;
+        case 6:
+            if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+                bbcount2_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+                CHK_(ptr);
+            } else goto handle_unusual;
+            continue;
+            // .dra.runTimeData run_time_date = 8;
+        case 8:
+            if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+                ptr = ctx->ParseMessage(_internal_mutable_run_time_date(), ptr);
+                CHK_(ptr);
+            } else goto handle_unusual;
+            continue;
+            // map<string, uint32> input = 22;
       case 22:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 178)) {
           ptr -= 2;
@@ -5265,25 +5277,33 @@ failure:
   // uint32 bbcount = 4;
   if (this->bbcount() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_bbcount(), target);
+      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_bbcount(),
+                                                                                     target);
   }
 
-  // .dra.UncoveredAddressKind kind = 5;
-  if (this->kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      5, this->_internal_kind(), target);
-  }
+    // .dra.UncoveredAddressKind kind = 5;
+    if (this->kind() != 0) {
+        target = stream->EnsureSpace(target);
+        target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+                5, this->_internal_kind(), target);
+    }
 
-  // .dra.runTimeData run_time_date = 8;
-  if (this->has_run_time_date()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        8, _Internal::run_time_date(this), target, stream);
-  }
+    // uint32 bbcount2 = 6;
+    if (this->bbcount2() != 0) {
+        target = stream->EnsureSpace(target);
+        target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_bbcount2(),
+                                                                                       target);
+    }
 
-  // map<string, uint32> input = 22;
+    // .dra.runTimeData run_time_date = 8;
+    if (this->has_run_time_date()) {
+        target = stream->EnsureSpace(target);
+        target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(
+                8, _Internal::run_time_date(this), target, stream);
+    }
+
+    // map<string, uint32> input = 22;
   if (!this->_internal_input().empty()) {
     typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_pointer
         ConstPtr;
@@ -5428,23 +5448,30 @@ size_t UncoveredAddress::ByteSizeLong() const {
   // uint32 bbcount = 4;
   if (this->bbcount() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_bbcount());
+                  ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+                          this->_internal_bbcount());
   }
 
-  // .dra.UncoveredAddressKind kind = 5;
-  if (this->kind() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_kind());
-  }
+    // .dra.UncoveredAddressKind kind = 5;
+    if (this->kind() != 0) {
+        total_size += 1 +
+                      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_kind());
+    }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+    // uint32 bbcount2 = 6;
+    if (this->bbcount2() != 0) {
+        total_size += 1 +
+                      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+                              this->_internal_bbcount2());
+    }
+
+    if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+        return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+                _internal_metadata_, total_size, &_cached_size_);
+    }
+    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+    SetCachedSize(cached_size);
+    return total_size;
 }
 
 void UncoveredAddress::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -5478,15 +5505,18 @@ void UncoveredAddress::MergeFrom(const UncoveredAddress& from) {
   if (from.condition_address() != 0) {
     _internal_set_condition_address(from._internal_condition_address());
   }
-  if (from.uncovered_address() != 0) {
-    _internal_set_uncovered_address(from._internal_uncovered_address());
-  }
-  if (from.bbcount() != 0) {
-    _internal_set_bbcount(from._internal_bbcount());
-  }
-  if (from.kind() != 0) {
-    _internal_set_kind(from._internal_kind());
-  }
+    if (from.uncovered_address() != 0) {
+        _internal_set_uncovered_address(from._internal_uncovered_address());
+    }
+    if (from.bbcount() != 0) {
+        _internal_set_bbcount(from._internal_bbcount());
+    }
+    if (from.kind() != 0) {
+        _internal_set_kind(from._internal_kind());
+    }
+    if (from.bbcount2() != 0) {
+        _internal_set_bbcount2(from._internal_bbcount2());
+    }
 }
 
 void UncoveredAddress::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -5517,7 +5547,8 @@ void UncoveredAddress::InternalSwap(UncoveredAddress* other) {
   swap(condition_address_, other->condition_address_);
   swap(uncovered_address_, other->uncovered_address_);
   swap(bbcount_, other->bbcount_);
-  swap(kind_, other->kind_);
+    swap(kind_, other->kind_);
+    swap(bbcount2_, other->bbcount2_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress::GetMetadata() const {

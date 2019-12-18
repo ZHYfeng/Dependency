@@ -8,7 +8,6 @@
 #include "DFunction.h"
 
 #include <iostream>
-#include <llvm/ADT/StringRef.h>
 #include <llvm/IR/CFG.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/InstrTypes.h>
@@ -17,20 +16,14 @@
 #include "DataManagement.h"
 #include "../DCC/general.h"
 #include <set>
-#include <utility>
 
 namespace dra {
-
-    static DFunction *MargeDFunction(DFunction *one, DFunction *two) {
-        auto *f = new DFunction();
-        return f;
-    }
 
     DFunction::DFunction() {
         Objudump = false;
         AsmSourceCode = false;
         IR = false;
-        repeat = false;
+        Repeat = false;
 
         function = nullptr;
         parent = nullptr;
@@ -45,12 +38,15 @@ namespace dra {
 
         critical_condition = false;
         this->uncovered_basicblock = false;
+
+        DT = nullptr;
     }
 
     DFunction::~DFunction() = default;
 
     void DFunction::InitIRFunction(llvm::Function *f) {
         DFunction::function = f;
+        this->DT = new llvm::DominatorTree(*f);
         std::string Name;
         DBasicBlock *b;
         int64_t no = 0;
@@ -106,25 +102,25 @@ namespace dra {
 
     bool DFunction::isObjudump() const { return Objudump; }
 
-    void DFunction::setObjudump(bool Objudump) { DFunction::Objudump = Objudump; }
+    void DFunction::setObjudump(bool objudump) { DFunction::Objudump = objudump; }
 
     bool DFunction::isAsmSourceCode() const { return AsmSourceCode; }
 
-    void DFunction::setAsmSourceCode(bool AsmSourceCode) {
-        DFunction::AsmSourceCode = AsmSourceCode;
+    void DFunction::setAsmSourceCode(bool asmSourceCode) {
+        DFunction::AsmSourceCode = asmSourceCode;
     }
 
     bool DFunction::isIR() const { return IR; }
 
-    void DFunction::setIR(bool IR) { DFunction::IR = IR; }
+    void DFunction::setIR(bool ir) { DFunction::IR = ir; }
 
     bool DFunction::isMap() {
         return DFunction::Objudump && DFunction::AsmSourceCode && DFunction::IR;
     }
 
-    bool DFunction::isRepeat() const { return repeat; }
+    bool DFunction::isRepeat() const { return Repeat; }
 
-    void DFunction::setRepeat(bool repeat) { this->repeat = repeat; }
+    void DFunction::setRepeat(bool repeat) { this->Repeat = repeat; }
 
     void DFunction::setKind(FunctionKind kind) {
         switch (kind) {
@@ -154,7 +150,7 @@ namespace dra {
         std::cout << "Objudump :" << Objudump << std::endl;
         std::cout << "AsmSourceCode :" << AsmSourceCode << std::endl;
         std::cout << "IR :" << IR << std::endl;
-        std::cout << "repeat :" << repeat << std::endl;
+        std::cout << "repeat :" << Repeat << std::endl;
         std::cout << "CoverKind :" << state << std::endl;
         std::cout << "IRName :" << IRName << std::endl;
         std::cout << "Address :" << Address << std::endl;
@@ -231,14 +227,13 @@ namespace dra {
     }
 
     void DFunction::get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb) {
-        for (auto db : this->BasicBlock) {
+        for (const auto &db : this->BasicBlock) {
             for (auto di : db.second->InstIR) {
-                if (llvm::ReturnInst *RI = llvm::dyn_cast<llvm::ReturnInst>(di->i)) {
+                if (auto *RI = llvm::dyn_cast<llvm::ReturnInst>(di->i)) {
                     terminator_bb.push_back(db.second);
                 }
             }
         }
-        return;
     }
 
     void DFunction::set_pred_successor(DBasicBlock *db) {
@@ -274,7 +269,17 @@ namespace dra {
         for (auto b : this->BasicBlock) {
             b.second->get_function_call(res);
         }
-        return;
+    }
+
+
+    uint32_t DFunction::get_dominator_uncovered_basicblock_number(llvm::BasicBlock *b) {
+        uint32_t count = 0;
+        count = count + this->parent->get_DB_from_bb(b)->get_uncovered_basicblock_number();
+        for (auto c : DT->getNode(b)->getChildren()) {
+            auto df = this->parent->get_DB_from_bb(c->getBlock());
+            count = count + df->get_uncovered_basicblock_number();
+            count = count + this->get_dominator_uncovered_basicblock_number(df->basicBlock);
+        }
     }
 
 } /* namespace dra */

@@ -136,6 +136,8 @@ namespace dra {
                     //                    uint32_t bbcount = bbs.size();
                     uint32_t bbcount = db->get_all_uncovered_basicblock_number();
                     uncoveredAddress->set_bbcount(bbcount);
+                    uint32_t bbcount2 = db->get_all_dominator_uncovered_basicblock_number();
+                    uncoveredAddress->set_bbcount2(bbcount2);
                 }
 
                 (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();

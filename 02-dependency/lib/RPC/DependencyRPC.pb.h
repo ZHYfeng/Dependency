@@ -2604,14 +2604,15 @@ class UncoveredAddress :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kRightBranchAddressFieldNumber = 3,
-    kInputFieldNumber = 22,
-    kWriteAddressFieldNumber = 23,
-    kRunTimeDateFieldNumber = 8,
-    kConditionAddressFieldNumber = 1,
-    kUncoveredAddressFieldNumber = 2,
-    kBbcountFieldNumber = 4,
-    kKindFieldNumber = 5,
+      kRightBranchAddressFieldNumber = 3,
+      kInputFieldNumber = 22,
+      kWriteAddressFieldNumber = 23,
+      kRunTimeDateFieldNumber = 8,
+      kConditionAddressFieldNumber = 1,
+      kUncoveredAddressFieldNumber = 2,
+      kBbcountFieldNumber = 4,
+      kKindFieldNumber = 5,
+      kBbcount2FieldNumber = 6,
   };
   // repeated uint32 right_branch_address = 3;
   int right_branch_address_size() const;
@@ -2709,26 +2710,46 @@ class UncoveredAddress :
   private:
   ::PROTOBUF_NAMESPACE_ID::uint32 _internal_bbcount() const;
   void _internal_set_bbcount(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
 
-  // .dra.UncoveredAddressKind kind = 5;
-  void clear_kind();
-  ::dra::UncoveredAddressKind kind() const;
-  void set_kind(::dra::UncoveredAddressKind value);
-  private:
-  ::dra::UncoveredAddressKind _internal_kind() const;
-  void _internal_set_kind(::dra::UncoveredAddressKind value);
-  public:
+public:
 
-  // @@protoc_insertion_point(class_scope:dra.UncoveredAddress)
- private:
-  class _Internal;
+    // .dra.UncoveredAddressKind kind = 5;
+    void clear_kind();
 
-  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 > right_branch_address_;
-  mutable std::atomic<int> _right_branch_address_cached_byte_size_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      UncoveredAddress_InputEntry_DoNotUse,
+    ::dra::UncoveredAddressKind kind() const;
+
+    void set_kind(::dra::UncoveredAddressKind value);
+
+private:
+    ::dra::UncoveredAddressKind _internal_kind() const;
+
+    void _internal_set_kind(::dra::UncoveredAddressKind value);
+
+public:
+
+    // uint32 bbcount2 = 6;
+    void clear_bbcount2();
+
+    ::PROTOBUF_NAMESPACE_ID::uint32 bbcount2() const;
+
+    void set_bbcount2(::PROTOBUF_NAMESPACE_ID::uint32 value);
+
+private:
+    ::PROTOBUF_NAMESPACE_ID::uint32 _internal_bbcount2() const;
+
+    void _internal_set_bbcount2(::PROTOBUF_NAMESPACE_ID::uint32 value);
+
+public:
+
+    // @@protoc_insertion_point(class_scope:dra.UncoveredAddress)
+private:
+    class _Internal;
+
+    ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField<::PROTOBUF_NAMESPACE_ID::uint32> right_branch_address_;
+    mutable std::atomic<int> _right_branch_address_cached_byte_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+            UncoveredAddress_InputEntry_DoNotUse,
       std::string, ::PROTOBUF_NAMESPACE_ID::uint32,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
@@ -2743,8 +2764,9 @@ class UncoveredAddress :
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 uncovered_address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 bbcount_;
-  int kind_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    int kind_;
+    ::PROTOBUF_NAMESPACE_ID::uint32 bbcount2_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
 // -------------------------------------------------------------------
@@ -7562,24 +7584,52 @@ inline ::dra::UncoveredAddressKind UncoveredAddress::kind() const {
   // @@protoc_insertion_point(field_get:dra.UncoveredAddress.kind)
   return _internal_kind();
 }
-inline void UncoveredAddress::_internal_set_kind(::dra::UncoveredAddressKind value) {
-  
-  kind_ = value;
-}
-inline void UncoveredAddress::set_kind(::dra::UncoveredAddressKind value) {
-  _internal_set_kind(value);
-  // @@protoc_insertion_point(field_set:dra.UncoveredAddress.kind)
-}
+
+    inline void UncoveredAddress::_internal_set_kind(::dra::UncoveredAddressKind value) {
+
+        kind_ = value;
+    }
+
+    inline void UncoveredAddress::set_kind(::dra::UncoveredAddressKind value) {
+        _internal_set_kind(value);
+        // @@protoc_insertion_point(field_set:dra.UncoveredAddress.kind)
+    }
+
+// uint32 bbcount2 = 6;
+    inline void UncoveredAddress::clear_bbcount2() {
+        bbcount2_ = 0u;
+    }
+
+    inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::_internal_bbcount2() const {
+        return bbcount2_;
+    }
+
+    inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::bbcount2() const {
+        // @@protoc_insertion_point(field_get:dra.UncoveredAddress.bbcount2)
+        return _internal_bbcount2();
+    }
+
+    inline void UncoveredAddress::_internal_set_bbcount2(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+
+        bbcount2_ = value;
+    }
+
+    inline void UncoveredAddress::set_bbcount2(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+        _internal_set_bbcount2(value);
+        // @@protoc_insertion_point(field_set:dra.UncoveredAddress.bbcount2)
+    }
 
 // map<string, uint32> input = 22;
-inline int UncoveredAddress::_internal_input_size() const {
-  return input_.size();
-}
-inline int UncoveredAddress::input_size() const {
-  return _internal_input_size();
-}
-inline void UncoveredAddress::clear_input() {
-  input_.Clear();
+    inline int UncoveredAddress::_internal_input_size() const {
+        return input_.size();
+    }
+
+    inline int UncoveredAddress::input_size() const {
+        return _internal_input_size();
+    }
+
+    inline void UncoveredAddress::clear_input() {
+        input_.Clear();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::PROTOBUF_NAMESPACE_ID::uint32 >&
 UncoveredAddress::_internal_input() const {

@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <llvm/Support/GenericDomTree.h>
+#include <llvm/IR/Dominators.h>
 
 #include "DAInstruction.h"
 #include "DInput.h"
@@ -79,7 +81,7 @@ namespace dra {
 
         uint32_t get_all_uncovered_basicblock_number();
 
-        uint32_t get__uncovered_basicblock_number();
+        uint32_t get_all_dominator_uncovered_basicblock_number();
 
     public:
         bool IR;

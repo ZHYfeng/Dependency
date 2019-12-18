@@ -454,11 +454,11 @@ namespace dra {
                 }
             }
         }
-
-        llvm::PostDominatorTree PDT(*this->basicBlock->getParent());
-        PDT.getNode(this->basicBlock)->getIDom();
-
         return bb_number;
+    }
+
+    uint32_t DBasicBlock::get_all_dominator_uncovered_basicblock_number() {
+        return this->parent->get_dominator_uncovered_basicblock_number(this->basicBlock);
     }
 
 } /* namespace dra */
