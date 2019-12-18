@@ -8,11 +8,11 @@ notice: remove the default protobuf and install new!
 sudo apt -y install autoconf automake libtool curl make g++ unzip
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
+git checkout tags/v3.11.0
 git submodule update --init --recursive
 ./autogen.sh
 ./configure --prefix=/home/yuh/data/build  --disable-shared
-make
-make ckeck
+make -j12
 make install
 sudo ldconfig
 ```
@@ -24,7 +24,7 @@ sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev li
 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
 git submodule update --init
-make HAS_SYSTEM_PROTOBUF=false
+make HAS_SYSTEM_PROTOBUF=false -j12
 make install prefix=/home/yuh/data/build
 sudo ldconfig
 ```

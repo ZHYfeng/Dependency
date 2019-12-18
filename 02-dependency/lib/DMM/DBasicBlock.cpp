@@ -456,7 +456,7 @@ namespace dra {
         }
 
         llvm::PostDominatorTree PDT(*this->basicBlock->getParent());
-        PDT.getNode(this->basicBlock)->getIDom()
+        PDT.getNode(this->basicBlock)->getIDom();
 
         return bb_number;
     }

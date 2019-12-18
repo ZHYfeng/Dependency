@@ -319,8 +319,8 @@ namespace dra {
             std::string kind;
             this->getFileOperations(&function_name, &file_operations, &kind);
             int index = 0;
-            for (int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
-                if (file_operations_kind_Name(i) == kind) {
+            for (u_int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
+                if (file_operations_kind_Name(static_cast<file_operations_kind>(i)) == kind) {
                     index = i;
                     break;
                 }
@@ -505,7 +505,8 @@ namespace dra {
                                         this->getFileOperations(&funtion_name, &file_operations, &kind);
                                         int index = 0;
                                         for (int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
-                                            if (file_operations_kind_Name(i) == kind) {
+                                            if (file_operations_kind_Name(static_cast<file_operations_kind>(i)) ==
+                                                kind) {
                                                 index = i;
                                                 break;
                                             }
