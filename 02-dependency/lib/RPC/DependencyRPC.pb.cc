@@ -1310,12 +1310,13 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::dra::Task, sig_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, index_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, program_),
+  PROTOBUF_FIELD_OFFSET(::dra::Task, kind_),
+  PROTOBUF_FIELD_OFFSET(::dra::Task, priority_),
+  PROTOBUF_FIELD_OFFSET(::dra::Task, hash_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, write_sig_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, write_index_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, write_program_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, priority_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, hash_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, covered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, task_status_),
@@ -1423,13 +1424,13 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 347, 354, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
   { 356, 363, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
   { 365, -1, sizeof(::dra::Task)},
-  { 389, 396, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
-  { 398, -1, sizeof(::dra::Tasks)},
-  { 407, -1, sizeof(::dra::Time)},
-  { 415, 422, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
-  { 424, -1, sizeof(::dra::Coverage)},
-  { 431, -1, sizeof(::dra::Conditions)},
-  { 437, -1, sizeof(::dra::WriteAddresses)},
+  { 390, 397, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
+  { 399, -1, sizeof(::dra::Tasks)},
+  { 408, -1, sizeof(::dra::Time)},
+  { 416, 423, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
+  { 425, -1, sizeof(::dra::Coverage)},
+  { 432, -1, sizeof(::dra::Conditions)},
+  { 438, -1, sizeof(::dra::WriteAddresses)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1590,70 +1591,70 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VA
   " \003(\0132\031.dra.Statistics.StatEntry\022&\n\014usefu"
   "l_input\030\014 \003(\0132\020.dra.UsefulInput\032;\n\tStatE"
   "ntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001(\0132\016.dra.S"
-  "tatistic:\0028\001\"\225\005\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005in"
-  "dex\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\021\n\twrite_sig\030"
-  "\013 \001(\t\022\023\n\013write_index\030\014 \001(\r\022\025\n\rwrite_prog"
-  "ram\030\r \001(\014\022\025\n\rwrite_address\030\016 \001(\r\022\020\n\010prio"
-  "rity\030\017 \001(\005\022\014\n\004hash\030\020 \001(\t\022:\n\021uncovered_ad"
-  "dress\030\025 \003(\0132\037.dra.Task.UncoveredAddressE"
-  "ntry\0226\n\017covered_address\030\027 \003(\0132\035.dra.Task"
-  ".CoveredAddressEntry\022$\n\013task_status\030\030 \001("
-  "\0162\017.dra.taskStatus\022\033\n\023check_write_addres"
-  "s\030\031 \001(\010\022!\n\031check_write_address_final\030\032 \001"
-  "(\010\022\"\n\032check_write_address_remove\030\033 \001(\010\022\021"
-  "\n\tfinal_idx\030\034 \001(\r\022\027\n\017final_write_idx\030\035 \001"
-  "(\r\022\022\n\nremove_idx\030\036 \001(\r\022\030\n\020remove_write_i"
-  "dx\030\037 \001(\r\032I\n\025UncoveredAddressEntry\022\013\n\003key"
-  "\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTimeData:"
-  "\0028\001\032G\n\023CoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022"
-  "\037\n\005value\030\002 \001(\0132\020.dra.runTimeData:\0028\001\"\250\001\n"
-  "\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004kind\030* \001(\0162\r.dra"
-  ".TaskKind\022\"\n\004task\030\001 \003(\0132\024.dra.Tasks.Task"
-  "Entry\022\030\n\005tasks\030\002 \003(\0132\t.dra.Task\0326\n\tTaskE"
-  "ntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value\030\002 \001(\0132\t.dra.T"
-  "ask:\0028\001\"5\n\004Time\022\014\n\004time\030\001 \001(\001\022\013\n\003num\030\002 \001"
-  "(\003\022\022\n\nexecuteNum\030\003 \001(\003\"\203\001\n\010Coverage\022-\n\010c"
-  "overage\030\001 \003(\0132\033.dra.Coverage.CoverageEnt"
-  "ry\022\027\n\004time\030\002 \003(\0132\t.dra.Time\032/\n\rCoverageE"
-  "ntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"/\n\n"
-  "Conditions\022!\n\tcondition\030\n \003(\0132\016.dra.Cond"
-  "ition\"]\n\016WriteAddresses\022!\n\tcondition\030\001 \001"
-  "(\0132\016.dra.Condition\022(\n\rwrite_address\030\004 \003("
-  "\0132\021.dra.WriteAddress*f\n\ntaskStatus\022\014\n\010un"
-  "tested\020\000\022\r\n\trecursive\020\001\022\n\n\006tested\020\002\022\007\n\003o"
-  "ut\020\003\022\013\n\007covered\020\004\022\013\n\007testing\020\005\022\014\n\010unstab"
-  "le\020\006*\215\001\n\024file_operations_kind\022\013\n\007default"
-  "\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010\n\004read\020\003\022\t\n\005wr"
-  "ite\020\004\022\010\n\004poll\020\t\022\022\n\016unlocked_ioctl\020\n\022\010\n\004m"
-  "map\020\014\022\010\n\004open\020\016\022\013\n\007release\020\020*W\n\024Uncovere"
-  "dAddressKind\022\013\n\007Outside\020\000\022\020\n\014InputRelate"
-  "d\020\001\022\025\n\021DependnecyRelated\020\002\022\t\n\005Other\020\003*\312\001"
-  "\n\013FuzzingStat\022\017\n\013StatDefault\020\000\022\020\n\014StatGe"
-  "nerate\020\001\022\014\n\010StatFuzz\020\002\022\021\n\rStatCandidate\020"
-  "\003\022\016\n\nStatTriage\020\004\022\020\n\014StatMinimize\020\005\022\r\n\tS"
-  "tatSmash\020\006\022\014\n\010StatHint\020\007\022\014\n\010StatSeed\020\010\022\022"
-  "\n\016StatDependency\020\t\022\026\n\022StatDependencyBoot"
-  "\020\n**\n\010TaskKind\022\n\n\006Normal\020\000\022\010\n\004High\020\001\022\010\n\004"
-  "Boot\020\0022\365\005\n\rDependencyRPC\022(\n\014GetVMOffsets"
-  "\022\n.dra.Empty\032\n.dra.Empty\"\000\0220\n\024SendBasicB"
-  "lockNumber\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\013"
-  "GetNewInput\022\n.dra.Empty\032\013.dra.Inputs\"\000\022/"
-  "\n\016SendDependency\022\017.dra.Dependency\032\n.dra."
-  "Empty\"\000\022-\n\014GetCondition\022\n.dra.Empty\032\017.dr"
-  "a.Conditions\"\000\0225\n\020SendWriteAddress\022\023.dra"
-  ".WriteAddresses\032\n.dra.Empty\"\000\022#\n\007Connect"
-  "\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\014SendNewInp"
-  "ut\022\n.dra.Input\032\n.dra.Empty\"\000\022$\n\010GetTasks"
-  "\022\n.dra.Empty\032\n.dra.Tasks\"\000\022(\n\014GetBootTas"
-  "ks\022\n.dra.Empty\032\n.dra.Tasks\"\000\022\'\n\013ReturnTa"
-  "sks\022\n.dra.Tasks\032\n.dra.Empty\"\000\022)\n\rSendBoo"
-  "tInput\022\n.dra.Input\032\n.dra.Empty\"\000\0225\n\021Send"
-  "UnstableInput\022\022.dra.UnstableInput\032\n.dra."
-  "Empty\"\000\022#\n\007SendLog\022\n.dra.Empty\032\n.dra.Emp"
-  "ty\"\000\022(\n\010sendStat\022\016.dra.Statistic\032\n.dra.E"
-  "mpty\"\000\022#\n\007GetNeed\022\n.dra.Empty\032\n.dra.Empt"
-  "y\"\000\022)\n\rSendNeedInput\022\n.dra.Input\032\n.dra.E"
-  "mpty\"\000b\006proto3"
+  "tatistic:\0028\001\"\243\005\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005in"
+  "dex\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\014\n\004kind\030\004 \001(\r"
+  "\022\020\n\010priority\030\005 \001(\005\022\014\n\004hash\030\006 \001(\t\022\021\n\twrit"
+  "e_sig\030\013 \001(\t\022\023\n\013write_index\030\014 \001(\r\022\025\n\rwrit"
+  "e_program\030\r \001(\014\022\025\n\rwrite_address\030\016 \001(\r\022:"
+  "\n\021uncovered_address\030\025 \003(\0132\037.dra.Task.Unc"
+  "overedAddressEntry\0226\n\017covered_address\030\027 "
+  "\003(\0132\035.dra.Task.CoveredAddressEntry\022$\n\013ta"
+  "sk_status\030\030 \001(\0162\017.dra.taskStatus\022\033\n\023chec"
+  "k_write_address\030\031 \001(\010\022!\n\031check_write_add"
+  "ress_final\030\032 \001(\010\022\"\n\032check_write_address_"
+  "remove\030\033 \001(\010\022\021\n\tfinal_idx\030\034 \001(\r\022\027\n\017final"
+  "_write_idx\030\035 \001(\r\022\022\n\nremove_idx\030\036 \001(\r\022\030\n\020"
+  "remove_write_idx\030\037 \001(\r\032I\n\025UncoveredAddre"
+  "ssEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dr"
+  "a.runTimeData:\0028\001\032G\n\023CoveredAddressEntry"
+  "\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTi"
+  "meData:\0028\001\"\250\001\n\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004ki"
+  "nd\030* \001(\0162\r.dra.TaskKind\022\"\n\004task\030\001 \003(\0132\024."
+  "dra.Tasks.TaskEntry\022\030\n\005tasks\030\002 \003(\0132\t.dra"
+  ".Task\0326\n\tTaskEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value"
+  "\030\002 \001(\0132\t.dra.Task:\0028\001\"5\n\004Time\022\014\n\004time\030\001 "
+  "\001(\001\022\013\n\003num\030\002 \001(\003\022\022\n\nexecuteNum\030\003 \001(\003\"\203\001\n"
+  "\010Coverage\022-\n\010coverage\030\001 \003(\0132\033.dra.Covera"
+  "ge.CoverageEntry\022\027\n\004time\030\002 \003(\0132\t.dra.Tim"
+  "e\032/\n\rCoverageEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value"
+  "\030\002 \001(\r:\0028\001\"/\n\nConditions\022!\n\tcondition\030\n "
+  "\003(\0132\016.dra.Condition\"]\n\016WriteAddresses\022!\n"
+  "\tcondition\030\001 \001(\0132\016.dra.Condition\022(\n\rwrit"
+  "e_address\030\004 \003(\0132\021.dra.WriteAddress*f\n\nta"
+  "skStatus\022\014\n\010untested\020\000\022\r\n\trecursive\020\001\022\n\n"
+  "\006tested\020\002\022\007\n\003out\020\003\022\013\n\007covered\020\004\022\013\n\007testi"
+  "ng\020\005\022\014\n\010unstable\020\006*\215\001\n\024file_operations_k"
+  "ind\022\013\n\007default\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010"
+  "\n\004read\020\003\022\t\n\005write\020\004\022\010\n\004poll\020\t\022\022\n\016unlocke"
+  "d_ioctl\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n\007release"
+  "\020\020*W\n\024UncoveredAddressKind\022\013\n\007Outside\020\000\022"
+  "\020\n\014InputRelated\020\001\022\025\n\021DependnecyRelated\020\002"
+  "\022\t\n\005Other\020\003*\312\001\n\013FuzzingStat\022\017\n\013StatDefau"
+  "lt\020\000\022\020\n\014StatGenerate\020\001\022\014\n\010StatFuzz\020\002\022\021\n\r"
+  "StatCandidate\020\003\022\016\n\nStatTriage\020\004\022\020\n\014StatM"
+  "inimize\020\005\022\r\n\tStatSmash\020\006\022\014\n\010StatHint\020\007\022\014"
+  "\n\010StatSeed\020\010\022\022\n\016StatDependency\020\t\022\026\n\022Stat"
+  "DependencyBoot\020\n**\n\010TaskKind\022\n\n\006Normal\020\000"
+  "\022\010\n\004High\020\001\022\010\n\004Boot\020\0022\365\005\n\rDependencyRPC\022("
+  "\n\014GetVMOffsets\022\n.dra.Empty\032\n.dra.Empty\"\000"
+  "\0220\n\024SendBasicBlockNumber\022\n.dra.Empty\032\n.d"
+  "ra.Empty\"\000\022(\n\013GetNewInput\022\n.dra.Empty\032\013."
+  "dra.Inputs\"\000\022/\n\016SendDependency\022\017.dra.Dep"
+  "endency\032\n.dra.Empty\"\000\022-\n\014GetCondition\022\n."
+  "dra.Empty\032\017.dra.Conditions\"\000\0225\n\020SendWrit"
+  "eAddress\022\023.dra.WriteAddresses\032\n.dra.Empt"
+  "y\"\000\022#\n\007Connect\022\n.dra.Empty\032\n.dra.Empty\"\000"
+  "\022(\n\014SendNewInput\022\n.dra.Input\032\n.dra.Empty"
+  "\"\000\022$\n\010GetTasks\022\n.dra.Empty\032\n.dra.Tasks\"\000"
+  "\022(\n\014GetBootTasks\022\n.dra.Empty\032\n.dra.Tasks"
+  "\"\000\022\'\n\013ReturnTasks\022\n.dra.Tasks\032\n.dra.Empt"
+  "y\"\000\022)\n\rSendBootInput\022\n.dra.Input\032\n.dra.E"
+  "mpty\"\000\0225\n\021SendUnstableInput\022\022.dra.Unstab"
+  "leInput\032\n.dra.Empty\"\000\022#\n\007SendLog\022\n.dra.E"
+  "mpty\032\n.dra.Empty\"\000\022(\n\010sendStat\022\016.dra.Sta"
+  "tistic\032\n.dra.Empty\"\000\022#\n\007GetNeed\022\n.dra.Em"
+  "pty\032\n.dra.Empty\"\000\022)\n\rSendNeedInput\022\n.dra"
+  ".Input\032\n.dra.Empty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -1709,7 +1710,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 6814,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 6828,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 47, 0,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 47, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
@@ -8597,6 +8598,10 @@ Task::Task(const Task& from)
   if (!from._internal_program().empty()) {
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
+  hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_hash().empty()) {
+    hash_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.hash_);
+  }
   write_sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_write_sig().empty()) {
     write_sig_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.write_sig_);
@@ -8605,13 +8610,9 @@ Task::Task(const Task& from)
   if (!from._internal_write_program().empty()) {
     write_program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.write_program_);
   }
-  hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_hash().empty()) {
-    hash_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.hash_);
-  }
   ::memcpy(&index_, &from.index_,
-    static_cast<size_t>(reinterpret_cast<char*>(&remove_write_idx_) -
-    reinterpret_cast<char*>(&index_)) + sizeof(remove_write_idx_));
+    static_cast<size_t>(reinterpret_cast<char*>(&remove_idx_) -
+    reinterpret_cast<char*>(&index_)) + sizeof(remove_idx_));
   // @@protoc_insertion_point(copy_constructor:dra.Task)
 }
 
@@ -8619,12 +8620,12 @@ void Task::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Task_DependencyRPC_2eproto.base);
   sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&index_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&remove_write_idx_) -
-      reinterpret_cast<char*>(&index_)) + sizeof(remove_write_idx_));
+      reinterpret_cast<char*>(&remove_idx_) -
+      reinterpret_cast<char*>(&index_)) + sizeof(remove_idx_));
 }
 
 Task::~Task() {
@@ -8635,9 +8636,9 @@ Task::~Task() {
 void Task::SharedDtor() {
   sig_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  hash_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_sig_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_program_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  hash_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Task::SetCachedSize(int size) const {
@@ -8659,12 +8660,12 @@ void Task::Clear() {
   covered_address_.Clear();
   sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  hash_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  hash_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&index_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&remove_write_idx_) -
-      reinterpret_cast<char*>(&index_)) + sizeof(remove_write_idx_));
+      reinterpret_cast<char*>(&remove_idx_) -
+      reinterpret_cast<char*>(&index_)) + sizeof(remove_idx_));
   _internal_metadata_.Clear();
 }
 
@@ -8699,6 +8700,29 @@ const char* Task::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
+      // uint32 kind = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          kind_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 priority = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          priority_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string hash = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+          auto str = _internal_mutable_hash();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.Task.hash"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string write_sig = 11;
       case 11:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
@@ -8727,22 +8751,6 @@ const char* Task::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
       case 14:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 112)) {
           write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // int32 priority = 15;
-      case 15:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 120)) {
-          priority_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // string hash = 16;
-      case 16:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 130)) {
-          auto str = _internal_mutable_hash();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.Task.hash"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8875,6 +8883,28 @@ failure:
         3, this->_internal_program(), target);
   }
 
+  // uint32 kind = 4;
+  if (this->kind() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_kind(), target);
+  }
+
+  // int32 priority = 5;
+  if (this->priority() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_priority(), target);
+  }
+
+  // string hash = 6;
+  if (this->hash().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_hash().data(), static_cast<int>(this->_internal_hash().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "dra.Task.hash");
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_hash(), target);
+  }
+
   // string write_sig = 11;
   if (this->write_sig().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
@@ -8901,22 +8931,6 @@ failure:
   if (this->write_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(14, this->_internal_write_address(), target);
-  }
-
-  // int32 priority = 15;
-  if (this->priority() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(15, this->_internal_priority(), target);
-  }
-
-  // string hash = 16;
-  if (this->hash().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_hash().data(), static_cast<int>(this->_internal_hash().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "dra.Task.hash");
-    target = stream->WriteStringMaybeAliased(
-        16, this->_internal_hash(), target);
   }
 
   // map<uint32, .dra.runTimeData> uncovered_address = 21;
@@ -9078,6 +9092,13 @@ size_t Task::ByteSizeLong() const {
         this->_internal_program());
   }
 
+  // string hash = 6;
+  if (this->hash().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_hash());
+  }
+
   // string write_sig = 11;
   if (this->write_sig().size() > 0) {
     total_size += 1 +
@@ -9092,18 +9113,25 @@ size_t Task::ByteSizeLong() const {
         this->_internal_write_program());
   }
 
-  // string hash = 16;
-  if (this->hash().size() > 0) {
-    total_size += 2 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_hash());
-  }
-
   // uint32 index = 2;
   if (this->index() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->_internal_index());
+  }
+
+  // uint32 kind = 4;
+  if (this->kind() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_kind());
+  }
+
+  // int32 priority = 5;
+  if (this->priority() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_priority());
   }
 
   // uint32 write_index = 12;
@@ -9120,17 +9148,17 @@ size_t Task::ByteSizeLong() const {
         this->_internal_write_address());
   }
 
-  // int32 priority = 15;
-  if (this->priority() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_priority());
-  }
-
   // .dra.taskStatus task_status = 24;
   if (this->task_status() != 0) {
     total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_task_status());
+  }
+
+  // uint32 remove_write_idx = 31;
+  if (this->remove_write_idx() != 0) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_remove_write_idx());
   }
 
   // bool check_write_address = 25;
@@ -9167,13 +9195,6 @@ size_t Task::ByteSizeLong() const {
     total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->_internal_remove_idx());
-  }
-
-  // uint32 remove_write_idx = 31;
-  if (this->remove_write_idx() != 0) {
-    total_size += 2 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_remove_write_idx());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -9217,6 +9238,10 @@ void Task::MergeFrom(const Task& from) {
 
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
+  if (from.hash().size() > 0) {
+
+    hash_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.hash_);
+  }
   if (from.write_sig().size() > 0) {
 
     write_sig_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.write_sig_);
@@ -9225,12 +9250,14 @@ void Task::MergeFrom(const Task& from) {
 
     write_program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.write_program_);
   }
-  if (from.hash().size() > 0) {
-
-    hash_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.hash_);
-  }
   if (from.index() != 0) {
     _internal_set_index(from._internal_index());
+  }
+  if (from.kind() != 0) {
+    _internal_set_kind(from._internal_kind());
+  }
+  if (from.priority() != 0) {
+    _internal_set_priority(from._internal_priority());
   }
   if (from.write_index() != 0) {
     _internal_set_write_index(from._internal_write_index());
@@ -9238,11 +9265,11 @@ void Task::MergeFrom(const Task& from) {
   if (from.write_address() != 0) {
     _internal_set_write_address(from._internal_write_address());
   }
-  if (from.priority() != 0) {
-    _internal_set_priority(from._internal_priority());
-  }
   if (from.task_status() != 0) {
     _internal_set_task_status(from._internal_task_status());
+  }
+  if (from.remove_write_idx() != 0) {
+    _internal_set_remove_write_idx(from._internal_remove_write_idx());
   }
   if (from.check_write_address() != 0) {
     _internal_set_check_write_address(from._internal_check_write_address());
@@ -9261,9 +9288,6 @@ void Task::MergeFrom(const Task& from) {
   }
   if (from.remove_idx() != 0) {
     _internal_set_remove_idx(from._internal_remove_idx());
-  }
-  if (from.remove_write_idx() != 0) {
-    _internal_set_remove_write_idx(from._internal_remove_write_idx());
   }
 }
 
@@ -9294,24 +9318,25 @@ void Task::InternalSwap(Task* other) {
     GetArenaNoVirtual());
   program_.Swap(&other->program_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  hash_.Swap(&other->hash_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   write_sig_.Swap(&other->write_sig_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   write_program_.Swap(&other->write_program_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  hash_.Swap(&other->hash_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
   swap(index_, other->index_);
+  swap(kind_, other->kind_);
+  swap(priority_, other->priority_);
   swap(write_index_, other->write_index_);
   swap(write_address_, other->write_address_);
-  swap(priority_, other->priority_);
   swap(task_status_, other->task_status_);
+  swap(remove_write_idx_, other->remove_write_idx_);
   swap(check_write_address_, other->check_write_address_);
   swap(check_write_address_final_, other->check_write_address_final_);
   swap(check_write_address_remove_, other->check_write_address_remove_);
   swap(final_idx_, other->final_idx_);
   swap(final_write_idx_, other->final_write_idx_);
   swap(remove_idx_, other->remove_idx_);
-  swap(remove_write_idx_, other->remove_write_idx_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Task::GetMetadata() const {

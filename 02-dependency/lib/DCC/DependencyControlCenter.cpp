@@ -314,10 +314,10 @@ namespace dra {
 #endif
             auto ctx = c->ctx;
             auto inst = ctx.begin();
-            std::string funtion_name = getFunctionName((*inst)->getParent()->getParent());
+            std::string function_name = getFunctionName((*inst)->getParent()->getParent());
             std::string file_operations;
             std::string kind;
-            this->getFileOperations(&funtion_name, &file_operations, &kind);
+            this->getFileOperations(&function_name, &file_operations, &kind);
             int index = 0;
             for (int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
                 if (file_operations_kind_Name(i) == kind) {
@@ -332,6 +332,7 @@ namespace dra {
         writeAddress->set_write_address(write_address);
         writeAddress->set_condition_address(condition->syzkaller_condition_address());
         writeAddress->mutable_run_time_date();
+        writeAddress->set_kind(write_basicblock->is_trait_fixed() ? 1 : 0);
 
         //        auto function_name = "ioctl";
         //        std::cout << "for (auto c : *cmd_ctx) {" << std::endl;

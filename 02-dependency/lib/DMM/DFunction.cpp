@@ -260,7 +260,7 @@ namespace dra {
         }
     }
 
-    uint32_t DFunction::get_basicblock_number() {
+    uint32_t DFunction::get_uncovered_basicblock_number() {
         uint64_t uncovered_basicblock_number = 0;
         for (auto b : this->BasicBlock) {
             if (b.second->state != CoverKind::cover) {

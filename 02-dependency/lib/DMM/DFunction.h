@@ -79,7 +79,7 @@ namespace dra {
 
         void set_critical_condition();
 
-        uint32_t get_basicblock_number();
+        uint32_t get_uncovered_basicblock_number();
 
         void get_function_call(std::set<llvm::Function *> &res);
 

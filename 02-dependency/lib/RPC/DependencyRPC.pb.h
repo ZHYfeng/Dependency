@@ -4841,21 +4841,22 @@ class Task :
     kCoveredAddressFieldNumber = 23,
     kSigFieldNumber = 1,
     kProgramFieldNumber = 3,
+    kHashFieldNumber = 6,
     kWriteSigFieldNumber = 11,
     kWriteProgramFieldNumber = 13,
-    kHashFieldNumber = 16,
     kIndexFieldNumber = 2,
+    kKindFieldNumber = 4,
+    kPriorityFieldNumber = 5,
     kWriteIndexFieldNumber = 12,
     kWriteAddressFieldNumber = 14,
-    kPriorityFieldNumber = 15,
     kTaskStatusFieldNumber = 24,
+    kRemoveWriteIdxFieldNumber = 31,
     kCheckWriteAddressFieldNumber = 25,
     kCheckWriteAddressFinalFieldNumber = 26,
     kCheckWriteAddressRemoveFieldNumber = 27,
     kFinalIdxFieldNumber = 28,
     kFinalWriteIdxFieldNumber = 29,
     kRemoveIdxFieldNumber = 30,
-    kRemoveWriteIdxFieldNumber = 31,
   };
   // map<uint32, .dra.runTimeData> uncovered_address = 21;
   int uncovered_address_size() const;
@@ -4923,6 +4924,22 @@ class Task :
   std::string* _internal_mutable_program();
   public:
 
+  // string hash = 6;
+  void clear_hash();
+  const std::string& hash() const;
+  void set_hash(const std::string& value);
+  void set_hash(std::string&& value);
+  void set_hash(const char* value);
+  void set_hash(const char* value, size_t size);
+  std::string* mutable_hash();
+  std::string* release_hash();
+  void set_allocated_hash(std::string* hash);
+  private:
+  const std::string& _internal_hash() const;
+  void _internal_set_hash(const std::string& value);
+  std::string* _internal_mutable_hash();
+  public:
+
   // string write_sig = 11;
   void clear_write_sig();
   const std::string& write_sig() const;
@@ -4955,22 +4972,6 @@ class Task :
   std::string* _internal_mutable_write_program();
   public:
 
-  // string hash = 16;
-  void clear_hash();
-  const std::string& hash() const;
-  void set_hash(const std::string& value);
-  void set_hash(std::string&& value);
-  void set_hash(const char* value);
-  void set_hash(const char* value, size_t size);
-  std::string* mutable_hash();
-  std::string* release_hash();
-  void set_allocated_hash(std::string* hash);
-  private:
-  const std::string& _internal_hash() const;
-  void _internal_set_hash(const std::string& value);
-  std::string* _internal_mutable_hash();
-  public:
-
   // uint32 index = 2;
   void clear_index();
   ::PROTOBUF_NAMESPACE_ID::uint32 index() const;
@@ -4978,6 +4979,24 @@ class Task :
   private:
   ::PROTOBUF_NAMESPACE_ID::uint32 _internal_index() const;
   void _internal_set_index(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 kind = 4;
+  void clear_kind();
+  ::PROTOBUF_NAMESPACE_ID::uint32 kind() const;
+  void set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_kind() const;
+  void _internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // int32 priority = 5;
+  void clear_priority();
+  ::PROTOBUF_NAMESPACE_ID::int32 priority() const;
+  void set_priority(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_priority() const;
+  void _internal_set_priority(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // uint32 write_index = 12;
@@ -4998,15 +5017,6 @@ class Task :
   void _internal_set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // int32 priority = 15;
-  void clear_priority();
-  ::PROTOBUF_NAMESPACE_ID::int32 priority() const;
-  void set_priority(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_priority() const;
-  void _internal_set_priority(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
   // .dra.taskStatus task_status = 24;
   void clear_task_status();
   ::dra::taskStatus task_status() const;
@@ -5014,6 +5024,15 @@ class Task :
   private:
   ::dra::taskStatus _internal_task_status() const;
   void _internal_set_task_status(::dra::taskStatus value);
+  public:
+
+  // uint32 remove_write_idx = 31;
+  void clear_remove_write_idx();
+  ::PROTOBUF_NAMESPACE_ID::uint32 remove_write_idx() const;
+  void set_remove_write_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_remove_write_idx() const;
+  void _internal_set_remove_write_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
   // bool check_write_address = 25;
@@ -5070,15 +5089,6 @@ class Task :
   void _internal_set_remove_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // uint32 remove_write_idx = 31;
-  void clear_remove_write_idx();
-  ::PROTOBUF_NAMESPACE_ID::uint32 remove_write_idx() const;
-  void set_remove_write_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_remove_write_idx() const;
-  void _internal_set_remove_write_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:dra.Task)
  private:
   class _Internal;
@@ -5098,21 +5108,22 @@ class Task :
       0 > covered_address_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr hash_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr write_sig_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr write_program_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr hash_;
   ::PROTOBUF_NAMESPACE_ID::uint32 index_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 kind_;
+  ::PROTOBUF_NAMESPACE_ID::int32 priority_;
   ::PROTOBUF_NAMESPACE_ID::uint32 write_index_;
   ::PROTOBUF_NAMESPACE_ID::uint32 write_address_;
-  ::PROTOBUF_NAMESPACE_ID::int32 priority_;
   int task_status_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 remove_write_idx_;
   bool check_write_address_;
   bool check_write_address_final_;
   bool check_write_address_remove_;
   ::PROTOBUF_NAMESPACE_ID::uint32 final_idx_;
   ::PROTOBUF_NAMESPACE_ID::uint32 final_write_idx_;
   ::PROTOBUF_NAMESPACE_ID::uint32 remove_idx_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 remove_write_idx_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -9340,6 +9351,106 @@ inline void Task::set_allocated_program(std::string* program) {
   // @@protoc_insertion_point(field_set_allocated:dra.Task.program)
 }
 
+// uint32 kind = 4;
+inline void Task::clear_kind() {
+  kind_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Task::_internal_kind() const {
+  return kind_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Task::kind() const {
+  // @@protoc_insertion_point(field_get:dra.Task.kind)
+  return _internal_kind();
+}
+inline void Task::_internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  kind_ = value;
+}
+inline void Task::set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_kind(value);
+  // @@protoc_insertion_point(field_set:dra.Task.kind)
+}
+
+// int32 priority = 5;
+inline void Task::clear_priority() {
+  priority_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 Task::_internal_priority() const {
+  return priority_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 Task::priority() const {
+  // @@protoc_insertion_point(field_get:dra.Task.priority)
+  return _internal_priority();
+}
+inline void Task::_internal_set_priority(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  priority_ = value;
+}
+inline void Task::set_priority(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_priority(value);
+  // @@protoc_insertion_point(field_set:dra.Task.priority)
+}
+
+// string hash = 6;
+inline void Task::clear_hash() {
+  hash_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline const std::string& Task::hash() const {
+  // @@protoc_insertion_point(field_get:dra.Task.hash)
+  return _internal_hash();
+}
+inline void Task::set_hash(const std::string& value) {
+  _internal_set_hash(value);
+  // @@protoc_insertion_point(field_set:dra.Task.hash)
+}
+inline std::string* Task::mutable_hash() {
+  // @@protoc_insertion_point(field_mutable:dra.Task.hash)
+  return _internal_mutable_hash();
+}
+inline const std::string& Task::_internal_hash() const {
+  return hash_.GetNoArena();
+}
+inline void Task::_internal_set_hash(const std::string& value) {
+  
+  hash_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void Task::set_hash(std::string&& value) {
+  
+  hash_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:dra.Task.hash)
+}
+inline void Task::set_hash(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  hash_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:dra.Task.hash)
+}
+inline void Task::set_hash(const char* value, size_t size) {
+  
+  hash_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:dra.Task.hash)
+}
+inline std::string* Task::_internal_mutable_hash() {
+  
+  return hash_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* Task::release_hash() {
+  // @@protoc_insertion_point(field_release:dra.Task.hash)
+  
+  return hash_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void Task::set_allocated_hash(std::string* hash) {
+  if (hash != nullptr) {
+    
+  } else {
+    
+  }
+  hash_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), hash);
+  // @@protoc_insertion_point(field_set_allocated:dra.Task.hash)
+}
+
 // string write_sig = 11;
 inline void Task::clear_write_sig() {
   write_sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -9498,86 +9609,6 @@ inline void Task::_internal_set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 va
 inline void Task::set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_write_address(value);
   // @@protoc_insertion_point(field_set:dra.Task.write_address)
-}
-
-// int32 priority = 15;
-inline void Task::clear_priority() {
-  priority_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 Task::_internal_priority() const {
-  return priority_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 Task::priority() const {
-  // @@protoc_insertion_point(field_get:dra.Task.priority)
-  return _internal_priority();
-}
-inline void Task::_internal_set_priority(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  priority_ = value;
-}
-inline void Task::set_priority(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_priority(value);
-  // @@protoc_insertion_point(field_set:dra.Task.priority)
-}
-
-// string hash = 16;
-inline void Task::clear_hash() {
-  hash_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline const std::string& Task::hash() const {
-  // @@protoc_insertion_point(field_get:dra.Task.hash)
-  return _internal_hash();
-}
-inline void Task::set_hash(const std::string& value) {
-  _internal_set_hash(value);
-  // @@protoc_insertion_point(field_set:dra.Task.hash)
-}
-inline std::string* Task::mutable_hash() {
-  // @@protoc_insertion_point(field_mutable:dra.Task.hash)
-  return _internal_mutable_hash();
-}
-inline const std::string& Task::_internal_hash() const {
-  return hash_.GetNoArena();
-}
-inline void Task::_internal_set_hash(const std::string& value) {
-  
-  hash_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
-}
-inline void Task::set_hash(std::string&& value) {
-  
-  hash_.SetNoArena(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:dra.Task.hash)
-}
-inline void Task::set_hash(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  hash_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:dra.Task.hash)
-}
-inline void Task::set_hash(const char* value, size_t size) {
-  
-  hash_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:dra.Task.hash)
-}
-inline std::string* Task::_internal_mutable_hash() {
-  
-  return hash_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline std::string* Task::release_hash() {
-  // @@protoc_insertion_point(field_release:dra.Task.hash)
-  
-  return hash_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-inline void Task::set_allocated_hash(std::string* hash) {
-  if (hash != nullptr) {
-    
-  } else {
-    
-  }
-  hash_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), hash);
-  // @@protoc_insertion_point(field_set_allocated:dra.Task.hash)
 }
 
 // map<uint32, .dra.runTimeData> uncovered_address = 21;

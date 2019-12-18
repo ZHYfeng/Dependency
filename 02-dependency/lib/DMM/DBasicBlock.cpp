@@ -9,10 +9,10 @@
 #define LIB_DRA_DBASICBLOCK_CPP_
 
 #include "DBasicBlock.h"
-
+#include <llvm/IR/IntrinsicInst.h>
 #include <llvm/IR/Instructions.h>
-#include "llvm/IR/CFG.h"
-#include "llvm/IR/CallSite.h"
+#include <llvm/IR/CallSite.h>
+#include <llvm/Analysis/PostDominators.h>
 #include <iostream>
 
 #include "DFunction.h"
@@ -43,6 +43,18 @@ namespace dra {
 
             i->parent = this;
             i->i = (&it);
+
+            if (llvm::isa<llvm::PHINode>(it) || llvm::isa<llvm::DbgInfoIntrinsic>(it))
+                continue;
+            if (auto *II = llvm::dyn_cast<llvm::IntrinsicInst>(&it)) {
+
+                if (II->getIntrinsicID() == llvm::Intrinsic::lifetime_start ||
+                    II->getIntrinsicID() == llvm::Intrinsic::lifetime_end) {
+                    continue;
+                }
+            }
+
+            this->basicBlock++;
         }
     }
 
@@ -59,7 +71,7 @@ namespace dra {
         }
     }
 
-    void DBasicBlock::update(CoverKind kind, DInput *input) {
+    void DBasicBlock::update(CoverKind kind, DInput *dInput) {
         setState(kind);
         for (auto it : InstIR) {
             it->setState(kind);
@@ -75,7 +87,7 @@ namespace dra {
         }
 
         if (this->basicBlock != nullptr) {
-            if (inferCoverBB(input, this->basicBlock)) {
+            if (inferCoverBB(dInput, this->basicBlock)) {
 
             }
             infer();
@@ -101,35 +113,36 @@ namespace dra {
         IR = ir;
     }
 
-    bool DBasicBlock::inferCoverBB(DInput *input, llvm::BasicBlock *b) {
+    bool DBasicBlock::inferCoverBB(DInput *dInput, llvm::BasicBlock *b) {
         DBasicBlock *Db;
-        std::string name = b->getName().str();
-        if (parent->BasicBlock.find(name) != parent->BasicBlock.end()) {
-            Db = parent->BasicBlock[name];
+
+        std::string bname = b->getName().str();
+        if (parent->BasicBlock.find(bname) != parent->BasicBlock.end()) {
+            Db = parent->BasicBlock[bname];
             if (Db->state == CoverKind::untest || Db->state == CoverKind::uncover) {
                 Db->setState(CoverKind::cover);
                 Db->input.clear();
-                this->addNewInput(input);
+                this->addNewInput(dInput);
                 return true;
             } else if (Db->state == CoverKind::cover) {
-                this->addNewInput(input);
+                this->addNewInput(dInput);
             }
         } else {
-            std::cout << "inferCoverBB not find basic block name : " << name << std::endl;
+            std::cout << "inferCoverBB not find basic block name : " << bname << std::endl;
             parent->dump();
             exit(0);
         }
         return false;
     }
 
-    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b, int i) {
+    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b, u_int i) {
         DBasicBlock *Dp;
         DBasicBlock *Db;
         std::string pname = p->getName().str();
-        std::string name = b->getName().str();
-        if (parent->BasicBlock.find(name) != parent->BasicBlock.end()) {
+        std::string bname = b->getName().str();
+        if (parent->BasicBlock.find(bname) != parent->BasicBlock.end()) {
             Dp = parent->BasicBlock[pname];
-            Db = parent->BasicBlock[name];
+            Db = parent->BasicBlock[bname];
             if (parent->BasicBlock.find(pname) != parent->BasicBlock.end()) {
                 DInput *dInput = parent->BasicBlock[pname]->lastInput;
                 if (Db->state == CoverKind::untest) {
@@ -149,11 +162,11 @@ namespace dra {
                 }
 #endif
             } else {
-                std::cout << "inferUncoverBB not find basic block pname : " << name << std::endl;
+                std::cout << "inferUncoverBB not find basic block pname : " << bname << std::endl;
             }
 
         } else {
-            std::cout << "inferUncoverBB not find basic block name : " << name << std::endl;
+            std::cout << "inferUncoverBB not find basic block name : " << bname << std::endl;
             parent->dump();
             exit(0);
         }
@@ -231,9 +244,9 @@ namespace dra {
     void DBasicBlock::addNewInput(DInput *i) {
         this->lastInput = i;
         if (this->input.find(i) == this->input.end()) {
-            this->input[i] = 1 << i->idx;
+            this->input[i] = 1U << i->idx;
         } else {
-            this->input[i] = this->input[i] | 1 << i->idx;
+            this->input[i] = this->input[i] | 1U << i->idx;
         }
     }
 
@@ -316,20 +329,20 @@ namespace dra {
     // not work if there is a switch with more than 64 cases.
     bool DBasicBlock::set_arrive(dra::DBasicBlock *db) {
         bool res = false;
-        uint64_t Num;
+        uint64_t Num = 0;
         auto *inst = dra::getFinalBB(this->basicBlock)->getTerminator();
         for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
             if (inst->getSuccessor(i) == db->basicBlock) {
                 Num = i;
                 if (this->arrive.find(db) != this->arrive.end()) {
-                    if ((this->arrive[db] & 1 << i) > 0) {
+                    if ((this->arrive[db] & 1U << i) > 0) {
 
                     } else {
-                        this->arrive[db] |= 1 << i;
+                        this->arrive[db] |= 1U << i;
                         res = true;
                     }
                 } else {
-                    this->arrive[db] = 1 << i;
+                    this->arrive[db] = 1U << i;
                     res = true;
                 }
             }
@@ -337,14 +350,14 @@ namespace dra {
 
         for (auto bb : db->arrive) {
             if (this->arrive.find(bb.first) != this->arrive.end()) {
-                if ((this->arrive[bb.first] & 1 << Num) > 0) {
+                if ((this->arrive[bb.first] & 1U << Num) > 0) {
 
                 } else {
-                    this->arrive[bb.first] |= 1 << Num;
+                    this->arrive[bb.first] |= 1U << Num;
                     res = true;
                 }
             } else {
-                this->arrive[bb.first] = 1 << Num;
+                this->arrive[bb.first] = 1U << Num;
                 res = true;
             }
         }
@@ -360,7 +373,7 @@ namespace dra {
             auto *inst = fb->getTerminator();
             auto successor_num = inst->getNumSuccessors();
             for (auto bb : this->arrive) {
-                if (bb.second == ((1 << successor_num) - 1)) {
+                if (bb.second == ((1U << successor_num) - 1)) {
 
                 } else {
                     bb.first->add_critical_condition(this, bb.second);
@@ -370,13 +383,13 @@ namespace dra {
     }
 
     void DBasicBlock::add_critical_condition(dra::DBasicBlock *db, uint64_t condition) {
-        Condition *c = new Condition();
+        auto *c = new Condition();
         c->set_condition_address(db->trace_pc_address);
         c->set_successor(condition);
         auto *inst = dra::getFinalBB(db->basicBlock)->getTerminator();
         for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
             auto temp = this->get_DB_from_bb(inst->getSuccessor(i));
-            if (condition && 1 << i) {
+            if (condition && 1U << i) {
                 c->add_right_branch_address(temp->trace_pc_address);
 //                (*c->mutable_right_branch_address())[temp->trace_pc_address] = 0;
             } else {
@@ -398,8 +411,7 @@ namespace dra {
         if (this->state == CoverKind::cover) {
             return 0;
         } else {
-            uint32_t basicblock_number = 1;
-            return basicblock_number;
+            return this->basicblock_number;
         }
     }
 
@@ -413,37 +425,40 @@ namespace dra {
                 }
             }
         }
-        return;
     }
 
     uint32_t DBasicBlock::get_all_uncovered_basicblock_number() {
-        std::set<llvm::Function *> fcs;
-        std::set<llvm::Function *> newfc;
-        fcs.insert(this->parent->function);
-        this->basicblock_number = 1;
+        std::set<llvm::Function *> uncovered_function;
+        std::set<llvm::Function *> new_uncovered_functions;
+        uncovered_function.insert(this->parent->function);
+        uint32_t bb_number = 1;
         for (auto b : this->arrive) {
             if (b.first->state != CoverKind::cover) {
-                this->basicblock_number++;
+                bb_number++;
             }
-            b.first->get_function_call(newfc);
+            b.first->get_function_call(new_uncovered_functions);
         }
-        while (!newfc.empty()) {
-            std::set<llvm::Function *> res;
-            for (auto f : newfc) {
-                fcs.insert(f);
+        while (!new_uncovered_functions.empty()) {
+            std::set<llvm::Function *> temp;
+            for (auto f : new_uncovered_functions) {
+                uncovered_function.insert(f);
                 DFunction *df = this->parent->parent->get_DF_from_f(f);
-                this->basicblock_number += df->get_basicblock_number();
-                df->get_function_call(res);
+                bb_number += df->get_uncovered_basicblock_number();
+                df->get_function_call(temp);
             }
-            newfc.clear();
-            for (auto f : res) {
-                if (fcs.find(f) == fcs.end()) {
-                    newfc.insert(f);
-                    fcs.insert(f);
+            new_uncovered_functions.clear();
+            for (auto f : temp) {
+                if (uncovered_function.find(f) == uncovered_function.end()) {
+                    new_uncovered_functions.insert(f);
+                    uncovered_function.insert(f);
                 }
             }
         }
-        return this->basicblock_number;
+
+        llvm::PostDominatorTree PDT(*this->basicBlock->getParent());
+        PDT.getNode(this->basicBlock)->getIDom()
+
+        return bb_number;
     }
 
 } /* namespace dra */

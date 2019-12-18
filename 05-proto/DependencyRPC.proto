@@ -299,13 +299,16 @@ message Task {
     uint32 index = 2;
     bytes program = 3;
 
+    // 0 is undef
+    // 1 is constant
+    uint32 kind = 4;
+    int32 priority = 5;
+    string hash = 6;
+
     string write_sig = 11;
     uint32 write_index = 12;
     bytes write_program = 13;
     uint32 write_address = 14;
-
-    int32 priority = 15;
-    string hash = 16;
 
     // uncovered address, priority
     map<uint32, runTimeData> uncovered_address = 21;

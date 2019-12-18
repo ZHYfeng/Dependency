@@ -37,11 +37,11 @@ namespace dra {
 
         void setState(CoverKind kind);
 
-        void update(CoverKind kind, DInput *input);
+        void update(CoverKind kind, DInput *dInput);
 
-        bool inferCoverBB(DInput *input, llvm::BasicBlock *b);
+        bool inferCoverBB(DInput *dInput, llvm::BasicBlock *b);
 
-        void inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b, int i);
+        void inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b, u_int i);
 
         void inferSuccessors(llvm::BasicBlock *s, llvm::BasicBlock *b);
 
@@ -79,6 +79,8 @@ namespace dra {
 
         uint32_t get_all_uncovered_basicblock_number();
 
+        uint32_t get__uncovered_basicblock_number();
+
     public:
         bool IR;
         bool AsmSourceCode;
@@ -88,8 +90,8 @@ namespace dra {
         CoverKind state;
         std::string name;
         uint64_t tracr_num;
-        uint64_t trace_pc_address;
-        uint64_t trace_cmp_address;
+        uint64_t trace_pc_address{};
+        uint64_t trace_cmp_address{};
         uint32_t basicblock_number;
 
         std::vector<DAInstruction *> InstASM;

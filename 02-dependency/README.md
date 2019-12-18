@@ -10,7 +10,7 @@ git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
 git submodule update --init --recursive
 ./autogen.sh
-./configure --prefix=~/data/build
+./configure --prefix=/home/yuh/data/build  --disable-shared
 make
 make ckeck
 make install
@@ -24,10 +24,8 @@ sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev li
 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
 git submodule update --init
-mkdir build
-cd build
 make HAS_SYSTEM_PROTOBUF=false
-make install prefix=~/data/build
+make install prefix=/home/yuh/data/build
 sudo ldconfig
 ```
 
