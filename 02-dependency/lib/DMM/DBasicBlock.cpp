@@ -29,7 +29,7 @@ namespace dra {
         state = CoverKind::untest;
         tracr_num = 0;
         this->lastInput = nullptr;
-        this->basicblock_number = 1;
+        this->number_instructions = 1;
     }
 
     DBasicBlock::~DBasicBlock() = default;
@@ -54,7 +54,7 @@ namespace dra {
                 }
             }
 
-            this->basicBlock++;
+            this->number_instructions++;
         }
     }
 
@@ -407,11 +407,11 @@ namespace dra {
         return db;
     }
 
-    uint32_t DBasicBlock::get_uncovered_basicblock_number() {
+    uint32_t DBasicBlock::get_number_uncovered_instructions() {
         if (this->state == CoverKind::cover) {
             return 0;
         } else {
-            return this->basicblock_number;
+            return this->number_instructions;
         }
     }
 
@@ -427,14 +427,15 @@ namespace dra {
         }
     }
 
-    uint32_t DBasicBlock::get_all_uncovered_basicblock_number() {
+    uint32_t DBasicBlock::get_number_arrive_uncovered_instructions() {
         std::set<llvm::Function *> uncovered_function;
         std::set<llvm::Function *> new_uncovered_functions;
         uncovered_function.insert(this->parent->function);
-        uint32_t bb_number = 1;
+        uint32_t number_uncovered_instructions = this->get_number_uncovered_instructions();
         for (auto b : this->arrive) {
             if (b.first->state != CoverKind::cover) {
-                bb_number++;
+                number_uncovered_instructions =
+                        number_uncovered_instructions + b.first->get_number_uncovered_instructions();
             }
             b.first->get_function_call(new_uncovered_functions);
         }
@@ -443,7 +444,7 @@ namespace dra {
             for (auto f : new_uncovered_functions) {
                 uncovered_function.insert(f);
                 DFunction *df = this->parent->parent->get_DF_from_f(f);
-                bb_number += df->get_uncovered_basicblock_number();
+                number_uncovered_instructions += df->get_number_uncovered_instructions();
                 df->get_function_call(temp);
             }
             new_uncovered_functions.clear();
@@ -454,11 +455,11 @@ namespace dra {
                 }
             }
         }
-        return bb_number;
+        return number_uncovered_instructions;
     }
 
-    uint32_t DBasicBlock::get_all_dominator_uncovered_basicblock_number() {
-        return this->parent->get_dominator_uncovered_basicblock_number(this->basicBlock);
+    uint32_t DBasicBlock::get_number_all_dominator_uncovered_instructions() {
+        return this->parent->get_number_dominator_uncovered_instructions(this->basicBlock);
     }
 
 } /* namespace dra */

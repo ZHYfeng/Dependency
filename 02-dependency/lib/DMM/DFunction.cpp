@@ -255,11 +255,11 @@ namespace dra {
         }
     }
 
-    uint32_t DFunction::get_uncovered_basicblock_number() {
+    uint32_t DFunction::get_number_uncovered_instructions() {
         uint64_t uncovered_basicblock_number = 0;
         for (auto b : this->BasicBlock) {
             if (b.second->state != CoverKind::cover) {
-                uncovered_basicblock_number += b.second->get_uncovered_basicblock_number();
+                uncovered_basicblock_number += b.second->get_number_uncovered_instructions();
             }
         }
         return 0;
@@ -272,13 +272,13 @@ namespace dra {
     }
 
 
-    uint32_t DFunction::get_dominator_uncovered_basicblock_number(llvm::BasicBlock *b) {
+    uint32_t DFunction::get_number_dominator_uncovered_instructions(llvm::BasicBlock *b) {
         uint32_t count = 0;
-        count = count + this->parent->get_DB_from_bb(b)->get_uncovered_basicblock_number();
+        count = count + this->parent->get_DB_from_bb(b)->get_number_uncovered_instructions();
         for (auto c : DT->getNode(b)->getChildren()) {
             auto df = this->parent->get_DB_from_bb(c->getBlock());
-            count = count + df->get_uncovered_basicblock_number();
-            count = count + this->get_dominator_uncovered_basicblock_number(df->basicBlock);
+            count = count + df->get_number_uncovered_instructions();
+            count = count + this->get_number_dominator_uncovered_instructions(df->basicBlock);
         }
     }
 

@@ -196,9 +196,9 @@ message UncoveredAddress {
     uint32 condition_address = 1;
     uint32 uncovered_address = 2;
     repeated uint32 right_branch_address = 3;
-    uint32 bbcount = 4;
+    uint32 number_arrive_basicblocks = 4;
     UncoveredAddressKind kind = 5;
-    uint32 bbcount2 = 6;
+    uint32 number_dominator_instructions = 6;
 
     // sig, index by bits
     map<string, uint32> input = 22;
@@ -227,6 +227,9 @@ message Input {
     string sig = 11; // hash value for each input from syzkaller
     bytes program = 12;
     map<uint32, Call> call = 13;
+
+    uint32 stable = 14;
+    uint32 total = 15;
 
     // for dependency
     FuzzingStat stat = 21;

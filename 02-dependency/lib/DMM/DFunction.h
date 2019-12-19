@@ -77,11 +77,11 @@ namespace dra {
 
         void set_critical_condition();
 
-        uint32_t get_uncovered_basicblock_number();
+        uint32_t get_number_uncovered_instructions();
 
         void get_function_call(std::set<llvm::Function *> &res);
 
-        uint32_t get_dominator_uncovered_basicblock_number(llvm::BasicBlock *b);
+        uint32_t get_number_dominator_uncovered_instructions(llvm::BasicBlock *b);
 
     public:
         bool Objudump;
