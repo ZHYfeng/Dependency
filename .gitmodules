@@ -1,8 +1,8 @@
 [submodule "third_party/protobuf"]
-        path = third_party/spiffing
-        url = http://github.com/surevine/spiffing
+        path = third_party/protobuf
+        url = https://github.com/protocolbuffers/protobuf.git
         branch = 3.7.0
 [submodule "third_party/grpc"]
-        path = deps/openssl
-        url = git://git.openssl.org/openssl.git
+        path = third_party/grpc
+        url = https://github.com/grpc/grpc
         branch = $(curl -L https://grpc.io/release)
