@@ -31,8 +31,6 @@ namespace dra {
         IR, O, S,
     };
 
-    static DFunction *MargeDFunction(DFunction *one, DFunction *two);
-
     class DFunction {
     public:
         DFunction();
@@ -47,15 +45,15 @@ namespace dra {
 
         bool isObjudump() const;
 
-        void setObjudump(bool Objudump);
+        void setObjudump(bool objudump);
 
         bool isAsmSourceCode() const;
 
-        void setAsmSourceCode(bool AsmSourceCode);
+        void setAsmSourceCode(bool asmSourceCode);
 
         bool isIR() const;
 
-        void setIR(bool IR);
+        void setIR(bool ir);
 
         void setKind(FunctionKind kind);
 
@@ -79,16 +77,19 @@ namespace dra {
 
         void set_critical_condition();
 
-        uint32_t get_uncovered_basicblock_number();
+        uint32_t get_number_uncovered_instructions();
 
         void get_function_call(std::set<llvm::Function *> &res);
+
+        uint32_t get_number_dominator_uncovered_instructions(llvm::BasicBlock *b);
 
     public:
         bool Objudump;
         bool AsmSourceCode;
         bool IR;
 
-        bool repeat;
+        bool Repeat;
+
 
         llvm::Function *function;
         DModule *parent;
@@ -113,7 +114,7 @@ namespace dra {
         bool critical_condition;
 
         bool uncovered_basicblock;
-
+        llvm::DominatorTree *DT{};
     };
 
 } /* namespace dra */

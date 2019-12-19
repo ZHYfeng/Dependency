@@ -772,7 +772,7 @@ func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint
 	if !ok {
 		log.Fatalf("getPriority not find uncoveredAddress")
 	}
-	bbcount := u.Bbcount
+	bbcount := u.NumberDominatorInstructions
 	waa, ok := u.WriteAddress[writeAddress]
 	if !ok {
 		log.Fatalf("getPriority not find writeAddress")

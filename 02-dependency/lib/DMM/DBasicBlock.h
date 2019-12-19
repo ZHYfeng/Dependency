@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <llvm/Support/GenericDomTree.h>
+#include <llvm/IR/Dominators.h>
 
 #include "DAInstruction.h"
 #include "DInput.h"
@@ -73,13 +75,13 @@ namespace dra {
 
         DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
 
-        uint32_t get_uncovered_basicblock_number();
+        uint32_t get_number_uncovered_instructions();
 
         void get_function_call(std::set<llvm::Function *> &res);
 
-        uint32_t get_all_uncovered_basicblock_number();
+        uint32_t get_number_arrive_uncovered_instructions();
 
-        uint32_t get__uncovered_basicblock_number();
+        uint32_t get_number_all_dominator_uncovered_instructions();
 
     public:
         bool IR;
@@ -92,7 +94,7 @@ namespace dra {
         uint64_t tracr_num;
         uint64_t trace_pc_address{};
         uint64_t trace_cmp_address{};
-        uint32_t basicblock_number;
+        uint32_t number_instructions;
 
         std::vector<DAInstruction *> InstASM;
         std::vector<DLInstruction *> InstIR;

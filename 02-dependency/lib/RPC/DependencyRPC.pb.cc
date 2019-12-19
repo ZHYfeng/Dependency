@@ -1111,8 +1111,9 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, condition_address_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, right_branch_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, bbcount_),
+  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, number_arrive_basicblocks_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, kind_),
+  PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, number_dominator_instructions_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, input_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, write_address_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, run_time_date_),
@@ -1167,6 +1168,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets
   PROTOBUF_FIELD_OFFSET(::dra::Input, sig_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, program_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, call_),
+  PROTOBUF_FIELD_OFFSET(::dra::Input, stable_),
+  PROTOBUF_FIELD_OFFSET(::dra::Input, total_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, stat_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, write_address_),
@@ -1403,34 +1406,34 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 148, 155, sizeof(::dra::UncoveredAddress_InputEntry_DoNotUse)},
   { 157, 164, sizeof(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse)},
   { 166, -1, sizeof(::dra::UncoveredAddress)},
-  { 179, -1, sizeof(::dra::Path)},
-  { 185, -1, sizeof(::dra::UnstableInput)},
-  { 195, 202, sizeof(::dra::Input_CallEntry_DoNotUse)},
-  { 204, 211, sizeof(::dra::Input_UncoveredAddressEntry_DoNotUse)},
-  { 213, 220, sizeof(::dra::Input_WriteAddressEntry_DoNotUse)},
-  { 222, -1, sizeof(::dra::Input)},
-  { 233, -1, sizeof(::dra::Dependency)},
-  { 241, 248, sizeof(::dra::Corpus_InputEntry_DoNotUse)},
-  { 250, 257, sizeof(::dra::Corpus_UncoveredAddressEntry_DoNotUse)},
-  { 259, 266, sizeof(::dra::Corpus_CoveredAddressEntry_DoNotUse)},
-  { 268, 275, sizeof(::dra::Corpus_WriteAddressEntry_DoNotUse)},
-  { 277, 284, sizeof(::dra::Corpus_FileOperationsEntry_DoNotUse)},
-  { 286, 293, sizeof(::dra::Corpus_NewInputEntry_DoNotUse)},
-  { 295, -1, sizeof(::dra::Corpus)},
-  { 309, -1, sizeof(::dra::UsefulInput)},
-  { 318, -1, sizeof(::dra::Statistic)},
-  { 328, 335, sizeof(::dra::Statistics_StatEntry_DoNotUse)},
-  { 337, -1, sizeof(::dra::Statistics)},
-  { 347, 354, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
-  { 356, 363, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
-  { 365, -1, sizeof(::dra::Task)},
-  { 390, 397, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
-  { 399, -1, sizeof(::dra::Tasks)},
-  { 408, -1, sizeof(::dra::Time)},
-  { 416, 423, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
-  { 425, -1, sizeof(::dra::Coverage)},
-  { 432, -1, sizeof(::dra::Conditions)},
-  { 438, -1, sizeof(::dra::WriteAddresses)},
+  { 180, -1, sizeof(::dra::Path)},
+  { 186, -1, sizeof(::dra::UnstableInput)},
+  { 196, 203, sizeof(::dra::Input_CallEntry_DoNotUse)},
+  { 205, 212, sizeof(::dra::Input_UncoveredAddressEntry_DoNotUse)},
+  { 214, 221, sizeof(::dra::Input_WriteAddressEntry_DoNotUse)},
+  { 223, -1, sizeof(::dra::Input)},
+  { 236, -1, sizeof(::dra::Dependency)},
+  { 244, 251, sizeof(::dra::Corpus_InputEntry_DoNotUse)},
+  { 253, 260, sizeof(::dra::Corpus_UncoveredAddressEntry_DoNotUse)},
+  { 262, 269, sizeof(::dra::Corpus_CoveredAddressEntry_DoNotUse)},
+  { 271, 278, sizeof(::dra::Corpus_WriteAddressEntry_DoNotUse)},
+  { 280, 287, sizeof(::dra::Corpus_FileOperationsEntry_DoNotUse)},
+  { 289, 296, sizeof(::dra::Corpus_NewInputEntry_DoNotUse)},
+  { 298, -1, sizeof(::dra::Corpus)},
+  { 312, -1, sizeof(::dra::UsefulInput)},
+  { 321, -1, sizeof(::dra::Statistic)},
+  { 331, 338, sizeof(::dra::Statistics_StatEntry_DoNotUse)},
+  { 340, -1, sizeof(::dra::Statistics)},
+  { 350, 357, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
+  { 359, 366, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
+  { 368, -1, sizeof(::dra::Task)},
+  { 393, 400, sizeof(::dra::Tasks_TaskEntry_DoNotUse)},
+  { 402, -1, sizeof(::dra::Tasks)},
+  { 411, -1, sizeof(::dra::Time)},
+  { 419, 426, sizeof(::dra::Coverage_CoverageEntry_DoNotUse)},
+  { 428, -1, sizeof(::dra::Coverage)},
+  { 435, -1, sizeof(::dra::Conditions)},
+  { 441, -1, sizeof(::dra::WriteAddresses)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1531,130 +1534,132 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VA
   "\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\r:"
   "\0028\001\"M\n\026writeAddressAttributes\022\025\n\rwrite_a"
   "ddress\030\002 \001(\r\022\016\n\006repeat\030\007 \001(\r\022\014\n\004prio\030\006 \001"
-  "(\r\"\272\003\n\020UncoveredAddress\022\031\n\021condition_add"
+  "(\r\"\363\003\n\020UncoveredAddress\022\031\n\021condition_add"
   "ress\030\001 \001(\r\022\031\n\021uncovered_address\030\002 \001(\r\022\034\n"
-  "\024right_branch_address\030\003 \003(\r\022\017\n\007bbcount\030\004"
-  " \001(\r\022\'\n\004kind\030\005 \001(\0162\031.dra.UncoveredAddres"
-  "sKind\022/\n\005input\030\026 \003(\0132 .dra.UncoveredAddr"
-  "ess.InputEntry\022>\n\rwrite_address\030\027 \003(\0132\'."
-  "dra.UncoveredAddress.WriteAddressEntry\022\'"
-  "\n\rrun_time_date\030\010 \001(\0132\020.dra.runTimeData\032"
-  ",\n\nInputEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001("
-  "\r:\0028\001\032P\n\021WriteAddressEntry\022\013\n\003key\030\001 \001(\r\022"
-  "*\n\005value\030\002 \001(\0132\033.dra.writeAddressAttribu"
-  "tes:\0028\001\"\027\n\004Path\022\017\n\007address\030\001 \003(\r\"y\n\rUnst"
-  "ableInput\022\033\n\010new_path\030\001 \001(\0132\t.dra.Path\022 "
-  "\n\runstable_path\030\002 \001(\0132\t.dra.Path\022\013\n\003idx\030"
-  "\003 \001(\005\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030\014 \001(\014\"\201\003\n\005"
-  "Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007program\030\014 \001(\014\022\"\n\004c"
-  "all\030\r \003(\0132\024.dra.Input.CallEntry\022\036\n\004stat\030"
-  "\025 \001(\0162\020.dra.FuzzingStat\022;\n\021uncovered_add"
-  "ress\030\026 \003(\0132 .dra.Input.UncoveredAddressE"
-  "ntry\0223\n\rwrite_address\030\031 \003(\0132\034.dra.Input."
-  "WriteAddressEntry\0326\n\tCallEntry\022\013\n\003key\030\001 "
-  "\001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:\0028\001\0327\n\025Unc"
-  "overedAddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value"
-  "\030\002 \001(\r:\0028\001\0323\n\021WriteAddressEntry\022\013\n\003key\030\001"
-  " \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\203\001\n\nDependency\022\031"
-  "\n\005input\030\001 \001(\0132\n.dra.Input\0220\n\021uncovered_a"
-  "ddress\030\002 \001(\0132\025.dra.UncoveredAddress\022(\n\rw"
-  "rite_address\030\003 \003(\0132\021.dra.WriteAddress\"\307\006"
-  "\n\006Corpus\022%\n\005input\030\001 \003(\0132\026.dra.Corpus.Inp"
-  "utEntry\022<\n\021uncovered_address\030\004 \003(\0132!.dra"
-  ".Corpus.UncoveredAddressEntry\0228\n\017covered"
-  "_address\030\002 \003(\0132\037.dra.Corpus.CoveredAddre"
-  "ssEntry\0224\n\rwrite_address\030\005 \003(\0132\035.dra.Cor"
-  "pus.WriteAddressEntry\0228\n\017file_operations"
-  "\030\006 \003(\0132\037.dra.Corpus.FileOperationsEntry\022"
-  "\031\n\005tasks\030\007 \001(\0132\n.dra.Tasks\022\035\n\thigh_task\030"
-  "\010 \001(\0132\n.dra.Tasks\022\035\n\tboot_task\030\t \001(\0132\n.d"
-  "ra.Tasks\022,\n\tnew_input\030\013 \003(\0132\031.dra.Corpus"
-  ".NewInputEntry\0328\n\nInputEntry\022\013\n\003key\030\001 \001("
-  "\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001\032N\n\025Unco"
-  "veredAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005value\030"
-  "\002 \001(\0132\025.dra.UncoveredAddress:\0028\001\032L\n\023Cove"
-  "redAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005value\030\002 "
-  "\001(\0132\025.dra.UncoveredAddress:\0028\001\032F\n\021WriteA"
-  "ddressEntry\022\013\n\003key\030\001 \001(\r\022 \n\005value\030\002 \001(\0132"
-  "\021.dra.WriteAddress:\0028\001\032J\n\023FileOperations"
-  "Entry\022\013\n\003key\030\001 \001(\t\022\"\n\005value\030\002 \001(\0132\023.dra."
-  "FileOperations:\0028\001\032;\n\rNewInputEntry\022\013\n\003k"
-  "ey\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001\""
-  "X\n\013UsefulInput\022\031\n\005input\030\001 \001(\0132\n.dra.Inpu"
-  "t\022\014\n\004time\030\002 \001(\001\022\013\n\003num\030\003 \001(\004\022\023\n\013new_addr"
-  "ess\030\004 \003(\r\"|\n\tStatistic\022\036\n\004name\030\001 \001(\0162\020.d"
-  "ra.FuzzingStat\022\022\n\nexecuteNum\030\013 \001(\004\022\014\n\004ti"
-  "me\030\014 \001(\001\022\026\n\016newTestCaseNum\030\r \001(\004\022\025\n\rnewA"
-  "ddressNum\030\016 \001(\004\"\352\001\n\nStatistics\022\021\n\tsignal"
-  "Num\030\001 \001(\004\022\032\n\022basic_block_number\030\n \001(\r\022\037\n"
-  "\010coverage\030\010 \001(\0132\r.dra.Coverage\022\'\n\004stat\030\013"
-  " \003(\0132\031.dra.Statistics.StatEntry\022&\n\014usefu"
-  "l_input\030\014 \003(\0132\020.dra.UsefulInput\032;\n\tStatE"
-  "ntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001(\0132\016.dra.S"
-  "tatistic:\0028\001\"\243\005\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005in"
-  "dex\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\014\n\004kind\030\004 \001(\r"
-  "\022\020\n\010priority\030\005 \001(\005\022\014\n\004hash\030\006 \001(\t\022\021\n\twrit"
-  "e_sig\030\013 \001(\t\022\023\n\013write_index\030\014 \001(\r\022\025\n\rwrit"
-  "e_program\030\r \001(\014\022\025\n\rwrite_address\030\016 \001(\r\022:"
-  "\n\021uncovered_address\030\025 \003(\0132\037.dra.Task.Unc"
-  "overedAddressEntry\0226\n\017covered_address\030\027 "
-  "\003(\0132\035.dra.Task.CoveredAddressEntry\022$\n\013ta"
-  "sk_status\030\030 \001(\0162\017.dra.taskStatus\022\033\n\023chec"
-  "k_write_address\030\031 \001(\010\022!\n\031check_write_add"
-  "ress_final\030\032 \001(\010\022\"\n\032check_write_address_"
-  "remove\030\033 \001(\010\022\021\n\tfinal_idx\030\034 \001(\r\022\027\n\017final"
-  "_write_idx\030\035 \001(\r\022\022\n\nremove_idx\030\036 \001(\r\022\030\n\020"
-  "remove_write_idx\030\037 \001(\r\032I\n\025UncoveredAddre"
-  "ssEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dr"
-  "a.runTimeData:\0028\001\032G\n\023CoveredAddressEntry"
-  "\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTi"
-  "meData:\0028\001\"\250\001\n\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004ki"
-  "nd\030* \001(\0162\r.dra.TaskKind\022\"\n\004task\030\001 \003(\0132\024."
-  "dra.Tasks.TaskEntry\022\030\n\005tasks\030\002 \003(\0132\t.dra"
-  ".Task\0326\n\tTaskEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value"
-  "\030\002 \001(\0132\t.dra.Task:\0028\001\"5\n\004Time\022\014\n\004time\030\001 "
-  "\001(\001\022\013\n\003num\030\002 \001(\003\022\022\n\nexecuteNum\030\003 \001(\003\"\203\001\n"
-  "\010Coverage\022-\n\010coverage\030\001 \003(\0132\033.dra.Covera"
-  "ge.CoverageEntry\022\027\n\004time\030\002 \003(\0132\t.dra.Tim"
-  "e\032/\n\rCoverageEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value"
-  "\030\002 \001(\r:\0028\001\"/\n\nConditions\022!\n\tcondition\030\n "
-  "\003(\0132\016.dra.Condition\"]\n\016WriteAddresses\022!\n"
-  "\tcondition\030\001 \001(\0132\016.dra.Condition\022(\n\rwrit"
-  "e_address\030\004 \003(\0132\021.dra.WriteAddress*f\n\nta"
-  "skStatus\022\014\n\010untested\020\000\022\r\n\trecursive\020\001\022\n\n"
-  "\006tested\020\002\022\007\n\003out\020\003\022\013\n\007covered\020\004\022\013\n\007testi"
-  "ng\020\005\022\014\n\010unstable\020\006*\215\001\n\024file_operations_k"
-  "ind\022\013\n\007default\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010"
-  "\n\004read\020\003\022\t\n\005write\020\004\022\010\n\004poll\020\t\022\022\n\016unlocke"
-  "d_ioctl\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n\007release"
-  "\020\020*W\n\024UncoveredAddressKind\022\013\n\007Outside\020\000\022"
-  "\020\n\014InputRelated\020\001\022\025\n\021DependnecyRelated\020\002"
-  "\022\t\n\005Other\020\003*\312\001\n\013FuzzingStat\022\017\n\013StatDefau"
-  "lt\020\000\022\020\n\014StatGenerate\020\001\022\014\n\010StatFuzz\020\002\022\021\n\r"
-  "StatCandidate\020\003\022\016\n\nStatTriage\020\004\022\020\n\014StatM"
-  "inimize\020\005\022\r\n\tStatSmash\020\006\022\014\n\010StatHint\020\007\022\014"
-  "\n\010StatSeed\020\010\022\022\n\016StatDependency\020\t\022\026\n\022Stat"
-  "DependencyBoot\020\n**\n\010TaskKind\022\n\n\006Normal\020\000"
-  "\022\010\n\004High\020\001\022\010\n\004Boot\020\0022\365\005\n\rDependencyRPC\022("
-  "\n\014GetVMOffsets\022\n.dra.Empty\032\n.dra.Empty\"\000"
-  "\0220\n\024SendBasicBlockNumber\022\n.dra.Empty\032\n.d"
-  "ra.Empty\"\000\022(\n\013GetNewInput\022\n.dra.Empty\032\013."
-  "dra.Inputs\"\000\022/\n\016SendDependency\022\017.dra.Dep"
-  "endency\032\n.dra.Empty\"\000\022-\n\014GetCondition\022\n."
-  "dra.Empty\032\017.dra.Conditions\"\000\0225\n\020SendWrit"
-  "eAddress\022\023.dra.WriteAddresses\032\n.dra.Empt"
-  "y\"\000\022#\n\007Connect\022\n.dra.Empty\032\n.dra.Empty\"\000"
-  "\022(\n\014SendNewInput\022\n.dra.Input\032\n.dra.Empty"
-  "\"\000\022$\n\010GetTasks\022\n.dra.Empty\032\n.dra.Tasks\"\000"
-  "\022(\n\014GetBootTasks\022\n.dra.Empty\032\n.dra.Tasks"
-  "\"\000\022\'\n\013ReturnTasks\022\n.dra.Tasks\032\n.dra.Empt"
-  "y\"\000\022)\n\rSendBootInput\022\n.dra.Input\032\n.dra.E"
-  "mpty\"\000\0225\n\021SendUnstableInput\022\022.dra.Unstab"
-  "leInput\032\n.dra.Empty\"\000\022#\n\007SendLog\022\n.dra.E"
-  "mpty\032\n.dra.Empty\"\000\022(\n\010sendStat\022\016.dra.Sta"
-  "tistic\032\n.dra.Empty\"\000\022#\n\007GetNeed\022\n.dra.Em"
-  "pty\032\n.dra.Empty\"\000\022)\n\rSendNeedInput\022\n.dra"
-  ".Input\032\n.dra.Empty\"\000b\006proto3"
+  "\024right_branch_address\030\003 \003(\r\022!\n\031number_ar"
+  "rive_basicblocks\030\004 \001(\r\022\'\n\004kind\030\005 \001(\0162\031.d"
+  "ra.UncoveredAddressKind\022%\n\035number_domina"
+  "tor_instructions\030\006 \001(\r\022/\n\005input\030\026 \003(\0132 ."
+  "dra.UncoveredAddress.InputEntry\022>\n\rwrite"
+  "_address\030\027 \003(\0132\'.dra.UncoveredAddress.Wr"
+  "iteAddressEntry\022\'\n\rrun_time_date\030\010 \001(\0132\020"
+  ".dra.runTimeData\032,\n\nInputEntry\022\013\n\003key\030\001 "
+  "\001(\t\022\r\n\005value\030\002 \001(\r:\0028\001\032P\n\021WriteAddressEn"
+  "try\022\013\n\003key\030\001 \001(\r\022*\n\005value\030\002 \001(\0132\033.dra.wr"
+  "iteAddressAttributes:\0028\001\"\027\n\004Path\022\017\n\007addr"
+  "ess\030\001 \003(\r\"y\n\rUnstableInput\022\033\n\010new_path\030\001"
+  " \001(\0132\t.dra.Path\022 \n\runstable_path\030\002 \001(\0132\t"
+  ".dra.Path\022\013\n\003idx\030\003 \001(\005\022\013\n\003sig\030\013 \001(\t\022\017\n\007p"
+  "rogram\030\014 \001(\014\"\240\003\n\005Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007p"
+  "rogram\030\014 \001(\014\022\"\n\004call\030\r \003(\0132\024.dra.Input.C"
+  "allEntry\022\016\n\006stable\030\016 \001(\r\022\r\n\005total\030\017 \001(\r\022"
+  "\036\n\004stat\030\025 \001(\0162\020.dra.FuzzingStat\022;\n\021uncov"
+  "ered_address\030\026 \003(\0132 .dra.Input.Uncovered"
+  "AddressEntry\0223\n\rwrite_address\030\031 \003(\0132\034.dr"
+  "a.Input.WriteAddressEntry\0326\n\tCallEntry\022\013"
+  "\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Call:\0028"
+  "\001\0327\n\025UncoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022"
+  "\r\n\005value\030\002 \001(\r:\0028\001\0323\n\021WriteAddressEntry\022"
+  "\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\203\001\n\nDepe"
+  "ndency\022\031\n\005input\030\001 \001(\0132\n.dra.Input\0220\n\021unc"
+  "overed_address\030\002 \001(\0132\025.dra.UncoveredAddr"
+  "ess\022(\n\rwrite_address\030\003 \003(\0132\021.dra.WriteAd"
+  "dress\"\307\006\n\006Corpus\022%\n\005input\030\001 \003(\0132\026.dra.Co"
+  "rpus.InputEntry\022<\n\021uncovered_address\030\004 \003"
+  "(\0132!.dra.Corpus.UncoveredAddressEntry\0228\n"
+  "\017covered_address\030\002 \003(\0132\037.dra.Corpus.Cove"
+  "redAddressEntry\0224\n\rwrite_address\030\005 \003(\0132\035"
+  ".dra.Corpus.WriteAddressEntry\0228\n\017file_op"
+  "erations\030\006 \003(\0132\037.dra.Corpus.FileOperatio"
+  "nsEntry\022\031\n\005tasks\030\007 \001(\0132\n.dra.Tasks\022\035\n\thi"
+  "gh_task\030\010 \001(\0132\n.dra.Tasks\022\035\n\tboot_task\030\t"
+  " \001(\0132\n.dra.Tasks\022,\n\tnew_input\030\013 \003(\0132\031.dr"
+  "a.Corpus.NewInputEntry\0328\n\nInputEntry\022\013\n\003"
+  "key\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001"
+  "\032N\n\025UncoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022$"
+  "\n\005value\030\002 \001(\0132\025.dra.UncoveredAddress:\0028\001"
+  "\032L\n\023CoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005"
+  "value\030\002 \001(\0132\025.dra.UncoveredAddress:\0028\001\032F"
+  "\n\021WriteAddressEntry\022\013\n\003key\030\001 \001(\r\022 \n\005valu"
+  "e\030\002 \001(\0132\021.dra.WriteAddress:\0028\001\032J\n\023FileOp"
+  "erationsEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005value\030\002 \001("
+  "\0132\023.dra.FileOperations:\0028\001\032;\n\rNewInputEn"
+  "try\022\013\n\003key\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.In"
+  "put:\0028\001\"X\n\013UsefulInput\022\031\n\005input\030\001 \001(\0132\n."
+  "dra.Input\022\014\n\004time\030\002 \001(\001\022\013\n\003num\030\003 \001(\004\022\023\n\013"
+  "new_address\030\004 \003(\r\"|\n\tStatistic\022\036\n\004name\030\001"
+  " \001(\0162\020.dra.FuzzingStat\022\022\n\nexecuteNum\030\013 \001"
+  "(\004\022\014\n\004time\030\014 \001(\001\022\026\n\016newTestCaseNum\030\r \001(\004"
+  "\022\025\n\rnewAddressNum\030\016 \001(\004\"\352\001\n\nStatistics\022\021"
+  "\n\tsignalNum\030\001 \001(\004\022\032\n\022basic_block_number\030"
+  "\n \001(\r\022\037\n\010coverage\030\010 \001(\0132\r.dra.Coverage\022\'"
+  "\n\004stat\030\013 \003(\0132\031.dra.Statistics.StatEntry\022"
+  "&\n\014useful_input\030\014 \003(\0132\020.dra.UsefulInput\032"
+  ";\n\tStatEntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002 \001(\013"
+  "2\016.dra.Statistic:\0028\001\"\243\005\n\004Task\022\013\n\003sig\030\001 \001"
+  "(\t\022\r\n\005index\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\014\n\004ki"
+  "nd\030\004 \001(\r\022\020\n\010priority\030\005 \001(\005\022\014\n\004hash\030\006 \001(\t"
+  "\022\021\n\twrite_sig\030\013 \001(\t\022\023\n\013write_index\030\014 \001(\r"
+  "\022\025\n\rwrite_program\030\r \001(\014\022\025\n\rwrite_address"
+  "\030\016 \001(\r\022:\n\021uncovered_address\030\025 \003(\0132\037.dra."
+  "Task.UncoveredAddressEntry\0226\n\017covered_ad"
+  "dress\030\027 \003(\0132\035.dra.Task.CoveredAddressEnt"
+  "ry\022$\n\013task_status\030\030 \001(\0162\017.dra.taskStatus"
+  "\022\033\n\023check_write_address\030\031 \001(\010\022!\n\031check_w"
+  "rite_address_final\030\032 \001(\010\022\"\n\032check_write_"
+  "address_remove\030\033 \001(\010\022\021\n\tfinal_idx\030\034 \001(\r\022"
+  "\027\n\017final_write_idx\030\035 \001(\r\022\022\n\nremove_idx\030\036"
+  " \001(\r\022\030\n\020remove_write_idx\030\037 \001(\r\032I\n\025Uncove"
+  "redAddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 "
+  "\001(\0132\020.dra.runTimeData:\0028\001\032G\n\023CoveredAddr"
+  "essEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.d"
+  "ra.runTimeData:\0028\001\"\250\001\n\005Tasks\022\014\n\004name\030) \001"
+  "(\t\022\033\n\004kind\030* \001(\0162\r.dra.TaskKind\022\"\n\004task\030"
+  "\001 \003(\0132\024.dra.Tasks.TaskEntry\022\030\n\005tasks\030\002 \003"
+  "(\0132\t.dra.Task\0326\n\tTaskEntry\022\013\n\003key\030\001 \001(\t\022"
+  "\030\n\005value\030\002 \001(\0132\t.dra.Task:\0028\001\"5\n\004Time\022\014\n"
+  "\004time\030\001 \001(\001\022\013\n\003num\030\002 \001(\003\022\022\n\nexecuteNum\030\003"
+  " \001(\003\"\203\001\n\010Coverage\022-\n\010coverage\030\001 \003(\0132\033.dr"
+  "a.Coverage.CoverageEntry\022\027\n\004time\030\002 \003(\0132\t"
+  ".dra.Time\032/\n\rCoverageEntry\022\013\n\003key\030\001 \001(\r\022"
+  "\r\n\005value\030\002 \001(\r:\0028\001\"/\n\nConditions\022!\n\tcond"
+  "ition\030\n \003(\0132\016.dra.Condition\"]\n\016WriteAddr"
+  "esses\022!\n\tcondition\030\001 \001(\0132\016.dra.Condition"
+  "\022(\n\rwrite_address\030\004 \003(\0132\021.dra.WriteAddre"
+  "ss*f\n\ntaskStatus\022\014\n\010untested\020\000\022\r\n\trecurs"
+  "ive\020\001\022\n\n\006tested\020\002\022\007\n\003out\020\003\022\013\n\007covered\020\004\022"
+  "\013\n\007testing\020\005\022\014\n\010unstable\020\006*\215\001\n\024file_oper"
+  "ations_kind\022\013\n\007default\020\000\022\010\n\004init\020\001\022\n\n\006ll"
+  "seek\020\002\022\010\n\004read\020\003\022\t\n\005write\020\004\022\010\n\004poll\020\t\022\022\n"
+  "\016unlocked_ioctl\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n"
+  "\007release\020\020*W\n\024UncoveredAddressKind\022\013\n\007Ou"
+  "tside\020\000\022\020\n\014InputRelated\020\001\022\025\n\021DependnecyR"
+  "elated\020\002\022\t\n\005Other\020\003*\312\001\n\013FuzzingStat\022\017\n\013S"
+  "tatDefault\020\000\022\020\n\014StatGenerate\020\001\022\014\n\010StatFu"
+  "zz\020\002\022\021\n\rStatCandidate\020\003\022\016\n\nStatTriage\020\004\022"
+  "\020\n\014StatMinimize\020\005\022\r\n\tStatSmash\020\006\022\014\n\010Stat"
+  "Hint\020\007\022\014\n\010StatSeed\020\010\022\022\n\016StatDependency\020\t"
+  "\022\026\n\022StatDependencyBoot\020\n**\n\010TaskKind\022\n\n\006"
+  "Normal\020\000\022\010\n\004High\020\001\022\010\n\004Boot\020\0022\365\005\n\rDepende"
+  "ncyRPC\022(\n\014GetVMOffsets\022\n.dra.Empty\032\n.dra"
+  ".Empty\"\000\0220\n\024SendBasicBlockNumber\022\n.dra.E"
+  "mpty\032\n.dra.Empty\"\000\022(\n\013GetNewInput\022\n.dra."
+  "Empty\032\013.dra.Inputs\"\000\022/\n\016SendDependency\022\017"
+  ".dra.Dependency\032\n.dra.Empty\"\000\022-\n\014GetCond"
+  "ition\022\n.dra.Empty\032\017.dra.Conditions\"\000\0225\n\020"
+  "SendWriteAddress\022\023.dra.WriteAddresses\032\n."
+  "dra.Empty\"\000\022#\n\007Connect\022\n.dra.Empty\032\n.dra"
+  ".Empty\"\000\022(\n\014SendNewInput\022\n.dra.Input\032\n.d"
+  "ra.Empty\"\000\022$\n\010GetTasks\022\n.dra.Empty\032\n.dra"
+  ".Tasks\"\000\022(\n\014GetBootTasks\022\n.dra.Empty\032\n.d"
+  "ra.Tasks\"\000\022\'\n\013ReturnTasks\022\n.dra.Tasks\032\n."
+  "dra.Empty\"\000\022)\n\rSendBootInput\022\n.dra.Input"
+  "\032\n.dra.Empty\"\000\0225\n\021SendUnstableInput\022\022.dr"
+  "a.UnstableInput\032\n.dra.Empty\"\000\022#\n\007SendLog"
+  "\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\010sendStat\022\016"
+  ".dra.Statistic\032\n.dra.Empty\"\000\022#\n\007GetNeed\022"
+  "\n.dra.Empty\032\n.dra.Empty\"\000\022)\n\rSendNeedInp"
+  "ut\022\n.dra.Input\032\n.dra.Empty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[1] = {
 };
@@ -1710,7 +1715,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 6828,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 6916,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 47, 0,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 47, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
@@ -5089,16 +5094,16 @@ UncoveredAddress::UncoveredAddress(const UncoveredAddress& from)
     run_time_date_ = nullptr;
   }
   ::memcpy(&condition_address_, &from.condition_address_,
-    static_cast<size_t>(reinterpret_cast<char*>(&kind_) -
-    reinterpret_cast<char*>(&condition_address_)) + sizeof(kind_));
+    static_cast<size_t>(reinterpret_cast<char*>(&number_dominator_instructions_) -
+    reinterpret_cast<char*>(&condition_address_)) + sizeof(number_dominator_instructions_));
   // @@protoc_insertion_point(copy_constructor:dra.UncoveredAddress)
 }
 
 void UncoveredAddress::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UncoveredAddress_DependencyRPC_2eproto.base);
   ::memset(&run_time_date_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&kind_) -
-      reinterpret_cast<char*>(&run_time_date_)) + sizeof(kind_));
+      reinterpret_cast<char*>(&number_dominator_instructions_) -
+      reinterpret_cast<char*>(&run_time_date_)) + sizeof(number_dominator_instructions_));
 }
 
 UncoveredAddress::~UncoveredAddress() {
@@ -5133,8 +5138,8 @@ void UncoveredAddress::Clear() {
   }
   run_time_date_ = nullptr;
   ::memset(&condition_address_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&kind_) -
-      reinterpret_cast<char*>(&condition_address_)) + sizeof(kind_));
+      reinterpret_cast<char*>(&number_dominator_instructions_) -
+      reinterpret_cast<char*>(&condition_address_)) + sizeof(number_dominator_instructions_));
   _internal_metadata_.Clear();
 }
 
@@ -5169,10 +5174,10 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 bbcount = 4;
+      // uint32 number_arrive_basicblocks = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          bbcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          number_arrive_basicblocks_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -5182,6 +5187,13 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
           _internal_set_kind(static_cast<::dra::UncoveredAddressKind>(val));
+        } else goto handle_unusual;
+        continue;
+      // uint32 number_dominator_instructions = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          number_dominator_instructions_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // .dra.runTimeData run_time_date = 8;
@@ -5262,10 +5274,10 @@ failure:
     }
   }
 
-  // uint32 bbcount = 4;
-  if (this->bbcount() != 0) {
+  // uint32 number_arrive_basicblocks = 4;
+  if (this->number_arrive_basicblocks() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_bbcount(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_number_arrive_basicblocks(), target);
   }
 
   // .dra.UncoveredAddressKind kind = 5;
@@ -5273,6 +5285,12 @@ failure:
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       5, this->_internal_kind(), target);
+  }
+
+  // uint32 number_dominator_instructions = 6;
+  if (this->number_dominator_instructions() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_number_dominator_instructions(), target);
   }
 
   // .dra.runTimeData run_time_date = 8;
@@ -5425,17 +5443,24 @@ size_t UncoveredAddress::ByteSizeLong() const {
         this->_internal_uncovered_address());
   }
 
-  // uint32 bbcount = 4;
-  if (this->bbcount() != 0) {
+  // uint32 number_arrive_basicblocks = 4;
+  if (this->number_arrive_basicblocks() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_bbcount());
+        this->_internal_number_arrive_basicblocks());
   }
 
   // .dra.UncoveredAddressKind kind = 5;
   if (this->kind() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_kind());
+  }
+
+  // uint32 number_dominator_instructions = 6;
+  if (this->number_dominator_instructions() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_number_dominator_instructions());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5481,11 +5506,14 @@ void UncoveredAddress::MergeFrom(const UncoveredAddress& from) {
   if (from.uncovered_address() != 0) {
     _internal_set_uncovered_address(from._internal_uncovered_address());
   }
-  if (from.bbcount() != 0) {
-    _internal_set_bbcount(from._internal_bbcount());
+  if (from.number_arrive_basicblocks() != 0) {
+    _internal_set_number_arrive_basicblocks(from._internal_number_arrive_basicblocks());
   }
   if (from.kind() != 0) {
     _internal_set_kind(from._internal_kind());
+  }
+  if (from.number_dominator_instructions() != 0) {
+    _internal_set_number_dominator_instructions(from._internal_number_dominator_instructions());
   }
 }
 
@@ -5516,8 +5544,9 @@ void UncoveredAddress::InternalSwap(UncoveredAddress* other) {
   swap(run_time_date_, other->run_time_date_);
   swap(condition_address_, other->condition_address_);
   swap(uncovered_address_, other->uncovered_address_);
-  swap(bbcount_, other->bbcount_);
+  swap(number_arrive_basicblocks_, other->number_arrive_basicblocks_);
   swap(kind_, other->kind_);
+  swap(number_dominator_instructions_, other->number_dominator_instructions_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress::GetMetadata() const {
@@ -6149,7 +6178,9 @@ Input::Input(const Input& from)
   if (!from._internal_program().empty()) {
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
-  stat_ = from.stat_;
+  ::memcpy(&stat_, &from.stat_,
+    static_cast<size_t>(reinterpret_cast<char*>(&total_) -
+    reinterpret_cast<char*>(&stat_)) + sizeof(total_));
   // @@protoc_insertion_point(copy_constructor:dra.Input)
 }
 
@@ -6157,7 +6188,9 @@ void Input::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Input_DependencyRPC_2eproto.base);
   sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  stat_ = 0;
+  ::memset(&stat_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&total_) -
+      reinterpret_cast<char*>(&stat_)) + sizeof(total_));
 }
 
 Input::~Input() {
@@ -6190,7 +6223,9 @@ void Input::Clear() {
   write_address_.Clear();
   sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  stat_ = 0;
+  ::memset(&stat_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&total_) -
+      reinterpret_cast<char*>(&stat_)) + sizeof(total_));
   _internal_metadata_.Clear();
 }
 
@@ -6228,6 +6263,20 @@ const char* Input::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<106>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // uint32 stable = 14;
+      case 14:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 112)) {
+          stable_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 total = 15;
+      case 15:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 120)) {
+          total_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // .dra.FuzzingStat stat = 21;
@@ -6333,6 +6382,18 @@ failure:
         target = Input_CallEntry_DoNotUse::Funcs::InternalSerialize(13, it->first, it->second, target, stream);
       }
     }
+  }
+
+  // uint32 stable = 14;
+  if (this->stable() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(14, this->_internal_stable(), target);
+  }
+
+  // uint32 total = 15;
+  if (this->total() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(15, this->_internal_total(), target);
   }
 
   // .dra.FuzzingStat stat = 21;
@@ -6467,6 +6528,20 @@ size_t Input::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_stat());
   }
 
+  // uint32 stable = 14;
+  if (this->stable() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_stable());
+  }
+
+  // uint32 total = 15;
+  if (this->total() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_total());
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -6512,6 +6587,12 @@ void Input::MergeFrom(const Input& from) {
   if (from.stat() != 0) {
     _internal_set_stat(from._internal_stat());
   }
+  if (from.stable() != 0) {
+    _internal_set_stable(from._internal_stable());
+  }
+  if (from.total() != 0) {
+    _internal_set_total(from._internal_total());
+  }
 }
 
 void Input::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -6543,6 +6624,8 @@ void Input::InternalSwap(Input* other) {
   program_.Swap(&other->program_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(stat_, other->stat_);
+  swap(stable_, other->stable_);
+  swap(total_, other->total_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Input::GetMetadata() const {

@@ -2610,8 +2610,9 @@ class UncoveredAddress :
     kRunTimeDateFieldNumber = 8,
     kConditionAddressFieldNumber = 1,
     kUncoveredAddressFieldNumber = 2,
-    kBbcountFieldNumber = 4,
+    kNumberArriveBasicblocksFieldNumber = 4,
     kKindFieldNumber = 5,
+    kNumberDominatorInstructionsFieldNumber = 6,
   };
   // repeated uint32 right_branch_address = 3;
   int right_branch_address_size() const;
@@ -2702,13 +2703,13 @@ class UncoveredAddress :
   void _internal_set_uncovered_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // uint32 bbcount = 4;
-  void clear_bbcount();
-  ::PROTOBUF_NAMESPACE_ID::uint32 bbcount() const;
-  void set_bbcount(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 number_arrive_basicblocks = 4;
+  void clear_number_arrive_basicblocks();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_arrive_basicblocks() const;
+  void set_number_arrive_basicblocks(::PROTOBUF_NAMESPACE_ID::uint32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_bbcount() const;
-  void _internal_set_bbcount(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_arrive_basicblocks() const;
+  void _internal_set_number_arrive_basicblocks(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
   // .dra.UncoveredAddressKind kind = 5;
@@ -2718,6 +2719,15 @@ class UncoveredAddress :
   private:
   ::dra::UncoveredAddressKind _internal_kind() const;
   void _internal_set_kind(::dra::UncoveredAddressKind value);
+  public:
+
+  // uint32 number_dominator_instructions = 6;
+  void clear_number_dominator_instructions();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_dominator_instructions() const;
+  void set_number_dominator_instructions(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_dominator_instructions() const;
+  void _internal_set_number_dominator_instructions(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:dra.UncoveredAddress)
@@ -2742,8 +2752,9 @@ class UncoveredAddress :
   ::dra::runTimeData* run_time_date_;
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 uncovered_address_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 bbcount_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_arrive_basicblocks_;
   int kind_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_dominator_instructions_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -3292,6 +3303,8 @@ class Input :
     kSigFieldNumber = 11,
     kProgramFieldNumber = 12,
     kStatFieldNumber = 21,
+    kStableFieldNumber = 14,
+    kTotalFieldNumber = 15,
   };
   // map<uint32, .dra.Call> call = 13;
   int call_size() const;
@@ -3385,6 +3398,24 @@ class Input :
   void _internal_set_stat(::dra::FuzzingStat value);
   public:
 
+  // uint32 stable = 14;
+  void clear_stable();
+  ::PROTOBUF_NAMESPACE_ID::uint32 stable() const;
+  void set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_stable() const;
+  void _internal_set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 total = 15;
+  void clear_total();
+  ::PROTOBUF_NAMESPACE_ID::uint32 total() const;
+  void set_total(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_total() const;
+  void _internal_set_total(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:dra.Input)
  private:
   class _Internal;
@@ -3411,6 +3442,8 @@ class Input :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_;
   int stat_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 stable_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 total_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -7531,24 +7564,24 @@ UncoveredAddress::mutable_right_branch_address() {
   return _internal_mutable_right_branch_address();
 }
 
-// uint32 bbcount = 4;
-inline void UncoveredAddress::clear_bbcount() {
-  bbcount_ = 0u;
+// uint32 number_arrive_basicblocks = 4;
+inline void UncoveredAddress::clear_number_arrive_basicblocks() {
+  number_arrive_basicblocks_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::_internal_bbcount() const {
-  return bbcount_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::_internal_number_arrive_basicblocks() const {
+  return number_arrive_basicblocks_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::bbcount() const {
-  // @@protoc_insertion_point(field_get:dra.UncoveredAddress.bbcount)
-  return _internal_bbcount();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::number_arrive_basicblocks() const {
+  // @@protoc_insertion_point(field_get:dra.UncoveredAddress.number_arrive_basicblocks)
+  return _internal_number_arrive_basicblocks();
 }
-inline void UncoveredAddress::_internal_set_bbcount(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void UncoveredAddress::_internal_set_number_arrive_basicblocks(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  bbcount_ = value;
+  number_arrive_basicblocks_ = value;
 }
-inline void UncoveredAddress::set_bbcount(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_bbcount(value);
-  // @@protoc_insertion_point(field_set:dra.UncoveredAddress.bbcount)
+inline void UncoveredAddress::set_number_arrive_basicblocks(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_arrive_basicblocks(value);
+  // @@protoc_insertion_point(field_set:dra.UncoveredAddress.number_arrive_basicblocks)
 }
 
 // .dra.UncoveredAddressKind kind = 5;
@@ -7569,6 +7602,26 @@ inline void UncoveredAddress::_internal_set_kind(::dra::UncoveredAddressKind val
 inline void UncoveredAddress::set_kind(::dra::UncoveredAddressKind value) {
   _internal_set_kind(value);
   // @@protoc_insertion_point(field_set:dra.UncoveredAddress.kind)
+}
+
+// uint32 number_dominator_instructions = 6;
+inline void UncoveredAddress::clear_number_dominator_instructions() {
+  number_dominator_instructions_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::_internal_number_dominator_instructions() const {
+  return number_dominator_instructions_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 UncoveredAddress::number_dominator_instructions() const {
+  // @@protoc_insertion_point(field_get:dra.UncoveredAddress.number_dominator_instructions)
+  return _internal_number_dominator_instructions();
+}
+inline void UncoveredAddress::_internal_set_number_dominator_instructions(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  number_dominator_instructions_ = value;
+}
+inline void UncoveredAddress::set_number_dominator_instructions(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_dominator_instructions(value);
+  // @@protoc_insertion_point(field_set:dra.UncoveredAddress.number_dominator_instructions)
 }
 
 // map<string, uint32> input = 22;
@@ -8161,6 +8214,46 @@ inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Cal
 Input::mutable_call() {
   // @@protoc_insertion_point(field_mutable_map:dra.Input.call)
   return _internal_mutable_call();
+}
+
+// uint32 stable = 14;
+inline void Input::clear_stable() {
+  stable_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::_internal_stable() const {
+  return stable_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::stable() const {
+  // @@protoc_insertion_point(field_get:dra.Input.stable)
+  return _internal_stable();
+}
+inline void Input::_internal_set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  stable_ = value;
+}
+inline void Input::set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_stable(value);
+  // @@protoc_insertion_point(field_set:dra.Input.stable)
+}
+
+// uint32 total = 15;
+inline void Input::clear_total() {
+  total_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::_internal_total() const {
+  return total_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::total() const {
+  // @@protoc_insertion_point(field_get:dra.Input.total)
+  return _internal_total();
+}
+inline void Input::_internal_set_total(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  total_ = value;
+}
+inline void Input::set_total(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_total(value);
+  // @@protoc_insertion_point(field_set:dra.Input.total)
 }
 
 // .dra.FuzzingStat stat = 21;

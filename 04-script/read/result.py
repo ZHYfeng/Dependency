@@ -11,6 +11,8 @@ from read.data import uncovered_address_str, not_covered_address_str, not_covere
 
 class Device:
     def __init__(self, dir_path, dir_name):
+        self.unique_coverage_without_dra = {}
+        self.unique_coverage_with_dra = {}
         self.dir_path = dir_path
         self.dir_name = dir_name
         self.path_dev = os.path.join(self.dir_path, dir_name)
@@ -56,15 +58,13 @@ class Device:
         self.axises.plot(name=file_figure_all, title=title)
 
     def get_coverage(self):
-        unique_coverage_with_dra = {}
         for a in self.results_with_dra.max_coverage:
             if a not in self.results_without_dra.max_coverage:
-                unique_coverage_with_dra[a] = self.results_with_dra.max_coverage[a]
+                self.unique_coverage_with_dra[a] = self.results_with_dra.max_coverage[a]
 
-        unique_coverage_without_dra = {}
         for a in self.results_without_dra.max_coverage:
             if a not in self.results_with_dra.max_coverage:
-                unique_coverage_without_dra[a] = self.results_without_dra.max_coverage[a]
+                self.unique_coverage_without_dra[a] = self.results_without_dra.max_coverage[a]
 
         max_coverage = {}
         for a in self.results_without_dra.max_coverage:
@@ -79,11 +79,11 @@ class Device:
         f.write("=====================================================\n")
         f.write("coverage:\n")
         f.write("unique_coverage_with_dra : " +
-                str(len(unique_coverage_with_dra)) + "\n")
-        f.write(str(unique_coverage_with_dra) + "\n")
+                str(len(self.unique_coverage_with_dra)) + "\n")
+        f.write(str(self.unique_coverage_with_dra) + "\n")
         f.write("unique_coverage_without_dra : " +
-                str(len(unique_coverage_without_dra)) + "\n")
-        f.write(str(unique_coverage_without_dra) + "\n")
+                str(len(self.unique_coverage_without_dra)) + "\n")
+        f.write(str(self.unique_coverage_without_dra) + "\n")
         f.write("max_coverage : " + str(len(max_coverage)) + "\n")
         f.close()
 
@@ -103,31 +103,34 @@ class Device:
                     ca_uca_dep_with_dra[a] = self.results_with_dra.max_coverage[a]
                 if a in self.results_without_dra.max_coverage:
                     ca_uca_dep_without_dra[a] = self.results_without_dra.max_coverage[a]
-            f.write("number of uncovered address : " +
-                    str(len(basic.data.real_data.uncovered_address)) + "\n")
-            f.write("related to dependency: "
-                    + str(len(basic.data.uncovered_address_dependency)) + "\n")
+            f.write("number of uncovered address : " + str(len(basic.data.real_data.uncovered_address)) + "\n")
+            f.write("related to dependency: " + str(len(basic.data.uncovered_address_dependency)) + "\n")
             count = 0
             for a in ca_uca_dep_with_dra:
                 count += ca_uca_dep_with_dra[a]
             f.write("covered by syzkaller with dra: "
                     + str(len(ca_uca_dep_with_dra)) + " count : " + str(count) + "\n")
 
-            count = 0
+            addresses_dependency_covered_with_dra_dependency = {}
             for a in ca_uca_dep_with_dra:
                 for s in self.results_with_dra.statistics.statistics:
                     if a in s.real_stat.coverage.coverage:
                         if s.real_stat.coverage.coverage[a] == 1:
-                            count = count + 1
+                            addresses_dependency_covered_with_dra_dependency[a] = 1
                             break
-            f.write("covered by dependency mutate: "
-                    + str(count) + "\n")
+            f.write("covered by dependency mutate: " + str(count) + "\n")
+
+            count = 0
+            for a in addresses_dependency_covered_with_dra_dependency:
+                if a in self.unique_coverage_with_dra:
+                    count = count + 1
+            f.write("unique one of them: " + str(count) + "\n")
 
             count = 0
             for a in ca_uca_dep_without_dra:
                 count += ca_uca_dep_without_dra[a]
-            f.write("covered by syzkaller without dra: "
-                    + str(len(ca_uca_dep_without_dra)) + " count : " + str(count) + "\n")
+            f.write("covered by syzkaller without dra: " + str(len(ca_uca_dep_without_dra)) + " count : " + str(
+                count) + "\n")
 
             # ca_uca_input_with_dra = {}
             # ca_uca_input_without_dra = {}
