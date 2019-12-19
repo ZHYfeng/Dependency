@@ -39,7 +39,7 @@ func (m *Input) mergeInput(d *Input) {
 			m.Call[i] = call
 		}
 
-		if(call.Address == nil) {
+		if call.Address == nil {
 			// templog := "debug mergeInput :\n"
 			// templog += string(m.Program) + "\n" + string(d.Program) + "\n"
 			// templog += "index : " + strconv.FormatInt(int64(i), 10) + "\n"
@@ -48,7 +48,7 @@ func (m *Input) mergeInput(d *Input) {
 			// _ = f.Close()
 			call.Address = make(map[uint32]uint32)
 		}
-		
+
 		for a := range u.Address {
 			call.Address[a] = 0
 		}
@@ -607,12 +607,13 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		Sig:                    sig,
 		Index:                  index,
 		Program:                []byte{},
+		Kind:                   0,
+		Priority:               10,
+		Hash:                   "",
 		WriteSig:               writeSig,
 		WriteIndex:             writeIndex,
 		WriteProgram:           []byte{},
 		WriteAddress:           writeAddress,
-		Priority:               10,
-		Hash:                   "",
 		UncoveredAddress:       map[uint32]*RunTimeData{},
 		CoveredAddress:         map[uint32]*RunTimeData{},
 		TaskStatus:             TaskStatus_untested,
@@ -638,6 +639,11 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		task.WriteProgram = append(task.WriteProgram, c)
 	}
 
+	wa, ok := ss.corpusDependency.WriteAddress[writeAddress]
+	if !ok {
+		log.Fatalf("getTask with error writeAddress")
+	}
+	task.Kind = wa.Kind
 	ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("getTask with error uncoveredAddress")
