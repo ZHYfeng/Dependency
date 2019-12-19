@@ -39,7 +39,7 @@ func (m *Input) mergeInput(d *Input) {
 			m.Call[i] = call
 		}
 
-		if(call.Address == nil) {
+		if call.Address == nil {
 			// templog := "debug mergeInput :\n"
 			// templog += string(m.Program) + "\n" + string(d.Program) + "\n"
 			// templog += "index : " + strconv.FormatInt(int64(i), 10) + "\n"
@@ -48,7 +48,7 @@ func (m *Input) mergeInput(d *Input) {
 			// _ = f.Close()
 			call.Address = make(map[uint32]uint32)
 		}
-		
+
 		for a := range u.Address {
 			call.Address[a] = 0
 		}
@@ -766,7 +766,7 @@ func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint
 	if !ok {
 		log.Fatalf("getPriority not find uncoveredAddress")
 	}
-	bbcount := u.Bbcount
+	bbcount := u.NumberDominatorInstructions
 	waa, ok := u.WriteAddress[writeAddress]
 	if !ok {
 		log.Fatalf("getPriority not find writeAddress")
