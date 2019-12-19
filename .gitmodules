@@ -1,8 +1,8 @@
 [submodule "third_party/protobuf"]
-        path = third_party/protobuf
-        url = https://github.com/protocolbuffers/protobuf.git
-        branch = 3.7.0
+    path = third_party/protobuf
+    url = https://github.com/protocolbuffers/protobuf.git
+    branch = 3.11.0
 [submodule "third_party/grpc"]
-        path = third_party/grpc
-        url = https://github.com/grpc/grpc
-        branch = $(curl -L https://grpc.io/release)
+	path = third_party/grpc
+	url = https://github.com/grpc/grpc
+	branch = v1.20.0
