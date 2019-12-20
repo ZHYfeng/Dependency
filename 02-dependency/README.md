@@ -6,7 +6,7 @@ notice: remove the default protobuf and install new!
 
 ```shell
 sudo apt -y install autoconf automake libtool curl make g++ unzip
-git clone https://github.com/protocolbuffers/protobuf.git
+git clone https://github.com/protocolbuffers/protobuf
 cd protobuf
 git checkout tags/v3.11.0
 git submodule update --init --recursive
