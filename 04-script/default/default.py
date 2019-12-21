@@ -44,7 +44,7 @@ file_function = name_driver + ".function.json"
 
 path_home = os.path.expanduser("~")
 path_root = os.path.join(path_home, "data")
-number_execute = 6
+number_execute = 1
 path_current = os.getcwd()
 path_git = os.path.join(path_root, "git")
 path_repo = os.path.join(
