@@ -23,7 +23,7 @@ sudo ldconfig
 sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev libgtest-dev libc++-dev
 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
-git submodule update --init
+git submodule update --init --recursive
 make HAS_SYSTEM_PROTOBUF=false -j12
 make install prefix=/home/yuh/data/build
 sudo ldconfig

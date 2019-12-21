@@ -38,6 +38,7 @@ workdir*
 */cmake-build-debug*
 */bin
 *.pyc
+ld.so.cache
 
 # IDE
 */workspace.xml
