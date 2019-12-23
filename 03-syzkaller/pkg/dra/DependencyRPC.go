@@ -169,15 +169,12 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 	return
 }
 
-func (ss Server) increasePriority(m *Task) {
-	if t, ok := ss.corpusDependency.Tasks.Task[m.getHash()]; ok {
-		t.increasePriority()
+func (m *Task) modifyPriority(t *Task) {
+	if t.TaskStatus == TaskStatus_unstable && m.TaskStatus == TaskStatus_testing {
+		m.reducePriority()
 	}
-}
-
-func (ss Server) reducePriority(m *Task) {
-	if t, ok := ss.corpusDependency.Tasks.Task[m.getHash()]; ok {
-		t.reducePriority()
+	if t.TaskStatus == TaskStatus_tested {
+		m.reducePriority()
 	}
 }
 
@@ -190,6 +187,7 @@ func (m *Task) reducePriority() {
 }
 
 func (m *Task) mergeTask(s *Task) {
+	m.modifyPriority(s)
 	if m.CoveredAddress == nil {
 		m.CoveredAddress = map[uint32]*RunTimeData{}
 	}

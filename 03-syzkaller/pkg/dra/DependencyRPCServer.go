@@ -17,7 +17,7 @@ import (
 
 // useful const
 const (
-	startTime  = 10800
+	startTime = 10800
 	//startTime  = 0
 	newTime    = 600
 	bootTime   = 300
@@ -505,12 +505,6 @@ func (ss *Server) Update() {
 	}
 	for hash, task := range returnTask.Task {
 		if t, ok := ss.corpusDependency.Tasks.Task[hash]; ok {
-			if task.TaskStatus == TaskStatus_unstable && t.TaskStatus == TaskStatus_testing {
-				ss.reducePriority(task)
-			}
-			if task.TaskStatus == TaskStatus_tested {
-				ss.reducePriority(task)
-			}
 			t.mergeTask(task)
 			for u := range t.UncoveredAddress {
 				_, ok := ss.corpusDependency.UncoveredAddress[u]
@@ -572,8 +566,8 @@ func (ss *Server) Update() {
 						if t.TaskStatus == TaskStatus_untested {
 							t.TaskStatus = TaskStatus_testing
 							task = append(task, t)
-						} else if t.TaskStatus == TaskStatus_testing {
-							task = append(task, t)
+							//} else if t.TaskStatus == TaskStatus_testing {
+							//	task = append(task, t)
 						} else if t.TaskStatus == TaskStatus_unstable {
 							task = append(task, t)
 						}

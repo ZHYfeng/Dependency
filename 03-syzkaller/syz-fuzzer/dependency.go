@@ -17,9 +17,8 @@ func (proc *Proc) dependency(item *WorkDependency) {
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.WriteProgram: %v", err)
 	}
-	proc.dependencyMutateCheckWriteAddress(task, writeProg)
 
-	if task.CheckWriteAddress {
+	if proc.dependencyMutateCheckWriteAddress(task, writeProg) {
 
 		Prog, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
 		if err != nil {
@@ -30,13 +29,12 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		for _, i := range indexInsert {
 
 			tempProg := proc.dependencyMutateInsert(task, Prog, writeProg, i)
-			proc.dependencyMutateCheck(task, tempProg)
+			data := proc.dependencyMutateCheck(task, tempProg)
 
 			writeIndex := int(task.FinalWriteIdx)
 			index := int(task.FinalIdx)
 			proc.dependencyMutateArguement(task, tempProg, writeIndex, index)
 
-			data := tempProg.Serialize()
 			removeProg := proc.dependencyMutateRemove(task, data)
 			proc.dependencyMutateCheck(task, removeProg)
 
@@ -98,7 +96,7 @@ func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
 	})
 }
 
-func (proc *Proc) dependencyMutateCheckWriteAddress(task *pb.Task, writeProg *prog.Prog) {
+func (proc *Proc) dependencyMutateCheckWriteAddress(task *pb.Task, writeProg *prog.Prog) bool {
 	log.Logf(pb.DebugLevel, "write program : \n%s", task.WriteProgram)
 	idx := int(task.WriteIndex)
 	info := proc.execute(proc.execOptsCover, writeProg, ProgNormal, StatDependency)
@@ -107,9 +105,10 @@ func (proc *Proc) dependencyMutateCheckWriteAddress(task *pb.Task, writeProg *pr
 		task.CheckWriteAddress = true
 		log.Logf(pb.DebugLevel, "write program could arrive at write address : %d", task.WriteAddress)
 	} else {
+		task.CheckWriteAddress = false
 		log.Logf(pb.DebugLevel, "write program could not arrive at write address : %d", task.WriteAddress)
 	}
-	return
+	return task.CheckWriteAddress
 }
 
 func (proc *Proc) dependencyMutateInsert(task *pb.Task, Prog *prog.Prog, writeProg *prog.Prog, idx int) *prog.Prog {
@@ -138,7 +137,7 @@ func (proc *Proc) dependencyMutateInsert(task *pb.Task, Prog *prog.Prog, writePr
 	return p
 }
 
-func (proc *Proc) dependencyMutateCheck(task *pb.Task, Prog *prog.Prog) {
+func (proc *Proc) dependencyMutateCheck(task *pb.Task, Prog *prog.Prog) []byte {
 
 	infoFinal := proc.execute(proc.execOptsCover, Prog, ProgNormal, StatDependency)
 	checkWriteAddress2 := checkAddressInArray(task.WriteAddress, infoFinal.Calls[task.FinalWriteIdx].Cover)
@@ -149,6 +148,30 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, Prog *prog.Prog) {
 		task.CheckWriteAddressFinal = false
 		log.Logf(pb.DebugLevel, "final program could not arrive at write address : %d", task.WriteAddress)
 	}
+
+	data := Prog.Serialize()
+	var temp []uint32
+	for ua, rtd := range task.UncoveredAddress {
+		if checkAddressInArray(rtd.ConditionAddress, infoFinal.Calls[task.FinalIdx].Cover) {
+			rtd.CheckCondition = true
+			if checkAddressInArray(ua, infoFinal.Calls[task.FinalIdx].Cover) {
+				rtd.CheckAddress = true
+				rtd.Idx = task.FinalIdx
+				rtd.TaskStatus = pb.TaskStatus_covered
+				for _, c := range data {
+					rtd.Program = append(rtd.Program, c)
+				}
+				task.CoveredAddress[ua] = rtd
+				temp = append(temp, ua)
+			}
+		} else {
+			rtd.TaskStatus = pb.TaskStatus_tested
+		}
+	}
+	for _, ua := range temp {
+		delete(task.UncoveredAddress, ua)
+	}
+	return data
 }
 
 func (proc *Proc) dependencyMutateRemove(task *pb.Task, data []byte) *prog.Prog {
@@ -156,6 +179,7 @@ func (proc *Proc) dependencyMutateRemove(task *pb.Task, data []byte) *prog.Prog 
 	idx := task.FinalIdx
 	removeData, removeIdx := removeSameResource(data)
 	task.RemoveIdx = removeIdx[idx]
+	task.FinalIdx = task.RemoveIdx
 	removeProg, err := proc.fuzzer.target.Deserialize(removeData, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
@@ -163,6 +187,7 @@ func (proc *Proc) dependencyMutateRemove(task *pb.Task, data []byte) *prog.Prog 
 	log.Logf(pb.DebugLevel, "remove program : \n%s", removeData)
 	writeIdx := removeIdx[task.FinalWriteIdx]
 	task.RemoveWriteIdx = writeIdx
+	task.FinalWriteIdx = task.RemoveWriteIdx
 	log.Logf(pb.DebugLevel, "remove index  : %d remove write index : %d", task.RemoveIdx, task.RemoveWriteIdx)
 	return removeProg
 }
