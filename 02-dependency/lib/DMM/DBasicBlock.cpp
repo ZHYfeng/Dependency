@@ -44,20 +44,9 @@ namespace dra {
             i->parent = this;
             i->i = (&it);
 
-            if (llvm::isa<llvm::PHINode>(it) || llvm::isa<llvm::DbgInfoIntrinsic>(it))
-                continue;
-            if (auto *II = llvm::dyn_cast<llvm::IntrinsicInst>(&it)) {
-
-                if (II->getIntrinsicID() == llvm::Intrinsic::lifetime_start ||
-                    II->getIntrinsicID() == llvm::Intrinsic::lifetime_end) {
-                    continue;
-                }
-            }
-
-            this->number_instructions++;
         }
 
-        for (auto temp = b->getNextNode(); !temp->hasName(); temp = temp->getNextNode()) {
+        for (auto temp = b; temp != nullptr && !temp->hasName(); temp = temp->getNextNode()) {
             for (auto &it : *b) {
                 if (llvm::isa<llvm::PHINode>(it) || llvm::isa<llvm::DbgInfoIntrinsic>(it))
                     continue;
