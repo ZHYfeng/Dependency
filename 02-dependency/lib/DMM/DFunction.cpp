@@ -274,13 +274,20 @@ namespace dra {
 
     uint32_t DFunction::get_number_dominator_uncovered_instructions(llvm::BasicBlock *b) {
         uint32_t count = 0;
-        count = count + this->parent->get_DB_from_bb(b)->get_number_uncovered_instructions();
-        if (DT->getNode(b)->getNumChildren() != 0) {
-            for (auto c : DT->getNode(b)->getChildren()) {
-                auto df = this->parent->get_DB_from_bb(c->getBlock());
-                count = count + df->get_number_uncovered_instructions();
-                count = count + this->get_number_dominator_uncovered_instructions(df->basicBlock);
+        if (b->hasName()) {
+            std::string Name = b->getName().str();
+            if (BasicBlock.find(Name) != BasicBlock.end()) {
+                count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
             }
+        }
+        for (auto c : DT->getNode(b)->getChildren()) {
+            if (c->getBlock()->hasName()) {
+                std::string Name = c->getBlock()->getName().str();
+                if (BasicBlock.find(Name) != BasicBlock.end()) {
+                    count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
+                }
+            }
+            count = count + this->get_number_dominator_uncovered_instructions(c->getBlock());
         }
     }
 
