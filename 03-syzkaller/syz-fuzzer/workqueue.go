@@ -159,14 +159,12 @@ func (wq *WorkQueue) dequeue() (item interface{}) {
 }
 
 func (wq *WorkQueue) dequeueDependency() (item *WorkDependency) {
-	wq.mu.RLock()
+	wq.mu.Lock()
 	if len(wq.dependency) == 0 {
-		wq.mu.RUnlock()
+		wq.mu.Unlock()
 		return nil
 	}
 
-	wq.mu.RUnlock()
-	wq.mu.Lock()
 	last := len(wq.dependency) - 1
 	item = wq.dependency[last]
 	wq.dependency = wq.dependency[:last]
