@@ -55,12 +55,12 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		task.TaskStatus = pb.TaskStatus_tested
 	}
 	tasks := &pb.Tasks{
-		Name:  proc.fuzzer.name,
-		Kind:  pb.TaskKind_Normal,
-		Task:  map[string]*pb.Task{},
-		Tasks: []*pb.Task{},
+		Name:      proc.fuzzer.name,
+		Kind:      pb.TaskKind_Normal,
+		TaskMap:   map[string]*pb.Task{},
+		TaskArray: []*pb.Task{},
 	}
-	tasks.Tasks = append(tasks.Tasks, task)
+	tasks.AddTask(task)
 	proc.fuzzer.dManager.ReturnTasks(tasks)
 
 	return
@@ -260,12 +260,12 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 		task.TaskStatus = pb.TaskStatus_tested
 	}
 	tasks := &pb.Tasks{
-		Name:  proc.fuzzer.name,
-		Kind:  pb.TaskKind_Boot,
-		Task:  map[string]*pb.Task{},
-		Tasks: []*pb.Task{},
+		Name:      proc.fuzzer.name,
+		Kind:      pb.TaskKind_Boot,
+		TaskMap:   map[string]*pb.Task{},
+		TaskArray: []*pb.Task{},
 	}
-	tasks.Tasks = append(tasks.Tasks, task)
+	tasks.AddTask(task)
 	proc.fuzzer.dManager.ReturnTasks(tasks)
 
 	return

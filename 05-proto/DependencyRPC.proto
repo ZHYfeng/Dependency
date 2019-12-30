@@ -337,8 +337,8 @@ enum TaskKind {
 message Tasks {
     string name = 41;
     TaskKind kind = 42;
-    map<string, Task> task = 1;
-    repeated Task tasks = 2;
+    map<string, Task> task_map = 1;
+    repeated Task task_array = 2;
 }
 
 message Time {

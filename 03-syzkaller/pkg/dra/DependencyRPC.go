@@ -170,10 +170,9 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 }
 
 func (m *Task) modifyPriority(t *Task) {
-	if t.TaskStatus == TaskStatus_unstable && m.TaskStatus == TaskStatus_testing {
+	if t.TaskStatus == TaskStatus_unstable {
 		m.reducePriority()
-	}
-	if t.TaskStatus == TaskStatus_tested {
+	} else if t.TaskStatus == TaskStatus_tested {
 		m.reducePriority()
 	}
 }
@@ -203,6 +202,10 @@ func (m *Task) mergeTask(s *Task) {
 	}
 	if m.TaskStatus == TaskStatus_testing {
 		m.TaskStatus = s.TaskStatus
+	} else if m.TaskStatus == TaskStatus_unstable {
+		m.TaskStatus = s.TaskStatus
+	} else if m.TaskStatus == TaskStatus_tested && s.TaskStatus == TaskStatus_covered {
+		m.TaskStatus = s.TaskStatus
 	}
 
 	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress
@@ -217,15 +220,15 @@ func (ss Server) pickTask(name string) *Tasks {
 	f, ok := ss.fuzzers[name]
 	if ok {
 		f.taskMu.Lock()
-		if len(f.highTasks.Task) > 0 {
-			last := len(f.highTasks.Task)
+		if len(f.highTasks.TaskArray) > 0 {
+			last := len(f.highTasks.TaskArray)
 			if last > taskNum {
 				last = taskNum
 			}
 			tasks = f.highTasks.pop(last)
 			tasks.Kind = TaskKind_High
 		} else {
-			last := len(f.newTask.Task)
+			last := len(f.newTask.TaskArray)
 			if last > taskNum {
 				last = taskNum
 			}
@@ -242,7 +245,7 @@ func (ss Server) pickBootTask(name string) *Tasks {
 	f, ok := ss.fuzzers[name]
 	if ok {
 		f.bootTaskMu.Lock()
-		last := len(f.bootTasks.Task)
+		last := len(f.bootTasks.TaskArray)
 		tasks = f.bootTasks.pop(last)
 		tasks.Kind = TaskKind_Boot
 		f.bootTaskMu.Unlock()
@@ -674,11 +677,11 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 			dr = r
 		}
 	} else {
-		log.Fatalf("addTask more than one uncovered address")
+		log.Fatalf("AddTask more than one uncovered address")
 	}
 
 	hash := task.getHash()
-	if t, ok := tasks.Task[hash]; ok {
+	if t, ok := tasks.TaskMap[hash]; ok {
 		if _, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 			t.UncoveredAddress[uncoveredAddress].updatePriority(dr.Priority)
 		} else {
@@ -691,57 +694,57 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 		t.updatePriority(task.Priority)
 		return
 	}
-	tasks.addTask(task)
+	tasks.AddTask(task)
 }
 
-func (m *Tasks) addTask(t *Task) {
-	if m.Task == nil {
-		m.Task = map[string]*Task{}
+func (m *Tasks) AddTask(t *Task) {
+	if m.TaskMap == nil {
+		m.TaskMap = map[string]*Task{}
 	}
-	if m.Tasks == nil {
-		m.Tasks = []*Task{}
+	if m.TaskArray == nil {
+		m.TaskArray = []*Task{}
 	}
-	if len(m.Task) != len(m.Tasks) {
+	if len(m.TaskMap) != len(m.TaskArray) {
 		log.Fatalf("%s : len(m.Task) != len(m.Tasks)", m.Name)
 	}
-	if _, ok := m.Task[t.getHash()]; ok {
+	if _, ok := m.TaskMap[t.getHash()]; ok {
 
 	} else {
-		m.Task[t.getHash()] = t
-		m.Tasks = append(m.Tasks, t)
+		m.TaskMap[t.getHash()] = t
+		m.TaskArray = append(m.TaskArray, t)
 	}
 }
 
-func (m *Tasks) addTasks(t *Tasks) {
-	for _, tt := range t.Task {
-		m.addTask(tt)
+func (m *Tasks) AddTasks(t *Tasks) {
+	for _, tt := range t.TaskMap {
+		m.AddTask(tt)
 	}
-	for _, tt := range t.Tasks {
-		m.addTask(tt)
+	for _, tt := range t.TaskArray {
+		m.AddTask(tt)
 	}
 }
 
 func (m *Tasks) emptyTask() {
-	m.Task = map[string]*Task{}
-	m.Tasks = []*Task{}
+	m.TaskMap = map[string]*Task{}
+	m.TaskArray = []*Task{}
 }
 
 func (m *Tasks) pop(number int) *Tasks {
 	tasks := &Tasks{
-		Name:  m.Name,
-		Kind:  TaskKind_Normal,
-		Task:  map[string]*Task{},
-		Tasks: []*Task{},
+		Name:      m.Name,
+		Kind:      TaskKind_Normal,
+		TaskMap:   map[string]*Task{},
+		TaskArray: []*Task{},
 	}
 	temp := []*Task{}
-	if number > len(m.Tasks) {
+	if number > len(m.TaskArray) {
 		log.Fatalf("%s : number > len(m.Tasks)", m.Name)
 	}
-	temp = append(temp, m.Tasks[:number]...)
-	m.Tasks = m.Tasks[number:]
+	temp = append(temp, m.TaskArray[:number]...)
+	m.TaskArray = m.TaskArray[number:]
 	for _, t := range temp {
-		delete(m.Task, t.getHash())
-		tasks.addTask(t)
+		delete(m.TaskMap, t.getHash())
+		tasks.AddTask(t)
 	}
 	return tasks
 }

@@ -21,7 +21,7 @@ const (
 	//startTime  = 0
 	newTime    = 600
 	bootTime   = 300
-	taskNum    = 20
+	taskNum    = 40
 	DebugLevel = 2
 )
 
@@ -173,29 +173,29 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 			taskMu:     &sync.Mutex{},
 			bootTaskMu: &sync.Mutex{},
 			bootTasks: &Tasks{
-				Name:  name,
-				Task:  map[string]*Task{},
-				Tasks: []*Task{},
+				Name:      name,
+				TaskMap:   map[string]*Task{},
+				TaskArray: []*Task{},
 			},
 			highTasks: &Tasks{
-				Name:  name,
-				Task:  map[string]*Task{},
-				Tasks: []*Task{},
+				Name:      name,
+				TaskMap:   map[string]*Task{},
+				TaskArray: []*Task{},
 			},
 			newTask: &Tasks{
-				Name:  name,
-				Task:  map[string]*Task{},
-				Tasks: []*Task{},
+				Name:      name,
+				TaskMap:   map[string]*Task{},
+				TaskArray: []*Task{},
 			},
 			returnTask: &Tasks{
-				Name:  name,
-				Task:  map[string]*Task{},
-				Tasks: []*Task{},
+				Name:      name,
+				TaskMap:   map[string]*Task{},
+				TaskArray: []*Task{},
 			},
 			returnBootTask: &Tasks{
-				Name:  name,
-				Task:  map[string]*Task{},
-				Tasks: []*Task{},
+				Name:      name,
+				TaskMap:   map[string]*Task{},
+				TaskArray: []*Task{},
 			},
 		}
 	} else {
@@ -252,11 +252,11 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 	if ok {
 		if tasks.Kind == TaskKind_Normal || tasks.Kind == TaskKind_High {
 			f.taskMu.Lock()
-			f.returnTask.addTasks(tasks)
+			f.returnTask.AddTasks(tasks)
 			f.taskMu.Unlock()
 		} else if tasks.Kind == TaskKind_Boot {
 			f.taskMu.Lock()
-			f.returnBootTask.addTasks(tasks)
+			f.returnBootTask.AddTasks(tasks)
 			f.taskMu.Unlock()
 		}
 	} else {
@@ -367,9 +367,9 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		CoveredAddress:   map[uint32]*UncoveredAddress{},
 		WriteAddress:     map[uint32]*WriteAddress{},
 		FileOperations:   map[string]*FileOperations{},
-		Tasks:            &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
-		HighTask:         &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
-		BootTask:         &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}},
+		Tasks:            &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+		HighTask:         &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+		BootTask:         &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
 		NewInput:         map[string]*Input{},
 	}
 
@@ -496,15 +496,15 @@ func (ss *Server) Update() {
 	newDependency = nil
 
 	// deal return tasks
-	returnTask := &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}}
+	returnTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
 	for _, f := range ss.fuzzers {
 		f.taskMu.Lock()
-		returnTask.addTasks(f.returnTask)
+		returnTask.AddTasks(f.returnTask)
 		f.returnTask.emptyTask()
 		f.taskMu.Unlock()
 	}
-	for hash, task := range returnTask.Task {
-		if t, ok := ss.corpusDependency.Tasks.Task[hash]; ok {
+	for hash, task := range returnTask.TaskMap {
+		if t, ok := ss.corpusDependency.Tasks.TaskMap[hash]; ok {
 			t.mergeTask(task)
 			for u := range t.UncoveredAddress {
 				_, ok := ss.corpusDependency.UncoveredAddress[u]
@@ -516,8 +516,8 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-	sort.Slice(ss.corpusDependency.Tasks.Tasks, func(i, j int) bool {
-		return ss.corpusDependency.Tasks.Tasks[i].getRealPriority() > ss.corpusDependency.Tasks.Tasks[j].getRealPriority()
+	sort.Slice(ss.corpusDependency.Tasks.TaskArray, func(i, j int) bool {
+		return ss.corpusDependency.Tasks.TaskArray[i].getRealPriority() > ss.corpusDependency.Tasks.TaskArray[j].getRealPriority()
 	})
 	returnTask = nil
 
@@ -526,9 +526,9 @@ func (ss *Server) Update() {
 		t := time.Now()
 		elapsed := t.Sub(ss.timeStart)
 		if elapsed.Seconds() > startTime {
-			if len(ss.corpusDependency.HighTask.Task) != 0 {
+			if len(ss.corpusDependency.HighTask.TaskArray) != 0 {
 				var task []*Task
-				for _, t := range ss.corpusDependency.HighTask.Task {
+				for _, t := range ss.corpusDependency.HighTask.TaskArray {
 					for u := range t.UncoveredAddress {
 						_, ok := ss.corpusDependency.UncoveredAddress[u]
 						if ok {
@@ -546,14 +546,15 @@ func (ss *Server) Update() {
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
 					for _, t := range task {
-						f.highTasks.addTask(proto.Clone(t).(*Task))
+						f.highTasks.AddTask(proto.Clone(t).(*Task))
 					}
 					f.taskMu.Unlock()
 				}
 				task = nil
-			} else {
+			}
+			{
 				var task []*Task
-				for _, t := range ss.corpusDependency.Tasks.Task {
+				for _, t := range ss.corpusDependency.Tasks.TaskArray {
 					for u := range t.UncoveredAddress {
 						_, ok := ss.corpusDependency.UncoveredAddress[u]
 						if ok {
@@ -579,7 +580,7 @@ func (ss *Server) Update() {
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
 					for _, t := range task {
-						f.newTask.addTask(proto.Clone(t).(*Task))
+						f.newTask.AddTask(proto.Clone(t).(*Task))
 					}
 					f.taskMu.Unlock()
 				}
@@ -592,15 +593,15 @@ func (ss *Server) Update() {
 	}
 
 	// deal return boot tasks
-	returnBootTask := &Tasks{Name: "", Task: map[string]*Task{}, Tasks: []*Task{}}
+	returnBootTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
 	for _, f := range ss.fuzzers {
 		f.taskMu.Lock()
-		returnBootTask.addTasks(f.returnBootTask)
+		returnBootTask.AddTasks(f.returnBootTask)
 		f.returnBootTask.emptyTask()
 		f.taskMu.Unlock()
 	}
-	for hash, task := range returnBootTask.Task {
-		if t, ok := ss.corpusDependency.BootTask.Task[hash]; ok {
+	for hash, task := range returnBootTask.TaskMap {
+		if t, ok := ss.corpusDependency.BootTask.TaskMap[hash]; ok {
 			if task.TaskStatus == TaskStatus_covered {
 				t.mergeTask(task)
 			} else {
@@ -617,8 +618,8 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-	sort.Slice(ss.corpusDependency.BootTask.Tasks, func(i, j int) bool {
-		return ss.corpusDependency.BootTask.Tasks[i].getRealPriority() > ss.corpusDependency.BootTask.Tasks[j].getRealPriority()
+	sort.Slice(ss.corpusDependency.BootTask.TaskArray, func(i, j int) bool {
+		return ss.corpusDependency.BootTask.TaskArray[i].getRealPriority() > ss.corpusDependency.BootTask.TaskArray[j].getRealPriority()
 	})
 	returnBootTask = nil
 
@@ -627,9 +628,9 @@ func (ss *Server) Update() {
 		t := time.Now()
 		elapsed := t.Sub(ss.timeStart)
 		if elapsed.Seconds() > startTime {
-			if len(ss.corpusDependency.BootTask.Task) != 0 {
+			if len(ss.corpusDependency.BootTask.TaskArray) != 0 {
 				var task []*Task
-				for _, t := range ss.corpusDependency.BootTask.Task {
+				for _, t := range ss.corpusDependency.BootTask.TaskArray {
 					if t.TaskStatus == TaskStatus_untested {
 						for u := range t.UncoveredAddress {
 							_, ok := ss.corpusDependency.UncoveredAddress[u]
@@ -648,7 +649,7 @@ func (ss *Server) Update() {
 				for _, f := range ss.fuzzers {
 					f.bootTaskMu.Lock()
 					for _, t := range task {
-						f.bootTasks.addTask(proto.Clone(t).(*Task))
+						f.bootTasks.AddTask(proto.Clone(t).(*Task))
 					}
 					f.bootTaskMu.Unlock()
 				}

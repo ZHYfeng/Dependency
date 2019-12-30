@@ -295,22 +295,25 @@ func (fuzzer *Fuzzer) pollLoop() {
 		//sig := hash.Hash(data)
 		//fuzzer.dManager.SendDependencyInput(sig.String())
 		log.Logf(0, "len(fuzzer.workQueue.dependency) %v", len(fuzzer.workQueue.dependency))
-		newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
-		if newDependencyTasks.Kind == pb.TaskKind_High {
-			for _, Task := range newDependencyTasks.Task {
-				fuzzer.workQueue.enqueue(&WorkDependency{
-					task: Task,
-					call: int(Task.Index),
-				})
-			}
-		} else {
-			for _, Task := range newDependencyTasks.Task {
-				fuzzer.workQueue.addDependency(&WorkDependency{
-					task: Task,
-					call: int(Task.Index),
-				})
+		for i := 0; i < 2; i++ {
+			newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
+			if newDependencyTasks.Kind == pb.TaskKind_High {
+				for _, Task := range newDependencyTasks.TaskArray {
+					fuzzer.workQueue.enqueue(&WorkDependency{
+						task: Task,
+						call: int(Task.Index),
+					})
+				}
+			} else {
+				for _, Task := range newDependencyTasks.TaskArray {
+					fuzzer.workQueue.addDependency(&WorkDependency{
+						task: Task,
+						call: int(Task.Index),
+					})
+				}
 			}
 		}
+
 		fuzzer.dManager.SSendLog()
 		e, _ := fuzzer.dManager.GetNeed()
 		if e.Address == 0 {

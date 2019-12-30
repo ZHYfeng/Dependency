@@ -5,42 +5,29 @@
 
 #include <algorithm>
 
+#include <google/protobuf/stubs/common.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
+#include <google/protobuf/wire_format_lite_inl.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_a2l_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_address_AddrEntry_DoNotUse_a2l_2eproto;
+
+extern PROTOBUF_INTERNAL_EXPORT_a2l_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_address_AddrEntry_DoNotUse_a2l_2eproto;
 namespace dra {
 class address_AddrEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<address_AddrEntry_DoNotUse> _instance;
+  ::google::protobuf::internal::ExplicitlyConstructed<address_AddrEntry_DoNotUse> _instance;
 } _address_AddrEntry_DoNotUse_default_instance_;
 class addressDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<address> _instance;
+  ::google::protobuf::internal::ExplicitlyConstructed<address> _instance;
 } _address_default_instance_;
 }  // namespace dra
-static void InitDefaultsscc_info_address_a2l_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_address_default_instance_;
-    new (ptr) ::dra::address();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::address::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_address_a2l_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_address_a2l_2eproto}, {
-      &scc_info_address_AddrEntry_DoNotUse_a2l_2eproto.base,}};
-
-static void InitDefaultsscc_info_address_AddrEntry_DoNotUse_a2l_2eproto() {
+static void InitDefaultsaddress_AddrEntry_DoNotUse_a2l_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
@@ -50,14 +37,34 @@ static void InitDefaultsscc_info_address_AddrEntry_DoNotUse_a2l_2eproto() {
   ::dra::address_AddrEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_address_AddrEntry_DoNotUse_a2l_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_address_AddrEntry_DoNotUse_a2l_2eproto}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_address_AddrEntry_DoNotUse_a2l_2eproto =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsaddress_AddrEntry_DoNotUse_a2l_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_a2l_2eproto[2];
-static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_a2l_2eproto = nullptr;
-static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_a2l_2eproto = nullptr;
+static void InitDefaultsaddress_a2l_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_a2l_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  {
+    void* ptr = &::dra::_address_default_instance_;
+    new (ptr) ::dra::address();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::dra::address::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<1> scc_info_address_a2l_2eproto =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsaddress_a2l_2eproto}, {
+      &scc_info_address_AddrEntry_DoNotUse_a2l_2eproto.base,}};
+
+void InitDefaults_a2l_2eproto() {
+  ::google::protobuf::internal::InitSCC(&scc_info_address_AddrEntry_DoNotUse_a2l_2eproto.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_address_a2l_2eproto.base);
+}
+
+static ::google::protobuf::Metadata file_level_metadata_a2l_2eproto[2];
+static constexpr ::google::protobuf::EnumDescriptor const** file_level_enum_descriptors_a2l_2eproto = nullptr;
+static constexpr ::google::protobuf::ServiceDescriptor const** file_level_service_descriptors_a2l_2eproto = nullptr;
+
+const ::google::protobuf::uint32 TableStruct_a2l_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   PROTOBUF_FIELD_OFFSET(::dra::address_AddrEntry_DoNotUse, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::dra::address_AddrEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -75,55 +82,60 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_a2l_2eproto::offsets[] PROTOBU
   PROTOBUF_FIELD_OFFSET(::dra::address, name_),
   PROTOBUF_FIELD_OFFSET(::dra::address, addr_),
 };
-static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::dra::address_AddrEntry_DoNotUse)},
   { 9, -1, sizeof(::dra::address)},
 };
 
-static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_address_AddrEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_address_default_instance_),
+static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&::dra::_address_AddrEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::dra::_address_default_instance_),
 };
 
-const char descriptor_table_protodef_a2l_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
+static ::google::protobuf::internal::AssignDescriptorsTable assign_descriptors_table_a2l_2eproto = {
+  {}, AddDescriptors_a2l_2eproto, "a2l.proto", schemas,
+  file_default_instances, TableStruct_a2l_2eproto::offsets,
+  file_level_metadata_a2l_2eproto, 2, file_level_enum_descriptors_a2l_2eproto, file_level_service_descriptors_a2l_2eproto,
+};
+
+const char descriptor_table_protodef_a2l_2eproto[] =
   "\n\ta2l.proto\022\003dra\"j\n\007address\022\014\n\004name\030\001 \001("
   "\t\022$\n\004addr\030\002 \003(\0132\026.dra.address.AddrEntry\032"
   "+\n\tAddrEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t"
   ":\0028\001b\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_a2l_2eproto_deps[1] = {
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_a2l_2eproto_sccs[2] = {
-  &scc_info_address_a2l_2eproto.base,
-  &scc_info_address_AddrEntry_DoNotUse_a2l_2eproto.base,
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_a2l_2eproto_once;
-static bool descriptor_table_a2l_2eproto_initialized = false;
-const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_a2l_2eproto = {
-  &descriptor_table_a2l_2eproto_initialized, descriptor_table_protodef_a2l_2eproto, "a2l.proto", 132,
-  &descriptor_table_a2l_2eproto_once, descriptor_table_a2l_2eproto_sccs, descriptor_table_a2l_2eproto_deps, 2, 0,
-  schemas, file_default_instances, TableStruct_a2l_2eproto::offsets,
-  file_level_metadata_a2l_2eproto, 2, file_level_enum_descriptors_a2l_2eproto, file_level_service_descriptors_a2l_2eproto,
+static ::google::protobuf::internal::DescriptorTable descriptor_table_a2l_2eproto = {
+  false, InitDefaults_a2l_2eproto, 
+  descriptor_table_protodef_a2l_2eproto,
+  "a2l.proto", &assign_descriptors_table_a2l_2eproto, 132,
 };
 
+void AddDescriptors_a2l_2eproto() {
+  static constexpr ::google::protobuf::internal::InitFunc deps[1] =
+  {
+  };
+ ::google::protobuf::internal::AddDescriptors(&descriptor_table_a2l_2eproto, deps, 0);
+}
+
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_a2l_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_a2l_2eproto), true);
+static bool dynamic_init_dummy_a2l_2eproto = []() { AddDescriptors_a2l_2eproto(); return true; }();
 namespace dra {
 
 // ===================================================================
 
 address_AddrEntry_DoNotUse::address_AddrEntry_DoNotUse() {}
-address_AddrEntry_DoNotUse::address_AddrEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+address_AddrEntry_DoNotUse::address_AddrEntry_DoNotUse(::google::protobuf::Arena* arena)
     : SuperType(arena) {}
 void address_AddrEntry_DoNotUse::MergeFrom(const address_AddrEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata address_AddrEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+::google::protobuf::Metadata address_AddrEntry_DoNotUse::GetMetadata() const {
+  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_a2l_2eproto);
+  return ::file_level_metadata_a2l_2eproto[0];
 }
 void address_AddrEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
+    const ::google::protobuf::Message& other) {
+  ::google::protobuf::Message::MergeFrom(other);
 }
 
 
@@ -131,30 +143,36 @@ void address_AddrEntry_DoNotUse::MergeFrom(
 
 void address::InitAsDefaultInstance() {
 }
-class address::_Internal {
+class address::HasBitSetters {
  public:
 };
 
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int address::kNameFieldNumber;
+const int address::kAddrFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
 address::address()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:dra.address)
 }
 address::address(const address& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
+  : ::google::protobuf::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   addr_.MergeFrom(from.addr_);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_name().empty()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.name().size() > 0) {
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
   // @@protoc_insertion_point(copy_constructor:dra.address)
 }
 
 void address::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_address_a2l_2eproto.base);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::google::protobuf::internal::InitSCC(
+      &scc_info_address_a2l_2eproto.base);
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 address::~address() {
@@ -163,141 +181,278 @@ address::~address() {
 }
 
 void address::SharedDtor() {
-  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void address::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const address& address::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_address_a2l_2eproto.base);
+  ::google::protobuf::internal::InitSCC(&::scc_info_address_a2l_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void address::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.address)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   addr_.Clear();
-  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
-const char* address::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+const char* address::_InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) {
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
+    ::google::protobuf::uint32 tag;
+    ptr = ::google::protobuf::internal::ReadTag(ptr, &tag);
+    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
     switch (tag >> 3) {
       // string name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_name();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.address.name"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
+      case 1: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
+        ptr = ::google::protobuf::internal::InlineGreedyStringParserUTF8(mutable_name(), ptr, ctx, "dra.address.name");
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        break;
+      }
       // map<string, string> addr = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(&addr_, ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else goto handle_unusual;
-        continue;
+      case 2: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
+        do {
+          ptr = ctx->ParseMessage(&addr_, ptr);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          if (ctx->Done(&ptr)) return ptr;
+        } while ((::google::protobuf::internal::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 18 && (ptr += 1));
+        break;
+      }
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
-          goto success;
+          return ptr;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
+        ptr = UnknownFieldParse(tag,
+          _internal_metadata_.mutable_unknown_fields(), ptr, ctx);
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
+        break;
       }
     }  // switch
   }  // while
-success:
   return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
 }
+#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+bool address::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:dra.address)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string name = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->name().data(), static_cast<int>(this->name().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "dra.address.name"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
 
-::PROTOBUF_NAMESPACE_ID::uint8* address::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:dra.address)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+      // map<string, string> addr = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
+          address_AddrEntry_DoNotUse::Parser< ::google::protobuf::internal::MapField<
+              address_AddrEntry_DoNotUse,
+              ::std::string, ::std::string,
+              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+              0 >,
+            ::google::protobuf::Map< ::std::string, ::std::string > > parser(&addr_);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, &parser));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            parser.key().data(), static_cast<int>(parser.key().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "dra.address.AddrEntry.key"));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            parser.value().data(), static_cast<int>(parser.value().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "dra.address.AddrEntry.value"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:dra.address)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:dra.address)
+  return false;
+#undef DO_
+}
+#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+
+void address::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:dra.address)
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (this->name().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "dra.address.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->name(), output);
   }
 
   // map<string, string> addr = 2;
-  if (!this->_internal_addr().empty()) {
-    typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_pointer
+  if (!this->addr().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
         ConstPtr;
     typedef ConstPtr SortItem;
-    typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
     struct Utf8Check {
       static void Check(ConstPtr p) {
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
-          ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
           "dra.address.AddrEntry.key");
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           p->second.data(), static_cast<int>(p->second.length()),
-          ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
           "dra.address.AddrEntry.value");
       }
     };
 
-    if (stream->IsSerializationDeterministic() &&
-        this->_internal_addr().size() > 1) {
+    if (output->IsSerializationDeterministic() &&
+        this->addr().size() > 1) {
       ::std::unique_ptr<SortItem[]> items(
-          new SortItem[this->_internal_addr().size()]);
-      typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::size_type size_type;
+          new SortItem[this->addr().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
       size_type n = 0;
-      for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
-          it = this->_internal_addr().begin();
-          it != this->_internal_addr().end(); ++it, ++n) {
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->addr().begin();
+          it != this->addr().end(); ++it, ++n) {
         items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = address_AddrEntry_DoNotUse::Funcs::InternalSerialize(2, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
+        address_AddrEntry_DoNotUse::MapEntryWrapper entry(nullptr, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second);
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(2, entry, output);
         Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
       }
     } else {
-      for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
-          it = this->_internal_addr().begin();
-          it != this->_internal_addr().end(); ++it) {
-        target = address_AddrEntry_DoNotUse::Funcs::InternalSerialize(2, it->first, it->second, target, stream);
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->addr().begin();
+          it != this->addr().end(); ++it) {
+        address_AddrEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
+        ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(2, entry, output);
         Utf8Check::Check(&(*it));
       }
     }
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        _internal_metadata_.unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:dra.address)
+}
+
+::google::protobuf::uint8* address::InternalSerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dra.address)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "dra.address.name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
+  }
+
+  // map<string, string> addr = 2;
+  if (!this->addr().empty()) {
+    typedef ::google::protobuf::Map< ::std::string, ::std::string >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::google::protobuf::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "dra.address.AddrEntry.key");
+        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          p->second.data(), static_cast<int>(p->second.length()),
+          ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+          "dra.address.AddrEntry.value");
+      }
+    };
+
+    if (false &&
+        this->addr().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->addr().size()]);
+      typedef ::google::protobuf::Map< ::std::string, ::std::string >::size_type size_type;
+      size_type n = 0;
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->addr().begin();
+          it != this->addr().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      for (size_type i = 0; i < n; i++) {
+        address_AddrEntry_DoNotUse::MapEntryWrapper entry(nullptr, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second);
+        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessageNoVirtualToArray(2, entry, target);
+        Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
+      }
+    } else {
+      for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+          it = this->addr().begin();
+          it != this->addr().end(); ++it) {
+        address_AddrEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
+        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessageNoVirtualToArray(2, entry, target);
+        Utf8Check::Check(&(*it));
+      }
+    }
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.address)
   return target;
@@ -307,44 +462,47 @@ size_t address::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:dra.address)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        _internal_metadata_.unknown_fields());
+  }
+  ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // map<string, string> addr = 2;
   total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_addr_size());
-  for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
-      it = this->_internal_addr().begin();
-      it != this->_internal_addr().end(); ++it) {
-    total_size += address_AddrEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+      ::google::protobuf::internal::FromIntSize(this->addr_size());
+  for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+      it = this->addr().begin();
+      it != this->addr().end(); ++it) {
+    address_AddrEntry_DoNotUse::MapEntryWrapper entry(nullptr, it->first, it->second);
+    total_size += ::google::protobuf::internal::WireFormatLite::
+        MessageSizeNoVirtual(entry);
   }
 
   // string name = 1;
   if (this->name().size() > 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->name());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void address::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+void address::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:dra.address)
   GOOGLE_DCHECK_NE(&from, this);
   const address* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<address>(
+      ::google::protobuf::DynamicCastToGenerated<address>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.address)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.address)
     MergeFrom(*source);
@@ -355,17 +513,17 @@ void address::MergeFrom(const address& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.address)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   addr_.MergeFrom(from.addr_);
   if (from.name().size() > 0) {
 
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
 }
 
-void address::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+void address::CopyFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:dra.address)
   if (&from == this) return;
   Clear();
@@ -383,29 +541,36 @@ bool address::IsInitialized() const {
   return true;
 }
 
+void address::Swap(address* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
 void address::InternalSwap(address* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   addr_.Swap(&other->addr_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+  name_.Swap(&other->name_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata address::GetMetadata() const {
-  return GetMetadataStatic();
+::google::protobuf::Metadata address::GetMetadata() const {
+  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_a2l_2eproto);
+  return ::file_level_metadata_a2l_2eproto[kIndexInFileMessages];
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace dra
-PROTOBUF_NAMESPACE_OPEN
+namespace google {
+namespace protobuf {
 template<> PROTOBUF_NOINLINE ::dra::address_AddrEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::address_AddrEntry_DoNotUse >(Arena* arena) {
   return Arena::CreateInternal< ::dra::address_AddrEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::address* Arena::CreateMaybeMessage< ::dra::address >(Arena* arena) {
   return Arena::CreateInternal< ::dra::address >(arena);
 }
-PROTOBUF_NAMESPACE_CLOSE
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 #include <google/protobuf/port_undef.inc>
