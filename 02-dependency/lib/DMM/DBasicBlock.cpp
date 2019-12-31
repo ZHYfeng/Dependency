@@ -291,6 +291,11 @@ namespace dra {
         std::cout << "CoverKind : " << state << std::endl;
         std::cout << "trace_pc_address : 0x" << std::hex << trace_pc_address << std::endl;
 
+        std::cout << "all dominator uncovered instructions : "
+                  << this->get_number_all_dominator_uncovered_instructions() << std::endl;
+        std::cout << "all arrive uncovered instructions : " << this->get_number_arrive_uncovered_instructions()
+                  << std::endl;
+
         std::string ld;
         llvm::raw_string_ostream rso(ld);
         this->basicBlock->print(rso);
