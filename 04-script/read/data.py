@@ -148,7 +148,7 @@ class data:
             kind = 3
 
         tasks = []
-        for t in self.real_data.tasks.tasks:
+        for t in self.real_data.tasks.task_array:
             if not_covered_address in t.uncovered_address or not_covered_address in t.covered_address:
                 tasks.append(t)
 

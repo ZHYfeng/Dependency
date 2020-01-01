@@ -66,14 +66,20 @@ class Device:
             if a not in self.results_with_dra.max_coverage:
                 self.unique_coverage_without_dra[a] = self.results_without_dra.max_coverage[a]
 
-        max_coverage = {}
+        union_coverage = {}
         for a in self.results_without_dra.max_coverage:
-            max_coverage[a] = self.results_without_dra.max_coverage[a]
+            union_coverage[a] = self.results_without_dra.max_coverage[a]
         for a in self.results_with_dra.max_coverage:
-            if a not in max_coverage:
-                max_coverage[a] = 0
+            if a not in union_coverage:
+                union_coverage[a] = self.results_with_dra.max_coverage[a]
             else:
-                max_coverage[a] = max_coverage[a] + self.results_with_dra.max_coverage[a]
+                union_coverage[a] = union_coverage[a] + self.results_with_dra.max_coverage[a]
+
+        intersection_coverage = {}
+        for a in union_coverage:
+            if a in self.results_with_dra.max_coverage and a in self.results_without_dra.max_coverage:
+                intersection_coverage[a] = self.results_without_dra.max_coverage[a] + \
+                                           self.results_with_dra.max_coverage[a]
 
         f = open(self.file_result, "a")
         f.write("=====================================================\n")
@@ -81,10 +87,31 @@ class Device:
         f.write("unique_coverage_with_dra : " +
                 str(len(self.unique_coverage_with_dra)) + "\n")
         f.write(str(self.unique_coverage_with_dra) + "\n")
+
         f.write("unique_coverage_without_dra : " +
                 str(len(self.unique_coverage_without_dra)) + "\n")
         f.write(str(self.unique_coverage_without_dra) + "\n")
-        f.write("max_coverage : " + str(len(max_coverage)) + "\n")
+        f.write("union_coverage : " + str(len(union_coverage)) + "\n")
+        f.write("intersection_coverage : " + str(len(intersection_coverage)) + "\n")
+
+        solved_condition = {}
+        for r in self.results_with_dra.results:
+            for t in r.data.real_data.tasks.task_array:
+                for ca in t.covered_address:
+                    solved_condition[ca] = t.covered_address[ca]
+
+        stable_solved_conditon = {}
+        unstable_solved_conditon = {}
+        for a in solved_condition:
+            if a in union_coverage:
+                stable_solved_conditon[a] = solved_condition[a]
+            else:
+                unstable_solved_conditon[a] = solved_condition[a]
+
+        f.write("solved_condition : " + str(len(solved_condition)) + "\n")
+        f.write("stable_solved_conditon : " + str(len(stable_solved_conditon)) + "\n")
+        f.write("unstable_solved_conditon : " + str(len(unstable_solved_conditon)) + "\n")
+
         f.close()
 
     def get_base(self):
@@ -157,9 +184,9 @@ class Device:
 
             os.chdir(self.path_dev)
 
-            # cmd_rm_0x = "rm -rf 0x*"
-            # p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
-            # p_rm_0x.wait()
+            cmd_rm_0x = "rm -rf 0x*"
+            p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
+            p_rm_0x.wait()
             # cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
             #           + " -staticRes=./" + default.file_taint + " -function=./" + \
             #           default.file_function + " " + default.file_bc
