@@ -84,16 +84,17 @@ class stat:
         s_copy(self.processed_stat.stat[pb.StatDependency], self.real_stat.stat[pb.StatDependency])
         s_copy(self.processed_stat.stat[pb.StatDependency], self.real_stat.stat[pb.StatDependencyBoot])
 
-        f = open(self.file_result, "a")
-        f.write("=====================================================\n")
-        f.write("useful input :" + "\n")
-        for ui in self.real_stat.useful_input:
-            if ui.num > 100:
-                f.write("program : " + str(ui.input.program) + "\n")
-                f.write("number : " + str(ui.num) + "\n")
-                f.write("time : " + str(ui.time) + "\n")
-                f.write("address : " + str(ui.new_address) + "\n")
-        f.close()
+        if self.dir_path != "":
+            f = open(self.file_result, "a")
+            f.write("=====================================================\n")
+            f.write("useful input :" + "\n")
+            for ui in self.real_stat.useful_input:
+                if ui.num > 100:
+                    f.write("program : " + str(ui.input.program) + "\n")
+                    f.write("number : " + str(ui.num) + "\n")
+                    f.write("time : " + str(ui.time) + "\n")
+                    f.write("address : " + str(ui.new_address) + "\n")
+            f.close()
 
 
 def s_add(stat1: pb.Statistic, stat2: pb.Statistic) -> pb.Statistic:
