@@ -123,8 +123,10 @@ class data:
         res += "# write : " + str(len(not_covered.write_address)) + "\n"
         count = 0
         write_status = {}
-        for w in not_covered.write_address:
+        for w in self.real_data.write_address:
             write_status[w] = 0
+
+        for w in not_covered.write_address:
             res += "## write address : " + hex(w + 0xffffffff00000000 - 5) + "\n"
             if w in self.real_data.write_address:
                 write_address = self.real_data.write_address[w]
