@@ -291,42 +291,44 @@ namespace dra {
         std::cout << "CoverKind : " << state << std::endl;
         std::cout << "trace_pc_address : 0x" << std::hex << trace_pc_address << std::endl;
 
-        std::cout << "all dominator uncovered instructions : "
-                  << this->get_number_all_dominator_uncovered_instructions() << std::endl;
-        std::cout << "all arrive uncovered instructions : " << this->get_number_arrive_uncovered_instructions()
-                  << std::endl;
+        if (this->basicBlock != nullptr) {
+            std::cout << "all dominator uncovered instructions : "
+                      << this->get_number_all_dominator_uncovered_instructions() << std::endl;
+            std::cout << "all arrive uncovered instructions : " << this->get_number_arrive_uncovered_instructions()
+                      << std::endl;
 
-        std::string ld;
-        llvm::raw_string_ostream rso(ld);
-        this->basicBlock->print(rso);
-        auto bb = this->basicBlock;
-        auto temp = bb->getNextNode();
-        for (; temp != nullptr && !temp->hasName(); temp = bb->getNextNode()) {
-            bb = temp;
-            bb->print(rso);
-        }
-        // 0 is condition(br), 1 is uncovered branch, 2 is write statement(store)
-        if (kind == 0) {
-            auto inst = bb->getTerminator();
-            dump_inst(inst);
-        } else if (kind == 1) {
-            auto inst = this->basicBlock->getFirstNonPHIOrDbgOrLifetime();
-            dump_inst(inst);
-        } else if (kind == 2) {
-            for (temp = this->basicBlock;;) {
-                for (auto &inst : *temp) {
-                    if (inst.getOpcode() == llvm::Instruction::Store) {
-                        dump_inst(&inst);
-                    }
-                }
-                temp = temp->getNextNode();
-                if (temp == nullptr || temp->hasName()) {
-                    break;
-                }
-
+            std::string ld;
+            llvm::raw_string_ostream rso(ld);
+            this->basicBlock->print(rso);
+            auto bb = this->basicBlock;
+            auto temp = bb->getNextNode();
+            for (; temp != nullptr && !temp->hasName(); temp = bb->getNextNode()) {
+                bb = temp;
+                bb->print(rso);
             }
+            // 0 is condition(br), 1 is uncovered branch, 2 is write statement(store)
+            if (kind == 0) {
+                auto inst = bb->getTerminator();
+                dump_inst(inst);
+            } else if (kind == 1) {
+                auto inst = this->basicBlock->getFirstNonPHIOrDbgOrLifetime();
+                dump_inst(inst);
+            } else if (kind == 2) {
+                for (temp = this->basicBlock;;) {
+                    for (auto &inst : *temp) {
+                        if (inst.getOpcode() == llvm::Instruction::Store) {
+                            dump_inst(&inst);
+                        }
+                    }
+                    temp = temp->getNextNode();
+                    if (temp == nullptr || temp->hasName()) {
+                        break;
+                    }
+
+                }
+            }
+            std::cout << ld;
         }
-        std::cout << ld;
 
         for (auto i : this->input) {
             std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
@@ -468,7 +470,11 @@ namespace dra {
     }
 
     uint32_t DBasicBlock::get_number_all_dominator_uncovered_instructions() {
-        return this->parent->get_number_dominator_uncovered_instructions(this->basicBlock);
+        if (this->basicBlock != nullptr) {
+            return this->parent->get_number_dominator_uncovered_instructions(this->basicBlock);
+        } else {
+            return 0;
+        }
     }
 
 } /* namespace dra */
