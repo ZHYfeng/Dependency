@@ -227,7 +227,7 @@ class Device:
             sort_ua_insts = {k: v for k, v in sorted(ua_insts.items(), key=lambda item: item[1])}
             for ua in sort_ua_insts:
                 res += "uncovered address : " + str(ua) + " inst : " + str(sort_ua_insts[ua]) + " kind : " \
-                       + str(ua_status[ua])
+                       + str(ua_status[ua]) + "\n"
             f.write(res)
             f.close()
 
