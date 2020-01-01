@@ -106,8 +106,8 @@ class data:
         # 7: unstable condition address
 
         res += "*******************************************\n"
-        res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks)
-        res += "number_dominator_instructions(using) : " + str(not_covered.number_dominator_instructions)
+        res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks) + "\n"
+        res += "number_dominator_instructions(using) : " + str(not_covered.number_dominator_instructions) + "\n"
         res += "*******************************************\n"
 
         res += "# input : " + str(len(not_covered.input)) + "\n"
