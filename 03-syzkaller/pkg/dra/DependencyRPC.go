@@ -750,7 +750,7 @@ func (m *Tasks) pop(number int) *Tasks {
 }
 
 func (m *Task) updatePriority(p1 int32) {
-	m.Priority = m.Priority + p1
+	m.Priority = p1
 	return
 }
 
@@ -760,6 +760,7 @@ func (m *Task) getRealPriority() float64 {
 		p += r.Priority
 	}
 	res := float64(p) * (math.Pow(2, float64(m.Priority)))
+	//res := float64(p) * float64(m.Priority)
 	return res
 }
 
