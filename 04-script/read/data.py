@@ -101,8 +101,9 @@ class data:
         # 2: not find write address
         # 3: not have write input
         # 4: cover the address
-        # 5: unstable
+        # 5: unstable write address
         # 6: useless or FP
+        # 7: unstable condition address
 
         res += "*******************************************\n"
         res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks)
@@ -124,7 +125,7 @@ class data:
         count = 0
         write_status = {}
         for w in self.real_data.write_address:
-            write_status[w] = 0
+            write_status[w] = -1
 
         for w in not_covered.write_address:
             res += "## write address : " + hex(w + 0xffffffff00000000 - 5) + "\n"
@@ -162,6 +163,8 @@ class data:
             res += task_str(t)
             if t.task_status == 0:
                 untested_count += 1
+                if write_status[t.write_address] < 0:
+                    write_status[t.write_address] = 0
             else:
                 if t.task_status == 2:
                     tested_count += 1
@@ -198,11 +201,14 @@ class data:
         write_untested_count = 0
         write_unstable_count = 0
         write_useless_fp_count = 0
+        condition_unstable_count = 0
         for w in write_status:
             if write_status[w] == 0:
                 write_untested_count += 1
-            elif write_status[w] == 1 or write_status[w] == 2:
+            elif write_status[w] == 1:
                 write_unstable_count += 1
+            elif write_status[w] == 2:
+                condition_unstable_count += 1
             elif write_status[w] == 3:
                 write_useless_fp_count += 1
 
@@ -212,9 +218,12 @@ class data:
 
         res += "write_untested_count : " + str(write_untested_count) + "\n"
         res += "write_unstable_count : " + str(write_unstable_count) + "\n"
+        res += "condition_unstable_count : " + str(condition_unstable_count) + "\n"
         res += "write_useless_fp_count : " + str(write_useless_fp_count) + "\n"
         if write_unstable_count > 0:
             kind = 5
+        if condition_unstable_count > 0:
+            kind = 7
         if write_useless_fp_count > 0:
             kind = 6
 
