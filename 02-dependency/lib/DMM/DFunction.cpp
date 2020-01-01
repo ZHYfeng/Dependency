@@ -280,13 +280,10 @@ namespace dra {
                 count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
             }
         }
+
+        std::cout << "get_number_dominator_uncovered_instructions 1 : " << count << std::endl;
+
         for (auto c : DT->getNode(b)->getChildren()) {
-            if (c->getBlock()->hasName()) {
-                std::string Name = c->getBlock()->getName().str();
-                if (BasicBlock.find(Name) != BasicBlock.end()) {
-                    count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
-                }
-            }
             count = count + this->get_number_dominator_uncovered_instructions(c->getBlock());
         }
     }
