@@ -19,7 +19,7 @@ def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
 
 def not_covered_address_str(uncovered_address: pb.UncoveredAddress):
     res = hex_adddress(uncovered_address.condition_address) + "&" + hex_adddress(
-        uncovered_address.uncovered_addres) + "\n"
+        uncovered_address.uncovered_address) + "\n"
     return res
 
 
