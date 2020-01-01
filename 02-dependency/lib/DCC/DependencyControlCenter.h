@@ -51,7 +51,9 @@ namespace dra {
 
         void test_sta();
 
-        static void test_rpc();
+        void test_rpc();
+
+        void test();
 
         void getFileOperations(std::string *function_name, std::string *file_operations, std::string *kind);
 

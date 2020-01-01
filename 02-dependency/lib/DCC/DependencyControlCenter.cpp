@@ -139,6 +139,13 @@ namespace dra {
                             db->get_number_all_dominator_uncovered_instructions());
                 }
 
+                if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
+                    DBasicBlock *db = DM.Address2BB[u->condition_address()]->parent;
+                    uncoveredAddress->set_number_arrive_basicblocks(db->get_number_arrive_uncovered_instructions());
+                    uncoveredAddress->set_number_dominator_instructions(
+                            db->get_number_all_dominator_uncovered_instructions());
+                }
+
                 (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
                 (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
 
@@ -564,6 +571,19 @@ namespace dra {
     }
 
     void dra::DependencyControlCenter::test_rpc() {
+
+        exit(0);
+    }
+
+    void dra::DependencyControlCenter::test() {
+
+        for (auto ff : this->DM.Modules->Function) {
+            for (auto f : ff.second) {
+                for (auto b : f.second->BasicBlock) {
+                    b.second->real_dump();
+                }
+            }
+        }
 
         exit(0);
     }

@@ -33,6 +33,7 @@ int main(int argc, char **argv)
     auto *dcc = new dra::DependencyControlCenter();
 
     dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes, function, port);
+//    dcc->test();
     dcc->run();
     return 0;
 }
