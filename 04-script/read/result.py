@@ -211,7 +211,7 @@ class Device:
                             ua_insts[a] = inst
                             break
                     ff.close()
-            ua_status_count = {x: 0 for x in range(7)}
+            ua_status_count = {x: 0 for x in range(8)}
             for ua in ua_status:
                 ua_status_count[ua_status[ua]] += 1
 
