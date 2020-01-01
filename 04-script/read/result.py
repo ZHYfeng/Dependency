@@ -228,7 +228,7 @@ class Device:
             for ua in sort_ua_insts:
                 res += "uncovered address : " + str(ua) + " inst : " + str(sort_ua_insts[ua]) + " kind : " \
                        + str(ua_status[ua])
-
+            f.write(res)
             f.close()
 
         else:
