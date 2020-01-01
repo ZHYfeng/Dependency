@@ -118,7 +118,8 @@ class Device:
                         if s.real_stat.coverage.coverage[a] == 1:
                             addresses_dependency_covered_with_dra_dependency[a] = 1
                             break
-            f.write("covered by dependency mutate: " + str(count) + "\n")
+            f.write(
+                "covered by dependency mutate: " + str(len(addresses_dependency_covered_with_dra_dependency)) + "\n")
 
             count = 0
             for a in addresses_dependency_covered_with_dra_dependency:
@@ -153,20 +154,20 @@ class Device:
                     ff.write(not_covered_address_str(basic.data.real_data.uncovered_address[a]))
 
             ff.close()
-            f.close()
 
             os.chdir(self.path_dev)
 
-            cmd_rm_0x = "rm -rf 0x*"
-            p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
-            p_rm_0x.wait()
-            cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                      + " -staticRes=./" + default.file_taint + " -function=./" + \
-                      default.file_function + " " + default.file_bc
-            print(cmd_a2i)
-            p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
-            p_a2i_img.wait()
+            # cmd_rm_0x = "rm -rf 0x*"
+            # p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
+            # p_rm_0x.wait()
+            # cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
+            #           + " -staticRes=./" + default.file_taint + " -function=./" + \
+            #           default.file_function + " " + default.file_bc
+            # print(cmd_a2i)
+            # p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
+            # p_a2i_img.wait()
 
+            ua_status = {}
             for a in basic.data.uncovered_address_dependency:
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
@@ -176,9 +177,12 @@ class Device:
                     ff = open(not_covered_address_file, "a")
                     for r in self.results_with_dra.results:
                         if a in r.data.real_data.uncovered_address:
-                            ff.write(r.data.not_covered_address_tasks_str(a))
+                            res, kind = r.data.not_covered_address_tasks_str(a)
+                            ff.write(res)
+                            ua_status[a] = kind
                             break
                     ff.close()
+            f.close()
 
         else:
             print("base not exist: " + path_base + "\n")

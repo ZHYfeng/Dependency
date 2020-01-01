@@ -3,24 +3,28 @@ import os
 from default import DependencyRPC_pb2 as pb, default
 
 
+def hex_adddress(address):
+    return hex(address + 0xffffffff00000000 - 5)
+
+
 def uncovered_address_str(uncovered_address: pb.UncoveredAddress):
     res = ""
-    res += "condition address : " + hex(uncovered_address.condition_address + 0xffffffff00000000 - 5) + "\n"
-    res += "uncovered address : " + hex(uncovered_address.uncovered_address + 0xffffffff00000000 - 5) + "\n"
+    res += "condition address : " + hex_adddress(uncovered_address.condition_address) + "\n"
+    res += "uncovered address : " + hex_adddress(uncovered_address.uncovered_address) + "\n"
     for w in uncovered_address.write_address:
-        res += "write address : " + hex(w + 0xffffffff00000000 - 5) + "\n"
+        res += "write address : " + hex_adddress(w) + "\n"
     res += "\n"
     return res
 
 
 def not_covered_address_str(uncovered_address: pb.UncoveredAddress):
-    res = hex(uncovered_address.condition_address + 0xffffffff00000000 - 5) + "&" + hex(
-        uncovered_address.uncovered_address + 0xffffffff00000000 - 5) + "\n"
+    res = hex_adddress(uncovered_address.condition_address) + "&" + hex_adddress(
+        uncovered_address.uncovered_addres) + "\n"
     return res
 
 
 def not_covered_address_file_name(uncovered_address: pb.UncoveredAddress):
-    res = hex(uncovered_address.condition_address + 0xffffffff00000000 - 5) + ".txt"
+    res = hex_adddress(uncovered_address.condition_address) + ".txt"
     return res
 
 
@@ -28,13 +32,17 @@ def task_str(task: pb.Task):
     res = ""
     res += "*******************************************\n"
     res += "task_status : " + pb.taskStatus.Name(task.task_status) + "\n"
-    res += "priority : " + str(task.priority) + "\n"
+    res += "task priority : " + str(task.priority) + "\n"
+    priority = 0
+    for ua in task.uncovered_address:
+        priority += task.uncovered_address[ua].priority
+    res += "uncovered address priority : " + str(priority) + "\n"
     res += "condition program : " + str(task.index) + " : " + task.sig + "\n"
     res += str(task.program, default.encoding)
-    res += "write address : " + str(task.write_address) + "\n"
+    res += "write address : " + hex_adddress(task.write_address) + "\n"
     res += "write program : " + str(task.write_index) + " : " + task.write_sig + "\n"
     res += str(task.write_program, default.encoding)
-    res += "check_write_address : " + str(task.check_write_address) + "\n"
+    res += "check_write_address : " + hex_adddress(task.check_write_address) + "\n"
     res += "check_write_address_final : " + str(task.check_write_address_final) + "\n"
     res += "check_write_address_remove : " + str(task.check_write_address_remove) + "\n"
     res += "-------------------------------------------\n"
@@ -83,8 +91,18 @@ class data:
         # f.close()
 
     def not_covered_address_tasks_str(self, not_covered_address):
+        global ua
         res = ""
         not_covered = self.real_data.uncovered_address[not_covered_address]
+
+        kind = 0
+        # 0: default
+        # 1: not find input
+        # 2: not find write address
+        # 3: not have write input
+        # 4: cover the address
+        # 5: unstable
+        # 6: useless or FP
 
         res += "# input : " + str(len(not_covered.input)) + "\n"
         for i in not_covered.input:
@@ -93,33 +111,105 @@ class data:
             else:
                 res += "*******************************************\n"
                 res += "not find input : " + str(i) + "\n"
+                kind = 1
             res += "index : " + bin(not_covered.input[i]) + "\n"
             res += "-------------------------------------------\n"
 
         res += "# write : " + str(len(not_covered.write_address)) + "\n"
+        count = 0
+        write_status = {}
         for w in not_covered.write_address:
+            write_status[w] = 0
             res += "## write address : " + hex(w + 0xffffffff00000000 - 5) + "\n"
             if w in self.real_data.write_address:
                 write_address = self.real_data.write_address[w]
-                for i in write_address.input:
-                    if i in self.real_data.input:
-                        res += input_str(self.real_data.input[i])
-                    else:
-                        res += "*******************************************\n"
-                        res += "not find write input : " + str(i) + "\n"
-                    res += "index : " + bin(write_address.input[i]) + "\n"
-                    res += "-------------------------------------------\n"
+                if len(write_address.input) == 0:
+                    res += "*******************************************\n"
+                    res += "not have write input" + "\n"
+                else:
+                    count += len(write_address.input)
+                    for i in write_address.input:
+                        if i in self.real_data.input:
+                            res += input_str(self.real_data.input[i])
+                            res += "not find write input : " + str(i) + "\n"
+                        res += "index : " + bin(write_address.input[i]) + "\n"
+                        res += "-------------------------------------------\n"
             else:
                 res += "*******************************************\n"
                 res += "not find write address : " + str(w) + "\n"
+                kind = 2
             res += "-------------------------------------------\n"
+        if count == 0:
+            kind = 3
 
         tasks = []
         for t in self.real_data.tasks.tasks:
-            if not_covered_address in t.uncovered_address:
+            if not_covered_address in t.uncovered_address or not_covered_address in t.covered_address:
                 tasks.append(t)
 
         res += "# tasks : " + str(len(tasks)) + "\n"
+        untested_count = 0
+        unstable_count = 0
+        tested_count = 0
         for t in tasks:
             res += task_str(t)
-        return res
+            if t.task_status == 0:
+                untested_count += 1
+            else:
+                if t.task_status == 2:
+                    tested_count += 1
+                elif t.task_status == 6:
+                    unstable_count += 1
+
+                if not_covered_address in t.uncovered_address:
+                    ua = t.uncovered_address[not_covered_address]
+                    res += "task_status : " + pb.taskStatus.Name(ua.task_status) + "\n"
+                    res += "check condition : " + str(ua.checkCondition) + "\n"
+                    res += "chech address : " + str(ua.checkAddress) + "\n"
+                    res += "-------------------------------------------\n"
+                    if t.check_write_address_final or t.check_write_address_remove:
+                        if ua.checkCondition:
+                            if ua.checkAddress:
+                                res += "error in ua.checkAddress" + "\n"
+                            else:
+                                res += "useless write address or FP" + "\n"
+                                if write_status[t.write_address] < 3:
+                                    write_status[t.write_address] = 3
+                        else:
+                            res += "unstable condition address" + "\n"
+                            if write_status[t.write_address] < 2:
+                                write_status[t.write_address] = 2
+                    else:
+                        res += "unstable write address" + "\n"
+                        if write_status[t.write_address] < 1:
+                            write_status[t.write_address] = 1
+
+                elif not_covered_address in t.covered_address:
+                    ua = t.covered_address[not_covered_address]
+                    kind = 4
+
+        write_untested_count = 0
+        write_unstable_count = 0
+        write_useless_fp_count = 0
+        for w in write_status:
+            if write_status[w] == 0:
+                write_untested_count += 1
+            elif write_status[w] == 1 or write_status[w] == 2:
+                write_unstable_count += 1
+            elif write_status[w] == 3:
+                write_useless_fp_count += 1
+
+        res += "untested : " + str(untested_count) + "\n"
+        res += "unstable : " + str(unstable_count) + "\n"
+        res += "tested : " + str(tested_count) + "\n"
+
+        res += "write_untested_count : " + str(write_untested_count) + "\n"
+        res += "write_unstable_count : " + str(write_unstable_count) + "\n"
+        res += "write_useless_fp_count : " + str(write_useless_fp_count) + "\n"
+        if write_unstable_count > 0:
+            kind = 5
+        if write_useless_fp_count > 0:
+            kind = 6
+
+        res += "kind : " + str(kind) + "\n"
+        return res, kind
