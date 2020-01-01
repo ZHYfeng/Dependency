@@ -218,7 +218,8 @@ class Device:
             res = ""
             res += "not have write input : " + str(ua_status_count[3]) + "\n"
             res += "cover : " + str(ua_status_count[4]) + "\n"
-            res += "unstable : " + str(ua_status_count[5]) + "\n"
+            res += "unstable write : " + str(ua_status_count[5]) + "\n"
+            res += "unstable condition : " + str(ua_status_count[7]) + "\n"
             res += "useless or FP : " + str(ua_status_count[6]) + "\n"
             f.write(res)
 
