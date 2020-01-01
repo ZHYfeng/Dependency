@@ -281,13 +281,7 @@ namespace dra {
             }
         }
 
-        std::cout << "get_number_dominator_uncovered_instructions 1 : " << count << std::endl;
-
         for (auto c : DT->getNode(b)->getChildren()) {
-            if (!c->getBlock()->hasName()) {
-                std::cout << "c does not have name " << std::endl;
-                c->getBlock()->dump();
-            }
             count = count + this->get_number_dominator_uncovered_instructions(c->getBlock());
         }
         return count;
