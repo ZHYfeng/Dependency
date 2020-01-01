@@ -104,6 +104,11 @@ class data:
         # 5: unstable
         # 6: useless or FP
 
+        res += "*******************************************\n"
+        res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks)
+        res += "number_dominator_instructions(using) : " + str(not_covered.number_dominator_instructions)
+        res += "*******************************************\n"
+
         res += "# input : " + str(len(not_covered.input)) + "\n"
         for i in not_covered.input:
             if i in self.real_data.input:
@@ -212,4 +217,4 @@ class data:
             kind = 6
 
         res += "kind : " + str(kind) + "\n"
-        return res, kind
+        return res, kind, not_covered.number_dominator_instructions

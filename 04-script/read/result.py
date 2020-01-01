@@ -168,6 +168,7 @@ class Device:
             # p_a2i_img.wait()
 
             ua_status = {}
+            ua_insts = {}
             for a in basic.data.uncovered_address_dependency:
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
@@ -177,11 +178,29 @@ class Device:
                     ff = open(not_covered_address_file, "a")
                     for r in self.results_with_dra.results:
                         if a in r.data.real_data.uncovered_address:
-                            res, kind = r.data.not_covered_address_tasks_str(a)
+                            res, kind, inst = r.data.not_covered_address_tasks_str(a)
                             ff.write(res)
                             ua_status[a] = kind
+                            ua_insts[a] = inst
                             break
                     ff.close()
+            ua_status_count = {x: 0 for x in range(7)}
+            for ua in ua_status:
+                ua_status_count[ua_status[ua]] += 1
+
+            res = ""
+            res += "not have write input : " + str(ua_status_count[3]) + "\n"
+            res += "cover : " + str(ua_status_count[4]) + "\n"
+            res += "unstable : " + str(ua_status_count[5]) + "\n"
+            res += "useless or FP : " + str(ua_status_count[6]) + "\n"
+            f.write(res)
+
+            res = ""
+            sort_ua_insts = {k: v for k, v in sorted(ua_insts.items(), key=lambda item: item[1])}
+            for ua in sort_ua_insts:
+                res += "uncovered address : " + str(ua) + " inst : " + str(sort_ua_insts[ua]) + " kind : " \
+                       + str(ua_status[ua])
+
             f.close()
 
         else:
