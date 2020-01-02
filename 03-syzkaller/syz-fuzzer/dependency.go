@@ -29,20 +29,21 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		for _, i := range indexInsert {
 
 			tempProg := proc.dependencyMutateInsert(task, Prog, writeProg, i)
-			data := proc.dependencyMutateCheck(task, tempProg)
+			data := proc.dependencyMutateCheck(task, tempProg, 1)
 
 			writeIndex := int(task.FinalWriteIdx)
 			index := int(task.FinalIdx)
 			proc.dependencyMutateArguement(task, tempProg, writeIndex, index)
 
 			removeProg := proc.dependencyMutateRemove(task, data)
-			proc.dependencyMutateCheck(task, removeProg)
+			proc.dependencyMutateCheck(task, removeProg, 2)
 
 			removeWriteIdx := int(task.RemoveWriteIdx)
 			removeIdx := int(task.RemoveIdx)
 			proc.dependencyMutateArguement(task, removeProg, removeWriteIdx, removeIdx)
 
 		}
+
 	} else {
 
 	}
@@ -137,35 +138,71 @@ func (proc *Proc) dependencyMutateInsert(task *pb.Task, Prog *prog.Prog, writePr
 	return p
 }
 
-func (proc *Proc) dependencyMutateCheck(task *pb.Task, Prog *prog.Prog) []byte {
+// kind 1: final 2: remove
+func (proc *Proc) dependencyMutateCheck(task *pb.Task, Prog *prog.Prog, kind int64) []byte {
+
+	var idx, writeIdx uint32
+	if kind == 1 {
+		idx = task.FinalIdx
+		writeIdx = task.FinalWriteIdx
+	} else if kind == 2 {
+		idx = task.RemoveIdx
+		writeIdx = task.RemoveWriteIdx
+	}
 
 	infoFinal := proc.execute(proc.execOptsCover, Prog, ProgNormal, StatDependency)
-	checkWriteAddress2 := checkAddressInArray(task.WriteAddress, infoFinal.Calls[task.FinalWriteIdx].Cover)
+	checkWriteAddress2 := checkAddressInArray(task.WriteAddress, infoFinal.Calls[writeIdx].Cover)
 	if checkWriteAddress2 {
-		task.CheckWriteAddressFinal = true
-		log.Logf(pb.DebugLevel, "final program could arrive at write address : %d", task.WriteAddress)
+		if kind == 1 {
+			task.CheckWriteAddressFinal = true
+			log.Logf(pb.DebugLevel, "final program could arrive at write address : %d", task.WriteAddress)
+		} else if kind == 2 {
+			task.CheckWriteAddressRemove = true
+			log.Logf(pb.DebugLevel, "remove program could arrive at write address : %d", task.WriteAddress)
+		}
 	} else {
-		task.CheckWriteAddressFinal = false
-		log.Logf(pb.DebugLevel, "final program could not arrive at write address : %d", task.WriteAddress)
+		if kind == 1 {
+			task.CheckWriteAddressFinal = false
+			log.Logf(pb.DebugLevel, "final program could not arrive at write address : %d", task.WriteAddress)
+		} else if kind == 2 {
+			task.CheckWriteAddressRemove = false
+			log.Logf(pb.DebugLevel, "remove program could not arrive at write address : %d", task.WriteAddress)
+		}
 	}
 
 	data := Prog.Serialize()
 	var temp []uint32
 	for ua, rtd := range task.UncoveredAddress {
-		if checkAddressInArray(rtd.ConditionAddress, infoFinal.Calls[task.FinalIdx].Cover) {
+		if checkAddressInArray(rtd.ConditionAddress, infoFinal.Calls[idx].Cover) {
 			rtd.CheckCondition = true
-			if checkAddressInArray(ua, infoFinal.Calls[task.FinalIdx].Cover) {
+			if checkAddressInArray(ua, infoFinal.Calls[idx].Cover) {
 				rtd.CheckAddress = true
-				rtd.Idx = task.FinalIdx
 				rtd.TaskStatus = pb.TaskStatus_covered
+				rtd.Idx = idx
 				for _, c := range data {
 					rtd.Program = append(rtd.Program, c)
 				}
 				task.CoveredAddress[ua] = rtd
 				temp = append(temp, ua)
+			} else {
+				rtd.CheckAddress = false
+				if rtd.TaskStatus < pb.TaskStatus_tested {
+					rtd.TaskStatus = pb.TaskStatus_tested
+					rtd.Idx = idx
+					for _, c := range data {
+						rtd.Program = append(rtd.Program, c)
+					}
+				}
 			}
 		} else {
-			rtd.TaskStatus = pb.TaskStatus_tested
+			rtd.CheckCondition = false
+			if rtd.TaskStatus < pb.TaskStatus_unstable {
+				rtd.TaskStatus = pb.TaskStatus_unstable
+				rtd.Idx = idx
+				for _, c := range data {
+					rtd.Program = append(rtd.Program, c)
+				}
+			}
 		}
 	}
 	for _, ua := range temp {
@@ -179,7 +216,6 @@ func (proc *Proc) dependencyMutateRemove(task *pb.Task, data []byte) *prog.Prog 
 	idx := task.FinalIdx
 	removeData, removeIdx := removeSameResource(data)
 	task.RemoveIdx = removeIdx[idx]
-	task.FinalIdx = task.RemoveIdx
 	removeProg, err := proc.fuzzer.target.Deserialize(removeData, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
@@ -187,7 +223,6 @@ func (proc *Proc) dependencyMutateRemove(task *pb.Task, data []byte) *prog.Prog 
 	log.Logf(pb.DebugLevel, "remove program : \n%s", removeData)
 	writeIdx := removeIdx[task.FinalWriteIdx]
 	task.RemoveWriteIdx = writeIdx
-	task.FinalWriteIdx = task.RemoveWriteIdx
 	log.Logf(pb.DebugLevel, "remove index  : %d remove write index : %d", task.RemoveIdx, task.RemoveWriteIdx)
 	return removeProg
 }

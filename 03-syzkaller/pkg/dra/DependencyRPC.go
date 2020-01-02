@@ -166,6 +166,18 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 		return
 	}
 
+	if m.TaskStatus < d.TaskStatus {
+		m.TaskStatus = d.TaskStatus
+		m.Program = []byte{}
+		for _, c := range d.Program {
+			m.Program = append(m.Program, c)
+		}
+		m.Idx = d.Idx
+		m.CheckCondition = d.CheckCondition
+		m.CheckAddress = d.CheckAddress
+		m.CheckRightBranchAddress = d.CheckRightBranchAddress
+	}
+
 	return
 }
 
@@ -200,6 +212,13 @@ func (m *Task) mergeTask(s *Task) {
 			delete(m.UncoveredAddress, u)
 		}
 	}
+
+	for ua := range m.UncoveredAddress {
+		if u, ok := s.UncoveredAddress[ua]; ok {
+			m.UncoveredAddress[ua].mergeRunTimeData(u)
+		}
+	}
+
 	if m.TaskStatus == TaskStatus_testing {
 		m.TaskStatus = s.TaskStatus
 	} else if m.TaskStatus == TaskStatus_unstable {

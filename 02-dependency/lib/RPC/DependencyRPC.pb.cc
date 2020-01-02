@@ -1043,17 +1043,17 @@ const ::google::protobuf::uint32 TableStruct_DependencyRPC_2eproto::offsets[] PR
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, program_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, task_status_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, rcursive_count_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, priority_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkcondition_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, condition_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkaddress_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, address_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkrightbranchaddress_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, right_branch_address_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, task_status_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, program_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, idx_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, rcursive_count_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkcondition_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkaddress_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkrightbranchaddress_),
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1558,13 +1558,13 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] =
   "\r\022\r\n\005value\030\002 \001(\r:\0028\001\"#\n\006Inputs\022\031\n\005input\030"
   "\001 \003(\0132\n.dra.Input\"9\n\016Dependencytask\022\031\n\005i"
   "nput\030\001 \001(\0132\n.dra.Input\022\014\n\004name\030) \001(\t\"\224\002\n"
-  "\013runTimeData\022\017\n\007program\030\002 \001(\014\022$\n\013task_st"
-  "atus\030\003 \001(\0162\017.dra.taskStatus\022\026\n\016rcursive_"
-  "count\030\004 \001(\r\022\020\n\010priority\030\005 \001(\r\022\013\n\003idx\030\n \001"
-  "(\r\022\026\n\016checkCondition\030\013 \001(\010\022\031\n\021condition_"
-  "address\030\014 \001(\r\022\024\n\014checkAddress\030\r \001(\010\022\017\n\007a"
-  "ddress\030\016 \001(\r\022\037\n\027checkRightBranchAddress\030"
-  "\017 \001(\010\022\034\n\024right_branch_address\030\020 \003(\r\"\236\002\n\026"
+  "\013runTimeData\022\020\n\010priority\030\001 \001(\r\022\031\n\021condit"
+  "ion_address\030\002 \001(\r\022\017\n\007address\030\004 \001(\r\022\034\n\024ri"
+  "ght_branch_address\030\006 \003(\r\022$\n\013task_status\030"
+  "\n \001(\0162\017.dra.taskStatus\022\017\n\007program\030\014 \001(\014\022"
+  "\013\n\003idx\030\r \001(\r\022\026\n\016rcursive_count\030\016 \001(\r\022\026\n\016"
+  "checkCondition\030\025 \001(\010\022\024\n\014checkAddress\030\026 \001"
+  "(\010\022\037\n\027checkRightBranchAddress\030\027 \001(\010\"\236\002\n\026"
   "FileOperationsFunction\022\014\n\004name\030\001 \001(\t\022\034\n\024"
   "file_operations_name\030\002 \001(\t\022\'\n\004kind\030\003 \001(\016"
   "2\031.dra.file_operations_kind\022\013\n\003cmd\030\004 \001(\004"
@@ -1685,9 +1685,9 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] =
   "on\"]\n\016WriteAddresses\022!\n\tcondition\030\001 \001(\0132"
   "\016.dra.Condition\022(\n\rwrite_address\030\004 \003(\0132\021"
   ".dra.WriteAddress*f\n\ntaskStatus\022\014\n\010untes"
-  "ted\020\000\022\r\n\trecursive\020\001\022\n\n\006tested\020\002\022\007\n\003out\020"
-  "\003\022\013\n\007covered\020\004\022\013\n\007testing\020\005\022\014\n\010unstable\020"
-  "\006*\215\001\n\024file_operations_kind\022\013\n\007default\020\000\022"
+  "ted\020\000\022\013\n\007testing\020\001\022\014\n\010unstable\020\002\022\n\n\006test"
+  "ed\020\003\022\013\n\007covered\020\004\022\r\n\trecursive\020\n\022\007\n\003out\020"
+  "\013*\215\001\n\024file_operations_kind\022\013\n\007default\020\000\022"
   "\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010\n\004read\020\003\022\t\n\005write"
   "\020\004\022\010\n\004poll\020\t\022\022\n\016unlocked_ioctl\020\n\022\010\n\004mmap"
   "\020\014\022\010\n\004open\020\016\022\013\n\007release\020\020*W\n\024UncoveredAd"
@@ -1747,8 +1747,8 @@ bool taskStatus_IsValid(int value) {
     case 2:
     case 3:
     case 4:
-    case 5:
-    case 6:
+    case 10:
+    case 11:
       return true;
     default:
       return false;
@@ -3759,17 +3759,17 @@ class runTimeData::HasBitSetters {
 };
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int runTimeData::kProgramFieldNumber;
-const int runTimeData::kTaskStatusFieldNumber;
-const int runTimeData::kRcursiveCountFieldNumber;
 const int runTimeData::kPriorityFieldNumber;
-const int runTimeData::kIdxFieldNumber;
-const int runTimeData::kCheckConditionFieldNumber;
 const int runTimeData::kConditionAddressFieldNumber;
-const int runTimeData::kCheckAddressFieldNumber;
 const int runTimeData::kAddressFieldNumber;
-const int runTimeData::kCheckRightBranchAddressFieldNumber;
 const int runTimeData::kRightBranchAddressFieldNumber;
+const int runTimeData::kTaskStatusFieldNumber;
+const int runTimeData::kProgramFieldNumber;
+const int runTimeData::kIdxFieldNumber;
+const int runTimeData::kRcursiveCountFieldNumber;
+const int runTimeData::kCheckConditionFieldNumber;
+const int runTimeData::kCheckAddressFieldNumber;
+const int runTimeData::kCheckRightBranchAddressFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 runTimeData::runTimeData()
@@ -3786,9 +3786,9 @@ runTimeData::runTimeData(const runTimeData& from)
   if (from.program().size() > 0) {
     program_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
-  ::memcpy(&task_status_, &from.task_status_,
-    static_cast<size_t>(reinterpret_cast<char*>(&checkrightbranchaddress_) -
-    reinterpret_cast<char*>(&task_status_)) + sizeof(checkrightbranchaddress_));
+  ::memcpy(&priority_, &from.priority_,
+    static_cast<size_t>(reinterpret_cast<char*>(&rcursive_count_) -
+    reinterpret_cast<char*>(&priority_)) + sizeof(rcursive_count_));
   // @@protoc_insertion_point(copy_constructor:dra.runTimeData)
 }
 
@@ -3796,9 +3796,9 @@ void runTimeData::SharedCtor() {
   ::google::protobuf::internal::InitSCC(
       &scc_info_runTimeData_DependencyRPC_2eproto.base);
   program_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&task_status_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&checkrightbranchaddress_) -
-      reinterpret_cast<char*>(&task_status_)) + sizeof(checkrightbranchaddress_));
+  ::memset(&priority_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&rcursive_count_) -
+      reinterpret_cast<char*>(&priority_)) + sizeof(rcursive_count_));
 }
 
 runTimeData::~runTimeData() {
@@ -3827,9 +3827,9 @@ void runTimeData::Clear() {
 
   right_branch_address_.Clear();
   program_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&task_status_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&checkrightbranchaddress_) -
-      reinterpret_cast<char*>(&task_status_)) + sizeof(checkrightbranchaddress_));
+  ::memset(&priority_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&rcursive_count_) -
+      reinterpret_cast<char*>(&priority_)) + sizeof(rcursive_count_));
   _internal_metadata_.Clear();
 }
 
@@ -3840,89 +3840,89 @@ const char* runTimeData::_InternalParse(const char* ptr, ::google::protobuf::int
     ptr = ::google::protobuf::internal::ReadTag(ptr, &tag);
     GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
     switch (tag >> 3) {
-      // bytes program = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::internal::InlineGreedyStringParser(mutable_program(), ptr, ctx);
+      // uint32 priority = 1;
+      case 1: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
+        set_priority(::google::protobuf::internal::ReadVarint(&ptr));
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         break;
       }
-      // .dra.taskStatus task_status = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 24) goto handle_unusual;
+      // uint32 condition_address = 2;
+      case 2: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
+        set_condition_address(::google::protobuf::internal::ReadVarint(&ptr));
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        break;
+      }
+      // uint32 address = 4;
+      case 4: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 32) goto handle_unusual;
+        set_address(::google::protobuf::internal::ReadVarint(&ptr));
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        break;
+      }
+      // repeated uint32 right_branch_address = 6;
+      case 6: {
+        if (static_cast<::google::protobuf::uint8>(tag) == 50) {
+          ptr = ::google::protobuf::internal::PackedUInt32Parser(mutable_right_branch_address(), ptr, ctx);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          break;
+        } else if (static_cast<::google::protobuf::uint8>(tag) != 48) goto handle_unusual;
+        do {
+          add_right_branch_address(::google::protobuf::internal::ReadVarint(&ptr));
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          if (ctx->Done(&ptr)) return ptr;
+        } while ((::google::protobuf::internal::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 48 && (ptr += 1));
+        break;
+      }
+      // .dra.taskStatus task_status = 10;
+      case 10: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 80) goto handle_unusual;
         ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         set_task_status(static_cast<::dra::taskStatus>(val));
         break;
       }
-      // uint32 rcursive_count = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 32) goto handle_unusual;
-        set_rcursive_count(::google::protobuf::internal::ReadVarint(&ptr));
+      // bytes program = 12;
+      case 12: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 98) goto handle_unusual;
+        ptr = ::google::protobuf::internal::InlineGreedyStringParser(mutable_program(), ptr, ctx);
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         break;
       }
-      // uint32 priority = 5;
-      case 5: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 40) goto handle_unusual;
-        set_priority(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
-      // uint32 idx = 10;
-      case 10: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 80) goto handle_unusual;
+      // uint32 idx = 13;
+      case 13: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 104) goto handle_unusual;
         set_idx(::google::protobuf::internal::ReadVarint(&ptr));
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         break;
       }
-      // bool checkCondition = 11;
-      case 11: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 88) goto handle_unusual;
+      // uint32 rcursive_count = 14;
+      case 14: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 112) goto handle_unusual;
+        set_rcursive_count(::google::protobuf::internal::ReadVarint(&ptr));
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        break;
+      }
+      // bool checkCondition = 21;
+      case 21: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 168) goto handle_unusual;
         set_checkcondition(::google::protobuf::internal::ReadVarint(&ptr));
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         break;
       }
-      // uint32 condition_address = 12;
-      case 12: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 96) goto handle_unusual;
-        set_condition_address(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
-      // bool checkAddress = 13;
-      case 13: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 104) goto handle_unusual;
+      // bool checkAddress = 22;
+      case 22: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 176) goto handle_unusual;
         set_checkaddress(::google::protobuf::internal::ReadVarint(&ptr));
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         break;
       }
-      // uint32 address = 14;
-      case 14: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 112) goto handle_unusual;
-        set_address(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
-      // bool checkRightBranchAddress = 15;
-      case 15: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 120) goto handle_unusual;
+      // bool checkRightBranchAddress = 23;
+      case 23: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 184) goto handle_unusual;
         set_checkrightbranchaddress(::google::protobuf::internal::ReadVarint(&ptr));
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
-      // repeated uint32 right_branch_address = 16;
-      case 16: {
-        if (static_cast<::google::protobuf::uint8>(tag) == 130) {
-          ptr = ::google::protobuf::internal::PackedUInt32Parser(mutable_right_branch_address(), ptr, ctx);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          break;
-        } else if (static_cast<::google::protobuf::uint8>(tag) != 128) goto handle_unusual;
-        do {
-          add_right_branch_address(::google::protobuf::internal::ReadVarint(&ptr));
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          if (ctx->Done(&ptr)) return ptr;
-        } while ((::google::protobuf::internal::UnalignedLoad<::google::protobuf::uint64>(ptr) & 65535) == 384 && (ptr += 2));
         break;
       }
       default: {
@@ -3951,20 +3951,64 @@ bool runTimeData::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bytes program = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_program()));
+      // uint32 priority = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &priority_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // .dra.taskStatus task_status = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (24 & 0xFF)) {
+      // uint32 condition_address = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &condition_address_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 address = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (32 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &address_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated uint32 right_branch_address = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (50 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_right_branch_address())));
+        } else if (static_cast< ::google::protobuf::uint8>(tag) == (48 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 50u, input, this->mutable_right_branch_address())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .dra.taskStatus task_status = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (80 & 0xFF)) {
           int value = 0;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -3976,35 +4020,20 @@ bool runTimeData::MergePartialFromCodedStream(
         break;
       }
 
-      // uint32 rcursive_count = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (32 & 0xFF)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &rcursive_count_)));
+      // bytes program = 12;
+      case 12: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (98 & 0xFF)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_program()));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // uint32 priority = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (40 & 0xFF)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &priority_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // uint32 idx = 10;
-      case 10: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (80 & 0xFF)) {
+      // uint32 idx = 13;
+      case 13: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (104 & 0xFF)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
@@ -4015,9 +4044,22 @@ bool runTimeData::MergePartialFromCodedStream(
         break;
       }
 
-      // bool checkCondition = 11;
-      case 11: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (88 & 0xFF)) {
+      // uint32 rcursive_count = 14;
+      case 14: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (112 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &rcursive_count_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool checkCondition = 21;
+      case 21: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (168 & 0xFF)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -4028,22 +4070,9 @@ bool runTimeData::MergePartialFromCodedStream(
         break;
       }
 
-      // uint32 condition_address = 12;
-      case 12: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (96 & 0xFF)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &condition_address_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bool checkAddress = 13;
-      case 13: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (104 & 0xFF)) {
+      // bool checkAddress = 22;
+      case 22: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (176 & 0xFF)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -4054,42 +4083,13 @@ bool runTimeData::MergePartialFromCodedStream(
         break;
       }
 
-      // uint32 address = 14;
-      case 14: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (112 & 0xFF)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &address_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bool checkRightBranchAddress = 15;
-      case 15: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (120 & 0xFF)) {
+      // bool checkRightBranchAddress = 23;
+      case 23: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (184 & 0xFF)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
                  input, &checkrightbranchaddress_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // repeated uint32 right_branch_address = 16;
-      case 16: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (130 & 0xFF)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, this->mutable_right_branch_address())));
-        } else if (static_cast< ::google::protobuf::uint8>(tag) == (128 & 0xFF)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 2, 130u, input, this->mutable_right_branch_address())));
         } else {
           goto handle_unusual;
         }
@@ -4123,67 +4123,67 @@ void runTimeData::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes program = 2;
-  if (this->program().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      2, this->program(), output);
-  }
-
-  // .dra.taskStatus task_status = 3;
-  if (this->task_status() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      3, this->task_status(), output);
-  }
-
-  // uint32 rcursive_count = 4;
-  if (this->rcursive_count() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->rcursive_count(), output);
-  }
-
-  // uint32 priority = 5;
+  // uint32 priority = 1;
   if (this->priority() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->priority(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->priority(), output);
   }
 
-  // uint32 idx = 10;
-  if (this->idx() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(10, this->idx(), output);
-  }
-
-  // bool checkCondition = 11;
-  if (this->checkcondition() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->checkcondition(), output);
-  }
-
-  // uint32 condition_address = 12;
+  // uint32 condition_address = 2;
   if (this->condition_address() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(12, this->condition_address(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->condition_address(), output);
   }
 
-  // bool checkAddress = 13;
-  if (this->checkaddress() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->checkaddress(), output);
-  }
-
-  // uint32 address = 14;
+  // uint32 address = 4;
   if (this->address() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(14, this->address(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->address(), output);
   }
 
-  // bool checkRightBranchAddress = 15;
-  if (this->checkrightbranchaddress() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(15, this->checkrightbranchaddress(), output);
-  }
-
-  // repeated uint32 right_branch_address = 16;
+  // repeated uint32 right_branch_address = 6;
   if (this->right_branch_address_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(16, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    ::google::protobuf::internal::WireFormatLite::WriteTag(6, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_right_branch_address_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->right_branch_address_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
       this->right_branch_address(i), output);
+  }
+
+  // .dra.taskStatus task_status = 10;
+  if (this->task_status() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      10, this->task_status(), output);
+  }
+
+  // bytes program = 12;
+  if (this->program().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      12, this->program(), output);
+  }
+
+  // uint32 idx = 13;
+  if (this->idx() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(13, this->idx(), output);
+  }
+
+  // uint32 rcursive_count = 14;
+  if (this->rcursive_count() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(14, this->rcursive_count(), output);
+  }
+
+  // bool checkCondition = 21;
+  if (this->checkcondition() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(21, this->checkcondition(), output);
+  }
+
+  // bool checkAddress = 22;
+  if (this->checkaddress() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(22, this->checkaddress(), output);
+  }
+
+  // bool checkRightBranchAddress = 23;
+  if (this->checkrightbranchaddress() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(23, this->checkrightbranchaddress(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -4199,63 +4199,25 @@ void runTimeData::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes program = 2;
-  if (this->program().size() > 0) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->program(), target);
-  }
-
-  // .dra.taskStatus task_status = 3;
-  if (this->task_status() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      3, this->task_status(), target);
-  }
-
-  // uint32 rcursive_count = 4;
-  if (this->rcursive_count() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->rcursive_count(), target);
-  }
-
-  // uint32 priority = 5;
+  // uint32 priority = 1;
   if (this->priority() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->priority(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->priority(), target);
   }
 
-  // uint32 idx = 10;
-  if (this->idx() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(10, this->idx(), target);
-  }
-
-  // bool checkCondition = 11;
-  if (this->checkcondition() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->checkcondition(), target);
-  }
-
-  // uint32 condition_address = 12;
+  // uint32 condition_address = 2;
   if (this->condition_address() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(12, this->condition_address(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->condition_address(), target);
   }
 
-  // bool checkAddress = 13;
-  if (this->checkaddress() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(13, this->checkaddress(), target);
-  }
-
-  // uint32 address = 14;
+  // uint32 address = 4;
   if (this->address() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(14, this->address(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->address(), target);
   }
 
-  // bool checkRightBranchAddress = 15;
-  if (this->checkrightbranchaddress() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(15, this->checkrightbranchaddress(), target);
-  }
-
-  // repeated uint32 right_branch_address = 16;
+  // repeated uint32 right_branch_address = 6;
   if (this->right_branch_address_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      16,
+      6,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
@@ -4263,6 +4225,44 @@ void runTimeData::SerializeWithCachedSizes(
          target);
     target = ::google::protobuf::internal::WireFormatLite::
       WriteUInt32NoTagToArray(this->right_branch_address_, target);
+  }
+
+  // .dra.taskStatus task_status = 10;
+  if (this->task_status() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      10, this->task_status(), target);
+  }
+
+  // bytes program = 12;
+  if (this->program().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        12, this->program(), target);
+  }
+
+  // uint32 idx = 13;
+  if (this->idx() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(13, this->idx(), target);
+  }
+
+  // uint32 rcursive_count = 14;
+  if (this->rcursive_count() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(14, this->rcursive_count(), target);
+  }
+
+  // bool checkCondition = 21;
+  if (this->checkcondition() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(21, this->checkcondition(), target);
+  }
+
+  // bool checkAddress = 22;
+  if (this->checkaddress() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(22, this->checkaddress(), target);
+  }
+
+  // bool checkRightBranchAddress = 23;
+  if (this->checkrightbranchaddress() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(23, this->checkrightbranchaddress(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -4286,12 +4286,12 @@ size_t runTimeData::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated uint32 right_branch_address = 16;
+  // repeated uint32 right_branch_address = 6;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
       UInt32Size(this->right_branch_address_);
     if (data_size > 0) {
-      total_size += 2 +
+      total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
             static_cast<::google::protobuf::int32>(data_size));
     }
@@ -4301,67 +4301,67 @@ size_t runTimeData::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // bytes program = 2;
+  // bytes program = 12;
   if (this->program().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->program());
   }
 
-  // .dra.taskStatus task_status = 3;
-  if (this->task_status() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->task_status());
-  }
-
-  // uint32 rcursive_count = 4;
-  if (this->rcursive_count() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->rcursive_count());
-  }
-
-  // uint32 priority = 5;
+  // uint32 priority = 1;
   if (this->priority() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->priority());
   }
 
-  // uint32 idx = 10;
-  if (this->idx() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->idx());
-  }
-
-  // uint32 address = 14;
-  if (this->address() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->address());
-  }
-
-  // uint32 condition_address = 12;
+  // uint32 condition_address = 2;
   if (this->condition_address() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->condition_address());
   }
 
-  // bool checkCondition = 11;
+  // uint32 address = 4;
+  if (this->address() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->address());
+  }
+
+  // .dra.taskStatus task_status = 10;
+  if (this->task_status() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->task_status());
+  }
+
+  // bool checkCondition = 21;
   if (this->checkcondition() != 0) {
-    total_size += 1 + 1;
+    total_size += 2 + 1;
   }
 
-  // bool checkAddress = 13;
+  // bool checkAddress = 22;
   if (this->checkaddress() != 0) {
-    total_size += 1 + 1;
+    total_size += 2 + 1;
   }
 
-  // bool checkRightBranchAddress = 15;
+  // bool checkRightBranchAddress = 23;
   if (this->checkrightbranchaddress() != 0) {
-    total_size += 1 + 1;
+    total_size += 2 + 1;
+  }
+
+  // uint32 idx = 13;
+  if (this->idx() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->idx());
+  }
+
+  // uint32 rcursive_count = 14;
+  if (this->rcursive_count() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->rcursive_count());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4396,23 +4396,17 @@ void runTimeData::MergeFrom(const runTimeData& from) {
 
     program_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
-  if (from.task_status() != 0) {
-    set_task_status(from.task_status());
-  }
-  if (from.rcursive_count() != 0) {
-    set_rcursive_count(from.rcursive_count());
-  }
   if (from.priority() != 0) {
     set_priority(from.priority());
   }
-  if (from.idx() != 0) {
-    set_idx(from.idx());
+  if (from.condition_address() != 0) {
+    set_condition_address(from.condition_address());
   }
   if (from.address() != 0) {
     set_address(from.address());
   }
-  if (from.condition_address() != 0) {
-    set_condition_address(from.condition_address());
+  if (from.task_status() != 0) {
+    set_task_status(from.task_status());
   }
   if (from.checkcondition() != 0) {
     set_checkcondition(from.checkcondition());
@@ -4422,6 +4416,12 @@ void runTimeData::MergeFrom(const runTimeData& from) {
   }
   if (from.checkrightbranchaddress() != 0) {
     set_checkrightbranchaddress(from.checkrightbranchaddress());
+  }
+  if (from.idx() != 0) {
+    set_idx(from.idx());
+  }
+  if (from.rcursive_count() != 0) {
+    set_rcursive_count(from.rcursive_count());
   }
 }
 
@@ -4453,15 +4453,15 @@ void runTimeData::InternalSwap(runTimeData* other) {
   right_branch_address_.InternalSwap(&other->right_branch_address_);
   program_.Swap(&other->program_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  swap(task_status_, other->task_status_);
-  swap(rcursive_count_, other->rcursive_count_);
   swap(priority_, other->priority_);
-  swap(idx_, other->idx_);
-  swap(address_, other->address_);
   swap(condition_address_, other->condition_address_);
+  swap(address_, other->address_);
+  swap(task_status_, other->task_status_);
   swap(checkcondition_, other->checkcondition_);
   swap(checkaddress_, other->checkaddress_);
   swap(checkrightbranchaddress_, other->checkrightbranchaddress_);
+  swap(idx_, other->idx_);
+  swap(rcursive_count_, other->rcursive_count_);
 }
 
 ::google::protobuf::Metadata runTimeData::GetMetadata() const {
