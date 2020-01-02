@@ -6,7 +6,7 @@ import scipy.stats
 
 from default import DependencyRPC_pb2 as pb, default
 from read import data, stats, axis
-from read.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name
+from read.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name, hex_adddress
 
 
 class Device:
@@ -226,7 +226,7 @@ class Device:
             res = ""
             sort_ua_insts = sorted(ua_insts.items(), key=lambda kv: kv[1])
             for ua in sort_ua_insts:
-                res += "uncovered address : " + str(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
+                res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
                        + str(ua_status[ua[0]]) + "\n"
             f.write(res)
             f.close()
