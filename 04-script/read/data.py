@@ -166,9 +166,9 @@ class data:
                 if write_status[t.write_address] < 0:
                     write_status[t.write_address] = 0
             else:
-                if t.task_status == 2:
+                if t.task_status == pb.tested:
                     tested_count += 1
-                elif t.task_status == 6:
+                elif t.task_status == pb.unstable:
                     unstable_count += 1
 
                 if not_covered_address in t.uncovered_address:
@@ -197,6 +197,7 @@ class data:
                 elif not_covered_address in t.covered_address:
                     ua = t.covered_address[not_covered_address]
                     kind = 4
+            res += "*******************************************\n"
 
         write_untested_count = 0
         write_unstable_count = 0
