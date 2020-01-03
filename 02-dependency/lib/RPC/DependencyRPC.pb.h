@@ -257,18 +257,18 @@ namespace dra {
 
 enum taskStatus {
   untested = 0,
-  recursive = 1,
-  tested = 2,
-  out = 3,
+  testing = 1,
+  unstable = 2,
+  tested = 3,
   covered = 4,
-  testing = 5,
-  unstable = 6,
+  recursive = 10,
+  out = 11,
   taskStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::google::protobuf::int32>::min(),
   taskStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::google::protobuf::int32>::max()
 };
 bool taskStatus_IsValid(int value);
 constexpr taskStatus taskStatus_MIN = untested;
-constexpr taskStatus taskStatus_MAX = unstable;
+constexpr taskStatus taskStatus_MAX = out;
 constexpr int taskStatus_ARRAYSIZE = taskStatus_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* taskStatus_descriptor();
@@ -1199,10 +1199,10 @@ class runTimeData final :
 
   // accessors -------------------------------------------------------
 
-  // repeated uint32 right_branch_address = 16;
+  // repeated uint32 right_branch_address = 6;
   int right_branch_address_size() const;
   void clear_right_branch_address();
-  static const int kRightBranchAddressFieldNumber = 16;
+  static const int kRightBranchAddressFieldNumber = 6;
   ::google::protobuf::uint32 right_branch_address(int index) const;
   void set_right_branch_address(int index, ::google::protobuf::uint32 value);
   void add_right_branch_address(::google::protobuf::uint32 value);
@@ -1211,9 +1211,9 @@ class runTimeData final :
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
       mutable_right_branch_address();
 
-  // bytes program = 2;
+  // bytes program = 12;
   void clear_program();
-  static const int kProgramFieldNumber = 2;
+  static const int kProgramFieldNumber = 12;
   const ::std::string& program() const;
   void set_program(const ::std::string& value);
   #if LANG_CXX11
@@ -1225,59 +1225,59 @@ class runTimeData final :
   ::std::string* release_program();
   void set_allocated_program(::std::string* program);
 
-  // .dra.taskStatus task_status = 3;
-  void clear_task_status();
-  static const int kTaskStatusFieldNumber = 3;
-  ::dra::taskStatus task_status() const;
-  void set_task_status(::dra::taskStatus value);
-
-  // uint32 rcursive_count = 4;
-  void clear_rcursive_count();
-  static const int kRcursiveCountFieldNumber = 4;
-  ::google::protobuf::uint32 rcursive_count() const;
-  void set_rcursive_count(::google::protobuf::uint32 value);
-
-  // uint32 priority = 5;
+  // uint32 priority = 1;
   void clear_priority();
-  static const int kPriorityFieldNumber = 5;
+  static const int kPriorityFieldNumber = 1;
   ::google::protobuf::uint32 priority() const;
   void set_priority(::google::protobuf::uint32 value);
 
-  // uint32 idx = 10;
-  void clear_idx();
-  static const int kIdxFieldNumber = 10;
-  ::google::protobuf::uint32 idx() const;
-  void set_idx(::google::protobuf::uint32 value);
-
-  // uint32 address = 14;
-  void clear_address();
-  static const int kAddressFieldNumber = 14;
-  ::google::protobuf::uint32 address() const;
-  void set_address(::google::protobuf::uint32 value);
-
-  // uint32 condition_address = 12;
+  // uint32 condition_address = 2;
   void clear_condition_address();
-  static const int kConditionAddressFieldNumber = 12;
+  static const int kConditionAddressFieldNumber = 2;
   ::google::protobuf::uint32 condition_address() const;
   void set_condition_address(::google::protobuf::uint32 value);
 
-  // bool checkCondition = 11;
+  // uint32 address = 4;
+  void clear_address();
+  static const int kAddressFieldNumber = 4;
+  ::google::protobuf::uint32 address() const;
+  void set_address(::google::protobuf::uint32 value);
+
+  // .dra.taskStatus task_status = 10;
+  void clear_task_status();
+  static const int kTaskStatusFieldNumber = 10;
+  ::dra::taskStatus task_status() const;
+  void set_task_status(::dra::taskStatus value);
+
+  // bool checkCondition = 21;
   void clear_checkcondition();
-  static const int kCheckConditionFieldNumber = 11;
+  static const int kCheckConditionFieldNumber = 21;
   bool checkcondition() const;
   void set_checkcondition(bool value);
 
-  // bool checkAddress = 13;
+  // bool checkAddress = 22;
   void clear_checkaddress();
-  static const int kCheckAddressFieldNumber = 13;
+  static const int kCheckAddressFieldNumber = 22;
   bool checkaddress() const;
   void set_checkaddress(bool value);
 
-  // bool checkRightBranchAddress = 15;
+  // bool checkRightBranchAddress = 23;
   void clear_checkrightbranchaddress();
-  static const int kCheckRightBranchAddressFieldNumber = 15;
+  static const int kCheckRightBranchAddressFieldNumber = 23;
   bool checkrightbranchaddress() const;
   void set_checkrightbranchaddress(bool value);
+
+  // uint32 idx = 13;
+  void clear_idx();
+  static const int kIdxFieldNumber = 13;
+  ::google::protobuf::uint32 idx() const;
+  void set_idx(::google::protobuf::uint32 value);
+
+  // uint32 rcursive_count = 14;
+  void clear_rcursive_count();
+  static const int kRcursiveCountFieldNumber = 14;
+  ::google::protobuf::uint32 rcursive_count() const;
+  void set_rcursive_count(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:dra.runTimeData)
  private:
@@ -1287,15 +1287,15 @@ class runTimeData final :
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > right_branch_address_;
   mutable std::atomic<int> _right_branch_address_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr program_;
-  int task_status_;
-  ::google::protobuf::uint32 rcursive_count_;
   ::google::protobuf::uint32 priority_;
-  ::google::protobuf::uint32 idx_;
-  ::google::protobuf::uint32 address_;
   ::google::protobuf::uint32 condition_address_;
+  ::google::protobuf::uint32 address_;
+  int task_status_;
   bool checkcondition_;
   bool checkaddress_;
   bool checkrightbranchaddress_;
+  ::google::protobuf::uint32 idx_;
+  ::google::protobuf::uint32 rcursive_count_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -5273,7 +5273,93 @@ inline void Dependencytask::set_allocated_name(::std::string* name) {
 
 // runTimeData
 
-// bytes program = 2;
+// uint32 priority = 1;
+inline void runTimeData::clear_priority() {
+  priority_ = 0u;
+}
+inline ::google::protobuf::uint32 runTimeData::priority() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.priority)
+  return priority_;
+}
+inline void runTimeData::set_priority(::google::protobuf::uint32 value) {
+  
+  priority_ = value;
+  // @@protoc_insertion_point(field_set:dra.runTimeData.priority)
+}
+
+// uint32 condition_address = 2;
+inline void runTimeData::clear_condition_address() {
+  condition_address_ = 0u;
+}
+inline ::google::protobuf::uint32 runTimeData::condition_address() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.condition_address)
+  return condition_address_;
+}
+inline void runTimeData::set_condition_address(::google::protobuf::uint32 value) {
+  
+  condition_address_ = value;
+  // @@protoc_insertion_point(field_set:dra.runTimeData.condition_address)
+}
+
+// uint32 address = 4;
+inline void runTimeData::clear_address() {
+  address_ = 0u;
+}
+inline ::google::protobuf::uint32 runTimeData::address() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.address)
+  return address_;
+}
+inline void runTimeData::set_address(::google::protobuf::uint32 value) {
+  
+  address_ = value;
+  // @@protoc_insertion_point(field_set:dra.runTimeData.address)
+}
+
+// repeated uint32 right_branch_address = 6;
+inline int runTimeData::right_branch_address_size() const {
+  return right_branch_address_.size();
+}
+inline void runTimeData::clear_right_branch_address() {
+  right_branch_address_.Clear();
+}
+inline ::google::protobuf::uint32 runTimeData::right_branch_address(int index) const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.right_branch_address)
+  return right_branch_address_.Get(index);
+}
+inline void runTimeData::set_right_branch_address(int index, ::google::protobuf::uint32 value) {
+  right_branch_address_.Set(index, value);
+  // @@protoc_insertion_point(field_set:dra.runTimeData.right_branch_address)
+}
+inline void runTimeData::add_right_branch_address(::google::protobuf::uint32 value) {
+  right_branch_address_.Add(value);
+  // @@protoc_insertion_point(field_add:dra.runTimeData.right_branch_address)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+runTimeData::right_branch_address() const {
+  // @@protoc_insertion_point(field_list:dra.runTimeData.right_branch_address)
+  return right_branch_address_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+runTimeData::mutable_right_branch_address() {
+  // @@protoc_insertion_point(field_mutable_list:dra.runTimeData.right_branch_address)
+  return &right_branch_address_;
+}
+
+// .dra.taskStatus task_status = 10;
+inline void runTimeData::clear_task_status() {
+  task_status_ = 0;
+}
+inline ::dra::taskStatus runTimeData::task_status() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.task_status)
+  return static_cast< ::dra::taskStatus >(task_status_);
+}
+inline void runTimeData::set_task_status(::dra::taskStatus value) {
+  
+  task_status_ = value;
+  // @@protoc_insertion_point(field_set:dra.runTimeData.task_status)
+}
+
+// bytes program = 12;
 inline void runTimeData::clear_program() {
   program_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -5326,49 +5412,7 @@ inline void runTimeData::set_allocated_program(::std::string* program) {
   // @@protoc_insertion_point(field_set_allocated:dra.runTimeData.program)
 }
 
-// .dra.taskStatus task_status = 3;
-inline void runTimeData::clear_task_status() {
-  task_status_ = 0;
-}
-inline ::dra::taskStatus runTimeData::task_status() const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.task_status)
-  return static_cast< ::dra::taskStatus >(task_status_);
-}
-inline void runTimeData::set_task_status(::dra::taskStatus value) {
-  
-  task_status_ = value;
-  // @@protoc_insertion_point(field_set:dra.runTimeData.task_status)
-}
-
-// uint32 rcursive_count = 4;
-inline void runTimeData::clear_rcursive_count() {
-  rcursive_count_ = 0u;
-}
-inline ::google::protobuf::uint32 runTimeData::rcursive_count() const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.rcursive_count)
-  return rcursive_count_;
-}
-inline void runTimeData::set_rcursive_count(::google::protobuf::uint32 value) {
-  
-  rcursive_count_ = value;
-  // @@protoc_insertion_point(field_set:dra.runTimeData.rcursive_count)
-}
-
-// uint32 priority = 5;
-inline void runTimeData::clear_priority() {
-  priority_ = 0u;
-}
-inline ::google::protobuf::uint32 runTimeData::priority() const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.priority)
-  return priority_;
-}
-inline void runTimeData::set_priority(::google::protobuf::uint32 value) {
-  
-  priority_ = value;
-  // @@protoc_insertion_point(field_set:dra.runTimeData.priority)
-}
-
-// uint32 idx = 10;
+// uint32 idx = 13;
 inline void runTimeData::clear_idx() {
   idx_ = 0u;
 }
@@ -5382,7 +5426,21 @@ inline void runTimeData::set_idx(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:dra.runTimeData.idx)
 }
 
-// bool checkCondition = 11;
+// uint32 rcursive_count = 14;
+inline void runTimeData::clear_rcursive_count() {
+  rcursive_count_ = 0u;
+}
+inline ::google::protobuf::uint32 runTimeData::rcursive_count() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.rcursive_count)
+  return rcursive_count_;
+}
+inline void runTimeData::set_rcursive_count(::google::protobuf::uint32 value) {
+  
+  rcursive_count_ = value;
+  // @@protoc_insertion_point(field_set:dra.runTimeData.rcursive_count)
+}
+
+// bool checkCondition = 21;
 inline void runTimeData::clear_checkcondition() {
   checkcondition_ = false;
 }
@@ -5396,21 +5454,7 @@ inline void runTimeData::set_checkcondition(bool value) {
   // @@protoc_insertion_point(field_set:dra.runTimeData.checkCondition)
 }
 
-// uint32 condition_address = 12;
-inline void runTimeData::clear_condition_address() {
-  condition_address_ = 0u;
-}
-inline ::google::protobuf::uint32 runTimeData::condition_address() const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.condition_address)
-  return condition_address_;
-}
-inline void runTimeData::set_condition_address(::google::protobuf::uint32 value) {
-  
-  condition_address_ = value;
-  // @@protoc_insertion_point(field_set:dra.runTimeData.condition_address)
-}
-
-// bool checkAddress = 13;
+// bool checkAddress = 22;
 inline void runTimeData::clear_checkaddress() {
   checkaddress_ = false;
 }
@@ -5424,21 +5468,7 @@ inline void runTimeData::set_checkaddress(bool value) {
   // @@protoc_insertion_point(field_set:dra.runTimeData.checkAddress)
 }
 
-// uint32 address = 14;
-inline void runTimeData::clear_address() {
-  address_ = 0u;
-}
-inline ::google::protobuf::uint32 runTimeData::address() const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.address)
-  return address_;
-}
-inline void runTimeData::set_address(::google::protobuf::uint32 value) {
-  
-  address_ = value;
-  // @@protoc_insertion_point(field_set:dra.runTimeData.address)
-}
-
-// bool checkRightBranchAddress = 15;
+// bool checkRightBranchAddress = 23;
 inline void runTimeData::clear_checkrightbranchaddress() {
   checkrightbranchaddress_ = false;
 }
@@ -5450,36 +5480,6 @@ inline void runTimeData::set_checkrightbranchaddress(bool value) {
   
   checkrightbranchaddress_ = value;
   // @@protoc_insertion_point(field_set:dra.runTimeData.checkRightBranchAddress)
-}
-
-// repeated uint32 right_branch_address = 16;
-inline int runTimeData::right_branch_address_size() const {
-  return right_branch_address_.size();
-}
-inline void runTimeData::clear_right_branch_address() {
-  right_branch_address_.Clear();
-}
-inline ::google::protobuf::uint32 runTimeData::right_branch_address(int index) const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.right_branch_address)
-  return right_branch_address_.Get(index);
-}
-inline void runTimeData::set_right_branch_address(int index, ::google::protobuf::uint32 value) {
-  right_branch_address_.Set(index, value);
-  // @@protoc_insertion_point(field_set:dra.runTimeData.right_branch_address)
-}
-inline void runTimeData::add_right_branch_address(::google::protobuf::uint32 value) {
-  right_branch_address_.Add(value);
-  // @@protoc_insertion_point(field_add:dra.runTimeData.right_branch_address)
-}
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-runTimeData::right_branch_address() const {
-  // @@protoc_insertion_point(field_list:dra.runTimeData.right_branch_address)
-  return right_branch_address_;
-}
-inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-runTimeData::mutable_right_branch_address() {
-  // @@protoc_insertion_point(field_mutable_list:dra.runTimeData.right_branch_address)
-  return &right_branch_address_;
 }
 
 // -------------------------------------------------------------------

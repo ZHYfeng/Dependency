@@ -90,31 +90,30 @@ message Dependencytask {
 
 enum taskStatus {
     untested = 0;
-    recursive = 1;
-    tested = 2;
-    out = 3;
+    testing = 1;
+    unstable = 2;
+    tested = 3;
     covered = 4;
-    testing = 5;
-    unstable = 6;
+
+    recursive = 10;
+    out = 11;
 }
 
 message runTimeData {
-    bytes program = 2;
-    taskStatus task_status = 3;
-    uint32 rcursive_count = 4;
-    uint32 priority = 5;
+    uint32 priority = 1;
+    uint32 condition_address = 2;
+    uint32 address = 4;
+    repeated uint32 right_branch_address = 6;
 
-    uint32 idx = 10;
+    taskStatus task_status = 10;
+    bytes program = 12;
+    uint32 idx = 13;
+    uint32 rcursive_count = 14;
 
-    bool checkCondition = 11;
-    uint32 condition_address = 12;
-
-    bool checkAddress = 13;
-    uint32 address = 14;
-
-    bool checkRightBranchAddress = 15;
+    bool checkCondition = 21;
+    bool checkAddress = 22;
+    bool checkRightBranchAddress = 23;
     //    map<uint32, uint32> right_branch_address = 16;
-    repeated uint32 right_branch_address = 16;
 }
 
 message FileOperationsFunction {
