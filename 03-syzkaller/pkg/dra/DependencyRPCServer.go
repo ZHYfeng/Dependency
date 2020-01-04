@@ -543,6 +543,9 @@ func (ss *Server) Update() {
 				}
 				ss.corpusDependency.HighTask.emptyTask()
 				task = []*Task{}
+				for _, t := range task {
+					t.TaskRunTimeData = []*TaskRunTimeData{}
+				}
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
 					for _, t := range task {
@@ -566,16 +569,19 @@ func (ss *Server) Update() {
 					if len(t.UncoveredAddress) > 0 {
 						if t.TaskStatus == TaskStatus_untested {
 							t.TaskStatus = TaskStatus_testing
-							task = append(task, t)
+							task = append(task, proto.Clone(t).(*Task))
 							//} else if t.TaskStatus == TaskStatus_testing {
 							//	task = append(task, t)
 						} else if t.TaskStatus == TaskStatus_unstable {
-							task = append(task, t)
+							task = append(task, proto.Clone(t).(*Task))
 						}
 						if len(task) > taskNum {
 							break
 						}
 					}
+				}
+				for _, t := range task {
+					t.TaskRunTimeData = []*TaskRunTimeData{}
 				}
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
@@ -645,6 +651,9 @@ func (ss *Server) Update() {
 							t.TaskStatus = TaskStatus_testing
 						}
 					}
+				}
+				for _, t := range task {
+					t.TaskRunTimeData = []*TaskRunTimeData{}
 				}
 				for _, f := range ss.fuzzers {
 					f.bootTaskMu.Lock()
