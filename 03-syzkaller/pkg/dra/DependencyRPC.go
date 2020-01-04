@@ -265,6 +265,8 @@ func (m *Task) mergeTask(s *Task) {
 
 	if len(m.TaskRunTimeData) == 0 {
 		m.TaskRunTimeData = s.TaskRunTimeData
+	} else if len(s.TaskRunTimeData) == 0 {
+
 	} else if len(m.TaskRunTimeData) == len(s.TaskRunTimeData) {
 		for i, t := range s.TaskRunTimeData {
 			m.TaskRunTimeData[i].mergeTaskRunTimeData(t)
