@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"runtime/debug"
 	"strconv"
 	"time"
 
@@ -269,7 +270,7 @@ func (m *Task) mergeTask(s *Task) {
 			m.TaskRunTimeData[i].mergeTaskRunTimeData(t)
 		}
 	} else {
-		log.Fatalf("mergeTask with error number of TaskRunTimeData")
+		log.Fatalf("mergeTask with error number of TaskRunTimeData\n%v\n%v\n%s\n", m.TaskRunTimeData, s.TaskRunTimeData, debug.Stack())
 	}
 
 	return
