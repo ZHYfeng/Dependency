@@ -17,8 +17,8 @@ import (
 
 // useful const
 const (
-	startTime = 10800
-	//startTime  = 0
+	//startTime = 10800
+	startTime  = 0
 	newTime    = 600
 	bootTime   = 300
 	taskNum    = 40
