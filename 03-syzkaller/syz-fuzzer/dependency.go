@@ -203,7 +203,7 @@ func (proc *Proc) dependencyMutateRemove(task *pb.Task, taskRunTimeData *pb.Task
 	removeData, removeIdx := removeSameResource(taskRunTimeData.Program)
 
 	removeTaskRunTimeData := &pb.TaskRunTimeData{
-		Hash:              hash.Hash(removeData).String(),
+		Hash:              hash.String(removeData),
 		Program:           []byte{},
 		WriteIdx:          removeIdx[taskRunTimeData.WriteIdx],
 		ConditionIdx:      removeIdx[taskRunTimeData.ConditionIdx],
