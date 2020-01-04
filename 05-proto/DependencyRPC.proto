@@ -297,6 +297,17 @@ message Statistics {
     repeated UsefulInput useful_input = 12;
 }
 
+message TaskRunTimeData {
+    string hash = 1;
+    bytes program = 2;
+    uint32 write_idx = 5;
+    uint32 condition_idx = 6;
+
+    bool check_write_address = 10;
+    map<uint32, runTimeData> uncovered_address = 21;
+    map<uint32, runTimeData> covered_address = 23;
+}
+
 message Task {
     string sig = 1;
     uint32 index = 2;
@@ -313,17 +324,14 @@ message Task {
     bytes write_program = 13;
     uint32 write_address = 14;
 
+
+    taskStatus task_status = 24;
+    bool check_write_address = 25;
     // uncovered address, priority
     map<uint32, runTimeData> uncovered_address = 21;
     map<uint32, runTimeData> covered_address = 23;
-    taskStatus task_status = 24;
-    bool check_write_address = 25;
-    bool check_write_address_final = 26;
-    bool check_write_address_remove = 27;
-    uint32 final_idx = 28;
-    uint32 final_write_idx = 29;
-    uint32 remove_idx = 30;
-    uint32 remove_write_idx = 31;
+
+    repeated TaskRunTimeData task_run_time_data = 31;
 }
 
 enum TaskKind {

@@ -2,45 +2,28 @@ package main
 
 import (
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/golang/protobuf/proto"
 )
 
 func (proc *Proc) dependency(item *WorkDependency) {
 
-	log.Logf(pb.DebugLevel, "#%v: DependencyMutate", proc.pid)
 	task := item.task
-	log.Logf(pb.DebugLevel, "DependencyMutate program : \n%s", task.Program)
-	log.Logf(pb.DebugLevel, "index  : %d write index : %d", task.Index, task.WriteIndex)
 
-	writeProg, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
-	if err != nil {
-		log.Fatalf("dependency failed to deserialize program from task.WriteProgram: %v", err)
-	}
-
-	if proc.dependencyMutateCheckWriteAddress(task, writeProg) {
-
-		Prog, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
-		if err != nil {
-			log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
-		}
+	if proc.dependencyMutateCheckATask(task) {
 
 		indexInsert := []int{0, int(task.Index)}
 		for _, i := range indexInsert {
 
-			tempProg := proc.dependencyMutateInsert(task, Prog, writeProg, i)
-			data := proc.dependencyMutateCheck(task, tempProg, 1)
+			insertTaskRunTImeData := proc.dependencyMutateInsert(task, i)
+			proc.dependencyMutateCheck(task, insertTaskRunTImeData)
+			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
 
-			writeIndex := int(task.FinalWriteIdx)
-			index := int(task.FinalIdx)
-			proc.dependencyMutateArguement(task, tempProg, writeIndex, index)
-
-			removeProg := proc.dependencyMutateRemove(task, data)
-			proc.dependencyMutateCheck(task, removeProg, 2)
-
-			removeWriteIdx := int(task.RemoveWriteIdx)
-			removeIdx := int(task.RemoveIdx)
-			proc.dependencyMutateArguement(task, removeProg, removeWriteIdx, removeIdx)
+			removeTaskRunTimeData := proc.dependencyMutateRemove(task, insertTaskRunTImeData)
+			proc.dependencyMutateCheck(task, removeTaskRunTimeData)
+			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
 
 		}
 
@@ -67,13 +50,19 @@ func (proc *Proc) dependency(item *WorkDependency) {
 	return
 }
 
-func (proc *Proc) dependencyMutateArguement(task *pb.Task, Prog *prog.Prog, writeIndex int, index int) {
+func (proc *Proc) dependencyMutateArguement(task *pb.Task, taskRunTimeData *pb.TaskRunTimeData) {
 
-	if task.CheckWriteAddressRemove && task.Kind == 2 {
-		if index > writeIndex {
+	if task.CheckWriteAddress && task.Kind == 2 {
+		if taskRunTimeData.ConditionIdx > taskRunTimeData.WriteIdx {
 			if !proc.fuzzer.comparisonTracingEnabled {
-				proc.executeDependencyHintSeed(Prog, writeIndex)
-				proc.executeDependencyHintSeed(Prog, index)
+
+				Prog, err := proc.fuzzer.target.Deserialize(taskRunTimeData.Program, prog.NonStrict)
+				if err != nil {
+					log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
+				}
+
+				proc.executeDependencyHintSeed(Prog, int(taskRunTimeData.WriteIdx))
+				proc.executeDependencyHintSeed(Prog, int(taskRunTimeData.ConditionIdx))
 			}
 		}
 	}
@@ -97,134 +86,208 @@ func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
 	})
 }
 
-func (proc *Proc) dependencyMutateCheckWriteAddress(task *pb.Task, writeProg *prog.Prog) bool {
-	log.Logf(pb.DebugLevel, "write program : \n%s", task.WriteProgram)
+func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
+
+	ProgWrite, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
+	}
+
 	idx := int(task.WriteIndex)
-	info := proc.execute(proc.execOptsCover, writeProg, ProgNormal, StatDependency)
+	info := proc.execute(proc.execOptsCover, ProgWrite, ProgNormal, StatDependency)
 	checkWriteAddress1 := checkAddressInArray(task.WriteAddress, info.Calls[idx].Cover)
 	if checkWriteAddress1 {
 		task.CheckWriteAddress = true
-		log.Logf(pb.DebugLevel, "write program could arrive at write address : %d", task.WriteAddress)
 	} else {
 		task.CheckWriteAddress = false
-		log.Logf(pb.DebugLevel, "write program could not arrive at write address : %d", task.WriteAddress)
 	}
+
+	ProgCondition, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
+	}
+	var temp []uint32
+	idx = int(task.Index)
+	info = proc.execute(proc.execOptsCover, ProgCondition, ProgNormal, StatDependency)
+	for ua, r := range task.UncoveredAddress {
+		if checkAddressInArray(r.ConditionAddress, info.Calls[idx].Cover) {
+			r.CheckCondition = true
+			if checkAddressInArray(ua, info.Calls[idx].Cover) {
+				r.CheckAddress = true
+				r.TaskStatus = pb.TaskStatus_covered
+				task.CoveredAddress[ua] = r
+				temp = append(temp, ua)
+			} else {
+				r.CheckAddress = false
+				if r.TaskStatus < pb.TaskStatus_tested {
+					r.TaskStatus = pb.TaskStatus_tested
+				}
+			}
+		} else {
+			r.CheckCondition = false
+			if r.TaskStatus < pb.TaskStatus_unstable {
+				r.TaskStatus = pb.TaskStatus_unstable
+			}
+		}
+	}
+
+	for _, ua := range temp {
+		delete(task.UncoveredAddress, ua)
+	}
+
 	return task.CheckWriteAddress
 }
 
-func (proc *Proc) dependencyMutateInsert(task *pb.Task, Prog *prog.Prog, writeProg *prog.Prog, idx int) *prog.Prog {
+func (proc *Proc) dependencyMutateInsert(task *pb.Task, idx int) *pb.TaskRunTimeData {
+
+	ProgWrite, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
+	}
+
+	ProgCondition, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
+	}
 
 	var usefulSyscall []*prog.Call
-	if int(task.WriteIndex) > len(writeProg.Calls) {
+	if int(task.WriteIndex) > len(ProgWrite.Calls) {
 		log.Fatalf("dependency int(task.WriteIndex) > len(wp.Calls)")
 	}
-	for i, c := range writeProg.Calls {
+	for i, c := range ProgWrite.Calls {
 		if i <= int(task.WriteIndex) {
 			usefulSyscall = append(usefulSyscall, c)
 		} else {
 			break
 		}
 	}
-
-	p := Prog.Clone()
+	p := ProgCondition.Clone()
 	p.Calls = append(p.Calls[:idx], append(usefulSyscall, p.Calls[idx:]...)...)
-	task.FinalIdx = task.Index + task.WriteIndex + 1
-	task.FinalWriteIdx = uint32(idx) + task.WriteIndex
-
 	data := p.Serialize()
-	log.Logf(pb.DebugLevel, "final program : \n%s", data)
-	log.Logf(pb.DebugLevel, "final index  : %d final write index : %d", task.FinalIdx, task.FinalWriteIdx)
 
-	return p
+	insertTaskRunTImeData := &pb.TaskRunTimeData{
+		Hash:              hash.String(data),
+		Program:           nil,
+		WriteIdx:          uint32(idx) + task.WriteIndex,
+		ConditionIdx:      task.Index + task.WriteIndex + 1,
+		CheckWriteAddress: false,
+		UncoveredAddress:  map[uint32]*pb.RunTimeData{},
+		CoveredAddress:    map[uint32]*pb.RunTimeData{},
+	}
+
+	for _, c := range data {
+		insertTaskRunTImeData.Program = append(insertTaskRunTImeData.Program, c)
+	}
+
+	for ua, r := range task.UncoveredAddress {
+		insertTaskRunTImeData.UncoveredAddress[ua] = proto.Clone(r).(*pb.RunTimeData)
+	}
+
+	for _, r := range insertTaskRunTImeData.UncoveredAddress {
+		r.TaskStatus = pb.TaskStatus_untested
+		for _, c := range data {
+			r.Program = append(r.Program, c)
+		}
+		r.Idx = insertTaskRunTImeData.ConditionIdx
+		r.CheckAddress = false
+		r.CheckCondition = false
+	}
+
+	task.TaskRunTimeData = append(task.TaskRunTimeData, insertTaskRunTImeData)
+
+	return insertTaskRunTImeData
+}
+
+func (proc *Proc) dependencyMutateRemove(task *pb.Task, taskRunTimeData *pb.TaskRunTimeData) *pb.TaskRunTimeData {
+
+	removeData, removeIdx := removeSameResource(taskRunTimeData.Program)
+
+	removeTaskRunTimeData := &pb.TaskRunTimeData{
+		Hash:              hash.Hash(removeData).String(),
+		Program:           []byte{},
+		WriteIdx:          removeIdx[taskRunTimeData.WriteIdx],
+		ConditionIdx:      removeIdx[taskRunTimeData.ConditionIdx],
+		CheckWriteAddress: false,
+		UncoveredAddress:  map[uint32]*pb.RunTimeData{},
+		CoveredAddress:    map[uint32]*pb.RunTimeData{},
+	}
+
+	for _, c := range removeData {
+		removeTaskRunTimeData.Program = append(removeTaskRunTimeData.Program, c)
+	}
+
+	for ua, r := range task.UncoveredAddress {
+		removeTaskRunTimeData.UncoveredAddress[ua] = proto.Clone(r).(*pb.RunTimeData)
+	}
+
+	for _, r := range removeTaskRunTimeData.UncoveredAddress {
+		r.TaskStatus = pb.TaskStatus_untested
+		for _, c := range removeData {
+			r.Program = append(r.Program, c)
+		}
+		r.Idx = removeTaskRunTimeData.ConditionIdx
+		r.CheckAddress = false
+		r.CheckCondition = false
+	}
+
+	task.TaskRunTimeData = append(task.TaskRunTimeData, removeTaskRunTimeData)
+
+	return removeTaskRunTimeData
 }
 
 // kind 1: final 2: remove
-func (proc *Proc) dependencyMutateCheck(task *pb.Task, Prog *prog.Prog, kind int64) []byte {
+func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskRunTimeData) {
 
-	var idx, writeIdx uint32
-	if kind == 1 {
-		idx = task.FinalIdx
-		writeIdx = task.FinalWriteIdx
-	} else if kind == 2 {
-		idx = task.RemoveIdx
-		writeIdx = task.RemoveWriteIdx
+	Prog, err := proc.fuzzer.target.Deserialize(taskRunTimeData.Program, prog.NonStrict)
+	if err != nil {
+		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
 	}
 
-	infoFinal := proc.execute(proc.execOptsCover, Prog, ProgNormal, StatDependency)
-	checkWriteAddress2 := checkAddressInArray(task.WriteAddress, infoFinal.Calls[writeIdx].Cover)
+	info := proc.execute(proc.execOptsCover, Prog, ProgNormal, StatDependency)
+	checkWriteAddress2 := checkAddressInArray(task.WriteAddress, info.Calls[taskRunTimeData.WriteIdx].Cover)
 	if checkWriteAddress2 {
-		if kind == 1 {
-			task.CheckWriteAddressFinal = true
-			log.Logf(pb.DebugLevel, "final program could arrive at write address : %d", task.WriteAddress)
-		} else if kind == 2 {
-			task.CheckWriteAddressRemove = true
-			log.Logf(pb.DebugLevel, "remove program could arrive at write address : %d", task.WriteAddress)
-		}
+		taskRunTimeData.CheckWriteAddress = true
 	} else {
-		if kind == 1 {
-			task.CheckWriteAddressFinal = false
-			log.Logf(pb.DebugLevel, "final program could not arrive at write address : %d", task.WriteAddress)
-		} else if kind == 2 {
-			task.CheckWriteAddressRemove = false
-			log.Logf(pb.DebugLevel, "remove program could not arrive at write address : %d", task.WriteAddress)
-		}
+		taskRunTimeData.CheckWriteAddress = false
 	}
 
-	data := Prog.Serialize()
 	var temp []uint32
-	for ua, rtd := range task.UncoveredAddress {
-		if checkAddressInArray(rtd.ConditionAddress, infoFinal.Calls[idx].Cover) {
-			rtd.CheckCondition = true
-			if checkAddressInArray(ua, infoFinal.Calls[idx].Cover) {
-				rtd.CheckAddress = true
-				rtd.TaskStatus = pb.TaskStatus_covered
-				rtd.Idx = idx
-				for _, c := range data {
-					rtd.Program = append(rtd.Program, c)
-				}
-				task.CoveredAddress[ua] = rtd
+	for ua, r := range taskRunTimeData.UncoveredAddress {
+		if checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
+			r.CheckCondition = true
+			if checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
+				r.CheckAddress = true
+				r.TaskStatus = pb.TaskStatus_covered
+				taskRunTimeData.CoveredAddress[ua] = r
 				temp = append(temp, ua)
 			} else {
-				rtd.CheckAddress = false
-				if rtd.TaskStatus < pb.TaskStatus_tested {
-					rtd.TaskStatus = pb.TaskStatus_tested
-					rtd.Idx = idx
-					for _, c := range data {
-						rtd.Program = append(rtd.Program, c)
-					}
+				r.CheckAddress = false
+				if r.TaskStatus < pb.TaskStatus_tested {
+					r.TaskStatus = pb.TaskStatus_tested
 				}
 			}
 		} else {
-			rtd.CheckCondition = false
-			if rtd.TaskStatus < pb.TaskStatus_unstable {
-				rtd.TaskStatus = pb.TaskStatus_unstable
-				rtd.Idx = idx
-				for _, c := range data {
-					rtd.Program = append(rtd.Program, c)
-				}
+			r.CheckCondition = false
+			if r.TaskStatus < pb.TaskStatus_unstable {
+				r.TaskStatus = pb.TaskStatus_unstable
 			}
 		}
 	}
 	for _, ua := range temp {
-		delete(task.UncoveredAddress, ua)
+		delete(taskRunTimeData.UncoveredAddress, ua)
 	}
-	return data
-}
+	for ua, r := range taskRunTimeData.CoveredAddress {
+		if _, ok := task.UncoveredAddress[ua]; ok {
+			delete(task.UncoveredAddress, ua)
+		}
+		if _, ok := task.CoveredAddress[ua]; ok {
 
-func (proc *Proc) dependencyMutateRemove(task *pb.Task, data []byte) *prog.Prog {
-
-	idx := task.FinalIdx
-	removeData, removeIdx := removeSameResource(data)
-	task.RemoveIdx = removeIdx[idx]
-	removeProg, err := proc.fuzzer.target.Deserialize(removeData, prog.NonStrict)
-	if err != nil {
-		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
+		} else {
+			task.CoveredAddress[ua] = r
+		}
 	}
-	log.Logf(pb.DebugLevel, "remove program : \n%s", removeData)
-	writeIdx := removeIdx[task.FinalWriteIdx]
-	task.RemoveWriteIdx = writeIdx
-	log.Logf(pb.DebugLevel, "remove index  : %d remove write index : %d", task.RemoveIdx, task.RemoveWriteIdx)
-	return removeProg
+
+	return
 }
 
 func (proc *Proc) dependencyBoot(item *WorkBoot) {

@@ -181,6 +181,40 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 	return
 }
 
+func (m *TaskRunTimeData) mergeTaskRunTimeData(d *TaskRunTimeData) {
+	if d == nil {
+		return
+	}
+
+	if m.Hash != d.Hash {
+		return
+	}
+
+	m.CheckWriteAddress = m.CheckWriteAddress || d.CheckWriteAddress
+
+	if m.CoveredAddress == nil {
+		m.CoveredAddress = map[uint32]*RunTimeData{}
+	}
+	for u, p := range d.CoveredAddress {
+		m.CoveredAddress[u] = proto.Clone(p).(*RunTimeData)
+	}
+
+	for u := range m.UncoveredAddress {
+		_, ok := m.CoveredAddress[u]
+		if ok {
+			delete(m.UncoveredAddress, u)
+		}
+	}
+
+	for ua := range m.UncoveredAddress {
+		if u, ok := d.UncoveredAddress[ua]; ok {
+			m.UncoveredAddress[ua].mergeRunTimeData(u)
+		}
+	}
+
+	return
+}
+
 func (m *Task) modifyPriority(t *Task) {
 	if t.TaskStatus == TaskStatus_unstable {
 		m.reducePriority()
@@ -226,10 +260,17 @@ func (m *Task) mergeTask(s *Task) {
 	} else if m.TaskStatus == TaskStatus_tested && s.TaskStatus == TaskStatus_covered {
 		m.TaskStatus = s.TaskStatus
 	}
-
 	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress
-	m.CheckWriteAddressFinal = s.CheckWriteAddressFinal || m.CheckWriteAddressFinal
-	m.CheckWriteAddressRemove = s.CheckWriteAddressRemove || m.CheckWriteAddressRemove
+
+	if len(m.TaskRunTimeData) == 0 {
+		m.TaskRunTimeData = s.TaskRunTimeData
+	} else if len(m.TaskRunTimeData) == len(s.TaskRunTimeData) {
+		for i, t := range s.TaskRunTimeData {
+			m.TaskRunTimeData[i].mergeTaskRunTimeData(t)
+		}
+	} else {
+		log.Fatalf("mergeTask with error number of TaskRunTimeData")
+	}
 
 	return
 }
@@ -624,21 +665,21 @@ func (m *Task) getHash() string {
 func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex uint32,
 	writeAddress uint32, uncoveredAddress uint32) *Task {
 	task := &Task{
-		Sig:                    sig,
-		Index:                  index,
-		Program:                []byte{},
-		Kind:                   0,
-		Priority:               10,
-		Hash:                   "",
-		WriteSig:               writeSig,
-		WriteIndex:             writeIndex,
-		WriteProgram:           []byte{},
-		WriteAddress:           writeAddress,
-		UncoveredAddress:       map[uint32]*RunTimeData{},
-		CoveredAddress:         map[uint32]*RunTimeData{},
-		TaskStatus:             TaskStatus_untested,
-		CheckWriteAddress:      false,
-		CheckWriteAddressFinal: false,
+		Sig:               sig,
+		Index:             index,
+		Program:           []byte{},
+		Kind:              0,
+		Priority:          10,
+		Hash:              "",
+		WriteSig:          writeSig,
+		WriteIndex:        writeIndex,
+		WriteProgram:      []byte{},
+		WriteAddress:      writeAddress,
+		TaskStatus:        TaskStatus_untested,
+		CheckWriteAddress: false,
+		UncoveredAddress:  map[uint32]*RunTimeData{},
+		CoveredAddress:    map[uint32]*RunTimeData{},
+		TaskRunTimeData:   []*TaskRunTimeData{},
 	}
 
 	task.Hash = task.getHash()
