@@ -88,7 +88,7 @@ func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
 
 func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 
-	ProgWrite, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
+	ProgWrite, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
 	}
