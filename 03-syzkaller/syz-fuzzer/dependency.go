@@ -140,7 +140,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 
 func (proc *Proc) dependencyMutateInsert(task *pb.Task, idx int) *pb.TaskRunTimeData {
 
-	ProgWrite, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
+	ProgWrite, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
 	}
@@ -152,7 +152,7 @@ func (proc *Proc) dependencyMutateInsert(task *pb.Task, idx int) *pb.TaskRunTime
 
 	var usefulSyscall []*prog.Call
 	if int(task.WriteIndex) > len(ProgWrite.Calls) {
-		log.Fatalf("dependency int(task.WriteIndex) > len(wp.Calls)")
+		log.Fatalf("dependency int(task.WriteIndex) > len(ProgWrite.Calls)")
 	}
 	for i, c := range ProgWrite.Calls {
 		if i <= int(task.WriteIndex) {
