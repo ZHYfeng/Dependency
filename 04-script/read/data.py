@@ -170,10 +170,10 @@ class data:
                 elif t.task_status == pb.unstable:
                     unstable_count += 1
 
+                res += "chech write address : " + str(t.check_write_address) + "\n"
                 if not_covered_address in t.uncovered_address:
                     ua = t.uncovered_address[not_covered_address]
                     res += "task_status : " + pb.taskStatus.Name(ua.task_status) + "\n"
-                    res += "chech write address : " + str(ua.check_write_address) + "\n"
                     res += "check condition : " + str(ua.checkCondition) + "\n"
                     res += "chech address : " + str(ua.checkAddress) + "\n"
                     if ua.checkCondition:
