@@ -813,7 +813,7 @@ func (m *Tasks) pop(number int) *Tasks {
 }
 
 func (m *Task) updatePriority(p1 int32) {
-	m.Priority = p1
+	//m.Priority = p1
 	return
 }
 
