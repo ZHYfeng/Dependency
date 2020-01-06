@@ -246,7 +246,7 @@ class Device:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
                        + str(ua_status[ua[0]]) + " input : " + str(ua_input[ua[0]]) + " write : " + str(
                     ua_write[ua[0]]) + " count : " + str(ua_count[ua[0]]) + " tasks : " + str(
-                    ua_tasks[ua[0]]) + " tasked tasks : " + str(ua_tested_tasks[ua[0]]) + "\n"
+                    ua_tasks[ua[0]]) + " tasted tasks : " + str(ua_tested_tasks[ua[0]]) + "\n"
 
             cover_addres = {}
             for r in self.results_with_dra.results:

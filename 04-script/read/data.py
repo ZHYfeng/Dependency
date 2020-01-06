@@ -172,9 +172,13 @@ class data:
                 if t.task_status == pb.tested:
                     tested_count += 1
                     test_count += 10 - t.priority
+                    if t.priority == 10:
+                        test_count += 1
                 elif t.task_status == pb.unstable:
                     unstable_count += 1
                     test_count += 10 - t.priority
+                    if t.priority == 10:
+                        test_count += 1
                 elif t.task_status == pb.covered:
                     test_count += 10 - t.priority + 1
 
