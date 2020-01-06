@@ -167,7 +167,7 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 		return
 	}
 
-	if m.TaskStatus < d.TaskStatus {
+	if m.TaskStatus <= d.TaskStatus {
 		m.TaskStatus = d.TaskStatus
 		m.Program = []byte{}
 		for _, c := range d.Program {

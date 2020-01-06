@@ -216,7 +216,7 @@ class Device:
                 ua_status_count[ua_status[ua]] += 1
 
             res = ""
-            res += "default : " + str(ua_status_count[0]) + "\n"
+            res += "untested : " + str(ua_status_count[0]) + "\n"
             res += "not find input : " + str(ua_status_count[1]) + "\n"
             res += "not find write address : " + str(ua_status_count[2]) + "\n"
             res += "not have write input : " + str(ua_status_count[3]) + "\n"
