@@ -196,9 +196,11 @@ class Device:
 
             ua_status = {}
             ua_insts = {}
-            for a in basic.data.uncovered_address_dependency:
-                if a in self.results_with_dra.uncovered_address_dependency and \
-                        a in self.results_without_dra.uncovered_address_dependency:
+            # for a in basic.data.uncovered_address_dependency:
+            #     if a in self.results_with_dra.uncovered_address_dependency and \
+            #             a in self.results_without_dra.uncovered_address_dependency:
+
+            for a in self.results_with_dra.uncovered_address_dependency:
                     name = not_covered_address_file_name(basic.data.real_data.uncovered_address[a])
                     not_covered_address_file = os.path.join(self.path_dev, name)
                     print(not_covered_address_file)
@@ -232,6 +234,15 @@ class Device:
             for ua in sort_ua_insts:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
                        + str(ua_status[ua[0]]) + "\n"
+
+            cover_addres = {}
+            for r in self.results_with_dra.results:
+                for t in r.data.real_data.tasks.task_array:
+                    for ca in t.covered_address:
+                        cover_addres[ca] = t.covered_address[ca]
+
+            res += "cover_addres in task : " + str(len(cover_addres)) + "\n"
+
             f.write(res)
             f.close()
 
