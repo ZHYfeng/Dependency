@@ -196,6 +196,8 @@ class Device:
 
             ua_status = {}
             ua_insts = {}
+            ua_input = {}
+            ua_write = {}
             ua_count = {}
             ua_tasks = {}
             ua_tested_tasks = {}
@@ -210,10 +212,13 @@ class Device:
                     ff = open(not_covered_address_file, "a")
                     for r in self.results_with_dra.results:
                         if a in r.data.real_data.uncovered_address:
-                            res, kind, inst, count, tasks, tested_tasks = r.data.not_covered_address_tasks_str(a)
+                            res, kind, inst, input_count, write_count, count, tasks, tested_tasks = r.data.not_covered_address_tasks_str(
+                                a)
                             ff.write(res)
                             ua_status[a] = kind
                             ua_insts[a] = inst
+                            ua_input[a] = input_count
+                            ua_write[a] = write_count
                             ua_count[a] = count
                             ua_tasks[a] = tasks
                             ua_tested_tasks[a] = tested_tasks
@@ -239,7 +244,8 @@ class Device:
             sort_ua_insts = sorted(ua_insts.items(), key=lambda kv: kv[1])
             for ua in sort_ua_insts:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
-                       + str(ua_status[ua[0]]) + " count : " + str(ua_count[ua[0]]) + " tasks : " + str(
+                       + str(ua_status[ua[0]]) + " input : " + str(ua_input[ua[0]]) + " write : " + str(
+                    ua_write[ua[0]]) + " count : " + str(ua_count[ua[0]]) + " tasks : " + str(
                     ua_tasks[ua[0]]) + " tasked tasks : " + str(ua_tested_tasks[ua[0]]) + "\n"
 
             cover_addres = {}
