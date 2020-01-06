@@ -103,7 +103,7 @@ class Device:
         stable_solved_conditon = {}
         unstable_solved_conditon = {}
         for a in solved_condition:
-            if a in union_coverage:
+            if a in self.results_with_dra.max_coverage:
                 stable_solved_conditon[a] = solved_condition[a]
             else:
                 unstable_solved_conditon[a] = solved_condition[a]
@@ -223,6 +223,7 @@ class Device:
             res += "cover : " + str(ua_status_count[4]) + "\n"
             res += "unstable write : " + str(ua_status_count[5]) + "\n"
             res += "unstable condition : " + str(ua_status_count[7]) + "\n"
+            res += "unstable insert condition : " + str(ua_status_count[8]) + "\n"
             res += "useless or FP : " + str(ua_status_count[6]) + "\n"
             f.write(res)
 

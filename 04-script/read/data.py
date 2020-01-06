@@ -104,6 +104,7 @@ class data:
         # 5: unstable write address
         # 6: useless or FP
         # 7: unstable condition address
+        # 8: unstable insert condition address
 
         res += "*******************************************\n"
         res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks) + "\n"
@@ -161,7 +162,7 @@ class data:
         tested_count = 0
         for t in tasks:
             res += task_str(t)
-            if t.task_status == 0:
+            if t.task_status == pb.untested:
                 untested_count += 1
                 if write_status[t.write_address] < 0:
                     write_status[t.write_address] = 0
@@ -176,41 +177,59 @@ class data:
                     res += "task_status : " + pb.taskStatus.Name(ua.task_status) + "\n"
                     res += "check condition : " + str(ua.checkCondition) + "\n"
                     res += "chech address : " + str(ua.checkAddress) + "\n"
-                    res += "-------------------------------------------\n"
-                    if t.check_write_address_final or t.check_write_address_remove:
-                        if ua.checkCondition:
-                            if ua.checkAddress:
-                                res += "error in ua.checkAddress" + "\n"
-                            else:
-                                res += "useless write address or FP" + "\n"
-                                if write_status[t.write_address] < 3:
-                                    write_status[t.write_address] = 3
-                        else:
-                            res += "unstable condition address" + "\n"
-                            if write_status[t.write_address] < 2:
-                                write_status[t.write_address] = 2
+                    if ua.checkCondition:
+                        res += ""
                     else:
-                        res += "unstable write address" + "\n"
-                        if write_status[t.write_address] < 1:
-                            write_status[t.write_address] = 1
+                        if write_status[t.write_address] < 3:
+                            write_status[t.write_address] = 3
+                    res += "-------------------------------------------\n"
+
+                    for r in t.task_run_time_data:
+                        res += "-------------------------------------------\n"
+                        res += "chech write address : " + str(r.check_write_address) + "\n"
+                        if not_covered_address in r.uncovered_address:
+                            uar = r.uncovered_address[not_covered_address]
+                            res += "check condition : " + str(uar.checkCondition) + "\n"
+                            res += "chech address : " + str(uar.checkAddress) + "\n"
+                            if uar.checkCondition:
+                                if uar.checkAddress:
+                                    res += "error in ua.checkAddress" + "\n"
+                                else:
+                                    if r.check_write_address:
+                                        res += "useless write address or FP" + "\n"
+                                        if write_status[t.write_address] < 4:
+                                            write_status[t.write_address] = 4
+                                    else:
+                                        res += "unstable insert write address" + "\n"
+                                        if write_status[t.write_address] < 1:
+                                            write_status[t.write_address] = 1
+                            else:
+                                res += "unstable insert condition address" + "\n"
+                                if write_status[t.write_address] < 2:
+                                    write_status[t.write_address] = 2
+                        res += "-------------------------------------------\n"
 
                 elif not_covered_address in t.covered_address:
                     ua = t.covered_address[not_covered_address]
                     kind = 4
+
             res += "*******************************************\n"
 
         write_untested_count = 0
         write_unstable_count = 0
         write_useless_fp_count = 0
         condition_unstable_count = 0
+        insert_condition_unstable_count = 0
         for w in write_status:
             if write_status[w] == 0:
                 write_untested_count += 1
             elif write_status[w] == 1:
                 write_unstable_count += 1
             elif write_status[w] == 2:
-                condition_unstable_count += 1
+                insert_condition_unstable_count += 1
             elif write_status[w] == 3:
+                condition_unstable_count += 1
+            elif write_status[w] == 4:
                 write_useless_fp_count += 1
 
         res += "untested : " + str(untested_count) + "\n"
@@ -225,6 +244,8 @@ class data:
             kind = 5
         if condition_unstable_count > 0:
             kind = 7
+        if insert_condition_unstable_count > 0:
+            kind = 8
         if write_useless_fp_count > 0:
             kind = 6
 
