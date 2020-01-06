@@ -202,6 +202,7 @@ class data:
                         res += "not_covered_address : " + hex_adddress(not_covered_address) + "\n"
                         if not_covered_address in r.uncovered_address:
                             uar = r.uncovered_address[not_covered_address]
+                            res += "insert task_status : " + pb.taskStatus.Name(uar.task_status) + "\n"
                             res += "check condition : " + str(uar.checkCondition) + "\n"
                             res += "chech address : " + str(uar.checkAddress) + "\n"
                             if uar.checkCondition:
