@@ -105,6 +105,7 @@ class data:
         # 8: unstable insert condition address
 
         res += "*******************************************\n"
+        res += "number_arrive_basicblocks : " + str(not_covered.uncovered_address) + "\n"
         res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks) + "\n"
         res += "number_dominator_instructions(using) : " + str(not_covered.number_dominator_instructions) + "\n"
         res += "*******************************************\n"
@@ -187,7 +188,7 @@ class data:
                         res += "-------------------------------------------\n"
                         res += "chech write address : " + str(r.check_write_address) + "\n"
                         for a in r.uncovered_address:
-                            res += "address : " + str(a) + "\n"
+                            res += "address : " + hex_adddress(a) + "\n"
                         if not_covered_address in r.uncovered_address:
                             uar = r.uncovered_address[not_covered_address]
                             res += "check condition : " + str(uar.checkCondition) + "\n"
