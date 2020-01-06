@@ -43,8 +43,6 @@ def task_str(task: pb.Task):
     res += "write program : " + str(task.write_index) + " : " + task.write_sig + "\n"
     res += str(task.write_program, default.encoding)
     res += "check_write_address : " + hex_adddress(task.check_write_address) + "\n"
-    res += "check_write_address_final : " + str(task.check_write_address_final) + "\n"
-    res += "check_write_address_remove : " + str(task.check_write_address_remove) + "\n"
     res += "-------------------------------------------\n"
     return res
 
