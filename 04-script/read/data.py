@@ -105,7 +105,7 @@ class data:
         # 8: unstable insert condition address
 
         res += "*******************************************\n"
-        res += "number_arrive_basicblocks : " + str(not_covered.uncovered_address) + "\n"
+        res += "number_arrive_basicblocks : " + hex_adddress(not_covered.uncovered_address) + "\n"
         res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks) + "\n"
         res += "number_dominator_instructions(using) : " + str(not_covered.number_dominator_instructions) + "\n"
         res += "*******************************************\n"
