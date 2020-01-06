@@ -259,6 +259,7 @@ class data:
         res += "untested : " + str(untested_count) + "\n"
         res += "unstable : " + str(unstable_count) + "\n"
         res += "tested : " + str(tested_count) + "\n"
+        res += "test : " + str(test_count) + "\n"
 
         res += "write_untested_count : " + str(write_untested_count) + "\n"
         res += "write_unstable_count : " + str(write_unstable_count) + "\n"
@@ -276,4 +277,5 @@ class data:
                 kind = 6
 
         res += "kind : " + str(kind) + "\n"
-        return res, kind, not_covered.number_dominator_instructions, test_count
+        return res, kind, not_covered.number_dominator_instructions, len(not_covered.input), len(
+            not_covered.write_address), test_count, len(tasks), unstable_count + tested_count

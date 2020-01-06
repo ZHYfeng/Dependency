@@ -197,22 +197,26 @@ class Device:
             ua_status = {}
             ua_insts = {}
             ua_count = {}
+            ua_tasks = {}
+            ua_tested_tasks = {}
             for a in basic.data.uncovered_address_dependency:
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
 
-            # for a in self.results_with_dra.uncovered_address_dependency:
+                    # for a in self.results_with_dra.uncovered_address_dependency:
                     name = not_covered_address_file_name(basic.data.real_data.uncovered_address[a])
                     not_covered_address_file = os.path.join(self.path_dev, name)
                     print(not_covered_address_file)
                     ff = open(not_covered_address_file, "a")
                     for r in self.results_with_dra.results:
                         if a in r.data.real_data.uncovered_address:
-                            res, kind, inst, count = r.data.not_covered_address_tasks_str(a)
+                            res, kind, inst, count, tasks, tested_tasks = r.data.not_covered_address_tasks_str(a)
                             ff.write(res)
                             ua_status[a] = kind
                             ua_insts[a] = inst
                             ua_count[a] = count
+                            ua_tasks[a] = tasks
+                            ua_tested_tasks[a] = tested_tasks
                             break
                     ff.close()
             ua_status_count = {x: 0 for x in range(9)}
@@ -235,7 +239,8 @@ class Device:
             sort_ua_insts = sorted(ua_insts.items(), key=lambda kv: kv[1])
             for ua in sort_ua_insts:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
-                       + str(ua_status[ua[0]]) + " count : " + str(ua_count[ua[0]]) + "\n"
+                       + str(ua_status[ua[0]]) + " count : " + str(ua_count[ua[0]]) + " tasks : " + str(
+                    ua_tasks[ua[0]]) + " tasked tasks : " + str(ua_tested_tasks[ua[0]]) + "\n"
 
             cover_addres = {}
             for r in self.results_with_dra.results:
