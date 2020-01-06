@@ -195,7 +195,7 @@ class data:
                             res += "chech address : " + str(uar.checkAddress) + "\n"
                             if uar.checkCondition:
                                 if uar.checkAddress:
-                                    res += "error in ua.checkAddress" + "\n"
+                                    res += "error in uar.checkAddress" + "\n"
                                 else:
                                     if r.check_write_address:
                                         res += "useless write address or FP" + "\n"
@@ -210,6 +210,8 @@ class data:
                                     res += "unstable insert condition address" + "\n"
                                     if write_status[t.write_address] < 3:
                                         write_status[t.write_address] = 3
+                        elif not_covered_address in r.covered_address:
+                            res += "error in not_covered_address in r.covered_addresss" + "\n"
                         res += "-------------------------------------------\n"
 
                 elif not_covered_address in t.covered_address:
@@ -244,14 +246,15 @@ class data:
         res += "condition_unstable_count : " + str(condition_unstable_count) + "\n"
         res += "insert condition_unstable_count : " + str(insert_condition_unstable_count) + "\n"
         res += "write_useless_fp_count : " + str(write_useless_fp_count) + "\n"
-        if write_unstable_count > 0:
-            kind = 5
-        if condition_unstable_count > 0:
-            kind = 7
-        if insert_condition_unstable_count > 0:
-            kind = 8
-        if write_useless_fp_count > 0:
-            kind = 6
+        if kind != 4:
+            if write_unstable_count > 0:
+                kind = 5
+            if condition_unstable_count > 0:
+                kind = 7
+            if insert_condition_unstable_count > 0:
+                kind = 8
+            if write_useless_fp_count > 0:
+                kind = 6
 
         res += "kind : " + str(kind) + "\n"
         return res, kind, not_covered.number_dominator_instructions
