@@ -199,7 +199,7 @@ class data:
                         res += "covered_address : " + "\n"
                         for a in r.covered_address:
                             res += "address : " + hex_adddress(a) + "\n"
-                        res += "not_covered_address : " + str(not_covered_address) + "\n"
+                        res += "not_covered_address : " + hex_adddress(not_covered_address) + "\n"
                         if not_covered_address in r.uncovered_address:
                             uar = r.uncovered_address[not_covered_address]
                             res += "check condition : " + str(uar.checkCondition) + "\n"
