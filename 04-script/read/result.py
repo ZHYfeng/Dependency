@@ -187,20 +187,20 @@ class Device:
             cmd_rm_0x = "rm -rf 0x*"
             p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
             p_rm_0x.wait()
-            # cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-            #           + " -staticRes=./" + default.file_taint + " -function=./" + \
-            #           default.file_function + " " + default.file_bc
-            # print(cmd_a2i)
-            # p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
-            # p_a2i_img.wait()
+            cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
+                      + " -staticRes=./" + default.file_taint + " -function=./" + \
+                      default.file_function + " " + default.file_bc
+            print(cmd_a2i)
+            p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
+            p_a2i_img.wait()
 
             ua_status = {}
             ua_insts = {}
-            # for a in basic.data.uncovered_address_dependency:
-            #     if a in self.results_with_dra.uncovered_address_dependency and \
-            #             a in self.results_without_dra.uncovered_address_dependency:
+            for a in basic.data.uncovered_address_dependency:
+                if a in self.results_with_dra.uncovered_address_dependency and \
+                        a in self.results_without_dra.uncovered_address_dependency:
 
-            for a in self.results_with_dra.uncovered_address_dependency:
+            # for a in self.results_with_dra.uncovered_address_dependency:
                     name = not_covered_address_file_name(basic.data.real_data.uncovered_address[a])
                     not_covered_address_file = os.path.join(self.path_dev, name)
                     print(not_covered_address_file)
