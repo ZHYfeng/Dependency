@@ -159,6 +159,9 @@ class data:
         untested_count = 0
         unstable_count = 0
         tested_count = 0
+
+        test_count = 0
+
         for t in tasks:
             res += task_str(t)
             if t.task_status == pb.untested:
@@ -168,8 +171,12 @@ class data:
             else:
                 if t.task_status == pb.tested:
                     tested_count += 1
+                    test_count += 10 - t.priority
                 elif t.task_status == pb.unstable:
                     unstable_count += 1
+                    test_count += 10 - t.priority
+                elif t.task_status == pb.covered:
+                    test_count += 10 - t.priority + 1
 
                 res += "check write address : " + str(t.check_write_address) + "\n"
                 res += "uncovered_address : " + "\n"
@@ -269,4 +276,4 @@ class data:
                 kind = 6
 
         res += "kind : " + str(kind) + "\n"
-        return res, kind, not_covered.number_dominator_instructions
+        return res, kind, not_covered.number_dominator_instructions, test_count

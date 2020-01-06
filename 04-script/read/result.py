@@ -187,15 +187,16 @@ class Device:
             cmd_rm_0x = "rm -rf 0x*"
             p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
             p_rm_0x.wait()
-            cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                      + " -staticRes=./" + default.file_taint + " -function=./" + \
-                      default.file_function + " " + default.file_bc
-            print(cmd_a2i)
-            p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
-            p_a2i_img.wait()
+            # cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
+            #           + " -staticRes=./" + default.file_taint + " -function=./" + \
+            #           default.file_function + " " + default.file_bc
+            # print(cmd_a2i)
+            # p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
+            # p_a2i_img.wait()
 
             ua_status = {}
             ua_insts = {}
+            ua_count = {}
             for a in basic.data.uncovered_address_dependency:
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
@@ -207,10 +208,11 @@ class Device:
                     ff = open(not_covered_address_file, "a")
                     for r in self.results_with_dra.results:
                         if a in r.data.real_data.uncovered_address:
-                            res, kind, inst = r.data.not_covered_address_tasks_str(a)
+                            res, kind, inst, count = r.data.not_covered_address_tasks_str(a)
                             ff.write(res)
                             ua_status[a] = kind
                             ua_insts[a] = inst
+                            ua_count[a] = count
                             break
                     ff.close()
             ua_status_count = {x: 0 for x in range(9)}
@@ -233,7 +235,7 @@ class Device:
             sort_ua_insts = sorted(ua_insts.items(), key=lambda kv: kv[1])
             for ua in sort_ua_insts:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
-                       + str(ua_status[ua[0]]) + "\n"
+                       + str(ua_status[ua[0]]) + " count : " + str(ua_count[ua[0]]) + "\n"
 
             cover_addres = {}
             for r in self.results_with_dra.results:
