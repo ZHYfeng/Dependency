@@ -171,7 +171,7 @@ class data:
                 elif t.task_status == pb.unstable:
                     unstable_count += 1
 
-                res += "chech write address : " + str(t.check_write_address) + "\n"
+                res += "check write address : " + str(t.check_write_address) + "\n"
                 res += "uncovered_address : " + "\n"
                 for a in t.uncovered_address:
                     res += "address : " + hex_adddress(a) + "\n"
@@ -192,13 +192,14 @@ class data:
 
                     for r in t.task_run_time_data:
                         res += "-------------------------------------------\n"
-                        res += "chech write address : " + str(r.check_write_address) + "\n"
+                        res += "check insert write address : " + str(r.check_write_address) + "\n"
                         res += "uncovered_address : " + "\n"
                         for a in r.uncovered_address:
                             res += "address : " + hex_adddress(a) + "\n"
                         res += "covered_address : " + "\n"
                         for a in r.covered_address:
                             res += "address : " + hex_adddress(a) + "\n"
+                        res += "not_covered_address : " + str(not_covered_address) + "\n"
                         if not_covered_address in r.uncovered_address:
                             uar = r.uncovered_address[not_covered_address]
                             res += "check condition : " + str(uar.checkCondition) + "\n"
