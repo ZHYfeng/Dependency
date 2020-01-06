@@ -178,8 +178,8 @@ class data:
                     if ua.checkCondition:
                         res += ""
                     else:
-                        if write_status[t.write_address] < 3:
-                            write_status[t.write_address] = 3
+                        if write_status[t.write_address] < 2:
+                            write_status[t.write_address] = 2
                     res += "-------------------------------------------\n"
 
                     for r in t.task_run_time_data:
@@ -202,9 +202,10 @@ class data:
                                         if write_status[t.write_address] < 1:
                                             write_status[t.write_address] = 1
                             else:
-                                res += "unstable insert condition address" + "\n"
-                                if write_status[t.write_address] < 2:
-                                    write_status[t.write_address] = 2
+                                if ua.checkCondition:
+                                    res += "unstable insert condition address" + "\n"
+                                    if write_status[t.write_address] < 3:
+                                        write_status[t.write_address] = 3
                         res += "-------------------------------------------\n"
 
                 elif not_covered_address in t.covered_address:
@@ -224,9 +225,9 @@ class data:
             elif write_status[w] == 1:
                 write_unstable_count += 1
             elif write_status[w] == 2:
-                insert_condition_unstable_count += 1
-            elif write_status[w] == 3:
                 condition_unstable_count += 1
+            elif write_status[w] == 3:
+                insert_condition_unstable_count += 1
             elif write_status[w] == 4:
                 write_useless_fp_count += 1
 
@@ -237,6 +238,7 @@ class data:
         res += "write_untested_count : " + str(write_untested_count) + "\n"
         res += "write_unstable_count : " + str(write_unstable_count) + "\n"
         res += "condition_unstable_count : " + str(condition_unstable_count) + "\n"
+        res += "insert condition_unstable_count : " + str(insert_condition_unstable_count) + "\n"
         res += "write_useless_fp_count : " + str(write_useless_fp_count) + "\n"
         if write_unstable_count > 0:
             kind = 5
