@@ -246,15 +246,32 @@ class Device:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
                        + str(ua_status[ua[0]]) + " input : " + str(ua_input[ua[0]]) + " write : " + str(
                     ua_write[ua[0]]) + " count : " + str(ua_count[ua[0]]) + " tasks : " + str(
-                    ua_tasks[ua[0]]) + " tasted tasks : " + str(ua_tested_tasks[ua[0]]) + "\n"
+                    ua_tasks[ua[0]]) + " tested tasks : " + str(ua_tested_tasks[ua[0]]) + "\n"
+
+            res += "\n"
 
             cover_addres = {}
+            task_priority = {}
             for r in self.results_with_dra.results:
-                for t in r.data.real_data.tasks.task_array:
-                    for ca in t.covered_address:
+                for t in r.data.real_data.tasks.task_map:
+                    tt = r.data.real_data.tasks.task_map[t]
+                    priority = 0
+                    for ua in tt.uncovered_address:
+                        priority += tt.uncovered_address[ua].priority
+                    priority = priority * pow(2, tt.priority)
+                    task_priority[t] = priority
+                    for ca in tt.covered_address:
                         cover_addres[ca] = t.covered_address[ca]
 
             res += "cover_addres in task : " + str(len(cover_addres)) + "\n"
+
+            sort_task_priority = sorted(task_priority.items(), key=lambda kv: kv[1])
+            for r in self.results_with_dra.results:
+                for t in sort_task_priority:
+                    tt = r.data.real_data.tasks.task_map[t[0]]
+                    res += "task : " + " priority : " + str(t[1]) + "task status : " + pb.taskStatus.Name(
+                        tt.task_status) + " uncovered address : " + str(
+                        len(tt.uncovered_address)) + " execute times : " + str(10 - tt.priority) + "\n"
 
             f.write(res)
             f.close()
