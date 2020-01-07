@@ -269,7 +269,7 @@ class Device:
             for r in self.results_with_dra.results:
                 for t in sort_task_priority:
                     tt = r.data.real_data.tasks.task_map[t[0]]
-                    res += "task : " + " priority : " + str(t[1]) + "task status : " + pb.taskStatus.Name(
+                    res += "task : " + " priority : " + str(t[1]) + " task status : " + pb.taskStatus.Name(
                         tt.task_status) + " uncovered address : " + str(
                         len(tt.uncovered_address)) + " execute times : " + str(10 - tt.priority) + "\n"
 

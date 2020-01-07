@@ -233,6 +233,7 @@ func (m *Task) reducePriority() {
 }
 
 func (m *Task) mergeTask(s *Task) {
+	m.Count += s.Count
 	m.modifyPriority(s)
 	if m.CoveredAddress == nil {
 		m.CoveredAddress = map[uint32]*RunTimeData{}
@@ -285,15 +286,15 @@ func (ss Server) pickTask(name string) *Tasks {
 		f.taskMu.Lock()
 		if len(f.highTasks.TaskArray) > 0 {
 			last := len(f.highTasks.TaskArray)
-			if last > taskNum {
-				last = taskNum
+			if last > TaskNum {
+				last = TaskNum
 			}
 			tasks = f.highTasks.pop(last)
 			tasks.Kind = TaskKind_High
 		} else {
 			last := len(f.newTask.TaskArray)
-			if last > taskNum {
-				last = taskNum
+			if last > TaskNum {
+				last = TaskNum
 			}
 			tasks = f.newTask.pop(last)
 		}
@@ -674,6 +675,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		Kind:              0,
 		Priority:          10,
 		Hash:              "",
+		Count:             0,
 		WriteSig:          writeSig,
 		WriteIndex:        writeIndex,
 		WriteProgram:      []byte{},

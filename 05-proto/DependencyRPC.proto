@@ -318,6 +318,7 @@ message Task {
     uint32 kind = 4;
     int32 priority = 5;
     string hash = 6;
+    uint32 count = 7;
 
     string write_sig = 11;
     uint32 write_index = 12;

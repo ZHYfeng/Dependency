@@ -18,10 +18,13 @@ import (
 // useful const
 const (
 	//startTime = 10800
-	startTime  = 0
-	newTime    = 600
-	bootTime   = 300
-	taskNum    = 40
+	startTime = 0
+	newTime   = 600
+	bootTime  = 300
+
+	TaskNum             = 40
+	TaskCountLimitation = 50
+
 	DebugLevel = 2
 )
 
@@ -517,7 +520,7 @@ func (ss *Server) Update() {
 		}
 	}
 	sort.Slice(ss.corpusDependency.Tasks.TaskArray, func(i, j int) bool {
-		return ss.corpusDependency.Tasks.TaskArray[i].getRealPriority() > ss.corpusDependency.Tasks.TaskArray[j].getRealPriority()
+		return ss.corpusDependency.Tasks.TaskArray[i].getRealPriority() < ss.corpusDependency.Tasks.TaskArray[j].getRealPriority()
 	})
 	returnTask = nil
 
@@ -566,7 +569,7 @@ func (ss *Server) Update() {
 							delete(t.UncoveredAddress, u)
 						}
 					}
-					if len(t.UncoveredAddress) > 0 {
+					if len(t.UncoveredAddress) > 0 && t.Count < TaskCountLimitation {
 						if t.TaskStatus == TaskStatus_untested {
 							t.TaskStatus = TaskStatus_testing
 							task = append(task, proto.Clone(t).(*Task))
@@ -575,7 +578,7 @@ func (ss *Server) Update() {
 						} else if t.TaskStatus == TaskStatus_unstable {
 							task = append(task, proto.Clone(t).(*Task))
 						}
-						if len(task) > taskNum {
+						if len(task) > TaskNum {
 							break
 						}
 					}
@@ -625,7 +628,7 @@ func (ss *Server) Update() {
 		}
 	}
 	sort.Slice(ss.corpusDependency.BootTask.TaskArray, func(i, j int) bool {
-		return ss.corpusDependency.BootTask.TaskArray[i].getRealPriority() > ss.corpusDependency.BootTask.TaskArray[j].getRealPriority()
+		return ss.corpusDependency.BootTask.TaskArray[i].getRealPriority() < ss.corpusDependency.BootTask.TaskArray[j].getRealPriority()
 	})
 	returnBootTask = nil
 
