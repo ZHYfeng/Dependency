@@ -243,10 +243,10 @@ class Device:
             res = ""
             sort_ua_insts = sorted(ua_insts.items(), key=lambda kv: kv[1])
             for ua in sort_ua_insts:
-                res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]) + " kind : " \
-                       + str(ua_status[ua[0]]) + " input : " + str(ua_input[ua[0]]) + " write : " + str(
-                    ua_write[ua[0]]) + " count : " + str(ua_count[ua[0]]) + " tasks : " + str(
-                    ua_tasks[ua[0]]) + " tested tasks : " + str(ua_tested_tasks[ua[0]]) + "\n"
+                res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]).zfill(4) + " kind : " \
+                       + str(ua_status[ua[0]]) + " input : " + str(ua_input[ua[0]]).zfill(3) + " write : " + str(
+                    ua_write[ua[0]]).zfill(3) + " count : " + str(ua_count[ua[0]]).zfill(3) + " tasks : " + str(
+                    ua_tasks[ua[0]]).zfill(4) + " tested tasks : " + str(ua_tested_tasks[ua[0]]).zfill(4) + "\n"
 
             res += "\n"
 
@@ -269,9 +269,9 @@ class Device:
             for r in self.results_with_dra.results:
                 for t in sort_task_priority:
                     tt = r.data.real_data.tasks.task_map[t[0]]
-                    res += "task : " + " priority : " + str(t[1]) + " task status : " + pb.taskStatus.Name(
+                    res += "task : " + " priority : " + str(t[1]).zfill(20) + " task status : " + pb.taskStatus.Name(
                         tt.task_status) + " uncovered address : " + str(
-                        len(tt.uncovered_address)) + " execute count : " + tt.count + "\n"
+                        len(tt.uncovered_address)) + " execute count : " + str(tt.count).zfill(3) + "\n"
 
             f.write(res)
             f.close()
