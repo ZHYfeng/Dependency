@@ -237,16 +237,16 @@ class data:
                                     if write_status[t.write_address] < 13:
                                         write_status[t.write_address] = 13
                         elif not_covered_address in r.covered_address:
-                            res += "error in not_covered_address in r.covered_addresss" + "\n"
+                            res += "not_covered_address in r.covered_address" + "\n"
+                        else:
+                            res += "not_covered_address lost" + "\n"
+                            is_lost = 1
                         res += "-------------------------------------------\n"
 
                 elif not_covered_address in t.covered_address:
                     res += "not_covered_address in t.covered_address" + "\n"
                     ua = t.covered_address[not_covered_address]
                     kind = 4
-                else:
-                    res += "not_covered_address lost" + "\n"
-                    is_lost = 1
 
             res += "*******************************************\n"
 
