@@ -271,7 +271,7 @@ class Device:
                     tt = r.data.real_data.tasks.task_map[t[0]]
                     res += "task : " + " priority : " + str(t[1]) + " task status : " + pb.taskStatus.Name(
                         tt.task_status) + " uncovered address : " + str(
-                        len(tt.uncovered_address)) + " execute times : " + str(10 - tt.priority) + "\n"
+                        len(tt.uncovered_address)) + " execute count : " + tt.count + "\n"
 
             f.write(res)
             f.close()

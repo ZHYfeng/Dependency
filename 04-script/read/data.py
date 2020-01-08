@@ -163,6 +163,7 @@ class data:
         test_count = 0
 
         for t in tasks:
+            test_count += t.count
             res += task_str(t)
             if t.task_status == pb.untested:
                 untested_count += 1
@@ -171,16 +172,10 @@ class data:
             else:
                 if t.task_status == pb.tested:
                     tested_count += 1
-                    test_count += 10 - t.priority
-                    if t.priority == 10:
-                        test_count += 1
                 elif t.task_status == pb.unstable:
                     unstable_count += 1
-                    test_count += 10 - t.priority
-                    if t.priority == 10:
-                        test_count += 1
                 elif t.task_status == pb.covered:
-                    test_count += 10 - t.priority + 1
+                    res += ""
 
                 res += "check write address : " + str(t.check_write_address) + "\n"
                 res += "uncovered_address : " + "\n"
