@@ -241,7 +241,11 @@ class Device:
             res += "unstable condition : " + str(ua_status_count[7]) + "\n"
             res += "unstable insert condition : " + str(ua_status_count[8]) + "\n"
             res += "useless or FP : " + str(ua_status_count[6]) + "\n"
-            res += "ua_is_lost : " + str(sum(ua_is_lost)) + "\n"
+
+            count = 0
+            for a in ua_is_lost:
+                count += ua_is_lost[a]
+            res += "ua_is_lost : " + str(count) + "\n"
             f.write(res)
 
             res = ""
