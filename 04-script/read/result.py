@@ -245,7 +245,7 @@ class Device:
             for ua in sort_ua_insts:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]).zfill(4) + " kind : " \
                        + str(ua_status[ua[0]]) + " input : " + str(ua_input[ua[0]]).zfill(3) + " write : " + str(
-                    ua_write[ua[0]]).zfill(3) + " count : " + str(ua_count[ua[0]]).zfill(5) + " tasks : " + str(
+                    ua_write[ua[0]]).zfill(3) + " count : " + str(ua_count[ua[0]]).zfill(6) + " tasks : " + str(
                     ua_tasks[ua[0]]).zfill(4) + " tested tasks : " + str(ua_tested_tasks[ua[0]]).zfill(4) + "\n"
 
             res += "\n"
@@ -269,8 +269,8 @@ class Device:
             for r in self.results_with_dra.results:
                 for t in sort_task_priority:
                     tt = r.data.real_data.tasks.task_map[t[0]]
-                    res += "task : " + " priority : " + str(t[1]).zfill(12) + " task status : " + pb.taskStatus.Name(
-                        tt.task_status) + " uncovered address : " + str(
+                    res += "task : " + " priority : " + str(t[1]).zfill(16) + " task status : " + str(pb.taskStatus.Name(
+                        tt.task_status)).zfill(8) + " uncovered address : " + str(
                         len(tt.uncovered_address)).zfill(2) + " execute count : " + str(tt.count).zfill(3) + "\n"
 
             f.write(res)
