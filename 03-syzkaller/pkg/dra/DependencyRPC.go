@@ -754,7 +754,6 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 				t.UncoveredAddress = map[uint32]*RunTimeData{}
 			}
 			t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
-			t.TaskStatus = TaskStatus_untested
 		}
 		t.updatePriority(task.Priority)
 		return
