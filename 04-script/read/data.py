@@ -94,7 +94,7 @@ class data:
         not_covered = self.real_data.uncovered_address[not_covered_address]
 
         kind = 0
-        # 0: default
+        # 0: untested
         # 1: not find input
         # 2: not find write address
         # 3: not have write input
@@ -103,6 +103,7 @@ class data:
         # 6: useless or FP
         # 7: unstable condition address
         # 8: unstable insert condition address
+        # 9: testing
 
         res += "*******************************************\n"
         res += "uncovered address : " + hex_adddress(not_covered.uncovered_address) + "\n"
@@ -157,6 +158,7 @@ class data:
 
         res += "# tasks : " + str(len(tasks)) + "\n"
         untested_count = 0
+        testing_count = 0
         unstable_count = 0
         tested_count = 0
 
@@ -169,6 +171,10 @@ class data:
                 untested_count += 1
                 if write_status[t.write_address] < 0:
                     write_status[t.write_address] = 0
+            elif t.task_status == pb.testing:
+                testing_count += 1
+                if write_status[t.write_address] < 1:
+                    write_status[t.write_address] = 1
             else:
                 if t.task_status == pb.tested:
                     tested_count += 1
@@ -192,8 +198,8 @@ class data:
                     if ua.checkCondition:
                         res += ""
                     else:
-                        if write_status[t.write_address] < 2:
-                            write_status[t.write_address] = 2
+                        if write_status[t.write_address] < 12:
+                            write_status[t.write_address] = 12
                     res += "-------------------------------------------\n"
 
                     for r in t.task_run_time_data:
@@ -217,17 +223,17 @@ class data:
                                 else:
                                     if r.check_write_address:
                                         res += "useless write address or FP" + "\n"
-                                        if write_status[t.write_address] < 4:
-                                            write_status[t.write_address] = 4
+                                        if write_status[t.write_address] < 14:
+                                            write_status[t.write_address] = 14
                                     else:
                                         res += "unstable insert write address" + "\n"
-                                        if write_status[t.write_address] < 1:
-                                            write_status[t.write_address] = 1
+                                        if write_status[t.write_address] < 11:
+                                            write_status[t.write_address] = 11
                             else:
                                 if ua.checkCondition:
                                     res += "unstable insert condition address" + "\n"
-                                    if write_status[t.write_address] < 3:
-                                        write_status[t.write_address] = 3
+                                    if write_status[t.write_address] < 13:
+                                        write_status[t.write_address] = 13
                         elif not_covered_address in r.covered_address:
                             res += "error in not_covered_address in r.covered_addresss" + "\n"
                         res += "-------------------------------------------\n"
@@ -239,6 +245,7 @@ class data:
             res += "*******************************************\n"
 
         write_untested_count = 0
+        write_testing_count = 0
         write_unstable_count = 0
         write_useless_fp_count = 0
         condition_unstable_count = 0
@@ -247,25 +254,31 @@ class data:
             if write_status[w] == 0:
                 write_untested_count += 1
             elif write_status[w] == 1:
+                write_testing_count += 1
+            elif write_status[w] == 11:
                 write_unstable_count += 1
-            elif write_status[w] == 2:
+            elif write_status[w] == 12:
                 condition_unstable_count += 1
-            elif write_status[w] == 3:
+            elif write_status[w] == 13:
                 insert_condition_unstable_count += 1
-            elif write_status[w] == 4:
+            elif write_status[w] == 14:
                 write_useless_fp_count += 1
 
         res += "untested : " + str(untested_count) + "\n"
+        res += "testing : " + str(testing_count) + "\n"
         res += "unstable : " + str(unstable_count) + "\n"
         res += "tested : " + str(tested_count) + "\n"
         res += "test : " + str(test_count) + "\n"
 
         res += "write_untested_count : " + str(write_untested_count) + "\n"
+        res += "write_testing_count : " + str(write_testing_count) + "\n"
         res += "write_unstable_count : " + str(write_unstable_count) + "\n"
         res += "condition_unstable_count : " + str(condition_unstable_count) + "\n"
         res += "insert condition_unstable_count : " + str(insert_condition_unstable_count) + "\n"
         res += "write_useless_fp_count : " + str(write_useless_fp_count) + "\n"
         if kind != 4:
+            if write_testing_count > 0:
+                kind = 9
             if write_unstable_count > 0:
                 kind = 5
             if condition_unstable_count > 0:

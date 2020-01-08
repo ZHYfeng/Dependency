@@ -224,7 +224,7 @@ class Device:
                             ua_tested_tasks[a] = tested_tasks
                             break
                     ff.close()
-            ua_status_count = {x: 0 for x in range(9)}
+            ua_status_count = {x: 0 for x in range(10)}
             for ua in ua_status:
                 ua_status_count[ua_status[ua]] += 1
 
@@ -234,6 +234,7 @@ class Device:
             res += "not find write address : " + str(ua_status_count[2]) + "\n"
             res += "not have write input : " + str(ua_status_count[3]) + "\n"
             res += "cover : " + str(ua_status_count[4]) + "\n"
+            res += "testing : " + str(ua_status_count[9]) + "\n"
             res += "unstable write : " + str(ua_status_count[5]) + "\n"
             res += "unstable condition : " + str(ua_status_count[7]) + "\n"
             res += "unstable insert condition : " + str(ua_status_count[8]) + "\n"
