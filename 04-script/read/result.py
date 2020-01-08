@@ -241,6 +241,7 @@ class Device:
             res += "unstable condition : " + str(ua_status_count[7]) + "\n"
             res += "unstable insert condition : " + str(ua_status_count[8]) + "\n"
             res += "useless or FP : " + str(ua_status_count[6]) + "\n"
+            res += "ua_is_lost : " + str(sum(ua_is_lost)) + "\n"
             f.write(res)
 
             res = ""
