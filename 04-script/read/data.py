@@ -105,6 +105,8 @@ class data:
         # 8: unstable insert condition address
         # 9: testing
 
+        is_lost = 0
+
         res += "*******************************************\n"
         res += "uncovered address : " + hex_adddress(not_covered.uncovered_address) + "\n"
         res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks) + "\n"
@@ -239,8 +241,12 @@ class data:
                         res += "-------------------------------------------\n"
 
                 elif not_covered_address in t.covered_address:
+                    res += "not_covered_address in t.covered_address" + "\n"
                     ua = t.covered_address[not_covered_address]
                     kind = 4
+                else:
+                    res += "not_covered_address lost" + "\n"
+                    is_lost = 1
 
             res += "*******************************************\n"
 
@@ -290,4 +296,4 @@ class data:
 
         res += "kind : " + str(kind) + "\n"
         return res, kind, not_covered.number_dominator_instructions, len(not_covered.input), len(
-            not_covered.write_address), test_count, len(tasks), unstable_count + tested_count
+            not_covered.write_address), test_count, len(tasks), unstable_count + tested_count, is_lost

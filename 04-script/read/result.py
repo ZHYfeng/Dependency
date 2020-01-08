@@ -201,6 +201,7 @@ class Device:
             ua_count = {}
             ua_tasks = {}
             ua_tested_tasks = {}
+            ua_is_lost = {}
             for a in basic.data.uncovered_address_dependency:
                 if a in self.results_with_dra.uncovered_address_dependency and \
                         a in self.results_without_dra.uncovered_address_dependency:
@@ -212,8 +213,8 @@ class Device:
                     ff = open(not_covered_address_file, "a")
                     for r in self.results_with_dra.results:
                         if a in r.data.real_data.uncovered_address:
-                            res, kind, inst, input_count, write_count, count, tasks, tested_tasks = r.data.not_covered_address_tasks_str(
-                                a)
+                            res, kind, inst, input_count, write_count, count, tasks, tested_tasks, is_lost = \
+                                r.data.not_covered_address_tasks_str(a)
                             ff.write(res)
                             ua_status[a] = kind
                             ua_insts[a] = inst
@@ -222,6 +223,7 @@ class Device:
                             ua_count[a] = count
                             ua_tasks[a] = tasks
                             ua_tested_tasks[a] = tested_tasks
+                            ua_is_lost[a] = is_lost
                             break
                     ff.close()
             ua_status_count = {x: 0 for x in range(10)}
@@ -247,7 +249,8 @@ class Device:
                 res += "uncovered address : " + hex_adddress(ua[0]) + " inst : " + str(ua[1]).zfill(4) + " kind : " \
                        + str(ua_status[ua[0]]) + " input : " + str(ua_input[ua[0]]).zfill(3) + " write : " + str(
                     ua_write[ua[0]]).zfill(3) + " count : " + str(ua_count[ua[0]]).zfill(7) + " tasks : " + str(
-                    ua_tasks[ua[0]]).zfill(5) + " tested tasks : " + str(ua_tested_tasks[ua[0]]).zfill(4) + "\n"
+                    ua_tasks[ua[0]]).zfill(5) + " tested tasks : " + str(ua_tested_tasks[ua[0]]).zfill(
+                    4) + " is lost : " + str(ua_is_lost[ua[0]]) + "\n"
 
             res += "\n"
 
@@ -270,7 +273,8 @@ class Device:
             for r in self.results_with_dra.results:
                 for t in sort_task_priority:
                     tt = r.data.real_data.tasks.task_map[t[0]]
-                    res += "task : " + " final priority : " + str(t[1]).zfill(22) + " priority : " + str(tt.priority).zfill(4) + " task status : " + str(pb.taskStatus.Name(
+                    res += "task : " + " final priority : " + str(t[1]).zfill(22) + " priority : " + str(
+                        tt.priority).zfill(4) + " task status : " + str(pb.taskStatus.Name(
                         tt.task_status)).zfill(8) + " uncovered address : " + str(
                         len(tt.uncovered_address)).zfill(3) + " execute count : " + str(tt.count).zfill(3) + "\n"
 
