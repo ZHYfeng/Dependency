@@ -23,7 +23,7 @@ const (
 	bootTime  = 300
 
 	TaskNum             = 40
-	TaskCountLimitation = 50
+	TaskCountLimitation = 120
 
 	DebugLevel = 2
 )
@@ -499,15 +499,17 @@ func (ss *Server) Update() {
 	newDependency = nil
 
 	// deal return tasks
-	returnTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
+	var returnTask []*Task
 	for _, f := range ss.fuzzers {
 		f.taskMu.Lock()
-		returnTask.AddTasks(f.returnTask)
+		for _, t := range f.returnTask.TaskArray {
+			returnTask = append(returnTask, t)
+		}
 		f.returnTask.emptyTask()
 		f.taskMu.Unlock()
 	}
-	for hash, task := range returnTask.TaskMap {
-		if t, ok := ss.corpusDependency.Tasks.TaskMap[hash]; ok {
+	for _, task := range returnTask {
+		if t, ok := ss.corpusDependency.Tasks.TaskMap[task.Hash]; ok {
 			t.mergeTask(task)
 			for u := range t.UncoveredAddress {
 				_, ok := ss.corpusDependency.UncoveredAddress[u]

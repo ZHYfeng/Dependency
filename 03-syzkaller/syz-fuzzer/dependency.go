@@ -49,7 +49,7 @@ func (proc *Proc) dependency(item *WorkDependency) {
 		TaskMap:   map[string]*pb.Task{},
 		TaskArray: []*pb.Task{},
 	}
-	task.Count += 1
+	task.Count = 1
 	tasks.AddTask(task)
 	proc.fuzzer.dManager.ReturnTasks(tasks)
 
