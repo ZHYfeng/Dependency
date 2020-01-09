@@ -468,6 +468,9 @@ func (ss *Server) Update() {
 	}
 	input = nil
 
+	 if ss.needWriteaddress {
+	 	ss.needWriteaddress = false
+	 }
 	// reboot the qemu
 	if ss.needboot {
 		ss.needboot = false
@@ -574,10 +577,12 @@ func (ss *Server) Update() {
 					if len(t.UncoveredAddress) > 0 && t.Count < TaskCountLimitation {
 						if t.TaskStatus == TaskStatus_untested {
 							t.TaskStatus = TaskStatus_testing
+							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
 							//} else if t.TaskStatus == TaskStatus_testing {
 							//	task = append(task, t)
 						} else if t.TaskStatus == TaskStatus_unstable {
+							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
 						}
 						if len(task) > TaskNum {
