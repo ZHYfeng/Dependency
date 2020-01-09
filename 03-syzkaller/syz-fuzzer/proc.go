@@ -182,20 +182,22 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		// Without !minimized check manager starts losing some considerable amount
 		// of coverage after each restart. Mechanics of this are not completely clear.
 		if newSignal.Empty() && item.flags&ProgMinimized == 0 {
-			//if _, _, idx := pb.CheckPath(item.info.Cover, thisCover); idx !=0 {
-			//	unstableInput := &pb.UnstableInput{}
-			//	unstableInput.NewPath = &pb.Path{}
-			//	unstableInput.NewPath.Address = make([]uint32, len(item.info.Cover))
-			//	copy(unstableInput.NewPath.Address, item.info.Cover)
-			//	unstableInput.UnstablePath = &pb.Path{}
-			//	unstableInput.UnstablePath.Address = make([]uint32, len(thisCover))
-			//	copy(unstableInput.UnstablePath.Address, thisCover)
-			//	unstableInput.Idx = int32(item.call)
+			//if _, _, idx := pb.CheckPath(item.info.Cover, thisCover); idx != 0 {
 			//	data := item.p.Serialize()
-			//	unstableInput.Program = make([]byte, len(data))
+			//	unstableInput := &pb.UnstableInput{
+			//		NewPath: &pb.Path{
+			//			Address: make([]uint32, len(item.info.Cover)),
+			//		},
+			//		UnstablePath: &pb.Path{
+			//			Address: make([]uint32, len(item.info.Cover)),
+			//		},
+			//		Idx:     int32(item.call),
+			//		Sig:     hash.Hash(data).String(),
+			//		Program: make([]byte, len(data)),
+			//	}
+			//	copy(unstableInput.NewPath.Address, item.info.Cover)
+			//	copy(unstableInput.UnstablePath.Address, thisCover)
 			//	copy(unstableInput.Program, data)
-			//	sig := hash.Hash(data)
-			//	unstableInput.Sig = sig.String()
 			//	proc.fuzzer.dManager.SendUnstableInput(unstableInput)
 			//}
 			return
