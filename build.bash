@@ -15,11 +15,13 @@ if [ -d $III ]; then
     echo "[*] $III exist"
 else 
     mkdir $III
-    git submodule update --init --recursive
-    cd $PATH_THIRD || exit
-    bash ./build.bash
-    cd ..
 fi
+
+
+git submodule update --init --recursive
+cd $PATH_THIRD || exit
+bash ./build.bash
+cd ..
 
 ldconfig -C $PATH_GIT/ld.so.cache
 
