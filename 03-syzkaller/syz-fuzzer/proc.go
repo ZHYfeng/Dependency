@@ -198,7 +198,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			//	unstableInput.Sig = sig.String()
 			//	proc.fuzzer.dManager.SendUnstableInput(unstableInput)
 			//}
-			//return
+			return
 		}
 		inputCover.Merge(thisCover)
 	}
