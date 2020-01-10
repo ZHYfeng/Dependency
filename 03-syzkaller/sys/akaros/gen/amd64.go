@@ -1529,4 +1529,4 @@ var consts_amd64 = []ConstValue{
 	{Name: "WUNTRACED", Value: 2},
 }
 
-const revision_amd64 = "7d15cd3ca57c55fb13724eab734b3ec25c8babc5"
+const revision_amd64 = "104f9abe4ffb3daf4693f8224c34e1813783bad7"

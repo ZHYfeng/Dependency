@@ -31,7 +31,7 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	d.Connect(name)
 }
 
-// Connect : connect to syz-manager 
+// Connect : connect to syz-manager
 func (d *DRPCClient) Connect(name *string) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)

@@ -2211,7 +2211,10 @@ static volatile long syz_usb_disconnect(volatile long a0)
 
 #if SYZ_EXECUTOR || __NR_syz_open_dev
 #include <fcntl.h>
+#include <limits.h>
+#include <linux/cdrom.h>
 #include <string.h>
+#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -2230,7 +2233,17 @@ static long syz_open_dev(volatile long a0, volatile long a1, volatile long a2)
 			*hash = '0' + (char)(a1 % 10);
 			a1 /= 10;
 		}
-		return open(buf, a2, 0);
+
+		if (buf[5] == 'c' && buf[6] == 'd' && buf[7] == 'r' && buf[8] == 'o' && buf[9] == 'm') {
+			char name[12] = "/dev/cdrom";
+			int r0 = open(name, 0x800);
+			int result = ioctl(r0, CDROM_DRIVE_STATUS, CDSL_NONE);
+			if (result == CDS_TRAY_OPEN)
+				ioctl(r0, CDROMCLOSETRAY);
+			return r0;
+		} else {
+			return open(buf, a2, 0);
+		}
 	}
 }
 #endif

@@ -7715,4 +7715,4 @@ var consts_arm64 = []ConstValue{
 	{Name: "fuchsia_power_Status_OK"},
 }
 
-const revision_arm64 = "8616d9486f604772463f4cae5e52cf7a5cf56e5b"
+const revision_arm64 = "cd106f25e78a7175159bb0ae89e4dd62cf65f11d"

@@ -468,9 +468,9 @@ func (ss *Server) Update() {
 	}
 	input = nil
 
-	 if ss.needWriteaddress {
-	 	ss.needWriteaddress = false
-	 }
+	if ss.needWriteaddress {
+		ss.needWriteaddress = false
+	}
 	// reboot the qemu
 	if ss.needboot {
 		ss.needboot = false

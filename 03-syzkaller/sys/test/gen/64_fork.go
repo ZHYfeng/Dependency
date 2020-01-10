@@ -118,4 +118,4 @@ var consts_64_fork = []ConstValue{
 	{Name: "IPPROTO_UDP", Value: 17},
 }
 
-const revision_64_fork = "dffeac0922d7804bbc534a7a20c77b30232ebc4d"
+const revision_64_fork = "fb88334b756f49140897449403c4220e571d52fd"

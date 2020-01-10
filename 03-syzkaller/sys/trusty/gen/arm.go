@@ -173,4 +173,4 @@ var consts_arm = []ConstValue{
 	{Name: "__NR_write", Value: 1},
 }
 
-const revision_arm = "e310afc1c6f271074c53522dc18d6a86e8f2553f"
+const revision_arm = "6c90c8f358f48e5e7692725606e77e45f66eb6e8"

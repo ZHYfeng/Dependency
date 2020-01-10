@@ -815,12 +815,12 @@ static long syz_extract_tcp_res(volatile long a0, volatile long a1, volatile lon
 
 #if SYZ_EXECUTOR || __NR_syz_open_dev
 #include <fcntl.h>
+#include <limits.h>
+#include <linux/cdrom.h>
 #include <string.h>
+#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <linux/cdrom.h>
-#include <sys/ioctl.h>
-#include <limits.h>
 
 static long syz_open_dev(volatile long a0, volatile long a1, volatile long a2)
 {
@@ -841,17 +841,16 @@ static long syz_open_dev(volatile long a0, volatile long a1, volatile long a2)
 			a1 /= 10;
 		}
 
-		if(buf[5] == 'c' && buf[6] == 'd' && buf[7] == 'r' && buf[8] == 'o' && buf[9] == 'm'){
+		if (buf[5] == 'c' && buf[6] == 'd' && buf[7] == 'r' && buf[8] == 'o' && buf[9] == 'm') {
 			char name[12] = "/dev/cdrom";
-        	int r0 = open(name, 0x800);	//open with mode 0x800
-        	int result = ioctl(r0, CDROM_DRIVE_STATUS, CDSL_NONE);	//check the cd drive status
-        	if(result == CDS_TRAY_OPEN)	//if the tray is open
-        		ioctl(r0, CDROMCLOSETRAY);	//close it
-        	return r0;
+			int r0 = open(name, 0x800); //open with mode 0x800
+			int result = ioctl(r0, CDROM_DRIVE_STATUS, CDSL_NONE); //check the cd drive status
+			if (result == CDS_TRAY_OPEN) //if the tray is open
+				ioctl(r0, CDROMCLOSETRAY); //close it
+			return r0;
 		} else {
-		    return open(buf, a2, 0);
+			return open(buf, a2, 0);
 		}
-
 	}
 }
 #endif
@@ -893,12 +892,11 @@ static long syz_open_pts(volatile long a0, volatile long a1)
 {
 	// syz_openpts(fd fd[tty], flags flags[open_flags]) fd[tty]
 
-
-//    unsigned int dir = 0xffffffffffffff9c;
-    int flag = 0x802;
-    int mode = 0x0;
-//	int a0 = openat(dir, "/dev/ptmx", flag, mode);
-//	int a0 = open("/dev/ptmx", flag, mode);
+	//    unsigned int dir = 0xffffffffffffff9c;
+	int flag = 0x802;
+	int mode = 0x0;
+	//	int a0 = openat(dir, "/dev/ptmx", flag, mode);
+	//	int a0 = open("/dev/ptmx", flag, mode);
 
 	// unlockpt()
 	int lock = 0;
