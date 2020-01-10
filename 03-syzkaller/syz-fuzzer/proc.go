@@ -204,6 +204,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		}
 		inputCover.Merge(thisCover)
 	}
+	data_before_mini := item.p.Serialize()
 	if item.flags&ProgMinimized == 0 {
 		item.p, item.call = prog.Minimize(item.p, item.call, false,
 			func(p1 *prog.Prog, call1 int) bool {
@@ -241,14 +242,11 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 	}
 
 	input := pb.Input{
-		Sig:     sig.String(),
-		Program: []byte{},
-		Call:    make(map[uint32]*pb.Call),
-		Stat:    pb.FuzzingStat_StatTriage,
-	}
-
-	for _, c := range data {
-		input.Program = append(input.Program, c)
+		Sig:               sig.String(),
+		Program:           data,
+		Call:              make(map[uint32]*pb.Call),
+		Stat:              pb.FuzzingStat_StatTriage,
+		ProgramBeforeMini: data_before_mini,
 	}
 
 	//log.Logf(2, "data :\n%s", data)

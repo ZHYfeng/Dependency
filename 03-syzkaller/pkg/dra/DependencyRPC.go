@@ -346,7 +346,7 @@ func (ss *Server) addInput(s *Input) {
 	ss.addWriteAddressMapInput(s)
 	ss.addUncoveredAddressMapInput(s)
 
-	//ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
+	ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
 	return
 }
 
