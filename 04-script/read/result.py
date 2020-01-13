@@ -187,12 +187,12 @@ class Device:
             cmd_rm_0x = "rm -rf 0x*"
             p_rm_0x = subprocess.Popen(cmd_rm_0x, shell=True, preexec_fn=os.setsid)
             p_rm_0x.wait()
-            cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                      + " -staticRes=./" + default.file_taint + " -function=./" + \
-                      default.file_function + " " + default.file_bc
-            print(cmd_a2i)
-            p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
-            p_a2i_img.wait()
+            # cmd_a2i = default.path_a2i + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
+            #           + " -staticRes=./" + default.file_taint + " -function=./" + \
+            #           default.file_function + " " + default.file_bc
+            # print(cmd_a2i)
+            # p_a2i_img = subprocess.Popen(cmd_a2i, shell=True, preexec_fn=os.setsid)
+            # p_a2i_img.wait()
 
             ua_status = {}
             ua_insts = {}
