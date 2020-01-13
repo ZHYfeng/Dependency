@@ -103,6 +103,8 @@ func (m *UncoveredAddress) mergeUncoveredAddress(d *UncoveredAddress) {
 		}
 	}
 
+	m.Count += d.Count
+
 	return
 }
 
@@ -527,6 +529,7 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 		i.mergeUncoveredAddress(s)
 	} else {
 		ss.corpusDependency.UncoveredAddress[s.UncoveredAddress] = s
+		s.Count = 0
 	}
 	ss.addWriteAddressMapUncoveredAddress(s)
 
@@ -622,10 +625,20 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 		}
 	}
 
+	if ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]; ok {
+		if ua.Count < ua.NumberDominatorInstructions {
+			ua.Count += uint32(len(index) * len(writeIndex))
+		} else {
+			return
+		}
+	} else {
+		return
+	}
+
 	for _, i := range index {
 		for _, wi := range writeIndex {
 			if high {
-				ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.HighTask)
+				//ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.HighTask)
 			}
 			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.Tasks)
 		}

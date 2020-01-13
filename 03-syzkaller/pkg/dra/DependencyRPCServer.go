@@ -19,11 +19,11 @@ import (
 const (
 	//startTime = 10800
 	startTime = 0
-	newTime   = 600
-	bootTime  = 300
+	newTime   = 3600
+	bootTime  = 3600
 
 	TaskNum             = 40
-	TaskCountLimitation = 120
+	TaskCountLimitation = 30
 
 	DebugLevel = 2
 )
@@ -595,6 +595,7 @@ func (ss *Server) Update() {
 				}
 				for _, f := range ss.fuzzers {
 					f.taskMu.Lock()
+					f.newTask.emptyTask()
 					for _, t := range task {
 						f.newTask.AddTask(proto.Clone(t).(*Task))
 					}

@@ -202,6 +202,7 @@ message UncoveredAddress {
     // sig, index by bits
     map<string, uint32> input = 22;
     map<uint32, writeAddressAttributes> write_address = 23;
+    uint32 count = 24;
 
     runTimeData run_time_date = 8;
 
