@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fileName := "/home/yuh/data/work/dev_snd_seq/01-result-with-dra/0/data.bin"
+	fileName := "/home/yhao016/data/work/dev_kvm/01-result-with-dra/0/data.bin"
 	in, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Fatalln("Error reading file:", err)
@@ -18,9 +18,9 @@ func main() {
 	if err := proto.Unmarshal(in, corpus); err != nil {
 		log.Fatalln("Failed to parse corpus:", err)
 	}
-	fmt.Printf("size : %d\n", len(corpus.BootTask.Tasks))
-	fmt.Printf("corpus.Tasks.Tasks size : %d\n", len(corpus.Tasks.Tasks))
-	fmt.Printf("size : %d\n", len(corpus.HighTask.Tasks))
+	fmt.Printf("size : %d\n", len(corpus.BootTask.TaskArray))
+	fmt.Printf("corpus.Tasks.Tasks size : %d\n", len(corpus.Tasks.TaskArray))
+	fmt.Printf("size : %d\n", len(corpus.HighTask.TaskArray))
 	fmt.Printf("size : %d\n", len(corpus.Input))
 	fmt.Printf("size : %d\n", len(corpus.NewInput))
 	fmt.Printf("size : %d\n", len(corpus.UncoveredAddress))

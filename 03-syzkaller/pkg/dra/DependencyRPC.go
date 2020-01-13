@@ -583,11 +583,11 @@ func (ss *Server) addInputTask(d *Input) {
 			for writeSig, indexBits := range wa.Input {
 				ss.addTasks(sig, inputIndexBits, writeSig, indexBits, w, u, false)
 			}
-			for name := range wa.FileOperationsFunction {
-				if name == "init" {
-					ss.addBootTasks(sig, inputIndexBits, u)
-				}
-			}
+			//for name := range wa.FileOperationsFunction {
+			//	if name == "init" {
+			//		ss.addBootTasks(sig, inputIndexBits, u)
+			//	}
+			//}
 		}
 	}
 
