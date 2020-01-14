@@ -207,6 +207,8 @@ class data:
                             if write_status[t.write_address] < 12:
                                 write_status[t.write_address] = 12
 
+                                res += "write_status[t.write_address] = 12" + "\n"
+
                     res += "-------------------------------------------\n"
 
                     for r in t.task_run_time_data:
