@@ -108,6 +108,7 @@ class data:
         is_lost = 0
 
         res += "*******************************************\n"
+        res += "condition address : " + hex_adddress(not_covered.condition_address) + "\n"
         res += "uncovered address : " + hex_adddress(not_covered.uncovered_address) + "\n"
         res += "number_arrive_basicblocks : " + str(not_covered.number_arrive_basicblocks) + "\n"
         res += "number_dominator_instructions(using) : " + str(not_covered.number_dominator_instructions) + "\n"
