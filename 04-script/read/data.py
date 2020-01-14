@@ -200,7 +200,7 @@ class data:
                     res += "task_status : " + pb.taskStatus.Name(ua.task_status) + "\n"
                     res += "check condition : " + str(ua.checkCondition) + "\n"
                     res += "chech address : " + str(ua.checkAddress) + "\n"
-                    if pb.taskStatus.Name(ua.task_status) != pb.untested:
+                    if ua.task_status != pb.untested:
                         if ua.checkCondition:
                             res += ""
                         else:
