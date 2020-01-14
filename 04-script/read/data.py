@@ -200,11 +200,13 @@ class data:
                     res += "task_status : " + pb.taskStatus.Name(ua.task_status) + "\n"
                     res += "check condition : " + str(ua.checkCondition) + "\n"
                     res += "chech address : " + str(ua.checkAddress) + "\n"
-                    if ua.checkCondition:
-                        res += ""
-                    else:
-                        if write_status[t.write_address] < 12:
-                            write_status[t.write_address] = 12
+                    if pb.taskStatus.Name(ua.task_status) != pb.untested:
+                        if ua.checkCondition:
+                            res += ""
+                        else:
+                            if write_status[t.write_address] < 12:
+                                write_status[t.write_address] = 12
+
                     res += "-------------------------------------------\n"
 
                     for r in t.task_run_time_data:
