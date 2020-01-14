@@ -207,12 +207,14 @@ class Device:
             #             a in self.results_without_dra.uncovered_address_dependency:
 
             for a in self.results_with_dra.uncovered_address_dependency:
-                    name = not_covered_address_file_name(basic.data.real_data.uncovered_address[a])
-                    not_covered_address_file = os.path.join(self.path_dev, name)
-                    print(not_covered_address_file)
-                    ff = open(not_covered_address_file, "a")
+
                     for r in self.results_with_dra.results:
                         if a in r.data.real_data.uncovered_address:
+                            name = not_covered_address_file_name(r.data.real_data.uncovered_address[a])
+                            not_covered_address_file = os.path.join(self.path_dev, name)
+                            print(not_covered_address_file)
+                            ff = open(not_covered_address_file, "a")
+
                             res, kind, inst, input_count, write_count, count, tasks, tested_tasks, is_lost = \
                                 r.data.not_covered_address_tasks_str(a)
                             ff.write(res)
@@ -224,8 +226,9 @@ class Device:
                             ua_tasks[a] = tasks
                             ua_tested_tasks[a] = tested_tasks
                             ua_is_lost[a] = is_lost
+
+                            ff.close()
                             break
-                    ff.close()
             ua_status_count = {x: 0 for x in range(10)}
             for ua in ua_status:
                 ua_status_count[ua_status[ua]] += 1
