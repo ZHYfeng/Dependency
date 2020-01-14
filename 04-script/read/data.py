@@ -25,6 +25,8 @@ def not_covered_address_str(uncovered_address: pb.UncoveredAddress):
 
 def not_covered_address_file_name(uncovered_address: pb.UncoveredAddress):
     res = hex_adddress(uncovered_address.condition_address) + ".txt"
+    print(hex(uncovered_address.condition_address))
+    print(res)
     return res
 
 
