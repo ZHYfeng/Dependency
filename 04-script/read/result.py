@@ -202,11 +202,11 @@ class Device:
             ua_tasks = {}
             ua_tested_tasks = {}
             ua_is_lost = {}
-            for a in basic.data.uncovered_address_dependency:
-                if a in self.results_with_dra.uncovered_address_dependency and \
-                        a in self.results_without_dra.uncovered_address_dependency:
+            # for a in basic.data.uncovered_address_dependency:
+            #     if a in self.results_with_dra.uncovered_address_dependency and \
+            #             a in self.results_without_dra.uncovered_address_dependency:
 
-                    # for a in self.results_with_dra.uncovered_address_dependency:
+            for a in self.results_with_dra.uncovered_address_dependency:
                     name = not_covered_address_file_name(basic.data.real_data.uncovered_address[a])
                     not_covered_address_file = os.path.join(self.path_dev, name)
                     print(not_covered_address_file)
