@@ -626,7 +626,7 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	}
 
 	if ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]; ok {
-		if ua.Count < ua.NumberDominatorInstructions {
+		if ua.Count < ua.NumberDominatorInstructions*10 {
 			ua.Count += uint32(len(index) * len(writeIndex))
 		} else {
 			return
