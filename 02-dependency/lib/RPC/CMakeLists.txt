@@ -1,15 +1,15 @@
 set(PROTOC
         DependencyRPC.grpc.pb.cc
         DependencyRPC.pb.cc
-        )
-
-set(APROTOC
-        a2l.pb.cc
+        Base.pb.cc
+        Dependency.pb.cc
+        Task.pb.cc
+        Input.pb.cc
+        Statistic.pb.cc
         )
 
 set(SOURCES
         ${PROTOC}
-        ${APROTOC}
         DependencyRPCClient.cpp)
 
 add_library(RPC ${SOURCES})

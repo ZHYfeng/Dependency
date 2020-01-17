@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package dra;
+
+import "Input.proto";
+
+message Statistic {
+    FuzzingStat name = 1;
+
+    uint64 executeNum = 11;
+    double time = 12;
+    uint64 newTestCaseNum = 13;
+    uint64 newAddressNum = 14;
+}
+
+message Time {
+    double time = 1;
+    int64 num = 2;
+    int64 executeNum = 3;
+}
+
+message Coverage {
+    map<uint32, uint32> coverage = 1;
+    repeated Time time = 2;
+}
+
+message UsefulInput {
+    Input input = 1;
+    double time = 2;
+    uint64 num = 3;
+    repeated uint32 new_address = 4;
+}
+
+message Statistics {
+    uint64 signalNum = 1;
+    uint32 basic_block_number = 10;
+    Coverage coverage = 8;
+    map<int32, Statistic> stat = 11;
+    repeated UsefulInput useful_input = 12;
+}

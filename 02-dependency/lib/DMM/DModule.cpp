@@ -9,7 +9,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "../RPC/a2l.pb.h"
+#include "../RPC/Dependency.pb.h"
 #include "../DCC/general.h"
 
 #define PATH_SIZE 10000

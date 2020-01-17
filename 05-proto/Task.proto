@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package dra;
+
+enum taskStatus {
+    untested = 0;
+
+    unstable_write = 11;
+    unstable_condition = 12;
+    unstable_insert = 13;
+    unstable = 14;
+
+    tested = 21;
+    covered = 22;
+
+    recursive = 31;
+    out = 32;
+}
+
+message runTimeData {
+    uint32 priority = 1;
+    uint32 condition_address = 2;
+    uint32 address = 4;
+    repeated uint32 right_branch_address = 6;
+
+    taskStatus task_status = 10;
+    bytes program = 12;
+    uint32 idx = 13;
+    uint32 rcursive_count = 14;
+
+    bool checkCondition = 21;
+    bool checkAddress = 22;
+    bool checkRightBranchAddress = 23;
+    //    map<uint32, uint32> right_branch_address = 16;
+}
+
+message TaskRunTimeData {
+    string hash = 1;
+    bytes program = 2;
+    uint32 write_idx = 5;
+    uint32 condition_idx = 6;
+
+    bool check_write_address = 10;
+    map<uint32, runTimeData> uncovered_address = 21;
+    map<uint32, runTimeData> covered_address = 23;
+}
+
+message Task {
+    string sig = 1;
+    uint32 index = 2;
+    bytes program = 3;
+
+    // 0 is undef
+    // 1 is constant
+    uint32 kind = 4;
+    int32 priority = 5;
+    string hash = 6;
+    uint32 count = 7;
+
+    string write_sig = 11;
+    uint32 write_index = 12;
+    bytes write_program = 13;
+    uint32 write_address = 14;
+
+
+    taskStatus task_status = 24;
+    bool check_write_address = 25;
+    // uncovered address, priority
+    map<uint32, runTimeData> uncovered_address = 21;
+    map<uint32, runTimeData> covered_address = 23;
+
+    repeated TaskRunTimeData task_run_time_data = 31;
+}
+
+enum TaskKind {
+    Normal = 0;
+    High = 1;
+    Boot = 2;
+}
+
+message Tasks {
+    string name = 41;
+    TaskKind kind = 42;
+    map<string, Task> task_map = 1;
+    repeated Task task_array = 2;
+}

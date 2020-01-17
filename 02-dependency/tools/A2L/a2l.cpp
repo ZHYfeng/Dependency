@@ -5,7 +5,7 @@
 #include <llvm/Support/CommandLine.h>
 #include <sstream>
 #include <fstream>
-#include "../../lib/RPC/a2l.pb.cc"
+#include "../../lib/RPC/Dependency.pb.h"
 
 #define TEST 0
 #define DEBUG_OBJ_DUMP 0

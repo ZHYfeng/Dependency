@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package dra;
+
+enum FuzzingStat {
+    StatDefault = 0;
+    StatGenerate = 1;
+    StatFuzz = 2;
+    StatCandidate = 3;
+    StatTriage = 4;
+    StatMinimize = 5;
+    StatSmash = 6;
+    StatHint = 7;
+    StatSeed = 8;
+    StatDependency = 9;
+    StatDependencyBoot = 10;
+}
+
+message Call {
+    uint32 idx = 1;
+    map<uint32, uint32> address = 2;
+    //    repeated uint32 address = 2;
+}
+
+message Input {
+    // for program
+    string sig = 11; // hash value for each input from syzkaller
+    bytes program = 12;
+    map<uint32, Call> call = 13;
+
+    uint32 stable = 14;
+    uint32 total = 15;
+
+    // for dependency
+    FuzzingStat stat = 21;
+    // uncovered address, index by bits
+    map<uint32, uint32> uncovered_address = 22;
+    // write address, index by bits
+    map<uint32, uint32> write_address = 25;
+
+    bytes program_before_mini = 30;
+
+}
+
+message Inputs {
+    // map<string, Input> input = 1;
+    repeated Input input = 1;
+}
+
+
+message Path {
+    repeated uint32 address = 1;
+}
+
+message UnstableInput {
+    Path new_path = 1;
+    Path unstable_path = 2;
+    int32 idx = 3;
+
+    string sig = 11; // hash value for each input from syzkaller
+    bytes program = 12;
+
+}

@@ -8,6 +8,10 @@ import (
 	"log"
 )
 
+const (
+
+)
+
 func main() {
 	fileName := "/home/yhao016/data/work/dev_kvm/01-result-with-dra/0/data.bin"
 	in, err := ioutil.ReadFile(fileName)

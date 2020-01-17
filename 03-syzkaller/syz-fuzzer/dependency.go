@@ -43,6 +43,9 @@ func (proc *Proc) dependency(item *WorkDependency) {
 			}
 		}
 	}
+
+
+
 	tasks := &pb.Tasks{
 		Name:      proc.fuzzer.name,
 		Kind:      pb.TaskKind_Normal,

@@ -1,0 +1,143 @@
+syntax = "proto3";
+
+package dra;
+
+import "Input.proto";
+import "Task.proto";
+
+message WriteAddress {
+
+    // the address writes to global variable
+    uint32 write_address = 2;
+    // the address of condition which is related to this global variable
+    uint32 condition_address = 3;
+
+    //    map<uint32, Input> write_input = 4;
+    //    map<uint32, Syscall> write_syscall = 5;
+    //    repeated Input write_input = 4;
+    //    repeated Syscall write_syscall = 5;
+    // 0 is undef
+    // 1 is constant
+    uint32 kind = 4;
+
+    // uncovered address,
+    map<uint32, writeAddressAttributes> uncovered_address = 23;
+    // file_operations name, file_operations_function index bits
+    map<string, uint32> file_operations_function = 24;
+    // sig, index by bits
+    map<string, uint32> input = 25;
+
+    // it is the data of uncovered address
+        runTimeData run_time_date = 11;
+}
+
+message writeAddressAttributes {
+    // the address writes to global variable
+    uint32 write_address = 2;
+    uint32 repeat = 7;
+    uint32 prio = 6;
+}
+
+enum UncoveredAddressKind {
+    Outside = 0;
+    InputRelated = 1;
+    DependencyRelated = 2;
+    Other = 3;
+}
+
+message UncoveredAddress {
+
+    uint32 condition_address = 1;
+    uint32 uncovered_address = 2;
+    repeated uint32 right_branch_address = 3;
+    uint32 number_arrive_basicblocks = 4;
+    UncoveredAddressKind kind = 5;
+    uint32 number_dominator_instructions = 6;
+
+    // sig, index by bits
+    map<string, uint32> input = 22;
+    map<uint32, writeAddressAttributes> write_address = 23;
+    uint32 count = 24;
+
+        runTimeData run_time_date = 8;
+
+}
+
+message Dependency {
+
+    Input input = 1;
+    UncoveredAddress uncovered_address = 2;
+    repeated WriteAddress write_address = 3;
+
+}
+
+enum file_operations_kind {
+    default = 0;
+    init = 1;
+    llseek = 2;
+    read = 3;
+    write = 4;
+    poll = 9;
+    unlocked_ioctl = 10;
+    mmap = 12;
+    open = 14;
+    release = 16;
+}
+
+message FileOperationsFunction {
+    string name = 1;
+    string file_operations_name = 2;
+    file_operations_kind kind = 3;
+    uint64 cmd = 4;
+
+    //    repeated Condition critical_condition = 4;
+    //    map<uint32, Condition> critical_condition = 4;
+    // it is the data of this syscall
+        runTimeData run_time_date = 5;
+
+    //    repeated WriteAddress write_address = 11;
+    map<uint32, uint32> write_address = 11;
+}
+
+message FileOperations {
+    string name = 1;
+    //cmd or 0, function
+    map<int64, FileOperationsFunction> file_operations_function = 3;
+}
+
+message address {
+    string name = 1;
+    map<string, string> addr = 2;
+}
+
+message Condition {
+
+    uint64 condition_address = 1;
+    uint32 syzkaller_condition_address = 2;
+    uint64 uncovered_address = 3;
+    uint32 syzkaller_uncovered_address = 4;
+
+    uint32 idx = 5;
+    uint64 successor = 6;
+
+    //    map<uint64, uint32> right_branch_address = 7;
+    //    map<uint32, uint32> syzkaller_right_branch_address = 8;
+    //    map<uint64, uint32> wrong_branch_address = 9;
+    //    map<uint32, uint32> syzkaller_wrong_branch_address = 10;
+    repeated uint64 right_branch_address = 7;
+    repeated uint32 syzkaller_right_branch_address = 8;
+    //    repeated uint64 wrong_branch_address = 9;
+    //    repeated uint32 syzkaller_wrong_branch_address = 10;
+
+}
+
+message Conditions {
+    //    map<uint64, Condition> condition = 10;
+    repeated Condition condition = 10;
+}
+
+message WriteAddresses {
+    Condition condition = 1;
+    //    map<uint32, WriteAddress> write_address = 4;
+    repeated WriteAddress write_address = 4;
+}

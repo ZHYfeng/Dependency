@@ -348,7 +348,11 @@ func (ss *Server) addInput(s *Input) {
 	ss.addWriteAddressMapInput(s)
 	ss.addUncoveredAddressMapInput(s)
 
-	ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
+	if Unstable {
+
+	} else {
+		ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
+	}
 	return
 }
 
@@ -777,6 +781,7 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 			}
 			t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
 		}
+		t.TaskStatus = TaskStatus_untested
 		t.updatePriority(task.Priority)
 		return
 	}
@@ -871,6 +876,11 @@ func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint
 }
 
 func (ss *Server) writeMessageToDisk(message proto.Message, name string) {
+	t := time.Now()
+	elapsed := t.Sub(ss.timeStart)
+	if elapsed.Seconds() > TimeWriteToDisk {
+
+	}
 	out, err := proto.Marshal(message)
 	if err != nil {
 		log.Fatalf("Failed to encode address: %s", err)

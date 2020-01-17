@@ -21,11 +21,16 @@ const (
 	startTime = 0
 	newTime   = 3600
 	bootTime  = 3600
+	TimeWriteToDisk = 3600
+	TimeExit = 3600
 
 	TaskNum             = 40
 	TaskCountLimitation = 30
 
 	DebugLevel = 2
+
+	CollectPath = true
+	Unstable = true
 )
 
 type syzFuzzer struct {
@@ -704,4 +709,10 @@ func (ss *Server) Update() {
 
 	ss.writeMessageToDisk(ss.stat, "statistics.bin")
 	ss.writeMessageToDisk(ss.corpusDependency, "data.bin")
+
+	t := time.Now()
+	elapsed := t.Sub(ss.timeStart)
+	if elapsed.Seconds() > TimeExit {
+		os.Exit(1)
+	}
 }

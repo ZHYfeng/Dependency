@@ -158,7 +158,7 @@ namespace dra {
                 } else if (write_basicblock->empty()) {
                     uncoveredAddress->set_kind(UncoveredAddressKind::InputRelated);
                 } else if (!write_basicblock->empty()) {
-                    uncoveredAddress->set_kind(UncoveredAddressKind::DependnecyRelated);
+                    uncoveredAddress->set_kind(UncoveredAddressKind::DependencyRelated);
 
                     //                    if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
                     //                        this->DM.uncover[u->uncovered_address()]->related_to_gv = true;

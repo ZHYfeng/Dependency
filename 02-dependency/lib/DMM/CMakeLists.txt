@@ -8,4 +8,4 @@ set(SOURCES
         DInput.cpp
         )
 
-add_library(DRA ${SOURCES})
+add_library(DMM ${SOURCES})

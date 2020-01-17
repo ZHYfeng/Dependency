@@ -385,6 +385,10 @@ func (proc *Proc) executeRaw(opts *ipc.ExecOpts, p *prog.Prog, stat Stat) *ipc.P
 		log.Fatalf("dedup cover is not enabled")
 	}
 
+	if pb.CollectPath {
+		opts.Flags &= ^ipc.FlagDedupCover
+	}
+
 	// Limit concurrency window and do leak checking once in a while.
 	ticket := proc.fuzzer.gate.Enter()
 	defer proc.fuzzer.gate.Leave(ticket)

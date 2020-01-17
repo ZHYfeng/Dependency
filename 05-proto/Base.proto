@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package dra;
+
+message Empty {
+    uint32 address = 1;
+    string name = 2;
+}
