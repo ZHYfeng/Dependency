@@ -1,6 +1,6 @@
 import os
 
-from default import DependencyRPC_pb2 as pb, default
+from default import Statistic_pb2 as pb, Base_pb2, default
 
 
 class stats:

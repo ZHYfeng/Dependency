@@ -97,15 +97,15 @@ func (proc *Proc) loop() {
 				log.Fatalf("unknown work type: %#v", item)
 			}
 		} else {
-			r := rand.New(proc.rnd)
-			n := 4
-			m := 2
-			if r.Intn(n) < m {
-				item := proc.fuzzer.workQueue.dequeueDependency()
-				if item != nil {
-					statName = pb.FuzzingStat_StatDependency
-					proc.dependency(item)
-				}
+			//r := rand.New(proc.rnd)
+			//n := 4
+			//m := 2
+			//if r.Intn(n) < m {
+			item := proc.fuzzer.workQueue.dequeueDependency()
+			if item != nil {
+				statName = pb.FuzzingStat_StatDependency
+				proc.dependency(item)
+				//}
 			} else {
 				ct := proc.fuzzer.choiceTable
 				corpus := proc.fuzzer.corpusSnapshot()

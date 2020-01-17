@@ -34,17 +34,15 @@ func (proc *Proc) dependency(item *WorkDependency) {
 	if len(task.UncoveredAddress) == 0 {
 		task.TaskStatus = pb.TaskStatus_covered
 	} else if !task.CheckWriteAddress {
-		task.TaskStatus = pb.TaskStatus_unstable
+		task.TaskStatus = pb.TaskStatus_unstable_write
 	} else {
 		task.TaskStatus = pb.TaskStatus_tested
 		for _, ua := range task.UncoveredAddress {
 			if ua.TaskStatus == pb.TaskStatus_unstable {
-				task.TaskStatus = pb.TaskStatus_unstable
+				task.TaskStatus = pb.TaskStatus_unstable_condition
 			}
 		}
 	}
-
-
 
 	tasks := &pb.Tasks{
 		Name:      proc.fuzzer.name,
@@ -109,6 +107,25 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 		task.CheckWriteAddress = true
 	} else {
 		task.CheckWriteAddress = false
+		if pb.Unstable {
+
+			unstableInput := &pb.UnstableInput{
+				NewPath:      map[uint32]*pb.Path{},
+				UnstablePath: map[uint32]*pb.Path{},
+				Idx:          task.WriteIndex,
+				Address:      task.WriteAddress,
+				Sig:          task.WriteSig,
+				Program:      task.WriteProgram,
+			}
+			for i, c := range info.Calls {
+				unstableInput.UnstablePath[uint32(i)] = &pb.Path{
+					Address: c.Cover,
+				}
+			}
+
+			proc.fuzzer.dManager.SendUnstableInput(unstableInput)
+		}
+
 	}
 
 	ProgCondition, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
@@ -134,8 +151,28 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 			}
 		} else {
 			r.CheckCondition = false
-			if r.TaskStatus < pb.TaskStatus_unstable {
-				r.TaskStatus = pb.TaskStatus_unstable
+			if r.TaskStatus < pb.TaskStatus_unstable_condition {
+				r.TaskStatus = pb.TaskStatus_unstable_condition
+
+				if pb.Unstable {
+
+					unstableInput := &pb.UnstableInput{
+						NewPath:      map[uint32]*pb.Path{},
+						UnstablePath: map[uint32]*pb.Path{},
+						Idx:          task.Index,
+						Address:      r.ConditionAddress,
+						Sig:          task.Sig,
+						Program:      task.Program,
+					}
+					for i, c := range info.Calls {
+						unstableInput.UnstablePath[uint32(i)] = &pb.Path{
+							Address: c.Cover,
+						}
+					}
+
+					proc.fuzzer.dManager.SendUnstableInput(unstableInput)
+
+				}
 			}
 		}
 	}
@@ -277,8 +314,9 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 			}
 		} else {
 			r.CheckCondition = false
-			if r.TaskStatus < pb.TaskStatus_unstable {
-				r.TaskStatus = pb.TaskStatus_unstable
+			if r.TaskStatus < pb.TaskStatus_unstable_condition {
+				r.TaskStatus = pb.TaskStatus_unstable_condition
+
 			}
 		}
 	}

@@ -266,7 +266,7 @@ func (m *Task) mergeTask(s *Task) {
 		}
 	}
 
-	if m.TaskStatus == TaskStatus_testing {
+	if m.TaskStatus == TaskStatus_untested {
 		m.TaskStatus = s.TaskStatus
 	} else if m.TaskStatus == TaskStatus_unstable {
 		m.TaskStatus = s.TaskStatus

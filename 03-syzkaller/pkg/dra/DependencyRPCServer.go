@@ -18,11 +18,11 @@ import (
 // useful const
 const (
 	//startTime = 10800
-	startTime = 0
-	newTime   = 3600
-	bootTime  = 3600
+	startTime       = 0
+	newTime         = 3600
+	bootTime        = 3600
 	TimeWriteToDisk = 3600
-	TimeExit = 3600
+	TimeExit        = 3600 * 2
 
 	TaskNum             = 40
 	TaskCountLimitation = 30
@@ -30,7 +30,7 @@ const (
 	DebugLevel = 2
 
 	CollectPath = true
-	Unstable = true
+	Unstable    = true
 )
 
 type syzFuzzer struct {
@@ -80,18 +80,24 @@ type Server struct {
 	dependencyMu  *sync.Mutex
 	newDependency *dependencys
 
+	// inputs of new test cases, used to get dependency
 	newInputMu *sync.Mutex
 	newInput   *Inputs
 
-	// not new input, it is random picked inputs which used as new input.
+	// inputs picked by randomly, used as new test cases.
 	needInputMu *sync.Mutex
 	needInput   *Inputs
 
+	// inputs of new test cases, used to check write addresses
 	inputMu *sync.Mutex
 	input   *Inputs
 
+	// inputs of new test cases, used to check coverage
 	coveredInputMu *sync.Mutex
 	coveredInput   *Inputs
+
+	unstableInputMu *sync.Mutex
+	unstableInput   map[string]*UnstableInput
 }
 
 // GetVMOffsets is to send the offset address in vmlinux to dra
@@ -287,17 +293,15 @@ func (ss Server) SendBootInput(ctx context.Context, request *Input) (*Empty, err
 
 // SendUnstableInput is get unstable input from syz-fuzzer
 func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) (*Empty, error) {
-	ss.logMu.Lock()
-	defer ss.logMu.Unlock()
-	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput : %x\n", request.NewPath.Address)
-	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput : %x\n", request.UnstablePath.Address)
-	newPathIdx, unstablePathIdx, idx := CheckPath(request.NewPath.Address, request.UnstablePath.Address)
-	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput newPathIdx: %v unstablePathIdx : %v idx : %v\n",
-		newPathIdx, unstablePathIdx, idx)
-	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput different address: %x\n",
-		request.NewPath.Address[idx+newPathIdx])
-	ss.log.Name = ss.log.Name + fmt.Sprintf("(ss Server) SendUnstableInput different address: %x\n",
-		request.UnstablePath.Address[idx+unstablePathIdx])
+	if Unstable {
+		ui := proto.Clone(request).(*UnstableInput)
+		ss.unstableInputMu.Lock()
+		defer ss.unstableInputMu.Unlock()
+		if _, ok := ss.unstableInput[ui.Sig]; ok {
+		} else {
+			ss.unstableInput[ui.Sig] = ui
+		}
+	}
 
 	reply := &Empty{}
 	return reply, nil
@@ -420,6 +424,11 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	ss.coveredInputMu = &sync.Mutex{}
 	ss.coveredInput = &Inputs{Input: []*Input{}}
+
+	if Unstable {
+		ss.unstableInputMu = &sync.Mutex{}
+		ss.unstableInput = map[string]*UnstableInput{}
+	}
 
 	lis, err := net.Listen("tcp", ss.Address)
 	log.Logf(0, "drpc on tcp : %s", ss.Address)
@@ -581,7 +590,6 @@ func (ss *Server) Update() {
 					}
 					if len(t.UncoveredAddress) > 0 && t.Count < TaskCountLimitation {
 						if t.TaskStatus == TaskStatus_untested {
-							t.TaskStatus = TaskStatus_testing
 							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
 							//} else if t.TaskStatus == TaskStatus_testing {
@@ -664,7 +672,6 @@ func (ss *Server) Update() {
 						}
 						if len(t.UncoveredAddress) > 0 {
 							task = append(task, t)
-							t.TaskStatus = TaskStatus_testing
 						}
 					}
 				}
@@ -709,6 +716,44 @@ func (ss *Server) Update() {
 
 	ss.writeMessageToDisk(ss.stat, "statistics.bin")
 	ss.writeMessageToDisk(ss.corpusDependency, "data.bin")
+
+	if Unstable {
+		ss.unstableInputMu.Lock()
+		unstableInput := map[string]*UnstableInput{}
+		for sig, ui := range ss.unstableInput {
+			unstableInput[sig] = ui
+		}
+		ss.unstableInput = map[string]*UnstableInput{}
+		ss.unstableInputMu.Unlock()
+		for sig, ui := range unstableInput {
+			ss.writeMessageToDisk(ui, sig)
+			res := ""
+			res += "sig : " + ui.Sig + "\n"
+			res += "program : \n" + string(ui.Program) + "\n"
+			res += "idx : " + string(ui.Idx) + "\n"
+			res += "address : " + string(ui.Address) + "\n"
+			res += "NewPath : \n"
+			for i, p := range ui.NewPath {
+				res += string(i)
+				for _, a := range p.Address {
+					res += "0xffffffff" + fmt.Sprintf("%x", a)
+				}
+				res += "\n"
+			}
+			res += "UnstablePath : \n"
+			for i, p := range ui.UnstablePath {
+				res += string(i)
+				for _, a := range p.Address {
+					res += "0xffffffff" + fmt.Sprintf("%x", a)
+				}
+				res += "\n"
+			}
+
+			f, _ := os.OpenFile(sig+".txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			_, _ = f.WriteString(res)
+			_ = f.Close()
+		}
+	}
 
 	t := time.Now()
 	elapsed := t.Sub(ss.timeStart)

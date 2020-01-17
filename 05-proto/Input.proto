@@ -53,9 +53,10 @@ message Path {
 }
 
 message UnstableInput {
-    Path new_path = 1;
-    Path unstable_path = 2;
-    int32 idx = 3;
+    map<uint32, Path> new_path = 1;
+    map<uint32, Path> unstable_path = 2;
+    uint32 idx = 3;
+    uint32 address = 4;
 
     string sig = 11; // hash value for each input from syzkaller
     bytes program = 12;
