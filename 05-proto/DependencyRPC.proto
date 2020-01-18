@@ -50,7 +50,7 @@ service DependencyRPC {
     }
 }
 
-message Corpus {
+message Data {
     map<string, Input> input = 1;
     map<uint32, UncoveredAddress> uncovered_address = 4;
     map<uint32, UncoveredAddress> covered_address = 2;

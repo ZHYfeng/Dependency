@@ -23,29 +23,29 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x13\x44\x65pendencyRPC.proto\x12\x03\x64ra\x1a\nBase.proto\x1a\nTask.proto\x1a\x0bInput.proto\x1a\x0fStatistic.proto\x1a\x10\x44\x65pendency.proto\"\xc7\x06\n\x06\x43orpus\x12%\n\x05input\x18\x01 \x03(\x0b\x32\x16.dra.Corpus.InputEntry\x12<\n\x11uncovered_address\x18\x04 \x03(\x0b\x32!.dra.Corpus.UncoveredAddressEntry\x12\x38\n\x0f\x63overed_address\x18\x02 \x03(\x0b\x32\x1f.dra.Corpus.CoveredAddressEntry\x12\x34\n\rwrite_address\x18\x05 \x03(\x0b\x32\x1d.dra.Corpus.WriteAddressEntry\x12\x38\n\x0f\x66ile_operations\x18\x06 \x03(\x0b\x32\x1f.dra.Corpus.FileOperationsEntry\x12\x19\n\x05tasks\x18\x07 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\thigh_task\x18\x08 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\tboot_task\x18\t \x01(\x0b\x32\n.dra.Tasks\x12,\n\tnew_input\x18\x0b \x03(\x0b\x32\x19.dra.Corpus.NewInputEntry\x1a\x38\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x1aN\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1aL\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1a\x46\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dra.WriteAddress:\x02\x38\x01\x1aJ\n\x13\x46ileOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dra.FileOperations:\x02\x38\x01\x1a;\n\rNewInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x32\xf5\x05\n\rDependencyRPC\x12(\n\x0cGetVMOffsets\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12\x30\n\x14SendBasicBlockNumber\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0bGetNewInput\x12\n.dra.Empty\x1a\x0b.dra.Inputs\"\x00\x12/\n\x0eSendDependency\x12\x0f.dra.Dependency\x1a\n.dra.Empty\"\x00\x12-\n\x0cGetCondition\x12\n.dra.Empty\x1a\x0f.dra.Conditions\"\x00\x12\x35\n\x10SendWriteAddress\x12\x13.dra.WriteAddresses\x1a\n.dra.Empty\"\x00\x12#\n\x07\x43onnect\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0cSendNewInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12$\n\x08GetTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12(\n\x0cGetBootTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12\'\n\x0bReturnTasks\x12\n.dra.Tasks\x1a\n.dra.Empty\"\x00\x12)\n\rSendBootInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12\x35\n\x11SendUnstableInput\x12\x12.dra.UnstableInput\x1a\n.dra.Empty\"\x00\x12#\n\x07SendLog\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x08sendStat\x12\x0e.dra.Statistic\x1a\n.dra.Empty\"\x00\x12#\n\x07GetNeed\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12)\n\rSendNeedInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x13\x44\x65pendencyRPC.proto\x12\x03\x64ra\x1a\nBase.proto\x1a\nTask.proto\x1a\x0bInput.proto\x1a\x0fStatistic.proto\x1a\x10\x44\x65pendency.proto\"\xb9\x06\n\x04\x44\x61ta\x12#\n\x05input\x18\x01 \x03(\x0b\x32\x14.dra.Data.InputEntry\x12:\n\x11uncovered_address\x18\x04 \x03(\x0b\x32\x1f.dra.Data.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x02 \x03(\x0b\x32\x1d.dra.Data.CoveredAddressEntry\x12\x32\n\rwrite_address\x18\x05 \x03(\x0b\x32\x1b.dra.Data.WriteAddressEntry\x12\x36\n\x0f\x66ile_operations\x18\x06 \x03(\x0b\x32\x1d.dra.Data.FileOperationsEntry\x12\x19\n\x05tasks\x18\x07 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\thigh_task\x18\x08 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\tboot_task\x18\t \x01(\x0b\x32\n.dra.Tasks\x12*\n\tnew_input\x18\x0b \x03(\x0b\x32\x17.dra.Data.NewInputEntry\x1a\x38\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x1aN\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1aL\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1a\x46\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dra.WriteAddress:\x02\x38\x01\x1aJ\n\x13\x46ileOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dra.FileOperations:\x02\x38\x01\x1a;\n\rNewInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x32\xf5\x05\n\rDependencyRPC\x12(\n\x0cGetVMOffsets\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12\x30\n\x14SendBasicBlockNumber\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0bGetNewInput\x12\n.dra.Empty\x1a\x0b.dra.Inputs\"\x00\x12/\n\x0eSendDependency\x12\x0f.dra.Dependency\x1a\n.dra.Empty\"\x00\x12-\n\x0cGetCondition\x12\n.dra.Empty\x1a\x0f.dra.Conditions\"\x00\x12\x35\n\x10SendWriteAddress\x12\x13.dra.WriteAddresses\x1a\n.dra.Empty\"\x00\x12#\n\x07\x43onnect\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0cSendNewInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12$\n\x08GetTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12(\n\x0cGetBootTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12\'\n\x0bReturnTasks\x12\n.dra.Tasks\x1a\n.dra.Empty\"\x00\x12)\n\rSendBootInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12\x35\n\x11SendUnstableInput\x12\x12.dra.UnstableInput\x1a\n.dra.Empty\"\x00\x12#\n\x07SendLog\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x08sendStat\x12\x0e.dra.Statistic\x1a\n.dra.Empty\"\x00\x12#\n\x07GetNeed\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12)\n\rSendNeedInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x62\x06proto3'
   ,
   dependencies=[Base__pb2.DESCRIPTOR,Task__pb2.DESCRIPTOR,Input__pb2.DESCRIPTOR,Statistic__pb2.DESCRIPTOR,Dependency__pb2.DESCRIPTOR,])
 
 
 
 
-_CORPUS_INPUTENTRY = _descriptor.Descriptor(
+_DATA_INPUTENTRY = _descriptor.Descriptor(
   name='InputEntry',
-  full_name='dra.Corpus.InputEntry',
+  full_name='dra.Data.InputEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Corpus.InputEntry.key', index=0,
+      name='key', full_name='dra.Data.InputEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Corpus.InputEntry.value', index=1,
+      name='value', full_name='dra.Data.InputEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -63,26 +63,26 @@ _CORPUS_INPUTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=517,
-  serialized_end=573,
+  serialized_start=503,
+  serialized_end=559,
 )
 
-_CORPUS_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
+_DATA_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   name='UncoveredAddressEntry',
-  full_name='dra.Corpus.UncoveredAddressEntry',
+  full_name='dra.Data.UncoveredAddressEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Corpus.UncoveredAddressEntry.key', index=0,
+      name='key', full_name='dra.Data.UncoveredAddressEntry.key', index=0,
       number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Corpus.UncoveredAddressEntry.value', index=1,
+      name='value', full_name='dra.Data.UncoveredAddressEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -100,26 +100,26 @@ _CORPUS_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=575,
-  serialized_end=653,
+  serialized_start=561,
+  serialized_end=639,
 )
 
-_CORPUS_COVEREDADDRESSENTRY = _descriptor.Descriptor(
+_DATA_COVEREDADDRESSENTRY = _descriptor.Descriptor(
   name='CoveredAddressEntry',
-  full_name='dra.Corpus.CoveredAddressEntry',
+  full_name='dra.Data.CoveredAddressEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Corpus.CoveredAddressEntry.key', index=0,
+      name='key', full_name='dra.Data.CoveredAddressEntry.key', index=0,
       number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Corpus.CoveredAddressEntry.value', index=1,
+      name='value', full_name='dra.Data.CoveredAddressEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -137,26 +137,26 @@ _CORPUS_COVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=655,
-  serialized_end=731,
+  serialized_start=641,
+  serialized_end=717,
 )
 
-_CORPUS_WRITEADDRESSENTRY = _descriptor.Descriptor(
+_DATA_WRITEADDRESSENTRY = _descriptor.Descriptor(
   name='WriteAddressEntry',
-  full_name='dra.Corpus.WriteAddressEntry',
+  full_name='dra.Data.WriteAddressEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Corpus.WriteAddressEntry.key', index=0,
+      name='key', full_name='dra.Data.WriteAddressEntry.key', index=0,
       number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Corpus.WriteAddressEntry.value', index=1,
+      name='value', full_name='dra.Data.WriteAddressEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -174,26 +174,26 @@ _CORPUS_WRITEADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=733,
-  serialized_end=803,
+  serialized_start=719,
+  serialized_end=789,
 )
 
-_CORPUS_FILEOPERATIONSENTRY = _descriptor.Descriptor(
+_DATA_FILEOPERATIONSENTRY = _descriptor.Descriptor(
   name='FileOperationsEntry',
-  full_name='dra.Corpus.FileOperationsEntry',
+  full_name='dra.Data.FileOperationsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Corpus.FileOperationsEntry.key', index=0,
+      name='key', full_name='dra.Data.FileOperationsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Corpus.FileOperationsEntry.value', index=1,
+      name='value', full_name='dra.Data.FileOperationsEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -211,26 +211,26 @@ _CORPUS_FILEOPERATIONSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=805,
-  serialized_end=879,
+  serialized_start=791,
+  serialized_end=865,
 )
 
-_CORPUS_NEWINPUTENTRY = _descriptor.Descriptor(
+_DATA_NEWINPUTENTRY = _descriptor.Descriptor(
   name='NewInputEntry',
-  full_name='dra.Corpus.NewInputEntry',
+  full_name='dra.Data.NewInputEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Corpus.NewInputEntry.key', index=0,
+      name='key', full_name='dra.Data.NewInputEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Corpus.NewInputEntry.value', index=1,
+      name='value', full_name='dra.Data.NewInputEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -248,75 +248,75 @@ _CORPUS_NEWINPUTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=881,
-  serialized_end=940,
+  serialized_start=867,
+  serialized_end=926,
 )
 
-_CORPUS = _descriptor.Descriptor(
-  name='Corpus',
-  full_name='dra.Corpus',
+_DATA = _descriptor.Descriptor(
+  name='Data',
+  full_name='dra.Data',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='input', full_name='dra.Corpus.input', index=0,
+      name='input', full_name='dra.Data.input', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='uncovered_address', full_name='dra.Corpus.uncovered_address', index=1,
+      name='uncovered_address', full_name='dra.Data.uncovered_address', index=1,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='covered_address', full_name='dra.Corpus.covered_address', index=2,
+      name='covered_address', full_name='dra.Data.covered_address', index=2,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='write_address', full_name='dra.Corpus.write_address', index=3,
+      name='write_address', full_name='dra.Data.write_address', index=3,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='file_operations', full_name='dra.Corpus.file_operations', index=4,
+      name='file_operations', full_name='dra.Data.file_operations', index=4,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tasks', full_name='dra.Corpus.tasks', index=5,
+      name='tasks', full_name='dra.Data.tasks', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='high_task', full_name='dra.Corpus.high_task', index=6,
+      name='high_task', full_name='dra.Data.high_task', index=6,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='boot_task', full_name='dra.Corpus.boot_task', index=7,
+      name='boot_task', full_name='dra.Data.boot_task', index=7,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='new_input', full_name='dra.Corpus.new_input', index=8,
+      name='new_input', full_name='dra.Data.new_input', index=8,
       number=11, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -325,7 +325,7 @@ _CORPUS = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_CORPUS_INPUTENTRY, _CORPUS_UNCOVEREDADDRESSENTRY, _CORPUS_COVEREDADDRESSENTRY, _CORPUS_WRITEADDRESSENTRY, _CORPUS_FILEOPERATIONSENTRY, _CORPUS_NEWINPUTENTRY, ],
+  nested_types=[_DATA_INPUTENTRY, _DATA_UNCOVEREDADDRESSENTRY, _DATA_COVEREDADDRESSENTRY, _DATA_WRITEADDRESSENTRY, _DATA_FILEOPERATIONSENTRY, _DATA_NEWINPUTENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -335,95 +335,95 @@ _CORPUS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=101,
-  serialized_end=940,
+  serialized_end=926,
 )
 
-_CORPUS_INPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
-_CORPUS_INPUTENTRY.containing_type = _CORPUS
-_CORPUS_UNCOVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
-_CORPUS_UNCOVEREDADDRESSENTRY.containing_type = _CORPUS
-_CORPUS_COVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
-_CORPUS_COVEREDADDRESSENTRY.containing_type = _CORPUS
-_CORPUS_WRITEADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._WRITEADDRESS
-_CORPUS_WRITEADDRESSENTRY.containing_type = _CORPUS
-_CORPUS_FILEOPERATIONSENTRY.fields_by_name['value'].message_type = Dependency__pb2._FILEOPERATIONS
-_CORPUS_FILEOPERATIONSENTRY.containing_type = _CORPUS
-_CORPUS_NEWINPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
-_CORPUS_NEWINPUTENTRY.containing_type = _CORPUS
-_CORPUS.fields_by_name['input'].message_type = _CORPUS_INPUTENTRY
-_CORPUS.fields_by_name['uncovered_address'].message_type = _CORPUS_UNCOVEREDADDRESSENTRY
-_CORPUS.fields_by_name['covered_address'].message_type = _CORPUS_COVEREDADDRESSENTRY
-_CORPUS.fields_by_name['write_address'].message_type = _CORPUS_WRITEADDRESSENTRY
-_CORPUS.fields_by_name['file_operations'].message_type = _CORPUS_FILEOPERATIONSENTRY
-_CORPUS.fields_by_name['tasks'].message_type = Task__pb2._TASKS
-_CORPUS.fields_by_name['high_task'].message_type = Task__pb2._TASKS
-_CORPUS.fields_by_name['boot_task'].message_type = Task__pb2._TASKS
-_CORPUS.fields_by_name['new_input'].message_type = _CORPUS_NEWINPUTENTRY
-DESCRIPTOR.message_types_by_name['Corpus'] = _CORPUS
+_DATA_INPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
+_DATA_INPUTENTRY.containing_type = _DATA
+_DATA_UNCOVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
+_DATA_UNCOVEREDADDRESSENTRY.containing_type = _DATA
+_DATA_COVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
+_DATA_COVEREDADDRESSENTRY.containing_type = _DATA
+_DATA_WRITEADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._WRITEADDRESS
+_DATA_WRITEADDRESSENTRY.containing_type = _DATA
+_DATA_FILEOPERATIONSENTRY.fields_by_name['value'].message_type = Dependency__pb2._FILEOPERATIONS
+_DATA_FILEOPERATIONSENTRY.containing_type = _DATA
+_DATA_NEWINPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
+_DATA_NEWINPUTENTRY.containing_type = _DATA
+_DATA.fields_by_name['input'].message_type = _DATA_INPUTENTRY
+_DATA.fields_by_name['uncovered_address'].message_type = _DATA_UNCOVEREDADDRESSENTRY
+_DATA.fields_by_name['covered_address'].message_type = _DATA_COVEREDADDRESSENTRY
+_DATA.fields_by_name['write_address'].message_type = _DATA_WRITEADDRESSENTRY
+_DATA.fields_by_name['file_operations'].message_type = _DATA_FILEOPERATIONSENTRY
+_DATA.fields_by_name['tasks'].message_type = Task__pb2._TASKS
+_DATA.fields_by_name['high_task'].message_type = Task__pb2._TASKS
+_DATA.fields_by_name['boot_task'].message_type = Task__pb2._TASKS
+_DATA.fields_by_name['new_input'].message_type = _DATA_NEWINPUTENTRY
+DESCRIPTOR.message_types_by_name['Data'] = _DATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Corpus = _reflection.GeneratedProtocolMessageType('Corpus', (_message.Message,), {
+Data = _reflection.GeneratedProtocolMessageType('Data', (_message.Message,), {
 
   'InputEntry' : _reflection.GeneratedProtocolMessageType('InputEntry', (_message.Message,), {
-    'DESCRIPTOR' : _CORPUS_INPUTENTRY,
+    'DESCRIPTOR' : _DATA_INPUTENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Corpus.InputEntry)
+    # @@protoc_insertion_point(class_scope:dra.Data.InputEntry)
     })
   ,
 
   'UncoveredAddressEntry' : _reflection.GeneratedProtocolMessageType('UncoveredAddressEntry', (_message.Message,), {
-    'DESCRIPTOR' : _CORPUS_UNCOVEREDADDRESSENTRY,
+    'DESCRIPTOR' : _DATA_UNCOVEREDADDRESSENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Corpus.UncoveredAddressEntry)
+    # @@protoc_insertion_point(class_scope:dra.Data.UncoveredAddressEntry)
     })
   ,
 
   'CoveredAddressEntry' : _reflection.GeneratedProtocolMessageType('CoveredAddressEntry', (_message.Message,), {
-    'DESCRIPTOR' : _CORPUS_COVEREDADDRESSENTRY,
+    'DESCRIPTOR' : _DATA_COVEREDADDRESSENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Corpus.CoveredAddressEntry)
+    # @@protoc_insertion_point(class_scope:dra.Data.CoveredAddressEntry)
     })
   ,
 
   'WriteAddressEntry' : _reflection.GeneratedProtocolMessageType('WriteAddressEntry', (_message.Message,), {
-    'DESCRIPTOR' : _CORPUS_WRITEADDRESSENTRY,
+    'DESCRIPTOR' : _DATA_WRITEADDRESSENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Corpus.WriteAddressEntry)
+    # @@protoc_insertion_point(class_scope:dra.Data.WriteAddressEntry)
     })
   ,
 
   'FileOperationsEntry' : _reflection.GeneratedProtocolMessageType('FileOperationsEntry', (_message.Message,), {
-    'DESCRIPTOR' : _CORPUS_FILEOPERATIONSENTRY,
+    'DESCRIPTOR' : _DATA_FILEOPERATIONSENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Corpus.FileOperationsEntry)
+    # @@protoc_insertion_point(class_scope:dra.Data.FileOperationsEntry)
     })
   ,
 
   'NewInputEntry' : _reflection.GeneratedProtocolMessageType('NewInputEntry', (_message.Message,), {
-    'DESCRIPTOR' : _CORPUS_NEWINPUTENTRY,
+    'DESCRIPTOR' : _DATA_NEWINPUTENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Corpus.NewInputEntry)
+    # @@protoc_insertion_point(class_scope:dra.Data.NewInputEntry)
     })
   ,
-  'DESCRIPTOR' : _CORPUS,
+  'DESCRIPTOR' : _DATA,
   '__module__' : 'DependencyRPC_pb2'
-  # @@protoc_insertion_point(class_scope:dra.Corpus)
+  # @@protoc_insertion_point(class_scope:dra.Data)
   })
-_sym_db.RegisterMessage(Corpus)
-_sym_db.RegisterMessage(Corpus.InputEntry)
-_sym_db.RegisterMessage(Corpus.UncoveredAddressEntry)
-_sym_db.RegisterMessage(Corpus.CoveredAddressEntry)
-_sym_db.RegisterMessage(Corpus.WriteAddressEntry)
-_sym_db.RegisterMessage(Corpus.FileOperationsEntry)
-_sym_db.RegisterMessage(Corpus.NewInputEntry)
+_sym_db.RegisterMessage(Data)
+_sym_db.RegisterMessage(Data.InputEntry)
+_sym_db.RegisterMessage(Data.UncoveredAddressEntry)
+_sym_db.RegisterMessage(Data.CoveredAddressEntry)
+_sym_db.RegisterMessage(Data.WriteAddressEntry)
+_sym_db.RegisterMessage(Data.FileOperationsEntry)
+_sym_db.RegisterMessage(Data.NewInputEntry)
 
 
-_CORPUS_INPUTENTRY._options = None
-_CORPUS_UNCOVEREDADDRESSENTRY._options = None
-_CORPUS_COVEREDADDRESSENTRY._options = None
-_CORPUS_WRITEADDRESSENTRY._options = None
-_CORPUS_FILEOPERATIONSENTRY._options = None
-_CORPUS_NEWINPUTENTRY._options = None
+_DATA_INPUTENTRY._options = None
+_DATA_UNCOVEREDADDRESSENTRY._options = None
+_DATA_COVEREDADDRESSENTRY._options = None
+_DATA_WRITEADDRESSENTRY._options = None
+_DATA_FILEOPERATIONSENTRY._options = None
+_DATA_NEWINPUTENTRY._options = None
 
 _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   name='DependencyRPC',
@@ -431,8 +431,8 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=943,
-  serialized_end=1700,
+  serialized_start=929,
+  serialized_end=1686,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetVMOffsets',

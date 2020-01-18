@@ -14,150 +14,150 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_InputEntry_DoNotUse_DependencyRPC_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_NewInputEntry_DoNotUse_DependencyRPC_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_InputEntry_DoNotUse_DependencyRPC_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_NewInputEntry_DoNotUse_DependencyRPC_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_FileOperations_Dependency_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_Input_Input_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Task_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_Tasks_Task_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_UncoveredAddress_Dependency_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_WriteAddress_Dependency_2eproto;
 namespace dra {
-class Corpus_InputEntry_DoNotUseDefaultTypeInternal {
+class Data_InputEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Corpus_InputEntry_DoNotUse> _instance;
-} _Corpus_InputEntry_DoNotUse_default_instance_;
-class Corpus_UncoveredAddressEntry_DoNotUseDefaultTypeInternal {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Data_InputEntry_DoNotUse> _instance;
+} _Data_InputEntry_DoNotUse_default_instance_;
+class Data_UncoveredAddressEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Corpus_UncoveredAddressEntry_DoNotUse> _instance;
-} _Corpus_UncoveredAddressEntry_DoNotUse_default_instance_;
-class Corpus_CoveredAddressEntry_DoNotUseDefaultTypeInternal {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Data_UncoveredAddressEntry_DoNotUse> _instance;
+} _Data_UncoveredAddressEntry_DoNotUse_default_instance_;
+class Data_CoveredAddressEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Corpus_CoveredAddressEntry_DoNotUse> _instance;
-} _Corpus_CoveredAddressEntry_DoNotUse_default_instance_;
-class Corpus_WriteAddressEntry_DoNotUseDefaultTypeInternal {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Data_CoveredAddressEntry_DoNotUse> _instance;
+} _Data_CoveredAddressEntry_DoNotUse_default_instance_;
+class Data_WriteAddressEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Corpus_WriteAddressEntry_DoNotUse> _instance;
-} _Corpus_WriteAddressEntry_DoNotUse_default_instance_;
-class Corpus_FileOperationsEntry_DoNotUseDefaultTypeInternal {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Data_WriteAddressEntry_DoNotUse> _instance;
+} _Data_WriteAddressEntry_DoNotUse_default_instance_;
+class Data_FileOperationsEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Corpus_FileOperationsEntry_DoNotUse> _instance;
-} _Corpus_FileOperationsEntry_DoNotUse_default_instance_;
-class Corpus_NewInputEntry_DoNotUseDefaultTypeInternal {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Data_FileOperationsEntry_DoNotUse> _instance;
+} _Data_FileOperationsEntry_DoNotUse_default_instance_;
+class Data_NewInputEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Corpus_NewInputEntry_DoNotUse> _instance;
-} _Corpus_NewInputEntry_DoNotUse_default_instance_;
-class CorpusDefaultTypeInternal {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Data_NewInputEntry_DoNotUse> _instance;
+} _Data_NewInputEntry_DoNotUse_default_instance_;
+class DataDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Corpus> _instance;
-} _Corpus_default_instance_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Data> _instance;
+} _Data_default_instance_;
 }  // namespace dra
-static void InitDefaultsscc_info_Corpus_DependencyRPC_2eproto() {
+static void InitDefaultsscc_info_Data_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_Corpus_default_instance_;
-    new (ptr) ::dra::Corpus();
+    void* ptr = &::dra::_Data_default_instance_;
+    new (ptr) ::dra::Data();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::dra::Corpus::InitAsDefaultInstance();
+  ::dra::Data::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<7> scc_info_Corpus_DependencyRPC_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 7, 0, InitDefaultsscc_info_Corpus_DependencyRPC_2eproto}, {
-      &scc_info_Corpus_InputEntry_DoNotUse_DependencyRPC_2eproto.base,
-      &scc_info_Corpus_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
-      &scc_info_Corpus_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
-      &scc_info_Corpus_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
-      &scc_info_Corpus_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto.base,
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<7> scc_info_Data_DependencyRPC_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 7, 0, InitDefaultsscc_info_Data_DependencyRPC_2eproto}, {
+      &scc_info_Data_InputEntry_DoNotUse_DependencyRPC_2eproto.base,
+      &scc_info_Data_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
+      &scc_info_Data_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
+      &scc_info_Data_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
+      &scc_info_Data_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto.base,
       &scc_info_Tasks_Task_2eproto.base,
-      &scc_info_Corpus_NewInputEntry_DoNotUse_DependencyRPC_2eproto.base,}};
+      &scc_info_Data_NewInputEntry_DoNotUse_DependencyRPC_2eproto.base,}};
 
-static void InitDefaultsscc_info_Corpus_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto() {
+static void InitDefaultsscc_info_Data_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_Corpus_CoveredAddressEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::Corpus_CoveredAddressEntry_DoNotUse();
+    void* ptr = &::dra::_Data_CoveredAddressEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::Data_CoveredAddressEntry_DoNotUse();
   }
-  ::dra::Corpus_CoveredAddressEntry_DoNotUse::InitAsDefaultInstance();
+  ::dra::Data_CoveredAddressEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Corpus_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Data_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto}, {
       &scc_info_UncoveredAddress_Dependency_2eproto.base,}};
 
-static void InitDefaultsscc_info_Corpus_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto() {
+static void InitDefaultsscc_info_Data_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_Corpus_FileOperationsEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::Corpus_FileOperationsEntry_DoNotUse();
+    void* ptr = &::dra::_Data_FileOperationsEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::Data_FileOperationsEntry_DoNotUse();
   }
-  ::dra::Corpus_FileOperationsEntry_DoNotUse::InitAsDefaultInstance();
+  ::dra::Data_FileOperationsEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Corpus_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Data_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto}, {
       &scc_info_FileOperations_Dependency_2eproto.base,}};
 
-static void InitDefaultsscc_info_Corpus_InputEntry_DoNotUse_DependencyRPC_2eproto() {
+static void InitDefaultsscc_info_Data_InputEntry_DoNotUse_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_Corpus_InputEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::Corpus_InputEntry_DoNotUse();
+    void* ptr = &::dra::_Data_InputEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::Data_InputEntry_DoNotUse();
   }
-  ::dra::Corpus_InputEntry_DoNotUse::InitAsDefaultInstance();
+  ::dra::Data_InputEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_InputEntry_DoNotUse_DependencyRPC_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Corpus_InputEntry_DoNotUse_DependencyRPC_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_InputEntry_DoNotUse_DependencyRPC_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Data_InputEntry_DoNotUse_DependencyRPC_2eproto}, {
       &scc_info_Input_Input_2eproto.base,}};
 
-static void InitDefaultsscc_info_Corpus_NewInputEntry_DoNotUse_DependencyRPC_2eproto() {
+static void InitDefaultsscc_info_Data_NewInputEntry_DoNotUse_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_Corpus_NewInputEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::Corpus_NewInputEntry_DoNotUse();
+    void* ptr = &::dra::_Data_NewInputEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::Data_NewInputEntry_DoNotUse();
   }
-  ::dra::Corpus_NewInputEntry_DoNotUse::InitAsDefaultInstance();
+  ::dra::Data_NewInputEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_NewInputEntry_DoNotUse_DependencyRPC_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Corpus_NewInputEntry_DoNotUse_DependencyRPC_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_NewInputEntry_DoNotUse_DependencyRPC_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Data_NewInputEntry_DoNotUse_DependencyRPC_2eproto}, {
       &scc_info_Input_Input_2eproto.base,}};
 
-static void InitDefaultsscc_info_Corpus_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto() {
+static void InitDefaultsscc_info_Data_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_Corpus_UncoveredAddressEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::Corpus_UncoveredAddressEntry_DoNotUse();
+    void* ptr = &::dra::_Data_UncoveredAddressEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::Data_UncoveredAddressEntry_DoNotUse();
   }
-  ::dra::Corpus_UncoveredAddressEntry_DoNotUse::InitAsDefaultInstance();
+  ::dra::Data_UncoveredAddressEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Corpus_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Data_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto}, {
       &scc_info_UncoveredAddress_Dependency_2eproto.base,}};
 
-static void InitDefaultsscc_info_Corpus_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto() {
+static void InitDefaultsscc_info_Data_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_Corpus_WriteAddressEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::Corpus_WriteAddressEntry_DoNotUse();
+    void* ptr = &::dra::_Data_WriteAddressEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::Data_WriteAddressEntry_DoNotUse();
   }
-  ::dra::Corpus_WriteAddressEntry_DoNotUse::InitAsDefaultInstance();
+  ::dra::Data_WriteAddressEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Corpus_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Corpus_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Data_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto}, {
       &scc_info_WriteAddress_Dependency_2eproto.base,}};
 
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_DependencyRPC_2eproto[7];
@@ -165,139 +165,139 @@ static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_DependencyRPC_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_DependencyRPC_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_InputEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_InputEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_InputEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_InputEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_InputEntry_DoNotUse, value_),
   0,
   1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_UncoveredAddressEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_UncoveredAddressEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_UncoveredAddressEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_UncoveredAddressEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_UncoveredAddressEntry_DoNotUse, value_),
   0,
   1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_CoveredAddressEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_CoveredAddressEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_CoveredAddressEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_CoveredAddressEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_CoveredAddressEntry_DoNotUse, value_),
   0,
   1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_WriteAddressEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_WriteAddressEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_WriteAddressEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_WriteAddressEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_WriteAddressEntry_DoNotUse, value_),
   0,
   1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_FileOperationsEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_FileOperationsEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_FileOperationsEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_FileOperationsEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_FileOperationsEntry_DoNotUse, value_),
   0,
   1,
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_NewInputEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_NewInputEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus_NewInputEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_NewInputEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data_NewInputEntry_DoNotUse, value_),
   0,
   1,
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, input_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, uncovered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, covered_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, write_address_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, file_operations_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, tasks_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, high_task_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, boot_task_),
-  PROTOBUF_FIELD_OFFSET(::dra::Corpus, new_input_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, input_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, uncovered_address_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, covered_address_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, write_address_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, file_operations_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, tasks_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, high_task_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, boot_task_),
+  PROTOBUF_FIELD_OFFSET(::dra::Data, new_input_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 7, sizeof(::dra::Corpus_InputEntry_DoNotUse)},
-  { 9, 16, sizeof(::dra::Corpus_UncoveredAddressEntry_DoNotUse)},
-  { 18, 25, sizeof(::dra::Corpus_CoveredAddressEntry_DoNotUse)},
-  { 27, 34, sizeof(::dra::Corpus_WriteAddressEntry_DoNotUse)},
-  { 36, 43, sizeof(::dra::Corpus_FileOperationsEntry_DoNotUse)},
-  { 45, 52, sizeof(::dra::Corpus_NewInputEntry_DoNotUse)},
-  { 54, -1, sizeof(::dra::Corpus)},
+  { 0, 7, sizeof(::dra::Data_InputEntry_DoNotUse)},
+  { 9, 16, sizeof(::dra::Data_UncoveredAddressEntry_DoNotUse)},
+  { 18, 25, sizeof(::dra::Data_CoveredAddressEntry_DoNotUse)},
+  { 27, 34, sizeof(::dra::Data_WriteAddressEntry_DoNotUse)},
+  { 36, 43, sizeof(::dra::Data_FileOperationsEntry_DoNotUse)},
+  { 45, 52, sizeof(::dra::Data_NewInputEntry_DoNotUse)},
+  { 54, -1, sizeof(::dra::Data)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Corpus_InputEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Corpus_UncoveredAddressEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Corpus_CoveredAddressEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Corpus_WriteAddressEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Corpus_FileOperationsEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Corpus_NewInputEntry_DoNotUse_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Corpus_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Data_InputEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Data_UncoveredAddressEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Data_CoveredAddressEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Data_WriteAddressEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Data_FileOperationsEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Data_NewInputEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Data_default_instance_),
 };
 
 const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\023DependencyRPC.proto\022\003dra\032\nBase.proto\032\n"
   "Task.proto\032\013Input.proto\032\017Statistic.proto"
-  "\032\020Dependency.proto\"\307\006\n\006Corpus\022%\n\005input\030\001"
-  " \003(\0132\026.dra.Corpus.InputEntry\022<\n\021uncovere"
-  "d_address\030\004 \003(\0132!.dra.Corpus.UncoveredAd"
-  "dressEntry\0228\n\017covered_address\030\002 \003(\0132\037.dr"
-  "a.Corpus.CoveredAddressEntry\0224\n\rwrite_ad"
-  "dress\030\005 \003(\0132\035.dra.Corpus.WriteAddressEnt"
-  "ry\0228\n\017file_operations\030\006 \003(\0132\037.dra.Corpus"
-  ".FileOperationsEntry\022\031\n\005tasks\030\007 \001(\0132\n.dr"
-  "a.Tasks\022\035\n\thigh_task\030\010 \001(\0132\n.dra.Tasks\022\035"
-  "\n\tboot_task\030\t \001(\0132\n.dra.Tasks\022,\n\tnew_inp"
-  "ut\030\013 \003(\0132\031.dra.Corpus.NewInputEntry\0328\n\nI"
-  "nputEntry\022\013\n\003key\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n."
-  "dra.Input:\0028\001\032N\n\025UncoveredAddressEntry\022\013"
-  "\n\003key\030\001 \001(\r\022$\n\005value\030\002 \001(\0132\025.dra.Uncover"
-  "edAddress:\0028\001\032L\n\023CoveredAddressEntry\022\013\n\003"
-  "key\030\001 \001(\r\022$\n\005value\030\002 \001(\0132\025.dra.Uncovered"
-  "Address:\0028\001\032F\n\021WriteAddressEntry\022\013\n\003key\030"
-  "\001 \001(\r\022 \n\005value\030\002 \001(\0132\021.dra.WriteAddress:"
-  "\0028\001\032J\n\023FileOperationsEntry\022\013\n\003key\030\001 \001(\t\022"
-  "\"\n\005value\030\002 \001(\0132\023.dra.FileOperations:\0028\001\032"
-  ";\n\rNewInputEntry\022\013\n\003key\030\001 \001(\t\022\031\n\005value\030\002"
-  " \001(\0132\n.dra.Input:\0028\0012\365\005\n\rDependencyRPC\022("
-  "\n\014GetVMOffsets\022\n.dra.Empty\032\n.dra.Empty\"\000"
-  "\0220\n\024SendBasicBlockNumber\022\n.dra.Empty\032\n.d"
-  "ra.Empty\"\000\022(\n\013GetNewInput\022\n.dra.Empty\032\013."
-  "dra.Inputs\"\000\022/\n\016SendDependency\022\017.dra.Dep"
-  "endency\032\n.dra.Empty\"\000\022-\n\014GetCondition\022\n."
-  "dra.Empty\032\017.dra.Conditions\"\000\0225\n\020SendWrit"
-  "eAddress\022\023.dra.WriteAddresses\032\n.dra.Empt"
-  "y\"\000\022#\n\007Connect\022\n.dra.Empty\032\n.dra.Empty\"\000"
-  "\022(\n\014SendNewInput\022\n.dra.Input\032\n.dra.Empty"
-  "\"\000\022$\n\010GetTasks\022\n.dra.Empty\032\n.dra.Tasks\"\000"
-  "\022(\n\014GetBootTasks\022\n.dra.Empty\032\n.dra.Tasks"
-  "\"\000\022\'\n\013ReturnTasks\022\n.dra.Tasks\032\n.dra.Empt"
-  "y\"\000\022)\n\rSendBootInput\022\n.dra.Input\032\n.dra.E"
-  "mpty\"\000\0225\n\021SendUnstableInput\022\022.dra.Unstab"
-  "leInput\032\n.dra.Empty\"\000\022#\n\007SendLog\022\n.dra.E"
-  "mpty\032\n.dra.Empty\"\000\022(\n\010sendStat\022\016.dra.Sta"
-  "tistic\032\n.dra.Empty\"\000\022#\n\007GetNeed\022\n.dra.Em"
-  "pty\032\n.dra.Empty\"\000\022)\n\rSendNeedInput\022\n.dra"
-  ".Input\032\n.dra.Empty\"\000b\006proto3"
+  "\032\020Dependency.proto\"\271\006\n\004Data\022#\n\005input\030\001 \003"
+  "(\0132\024.dra.Data.InputEntry\022:\n\021uncovered_ad"
+  "dress\030\004 \003(\0132\037.dra.Data.UncoveredAddressE"
+  "ntry\0226\n\017covered_address\030\002 \003(\0132\035.dra.Data"
+  ".CoveredAddressEntry\0222\n\rwrite_address\030\005 "
+  "\003(\0132\033.dra.Data.WriteAddressEntry\0226\n\017file"
+  "_operations\030\006 \003(\0132\035.dra.Data.FileOperati"
+  "onsEntry\022\031\n\005tasks\030\007 \001(\0132\n.dra.Tasks\022\035\n\th"
+  "igh_task\030\010 \001(\0132\n.dra.Tasks\022\035\n\tboot_task\030"
+  "\t \001(\0132\n.dra.Tasks\022*\n\tnew_input\030\013 \003(\0132\027.d"
+  "ra.Data.NewInputEntry\0328\n\nInputEntry\022\013\n\003k"
+  "ey\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.Input:\0028\001\032"
+  "N\n\025UncoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n"
+  "\005value\030\002 \001(\0132\025.dra.UncoveredAddress:\0028\001\032"
+  "L\n\023CoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022$\n\005v"
+  "alue\030\002 \001(\0132\025.dra.UncoveredAddress:\0028\001\032F\n"
+  "\021WriteAddressEntry\022\013\n\003key\030\001 \001(\r\022 \n\005value"
+  "\030\002 \001(\0132\021.dra.WriteAddress:\0028\001\032J\n\023FileOpe"
+  "rationsEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005value\030\002 \001(\013"
+  "2\023.dra.FileOperations:\0028\001\032;\n\rNewInputEnt"
+  "ry\022\013\n\003key\030\001 \001(\t\022\031\n\005value\030\002 \001(\0132\n.dra.Inp"
+  "ut:\0028\0012\365\005\n\rDependencyRPC\022(\n\014GetVMOffsets"
+  "\022\n.dra.Empty\032\n.dra.Empty\"\000\0220\n\024SendBasicB"
+  "lockNumber\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\013"
+  "GetNewInput\022\n.dra.Empty\032\013.dra.Inputs\"\000\022/"
+  "\n\016SendDependency\022\017.dra.Dependency\032\n.dra."
+  "Empty\"\000\022-\n\014GetCondition\022\n.dra.Empty\032\017.dr"
+  "a.Conditions\"\000\0225\n\020SendWriteAddress\022\023.dra"
+  ".WriteAddresses\032\n.dra.Empty\"\000\022#\n\007Connect"
+  "\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\014SendNewInp"
+  "ut\022\n.dra.Input\032\n.dra.Empty\"\000\022$\n\010GetTasks"
+  "\022\n.dra.Empty\032\n.dra.Tasks\"\000\022(\n\014GetBootTas"
+  "ks\022\n.dra.Empty\032\n.dra.Tasks\"\000\022\'\n\013ReturnTa"
+  "sks\022\n.dra.Tasks\032\n.dra.Empty\"\000\022)\n\rSendBoo"
+  "tInput\022\n.dra.Input\032\n.dra.Empty\"\000\0225\n\021Send"
+  "UnstableInput\022\022.dra.UnstableInput\032\n.dra."
+  "Empty\"\000\022#\n\007SendLog\022\n.dra.Empty\032\n.dra.Emp"
+  "ty\"\000\022(\n\010sendStat\022\016.dra.Statistic\032\n.dra.E"
+  "mpty\"\000\022#\n\007GetNeed\022\n.dra.Empty\032\n.dra.Empt"
+  "y\"\000\022)\n\rSendNeedInput\022\n.dra.Input\032\n.dra.E"
+  "mpty\"\000b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[5] = {
   &::descriptor_table_Base_2eproto,
@@ -307,18 +307,18 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
   &::descriptor_table_Task_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_DependencyRPC_2eproto_sccs[7] = {
-  &scc_info_Corpus_DependencyRPC_2eproto.base,
-  &scc_info_Corpus_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
-  &scc_info_Corpus_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto.base,
-  &scc_info_Corpus_InputEntry_DoNotUse_DependencyRPC_2eproto.base,
-  &scc_info_Corpus_NewInputEntry_DoNotUse_DependencyRPC_2eproto.base,
-  &scc_info_Corpus_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
-  &scc_info_Corpus_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
+  &scc_info_Data_DependencyRPC_2eproto.base,
+  &scc_info_Data_CoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
+  &scc_info_Data_FileOperationsEntry_DoNotUse_DependencyRPC_2eproto.base,
+  &scc_info_Data_InputEntry_DoNotUse_DependencyRPC_2eproto.base,
+  &scc_info_Data_NewInputEntry_DoNotUse_DependencyRPC_2eproto.base,
+  &scc_info_Data_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
+  &scc_info_Data_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1708,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1694,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 7, 5,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 7, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,
@@ -330,16 +330,16 @@ namespace dra {
 
 // ===================================================================
 
-Corpus_InputEntry_DoNotUse::Corpus_InputEntry_DoNotUse() {}
-Corpus_InputEntry_DoNotUse::Corpus_InputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+Data_InputEntry_DoNotUse::Data_InputEntry_DoNotUse() {}
+Data_InputEntry_DoNotUse::Data_InputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void Corpus_InputEntry_DoNotUse::MergeFrom(const Corpus_InputEntry_DoNotUse& other) {
+void Data_InputEntry_DoNotUse::MergeFrom(const Data_InputEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata Corpus_InputEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Data_InputEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void Corpus_InputEntry_DoNotUse::MergeFrom(
+void Data_InputEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -347,16 +347,16 @@ void Corpus_InputEntry_DoNotUse::MergeFrom(
 
 // ===================================================================
 
-Corpus_UncoveredAddressEntry_DoNotUse::Corpus_UncoveredAddressEntry_DoNotUse() {}
-Corpus_UncoveredAddressEntry_DoNotUse::Corpus_UncoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+Data_UncoveredAddressEntry_DoNotUse::Data_UncoveredAddressEntry_DoNotUse() {}
+Data_UncoveredAddressEntry_DoNotUse::Data_UncoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void Corpus_UncoveredAddressEntry_DoNotUse::MergeFrom(const Corpus_UncoveredAddressEntry_DoNotUse& other) {
+void Data_UncoveredAddressEntry_DoNotUse::MergeFrom(const Data_UncoveredAddressEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata Corpus_UncoveredAddressEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Data_UncoveredAddressEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void Corpus_UncoveredAddressEntry_DoNotUse::MergeFrom(
+void Data_UncoveredAddressEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -364,16 +364,16 @@ void Corpus_UncoveredAddressEntry_DoNotUse::MergeFrom(
 
 // ===================================================================
 
-Corpus_CoveredAddressEntry_DoNotUse::Corpus_CoveredAddressEntry_DoNotUse() {}
-Corpus_CoveredAddressEntry_DoNotUse::Corpus_CoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+Data_CoveredAddressEntry_DoNotUse::Data_CoveredAddressEntry_DoNotUse() {}
+Data_CoveredAddressEntry_DoNotUse::Data_CoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void Corpus_CoveredAddressEntry_DoNotUse::MergeFrom(const Corpus_CoveredAddressEntry_DoNotUse& other) {
+void Data_CoveredAddressEntry_DoNotUse::MergeFrom(const Data_CoveredAddressEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata Corpus_CoveredAddressEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Data_CoveredAddressEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void Corpus_CoveredAddressEntry_DoNotUse::MergeFrom(
+void Data_CoveredAddressEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -381,16 +381,16 @@ void Corpus_CoveredAddressEntry_DoNotUse::MergeFrom(
 
 // ===================================================================
 
-Corpus_WriteAddressEntry_DoNotUse::Corpus_WriteAddressEntry_DoNotUse() {}
-Corpus_WriteAddressEntry_DoNotUse::Corpus_WriteAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+Data_WriteAddressEntry_DoNotUse::Data_WriteAddressEntry_DoNotUse() {}
+Data_WriteAddressEntry_DoNotUse::Data_WriteAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void Corpus_WriteAddressEntry_DoNotUse::MergeFrom(const Corpus_WriteAddressEntry_DoNotUse& other) {
+void Data_WriteAddressEntry_DoNotUse::MergeFrom(const Data_WriteAddressEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata Corpus_WriteAddressEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Data_WriteAddressEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void Corpus_WriteAddressEntry_DoNotUse::MergeFrom(
+void Data_WriteAddressEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -398,16 +398,16 @@ void Corpus_WriteAddressEntry_DoNotUse::MergeFrom(
 
 // ===================================================================
 
-Corpus_FileOperationsEntry_DoNotUse::Corpus_FileOperationsEntry_DoNotUse() {}
-Corpus_FileOperationsEntry_DoNotUse::Corpus_FileOperationsEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+Data_FileOperationsEntry_DoNotUse::Data_FileOperationsEntry_DoNotUse() {}
+Data_FileOperationsEntry_DoNotUse::Data_FileOperationsEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void Corpus_FileOperationsEntry_DoNotUse::MergeFrom(const Corpus_FileOperationsEntry_DoNotUse& other) {
+void Data_FileOperationsEntry_DoNotUse::MergeFrom(const Data_FileOperationsEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata Corpus_FileOperationsEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Data_FileOperationsEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void Corpus_FileOperationsEntry_DoNotUse::MergeFrom(
+void Data_FileOperationsEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -415,16 +415,16 @@ void Corpus_FileOperationsEntry_DoNotUse::MergeFrom(
 
 // ===================================================================
 
-Corpus_NewInputEntry_DoNotUse::Corpus_NewInputEntry_DoNotUse() {}
-Corpus_NewInputEntry_DoNotUse::Corpus_NewInputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+Data_NewInputEntry_DoNotUse::Data_NewInputEntry_DoNotUse() {}
+Data_NewInputEntry_DoNotUse::Data_NewInputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void Corpus_NewInputEntry_DoNotUse::MergeFrom(const Corpus_NewInputEntry_DoNotUse& other) {
+void Data_NewInputEntry_DoNotUse::MergeFrom(const Data_NewInputEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata Corpus_NewInputEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Data_NewInputEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void Corpus_NewInputEntry_DoNotUse::MergeFrom(
+void Data_NewInputEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -432,75 +432,75 @@ void Corpus_NewInputEntry_DoNotUse::MergeFrom(
 
 // ===================================================================
 
-void Corpus::InitAsDefaultInstance() {
-  ::dra::_Corpus_default_instance_._instance.get_mutable()->tasks_ = const_cast< ::dra::Tasks*>(
+void Data::InitAsDefaultInstance() {
+  ::dra::_Data_default_instance_._instance.get_mutable()->tasks_ = const_cast< ::dra::Tasks*>(
       ::dra::Tasks::internal_default_instance());
-  ::dra::_Corpus_default_instance_._instance.get_mutable()->high_task_ = const_cast< ::dra::Tasks*>(
+  ::dra::_Data_default_instance_._instance.get_mutable()->high_task_ = const_cast< ::dra::Tasks*>(
       ::dra::Tasks::internal_default_instance());
-  ::dra::_Corpus_default_instance_._instance.get_mutable()->boot_task_ = const_cast< ::dra::Tasks*>(
+  ::dra::_Data_default_instance_._instance.get_mutable()->boot_task_ = const_cast< ::dra::Tasks*>(
       ::dra::Tasks::internal_default_instance());
 }
-class Corpus::_Internal {
+class Data::_Internal {
  public:
-  static const ::dra::Tasks& tasks(const Corpus* msg);
-  static const ::dra::Tasks& high_task(const Corpus* msg);
-  static const ::dra::Tasks& boot_task(const Corpus* msg);
+  static const ::dra::Tasks& tasks(const Data* msg);
+  static const ::dra::Tasks& high_task(const Data* msg);
+  static const ::dra::Tasks& boot_task(const Data* msg);
 };
 
 const ::dra::Tasks&
-Corpus::_Internal::tasks(const Corpus* msg) {
+Data::_Internal::tasks(const Data* msg) {
   return *msg->tasks_;
 }
 const ::dra::Tasks&
-Corpus::_Internal::high_task(const Corpus* msg) {
+Data::_Internal::high_task(const Data* msg) {
   return *msg->high_task_;
 }
 const ::dra::Tasks&
-Corpus::_Internal::boot_task(const Corpus* msg) {
+Data::_Internal::boot_task(const Data* msg) {
   return *msg->boot_task_;
 }
-void Corpus::clear_input() {
+void Data::clear_input() {
   input_.Clear();
 }
-void Corpus::clear_uncovered_address() {
+void Data::clear_uncovered_address() {
   uncovered_address_.Clear();
 }
-void Corpus::clear_covered_address() {
+void Data::clear_covered_address() {
   covered_address_.Clear();
 }
-void Corpus::clear_write_address() {
+void Data::clear_write_address() {
   write_address_.Clear();
 }
-void Corpus::clear_file_operations() {
+void Data::clear_file_operations() {
   file_operations_.Clear();
 }
-void Corpus::clear_tasks() {
+void Data::clear_tasks() {
   if (GetArenaNoVirtual() == nullptr && tasks_ != nullptr) {
     delete tasks_;
   }
   tasks_ = nullptr;
 }
-void Corpus::clear_high_task() {
+void Data::clear_high_task() {
   if (GetArenaNoVirtual() == nullptr && high_task_ != nullptr) {
     delete high_task_;
   }
   high_task_ = nullptr;
 }
-void Corpus::clear_boot_task() {
+void Data::clear_boot_task() {
   if (GetArenaNoVirtual() == nullptr && boot_task_ != nullptr) {
     delete boot_task_;
   }
   boot_task_ = nullptr;
 }
-void Corpus::clear_new_input() {
+void Data::clear_new_input() {
   new_input_.Clear();
 }
-Corpus::Corpus()
+Data::Data()
   : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.Corpus)
+  // @@protoc_insertion_point(constructor:dra.Data)
 }
-Corpus::Corpus(const Corpus& from)
+Data::Data(const Data& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -525,38 +525,38 @@ Corpus::Corpus(const Corpus& from)
   } else {
     boot_task_ = nullptr;
   }
-  // @@protoc_insertion_point(copy_constructor:dra.Corpus)
+  // @@protoc_insertion_point(copy_constructor:dra.Data)
 }
 
-void Corpus::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Corpus_DependencyRPC_2eproto.base);
+void Data::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Data_DependencyRPC_2eproto.base);
   ::memset(&tasks_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&boot_task_) -
       reinterpret_cast<char*>(&tasks_)) + sizeof(boot_task_));
 }
 
-Corpus::~Corpus() {
-  // @@protoc_insertion_point(destructor:dra.Corpus)
+Data::~Data() {
+  // @@protoc_insertion_point(destructor:dra.Data)
   SharedDtor();
 }
 
-void Corpus::SharedDtor() {
+void Data::SharedDtor() {
   if (this != internal_default_instance()) delete tasks_;
   if (this != internal_default_instance()) delete high_task_;
   if (this != internal_default_instance()) delete boot_task_;
 }
 
-void Corpus::SetCachedSize(int size) const {
+void Data::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Corpus& Corpus::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Corpus_DependencyRPC_2eproto.base);
+const Data& Data::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Data_DependencyRPC_2eproto.base);
   return *internal_default_instance();
 }
 
 
-void Corpus::Clear() {
-// @@protoc_insertion_point(message_clear_start:dra.Corpus)
+void Data::Clear() {
+// @@protoc_insertion_point(message_clear_start:dra.Data)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -582,7 +582,7 @@ void Corpus::Clear() {
   _internal_metadata_.Clear();
 }
 
-const char* Corpus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* Data::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -702,9 +702,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Corpus::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* Data::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:dra.Corpus)
+  // @@protoc_insertion_point(serialize_to_array_start:dra.Data)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -719,7 +719,7 @@ failure:
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-          "dra.Corpus.InputEntry.key");
+          "dra.Data.InputEntry.key");
       }
     };
 
@@ -736,14 +736,14 @@ failure:
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = Corpus_InputEntry_DoNotUse::Funcs::InternalSerialize(1, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
+        target = Data_InputEntry_DoNotUse::Funcs::InternalSerialize(1, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
         Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >::const_iterator
           it = this->_internal_input().begin();
           it != this->_internal_input().end(); ++it) {
-        target = Corpus_InputEntry_DoNotUse::Funcs::InternalSerialize(1, it->first, it->second, target, stream);
+        target = Data_InputEntry_DoNotUse::Funcs::InternalSerialize(1, it->first, it->second, target, stream);
         Utf8Check::Check(&(*it));
       }
     }
@@ -769,13 +769,13 @@ failure:
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = Corpus_CoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(2, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
+        target = Data_CoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(2, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >::const_iterator
           it = this->_internal_covered_address().begin();
           it != this->_internal_covered_address().end(); ++it) {
-        target = Corpus_CoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(2, it->first, it->second, target, stream);
+        target = Data_CoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(2, it->first, it->second, target, stream);
       }
     }
   }
@@ -800,13 +800,13 @@ failure:
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = Corpus_UncoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(4, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
+        target = Data_UncoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(4, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >::const_iterator
           it = this->_internal_uncovered_address().begin();
           it != this->_internal_uncovered_address().end(); ++it) {
-        target = Corpus_UncoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(4, it->first, it->second, target, stream);
+        target = Data_UncoveredAddressEntry_DoNotUse::Funcs::InternalSerialize(4, it->first, it->second, target, stream);
       }
     }
   }
@@ -831,13 +831,13 @@ failure:
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = Corpus_WriteAddressEntry_DoNotUse::Funcs::InternalSerialize(5, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
+        target = Data_WriteAddressEntry_DoNotUse::Funcs::InternalSerialize(5, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress >::const_iterator
           it = this->_internal_write_address().begin();
           it != this->_internal_write_address().end(); ++it) {
-        target = Corpus_WriteAddressEntry_DoNotUse::Funcs::InternalSerialize(5, it->first, it->second, target, stream);
+        target = Data_WriteAddressEntry_DoNotUse::Funcs::InternalSerialize(5, it->first, it->second, target, stream);
       }
     }
   }
@@ -853,7 +853,7 @@ failure:
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-          "dra.Corpus.FileOperationsEntry.key");
+          "dra.Data.FileOperationsEntry.key");
       }
     };
 
@@ -870,14 +870,14 @@ failure:
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = Corpus_FileOperationsEntry_DoNotUse::Funcs::InternalSerialize(6, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
+        target = Data_FileOperationsEntry_DoNotUse::Funcs::InternalSerialize(6, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
         Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::FileOperations >::const_iterator
           it = this->_internal_file_operations().begin();
           it != this->_internal_file_operations().end(); ++it) {
-        target = Corpus_FileOperationsEntry_DoNotUse::Funcs::InternalSerialize(6, it->first, it->second, target, stream);
+        target = Data_FileOperationsEntry_DoNotUse::Funcs::InternalSerialize(6, it->first, it->second, target, stream);
         Utf8Check::Check(&(*it));
       }
     }
@@ -918,7 +918,7 @@ failure:
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-          "dra.Corpus.NewInputEntry.key");
+          "dra.Data.NewInputEntry.key");
       }
     };
 
@@ -935,14 +935,14 @@ failure:
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = Corpus_NewInputEntry_DoNotUse::Funcs::InternalSerialize(11, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
+        target = Data_NewInputEntry_DoNotUse::Funcs::InternalSerialize(11, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
         Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >::const_iterator
           it = this->_internal_new_input().begin();
           it != this->_internal_new_input().end(); ++it) {
-        target = Corpus_NewInputEntry_DoNotUse::Funcs::InternalSerialize(11, it->first, it->second, target, stream);
+        target = Data_NewInputEntry_DoNotUse::Funcs::InternalSerialize(11, it->first, it->second, target, stream);
         Utf8Check::Check(&(*it));
       }
     }
@@ -952,12 +952,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:dra.Corpus)
+  // @@protoc_insertion_point(serialize_to_array_end:dra.Data)
   return target;
 }
 
-size_t Corpus::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:dra.Corpus)
+size_t Data::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dra.Data)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -970,7 +970,7 @@ size_t Corpus::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >::const_iterator
       it = this->_internal_input().begin();
       it != this->_internal_input().end(); ++it) {
-    total_size += Corpus_InputEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+    total_size += Data_InputEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // map<uint32, .dra.UncoveredAddress> covered_address = 2;
@@ -979,7 +979,7 @@ size_t Corpus::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >::const_iterator
       it = this->_internal_covered_address().begin();
       it != this->_internal_covered_address().end(); ++it) {
-    total_size += Corpus_CoveredAddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+    total_size += Data_CoveredAddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // map<uint32, .dra.UncoveredAddress> uncovered_address = 4;
@@ -988,7 +988,7 @@ size_t Corpus::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >::const_iterator
       it = this->_internal_uncovered_address().begin();
       it != this->_internal_uncovered_address().end(); ++it) {
-    total_size += Corpus_UncoveredAddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+    total_size += Data_UncoveredAddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // map<uint32, .dra.WriteAddress> write_address = 5;
@@ -997,7 +997,7 @@ size_t Corpus::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress >::const_iterator
       it = this->_internal_write_address().begin();
       it != this->_internal_write_address().end(); ++it) {
-    total_size += Corpus_WriteAddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+    total_size += Data_WriteAddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // map<string, .dra.FileOperations> file_operations = 6;
@@ -1006,7 +1006,7 @@ size_t Corpus::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::FileOperations >::const_iterator
       it = this->_internal_file_operations().begin();
       it != this->_internal_file_operations().end(); ++it) {
-    total_size += Corpus_FileOperationsEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+    total_size += Data_FileOperationsEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // map<string, .dra.Input> new_input = 11;
@@ -1015,7 +1015,7 @@ size_t Corpus::ByteSizeLong() const {
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >::const_iterator
       it = this->_internal_new_input().begin();
       it != this->_internal_new_input().end(); ++it) {
-    total_size += Corpus_NewInputEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+    total_size += Data_NewInputEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   // .dra.Tasks tasks = 7;
@@ -1048,23 +1048,23 @@ size_t Corpus::ByteSizeLong() const {
   return total_size;
 }
 
-void Corpus::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.Corpus)
+void Data::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:dra.Data)
   GOOGLE_DCHECK_NE(&from, this);
-  const Corpus* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Corpus>(
+  const Data* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Data>(
           &from);
   if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Corpus)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Data)
     ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Corpus)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Data)
     MergeFrom(*source);
   }
 }
 
-void Corpus::MergeFrom(const Corpus& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:dra.Corpus)
+void Data::MergeFrom(const Data& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:dra.Data)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1087,25 +1087,25 @@ void Corpus::MergeFrom(const Corpus& from) {
   }
 }
 
-void Corpus::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.Corpus)
+void Data::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:dra.Data)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Corpus::CopyFrom(const Corpus& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:dra.Corpus)
+void Data::CopyFrom(const Data& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dra.Data)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Corpus::IsInitialized() const {
+bool Data::IsInitialized() const {
   return true;
 }
 
-void Corpus::InternalSwap(Corpus* other) {
+void Data::InternalSwap(Data* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   input_.Swap(&other->input_);
@@ -1119,7 +1119,7 @@ void Corpus::InternalSwap(Corpus* other) {
   swap(boot_task_, other->boot_task_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Corpus::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Data::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -1127,26 +1127,26 @@ void Corpus::InternalSwap(Corpus* other) {
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace dra
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::dra::Corpus_InputEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Corpus_InputEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Corpus_InputEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::dra::Data_InputEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Data_InputEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Data_InputEntry_DoNotUse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::dra::Corpus_UncoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Corpus_UncoveredAddressEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Corpus_UncoveredAddressEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::dra::Data_UncoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Data_UncoveredAddressEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Data_UncoveredAddressEntry_DoNotUse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::dra::Corpus_CoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Corpus_CoveredAddressEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Corpus_CoveredAddressEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::dra::Data_CoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Data_CoveredAddressEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Data_CoveredAddressEntry_DoNotUse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::dra::Corpus_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Corpus_WriteAddressEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Corpus_WriteAddressEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::dra::Data_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Data_WriteAddressEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Data_WriteAddressEntry_DoNotUse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::dra::Corpus_FileOperationsEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Corpus_FileOperationsEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Corpus_FileOperationsEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::dra::Data_FileOperationsEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Data_FileOperationsEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Data_FileOperationsEntry_DoNotUse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::dra::Corpus_NewInputEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Corpus_NewInputEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Corpus_NewInputEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::dra::Data_NewInputEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Data_NewInputEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Data_NewInputEntry_DoNotUse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::dra::Corpus* Arena::CreateMaybeMessage< ::dra::Corpus >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Corpus >(arena);
+template<> PROTOBUF_NOINLINE ::dra::Data* Arena::CreateMaybeMessage< ::dra::Data >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::Data >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

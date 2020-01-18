@@ -92,7 +92,7 @@ type Manager struct {
 const (
 	// Just started, nothing done yet.
 	phaseInit = iota
-	// Corpus is loaded and machine is checked.
+	// data is loaded and machine is checked.
 	phaseLoadedCorpus
 	// Triaged all inputs from corpus.
 	// This is when we start querying hub and minimizing persistent corpus.

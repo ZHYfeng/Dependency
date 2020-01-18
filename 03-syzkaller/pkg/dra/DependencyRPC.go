@@ -329,20 +329,20 @@ func (ss Server) pickBootTask(name string) *Tasks {
 }
 
 func (ss *Server) addNewInput(s *Input) {
-	if i, ok := ss.corpusDependency.NewInput[s.Sig]; ok {
+	if i, ok := ss.dependencyData.NewInput[s.Sig]; ok {
 		i.mergeInput(s)
 	} else {
-		ss.corpusDependency.NewInput[s.Sig] = s
+		ss.dependencyData.NewInput[s.Sig] = s
 	}
 
 	return
 }
 
 func (ss *Server) addInput(s *Input) {
-	if i, ok := ss.corpusDependency.Input[s.Sig]; ok {
+	if i, ok := ss.dependencyData.Input[s.Sig]; ok {
 		i.mergeInput(s)
 	} else {
-		ss.corpusDependency.Input[s.Sig] = s
+		ss.dependencyData.Input[s.Sig] = s
 	}
 
 	ss.addWriteAddressMapInput(s)
@@ -351,7 +351,7 @@ func (ss *Server) addInput(s *Input) {
 	if Unstable {
 
 	} else {
-		ss.corpusDependency.Input[s.Sig].Call = make(map[uint32]*Call)
+		ss.dependencyData.Input[s.Sig].Call = make(map[uint32]*Call)
 	}
 	return
 }
@@ -361,7 +361,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 	for index, call := range s.Call {
 		indexBits := uint32(1 << index)
 		for a := range call.Address {
-			if wa, ok := ss.corpusDependency.WriteAddress[a]; ok {
+			if wa, ok := ss.dependencyData.WriteAddress[a]; ok {
 				var usefulIndexBits uint32
 				waIndex, ok := wa.Input[sig]
 				if ok {
@@ -377,7 +377,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 					wa.Input[sig] = indexBits
 				}
 				ss.addWriteAddressTask(wa, sig, usefulIndexBits)
-				input, ok := ss.corpusDependency.Input[sig]
+				input, ok := ss.dependencyData.Input[sig]
 				if ok {
 					if iIndex, ok := input.WriteAddress[a]; ok {
 						input.WriteAddress[a] = iIndex | indexBits
@@ -398,7 +398,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 func (ss *Server) addUncoveredAddressMapInput(s *Input) {
 	sig := s.Sig
 	for u1, i1 := range s.UncoveredAddress {
-		if u2, ok := ss.corpusDependency.UncoveredAddress[u1]; ok {
+		if u2, ok := ss.dependencyData.UncoveredAddress[u1]; ok {
 			if i2, ok := u2.Input[sig]; ok {
 				u2.Input[sig] = i2 | i1
 			} else {
@@ -413,7 +413,7 @@ func (ss *Server) addUncoveredAddressMapInput(s *Input) {
 }
 
 func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
-	_, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	_, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return false
 	}
@@ -422,13 +422,13 @@ func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
 }
 
 func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
-	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	u, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return
 	}
 
 	for sig := range u.Input {
-		input, ok := ss.corpusDependency.Input[sig]
+		input, ok := ss.dependencyData.Input[sig]
 		if !ok {
 			log.Fatalf("deleteUncoveredAddress not find sig")
 			continue
@@ -444,7 +444,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 	}
 
 	for wa := range u.WriteAddress {
-		waa, ok := ss.corpusDependency.WriteAddress[wa]
+		waa, ok := ss.dependencyData.WriteAddress[wa]
 		if !ok {
 			log.Fatalf("deleteUncoveredAddress not find wa")
 			continue
@@ -458,8 +458,8 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 		}
 	}
 
-	ss.corpusDependency.CoveredAddress[uncoveredAddress] = u
-	delete(ss.corpusDependency.UncoveredAddress, uncoveredAddress)
+	ss.dependencyData.CoveredAddress[uncoveredAddress] = u
+	delete(ss.dependencyData.UncoveredAddress, uncoveredAddress)
 
 	return
 }
@@ -529,10 +529,10 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 		return
 	}
 
-	if i, ok := ss.corpusDependency.UncoveredAddress[s.UncoveredAddress]; ok {
+	if i, ok := ss.dependencyData.UncoveredAddress[s.UncoveredAddress]; ok {
 		i.mergeUncoveredAddress(s)
 	} else {
-		ss.corpusDependency.UncoveredAddress[s.UncoveredAddress] = s
+		ss.dependencyData.UncoveredAddress[s.UncoveredAddress] = s
 		s.Count = 0
 	}
 	ss.addWriteAddressMapUncoveredAddress(s)
@@ -543,7 +543,7 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 func (ss *Server) addWriteAddressMapUncoveredAddress(s *UncoveredAddress) {
 	uncoveredAddress := s.UncoveredAddress
 	for w1, w3 := range s.WriteAddress {
-		if w2, ok := ss.corpusDependency.WriteAddress[w1]; ok {
+		if w2, ok := ss.dependencyData.WriteAddress[w1]; ok {
 			w2.UncoveredAddress[uncoveredAddress] = w3
 		}
 	}
@@ -551,14 +551,14 @@ func (ss *Server) addWriteAddressMapUncoveredAddress(s *UncoveredAddress) {
 }
 
 func (ss *Server) addWriteAddress(s *WriteAddress) {
-	if i, ok := ss.corpusDependency.WriteAddress[s.WriteAddress]; ok {
+	if i, ok := ss.dependencyData.WriteAddress[s.WriteAddress]; ok {
 		i.mergeWriteAddress(s)
 	} else {
-		ss.corpusDependency.WriteAddress[s.WriteAddress] = s
+		ss.dependencyData.WriteAddress[s.WriteAddress] = s
 	}
 
 	for sig, indexBits1 := range s.Input {
-		waInput, ok := ss.corpusDependency.Input[sig]
+		waInput, ok := ss.dependencyData.Input[sig]
 		if ok {
 			indexBits2, ok1 := waInput.WriteAddress[s.WriteAddress]
 			if ok1 {
@@ -578,12 +578,12 @@ func (ss *Server) addWriteAddress(s *WriteAddress) {
 func (ss *Server) addInputTask(d *Input) {
 	sig := d.Sig
 	for u, inputIndexBits := range d.UncoveredAddress {
-		ua, ok := ss.corpusDependency.UncoveredAddress[u]
+		ua, ok := ss.dependencyData.UncoveredAddress[u]
 		if !ok {
 			return
 		}
 		for w := range ua.WriteAddress {
-			wa, ok := ss.corpusDependency.WriteAddress[w]
+			wa, ok := ss.dependencyData.WriteAddress[w]
 			if !ok {
 				return
 			}
@@ -602,7 +602,7 @@ func (ss *Server) addInputTask(d *Input) {
 
 func (ss *Server) addWriteAddressTask(wa *WriteAddress, writeSig string, indexBits uint32) {
 	for u := range wa.UncoveredAddress {
-		ua, ok := ss.corpusDependency.UncoveredAddress[u]
+		ua, ok := ss.dependencyData.UncoveredAddress[u]
 		if !ok {
 			return
 		}
@@ -629,7 +629,7 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 		}
 	}
 
-	if ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]; ok {
+	if ua, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]; ok {
 		if ua.Count < ua.NumberDominatorInstructions*10 {
 			ua.Count += uint32(len(index) * len(writeIndex))
 		} else {
@@ -642,20 +642,20 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	for _, i := range index {
 		for _, wi := range writeIndex {
 			if high {
-				//ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.HighTask)
+				//ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.dependencyData.HighTask)
 			}
-			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.corpusDependency.Tasks)
+			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.dependencyData.Tasks)
 		}
 	}
 	return
 }
 
 func (ss *Server) addBootTasks(sig string, indexBits uint32, uncoveredAddress uint32) {
-	input, ok := ss.corpusDependency.Input[sig]
+	input, ok := ss.dependencyData.Input[sig]
 	if !ok {
 		log.Fatalf("addBootTasks do not find sig")
 	}
-	ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	ua, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("addBootTasks do not find uncovered address")
 	}
@@ -680,7 +680,7 @@ func (ss *Server) addBootTasks(sig string, indexBits uint32, uncoveredAddress ui
 		}
 	}
 	for _, i := range index {
-		ss.addTask(ss.getTask(sig, i, sig, writeIndexBits, uncoveredAddress, uncoveredAddress), ss.corpusDependency.BootTask)
+		ss.addTask(ss.getTask(sig, i, sig, writeIndexBits, uncoveredAddress, uncoveredAddress), ss.dependencyData.BootTask)
 	}
 	return
 }
@@ -715,7 +715,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 
 	task.Hash = task.getHash()
 
-	input, ok := ss.corpusDependency.Input[sig]
+	input, ok := ss.dependencyData.Input[sig]
 	if !ok {
 		log.Fatalf("getTask with error sig")
 	}
@@ -723,7 +723,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		task.Program = append(task.Program, c)
 	}
 
-	writeInput, ok := ss.corpusDependency.Input[writeSig]
+	writeInput, ok := ss.dependencyData.Input[writeSig]
 	if !ok {
 		log.Fatalf("getTask with error writeSig")
 	}
@@ -731,12 +731,12 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		task.WriteProgram = append(task.WriteProgram, c)
 	}
 
-	wa, ok := ss.corpusDependency.WriteAddress[writeAddress]
+	wa, ok := ss.dependencyData.WriteAddress[writeAddress]
 	if !ok {
 		log.Fatalf("getTask with error writeAddress")
 	}
 	task.Kind = wa.Kind
-	ua, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	ua, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("getTask with error uncoveredAddress")
 	}
@@ -861,7 +861,7 @@ func (m *RunTimeData) updatePriority(p1 uint32) {
 }
 
 func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint32 {
-	u, ok := ss.corpusDependency.UncoveredAddress[uncoveredAddress]
+	u, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("getPriority not find uncoveredAddress")
 	}
@@ -887,7 +887,7 @@ func (ss *Server) writeMessageToDisk(message proto.Message, name string) {
 	}
 	temp := name + ".temp"
 	if err := ioutil.WriteFile(temp, out, 0644); err != nil {
-		log.Fatalf("Failed to write corpusDependency: %s", err)
+		log.Fatalf("Failed to write dependencyData: %s", err)
 	}
 	old := name + ".old"
 	_ = os.Remove(old)

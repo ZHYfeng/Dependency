@@ -6,10 +6,8 @@ import (
 	"github.com/golang/protobuf/proto"
 	"io/ioutil"
 	"log"
-)
-
-const (
-
+	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -18,7 +16,7 @@ func main() {
 	if err != nil {
 		log.Fatalln("Error reading file:", err)
 	}
-	corpus := &pb.Corpus{}
+	corpus := &pb.Data{}
 	if err := proto.Unmarshal(in, corpus); err != nil {
 		log.Fatalln("Failed to parse corpus:", err)
 	}
@@ -29,4 +27,11 @@ func main() {
 	fmt.Printf("size : %d\n", len(corpus.NewInput))
 	fmt.Printf("size : %d\n", len(corpus.UncoveredAddress))
 	fmt.Printf("size : %d\n", len(corpus.WriteAddress))
+}
+
+func read(path string) {
+	baseName := filepath.Base(path)
+	if strings.HasPrefix(baseName, nameDevive) {
+
+	}
 }

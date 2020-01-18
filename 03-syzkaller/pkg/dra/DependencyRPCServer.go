@@ -58,9 +58,9 @@ type Server struct {
 	Address    string
 	Dependency bool
 
-	taskIndex        int
-	corpusDependency *Corpus
-	stat             *Statistics
+	taskIndex      int
+	dependencyData *Data
+	stat           *Statistics
 
 	fuzzerMu *sync.Mutex
 	fuzzers  map[string]*syzFuzzer
@@ -80,7 +80,7 @@ type Server struct {
 	dependencyMu  *sync.Mutex
 	newDependency *dependencys
 
-	// inputs of new test cases, used to get dependency
+	// inputs of new test cases, used to get dependencyData
 	newInputMu *sync.Mutex
 	newInput   *Inputs
 
@@ -373,7 +373,7 @@ func (ss *Server) SyncSignal(signalNum uint64) {
 func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.taskIndex = 0
 
-	ss.corpusDependency = &Corpus{
+	ss.dependencyData = &Data{
 		Input:            map[string]*Input{},
 		UncoveredAddress: map[uint32]*UncoveredAddress{},
 		CoveredAddress:   map[uint32]*UncoveredAddress{},
@@ -526,10 +526,10 @@ func (ss *Server) Update() {
 		f.taskMu.Unlock()
 	}
 	for _, task := range returnTask {
-		if t, ok := ss.corpusDependency.Tasks.TaskMap[task.Hash]; ok {
+		if t, ok := ss.dependencyData.Tasks.TaskMap[task.Hash]; ok {
 			t.mergeTask(task)
 			for u := range t.UncoveredAddress {
-				_, ok := ss.corpusDependency.UncoveredAddress[u]
+				_, ok := ss.dependencyData.UncoveredAddress[u]
 				if ok {
 
 				} else {
@@ -538,8 +538,8 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-	sort.Slice(ss.corpusDependency.Tasks.TaskArray, func(i, j int) bool {
-		return ss.corpusDependency.Tasks.TaskArray[i].getRealPriority() < ss.corpusDependency.Tasks.TaskArray[j].getRealPriority()
+	sort.Slice(ss.dependencyData.Tasks.TaskArray, func(i, j int) bool {
+		return ss.dependencyData.Tasks.TaskArray[i].getRealPriority() < ss.dependencyData.Tasks.TaskArray[j].getRealPriority()
 	})
 	returnTask = nil
 
@@ -548,11 +548,11 @@ func (ss *Server) Update() {
 		t := time.Now()
 		elapsed := t.Sub(ss.timeStart)
 		if elapsed.Seconds() > startTime {
-			if len(ss.corpusDependency.HighTask.TaskArray) != 0 {
+			if len(ss.dependencyData.HighTask.TaskArray) != 0 {
 				var task []*Task
-				for _, t := range ss.corpusDependency.HighTask.TaskArray {
+				for _, t := range ss.dependencyData.HighTask.TaskArray {
 					for u := range t.UncoveredAddress {
-						_, ok := ss.corpusDependency.UncoveredAddress[u]
+						_, ok := ss.dependencyData.UncoveredAddress[u]
 						if ok {
 
 						} else {
@@ -563,7 +563,7 @@ func (ss *Server) Update() {
 						task = append(task, t)
 					}
 				}
-				ss.corpusDependency.HighTask.emptyTask()
+				ss.dependencyData.HighTask.emptyTask()
 				task = []*Task{}
 				for _, t := range task {
 					t.TaskRunTimeData = []*TaskRunTimeData{}
@@ -579,9 +579,9 @@ func (ss *Server) Update() {
 			}
 			{
 				var task []*Task
-				for _, t := range ss.corpusDependency.Tasks.TaskArray {
+				for _, t := range ss.dependencyData.Tasks.TaskArray {
 					for u := range t.UncoveredAddress {
-						_, ok := ss.corpusDependency.UncoveredAddress[u]
+						_, ok := ss.dependencyData.UncoveredAddress[u]
 						if ok {
 
 						} else {
@@ -618,8 +618,8 @@ func (ss *Server) Update() {
 			}
 		}
 	} else {
-		ss.corpusDependency.HighTask.emptyTask()
-		ss.corpusDependency.Tasks.emptyTask()
+		ss.dependencyData.HighTask.emptyTask()
+		ss.dependencyData.Tasks.emptyTask()
 	}
 
 	// deal return boot tasks
@@ -631,7 +631,7 @@ func (ss *Server) Update() {
 		f.taskMu.Unlock()
 	}
 	for hash, task := range returnBootTask.TaskMap {
-		if t, ok := ss.corpusDependency.BootTask.TaskMap[hash]; ok {
+		if t, ok := ss.dependencyData.BootTask.TaskMap[hash]; ok {
 			if task.TaskStatus == TaskStatus_covered {
 				t.mergeTask(task)
 			} else {
@@ -639,7 +639,7 @@ func (ss *Server) Update() {
 			}
 			t.mergeTask(task)
 			for u := range t.UncoveredAddress {
-				_, ok := ss.corpusDependency.UncoveredAddress[u]
+				_, ok := ss.dependencyData.UncoveredAddress[u]
 				if ok {
 
 				} else {
@@ -648,8 +648,8 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-	sort.Slice(ss.corpusDependency.BootTask.TaskArray, func(i, j int) bool {
-		return ss.corpusDependency.BootTask.TaskArray[i].getRealPriority() < ss.corpusDependency.BootTask.TaskArray[j].getRealPriority()
+	sort.Slice(ss.dependencyData.BootTask.TaskArray, func(i, j int) bool {
+		return ss.dependencyData.BootTask.TaskArray[i].getRealPriority() < ss.dependencyData.BootTask.TaskArray[j].getRealPriority()
 	})
 	returnBootTask = nil
 
@@ -658,12 +658,12 @@ func (ss *Server) Update() {
 		t := time.Now()
 		elapsed := t.Sub(ss.timeStart)
 		if elapsed.Seconds() > startTime {
-			if len(ss.corpusDependency.BootTask.TaskArray) != 0 {
+			if len(ss.dependencyData.BootTask.TaskArray) != 0 {
 				var task []*Task
-				for _, t := range ss.corpusDependency.BootTask.TaskArray {
+				for _, t := range ss.dependencyData.BootTask.TaskArray {
 					if t.TaskStatus == TaskStatus_untested {
 						for u := range t.UncoveredAddress {
-							_, ok := ss.corpusDependency.UncoveredAddress[u]
+							_, ok := ss.dependencyData.UncoveredAddress[u]
 							if ok {
 
 							} else {
@@ -689,7 +689,7 @@ func (ss *Server) Update() {
 			}
 		}
 	} else {
-		ss.corpusDependency.BootTask.emptyTask()
+		ss.dependencyData.BootTask.emptyTask()
 	}
 
 	ss.logMu.Lock()
@@ -715,7 +715,7 @@ func (ss *Server) Update() {
 	newStat = nil
 
 	ss.writeMessageToDisk(ss.stat, "statistics.bin")
-	ss.writeMessageToDisk(ss.corpusDependency, "data.bin")
+	ss.writeMessageToDisk(ss.dependencyData, "data.bin")
 
 	if Unstable {
 		ss.unstableInputMu.Lock()
