@@ -164,6 +164,15 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		minimizeAttempts = 3
 	)
 
+	input := pb.Input{
+		Sig:               "",
+		Program:           []byte{},
+		Call:              make(map[uint32]*pb.Call),
+		Path:              map[uint32]*pb.Path{},
+		Stat:              pb.FuzzingStat_StatTriage,
+		ProgramBeforeMini: item.p.Serialize(),
+	}
+
 	// Compute input coverage and non-flaky signal for minimization.
 	notexecuted := 0
 	for i := 0; i < signalRuns; i++ {
@@ -203,8 +212,25 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			return
 		}
 		inputCover.Merge(thisCover)
+
+		if pb.CollectPath {
+			for i, c := range info.Calls {
+				if _, ok := input.Path[uint32(i)]; ok {
+
+				} else {
+					pp := &pb.Path{
+						Address: []uint32{},
+					}
+					input.Path[uint32(i)] = pp
+
+					for _, a := range c.Cover {
+						pp.Address = append(pp.Address, a)
+					}
+				}
+			}
+		}
 	}
-	data_before_mini := item.p.Serialize()
+
 	if item.flags&ProgMinimized == 0 {
 		item.p, item.call = prog.Minimize(item.p, item.call, false,
 			func(p1 *prog.Prog, call1 int) bool {
@@ -241,17 +267,11 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		proc.fuzzer.workQueue.enqueue(&WorkSmash{item.p, item.call})
 	}
 
-	input := pb.Input{
-		Sig:               sig.String(),
-		Program:           data,
-		Call:              make(map[uint32]*pb.Call),
-		Stat:              pb.FuzzingStat_StatTriage,
-		ProgramBeforeMini: data_before_mini,
-	}
-
 	//log.Logf(2, "data :\n%s", data)
 	//log.Logf(2, "input.Program :\n%s", input.Program)
 
+	input.Sig = sig.String()
+	input.Program = data
 	if item.call != -1 {
 		cc := &pb.Call{
 			Idx:     uint32(item.call),

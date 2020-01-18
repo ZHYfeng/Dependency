@@ -51,7 +51,7 @@ struct TableStruct_Input_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[11]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[12]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -71,6 +71,9 @@ extern InputDefaultTypeInternal _Input_default_instance_;
 class Input_CallEntry_DoNotUse;
 class Input_CallEntry_DoNotUseDefaultTypeInternal;
 extern Input_CallEntry_DoNotUseDefaultTypeInternal _Input_CallEntry_DoNotUse_default_instance_;
+class Input_PathEntry_DoNotUse;
+class Input_PathEntry_DoNotUseDefaultTypeInternal;
+extern Input_PathEntry_DoNotUseDefaultTypeInternal _Input_PathEntry_DoNotUse_default_instance_;
 class Input_UncoveredAddressEntry_DoNotUse;
 class Input_UncoveredAddressEntry_DoNotUseDefaultTypeInternal;
 extern Input_UncoveredAddressEntry_DoNotUseDefaultTypeInternal _Input_UncoveredAddressEntry_DoNotUse_default_instance_;
@@ -98,6 +101,7 @@ template<> ::dra::Call* Arena::CreateMaybeMessage<::dra::Call>(Arena*);
 template<> ::dra::Call_AddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Call_AddressEntry_DoNotUse>(Arena*);
 template<> ::dra::Input* Arena::CreateMaybeMessage<::dra::Input>(Arena*);
 template<> ::dra::Input_CallEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Input_CallEntry_DoNotUse>(Arena*);
+template<> ::dra::Input_PathEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Input_PathEntry_DoNotUse>(Arena*);
 template<> ::dra::Input_UncoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Input_UncoveredAddressEntry_DoNotUse>(Arena*);
 template<> ::dra::Input_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Input_WriteAddressEntry_DoNotUse>(Arena*);
 template<> ::dra::Inputs* Arena::CreateMaybeMessage<::dra::Inputs>(Arena*);
@@ -357,6 +361,36 @@ public:
 
 // -------------------------------------------------------------------
 
+class Input_PathEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Input_PathEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Input_PathEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  Input_PathEntry_DoNotUse();
+  Input_PathEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const Input_PathEntry_DoNotUse& other);
+  static const Input_PathEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Input_PathEntry_DoNotUse*>(&_Input_PathEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Input_2eproto);
+    return ::descriptor_table_Input_2eproto.file_level_metadata[3];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
 class Input_UncoveredAddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Input_UncoveredAddressEntry_DoNotUse, 
     ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
@@ -379,7 +413,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Input_2eproto);
-    return ::descriptor_table_Input_2eproto.file_level_metadata[3];
+    return ::descriptor_table_Input_2eproto.file_level_metadata[4];
   }
 
   public:
@@ -409,7 +443,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Input_2eproto);
-    return ::descriptor_table_Input_2eproto.file_level_metadata[4];
+    return ::descriptor_table_Input_2eproto.file_level_metadata[5];
   }
 
   public:
@@ -459,7 +493,7 @@ class Input :
                &_Input_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(Input& a, Input& b) {
     a.Swap(&b);
@@ -524,6 +558,7 @@ class Input :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kPathFieldNumber = 1,
     kCallFieldNumber = 13,
     kUncoveredAddressFieldNumber = 22,
     kWriteAddressFieldNumber = 25,
@@ -534,6 +569,23 @@ class Input :
     kStableFieldNumber = 14,
     kTotalFieldNumber = 15,
   };
+  // map<uint32, .dra.Path> path = 1;
+  int path_size() const;
+  private:
+  int _internal_path_size() const;
+  public:
+  void clear_path();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
+      _internal_path() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
+      _internal_mutable_path();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
+      path() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
+      mutable_path();
+
   // map<uint32, .dra.Call> call = 13;
   int call_size() const;
   private:
@@ -666,6 +718,12 @@ class Input :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      Input_PathEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
       Input_CallEntry_DoNotUse,
       ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
@@ -736,7 +794,7 @@ class Inputs :
                &_Inputs_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(Inputs& a, Inputs& b) {
     a.Swap(&b);
@@ -873,7 +931,7 @@ class Path :
                &_Path_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(Path& a, Path& b) {
     a.Swap(&b);
@@ -995,7 +1053,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Input_2eproto);
-    return ::descriptor_table_Input_2eproto.file_level_metadata[8];
+    return ::descriptor_table_Input_2eproto.file_level_metadata[9];
   }
 
   public:
@@ -1025,7 +1083,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Input_2eproto);
-    return ::descriptor_table_Input_2eproto.file_level_metadata[9];
+    return ::descriptor_table_Input_2eproto.file_level_metadata[10];
   }
 
   public:
@@ -1075,7 +1133,7 @@ class UnstableInput :
                &_UnstableInput_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(UnstableInput& a, UnstableInput& b) {
     a.Swap(&b);
@@ -1325,6 +1383,8 @@ Call::mutable_address() {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 // Input
 
 // string sig = 11;
@@ -1474,6 +1534,35 @@ inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Cal
 Input::mutable_call() {
   // @@protoc_insertion_point(field_mutable_map:dra.Input.call)
   return _internal_mutable_call();
+}
+
+// map<uint32, .dra.Path> path = 1;
+inline int Input::_internal_path_size() const {
+  return path_.size();
+}
+inline int Input::path_size() const {
+  return _internal_path_size();
+}
+inline void Input::clear_path() {
+  path_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
+Input::_internal_path() const {
+  return path_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
+Input::path() const {
+  // @@protoc_insertion_point(field_map:dra.Input.path)
+  return _internal_path();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
+Input::_internal_mutable_path() {
+  return path_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
+Input::mutable_path() {
+  // @@protoc_insertion_point(field_mutable_map:dra.Input.path)
+  return _internal_mutable_path();
 }
 
 // uint32 stable = 14;
@@ -1977,6 +2066,8 @@ inline void UnstableInput::set_allocated_program(std::string* program) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

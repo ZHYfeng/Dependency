@@ -27,6 +27,7 @@ message Input {
     string sig = 11; // hash value for each input from syzkaller
     bytes program = 12;
     map<uint32, Call> call = 13;
+    map<uint32, Path> path = 1;
 
     uint32 stable = 14;
     uint32 total = 15;

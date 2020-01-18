@@ -726,17 +726,20 @@ func (ss *Server) Update() {
 		ss.unstableInput = map[string]*UnstableInput{}
 		ss.unstableInputMu.Unlock()
 		for sig, ui := range unstableInput {
+			if i, ok := ss.dependencyData.Input[sig]; ok {
+				ui.NewPath = i.Path
+			}
 			ss.writeMessageToDisk(ui, sig)
 			res := ""
 			res += "sig : " + ui.Sig + "\n"
 			res += "program : \n" + string(ui.Program) + "\n"
 			res += "idx : " + fmt.Sprintf("%d", ui.Idx) + "\n"
-			res += "address : " + fmt.Sprintf("%x", ui.Address-5) + "\n"
+			res += "address : " + "0xffffffff" + fmt.Sprintf("%x", ui.Address-5) + "\n"
 			res += "NewPath : \n"
 			for i, p := range ui.NewPath {
 				res += string(i)
 				for _, a := range p.Address {
-					res += "0xffffffff" + fmt.Sprintf("%x ", a-5)
+					res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
 				}
 				res += "\n"
 			}
@@ -744,7 +747,7 @@ func (ss *Server) Update() {
 			for i, p := range ui.UnstablePath {
 				res += string(i)
 				for _, a := range p.Address {
-					res += "0xffffffff" + fmt.Sprintf("%x", a-5)
+					res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
 				}
 				res += "\n"
 			}

@@ -16,7 +16,7 @@
 #include <google/protobuf/port_def.inc>
 extern PROTOBUF_INTERNAL_EXPORT_Statistic_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_Coverage_Statistic_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Statistic_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Coverage_CoverageEntry_DoNotUse_Statistic_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_Input_Input_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_Input_Input_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Statistic_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Statistic_Statistic_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Statistic_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Statistics_StatEntry_DoNotUse_Statistic_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Statistic_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Time_Statistic_2eproto;

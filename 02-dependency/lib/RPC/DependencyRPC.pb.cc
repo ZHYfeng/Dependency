@@ -21,7 +21,7 @@ extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::i
 extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_UncoveredAddressEntry_DoNotUse_DependencyRPC_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_DependencyRPC_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Data_WriteAddressEntry_DoNotUse_DependencyRPC_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_FileOperations_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_Input_Input_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_Input_Input_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Task_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_Tasks_Task_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_UncoveredAddress_Dependency_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_WriteAddress_Dependency_2eproto;
