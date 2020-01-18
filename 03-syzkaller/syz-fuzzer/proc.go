@@ -381,12 +381,13 @@ func (proc *Proc) enqueueCallTriage(p *prog.Prog, flags ProgTypes, callIndex int
 }
 
 func (proc *Proc) executeRaw(opts *ipc.ExecOpts, p *prog.Prog, stat Stat) *ipc.ProgInfo {
-	if opts.Flags&ipc.FlagDedupCover == 0 {
-		log.Fatalf("dedup cover is not enabled")
-	}
 
 	if pb.CollectPath {
-		opts.Flags &= ^ipc.FlagDedupCover
+
+	} else {
+		if opts.Flags&ipc.FlagDedupCover == 0 {
+			log.Fatalf("dedup cover is not enabled")
+		}
 	}
 
 	// Limit concurrency window and do leak checking once in a while.

@@ -233,6 +233,11 @@ func main() {
 
 	needPoll := make(chan struct{}, 1)
 	needPoll <- struct{}{}
+
+	if pb.CollectPath {
+		execOpts.Flags &= ^ipc.FlagDedupCover
+	}
+
 	fuzzer := &Fuzzer{
 		name:                     *flagName,
 		outputType:               outputType,
