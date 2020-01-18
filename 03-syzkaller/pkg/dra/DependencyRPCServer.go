@@ -22,7 +22,7 @@ const (
 	newTime         = 3600
 	bootTime        = 3600
 	TimeWriteToDisk = 3600
-	TimeExit        = 3600 * 2
+	TimeExit        = 3600 * 24
 
 	TaskNum             = 40
 	TaskCountLimitation = 30
@@ -730,13 +730,13 @@ func (ss *Server) Update() {
 			res := ""
 			res += "sig : " + ui.Sig + "\n"
 			res += "program : \n" + string(ui.Program) + "\n"
-			res += "idx : " + string(ui.Idx) + "\n"
-			res += "address : " + string(ui.Address) + "\n"
+			res += "idx : " + fmt.Sprintf("%d", ui.Idx) + "\n"
+			res += "address : " + fmt.Sprintf("%x", ui.Address-5) + "\n"
 			res += "NewPath : \n"
 			for i, p := range ui.NewPath {
 				res += string(i)
 				for _, a := range p.Address {
-					res += "0xffffffff" + fmt.Sprintf("%x", a)
+					res += "0xffffffff" + fmt.Sprintf("%x ", a-5)
 				}
 				res += "\n"
 			}
@@ -744,7 +744,7 @@ func (ss *Server) Update() {
 			for i, p := range ui.UnstablePath {
 				res += string(i)
 				for _, a := range p.Address {
-					res += "0xffffffff" + fmt.Sprintf("%x", a)
+					res += "0xffffffff" + fmt.Sprintf("%x", a-5)
 				}
 				res += "\n"
 			}
