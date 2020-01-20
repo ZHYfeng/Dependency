@@ -27,7 +27,7 @@ message Input {
     string sig = 11; // hash value for each input from syzkaller
     bytes program = 12;
     map<uint32, Call> call = 13;
-    map<uint32, Path> path = 1;
+    repeated Paths paths = 1;
 
     uint32 stable = 14;
     uint32 total = 15;
@@ -53,8 +53,12 @@ message Path {
     repeated uint32 address = 1;
 }
 
+message Paths {
+    map<uint32, Path> path = 1;
+}
+
 message UnstableInput {
-    map<uint32, Path> new_path = 1;
+    repeated Paths new_path = 1;
     map<uint32, Path> unstable_path = 2;
     uint32 idx = 3;
     uint32 address = 4;

@@ -168,7 +168,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		Sig:               "",
 		Program:           []byte{},
 		Call:              make(map[uint32]*pb.Call),
-		Path:              map[uint32]*pb.Path{},
+		Paths:             []*pb.Paths{},
 		Stat:              pb.FuzzingStat_StatTriage,
 		ProgramBeforeMini: item.p.Serialize(),
 	}
@@ -214,18 +214,17 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		inputCover.Merge(thisCover)
 
 		if pb.CollectPath {
+			pps := &pb.Paths{
+				Path: map[uint32]*pb.Path{},
+			}
+			input.Paths = append(input.Paths, pps)
 			for i, c := range info.Calls {
-				if _, ok := input.Path[uint32(i)]; ok {
-
-				} else {
-					pp := &pb.Path{
-						Address: []uint32{},
-					}
-					input.Path[uint32(i)] = pp
-
-					for _, a := range c.Cover {
-						pp.Address = append(pp.Address, a)
-					}
+				pp := &pb.Path{
+					Address: []uint32{},
+				}
+				pps.Path[uint32(i)] = pp
+				for _, a := range c.Cover {
+					pp.Address = append(pp.Address, a)
 				}
 			}
 		}

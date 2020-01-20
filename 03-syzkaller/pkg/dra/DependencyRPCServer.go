@@ -727,7 +727,7 @@ func (ss *Server) Update() {
 		ss.unstableInputMu.Unlock()
 		for sig, ui := range unstableInput {
 			if i, ok := ss.dependencyData.Input[sig]; ok {
-				ui.NewPath = i.Path
+				ui.NewPath = i.Paths
 			}
 			ss.writeMessageToDisk(ui, sig)
 			res := ""
@@ -737,9 +737,13 @@ func (ss *Server) Update() {
 			res += "address : " + "0xffffffff" + fmt.Sprintf("%x", ui.Address-5) + "\n"
 			res += "NewPath : \n"
 			for i, p := range ui.NewPath {
-				res += string(i)
-				for _, a := range p.Address {
-					res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
+				res += fmt.Sprintf("Number %d test case", i) + "\n"
+				for ii, pp := range p.Path {
+					res += fmt.Sprintf("Number %d syscall", ii) + "\n"
+					for _, a := range pp.Address {
+						res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
+					}
+					res += "\n"
 				}
 				res += "\n"
 			}
