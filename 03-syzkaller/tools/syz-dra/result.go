@@ -178,7 +178,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		res += fmt.Sprintf("%s", t.WriteProgram) + "\n"
 
 		ua.TasksCount[int32(t.TaskStatus)]++
-		if t.TaskStatus == pb.TaskStatus_untested || true {
+		if t.TaskStatus == pb.TaskStatus_untested {
 
 		} else {
 			ua.RunTimeDate.RcursiveCount += t.Count

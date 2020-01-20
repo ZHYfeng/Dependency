@@ -119,6 +119,7 @@ func (d *device) checkUncoveredAddress() {
 	UADCWO := map[uint32]uint32{}
 	for a := range d.base.uncoveredAddressDependency {
 		if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
+			fmt.Printf("%d\n", c)
 			UADCW[a] = c
 			if c > 0 {
 				UADCWD[a] = c
