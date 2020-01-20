@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\nTask.proto\x12\x03\x64ra\"\x94\x02\n\x0brunTimeData\x12\x10\n\x08priority\x18\x01 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x02 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x06 \x03(\r\x12$\n\x0btask_status\x18\n \x01(\x0e\x32\x0f.dra.taskStatus\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\x0b\n\x03idx\x18\r \x01(\r\x12\x16\n\x0ercursive_count\x18\x0e \x01(\r\x12\x16\n\x0e\x63heckCondition\x18\x15 \x01(\x08\x12\x14\n\x0c\x63heckAddress\x18\x16 \x01(\x08\x12\x1f\n\x17\x63heckRightBranchAddress\x18\x17 \x01(\x08\"\x95\x03\n\x0fTaskRunTimeData\x12\x0c\n\x04hash\x18\x01 \x01(\t\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12\x11\n\twrite_idx\x18\x05 \x01(\r\x12\x15\n\rcondition_idx\x18\x06 \x01(\r\x12\x1b\n\x13\x63heck_write_address\x18\n \x01(\x08\x12\x45\n\x11uncovered_address\x18\x15 \x03(\x0b\x32*.dra.TaskRunTimeData.UncoveredAddressEntry\x12\x41\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32(.dra.TaskRunTimeData.CoveredAddressEntry\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xc3\x04\n\x04Task\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07program\x18\x03 \x01(\x0c\x12\x0c\n\x04kind\x18\x04 \x01(\r\x12\x10\n\x08priority\x18\x05 \x01(\x05\x12\x0c\n\x04hash\x18\x06 \x01(\t\x12\r\n\x05\x63ount\x18\x07 \x01(\r\x12\x11\n\twrite_sig\x18\x0b \x01(\t\x12\x13\n\x0bwrite_index\x18\x0c \x01(\r\x12\x15\n\rwrite_program\x18\r \x01(\x0c\x12\x15\n\rwrite_address\x18\x0e \x01(\r\x12$\n\x0btask_status\x18\x18 \x01(\x0e\x32\x0f.dra.taskStatus\x12\x1b\n\x13\x63heck_write_address\x18\x19 \x01(\x08\x12:\n\x11uncovered_address\x18\x15 \x03(\x0b\x32\x1f.dra.Task.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32\x1d.dra.Task.CoveredAddressEntry\x12\x30\n\x12task_run_time_data\x18\x1f \x03(\x0b\x32\x14.dra.TaskRunTimeData\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xb7\x01\n\x05Tasks\x12\x0c\n\x04name\x18) \x01(\t\x12\x1b\n\x04kind\x18* \x01(\x0e\x32\r.dra.TaskKind\x12)\n\x08task_map\x18\x01 \x03(\x0b\x32\x17.dra.Tasks.TaskMapEntry\x12\x1d\n\ntask_array\x18\x02 \x03(\x0b\x32\t.dra.Task\x1a\x39\n\x0cTaskMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Task:\x02\x38\x01*\x9a\x01\n\ntaskStatus\x12\x0c\n\x08untested\x10\x00\x12\x12\n\x0eunstable_write\x10\x0b\x12\x16\n\x12unstable_condition\x10\x0c\x12\x13\n\x0funstable_insert\x10\r\x12\x0c\n\x08unstable\x10\x0e\x12\n\n\x06tested\x10\x15\x12\x0b\n\x07\x63overed\x10\x16\x12\r\n\trecursive\x10\x1f\x12\x07\n\x03out\x10 **\n\x08TaskKind\x12\n\n\x06Normal\x10\x00\x12\x08\n\x04High\x10\x01\x12\x08\n\x04\x42oot\x10\x02\x62\x06proto3'
+  serialized_pb=b'\n\nTask.proto\x12\x03\x64ra\"\x94\x02\n\x0brunTimeData\x12\x10\n\x08priority\x18\x01 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x02 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x06 \x03(\r\x12$\n\x0btask_status\x18\n \x01(\x0e\x32\x0f.dra.taskStatus\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\x0b\n\x03idx\x18\r \x01(\r\x12\x16\n\x0ercursive_count\x18\x0e \x01(\r\x12\x16\n\x0e\x63heckCondition\x18\x15 \x01(\x08\x12\x14\n\x0c\x63heckAddress\x18\x16 \x01(\x08\x12\x1f\n\x17\x63heckRightBranchAddress\x18\x17 \x01(\x08\"\x95\x03\n\x0fTaskRunTimeData\x12\x0c\n\x04hash\x18\x01 \x01(\t\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12\x11\n\twrite_idx\x18\x05 \x01(\r\x12\x15\n\rcondition_idx\x18\x06 \x01(\r\x12\x1b\n\x13\x63heck_write_address\x18\n \x01(\x08\x12\x45\n\x11uncovered_address\x18\x15 \x03(\x0b\x32*.dra.TaskRunTimeData.UncoveredAddressEntry\x12\x41\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32(.dra.TaskRunTimeData.CoveredAddressEntry\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xc3\x04\n\x04Task\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07program\x18\x03 \x01(\x0c\x12\x0c\n\x04kind\x18\x04 \x01(\r\x12\x10\n\x08priority\x18\x05 \x01(\x05\x12\x0c\n\x04hash\x18\x06 \x01(\t\x12\r\n\x05\x63ount\x18\x07 \x01(\r\x12\x11\n\twrite_sig\x18\x0b \x01(\t\x12\x13\n\x0bwrite_index\x18\x0c \x01(\r\x12\x15\n\rwrite_program\x18\r \x01(\x0c\x12\x15\n\rwrite_address\x18\x0e \x01(\r\x12$\n\x0btask_status\x18\x18 \x01(\x0e\x32\x0f.dra.taskStatus\x12\x1b\n\x13\x63heck_write_address\x18\x19 \x01(\x08\x12:\n\x11uncovered_address\x18\x15 \x03(\x0b\x32\x1f.dra.Task.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32\x1d.dra.Task.CoveredAddressEntry\x12\x30\n\x12task_run_time_data\x18\x1f \x03(\x0b\x32\x14.dra.TaskRunTimeData\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xb7\x01\n\x05Tasks\x12\x0c\n\x04name\x18) \x01(\t\x12\x1b\n\x04kind\x18* \x01(\x0e\x32\r.dra.TaskKind\x12)\n\x08task_map\x18\x01 \x03(\x0b\x32\x17.dra.Tasks.TaskMapEntry\x12\x1d\n\ntask_array\x18\x02 \x03(\x0b\x32\t.dra.Task\x1a\x39\n\x0cTaskMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Task:\x02\x38\x01*\xff\x01\n\ntaskStatus\x12\x0c\n\x08untested\x10\x00\x12\x1b\n\x0enot_find_input\x10\xfb\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12#\n\x16not_find_write_address\x10\xfc\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12!\n\x14not_find_write_input\x10\xfd\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x12\n\x0eunstable_write\x10\x0b\x12\x16\n\x12unstable_condition\x10\x0c\x12\x13\n\x0funstable_insert\x10\r\x12\x0c\n\x08unstable\x10\x0e\x12\n\n\x06tested\x10\x15\x12\x0b\n\x07\x63overed\x10\x16\x12\r\n\trecursive\x10\x1f\x12\x07\n\x03out\x10 **\n\x08TaskKind\x12\n\n\x06Normal\x10\x00\x12\x08\n\x04High\x10\x01\x12\x08\n\x04\x42oot\x10\x02\x62\x06proto3'
 )
 
 _TASKSTATUS = _descriptor.EnumDescriptor(
@@ -33,42 +33,54 @@ _TASKSTATUS = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='unstable_write', index=1, number=11,
+      name='not_find_input', index=1, number=-5,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='unstable_condition', index=2, number=12,
+      name='not_find_write_address', index=2, number=-4,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='unstable_insert', index=3, number=13,
+      name='not_find_write_input', index=3, number=-3,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='unstable', index=4, number=14,
+      name='unstable_write', index=4, number=11,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='tested', index=5, number=21,
+      name='unstable_condition', index=5, number=12,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='covered', index=6, number=22,
+      name='unstable_insert', index=6, number=13,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='recursive', index=7, number=31,
+      name='unstable', index=7, number=14,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='out', index=8, number=32,
+      name='tested', index=8, number=21,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='covered', index=9, number=22,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='recursive', index=10, number=31,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='out', index=11, number=32,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
   serialized_start=1475,
-  serialized_end=1629,
+  serialized_end=1730,
 )
 _sym_db.RegisterEnumDescriptor(_TASKSTATUS)
 
@@ -94,13 +106,16 @@ _TASKKIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1631,
-  serialized_end=1673,
+  serialized_start=1732,
+  serialized_end=1774,
 )
 _sym_db.RegisterEnumDescriptor(_TASKKIND)
 
 TaskKind = enum_type_wrapper.EnumTypeWrapper(_TASKKIND)
 untested = 0
+not_find_input = -5
+not_find_write_address = -4
+not_find_write_input = -3
 unstable_write = 11
 unstable_condition = 12
 unstable_insert = 13

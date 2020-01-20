@@ -1,24 +1,191 @@
 package main
 
 import (
+	"fmt"
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"os"
+	"os/exec"
 	"path/filepath"
+	"sort"
 )
 
 type device struct {
 	path     string
 	dirName  string
 	baseName string
+	dataPath string
 
 	base              *result
 	resultsWithDra    *results
 	resultsWithoutDra *results
+
+	uniqueCoverageWithDra    map[uint32]uint32
+	uniqueCoverageWithoutDra map[uint32]uint32
+	unionCoverage            map[uint32]uint32
+	intersectionCoverage     map[uint32]uint32
 }
 
 func (d *device) read(path string) {
 	d.path = path
 	d.dirName = filepath.Dir(path)
 	d.baseName = filepath.Base(path)
+	d.dataPath = filepath.Join(path, nameDataResult)
 
+	pathBase := filepath.Join(d.path, nameBase)
+	if _, err := os.Stat(pathBase); os.IsNotExist(err) {
+		fmt.Printf(nameBase + " does not exist\n")
+	} else {
+		d.base = &result{}
+		d.base.read(pathBase)
+	}
+
+	d.resultsWithDra = &results{}
 	d.resultsWithDra.read(filepath.Join(d.path, nameWithDra))
+	d.resultsWithoutDra = &results{}
 	d.resultsWithoutDra.read(filepath.Join(d.path, nameWithoutDra))
+
+	d.checkCoverage()
+	d.checkUncoveredAddress()
+}
+
+func (d *device) checkCoverage() {
+	d.uniqueCoverageWithDra = map[uint32]uint32{}
+	d.uniqueCoverageWithoutDra = map[uint32]uint32{}
+	d.unionCoverage = map[uint32]uint32{}
+	d.intersectionCoverage = map[uint32]uint32{}
+
+	for a, c := range d.resultsWithDra.maxCoverage {
+		if cc, ok := d.resultsWithoutDra.maxCoverage[a]; ok {
+			d.intersectionCoverage[a] = c + cc
+		} else {
+			d.uniqueCoverageWithDra[a] = c
+		}
+		d.unionCoverage[a] += c
+	}
+	for a, c := range d.resultsWithoutDra.maxCoverage {
+		if _, ok := d.resultsWithDra.maxCoverage[a]; ok {
+
+		} else {
+			d.uniqueCoverageWithoutDra[a] = c
+		}
+		d.unionCoverage[a] += c
+	}
+
+	res := ""
+	res += "*******************************************\n"
+	res += "coverage : " + "\n"
+	res += "uniqueCoverageWithDra    : " + fmt.Sprintf("%5d", len(d.uniqueCoverageWithDra)) + "\n"
+	res += "uniqueCoverageWithoutDra : " + fmt.Sprintf("%5d", len(d.uniqueCoverageWithoutDra)) + "\n"
+	res += "unionCoverage            : " + fmt.Sprintf("%5d", len(d.unionCoverage)) + "\n"
+	res += "intersectionCoverage     : " + fmt.Sprintf("%5d", len(d.intersectionCoverage)) + "\n"
+	res += "*******************************************\n"
+
+	solvedCondition := map[uint32]*pb.RunTimeData{}
+	for _, r := range d.resultsWithDra.result {
+		for _, t := range r.data.Tasks.TaskArray {
+			for ca, rt := range t.CoveredAddress {
+				solvedCondition[ca] = rt
+			}
+		}
+	}
+	stableSolvedCondition := map[uint32]*pb.RunTimeData{}
+	unStableSolvedCondition := map[uint32]*pb.RunTimeData{}
+	for a, rt := range solvedCondition {
+		if _, ok := d.resultsWithDra.maxCoverage[a]; ok {
+			stableSolvedCondition[a] = rt
+		} else {
+			unStableSolvedCondition[a] = rt
+		}
+	}
+	res += "*******************************************\n"
+	res += "solvedCondition         : " + fmt.Sprintf("%5d", len(stableSolvedCondition)) + "\n"
+	res += "stableSolvedCondition   : " + fmt.Sprintf("%5d", len(stableSolvedCondition)) + "\n"
+	res += "unStableSolvedCondition : " + fmt.Sprintf("%5d", len(unStableSolvedCondition)) + "\n"
+	res += "*******************************************\n"
+
+	f, _ := os.OpenFile(d.dataPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	_, _ = f.WriteString(res)
+	_ = f.Close()
+
+}
+
+func (d *device) checkUncoveredAddress() {
+	UADCW := map[uint32]uint32{}
+	UADCWD := map[uint32]uint32{}
+	UADCWDU := map[uint32]uint32{}
+	UADCWO := map[uint32]uint32{}
+	for a := range d.base.uncoveredAddressDependency {
+		if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
+			UADCW[a] = c
+			if c > 0 {
+				UADCWD[a] = c
+				if _, ok := d.uniqueCoverageWithDra[a]; ok {
+					UADCWDU[a] = c
+				}
+			}
+		}
+		if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
+			UADCWO[a] = c
+		}
+	}
+
+	res := ""
+	res += "*******************************************\n"
+	res += "number of uncovered address      : " + fmt.Sprintf("%5d", len(d.base.data.UncoveredAddress)) + "\n"
+	res += "related to dependency            : " + fmt.Sprintf("%5d", len(d.base.uncoveredAddressDependency)) + "\n"
+	res += "covered by syzkaller with dra    : " + fmt.Sprintf("%5d", len(UADCW)) + "\n"
+	res += "covered by dependency mutate     : " + fmt.Sprintf("%5d", len(UADCWD)) + "\n"
+	res += "unique one of them               : " + fmt.Sprintf("%5d", len(UADCWDU)) + "\n"
+	res += "covered by syzkaller without dra : " + fmt.Sprintf("%5d", len(UADCWO)) + "\n"
+	res += "*******************************************\n"
+
+	_ = os.Chdir(d.path)
+	cmd := exec.Command("rm -rf 0x*")
+	_ = cmd.Wait()
+
+	var ua []*pb.UncoveredAddress
+	for _, r := range d.resultsWithDra.result {
+		for a, uaa := range r.uncoveredAddressDependency {
+			ress := r.checkUncoveredAddress(a)
+			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", a-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			_, _ = f.WriteString(ress)
+			_ = f.Close()
+			ua = append(ua, uaa)
+		}
+
+		uaStatus := map[pb.TaskStatus]uint32{}
+		for _, uaa := range ua {
+			uaStatus[uaa.RunTimeDate.TaskStatus]++
+		}
+		res += "*******************************************\n"
+		for ts, c := range uaStatus {
+			res += ts.String() + fmt.Sprintf("%5d", c) + "\n"
+		}
+		res += "*******************************************\n"
+
+		sort.Slice(ua, func(i, j int) bool {
+			return ua[i].NumberDominatorInstructions < ua[j].NumberDominatorInstructions
+		})
+		res += "*******************************************\n"
+		for _, uaa := range ua {
+			res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
+			res += " #inst : " + fmt.Sprintf("%4d", uaa.NumberDominatorInstructions)
+			res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
+			res += " #input : " + fmt.Sprintf("%3d", len(uaa.Input))
+			res += " #write : " + fmt.Sprintf("%3d", len(uaa.WriteAddress))
+			count := uint32(0)
+			for _, c := range uaa.TasksCount {
+				count += c
+			}
+			res += " #task : " + fmt.Sprintf("%5d", count)
+			count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
+			res += " #tested : " + fmt.Sprintf("%5d", count)
+			res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RcursiveCount)
+		}
+		res += "*******************************************\n"
+	}
+
+	f, _ := os.OpenFile(d.dataPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	_, _ = f.WriteString(res)
+	_ = f.Close()
 }

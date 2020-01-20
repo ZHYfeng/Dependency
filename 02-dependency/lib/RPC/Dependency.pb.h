@@ -53,7 +53,7 @@ struct TableStruct_Dependency_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[18]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[21]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -88,9 +88,18 @@ extern UncoveredAddressDefaultTypeInternal _UncoveredAddress_default_instance_;
 class UncoveredAddress_InputEntry_DoNotUse;
 class UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal;
 extern UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_InputEntry_DoNotUse_default_instance_;
+class UncoveredAddress_TasksCountEntry_DoNotUse;
+class UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal;
+extern UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_TasksCountEntry_DoNotUse_default_instance_;
 class UncoveredAddress_WriteAddressEntry_DoNotUse;
 class UncoveredAddress_WriteAddressEntry_DoNotUseDefaultTypeInternal;
 extern UncoveredAddress_WriteAddressEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_WriteAddressEntry_DoNotUse_default_instance_;
+class UncoveredAddress_WriteAddressStatusEntry_DoNotUse;
+class UncoveredAddress_WriteAddressStatusEntry_DoNotUseDefaultTypeInternal;
+extern UncoveredAddress_WriteAddressStatusEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_WriteAddressStatusEntry_DoNotUse_default_instance_;
+class UncoveredAddress_WriteCountEntry_DoNotUse;
+class UncoveredAddress_WriteCountEntry_DoNotUseDefaultTypeInternal;
+extern UncoveredAddress_WriteCountEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_WriteCountEntry_DoNotUse_default_instance_;
 class WriteAddress;
 class WriteAddressDefaultTypeInternal;
 extern WriteAddressDefaultTypeInternal _WriteAddress_default_instance_;
@@ -126,7 +135,10 @@ template<> ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse* Arena::Crea
 template<> ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse>(Arena*);
 template<> ::dra::UncoveredAddress* Arena::CreateMaybeMessage<::dra::UncoveredAddress>(Arena*);
 template<> ::dra::UncoveredAddress_InputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_InputEntry_DoNotUse>(Arena*);
+template<> ::dra::UncoveredAddress_TasksCountEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_TasksCountEntry_DoNotUse>(Arena*);
 template<> ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_WriteAddressEntry_DoNotUse>(Arena*);
+template<> ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse>(Arena*);
+template<> ::dra::UncoveredAddress_WriteCountEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_WriteCountEntry_DoNotUse>(Arena*);
 template<> ::dra::WriteAddress* Arena::CreateMaybeMessage<::dra::WriteAddress>(Arena*);
 template<> ::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse>(Arena*);
 template<> ::dra::WriteAddress_InputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::WriteAddress_InputEntry_DoNotUse>(Arena*);
@@ -746,6 +758,96 @@ public:
 
 // -------------------------------------------------------------------
 
+class UncoveredAddress_WriteAddressStatusEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_WriteAddressStatusEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_WriteAddressStatusEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM,
+    0 > SuperType;
+  UncoveredAddress_WriteAddressStatusEntry_DoNotUse();
+  UncoveredAddress_WriteAddressStatusEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const UncoveredAddress_WriteAddressStatusEntry_DoNotUse& other);
+  static const UncoveredAddress_WriteAddressStatusEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const UncoveredAddress_WriteAddressStatusEntry_DoNotUse*>(&_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[7];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class UncoveredAddress_TasksCountEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_TasksCountEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_TasksCountEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    0 > SuperType;
+  UncoveredAddress_TasksCountEntry_DoNotUse();
+  UncoveredAddress_TasksCountEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const UncoveredAddress_TasksCountEntry_DoNotUse& other);
+  static const UncoveredAddress_TasksCountEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const UncoveredAddress_TasksCountEntry_DoNotUse*>(&_UncoveredAddress_TasksCountEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[8];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class UncoveredAddress_WriteCountEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_WriteCountEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_WriteCountEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    0 > SuperType;
+  UncoveredAddress_WriteCountEntry_DoNotUse();
+  UncoveredAddress_WriteCountEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const UncoveredAddress_WriteCountEntry_DoNotUse& other);
+  static const UncoveredAddress_WriteCountEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const UncoveredAddress_WriteCountEntry_DoNotUse*>(&_UncoveredAddress_WriteCountEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[9];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
 class UncoveredAddress :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.UncoveredAddress) */ {
  public:
@@ -788,7 +890,7 @@ class UncoveredAddress :
                &_UncoveredAddress_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    10;
 
   friend void swap(UncoveredAddress& a, UncoveredAddress& b) {
     a.Swap(&b);
@@ -856,6 +958,9 @@ class UncoveredAddress :
     kRightBranchAddressFieldNumber = 3,
     kInputFieldNumber = 22,
     kWriteAddressFieldNumber = 23,
+    kWriteAddressStatusFieldNumber = 32,
+    kTasksCountFieldNumber = 33,
+    kWriteCountFieldNumber = 34,
     kRunTimeDateFieldNumber = 8,
     kConditionAddressFieldNumber = 1,
     kUncoveredAddressFieldNumber = 2,
@@ -919,6 +1024,57 @@ class UncoveredAddress :
       write_address() const;
   ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::writeAddressAttributes >*
       mutable_write_address();
+
+  // map<uint32, .dra.taskStatus> write_address_status = 32;
+  int write_address_status_size() const;
+  private:
+  int _internal_write_address_status_size() const;
+  public:
+  void clear_write_address_status();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+      _internal_write_address_status() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+      _internal_mutable_write_address_status();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+      write_address_status() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+      mutable_write_address_status();
+
+  // map<int32, uint32> tasks_count = 33;
+  int tasks_count_size() const;
+  private:
+  int _internal_tasks_count_size() const;
+  public:
+  void clear_tasks_count();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+      _internal_tasks_count() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+      _internal_mutable_tasks_count();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+      tasks_count() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+      mutable_tasks_count();
+
+  // map<int32, uint32> write_count = 34;
+  int write_count_size() const;
+  private:
+  int _internal_write_count_size() const;
+  public:
+  void clear_write_count();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+      _internal_write_count() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+      _internal_mutable_write_count();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+      write_count() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+      mutable_write_count();
 
   // .dra.runTimeData run_time_date = 8;
   bool has_run_time_date() const;
@@ -1008,6 +1164,24 @@ class UncoveredAddress :
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
       0 > write_address_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      UncoveredAddress_WriteAddressStatusEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM,
+      0 > write_address_status_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      UncoveredAddress_TasksCountEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      0 > tasks_count_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      UncoveredAddress_WriteCountEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      0 > write_count_;
   ::dra::runTimeData* run_time_date_;
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 uncovered_address_;
@@ -1062,7 +1236,7 @@ class Dependency :
                &_Dependency_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    11;
 
   friend void swap(Dependency& a, Dependency& b) {
     a.Swap(&b);
@@ -1213,7 +1387,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[9];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[12];
   }
 
   public:
@@ -1263,7 +1437,7 @@ class FileOperationsFunction :
                &_FileOperationsFunction_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    13;
 
   friend void swap(FileOperationsFunction& a, FileOperationsFunction& b) {
     a.Swap(&b);
@@ -1460,7 +1634,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[11];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[14];
   }
 
   public:
@@ -1510,7 +1684,7 @@ class FileOperations :
                &_FileOperations_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    15;
 
   friend void swap(FileOperations& a, FileOperations& b) {
     a.Swap(&b);
@@ -1654,7 +1828,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[13];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[16];
   }
 
   public:
@@ -1704,7 +1878,7 @@ class address :
                &_address_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    17;
 
   friend void swap(address& a, address& b) {
     a.Swap(&b);
@@ -1864,7 +2038,7 @@ class Condition :
                &_Condition_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    18;
 
   friend void swap(Condition& a, Condition& b) {
     a.Swap(&b);
@@ -2097,7 +2271,7 @@ class Conditions :
                &_Conditions_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    19;
 
   friend void swap(Conditions& a, Conditions& b) {
     a.Swap(&b);
@@ -2234,7 +2408,7 @@ class WriteAddresses :
                &_WriteAddresses_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    20;
 
   friend void swap(WriteAddresses& a, WriteAddresses& b) {
     a.Swap(&b);
@@ -2632,6 +2806,12 @@ inline void writeAddressAttributes::set_prio(::PROTOBUF_NAMESPACE_ID::uint32 val
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // UncoveredAddress
 
 // uint32 condition_address = 1;
@@ -2911,6 +3091,93 @@ inline void UncoveredAddress::set_allocated_run_time_date(::dra::runTimeData* ru
   }
   run_time_date_ = run_time_date;
   // @@protoc_insertion_point(field_set_allocated:dra.UncoveredAddress.run_time_date)
+}
+
+// map<uint32, .dra.taskStatus> write_address_status = 32;
+inline int UncoveredAddress::_internal_write_address_status_size() const {
+  return write_address_status_.size();
+}
+inline int UncoveredAddress::write_address_status_size() const {
+  return _internal_write_address_status_size();
+}
+inline void UncoveredAddress::clear_write_address_status() {
+  write_address_status_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+UncoveredAddress::_internal_write_address_status() const {
+  return write_address_status_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+UncoveredAddress::write_address_status() const {
+  // @@protoc_insertion_point(field_map:dra.UncoveredAddress.write_address_status)
+  return _internal_write_address_status();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+UncoveredAddress::_internal_mutable_write_address_status() {
+  return write_address_status_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+UncoveredAddress::mutable_write_address_status() {
+  // @@protoc_insertion_point(field_mutable_map:dra.UncoveredAddress.write_address_status)
+  return _internal_mutable_write_address_status();
+}
+
+// map<int32, uint32> tasks_count = 33;
+inline int UncoveredAddress::_internal_tasks_count_size() const {
+  return tasks_count_.size();
+}
+inline int UncoveredAddress::tasks_count_size() const {
+  return _internal_tasks_count_size();
+}
+inline void UncoveredAddress::clear_tasks_count() {
+  tasks_count_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+UncoveredAddress::_internal_tasks_count() const {
+  return tasks_count_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+UncoveredAddress::tasks_count() const {
+  // @@protoc_insertion_point(field_map:dra.UncoveredAddress.tasks_count)
+  return _internal_tasks_count();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+UncoveredAddress::_internal_mutable_tasks_count() {
+  return tasks_count_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+UncoveredAddress::mutable_tasks_count() {
+  // @@protoc_insertion_point(field_mutable_map:dra.UncoveredAddress.tasks_count)
+  return _internal_mutable_tasks_count();
+}
+
+// map<int32, uint32> write_count = 34;
+inline int UncoveredAddress::_internal_write_count_size() const {
+  return write_count_.size();
+}
+inline int UncoveredAddress::write_count_size() const {
+  return _internal_write_count_size();
+}
+inline void UncoveredAddress::clear_write_count() {
+  write_count_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+UncoveredAddress::_internal_write_count() const {
+  return write_count_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+UncoveredAddress::write_count() const {
+  // @@protoc_insertion_point(field_map:dra.UncoveredAddress.write_count)
+  return _internal_write_count();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+UncoveredAddress::_internal_mutable_write_count() {
+  return write_count_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+UncoveredAddress::mutable_write_count() {
+  // @@protoc_insertion_point(field_mutable_map:dra.UncoveredAddress.write_count)
+  return _internal_mutable_write_count();
 }
 
 // -------------------------------------------------------------------
@@ -3876,6 +4143,12 @@ WriteAddresses::write_address() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

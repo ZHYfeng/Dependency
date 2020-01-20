@@ -102,6 +102,9 @@ namespace dra {
 
 enum taskStatus : int {
   untested = 0,
+  not_find_input = -5,
+  not_find_write_address = -4,
+  not_find_write_input = -3,
   unstable_write = 11,
   unstable_condition = 12,
   unstable_insert = 13,
@@ -114,7 +117,7 @@ enum taskStatus : int {
   taskStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool taskStatus_IsValid(int value);
-constexpr taskStatus taskStatus_MIN = untested;
+constexpr taskStatus taskStatus_MIN = not_find_input;
 constexpr taskStatus taskStatus_MAX = out;
 constexpr int taskStatus_ARRAYSIZE = taskStatus_MAX + 1;
 

@@ -28,7 +28,7 @@ message WriteAddress {
     map<string, uint32> input = 25;
 
     // it is the data of uncovered address
-        runTimeData run_time_date = 11;
+    runTimeData run_time_date = 11;
 }
 
 message writeAddressAttributes {
@@ -59,7 +59,10 @@ message UncoveredAddress {
     map<uint32, writeAddressAttributes> write_address = 23;
     uint32 count = 24;
 
-        runTimeData run_time_date = 8;
+    runTimeData run_time_date = 8;
+    map<uint32, taskStatus> write_address_status = 32;
+    map<int32, uint32> tasks_count = 33;
+    map<int32, uint32> write_count = 34;
 
 }
 
@@ -93,7 +96,7 @@ message FileOperationsFunction {
     //    repeated Condition critical_condition = 4;
     //    map<uint32, Condition> critical_condition = 4;
     // it is the data of this syscall
-        runTimeData run_time_date = 5;
+    runTimeData run_time_date = 5;
 
     //    repeated WriteAddress write_address = 11;
     map<uint32, uint32> write_address = 11;

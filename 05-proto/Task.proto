@@ -4,6 +4,9 @@ package dra;
 
 enum taskStatus {
     untested = 0;
+    not_find_input = -5;
+    not_find_write_address = -4;
+    not_find_write_input = -3;
 
     unstable_write = 11;
     unstable_condition = 12;

@@ -87,7 +87,7 @@ class stat:
         if self.dir_path != "":
             f = open(self.file_result, "a")
             f.write("=====================================================\n")
-            f.write("useful input 1`43v b:" + "\n")
+            f.write("useful input :" + "\n")
             for ui in self.real_stat.useful_input:
                 if ui.num > 100:
                     f.write("program : " + str(ui.input.program) + "\n")

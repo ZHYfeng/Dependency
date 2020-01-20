@@ -12,6 +12,8 @@ type results struct {
 	dirName  string
 	baseName string
 	result   []*result
+
+	maxCoverage map[uint32]uint32
 }
 
 func (r *results) read(path string) {
@@ -19,12 +21,13 @@ func (r *results) read(path string) {
 	r.dirName = filepath.Dir(path)
 	r.baseName = filepath.Base(path)
 
+	r.result = []*result{}
 	err := filepath.Walk(r.path,
 		func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return err
 			}
-			if info.Name() == nameStatistic {
+			if info.Name() == nameStatistics {
 				temp := &result{}
 				r.result = append(r.result, temp)
 
@@ -35,5 +38,12 @@ func (r *results) read(path string) {
 		})
 	if err != nil {
 		log.Println(err)
+	}
+
+	r.maxCoverage = map[uint32]uint32{}
+	for _, rr := range r.result {
+		for a := range rr.statistics.Coverage.Coverage {
+			r.maxCoverage[a]++
+		}
 	}
 }
