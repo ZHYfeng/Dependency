@@ -159,8 +159,8 @@ func (d *device) checkUncoveredAddress() {
 
 	var ua []*pb.UncoveredAddress
 	for _, r := range d.resultsWithDra.result {
-		for a, uaa := range r.uncoveredAddressDependency {
-			ress := r.checkUncoveredAddress(a)
+		for a := range r.uncoveredAddressDependency {
+			ress, uaa := r.checkUncoveredAddress(a)
 			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", a-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 			_, _ = f.WriteString(ress)
 			_ = f.Close()

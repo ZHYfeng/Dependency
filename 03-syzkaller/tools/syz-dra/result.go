@@ -66,13 +66,13 @@ func (r *result) checkTasks() {
 
 }
 
-func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
+func (r *result) checkUncoveredAddress(uncoveredAddress uint32) (string, *pb.UncoveredAddress) {
 
 	ua, ok := r.data.UncoveredAddress[uncoveredAddress]
 	if ok {
 
 	} else {
-		return ""
+		return "", ua
 	}
 	ua.RunTimeDate.TaskStatus = pb.TaskStatus_not_find_input
 
@@ -267,5 +267,5 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 	res += "ua.RunTimeDate.TaskStatus : " + ua.RunTimeDate.TaskStatus.String() + "\n"
 
 	res += "*******************************************\n"
-	return res
+	return res, ua
 }
