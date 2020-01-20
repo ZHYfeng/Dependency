@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 type device struct {
@@ -142,8 +143,20 @@ func (d *device) checkUncoveredAddress() {
 	res += "*******************************************\n"
 
 	_ = os.Chdir(d.path)
-	cmd := exec.Command("/bin/bash", "rm -rf 0x*")
-	_ = cmd.Run()
+	err := filepath.Walk(d.path,
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if strings.HasPrefix(info.Name(), "0x") {
+				fmt.Printf("%s, %s", path, info.Name())
+				_ = os.Remove(info.Name())
+			}
+			return nil
+		})
+	if err != nil {
+		log.Println(err)
+	}
 
 	var ua []*pb.UncoveredAddress
 	for _, r := range d.resultsWithDra.result {
@@ -183,6 +196,7 @@ func (d *device) checkUncoveredAddress() {
 			count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
 			res += " #tested : " + fmt.Sprintf("%5d", count)
 			res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RcursiveCount)
+			res += "\n"
 		}
 		res += "*******************************************\n"
 	}
