@@ -44,6 +44,8 @@ func (d *device) read(path string) {
 	d.resultsWithoutDra = &results{}
 	d.resultsWithoutDra.read(filepath.Join(d.path, nameWithoutDra))
 
+	_ = os.Remove(filepath.Join(d.path, nameDataResult))
+
 	d.checkCoverage()
 	d.checkUncoveredAddress()
 }
@@ -140,7 +142,7 @@ func (d *device) checkUncoveredAddress() {
 	res += "*******************************************\n"
 
 	_ = os.Chdir(d.path)
-	cmd := exec.Command("rm -rf 0x*")
+	cmd := exec.Command("/bin/bash", "rm -rf 0x*")
 	_ = cmd.Run()
 
 	var ua []*pb.UncoveredAddress
