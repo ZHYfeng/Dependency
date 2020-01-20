@@ -35,6 +35,7 @@ func (r *result) read(path string) {
 		log.Fatalln("Failed to parse data:", err)
 	}
 
+	fmt.Printf("nameStatistics\n")
 	fileName = filepath.Join(r.path, nameStatistics)
 	in, err = ioutil.ReadFile(fileName)
 	if err != nil {
@@ -44,6 +45,7 @@ func (r *result) read(path string) {
 	if err := proto.Unmarshal(in, r.statistics); err != nil {
 		log.Fatalln("Failed to parse statistics:", err)
 	}
+	fmt.Printf("nameStatistics\n")
 
 	r.getUncoveredAddress()
 }

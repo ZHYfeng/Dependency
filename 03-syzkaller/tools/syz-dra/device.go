@@ -149,8 +149,7 @@ func (d *device) checkUncoveredAddress() {
 				return err
 			}
 			if strings.HasPrefix(info.Name(), "0x") {
-				fmt.Printf("%s, %s", path, info.Name())
-				_ = os.Remove(info.Name())
+				_ = os.Remove(path)
 			}
 			return nil
 		})
