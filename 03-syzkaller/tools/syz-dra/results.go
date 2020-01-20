@@ -40,8 +40,8 @@ func (r *results) read(path string) {
 
 	r.maxCoverage = map[uint32]uint32{}
 	for _, rr := range r.result {
-		for a := range rr.statistics.Coverage.Coverage {
-			r.maxCoverage[a]++
+		for a, c := range rr.statistics.Coverage.Coverage {
+			r.maxCoverage[a] += c
 		}
 	}
 }
