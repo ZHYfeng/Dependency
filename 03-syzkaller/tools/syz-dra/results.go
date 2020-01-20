@@ -32,7 +32,6 @@ func (r *results) read(path string) {
 				r.result = append(r.result, temp)
 
 				temp.read(filepath.Dir(path))
-				fmt.Println(info.Name(), info.Size())
 			}
 			return nil
 		})
