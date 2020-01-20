@@ -29,8 +29,10 @@ const (
 
 	DebugLevel = 2
 
-	CollectPath = true
-	Unstable    = true
+	CollectPath     = true
+	CollectUnstable = true
+
+	StableCoverage = true
 )
 
 type syzFuzzer struct {
@@ -293,7 +295,7 @@ func (ss Server) SendBootInput(ctx context.Context, request *Input) (*Empty, err
 
 // SendUnstableInput is get unstable input from syz-fuzzer
 func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) (*Empty, error) {
-	if Unstable {
+	if CollectUnstable {
 		ui := proto.Clone(request).(*UnstableInput)
 		ss.unstableInputMu.Lock()
 		defer ss.unstableInputMu.Unlock()
@@ -425,7 +427,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.coveredInputMu = &sync.Mutex{}
 	ss.coveredInput = &Inputs{Input: []*Input{}}
 
-	if Unstable {
+	if CollectUnstable {
 		ss.unstableInputMu = &sync.Mutex{}
 		ss.unstableInput = map[string]*UnstableInput{}
 	}
@@ -717,7 +719,7 @@ func (ss *Server) Update() {
 	ss.writeMessageToDisk(ss.stat, "statistics.bin")
 	ss.writeMessageToDisk(ss.dependencyData, "data.bin")
 
-	if Unstable {
+	if CollectUnstable {
 		ss.unstableInputMu.Lock()
 		unstableInput := map[string]*UnstableInput{}
 		for sig, ui := range ss.unstableInput {

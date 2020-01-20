@@ -158,7 +158,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		logCallName = fmt.Sprintf("call #%v %v", item.call, callName)
 	}
 	log.Logf(3, "triaging input for %v (new signal=%v)", logCallName, newSignal.Len())
-	var inputCover cover.Cover
+	inputCover := make(cover.Cover)
 	const (
 		signalRuns       = 3
 		minimizeAttempts = 3
@@ -172,6 +172,8 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		Stat:              pb.FuzzingStat_StatTriage,
 		ProgramBeforeMini: item.p.Serialize(),
 	}
+
+	call := make(map[uint32]uint32)
 
 	// Compute input coverage and non-flaky signal for minimization.
 	notexecuted := 0
@@ -212,6 +214,22 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			return
 		}
 		inputCover.Merge(thisCover)
+
+		if pb.StableCoverage {
+			if len(call) == 0 {
+				for _, a := range thisCover {
+					call[a] = 0
+				}
+			} else {
+				temp := make(map[uint32]uint32)
+				for _, a := range thisCover {
+					if _, ok := call[a]; ok {
+						temp[a] = 0
+					}
+				}
+				call = temp
+			}
+		}
 
 		if pb.CollectPath {
 			pps := &pb.Paths{
@@ -277,8 +295,14 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			Address: make(map[uint32]uint32),
 		}
 		input.Call[uint32(item.call)] = cc
-		for a := range inputCover {
-			cc.Address[a] = 0
+		if pb.StableCoverage {
+			for a := range call {
+				cc.Address[a] = 0
+			}
+		} else {
+			for a := range inputCover {
+				cc.Address[a] = 0
+			}
 		}
 	}
 
@@ -456,19 +480,19 @@ func (proc *Proc) logProgram(opts *ipc.ExecOpts, p *prog.Prog) {
 		fd, err := syscall.Open("/dev/kmsg", syscall.O_WRONLY, 0)
 		if err == nil {
 			buf := new(bytes.Buffer)
-			fmt.Fprintf(buf, "syzkaller: executing program %v%v:\n%s\n",
+			_, _ = fmt.Fprintf(buf, "syzkaller: executing program %v%v:\n%s\n",
 				proc.pid, strOpts, data)
-			syscall.Write(fd, buf.Bytes())
-			syscall.Close(fd)
+			_, _ = syscall.Write(fd, buf.Bytes())
+			_ = syscall.Close(fd)
 		}
 	case OutputFile:
 		f, err := os.Create(fmt.Sprintf("%v-%v.prog", proc.fuzzer.name, proc.pid))
 		if err == nil {
 			if strOpts != "" {
-				fmt.Fprintf(f, "#%v\n", strOpts)
+				_, _ = fmt.Fprintf(f, "#%v\n", strOpts)
 			}
-			f.Write(data)
-			f.Close()
+			_, _ = f.Write(data)
+			_ = f.Close()
 		}
 	default:
 		log.Fatalf("unknown output type: %v", proc.fuzzer.outputType)

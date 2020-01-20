@@ -55,6 +55,10 @@ func (m *Input) mergeInput(d *Input) {
 		}
 	}
 
+	for _, p := range d.Paths {
+		m.Paths = append(m.Paths, proto.Clone(p).(*Paths))
+	}
+
 	for i, c := range d.UncoveredAddress {
 		if index, ok := m.UncoveredAddress[i]; ok {
 			m.UncoveredAddress[i] = index | c
@@ -348,7 +352,7 @@ func (ss *Server) addInput(s *Input) {
 	ss.addWriteAddressMapInput(s)
 	ss.addUncoveredAddressMapInput(s)
 
-	if Unstable {
+	if CollectUnstable {
 
 	} else {
 		ss.dependencyData.Input[s.Sig].Call = make(map[uint32]*Call)

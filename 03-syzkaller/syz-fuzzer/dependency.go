@@ -107,7 +107,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 		task.CheckWriteAddress = true
 	} else {
 		task.CheckWriteAddress = false
-		if pb.Unstable {
+		if pb.CollectUnstable {
 
 			unstableInput := &pb.UnstableInput{
 				NewPath:      []*pb.Paths{},
@@ -154,7 +154,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 			if r.TaskStatus < pb.TaskStatus_unstable_condition {
 				r.TaskStatus = pb.TaskStatus_unstable_condition
 
-				if pb.Unstable {
+				if pb.CollectUnstable {
 
 					unstableInput := &pb.UnstableInput{
 						NewPath:      []*pb.Paths{},
