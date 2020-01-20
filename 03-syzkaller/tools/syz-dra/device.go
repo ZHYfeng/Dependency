@@ -141,7 +141,7 @@ func (d *device) checkUncoveredAddress() {
 
 	_ = os.Chdir(d.path)
 	cmd := exec.Command("rm -rf 0x*")
-	_ = cmd.Wait()
+	_ = cmd.Run()
 
 	var ua []*pb.UncoveredAddress
 	for _, r := range d.resultsWithDra.result {
