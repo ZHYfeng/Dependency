@@ -110,7 +110,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 		if pb.Unstable {
 
 			unstableInput := &pb.UnstableInput{
-				NewPath:      map[uint32]*pb.Path{},
+				NewPath:      []*pb.Paths{},
 				UnstablePath: map[uint32]*pb.Path{},
 				Idx:          task.WriteIndex,
 				Address:      task.WriteAddress,
@@ -157,7 +157,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 				if pb.Unstable {
 
 					unstableInput := &pb.UnstableInput{
-						NewPath:      map[uint32]*pb.Path{},
+						NewPath:      []*pb.Paths{},
 						UnstablePath: map[uint32]*pb.Path{},
 						Idx:          task.Index,
 						Address:      r.ConditionAddress,
