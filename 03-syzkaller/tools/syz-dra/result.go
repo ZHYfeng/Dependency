@@ -106,7 +106,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		res += "not find write address of " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress-5) + "\n"
 	} else {
 		for wa, waa := range ua.WriteAddress {
-			ua.WriteAddressStatus[wa] = pb.TaskStatus_untested
+			ua.WriteAddressStatus[wa] = pb.TaskStatus_not_find_write_address
 			res += "-------------------------------------------\n"
 			res += "## write address : " + fmt.Sprintf("0xffffffff%x", wa-5) + "\n"
 			res += "Repeat : " + fmt.Sprintf("%d", waa.Repeat) + "\n"
