@@ -46,6 +46,7 @@ func (d *device) read(path string) {
 	d.resultsWithoutDra.read(filepath.Join(d.path, nameWithoutDra))
 
 	_ = os.Remove(filepath.Join(d.path, nameDataResult))
+	fmt.Printf("remove %s\n", nameDataResult)
 
 	d.checkCoverage()
 	d.checkUncoveredAddress()
