@@ -53,6 +53,7 @@ func readUnstableInput(path string) {
 	if err := proto.Unmarshal(in, ui); err != nil {
 		log.Fatalln("Failed to parse ui:", err)
 	}
+	fmt.Printf("0xffffffff%x\n", ui.Address-5)
 	fmt.Printf("%d\n", ui.Idx)
 	fmt.Printf("%s\n", ui.Program)
 	for idx, path := range ui.NewPath {
