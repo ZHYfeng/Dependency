@@ -102,6 +102,7 @@ namespace dra {
 
 enum taskStatus : int {
   untested = 0,
+  testing = 1,
   not_find_input = -5,
   not_find_write_address = -4,
   not_find_write_input = -3,

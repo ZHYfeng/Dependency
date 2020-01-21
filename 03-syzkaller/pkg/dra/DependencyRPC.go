@@ -271,12 +271,11 @@ func (m *Task) mergeTask(s *Task) {
 	}
 
 	if m.TaskStatus == TaskStatus_untested {
-		m.TaskStatus = s.TaskStatus
-	} else if m.TaskStatus == TaskStatus_unstable {
-		m.TaskStatus = s.TaskStatus
-	} else if m.TaskStatus == TaskStatus_tested && s.TaskStatus == TaskStatus_covered {
+		//m.TaskStatus = s.TaskStatus
+	} else if m.TaskStatus < s.TaskStatus {
 		m.TaskStatus = s.TaskStatus
 	}
+
 	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress
 
 	if len(m.TaskRunTimeData) == 0 {

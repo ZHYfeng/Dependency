@@ -593,10 +593,12 @@ func (ss *Server) Update() {
 					if len(t.UncoveredAddress) > 0 && t.Count < TaskCountLimitation {
 						//if len(t.UncoveredAddress) > 0 {
 						if t.TaskStatus == TaskStatus_untested {
+							t.TaskStatus = TaskStatus_testing
 							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
-							//} else if t.TaskStatus == TaskStatus_testing {
-							//	task = append(task, t)
+						} else if t.TaskStatus == TaskStatus_testing {
+							t.reducePriority()
+							task = append(task, t)
 						} else if t.TaskStatus == TaskStatus_unstable {
 							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
