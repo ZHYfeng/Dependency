@@ -179,76 +179,79 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
 		ua.TasksCount[int32(t.TaskStatus)]++
 		if t.TaskStatus == pb.TaskStatus_untested {
+			continue
+		}
+		ua.RunTimeDate.RcursiveCount += t.Count
+		res += "check_write_address : " + fmt.Sprintf("%t", t.CheckWriteAddress) + "\n"
+		if t.CheckWriteAddress {
 
 		} else {
-			ua.RunTimeDate.RcursiveCount += t.Count
-			res += "check_write_address : " + fmt.Sprintf("%t", t.CheckWriteAddress) + "\n"
-			if t.CheckWriteAddress {
-
-			} else {
-				if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_write {
-					ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_write
-				}
+			if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_write {
+				ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_write
 			}
-			res += "-------------------------------------------\n"
-			if rd, ok := t.UncoveredAddress[uncoveredAddress]; ok {
-				res += "task_status : " + rd.TaskStatus.String() + "\n"
-				res += "check condition : " + fmt.Sprintf("%t", rd.CheckCondition) + "\n"
-				res += "check address : " + fmt.Sprintf("%t", rd.CheckAddress) + "\n"
-				if rd.CheckCondition {
-					if t.CheckWriteAddress {
-						for _, trd := range t.TaskRunTimeData {
-							res += "-------------------------------------------\n"
-							res += "check insert write address : " + fmt.Sprintf("%t", trd.CheckWriteAddress) + "\n"
-							if rdd, ok := trd.UncoveredAddress[uncoveredAddress]; ok {
+		}
+		res += "-------------------------------------------\n"
+		if rd, ok := t.UncoveredAddress[uncoveredAddress]; ok {
+			res += "task_status : " + rd.TaskStatus.String() + "\n"
+			res += "check condition : " + fmt.Sprintf("%t", rd.CheckCondition) + "\n"
+			res += "check address : " + fmt.Sprintf("%t", rd.CheckAddress) + "\n"
+			if rd.TaskStatus == pb.TaskStatus_untested {
+				continue
+			}
+			if rd.CheckCondition {
+				if !t.CheckWriteAddress {
+					continue
+				}
+				for _, trd := range t.TaskRunTimeData {
+					res += "-------------------------------------------\n"
+					res += "check insert write address : " + fmt.Sprintf("%t", trd.CheckWriteAddress) + "\n"
+					if rdd, ok := trd.UncoveredAddress[uncoveredAddress]; ok {
 
-								res += "insert task_status : " + rdd.TaskStatus.String() + "\n"
-								res += "check condition : " + fmt.Sprintf("%t", rdd.CheckCondition) + "\n"
-								res += "check address : " + fmt.Sprintf("%t", rdd.CheckAddress) + "\n"
-								if trd.CheckWriteAddress {
-									if rdd.CheckCondition {
-										if rdd.CheckCondition {
-											res += "error in rdd.CheckCondition" + "\n"
-										} else {
-											res += "useless write address or FP" + "\n"
-											if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_tested {
-												ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_tested
-											}
-										}
-									} else {
-										res += "unstable insert condition address" + "\n"
-										if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
-											ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
-										}
-									}
+						res += "insert task_status : " + rdd.TaskStatus.String() + "\n"
+						res += "check condition : " + fmt.Sprintf("%t", rdd.CheckCondition) + "\n"
+						res += "check address : " + fmt.Sprintf("%t", rdd.CheckAddress) + "\n"
+						if trd.CheckWriteAddress {
+							if rdd.CheckCondition {
+								if rdd.CheckCondition {
+									res += "error in rdd.CheckCondition" + "\n"
 								} else {
-									res += "unstable insert write address" + "\n"
-									if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
-										ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
+									res += "useless write address or FP" + "\n"
+									if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_tested {
+										ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_tested
 									}
 								}
-
-							} else if _, ok := trd.CoveredAddress[uncoveredAddress]; ok {
-								res += "uncoveredAddress in trd.CoveredAddress" + "\n"
 							} else {
-								res += "not test" + "\n"
+								res += "unstable insert condition address" + "\n"
+								if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
+									ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
+								}
+							}
+						} else {
+							res += "unstable insert write address" + "\n"
+							if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
+								ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
 							}
 						}
-					}
 
-				} else {
-					if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_condition {
-						ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_condition
+					} else if _, ok := trd.CoveredAddress[uncoveredAddress]; ok {
+						res += "uncoveredAddress in trd.CoveredAddress" + "\n"
+					} else {
+						res += "not test" + "\n"
 					}
 				}
 
-			} else if _, ok := t.CoveredAddress[uncoveredAddress]; ok {
-				res += "uncoveredAddress in t.covered_address" + "\n"
-				if ua.RunTimeDate.TaskStatus < pb.TaskStatus_covered {
-					ua.RunTimeDate.TaskStatus = pb.TaskStatus_covered
-				}
 			} else {
+				if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_condition {
+					ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_condition
+				}
 			}
+
+		} else if _, ok := t.CoveredAddress[uncoveredAddress]; ok {
+			res += "uncoveredAddress in t.covered_address" + "\n"
+			if ua.RunTimeDate.TaskStatus < pb.TaskStatus_covered {
+				ua.RunTimeDate.TaskStatus = pb.TaskStatus_covered
+			}
+		} else {
 		}
 	}
 
