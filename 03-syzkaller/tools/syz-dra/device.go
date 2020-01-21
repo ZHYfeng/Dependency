@@ -185,7 +185,6 @@ func (d *device) checkUncoveredAddress() {
 		for _, uaa := range ua {
 			res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
 			res += " #inst : " + fmt.Sprintf("%4d", uaa.NumberDominatorInstructions)
-			res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
 			res += " #input : " + fmt.Sprintf("%3d", len(uaa.Input))
 			res += " #write : " + fmt.Sprintf("%3d", len(uaa.WriteAddress))
 			count := uint32(0)
@@ -196,6 +195,7 @@ func (d *device) checkUncoveredAddress() {
 			count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
 			res += " #tested : " + fmt.Sprintf("%5d", count)
 			res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RcursiveCount)
+			res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
 			res += "\n"
 		}
 		res += "*******************************************\n"
