@@ -128,7 +128,7 @@ func (d *device) checkUncoveredAddress() {
 				}
 			}
 		}
-		if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
+		if c, ok := d.resultsWithoutDra.maxCoverage[a]; ok {
 			UADCWO[a] = c
 		}
 	}
