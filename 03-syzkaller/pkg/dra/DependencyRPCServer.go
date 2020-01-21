@@ -590,8 +590,8 @@ func (ss *Server) Update() {
 							delete(t.UncoveredAddress, u)
 						}
 					}
-					//if len(t.UncoveredAddress) > 0 && t.Count < TaskCountLimitation {
-					if len(t.UncoveredAddress) > 0 {
+					if len(t.UncoveredAddress) > 0 && t.Count < TaskCountLimitation {
+						//if len(t.UncoveredAddress) > 0 {
 						if t.TaskStatus == TaskStatus_untested {
 							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))

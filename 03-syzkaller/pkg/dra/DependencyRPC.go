@@ -249,7 +249,7 @@ func (m *Task) reducePriority() {
 
 func (m *Task) mergeTask(s *Task) {
 	m.Count += s.Count
-	m.modifyPriority(s)
+	//m.modifyPriority(s)
 	if m.CoveredAddress == nil {
 		m.CoveredAddress = map[uint32]*RunTimeData{}
 	}
@@ -634,7 +634,7 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	}
 
 	if ua, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]; ok {
-		if ua.Count < ua.NumberDominatorInstructions*10 {
+		if ua.Count < ua.NumberDominatorInstructions*40 {
 			ua.Count += uint32(len(index) * len(writeIndex))
 		} else {
 			return
@@ -786,6 +786,7 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 			t.UncoveredAddress[uncoveredAddress] = proto.Clone(dr).(*RunTimeData)
 		}
 		t.TaskStatus = TaskStatus_untested
+		t.Count = 0
 		t.updatePriority(task.Priority)
 		return
 	}
