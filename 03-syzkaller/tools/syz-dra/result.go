@@ -196,47 +196,49 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 				res += "check condition : " + fmt.Sprintf("%t", rd.CheckCondition) + "\n"
 				res += "check address : " + fmt.Sprintf("%t", rd.CheckAddress) + "\n"
 				if rd.CheckCondition {
+					if t.CheckWriteAddress {
+						for _, trd := range t.TaskRunTimeData {
+							res += "-------------------------------------------\n"
+							res += "check insert write address : " + fmt.Sprintf("%t", trd.CheckWriteAddress) + "\n"
+							if rdd, ok := trd.UncoveredAddress[uncoveredAddress]; ok {
+
+								res += "insert task_status : " + rdd.TaskStatus.String() + "\n"
+								res += "check condition : " + fmt.Sprintf("%t", rdd.CheckCondition) + "\n"
+								res += "check address : " + fmt.Sprintf("%t", rdd.CheckAddress) + "\n"
+								if trd.CheckWriteAddress {
+									if rdd.CheckCondition {
+										if rdd.CheckCondition {
+											res += "error in rdd.CheckCondition" + "\n"
+										} else {
+											res += "useless write address or FP" + "\n"
+											if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_tested {
+												ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_tested
+											}
+										}
+									} else {
+										res += "unstable insert condition address" + "\n"
+										if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
+											ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
+										}
+									}
+								} else {
+									res += "unstable insert write address" + "\n"
+									if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
+										ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
+									}
+								}
+
+							} else if _, ok := trd.CoveredAddress[uncoveredAddress]; ok {
+								res += "uncoveredAddress in trd.CoveredAddress" + "\n"
+							} else {
+								res += "not test" + "\n"
+							}
+						}
+					}
 
 				} else {
 					if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_condition {
 						ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_condition
-					}
-				}
-				for _, trd := range t.TaskRunTimeData {
-					res += "-------------------------------------------\n"
-					res += "check insert write address : " + fmt.Sprintf("%t", trd.CheckWriteAddress) + "\n"
-					if rdd, ok := trd.UncoveredAddress[uncoveredAddress]; ok {
-
-						res += "insert task_status : " + rdd.TaskStatus.String() + "\n"
-						res += "check condition : " + fmt.Sprintf("%t", rdd.CheckCondition) + "\n"
-						res += "check address : " + fmt.Sprintf("%t", rdd.CheckAddress) + "\n"
-						if trd.CheckWriteAddress {
-							if rdd.CheckCondition {
-								if rdd.CheckCondition {
-									res += "error in rdd.CheckCondition" + "\n"
-								} else {
-									res += "useless write address or FP" + "\n"
-									if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_tested {
-										ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_tested
-									}
-								}
-							} else {
-								res += "unstable insert condition address" + "\n"
-								if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
-									ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
-								}
-							}
-						} else {
-							res += "unstable insert write address" + "\n"
-							if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_insert {
-								ua.WriteAddressStatus[t.WriteAddress] = pb.TaskStatus_unstable_insert
-							}
-						}
-
-					} else if _, ok := trd.CoveredAddress[uncoveredAddress]; ok {
-						res += "uncoveredAddress in trd.CoveredAddress" + "\n"
-					} else {
-						res += "not test" + "\n"
 					}
 				}
 
@@ -249,10 +251,11 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 			}
 		}
 	}
+
+	res += "-------------------------------------------\n"
 	for _, ts := range ua.WriteAddressStatus {
 		ua.WriteCount[int32(ts)]++
 	}
-
 	res += "tasksCount" + "\n"
 	for ts, c := range ua.TasksCount {
 		res += pb.TaskStatus_name[ts] + " : " + fmt.Sprintf("%d", c) + "\n"
