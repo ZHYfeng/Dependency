@@ -754,7 +754,7 @@ func (ss *Server) Update() {
 			}
 			res += "UnstablePath : \n"
 			for i, p := range ui.UnstablePath {
-				res += string(i)
+				res += fmt.Sprintf("Number %d syscall", i) + "\n"
 				for _, a := range p.Address {
 					res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
 				}
