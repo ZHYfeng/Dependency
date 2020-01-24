@@ -28,6 +28,8 @@ service DependencyRPC {
     //syz-fuzzer and syz-manager
     rpc Connect (Empty) returns (Empty) {
     }
+    rpc GetDataDependency (Empty) returns (DataDependency) {
+    }
     rpc SendNewInput (Input) returns (Empty) {
     }
     rpc GetTasks (Empty) returns (Tasks) {
@@ -50,14 +52,22 @@ service DependencyRPC {
     }
 }
 
-message Data {
+message DataDependency {
     map<string, Input> input = 1;
     map<uint32, UncoveredAddress> uncovered_address = 4;
-    map<uint32, UncoveredAddress> covered_address = 2;
     map<uint32, WriteAddress> write_address = 5;
+    map<string, Input> other_input = 11;
+}
+
+message DataResult {
+    map<uint32, UncoveredAddress> covered_address = 2;
     map<string, FileOperations> file_operations = 6;
-    Tasks tasks = 7;
-    Tasks high_task = 8;
-    Tasks boot_task = 9;
-    map<string, Input> new_input = 11;
+}
+
+message DataRunTime {
+    Tasks tasks = 11;
+    Tasks return = 12;
+    Tasks high_task = 13;
+    Tasks boot_task = 20;
+    Tasks return_boot = 21;
 }

@@ -25,7 +25,7 @@ func (r *result) read(path string) {
 	r.dirName = filepath.Dir(path)
 	r.baseName = filepath.Base(path)
 
-	fileName := filepath.Join(r.path, nameData)
+	fileName := filepath.Join(r.path, pb.NameDataDependency)
 	in, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Fatalln("Error reading file:", err)
@@ -35,7 +35,7 @@ func (r *result) read(path string) {
 		log.Fatalln("Failed to parse data:", err)
 	}
 
-	fileName = filepath.Join(r.path, nameStatistics)
+	fileName = filepath.Join(r.path, pb.NameStatistics)
 	in, err = ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Fatalln("Error reading file:", err)

@@ -226,9 +226,7 @@ func main() {
 	}
 
 	log.Logf(0, "dialing dManager at %v", *flagDManager)
-	dManager := &pb.DRPCClient{
-		I: []*pb.Input{},
-	}
+	dManager := &pb.DRPCClient{}
 	dManager.RunDependencyRPCClient(flagDManager, flagName)
 
 	needPoll := make(chan struct{}, 1)
@@ -295,38 +293,6 @@ func (fuzzer *Fuzzer) pollLoop() {
 	var lastPrint time.Time
 	ticker := time.NewTicker(3 * time.Second).C
 	for {
-
-		//data := fuzzer.corpus[0].Serialize()
-		//sig := hash.Hash(data)
-		//fuzzer.dManager.SendDependencyInput(sig.String())
-		log.Logf(0, "len(fuzzer.workQueue.dependency) %v", len(fuzzer.workQueue.dependency))
-		for i := 0; i < 2; i++ {
-			newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
-			if newDependencyTasks.Kind == pb.TaskKind_High {
-				for _, Task := range newDependencyTasks.TaskArray {
-					fuzzer.workQueue.enqueue(&WorkDependency{
-						task: Task,
-						call: int(Task.Index),
-					})
-				}
-			} else {
-				for _, Task := range newDependencyTasks.TaskArray {
-					fuzzer.workQueue.addDependency(&WorkDependency{
-						task: Task,
-						call: int(Task.Index),
-					})
-				}
-			}
-		}
-
-		fuzzer.dManager.SSendLog()
-		e, _ := fuzzer.dManager.GetNeed()
-		if e.Address == 0 {
-			fuzzer.need = false
-		} else {
-			fuzzer.need = true
-		}
-
 		poll := false
 		select {
 		case <-ticker:
@@ -371,6 +337,37 @@ func (fuzzer *Fuzzer) pollLoop() {
 						break
 					}
 				}
+			}
+
+			if pb.CheckCondition {
+				fuzzer.dManager.GetDataDependency()
+			}
+
+			for i := 0; i < 2; i++ {
+				newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
+				if newDependencyTasks.Kind == pb.TaskKind_High {
+					for _, Task := range newDependencyTasks.TaskArray {
+						fuzzer.workQueue.enqueue(&WorkDependency{
+							task: Task,
+							call: int(Task.Index),
+						})
+					}
+				} else {
+					for _, Task := range newDependencyTasks.TaskArray {
+						fuzzer.workQueue.addDependency(&WorkDependency{
+							task: Task,
+							call: int(Task.Index),
+						})
+					}
+				}
+			}
+
+			fuzzer.dManager.SSendLog()
+			e, _ := fuzzer.dManager.GetNeed()
+			if e.Address == 0 {
+				fuzzer.need = false
+			} else {
+				fuzzer.need = true
 			}
 		}
 	}

@@ -30,23 +30,23 @@ func (d *device) read(path string) {
 	d.path = path
 	d.dirName = filepath.Dir(path)
 	d.baseName = filepath.Base(path)
-	d.dataPath = filepath.Join(path, nameDataResult)
+	d.dataPath = filepath.Join(path, pb.NameData)
 
-	pathBase := filepath.Join(d.path, nameBase)
+	pathBase := filepath.Join(d.path, pb.NameBase)
 	if _, err := os.Stat(pathBase); os.IsNotExist(err) {
-		fmt.Printf(nameBase + " does not exist\n")
+		fmt.Printf(pb.NameBase + " does not exist\n")
 	} else {
 		d.base = &result{}
 		d.base.read(pathBase)
 	}
 
 	d.resultsWithDra = &results{}
-	d.resultsWithDra.read(filepath.Join(d.path, nameWithDra))
+	d.resultsWithDra.read(filepath.Join(d.path, pb.NameWithDra))
 	d.resultsWithoutDra = &results{}
-	d.resultsWithoutDra.read(filepath.Join(d.path, nameWithoutDra))
+	d.resultsWithoutDra.read(filepath.Join(d.path, pb.NameWithoutDra))
 
-	_ = os.Remove(filepath.Join(d.path, nameDataResult))
-	fmt.Printf("remove %s\n", nameDataResult)
+	_ = os.Remove(filepath.Join(d.path, pb.NameData))
+	fmt.Printf("remove %s\n", pb.NameData)
 
 	d.checkCoverage()
 	d.checkUncoveredAddress()

@@ -58,12 +58,14 @@ message Paths {
 }
 
 message UnstableInput {
-    repeated Paths new_path = 1;
-    map<uint32, Path> unstable_path = 2;
-    uint32 idx = 3;
-    uint32 address = 4;
+    string sig = 1; // hash value for each input from syzkaller
+    bytes program = 2;
 
-    string sig = 11; // hash value for each input from syzkaller
-    bytes program = 12;
+    repeated Paths unstable_path = 12;
+    // address, index by bits
+    map<uint32, uint32> address = 13;
+}
 
+message UnstableInputs {
+    map<string, UnstableInput> unstable_input = 1;
 }

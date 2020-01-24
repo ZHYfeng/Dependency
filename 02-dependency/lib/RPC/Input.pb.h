@@ -51,7 +51,7 @@ struct TableStruct_Input_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[12]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[14]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -92,9 +92,15 @@ extern Paths_PathEntry_DoNotUseDefaultTypeInternal _Paths_PathEntry_DoNotUse_def
 class UnstableInput;
 class UnstableInputDefaultTypeInternal;
 extern UnstableInputDefaultTypeInternal _UnstableInput_default_instance_;
-class UnstableInput_UnstablePathEntry_DoNotUse;
-class UnstableInput_UnstablePathEntry_DoNotUseDefaultTypeInternal;
-extern UnstableInput_UnstablePathEntry_DoNotUseDefaultTypeInternal _UnstableInput_UnstablePathEntry_DoNotUse_default_instance_;
+class UnstableInput_AddressEntry_DoNotUse;
+class UnstableInput_AddressEntry_DoNotUseDefaultTypeInternal;
+extern UnstableInput_AddressEntry_DoNotUseDefaultTypeInternal _UnstableInput_AddressEntry_DoNotUse_default_instance_;
+class UnstableInputs;
+class UnstableInputsDefaultTypeInternal;
+extern UnstableInputsDefaultTypeInternal _UnstableInputs_default_instance_;
+class UnstableInputs_UnstableInputEntry_DoNotUse;
+class UnstableInputs_UnstableInputEntry_DoNotUseDefaultTypeInternal;
+extern UnstableInputs_UnstableInputEntry_DoNotUseDefaultTypeInternal _UnstableInputs_UnstableInputEntry_DoNotUse_default_instance_;
 }  // namespace dra
 PROTOBUF_NAMESPACE_OPEN
 template<> ::dra::Call* Arena::CreateMaybeMessage<::dra::Call>(Arena*);
@@ -108,7 +114,9 @@ template<> ::dra::Path* Arena::CreateMaybeMessage<::dra::Path>(Arena*);
 template<> ::dra::Paths* Arena::CreateMaybeMessage<::dra::Paths>(Arena*);
 template<> ::dra::Paths_PathEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Paths_PathEntry_DoNotUse>(Arena*);
 template<> ::dra::UnstableInput* Arena::CreateMaybeMessage<::dra::UnstableInput>(Arena*);
-template<> ::dra::UnstableInput_UnstablePathEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UnstableInput_UnstablePathEntry_DoNotUse>(Arena*);
+template<> ::dra::UnstableInput_AddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UnstableInput_AddressEntry_DoNotUse>(Arena*);
+template<> ::dra::UnstableInputs* Arena::CreateMaybeMessage<::dra::UnstableInputs>(Arena*);
+template<> ::dra::UnstableInputs_UnstableInputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UnstableInputs_UnstableInputEntry_DoNotUse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace dra {
 
@@ -1169,21 +1177,21 @@ class Paths :
 };
 // -------------------------------------------------------------------
 
-class UnstableInput_UnstablePathEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UnstableInput_UnstablePathEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path,
+class UnstableInput_AddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UnstableInput_AddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
     0 > {
 public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UnstableInput_UnstablePathEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path,
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UnstableInput_AddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
     0 > SuperType;
-  UnstableInput_UnstablePathEntry_DoNotUse();
-  UnstableInput_UnstablePathEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const UnstableInput_UnstablePathEntry_DoNotUse& other);
-  static const UnstableInput_UnstablePathEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const UnstableInput_UnstablePathEntry_DoNotUse*>(&_UnstableInput_UnstablePathEntry_DoNotUse_default_instance_); }
+  UnstableInput_AddressEntry_DoNotUse();
+  UnstableInput_AddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const UnstableInput_AddressEntry_DoNotUse& other);
+  static const UnstableInput_AddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const UnstableInput_AddressEntry_DoNotUse*>(&_UnstableInput_AddressEntry_DoNotUse_default_instance_); }
   static bool ValidateKey(void*) { return true; }
   static bool ValidateValue(void*) { return true; }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
@@ -1306,49 +1314,47 @@ class UnstableInput :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNewPathFieldNumber = 1,
-    kUnstablePathFieldNumber = 2,
-    kSigFieldNumber = 11,
-    kProgramFieldNumber = 12,
-    kIdxFieldNumber = 3,
-    kAddressFieldNumber = 4,
+    kUnstablePathFieldNumber = 12,
+    kAddressFieldNumber = 13,
+    kSigFieldNumber = 1,
+    kProgramFieldNumber = 2,
   };
-  // repeated .dra.Paths new_path = 1;
-  int new_path_size() const;
-  private:
-  int _internal_new_path_size() const;
-  public:
-  void clear_new_path();
-  ::dra::Paths* mutable_new_path(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >*
-      mutable_new_path();
-  private:
-  const ::dra::Paths& _internal_new_path(int index) const;
-  ::dra::Paths* _internal_add_new_path();
-  public:
-  const ::dra::Paths& new_path(int index) const;
-  ::dra::Paths* add_new_path();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >&
-      new_path() const;
-
-  // map<uint32, .dra.Path> unstable_path = 2;
+  // repeated .dra.Paths unstable_path = 12;
   int unstable_path_size() const;
   private:
   int _internal_unstable_path_size() const;
   public:
   void clear_unstable_path();
-  private:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
-      _internal_unstable_path() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
-      _internal_mutable_unstable_path();
-  public:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
-      unstable_path() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
+  ::dra::Paths* mutable_unstable_path(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >*
       mutable_unstable_path();
+  private:
+  const ::dra::Paths& _internal_unstable_path(int index) const;
+  ::dra::Paths* _internal_add_unstable_path();
+  public:
+  const ::dra::Paths& unstable_path(int index) const;
+  ::dra::Paths* add_unstable_path();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >&
+      unstable_path() const;
 
-  // string sig = 11;
+  // map<uint32, uint32> address = 13;
+  int address_size() const;
+  private:
+  int _internal_address_size() const;
+  public:
+  void clear_address();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+      _internal_address() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+      _internal_mutable_address();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+      address() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+      mutable_address();
+
+  // string sig = 1;
   void clear_sig();
   const std::string& sig() const;
   void set_sig(const std::string& value);
@@ -1364,7 +1370,7 @@ class UnstableInput :
   std::string* _internal_mutable_sig();
   public:
 
-  // bytes program = 12;
+  // bytes program = 2;
   void clear_program();
   const std::string& program() const;
   void set_program(const std::string& value);
@@ -1380,40 +1386,194 @@ class UnstableInput :
   std::string* _internal_mutable_program();
   public:
 
-  // uint32 idx = 3;
-  void clear_idx();
-  ::PROTOBUF_NAMESPACE_ID::uint32 idx() const;
-  void set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_idx() const;
-  void _internal_set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
-  // uint32 address = 4;
-  void clear_address();
-  ::PROTOBUF_NAMESPACE_ID::uint32 address() const;
-  void set_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_address() const;
-  void _internal_set_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:dra.UnstableInput)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths > new_path_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths > unstable_path_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      UnstableInput_UnstablePathEntry_DoNotUse,
-      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path,
+      UnstableInput_AddressEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > unstable_path_;
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      0 > address_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 idx_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 address_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Input_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UnstableInputs_UnstableInputEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UnstableInputs_UnstableInputEntry_DoNotUse, 
+    std::string, ::dra::UnstableInput,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UnstableInputs_UnstableInputEntry_DoNotUse, 
+    std::string, ::dra::UnstableInput,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  UnstableInputs_UnstableInputEntry_DoNotUse();
+  UnstableInputs_UnstableInputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const UnstableInputs_UnstableInputEntry_DoNotUse& other);
+  static const UnstableInputs_UnstableInputEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const UnstableInputs_UnstableInputEntry_DoNotUse*>(&_UnstableInputs_UnstableInputEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(std::string* s) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.UnstableInputs.UnstableInputEntry.key");
+ }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Input_2eproto);
+    return ::descriptor_table_Input_2eproto.file_level_metadata[12];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class UnstableInputs :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.UnstableInputs) */ {
+ public:
+  UnstableInputs();
+  virtual ~UnstableInputs();
+
+  UnstableInputs(const UnstableInputs& from);
+  UnstableInputs(UnstableInputs&& from) noexcept
+    : UnstableInputs() {
+    *this = ::std::move(from);
+  }
+
+  inline UnstableInputs& operator=(const UnstableInputs& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UnstableInputs& operator=(UnstableInputs&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const UnstableInputs& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UnstableInputs* internal_default_instance() {
+    return reinterpret_cast<const UnstableInputs*>(
+               &_UnstableInputs_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  friend void swap(UnstableInputs& a, UnstableInputs& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UnstableInputs* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UnstableInputs* New() const final {
+    return CreateMaybeMessage<UnstableInputs>(nullptr);
+  }
+
+  UnstableInputs* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UnstableInputs>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const UnstableInputs& from);
+  void MergeFrom(const UnstableInputs& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UnstableInputs* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dra.UnstableInputs";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Input_2eproto);
+    return ::descriptor_table_Input_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUnstableInputFieldNumber = 1,
+  };
+  // map<string, .dra.UnstableInput> unstable_input = 1;
+  int unstable_input_size() const;
+  private:
+  int _internal_unstable_input_size() const;
+  public:
+  void clear_unstable_input();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >&
+      _internal_unstable_input() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >*
+      _internal_mutable_unstable_input();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >&
+      unstable_input() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >*
+      mutable_unstable_input();
+
+  // @@protoc_insertion_point(class_scope:dra.UnstableInputs)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      UnstableInputs_UnstableInputEntry_DoNotUse,
+      std::string, ::dra::UnstableInput,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > unstable_input_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Input_2eproto;
 };
@@ -1990,115 +2150,7 @@ Paths::mutable_path() {
 
 // UnstableInput
 
-// repeated .dra.Paths new_path = 1;
-inline int UnstableInput::_internal_new_path_size() const {
-  return new_path_.size();
-}
-inline int UnstableInput::new_path_size() const {
-  return _internal_new_path_size();
-}
-inline void UnstableInput::clear_new_path() {
-  new_path_.Clear();
-}
-inline ::dra::Paths* UnstableInput::mutable_new_path(int index) {
-  // @@protoc_insertion_point(field_mutable:dra.UnstableInput.new_path)
-  return new_path_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >*
-UnstableInput::mutable_new_path() {
-  // @@protoc_insertion_point(field_mutable_list:dra.UnstableInput.new_path)
-  return &new_path_;
-}
-inline const ::dra::Paths& UnstableInput::_internal_new_path(int index) const {
-  return new_path_.Get(index);
-}
-inline const ::dra::Paths& UnstableInput::new_path(int index) const {
-  // @@protoc_insertion_point(field_get:dra.UnstableInput.new_path)
-  return _internal_new_path(index);
-}
-inline ::dra::Paths* UnstableInput::_internal_add_new_path() {
-  return new_path_.Add();
-}
-inline ::dra::Paths* UnstableInput::add_new_path() {
-  // @@protoc_insertion_point(field_add:dra.UnstableInput.new_path)
-  return _internal_add_new_path();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >&
-UnstableInput::new_path() const {
-  // @@protoc_insertion_point(field_list:dra.UnstableInput.new_path)
-  return new_path_;
-}
-
-// map<uint32, .dra.Path> unstable_path = 2;
-inline int UnstableInput::_internal_unstable_path_size() const {
-  return unstable_path_.size();
-}
-inline int UnstableInput::unstable_path_size() const {
-  return _internal_unstable_path_size();
-}
-inline void UnstableInput::clear_unstable_path() {
-  unstable_path_.Clear();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
-UnstableInput::_internal_unstable_path() const {
-  return unstable_path_.GetMap();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >&
-UnstableInput::unstable_path() const {
-  // @@protoc_insertion_point(field_map:dra.UnstableInput.unstable_path)
-  return _internal_unstable_path();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
-UnstableInput::_internal_mutable_unstable_path() {
-  return unstable_path_.MutableMap();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >*
-UnstableInput::mutable_unstable_path() {
-  // @@protoc_insertion_point(field_mutable_map:dra.UnstableInput.unstable_path)
-  return _internal_mutable_unstable_path();
-}
-
-// uint32 idx = 3;
-inline void UnstableInput::clear_idx() {
-  idx_ = 0u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 UnstableInput::_internal_idx() const {
-  return idx_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 UnstableInput::idx() const {
-  // @@protoc_insertion_point(field_get:dra.UnstableInput.idx)
-  return _internal_idx();
-}
-inline void UnstableInput::_internal_set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  
-  idx_ = value;
-}
-inline void UnstableInput::set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_idx(value);
-  // @@protoc_insertion_point(field_set:dra.UnstableInput.idx)
-}
-
-// uint32 address = 4;
-inline void UnstableInput::clear_address() {
-  address_ = 0u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 UnstableInput::_internal_address() const {
-  return address_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 UnstableInput::address() const {
-  // @@protoc_insertion_point(field_get:dra.UnstableInput.address)
-  return _internal_address();
-}
-inline void UnstableInput::_internal_set_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  
-  address_ = value;
-}
-inline void UnstableInput::set_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_address(value);
-  // @@protoc_insertion_point(field_set:dra.UnstableInput.address)
-}
-
-// string sig = 11;
+// string sig = 1;
 inline void UnstableInput::clear_sig() {
   sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -2158,7 +2210,7 @@ inline void UnstableInput::set_allocated_sig(std::string* sig) {
   // @@protoc_insertion_point(field_set_allocated:dra.UnstableInput.sig)
 }
 
-// bytes program = 12;
+// bytes program = 2;
 inline void UnstableInput::clear_program() {
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -2218,9 +2270,116 @@ inline void UnstableInput::set_allocated_program(std::string* program) {
   // @@protoc_insertion_point(field_set_allocated:dra.UnstableInput.program)
 }
 
+// repeated .dra.Paths unstable_path = 12;
+inline int UnstableInput::_internal_unstable_path_size() const {
+  return unstable_path_.size();
+}
+inline int UnstableInput::unstable_path_size() const {
+  return _internal_unstable_path_size();
+}
+inline void UnstableInput::clear_unstable_path() {
+  unstable_path_.Clear();
+}
+inline ::dra::Paths* UnstableInput::mutable_unstable_path(int index) {
+  // @@protoc_insertion_point(field_mutable:dra.UnstableInput.unstable_path)
+  return unstable_path_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >*
+UnstableInput::mutable_unstable_path() {
+  // @@protoc_insertion_point(field_mutable_list:dra.UnstableInput.unstable_path)
+  return &unstable_path_;
+}
+inline const ::dra::Paths& UnstableInput::_internal_unstable_path(int index) const {
+  return unstable_path_.Get(index);
+}
+inline const ::dra::Paths& UnstableInput::unstable_path(int index) const {
+  // @@protoc_insertion_point(field_get:dra.UnstableInput.unstable_path)
+  return _internal_unstable_path(index);
+}
+inline ::dra::Paths* UnstableInput::_internal_add_unstable_path() {
+  return unstable_path_.Add();
+}
+inline ::dra::Paths* UnstableInput::add_unstable_path() {
+  // @@protoc_insertion_point(field_add:dra.UnstableInput.unstable_path)
+  return _internal_add_unstable_path();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >&
+UnstableInput::unstable_path() const {
+  // @@protoc_insertion_point(field_list:dra.UnstableInput.unstable_path)
+  return unstable_path_;
+}
+
+// map<uint32, uint32> address = 13;
+inline int UnstableInput::_internal_address_size() const {
+  return address_.size();
+}
+inline int UnstableInput::address_size() const {
+  return _internal_address_size();
+}
+inline void UnstableInput::clear_address() {
+  address_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+UnstableInput::_internal_address() const {
+  return address_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >&
+UnstableInput::address() const {
+  // @@protoc_insertion_point(field_map:dra.UnstableInput.address)
+  return _internal_address();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+UnstableInput::_internal_mutable_address() {
+  return address_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >*
+UnstableInput::mutable_address() {
+  // @@protoc_insertion_point(field_mutable_map:dra.UnstableInput.address)
+  return _internal_mutable_address();
+}
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// UnstableInputs
+
+// map<string, .dra.UnstableInput> unstable_input = 1;
+inline int UnstableInputs::_internal_unstable_input_size() const {
+  return unstable_input_.size();
+}
+inline int UnstableInputs::unstable_input_size() const {
+  return _internal_unstable_input_size();
+}
+inline void UnstableInputs::clear_unstable_input() {
+  unstable_input_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >&
+UnstableInputs::_internal_unstable_input() const {
+  return unstable_input_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >&
+UnstableInputs::unstable_input() const {
+  // @@protoc_insertion_point(field_map:dra.UnstableInputs.unstable_input)
+  return _internal_unstable_input();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >*
+UnstableInputs::_internal_mutable_unstable_input() {
+  return unstable_input_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >*
+UnstableInputs::mutable_unstable_input() {
+  // @@protoc_insertion_point(field_mutable_map:dra.UnstableInputs.unstable_input)
+  return _internal_mutable_unstable_input();
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

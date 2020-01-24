@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
@@ -110,15 +111,17 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 		if pb.CollectUnstable {
 
 			unstableInput := &pb.UnstableInput{
-				NewPath:      []*pb.Paths{},
-				UnstablePath: map[uint32]*pb.Path{},
-				Idx:          task.WriteIndex,
-				Address:      task.WriteAddress,
 				Sig:          task.WriteSig,
 				Program:      task.WriteProgram,
+				UnstablePath: []*pb.Paths{},
+				Address:      map[uint32]uint32{},
+			}
+			unstableInput.Address[task.WriteAddress] = 1 << task.WriteIndex
+			paths := &pb.Paths{
+				Path: map[uint32]*pb.Path{},
 			}
 			for i, c := range info.Calls {
-				unstableInput.UnstablePath[uint32(i)] = &pb.Path{
+				paths.Path[uint32(i)] = &pb.Path{
 					Address: c.Cover,
 				}
 			}
@@ -155,17 +158,18 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 				r.TaskStatus = pb.TaskStatus_unstable_condition
 
 				if pb.CollectUnstable {
-
 					unstableInput := &pb.UnstableInput{
-						NewPath:      []*pb.Paths{},
-						UnstablePath: map[uint32]*pb.Path{},
-						Idx:          task.Index,
-						Address:      r.ConditionAddress,
 						Sig:          task.Sig,
 						Program:      task.Program,
+						UnstablePath: []*pb.Paths{},
+						Address:      map[uint32]uint32{},
+					}
+					unstableInput.Address[r.ConditionAddress] = 1 << task.Index
+					paths := &pb.Paths{
+						Path: map[uint32]*pb.Path{},
 					}
 					for i, c := range info.Calls {
-						unstableInput.UnstablePath[uint32(i)] = &pb.Path{
+						paths.Path[uint32(i)] = &pb.Path{
 							Address: c.Cover,
 						}
 					}
@@ -414,4 +418,21 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 	proc.fuzzer.dManager.ReturnTasks(tasks)
 
 	return
+}
+
+func (fuzzer *Fuzzer) checkUncoveredAddress(call *pb.Call) (bool, *pb.UncoveredAddress) {
+	for a, ua := range fuzzer.dManager.DataDependency.UncoveredAddress {
+		if _, ok := call.Address[a]; ok {
+			return true, ua
+		}
+	}
+	return false, &pb.UncoveredAddress{}
+}
+
+func (proc *Proc) checkUncoveredAddress(input *pb.Input) {
+	for idx, call := range input.Call {
+		if ok, ua := proc.fuzzer.checkUncoveredAddress(call); ok {
+
+		}
+	}
 }

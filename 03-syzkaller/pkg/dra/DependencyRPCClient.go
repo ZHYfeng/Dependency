@@ -11,9 +11,10 @@ import (
 
 // DRPCClient : the RPC client
 type DRPCClient struct {
-	c    DependencyRPCClient
-	I    []*Input
-	name *string
+	name           *string
+	c              DependencyRPCClient
+	MuDependency   *sync.RWMutex
+	DataDependency *DataDependency
 
 	log   string
 	logMu sync.RWMutex
@@ -26,9 +27,13 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	if err != nil {
 		log.Fatalf("Dependency gRPC did not connect: %v", err)
 	}
-	d.c = NewDependencyRPCClient(conn)
 	d.name = name
+	d.c = NewDependencyRPCClient(conn)
 	d.Connect(name)
+	if CheckCondition {
+		d.MuDependency = &sync.RWMutex{}
+		d.DataDependency = &DataDependency{}
+	}
 }
 
 // Connect : connect to syz-manager
@@ -40,6 +45,18 @@ func (d *DRPCClient) Connect(name *string) {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not Connect: %v", err)
 	}
+	return
+}
+
+func (d *DRPCClient) GetDataDependency() {
+	// Contact the server and print out its response.
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cancel()
+	replay, err := d.c.GetDataDependency(ctx, &Empty{Name: *d.name})
+	if err != nil {
+		log.Fatalf("Dependency gRPC could not Connect: %v", err)
+	}
+	d.DataDependency = proto.Clone(replay).(*DataDependency)
 	return
 }
 

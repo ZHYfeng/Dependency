@@ -55,7 +55,7 @@ struct TableStruct_DependencyRPC_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[9]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -63,58 +63,66 @@ struct TableStruct_DependencyRPC_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto;
 namespace dra {
-class Data;
-class DataDefaultTypeInternal;
-extern DataDefaultTypeInternal _Data_default_instance_;
-class Data_CoveredAddressEntry_DoNotUse;
-class Data_CoveredAddressEntry_DoNotUseDefaultTypeInternal;
-extern Data_CoveredAddressEntry_DoNotUseDefaultTypeInternal _Data_CoveredAddressEntry_DoNotUse_default_instance_;
-class Data_FileOperationsEntry_DoNotUse;
-class Data_FileOperationsEntry_DoNotUseDefaultTypeInternal;
-extern Data_FileOperationsEntry_DoNotUseDefaultTypeInternal _Data_FileOperationsEntry_DoNotUse_default_instance_;
-class Data_InputEntry_DoNotUse;
-class Data_InputEntry_DoNotUseDefaultTypeInternal;
-extern Data_InputEntry_DoNotUseDefaultTypeInternal _Data_InputEntry_DoNotUse_default_instance_;
-class Data_NewInputEntry_DoNotUse;
-class Data_NewInputEntry_DoNotUseDefaultTypeInternal;
-extern Data_NewInputEntry_DoNotUseDefaultTypeInternal _Data_NewInputEntry_DoNotUse_default_instance_;
-class Data_UncoveredAddressEntry_DoNotUse;
-class Data_UncoveredAddressEntry_DoNotUseDefaultTypeInternal;
-extern Data_UncoveredAddressEntry_DoNotUseDefaultTypeInternal _Data_UncoveredAddressEntry_DoNotUse_default_instance_;
-class Data_WriteAddressEntry_DoNotUse;
-class Data_WriteAddressEntry_DoNotUseDefaultTypeInternal;
-extern Data_WriteAddressEntry_DoNotUseDefaultTypeInternal _Data_WriteAddressEntry_DoNotUse_default_instance_;
+class DataDependency;
+class DataDependencyDefaultTypeInternal;
+extern DataDependencyDefaultTypeInternal _DataDependency_default_instance_;
+class DataDependency_InputEntry_DoNotUse;
+class DataDependency_InputEntry_DoNotUseDefaultTypeInternal;
+extern DataDependency_InputEntry_DoNotUseDefaultTypeInternal _DataDependency_InputEntry_DoNotUse_default_instance_;
+class DataDependency_OtherInputEntry_DoNotUse;
+class DataDependency_OtherInputEntry_DoNotUseDefaultTypeInternal;
+extern DataDependency_OtherInputEntry_DoNotUseDefaultTypeInternal _DataDependency_OtherInputEntry_DoNotUse_default_instance_;
+class DataDependency_UncoveredAddressEntry_DoNotUse;
+class DataDependency_UncoveredAddressEntry_DoNotUseDefaultTypeInternal;
+extern DataDependency_UncoveredAddressEntry_DoNotUseDefaultTypeInternal _DataDependency_UncoveredAddressEntry_DoNotUse_default_instance_;
+class DataDependency_WriteAddressEntry_DoNotUse;
+class DataDependency_WriteAddressEntry_DoNotUseDefaultTypeInternal;
+extern DataDependency_WriteAddressEntry_DoNotUseDefaultTypeInternal _DataDependency_WriteAddressEntry_DoNotUse_default_instance_;
+class DataResult;
+class DataResultDefaultTypeInternal;
+extern DataResultDefaultTypeInternal _DataResult_default_instance_;
+class DataResult_CoveredAddressEntry_DoNotUse;
+class DataResult_CoveredAddressEntry_DoNotUseDefaultTypeInternal;
+extern DataResult_CoveredAddressEntry_DoNotUseDefaultTypeInternal _DataResult_CoveredAddressEntry_DoNotUse_default_instance_;
+class DataResult_FileOperationsEntry_DoNotUse;
+class DataResult_FileOperationsEntry_DoNotUseDefaultTypeInternal;
+extern DataResult_FileOperationsEntry_DoNotUseDefaultTypeInternal _DataResult_FileOperationsEntry_DoNotUse_default_instance_;
+class DataRunTime;
+class DataRunTimeDefaultTypeInternal;
+extern DataRunTimeDefaultTypeInternal _DataRunTime_default_instance_;
 }  // namespace dra
 PROTOBUF_NAMESPACE_OPEN
-template<> ::dra::Data* Arena::CreateMaybeMessage<::dra::Data>(Arena*);
-template<> ::dra::Data_CoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Data_CoveredAddressEntry_DoNotUse>(Arena*);
-template<> ::dra::Data_FileOperationsEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Data_FileOperationsEntry_DoNotUse>(Arena*);
-template<> ::dra::Data_InputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Data_InputEntry_DoNotUse>(Arena*);
-template<> ::dra::Data_NewInputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Data_NewInputEntry_DoNotUse>(Arena*);
-template<> ::dra::Data_UncoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Data_UncoveredAddressEntry_DoNotUse>(Arena*);
-template<> ::dra::Data_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Data_WriteAddressEntry_DoNotUse>(Arena*);
+template<> ::dra::DataDependency* Arena::CreateMaybeMessage<::dra::DataDependency>(Arena*);
+template<> ::dra::DataDependency_InputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::DataDependency_InputEntry_DoNotUse>(Arena*);
+template<> ::dra::DataDependency_OtherInputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::DataDependency_OtherInputEntry_DoNotUse>(Arena*);
+template<> ::dra::DataDependency_UncoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::DataDependency_UncoveredAddressEntry_DoNotUse>(Arena*);
+template<> ::dra::DataDependency_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::DataDependency_WriteAddressEntry_DoNotUse>(Arena*);
+template<> ::dra::DataResult* Arena::CreateMaybeMessage<::dra::DataResult>(Arena*);
+template<> ::dra::DataResult_CoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::DataResult_CoveredAddressEntry_DoNotUse>(Arena*);
+template<> ::dra::DataResult_FileOperationsEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::DataResult_FileOperationsEntry_DoNotUse>(Arena*);
+template<> ::dra::DataRunTime* Arena::CreateMaybeMessage<::dra::DataRunTime>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace dra {
 
 // ===================================================================
 
-class Data_InputEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_InputEntry_DoNotUse, 
+class DataDependency_InputEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_InputEntry_DoNotUse, 
     std::string, ::dra::Input,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > {
 public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_InputEntry_DoNotUse, 
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_InputEntry_DoNotUse, 
     std::string, ::dra::Input,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > SuperType;
-  Data_InputEntry_DoNotUse();
-  Data_InputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const Data_InputEntry_DoNotUse& other);
-  static const Data_InputEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Data_InputEntry_DoNotUse*>(&_Data_InputEntry_DoNotUse_default_instance_); }
+  DataDependency_InputEntry_DoNotUse();
+  DataDependency_InputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const DataDependency_InputEntry_DoNotUse& other);
+  static const DataDependency_InputEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const DataDependency_InputEntry_DoNotUse*>(&_DataDependency_InputEntry_DoNotUse_default_instance_); }
   static bool ValidateKey(std::string* s) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.Data.InputEntry.key");
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.DataDependency.InputEntry.key");
  }
   static bool ValidateValue(void*) { return true; }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
@@ -130,21 +138,21 @@ public:
 
 // -------------------------------------------------------------------
 
-class Data_UncoveredAddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_UncoveredAddressEntry_DoNotUse, 
+class DataDependency_UncoveredAddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_UncoveredAddressEntry_DoNotUse, 
     ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > {
 public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_UncoveredAddressEntry_DoNotUse, 
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_UncoveredAddressEntry_DoNotUse, 
     ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > SuperType;
-  Data_UncoveredAddressEntry_DoNotUse();
-  Data_UncoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const Data_UncoveredAddressEntry_DoNotUse& other);
-  static const Data_UncoveredAddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Data_UncoveredAddressEntry_DoNotUse*>(&_Data_UncoveredAddressEntry_DoNotUse_default_instance_); }
+  DataDependency_UncoveredAddressEntry_DoNotUse();
+  DataDependency_UncoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const DataDependency_UncoveredAddressEntry_DoNotUse& other);
+  static const DataDependency_UncoveredAddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const DataDependency_UncoveredAddressEntry_DoNotUse*>(&_DataDependency_UncoveredAddressEntry_DoNotUse_default_instance_); }
   static bool ValidateKey(void*) { return true; }
   static bool ValidateValue(void*) { return true; }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
@@ -160,21 +168,21 @@ public:
 
 // -------------------------------------------------------------------
 
-class Data_CoveredAddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_CoveredAddressEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
+class DataDependency_WriteAddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_WriteAddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > {
 public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_CoveredAddressEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_WriteAddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > SuperType;
-  Data_CoveredAddressEntry_DoNotUse();
-  Data_CoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const Data_CoveredAddressEntry_DoNotUse& other);
-  static const Data_CoveredAddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Data_CoveredAddressEntry_DoNotUse*>(&_Data_CoveredAddressEntry_DoNotUse_default_instance_); }
+  DataDependency_WriteAddressEntry_DoNotUse();
+  DataDependency_WriteAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const DataDependency_WriteAddressEntry_DoNotUse& other);
+  static const DataDependency_WriteAddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const DataDependency_WriteAddressEntry_DoNotUse*>(&_DataDependency_WriteAddressEntry_DoNotUse_default_instance_); }
   static bool ValidateKey(void*) { return true; }
   static bool ValidateValue(void*) { return true; }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
@@ -190,22 +198,24 @@ public:
 
 // -------------------------------------------------------------------
 
-class Data_WriteAddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_WriteAddressEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+class DataDependency_OtherInputEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_OtherInputEntry_DoNotUse, 
+    std::string, ::dra::Input,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > {
 public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_WriteAddressEntry_DoNotUse, 
-    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataDependency_OtherInputEntry_DoNotUse, 
+    std::string, ::dra::Input,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
     0 > SuperType;
-  Data_WriteAddressEntry_DoNotUse();
-  Data_WriteAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const Data_WriteAddressEntry_DoNotUse& other);
-  static const Data_WriteAddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Data_WriteAddressEntry_DoNotUse*>(&_Data_WriteAddressEntry_DoNotUse_default_instance_); }
-  static bool ValidateKey(void*) { return true; }
+  DataDependency_OtherInputEntry_DoNotUse();
+  DataDependency_OtherInputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const DataDependency_OtherInputEntry_DoNotUse& other);
+  static const DataDependency_OtherInputEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const DataDependency_OtherInputEntry_DoNotUse*>(&_DataDependency_OtherInputEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(std::string* s) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.DataDependency.OtherInputEntry.key");
+ }
   static bool ValidateValue(void*) { return true; }
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
   ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
@@ -220,87 +230,23 @@ public:
 
 // -------------------------------------------------------------------
 
-class Data_FileOperationsEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_FileOperationsEntry_DoNotUse, 
-    std::string, ::dra::FileOperations,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-    0 > {
-public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_FileOperationsEntry_DoNotUse, 
-    std::string, ::dra::FileOperations,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-    0 > SuperType;
-  Data_FileOperationsEntry_DoNotUse();
-  Data_FileOperationsEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const Data_FileOperationsEntry_DoNotUse& other);
-  static const Data_FileOperationsEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Data_FileOperationsEntry_DoNotUse*>(&_Data_FileOperationsEntry_DoNotUse_default_instance_); }
-  static bool ValidateKey(std::string* s) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.Data.FileOperationsEntry.key");
- }
-  static bool ValidateValue(void*) { return true; }
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[4];
-  }
-
-  public:
-};
-
-// -------------------------------------------------------------------
-
-class Data_NewInputEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_NewInputEntry_DoNotUse, 
-    std::string, ::dra::Input,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-    0 > {
-public:
-  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Data_NewInputEntry_DoNotUse, 
-    std::string, ::dra::Input,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-    0 > SuperType;
-  Data_NewInputEntry_DoNotUse();
-  Data_NewInputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void MergeFrom(const Data_NewInputEntry_DoNotUse& other);
-  static const Data_NewInputEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Data_NewInputEntry_DoNotUse*>(&_Data_NewInputEntry_DoNotUse_default_instance_); }
-  static bool ValidateKey(std::string* s) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.Data.NewInputEntry.key");
- }
-  static bool ValidateValue(void*) { return true; }
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-  private:
-  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
-    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
-    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[5];
-  }
-
-  public:
-};
-
-// -------------------------------------------------------------------
-
-class Data :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.Data) */ {
+class DataDependency :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.DataDependency) */ {
  public:
-  Data();
-  virtual ~Data();
+  DataDependency();
+  virtual ~DataDependency();
 
-  Data(const Data& from);
-  Data(Data&& from) noexcept
-    : Data() {
+  DataDependency(const DataDependency& from);
+  DataDependency(DataDependency&& from) noexcept
+    : DataDependency() {
     *this = ::std::move(from);
   }
 
-  inline Data& operator=(const Data& from) {
+  inline DataDependency& operator=(const DataDependency& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Data& operator=(Data&& from) noexcept {
+  inline DataDependency& operator=(DataDependency&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -318,37 +264,37 @@ class Data :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const Data& default_instance();
+  static const DataDependency& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Data* internal_default_instance() {
-    return reinterpret_cast<const Data*>(
-               &_Data_default_instance_);
+  static inline const DataDependency* internal_default_instance() {
+    return reinterpret_cast<const DataDependency*>(
+               &_DataDependency_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
-  friend void swap(Data& a, Data& b) {
+  friend void swap(DataDependency& a, DataDependency& b) {
     a.Swap(&b);
   }
-  inline void Swap(Data* other) {
+  inline void Swap(DataDependency* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline Data* New() const final {
-    return CreateMaybeMessage<Data>(nullptr);
+  inline DataDependency* New() const final {
+    return CreateMaybeMessage<DataDependency>(nullptr);
   }
 
-  Data* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Data>(arena);
+  DataDependency* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DataDependency>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const Data& from);
-  void MergeFrom(const Data& from);
+  void CopyFrom(const DataDependency& from);
+  void MergeFrom(const DataDependency& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -362,10 +308,10 @@ class Data :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Data* other);
+  void InternalSwap(DataDependency* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "dra.Data";
+    return "dra.DataDependency";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -392,14 +338,9 @@ class Data :
 
   enum : int {
     kInputFieldNumber = 1,
-    kCoveredAddressFieldNumber = 2,
     kUncoveredAddressFieldNumber = 4,
     kWriteAddressFieldNumber = 5,
-    kFileOperationsFieldNumber = 6,
-    kNewInputFieldNumber = 11,
-    kTasksFieldNumber = 7,
-    kHighTaskFieldNumber = 8,
-    kBootTaskFieldNumber = 9,
+    kOtherInputFieldNumber = 11,
   };
   // map<string, .dra.Input> input = 1;
   int input_size() const;
@@ -417,23 +358,6 @@ class Data :
       input() const;
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
       mutable_input();
-
-  // map<uint32, .dra.UncoveredAddress> covered_address = 2;
-  int covered_address_size() const;
-  private:
-  int _internal_covered_address_size() const;
-  public:
-  void clear_covered_address();
-  private:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
-      _internal_covered_address() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
-      _internal_mutable_covered_address();
-  public:
-  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
-      covered_address() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
-      mutable_covered_address();
 
   // map<uint32, .dra.UncoveredAddress> uncovered_address = 4;
   int uncovered_address_size() const;
@@ -469,6 +393,246 @@ class Data :
   ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress >*
       mutable_write_address();
 
+  // map<string, .dra.Input> other_input = 11;
+  int other_input_size() const;
+  private:
+  int _internal_other_input_size() const;
+  public:
+  void clear_other_input();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
+      _internal_other_input() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
+      _internal_mutable_other_input();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
+      other_input() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
+      mutable_other_input();
+
+  // @@protoc_insertion_point(class_scope:dra.DataDependency)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      DataDependency_InputEntry_DoNotUse,
+      std::string, ::dra::Input,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > input_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      DataDependency_UncoveredAddressEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > uncovered_address_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      DataDependency_WriteAddressEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > write_address_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      DataDependency_OtherInputEntry_DoNotUse,
+      std::string, ::dra::Input,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > other_input_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_DependencyRPC_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DataResult_CoveredAddressEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataResult_CoveredAddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataResult_CoveredAddressEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  DataResult_CoveredAddressEntry_DoNotUse();
+  DataResult_CoveredAddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const DataResult_CoveredAddressEntry_DoNotUse& other);
+  static const DataResult_CoveredAddressEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const DataResult_CoveredAddressEntry_DoNotUse*>(&_DataResult_CoveredAddressEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[5];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class DataResult_FileOperationsEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataResult_FileOperationsEntry_DoNotUse, 
+    std::string, ::dra::FileOperations,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<DataResult_FileOperationsEntry_DoNotUse, 
+    std::string, ::dra::FileOperations,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  DataResult_FileOperationsEntry_DoNotUse();
+  DataResult_FileOperationsEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const DataResult_FileOperationsEntry_DoNotUse& other);
+  static const DataResult_FileOperationsEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const DataResult_FileOperationsEntry_DoNotUse*>(&_DataResult_FileOperationsEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(std::string* s) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.DataResult.FileOperationsEntry.key");
+ }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[6];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class DataResult :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.DataResult) */ {
+ public:
+  DataResult();
+  virtual ~DataResult();
+
+  DataResult(const DataResult& from);
+  DataResult(DataResult&& from) noexcept
+    : DataResult() {
+    *this = ::std::move(from);
+  }
+
+  inline DataResult& operator=(const DataResult& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DataResult& operator=(DataResult&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const DataResult& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DataResult* internal_default_instance() {
+    return reinterpret_cast<const DataResult*>(
+               &_DataResult_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(DataResult& a, DataResult& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DataResult* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DataResult* New() const final {
+    return CreateMaybeMessage<DataResult>(nullptr);
+  }
+
+  DataResult* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DataResult>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const DataResult& from);
+  void MergeFrom(const DataResult& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DataResult* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dra.DataResult";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCoveredAddressFieldNumber = 2,
+    kFileOperationsFieldNumber = 6,
+  };
+  // map<uint32, .dra.UncoveredAddress> covered_address = 2;
+  int covered_address_size() const;
+  private:
+  int _internal_covered_address_size() const;
+  public:
+  void clear_covered_address();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
+      _internal_covered_address() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
+      _internal_mutable_covered_address();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
+      covered_address() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
+      mutable_covered_address();
+
   // map<string, .dra.FileOperations> file_operations = 6;
   int file_operations_size() const;
   private:
@@ -486,24 +650,141 @@ class Data :
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::FileOperations >*
       mutable_file_operations();
 
-  // map<string, .dra.Input> new_input = 11;
-  int new_input_size() const;
-  private:
-  int _internal_new_input_size() const;
-  public:
-  void clear_new_input();
-  private:
-  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
-      _internal_new_input() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
-      _internal_mutable_new_input();
-  public:
-  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
-      new_input() const;
-  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
-      mutable_new_input();
+  // @@protoc_insertion_point(class_scope:dra.DataResult)
+ private:
+  class _Internal;
 
-  // .dra.Tasks tasks = 7;
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      DataResult_CoveredAddressEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > covered_address_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      DataResult_FileOperationsEntry_DoNotUse,
+      std::string, ::dra::FileOperations,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > file_operations_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_DependencyRPC_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DataRunTime :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.DataRunTime) */ {
+ public:
+  DataRunTime();
+  virtual ~DataRunTime();
+
+  DataRunTime(const DataRunTime& from);
+  DataRunTime(DataRunTime&& from) noexcept
+    : DataRunTime() {
+    *this = ::std::move(from);
+  }
+
+  inline DataRunTime& operator=(const DataRunTime& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DataRunTime& operator=(DataRunTime&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const DataRunTime& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DataRunTime* internal_default_instance() {
+    return reinterpret_cast<const DataRunTime*>(
+               &_DataRunTime_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(DataRunTime& a, DataRunTime& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DataRunTime* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DataRunTime* New() const final {
+    return CreateMaybeMessage<DataRunTime>(nullptr);
+  }
+
+  DataRunTime* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DataRunTime>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const DataRunTime& from);
+  void MergeFrom(const DataRunTime& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DataRunTime* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dra.DataRunTime";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_DependencyRPC_2eproto);
+    return ::descriptor_table_DependencyRPC_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTasksFieldNumber = 11,
+    kReturnFieldNumber = 12,
+    kHighTaskFieldNumber = 13,
+    kBootTaskFieldNumber = 20,
+    kReturnBootFieldNumber = 21,
+  };
+  // .dra.Tasks tasks = 11;
   bool has_tasks() const;
   private:
   bool _internal_has_tasks() const;
@@ -518,7 +799,22 @@ class Data :
   ::dra::Tasks* _internal_mutable_tasks();
   public:
 
-  // .dra.Tasks high_task = 8;
+  // .dra.Tasks return = 12;
+  bool has_return_() const;
+  private:
+  bool _internal_has_return_() const;
+  public:
+  void clear_return_();
+  const ::dra::Tasks& return_() const;
+  ::dra::Tasks* release_return_();
+  ::dra::Tasks* mutable_return_();
+  void set_allocated_return_(::dra::Tasks* return_);
+  private:
+  const ::dra::Tasks& _internal_return_() const;
+  ::dra::Tasks* _internal_mutable_return_();
+  public:
+
+  // .dra.Tasks high_task = 13;
   bool has_high_task() const;
   private:
   bool _internal_has_high_task() const;
@@ -533,7 +829,7 @@ class Data :
   ::dra::Tasks* _internal_mutable_high_task();
   public:
 
-  // .dra.Tasks boot_task = 9;
+  // .dra.Tasks boot_task = 20;
   bool has_boot_task() const;
   private:
   bool _internal_has_boot_task() const;
@@ -548,50 +844,31 @@ class Data :
   ::dra::Tasks* _internal_mutable_boot_task();
   public:
 
-  // @@protoc_insertion_point(class_scope:dra.Data)
+  // .dra.Tasks return_boot = 21;
+  bool has_return_boot() const;
+  private:
+  bool _internal_has_return_boot() const;
+  public:
+  void clear_return_boot();
+  const ::dra::Tasks& return_boot() const;
+  ::dra::Tasks* release_return_boot();
+  ::dra::Tasks* mutable_return_boot();
+  void set_allocated_return_boot(::dra::Tasks* return_boot);
+  private:
+  const ::dra::Tasks& _internal_return_boot() const;
+  ::dra::Tasks* _internal_mutable_return_boot();
+  public:
+
+  // @@protoc_insertion_point(class_scope:dra.DataRunTime)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      Data_InputEntry_DoNotUse,
-      std::string, ::dra::Input,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > input_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      Data_CoveredAddressEntry_DoNotUse,
-      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > covered_address_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      Data_UncoveredAddressEntry_DoNotUse,
-      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > uncovered_address_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      Data_WriteAddressEntry_DoNotUse,
-      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > write_address_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      Data_FileOperationsEntry_DoNotUse,
-      std::string, ::dra::FileOperations,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > file_operations_;
-  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
-      Data_NewInputEntry_DoNotUse,
-      std::string, ::dra::Input,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > new_input_;
   ::dra::Tasks* tasks_;
+  ::dra::Tasks* return__;
   ::dra::Tasks* high_task_;
   ::dra::Tasks* boot_task_;
+  ::dra::Tasks* return_boot_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_DependencyRPC_2eproto;
 };
@@ -612,166 +889,200 @@ class Data :
 
 // -------------------------------------------------------------------
 
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
-// Data
+// DataDependency
 
 // map<string, .dra.Input> input = 1;
-inline int Data::_internal_input_size() const {
+inline int DataDependency::_internal_input_size() const {
   return input_.size();
 }
-inline int Data::input_size() const {
+inline int DataDependency::input_size() const {
   return _internal_input_size();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
-Data::_internal_input() const {
+DataDependency::_internal_input() const {
   return input_.GetMap();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
-Data::input() const {
-  // @@protoc_insertion_point(field_map:dra.Data.input)
+DataDependency::input() const {
+  // @@protoc_insertion_point(field_map:dra.DataDependency.input)
   return _internal_input();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
-Data::_internal_mutable_input() {
+DataDependency::_internal_mutable_input() {
   return input_.MutableMap();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
-Data::mutable_input() {
-  // @@protoc_insertion_point(field_mutable_map:dra.Data.input)
+DataDependency::mutable_input() {
+  // @@protoc_insertion_point(field_mutable_map:dra.DataDependency.input)
   return _internal_mutable_input();
 }
 
 // map<uint32, .dra.UncoveredAddress> uncovered_address = 4;
-inline int Data::_internal_uncovered_address_size() const {
+inline int DataDependency::_internal_uncovered_address_size() const {
   return uncovered_address_.size();
 }
-inline int Data::uncovered_address_size() const {
+inline int DataDependency::uncovered_address_size() const {
   return _internal_uncovered_address_size();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
-Data::_internal_uncovered_address() const {
+DataDependency::_internal_uncovered_address() const {
   return uncovered_address_.GetMap();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
-Data::uncovered_address() const {
-  // @@protoc_insertion_point(field_map:dra.Data.uncovered_address)
+DataDependency::uncovered_address() const {
+  // @@protoc_insertion_point(field_map:dra.DataDependency.uncovered_address)
   return _internal_uncovered_address();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
-Data::_internal_mutable_uncovered_address() {
+DataDependency::_internal_mutable_uncovered_address() {
   return uncovered_address_.MutableMap();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
-Data::mutable_uncovered_address() {
-  // @@protoc_insertion_point(field_mutable_map:dra.Data.uncovered_address)
+DataDependency::mutable_uncovered_address() {
+  // @@protoc_insertion_point(field_mutable_map:dra.DataDependency.uncovered_address)
   return _internal_mutable_uncovered_address();
 }
 
-// map<uint32, .dra.UncoveredAddress> covered_address = 2;
-inline int Data::_internal_covered_address_size() const {
-  return covered_address_.size();
-}
-inline int Data::covered_address_size() const {
-  return _internal_covered_address_size();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
-Data::_internal_covered_address() const {
-  return covered_address_.GetMap();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
-Data::covered_address() const {
-  // @@protoc_insertion_point(field_map:dra.Data.covered_address)
-  return _internal_covered_address();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
-Data::_internal_mutable_covered_address() {
-  return covered_address_.MutableMap();
-}
-inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
-Data::mutable_covered_address() {
-  // @@protoc_insertion_point(field_mutable_map:dra.Data.covered_address)
-  return _internal_mutable_covered_address();
-}
-
 // map<uint32, .dra.WriteAddress> write_address = 5;
-inline int Data::_internal_write_address_size() const {
+inline int DataDependency::_internal_write_address_size() const {
   return write_address_.size();
 }
-inline int Data::write_address_size() const {
+inline int DataDependency::write_address_size() const {
   return _internal_write_address_size();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress >&
-Data::_internal_write_address() const {
+DataDependency::_internal_write_address() const {
   return write_address_.GetMap();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress >&
-Data::write_address() const {
-  // @@protoc_insertion_point(field_map:dra.Data.write_address)
+DataDependency::write_address() const {
+  // @@protoc_insertion_point(field_map:dra.DataDependency.write_address)
   return _internal_write_address();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress >*
-Data::_internal_mutable_write_address() {
+DataDependency::_internal_mutable_write_address() {
   return write_address_.MutableMap();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::WriteAddress >*
-Data::mutable_write_address() {
-  // @@protoc_insertion_point(field_mutable_map:dra.Data.write_address)
+DataDependency::mutable_write_address() {
+  // @@protoc_insertion_point(field_mutable_map:dra.DataDependency.write_address)
   return _internal_mutable_write_address();
 }
 
+// map<string, .dra.Input> other_input = 11;
+inline int DataDependency::_internal_other_input_size() const {
+  return other_input_.size();
+}
+inline int DataDependency::other_input_size() const {
+  return _internal_other_input_size();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
+DataDependency::_internal_other_input() const {
+  return other_input_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
+DataDependency::other_input() const {
+  // @@protoc_insertion_point(field_map:dra.DataDependency.other_input)
+  return _internal_other_input();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
+DataDependency::_internal_mutable_other_input() {
+  return other_input_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
+DataDependency::mutable_other_input() {
+  // @@protoc_insertion_point(field_mutable_map:dra.DataDependency.other_input)
+  return _internal_mutable_other_input();
+}
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// DataResult
+
+// map<uint32, .dra.UncoveredAddress> covered_address = 2;
+inline int DataResult::_internal_covered_address_size() const {
+  return covered_address_.size();
+}
+inline int DataResult::covered_address_size() const {
+  return _internal_covered_address_size();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
+DataResult::_internal_covered_address() const {
+  return covered_address_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >&
+DataResult::covered_address() const {
+  // @@protoc_insertion_point(field_map:dra.DataResult.covered_address)
+  return _internal_covered_address();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
+DataResult::_internal_mutable_covered_address() {
+  return covered_address_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::UncoveredAddress >*
+DataResult::mutable_covered_address() {
+  // @@protoc_insertion_point(field_mutable_map:dra.DataResult.covered_address)
+  return _internal_mutable_covered_address();
+}
+
 // map<string, .dra.FileOperations> file_operations = 6;
-inline int Data::_internal_file_operations_size() const {
+inline int DataResult::_internal_file_operations_size() const {
   return file_operations_.size();
 }
-inline int Data::file_operations_size() const {
+inline int DataResult::file_operations_size() const {
   return _internal_file_operations_size();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::FileOperations >&
-Data::_internal_file_operations() const {
+DataResult::_internal_file_operations() const {
   return file_operations_.GetMap();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::FileOperations >&
-Data::file_operations() const {
-  // @@protoc_insertion_point(field_map:dra.Data.file_operations)
+DataResult::file_operations() const {
+  // @@protoc_insertion_point(field_map:dra.DataResult.file_operations)
   return _internal_file_operations();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::FileOperations >*
-Data::_internal_mutable_file_operations() {
+DataResult::_internal_mutable_file_operations() {
   return file_operations_.MutableMap();
 }
 inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::FileOperations >*
-Data::mutable_file_operations() {
-  // @@protoc_insertion_point(field_mutable_map:dra.Data.file_operations)
+DataResult::mutable_file_operations() {
+  // @@protoc_insertion_point(field_mutable_map:dra.DataResult.file_operations)
   return _internal_mutable_file_operations();
 }
 
-// .dra.Tasks tasks = 7;
-inline bool Data::_internal_has_tasks() const {
+// -------------------------------------------------------------------
+
+// DataRunTime
+
+// .dra.Tasks tasks = 11;
+inline bool DataRunTime::_internal_has_tasks() const {
   return this != internal_default_instance() && tasks_ != nullptr;
 }
-inline bool Data::has_tasks() const {
+inline bool DataRunTime::has_tasks() const {
   return _internal_has_tasks();
 }
-inline const ::dra::Tasks& Data::_internal_tasks() const {
+inline const ::dra::Tasks& DataRunTime::_internal_tasks() const {
   const ::dra::Tasks* p = tasks_;
   return p != nullptr ? *p : *reinterpret_cast<const ::dra::Tasks*>(
       &::dra::_Tasks_default_instance_);
 }
-inline const ::dra::Tasks& Data::tasks() const {
-  // @@protoc_insertion_point(field_get:dra.Data.tasks)
+inline const ::dra::Tasks& DataRunTime::tasks() const {
+  // @@protoc_insertion_point(field_get:dra.DataRunTime.tasks)
   return _internal_tasks();
 }
-inline ::dra::Tasks* Data::release_tasks() {
-  // @@protoc_insertion_point(field_release:dra.Data.tasks)
+inline ::dra::Tasks* DataRunTime::release_tasks() {
+  // @@protoc_insertion_point(field_release:dra.DataRunTime.tasks)
   
   ::dra::Tasks* temp = tasks_;
   tasks_ = nullptr;
   return temp;
 }
-inline ::dra::Tasks* Data::_internal_mutable_tasks() {
+inline ::dra::Tasks* DataRunTime::_internal_mutable_tasks() {
   
   if (tasks_ == nullptr) {
     auto* p = CreateMaybeMessage<::dra::Tasks>(GetArenaNoVirtual());
@@ -779,11 +1090,11 @@ inline ::dra::Tasks* Data::_internal_mutable_tasks() {
   }
   return tasks_;
 }
-inline ::dra::Tasks* Data::mutable_tasks() {
-  // @@protoc_insertion_point(field_mutable:dra.Data.tasks)
+inline ::dra::Tasks* DataRunTime::mutable_tasks() {
+  // @@protoc_insertion_point(field_mutable:dra.DataRunTime.tasks)
   return _internal_mutable_tasks();
 }
-inline void Data::set_allocated_tasks(::dra::Tasks* tasks) {
+inline void DataRunTime::set_allocated_tasks(::dra::Tasks* tasks) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(tasks_);
@@ -799,33 +1110,87 @@ inline void Data::set_allocated_tasks(::dra::Tasks* tasks) {
     
   }
   tasks_ = tasks;
-  // @@protoc_insertion_point(field_set_allocated:dra.Data.tasks)
+  // @@protoc_insertion_point(field_set_allocated:dra.DataRunTime.tasks)
 }
 
-// .dra.Tasks high_task = 8;
-inline bool Data::_internal_has_high_task() const {
+// .dra.Tasks return = 12;
+inline bool DataRunTime::_internal_has_return_() const {
+  return this != internal_default_instance() && return__ != nullptr;
+}
+inline bool DataRunTime::has_return_() const {
+  return _internal_has_return_();
+}
+inline const ::dra::Tasks& DataRunTime::_internal_return_() const {
+  const ::dra::Tasks* p = return__;
+  return p != nullptr ? *p : *reinterpret_cast<const ::dra::Tasks*>(
+      &::dra::_Tasks_default_instance_);
+}
+inline const ::dra::Tasks& DataRunTime::return_() const {
+  // @@protoc_insertion_point(field_get:dra.DataRunTime.return)
+  return _internal_return_();
+}
+inline ::dra::Tasks* DataRunTime::release_return_() {
+  // @@protoc_insertion_point(field_release:dra.DataRunTime.return)
+  
+  ::dra::Tasks* temp = return__;
+  return__ = nullptr;
+  return temp;
+}
+inline ::dra::Tasks* DataRunTime::_internal_mutable_return_() {
+  
+  if (return__ == nullptr) {
+    auto* p = CreateMaybeMessage<::dra::Tasks>(GetArenaNoVirtual());
+    return__ = p;
+  }
+  return return__;
+}
+inline ::dra::Tasks* DataRunTime::mutable_return_() {
+  // @@protoc_insertion_point(field_mutable:dra.DataRunTime.return)
+  return _internal_mutable_return_();
+}
+inline void DataRunTime::set_allocated_return_(::dra::Tasks* return_) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(return__);
+  }
+  if (return_) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      return_ = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, return_, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  return__ = return_;
+  // @@protoc_insertion_point(field_set_allocated:dra.DataRunTime.return)
+}
+
+// .dra.Tasks high_task = 13;
+inline bool DataRunTime::_internal_has_high_task() const {
   return this != internal_default_instance() && high_task_ != nullptr;
 }
-inline bool Data::has_high_task() const {
+inline bool DataRunTime::has_high_task() const {
   return _internal_has_high_task();
 }
-inline const ::dra::Tasks& Data::_internal_high_task() const {
+inline const ::dra::Tasks& DataRunTime::_internal_high_task() const {
   const ::dra::Tasks* p = high_task_;
   return p != nullptr ? *p : *reinterpret_cast<const ::dra::Tasks*>(
       &::dra::_Tasks_default_instance_);
 }
-inline const ::dra::Tasks& Data::high_task() const {
-  // @@protoc_insertion_point(field_get:dra.Data.high_task)
+inline const ::dra::Tasks& DataRunTime::high_task() const {
+  // @@protoc_insertion_point(field_get:dra.DataRunTime.high_task)
   return _internal_high_task();
 }
-inline ::dra::Tasks* Data::release_high_task() {
-  // @@protoc_insertion_point(field_release:dra.Data.high_task)
+inline ::dra::Tasks* DataRunTime::release_high_task() {
+  // @@protoc_insertion_point(field_release:dra.DataRunTime.high_task)
   
   ::dra::Tasks* temp = high_task_;
   high_task_ = nullptr;
   return temp;
 }
-inline ::dra::Tasks* Data::_internal_mutable_high_task() {
+inline ::dra::Tasks* DataRunTime::_internal_mutable_high_task() {
   
   if (high_task_ == nullptr) {
     auto* p = CreateMaybeMessage<::dra::Tasks>(GetArenaNoVirtual());
@@ -833,11 +1198,11 @@ inline ::dra::Tasks* Data::_internal_mutable_high_task() {
   }
   return high_task_;
 }
-inline ::dra::Tasks* Data::mutable_high_task() {
-  // @@protoc_insertion_point(field_mutable:dra.Data.high_task)
+inline ::dra::Tasks* DataRunTime::mutable_high_task() {
+  // @@protoc_insertion_point(field_mutable:dra.DataRunTime.high_task)
   return _internal_mutable_high_task();
 }
-inline void Data::set_allocated_high_task(::dra::Tasks* high_task) {
+inline void DataRunTime::set_allocated_high_task(::dra::Tasks* high_task) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(high_task_);
@@ -853,33 +1218,33 @@ inline void Data::set_allocated_high_task(::dra::Tasks* high_task) {
     
   }
   high_task_ = high_task;
-  // @@protoc_insertion_point(field_set_allocated:dra.Data.high_task)
+  // @@protoc_insertion_point(field_set_allocated:dra.DataRunTime.high_task)
 }
 
-// .dra.Tasks boot_task = 9;
-inline bool Data::_internal_has_boot_task() const {
+// .dra.Tasks boot_task = 20;
+inline bool DataRunTime::_internal_has_boot_task() const {
   return this != internal_default_instance() && boot_task_ != nullptr;
 }
-inline bool Data::has_boot_task() const {
+inline bool DataRunTime::has_boot_task() const {
   return _internal_has_boot_task();
 }
-inline const ::dra::Tasks& Data::_internal_boot_task() const {
+inline const ::dra::Tasks& DataRunTime::_internal_boot_task() const {
   const ::dra::Tasks* p = boot_task_;
   return p != nullptr ? *p : *reinterpret_cast<const ::dra::Tasks*>(
       &::dra::_Tasks_default_instance_);
 }
-inline const ::dra::Tasks& Data::boot_task() const {
-  // @@protoc_insertion_point(field_get:dra.Data.boot_task)
+inline const ::dra::Tasks& DataRunTime::boot_task() const {
+  // @@protoc_insertion_point(field_get:dra.DataRunTime.boot_task)
   return _internal_boot_task();
 }
-inline ::dra::Tasks* Data::release_boot_task() {
-  // @@protoc_insertion_point(field_release:dra.Data.boot_task)
+inline ::dra::Tasks* DataRunTime::release_boot_task() {
+  // @@protoc_insertion_point(field_release:dra.DataRunTime.boot_task)
   
   ::dra::Tasks* temp = boot_task_;
   boot_task_ = nullptr;
   return temp;
 }
-inline ::dra::Tasks* Data::_internal_mutable_boot_task() {
+inline ::dra::Tasks* DataRunTime::_internal_mutable_boot_task() {
   
   if (boot_task_ == nullptr) {
     auto* p = CreateMaybeMessage<::dra::Tasks>(GetArenaNoVirtual());
@@ -887,11 +1252,11 @@ inline ::dra::Tasks* Data::_internal_mutable_boot_task() {
   }
   return boot_task_;
 }
-inline ::dra::Tasks* Data::mutable_boot_task() {
-  // @@protoc_insertion_point(field_mutable:dra.Data.boot_task)
+inline ::dra::Tasks* DataRunTime::mutable_boot_task() {
+  // @@protoc_insertion_point(field_mutable:dra.DataRunTime.boot_task)
   return _internal_mutable_boot_task();
 }
-inline void Data::set_allocated_boot_task(::dra::Tasks* boot_task) {
+inline void DataRunTime::set_allocated_boot_task(::dra::Tasks* boot_task) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(boot_task_);
@@ -907,38 +1272,70 @@ inline void Data::set_allocated_boot_task(::dra::Tasks* boot_task) {
     
   }
   boot_task_ = boot_task;
-  // @@protoc_insertion_point(field_set_allocated:dra.Data.boot_task)
+  // @@protoc_insertion_point(field_set_allocated:dra.DataRunTime.boot_task)
 }
 
-// map<string, .dra.Input> new_input = 11;
-inline int Data::_internal_new_input_size() const {
-  return new_input_.size();
+// .dra.Tasks return_boot = 21;
+inline bool DataRunTime::_internal_has_return_boot() const {
+  return this != internal_default_instance() && return_boot_ != nullptr;
 }
-inline int Data::new_input_size() const {
-  return _internal_new_input_size();
+inline bool DataRunTime::has_return_boot() const {
+  return _internal_has_return_boot();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
-Data::_internal_new_input() const {
-  return new_input_.GetMap();
+inline const ::dra::Tasks& DataRunTime::_internal_return_boot() const {
+  const ::dra::Tasks* p = return_boot_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::dra::Tasks*>(
+      &::dra::_Tasks_default_instance_);
 }
-inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >&
-Data::new_input() const {
-  // @@protoc_insertion_point(field_map:dra.Data.new_input)
-  return _internal_new_input();
+inline const ::dra::Tasks& DataRunTime::return_boot() const {
+  // @@protoc_insertion_point(field_get:dra.DataRunTime.return_boot)
+  return _internal_return_boot();
 }
-inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
-Data::_internal_mutable_new_input() {
-  return new_input_.MutableMap();
+inline ::dra::Tasks* DataRunTime::release_return_boot() {
+  // @@protoc_insertion_point(field_release:dra.DataRunTime.return_boot)
+  
+  ::dra::Tasks* temp = return_boot_;
+  return_boot_ = nullptr;
+  return temp;
 }
-inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Input >*
-Data::mutable_new_input() {
-  // @@protoc_insertion_point(field_mutable_map:dra.Data.new_input)
-  return _internal_mutable_new_input();
+inline ::dra::Tasks* DataRunTime::_internal_mutable_return_boot() {
+  
+  if (return_boot_ == nullptr) {
+    auto* p = CreateMaybeMessage<::dra::Tasks>(GetArenaNoVirtual());
+    return_boot_ = p;
+  }
+  return return_boot_;
+}
+inline ::dra::Tasks* DataRunTime::mutable_return_boot() {
+  // @@protoc_insertion_point(field_mutable:dra.DataRunTime.return_boot)
+  return _internal_mutable_return_boot();
+}
+inline void DataRunTime::set_allocated_return_boot(::dra::Tasks* return_boot) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(return_boot_);
+  }
+  if (return_boot) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      return_boot = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, return_boot, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  return_boot_ = return_boot;
+  // @@protoc_insertion_point(field_set_allocated:dra.DataRunTime.return_boot)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

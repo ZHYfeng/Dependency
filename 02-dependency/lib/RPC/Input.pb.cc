@@ -23,7 +23,9 @@ extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal:
 extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Path_Input_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Paths_Input_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Paths_PathEntry_DoNotUse_Input_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UnstableInput_UnstablePathEntry_DoNotUse_Input_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_UnstableInput_Input_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UnstableInput_AddressEntry_DoNotUse_Input_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UnstableInputs_UnstableInputEntry_DoNotUse_Input_2eproto;
 namespace dra {
 class Call_AddressEntry_DoNotUseDefaultTypeInternal {
  public:
@@ -65,14 +67,22 @@ class PathsDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Paths> _instance;
 } _Paths_default_instance_;
-class UnstableInput_UnstablePathEntry_DoNotUseDefaultTypeInternal {
+class UnstableInput_AddressEntry_DoNotUseDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UnstableInput_UnstablePathEntry_DoNotUse> _instance;
-} _UnstableInput_UnstablePathEntry_DoNotUse_default_instance_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UnstableInput_AddressEntry_DoNotUse> _instance;
+} _UnstableInput_AddressEntry_DoNotUse_default_instance_;
 class UnstableInputDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UnstableInput> _instance;
 } _UnstableInput_default_instance_;
+class UnstableInputs_UnstableInputEntry_DoNotUseDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UnstableInputs_UnstableInputEntry_DoNotUse> _instance;
+} _UnstableInputs_UnstableInputEntry_DoNotUse_default_instance_;
+class UnstableInputsDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UnstableInputs> _instance;
+} _UnstableInputs_default_instance_;
 }  // namespace dra
 static void InitDefaultsscc_info_Call_Input_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -232,23 +242,51 @@ static void InitDefaultsscc_info_UnstableInput_Input_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_UnstableInput_Input_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_UnstableInput_Input_2eproto}, {
       &scc_info_Paths_Input_2eproto.base,
-      &scc_info_UnstableInput_UnstablePathEntry_DoNotUse_Input_2eproto.base,}};
+      &scc_info_UnstableInput_AddressEntry_DoNotUse_Input_2eproto.base,}};
 
-static void InitDefaultsscc_info_UnstableInput_UnstablePathEntry_DoNotUse_Input_2eproto() {
+static void InitDefaultsscc_info_UnstableInput_AddressEntry_DoNotUse_Input_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::dra::_UnstableInput_UnstablePathEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::UnstableInput_UnstablePathEntry_DoNotUse();
+    void* ptr = &::dra::_UnstableInput_AddressEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::UnstableInput_AddressEntry_DoNotUse();
   }
-  ::dra::UnstableInput_UnstablePathEntry_DoNotUse::InitAsDefaultInstance();
+  ::dra::UnstableInput_AddressEntry_DoNotUse::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UnstableInput_UnstablePathEntry_DoNotUse_Input_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_UnstableInput_UnstablePathEntry_DoNotUse_Input_2eproto}, {
-      &scc_info_Path_Input_2eproto.base,}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UnstableInput_AddressEntry_DoNotUse_Input_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_UnstableInput_AddressEntry_DoNotUse_Input_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_Input_2eproto[12];
+static void InitDefaultsscc_info_UnstableInputs_Input_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::dra::_UnstableInputs_default_instance_;
+    new (ptr) ::dra::UnstableInputs();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::dra::UnstableInputs::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UnstableInputs_Input_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_UnstableInputs_Input_2eproto}, {
+      &scc_info_UnstableInputs_UnstableInputEntry_DoNotUse_Input_2eproto.base,}};
+
+static void InitDefaultsscc_info_UnstableInputs_UnstableInputEntry_DoNotUse_Input_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::dra::_UnstableInputs_UnstableInputEntry_DoNotUse_default_instance_;
+    new (ptr) ::dra::UnstableInputs_UnstableInputEntry_DoNotUse();
+  }
+  ::dra::UnstableInputs_UnstableInputEntry_DoNotUse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UnstableInputs_UnstableInputEntry_DoNotUse_Input_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_UnstableInputs_UnstableInputEntry_DoNotUse_Input_2eproto}, {
+      &scc_info_UnstableInput_Input_2eproto.base,}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_Input_2eproto[14];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Input_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Input_2eproto = nullptr;
 
@@ -338,13 +376,13 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Input_2eproto::offsets[] PROTO
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Paths, path_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_UnstablePathEntry_DoNotUse, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_UnstablePathEntry_DoNotUse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_AddressEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_AddressEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_UnstablePathEntry_DoNotUse, key_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_UnstablePathEntry_DoNotUse, value_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_AddressEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput_AddressEntry_DoNotUse, value_),
   0,
   1,
   ~0u,  // no _has_bits_
@@ -352,12 +390,25 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Input_2eproto::offsets[] PROTO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, new_path_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, unstable_path_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, address_),
   PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, sig_),
   PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, program_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, unstable_path_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInput, address_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInputs_UnstableInputEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInputs_UnstableInputEntry_DoNotUse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInputs_UnstableInputEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInputs_UnstableInputEntry_DoNotUse, value_),
+  0,
+  1,
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInputs, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::dra::UnstableInputs, unstable_input_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::dra::Call_AddressEntry_DoNotUse)},
@@ -370,8 +421,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 64, -1, sizeof(::dra::Path)},
   { 70, 77, sizeof(::dra::Paths_PathEntry_DoNotUse)},
   { 79, -1, sizeof(::dra::Paths)},
-  { 85, 92, sizeof(::dra::UnstableInput_UnstablePathEntry_DoNotUse)},
+  { 85, 92, sizeof(::dra::UnstableInput_AddressEntry_DoNotUse)},
   { 94, -1, sizeof(::dra::UnstableInput)},
+  { 103, 110, sizeof(::dra::UnstableInputs_UnstableInputEntry_DoNotUse)},
+  { 112, -1, sizeof(::dra::UnstableInputs)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -385,8 +438,10 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Path_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Paths_PathEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_Paths_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_UnstableInput_UnstablePathEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_UnstableInput_AddressEntry_DoNotUse_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_UnstableInput_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_UnstableInputs_UnstableInputEntry_DoNotUse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::dra::_UnstableInputs_default_instance_),
 };
 
 const char descriptor_table_protodef_Input_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -409,22 +464,24 @@ const char descriptor_table_protodef_Input_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "\"\027\n\004Path\022\017\n\007address\030\001 \003(\r\"c\n\005Paths\022\"\n\004pa"
   "th\030\001 \003(\0132\024.dra.Paths.PathEntry\0326\n\tPathEn"
   "try\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Pa"
-  "th:\0028\001\"\346\001\n\rUnstableInput\022\034\n\010new_path\030\001 \003"
-  "(\0132\n.dra.Paths\022;\n\runstable_path\030\002 \003(\0132$."
-  "dra.UnstableInput.UnstablePathEntry\022\013\n\003i"
-  "dx\030\003 \001(\r\022\017\n\007address\030\004 \001(\r\022\013\n\003sig\030\013 \001(\t\022\017"
-  "\n\007program\030\014 \001(\014\032>\n\021UnstablePathEntry\022\013\n\003"
-  "key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Path:\0028\001*"
-  "\312\001\n\013FuzzingStat\022\017\n\013StatDefault\020\000\022\020\n\014Stat"
-  "Generate\020\001\022\014\n\010StatFuzz\020\002\022\021\n\rStatCandidat"
-  "e\020\003\022\016\n\nStatTriage\020\004\022\020\n\014StatMinimize\020\005\022\r\n"
-  "\tStatSmash\020\006\022\014\n\010StatHint\020\007\022\014\n\010StatSeed\020\010"
-  "\022\022\n\016StatDependency\020\t\022\026\n\022StatDependencyBo"
-  "ot\020\nb\006proto3"
+  "th:\0028\001\"\262\001\n\rUnstableInput\022\013\n\003sig\030\001 \001(\t\022\017\n"
+  "\007program\030\002 \001(\014\022!\n\runstable_path\030\014 \003(\0132\n."
+  "dra.Paths\0220\n\007address\030\r \003(\0132\037.dra.Unstabl"
+  "eInput.AddressEntry\032.\n\014AddressEntry\022\013\n\003k"
+  "ey\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\232\001\n\016Unstable"
+  "Inputs\022>\n\016unstable_input\030\001 \003(\0132&.dra.Uns"
+  "tableInputs.UnstableInputEntry\032H\n\022Unstab"
+  "leInputEntry\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\013"
+  "2\022.dra.UnstableInput:\0028\001*\312\001\n\013FuzzingStat"
+  "\022\017\n\013StatDefault\020\000\022\020\n\014StatGenerate\020\001\022\014\n\010S"
+  "tatFuzz\020\002\022\021\n\rStatCandidate\020\003\022\016\n\nStatTria"
+  "ge\020\004\022\020\n\014StatMinimize\020\005\022\r\n\tStatSmash\020\006\022\014\n"
+  "\010StatHint\020\007\022\014\n\010StatSeed\020\010\022\022\n\016StatDepende"
+  "ncy\020\t\022\026\n\022StatDependencyBoot\020\nb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Input_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Input_2eproto_sccs[12] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Input_2eproto_sccs[14] = {
   &scc_info_Call_Input_2eproto.base,
   &scc_info_Call_AddressEntry_DoNotUse_Input_2eproto.base,
   &scc_info_Input_Input_2eproto.base,
@@ -436,15 +493,17 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Inp
   &scc_info_Paths_Input_2eproto.base,
   &scc_info_Paths_PathEntry_DoNotUse_Input_2eproto.base,
   &scc_info_UnstableInput_Input_2eproto.base,
-  &scc_info_UnstableInput_UnstablePathEntry_DoNotUse_Input_2eproto.base,
+  &scc_info_UnstableInput_AddressEntry_DoNotUse_Input_2eproto.base,
+  &scc_info_UnstableInputs_Input_2eproto.base,
+  &scc_info_UnstableInputs_UnstableInputEntry_DoNotUse_Input_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Input_2eproto_once;
 static bool descriptor_table_Input_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Input_2eproto = {
-  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1212,
-  &descriptor_table_Input_2eproto_once, descriptor_table_Input_2eproto_sccs, descriptor_table_Input_2eproto_deps, 12, 0,
+  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1317,
+  &descriptor_table_Input_2eproto_once, descriptor_table_Input_2eproto_sccs, descriptor_table_Input_2eproto_deps, 14, 0,
   schemas, file_default_instances, TableStruct_Input_2eproto::offsets,
-  file_level_metadata_Input_2eproto, 12, file_level_enum_descriptors_Input_2eproto, file_level_service_descriptors_Input_2eproto,
+  file_level_metadata_Input_2eproto, 14, file_level_enum_descriptors_Input_2eproto, file_level_service_descriptors_Input_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -1956,16 +2015,16 @@ void Paths::InternalSwap(Paths* other) {
 
 // ===================================================================
 
-UnstableInput_UnstablePathEntry_DoNotUse::UnstableInput_UnstablePathEntry_DoNotUse() {}
-UnstableInput_UnstablePathEntry_DoNotUse::UnstableInput_UnstablePathEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+UnstableInput_AddressEntry_DoNotUse::UnstableInput_AddressEntry_DoNotUse() {}
+UnstableInput_AddressEntry_DoNotUse::UnstableInput_AddressEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
     : SuperType(arena) {}
-void UnstableInput_UnstablePathEntry_DoNotUse::MergeFrom(const UnstableInput_UnstablePathEntry_DoNotUse& other) {
+void UnstableInput_AddressEntry_DoNotUse::MergeFrom(const UnstableInput_AddressEntry_DoNotUse& other) {
   MergeFromInternal(other);
 }
-::PROTOBUF_NAMESPACE_ID::Metadata UnstableInput_UnstablePathEntry_DoNotUse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata UnstableInput_AddressEntry_DoNotUse::GetMetadata() const {
   return GetMetadataStatic();
 }
-void UnstableInput_UnstablePathEntry_DoNotUse::MergeFrom(
+void UnstableInput_AddressEntry_DoNotUse::MergeFrom(
     const ::PROTOBUF_NAMESPACE_ID::Message& other) {
   ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
 }
@@ -1987,9 +2046,9 @@ UnstableInput::UnstableInput()
 UnstableInput::UnstableInput(const UnstableInput& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
-      new_path_(from.new_path_) {
+      unstable_path_(from.unstable_path_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  unstable_path_.MergeFrom(from.unstable_path_);
+  address_.MergeFrom(from.address_);
   sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_sig().empty()) {
     sig_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.sig_);
@@ -1998,9 +2057,6 @@ UnstableInput::UnstableInput(const UnstableInput& from)
   if (!from._internal_program().empty()) {
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
-  ::memcpy(&idx_, &from.idx_,
-    static_cast<size_t>(reinterpret_cast<char*>(&address_) -
-    reinterpret_cast<char*>(&idx_)) + sizeof(address_));
   // @@protoc_insertion_point(copy_constructor:dra.UnstableInput)
 }
 
@@ -2008,9 +2064,6 @@ void UnstableInput::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UnstableInput_Input_2eproto.base);
   sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&idx_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&address_) -
-      reinterpret_cast<char*>(&idx_)) + sizeof(address_));
 }
 
 UnstableInput::~UnstableInput() {
@@ -2038,13 +2091,10 @@ void UnstableInput::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  new_path_.Clear();
   unstable_path_.Clear();
+  address_.Clear();
   sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&idx_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&address_) -
-      reinterpret_cast<char*>(&idx_)) + sizeof(address_));
   _internal_metadata_.Clear();
 }
 
@@ -2055,59 +2105,45 @@ const char* UnstableInput::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // repeated .dra.Paths new_path = 1;
+      // string sig = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_new_path(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else goto handle_unusual;
-        continue;
-      // map<uint32, .dra.Path> unstable_path = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(&unstable_path_, ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else goto handle_unusual;
-        continue;
-      // uint32 idx = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          idx_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // uint32 address = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // string sig = 11;
-      case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
           auto str = _internal_mutable_sig();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.UnstableInput.sig"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bytes program = 12;
-      case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98)) {
+      // bytes program = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_program();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // repeated .dra.Paths unstable_path = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 98)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_unstable_path(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<98>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // map<uint32, uint32> address = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 106)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(&address_, ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<106>(ptr));
         } else goto handle_unusual;
         continue;
       default: {
@@ -2136,71 +2172,59 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .dra.Paths new_path = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_new_path_size()); i < n; i++) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_new_path(i), target, stream);
-  }
-
-  // map<uint32, .dra.Path> unstable_path = 2;
-  if (!this->_internal_unstable_path().empty()) {
-    typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >::const_pointer
-        ConstPtr;
-    typedef ::PROTOBUF_NAMESPACE_ID::internal::SortItem< ::PROTOBUF_NAMESPACE_ID::uint32, ConstPtr > SortItem;
-    typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByFirstField<SortItem> Less;
-
-    if (stream->IsSerializationDeterministic() &&
-        this->_internal_unstable_path().size() > 1) {
-      ::std::unique_ptr<SortItem[]> items(
-          new SortItem[this->_internal_unstable_path().size()]);
-      typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >::size_type size_type;
-      size_type n = 0;
-      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >::const_iterator
-          it = this->_internal_unstable_path().begin();
-          it != this->_internal_unstable_path().end(); ++it, ++n) {
-        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
-      }
-      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
-      for (size_type i = 0; i < n; i++) {
-        target = UnstableInput_UnstablePathEntry_DoNotUse::Funcs::InternalSerialize(2, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
-      }
-    } else {
-      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >::const_iterator
-          it = this->_internal_unstable_path().begin();
-          it != this->_internal_unstable_path().end(); ++it) {
-        target = UnstableInput_UnstablePathEntry_DoNotUse::Funcs::InternalSerialize(2, it->first, it->second, target, stream);
-      }
-    }
-  }
-
-  // uint32 idx = 3;
-  if (this->idx() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_idx(), target);
-  }
-
-  // uint32 address = 4;
-  if (this->address() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_address(), target);
-  }
-
-  // string sig = 11;
+  // string sig = 1;
   if (this->sig().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_sig().data(), static_cast<int>(this->_internal_sig().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "dra.UnstableInput.sig");
     target = stream->WriteStringMaybeAliased(
-        11, this->_internal_sig(), target);
+        1, this->_internal_sig(), target);
   }
 
-  // bytes program = 12;
+  // bytes program = 2;
   if (this->program().size() > 0) {
     target = stream->WriteBytesMaybeAliased(
-        12, this->_internal_program(), target);
+        2, this->_internal_program(), target);
+  }
+
+  // repeated .dra.Paths unstable_path = 12;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_unstable_path_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(12, this->_internal_unstable_path(i), target, stream);
+  }
+
+  // map<uint32, uint32> address = 13;
+  if (!this->_internal_address().empty()) {
+    typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_pointer
+        ConstPtr;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::SortItem< ::PROTOBUF_NAMESPACE_ID::uint32, ConstPtr > SortItem;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByFirstField<SortItem> Less;
+
+    if (stream->IsSerializationDeterministic() &&
+        this->_internal_address().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->_internal_address().size()]);
+      typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::size_type size_type;
+      size_type n = 0;
+      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_iterator
+          it = this->_internal_address().begin();
+          it != this->_internal_address().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      for (size_type i = 0; i < n; i++) {
+        target = UnstableInput_AddressEntry_DoNotUse::Funcs::InternalSerialize(13, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
+      }
+    } else {
+      for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_iterator
+          it = this->_internal_address().begin();
+          it != this->_internal_address().end(); ++it) {
+        target = UnstableInput_AddressEntry_DoNotUse::Funcs::InternalSerialize(13, it->first, it->second, target, stream);
+      }
+    }
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2219,48 +2243,34 @@ size_t UnstableInput::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .dra.Paths new_path = 1;
-  total_size += 1UL * this->_internal_new_path_size();
-  for (const auto& msg : this->new_path_) {
+  // repeated .dra.Paths unstable_path = 12;
+  total_size += 1UL * this->_internal_unstable_path_size();
+  for (const auto& msg : this->unstable_path_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // map<uint32, .dra.Path> unstable_path = 2;
+  // map<uint32, uint32> address = 13;
   total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_unstable_path_size());
-  for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Path >::const_iterator
-      it = this->_internal_unstable_path().begin();
-      it != this->_internal_unstable_path().end(); ++it) {
-    total_size += UnstableInput_UnstablePathEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_address_size());
+  for (::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32 >::const_iterator
+      it = this->_internal_address().begin();
+      it != this->_internal_address().end(); ++it) {
+    total_size += UnstableInput_AddressEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
-  // string sig = 11;
+  // string sig = 1;
   if (this->sig().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_sig());
   }
 
-  // bytes program = 12;
+  // bytes program = 2;
   if (this->program().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_program());
-  }
-
-  // uint32 idx = 3;
-  if (this->idx() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_idx());
-  }
-
-  // uint32 address = 4;
-  if (this->address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_address());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2294,8 +2304,8 @@ void UnstableInput::MergeFrom(const UnstableInput& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  new_path_.MergeFrom(from.new_path_);
   unstable_path_.MergeFrom(from.unstable_path_);
+  address_.MergeFrom(from.address_);
   if (from.sig().size() > 0) {
 
     sig_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.sig_);
@@ -2303,12 +2313,6 @@ void UnstableInput::MergeFrom(const UnstableInput& from) {
   if (from.program().size() > 0) {
 
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
-  }
-  if (from.idx() != 0) {
-    _internal_set_idx(from._internal_idx());
-  }
-  if (from.address() != 0) {
-    _internal_set_address(from._internal_address());
   }
 }
 
@@ -2333,17 +2337,258 @@ bool UnstableInput::IsInitialized() const {
 void UnstableInput::InternalSwap(UnstableInput* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  new_path_.InternalSwap(&other->new_path_);
-  unstable_path_.Swap(&other->unstable_path_);
+  unstable_path_.InternalSwap(&other->unstable_path_);
+  address_.Swap(&other->address_);
   sig_.Swap(&other->sig_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   program_.Swap(&other->program_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  swap(idx_, other->idx_);
-  swap(address_, other->address_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata UnstableInput::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+UnstableInputs_UnstableInputEntry_DoNotUse::UnstableInputs_UnstableInputEntry_DoNotUse() {}
+UnstableInputs_UnstableInputEntry_DoNotUse::UnstableInputs_UnstableInputEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+    : SuperType(arena) {}
+void UnstableInputs_UnstableInputEntry_DoNotUse::MergeFrom(const UnstableInputs_UnstableInputEntry_DoNotUse& other) {
+  MergeFromInternal(other);
+}
+::PROTOBUF_NAMESPACE_ID::Metadata UnstableInputs_UnstableInputEntry_DoNotUse::GetMetadata() const {
+  return GetMetadataStatic();
+}
+void UnstableInputs_UnstableInputEntry_DoNotUse::MergeFrom(
+    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
+  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
+}
+
+
+// ===================================================================
+
+void UnstableInputs::InitAsDefaultInstance() {
+}
+class UnstableInputs::_Internal {
+ public:
+};
+
+UnstableInputs::UnstableInputs()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:dra.UnstableInputs)
+}
+UnstableInputs::UnstableInputs(const UnstableInputs& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  unstable_input_.MergeFrom(from.unstable_input_);
+  // @@protoc_insertion_point(copy_constructor:dra.UnstableInputs)
+}
+
+void UnstableInputs::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UnstableInputs_Input_2eproto.base);
+}
+
+UnstableInputs::~UnstableInputs() {
+  // @@protoc_insertion_point(destructor:dra.UnstableInputs)
+  SharedDtor();
+}
+
+void UnstableInputs::SharedDtor() {
+}
+
+void UnstableInputs::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const UnstableInputs& UnstableInputs::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_UnstableInputs_Input_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void UnstableInputs::Clear() {
+// @@protoc_insertion_point(message_clear_start:dra.UnstableInputs)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  unstable_input_.Clear();
+  _internal_metadata_.Clear();
+}
+
+const char* UnstableInputs::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // map<string, .dra.UnstableInput> unstable_input = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(&unstable_input_, ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* UnstableInputs::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dra.UnstableInputs)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // map<string, .dra.UnstableInput> unstable_input = 1;
+  if (!this->_internal_unstable_input().empty()) {
+    typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >::const_pointer
+        ConstPtr;
+    typedef ConstPtr SortItem;
+    typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
+    struct Utf8Check {
+      static void Check(ConstPtr p) {
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+          p->first.data(), static_cast<int>(p->first.length()),
+          ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+          "dra.UnstableInputs.UnstableInputEntry.key");
+      }
+    };
+
+    if (stream->IsSerializationDeterministic() &&
+        this->_internal_unstable_input().size() > 1) {
+      ::std::unique_ptr<SortItem[]> items(
+          new SortItem[this->_internal_unstable_input().size()]);
+      typedef ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >::size_type size_type;
+      size_type n = 0;
+      for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >::const_iterator
+          it = this->_internal_unstable_input().begin();
+          it != this->_internal_unstable_input().end(); ++it, ++n) {
+        items[static_cast<ptrdiff_t>(n)] = SortItem(&*it);
+      }
+      ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
+      for (size_type i = 0; i < n; i++) {
+        target = UnstableInputs_UnstableInputEntry_DoNotUse::Funcs::InternalSerialize(1, items[static_cast<ptrdiff_t>(i)]->first, items[static_cast<ptrdiff_t>(i)]->second, target, stream);
+        Utf8Check::Check(&(*items[static_cast<ptrdiff_t>(i)]));
+      }
+    } else {
+      for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >::const_iterator
+          it = this->_internal_unstable_input().begin();
+          it != this->_internal_unstable_input().end(); ++it) {
+        target = UnstableInputs_UnstableInputEntry_DoNotUse::Funcs::InternalSerialize(1, it->first, it->second, target, stream);
+        Utf8Check::Check(&(*it));
+      }
+    }
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:dra.UnstableInputs)
+  return target;
+}
+
+size_t UnstableInputs::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:dra.UnstableInputs)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // map<string, .dra.UnstableInput> unstable_input = 1;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_unstable_input_size());
+  for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::UnstableInput >::const_iterator
+      it = this->_internal_unstable_input().begin();
+      it != this->_internal_unstable_input().end(); ++it) {
+    total_size += UnstableInputs_UnstableInputEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void UnstableInputs::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:dra.UnstableInputs)
+  GOOGLE_DCHECK_NE(&from, this);
+  const UnstableInputs* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<UnstableInputs>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.UnstableInputs)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.UnstableInputs)
+    MergeFrom(*source);
+  }
+}
+
+void UnstableInputs::MergeFrom(const UnstableInputs& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:dra.UnstableInputs)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  unstable_input_.MergeFrom(from.unstable_input_);
+}
+
+void UnstableInputs::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:dra.UnstableInputs)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void UnstableInputs::CopyFrom(const UnstableInputs& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dra.UnstableInputs)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UnstableInputs::IsInitialized() const {
+  return true;
+}
+
+void UnstableInputs::InternalSwap(UnstableInputs* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  unstable_input_.Swap(&other->unstable_input_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata UnstableInputs::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -2381,11 +2626,17 @@ template<> PROTOBUF_NOINLINE ::dra::Paths_PathEntry_DoNotUse* Arena::CreateMaybe
 template<> PROTOBUF_NOINLINE ::dra::Paths* Arena::CreateMaybeMessage< ::dra::Paths >(Arena* arena) {
   return Arena::CreateInternal< ::dra::Paths >(arena);
 }
-template<> PROTOBUF_NOINLINE ::dra::UnstableInput_UnstablePathEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UnstableInput_UnstablePathEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UnstableInput_UnstablePathEntry_DoNotUse >(arena);
+template<> PROTOBUF_NOINLINE ::dra::UnstableInput_AddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UnstableInput_AddressEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::UnstableInput_AddressEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UnstableInput* Arena::CreateMaybeMessage< ::dra::UnstableInput >(Arena* arena) {
   return Arena::CreateInternal< ::dra::UnstableInput >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dra::UnstableInputs_UnstableInputEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UnstableInputs_UnstableInputEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::UnstableInputs_UnstableInputEntry_DoNotUse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::dra::UnstableInputs* Arena::CreateMaybeMessage< ::dra::UnstableInputs >(Arena* arena) {
+  return Arena::CreateInternal< ::dra::UnstableInputs >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

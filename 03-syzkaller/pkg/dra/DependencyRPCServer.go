@@ -2,7 +2,6 @@ package dra
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"os"
 	"sort"
@@ -32,24 +31,38 @@ const (
 	CollectPath     = true
 	CollectUnstable = true
 
+	// collect coverage by intersection instead of union.
 	StableCoverage = true
+	// check Condition address in syz-fuzzer
+	CheckCondition = true
+)
+
+const (
+	NameDevice         = "dev_"
+	NameBase           = "base"
+	NameWithDra        = "01-result-with-dra"
+	NameWithoutDra     = "02-result-without-dra"
+	NameData           = "data.txt"
+	NameDataDependency = "DataDependency.bin"
+	NameDataResult     = "dataResult.bin"
+	NameDataRunTime    = "dataRunTime.bin"
+	NameStatistics     = "statistics.bin"
+	NameUnstable       = "unstable.bin"
+	NameUnstableResult = "unstable.txt"
 )
 
 type syzFuzzer struct {
-	taskMu         *sync.Mutex
-	bootTaskMu     *sync.Mutex
-	bootTasks      *Tasks
-	highTasks      *Tasks
-	newTask        *Tasks
-	returnTask     *Tasks
-	returnBootTask *Tasks
+	MuDependency   *sync.RWMutex
+	dataDependency *DataDependency
+	MuRunTime      *sync.Mutex
+	dataRunTime    *DataRunTime
 }
 
 type newStats struct {
 	newStat []*Statistic
 }
 
-type dependencys struct {
+type dependencies struct {
 	newDependency []*Dependency
 }
 
@@ -60,11 +73,12 @@ type Server struct {
 	Address    string
 	Dependency bool
 
-	taskIndex      int
-	dependencyData *Data
+	dataDependency *DataDependency
+	dataResult     *DataResult
+	dataRunTime    *DataRunTime
 	stat           *Statistics
 
-	fuzzerMu *sync.Mutex
+	MuFuzzer *sync.Mutex
 	fuzzers  map[string]*syzFuzzer
 
 	corpus           *map[string]rpctype.RPCInput
@@ -80,9 +94,9 @@ type Server struct {
 	newStat *newStats
 
 	dependencyMu  *sync.Mutex
-	newDependency *dependencys
+	newDependency *dependencies
 
-	// inputs of new test cases, used to get dependencyData
+	// inputs of new test cases, used to get DataDependency
 	newInputMu *sync.Mutex
 	newInput   *Inputs
 
@@ -98,8 +112,9 @@ type Server struct {
 	coveredInputMu *sync.Mutex
 	coveredInput   *Inputs
 
-	unstableInputMu *sync.Mutex
-	unstableInput   map[string]*UnstableInput
+	unstableInputMu    *sync.Mutex
+	unstableInputs     *UnstableInputs
+	unstableInputsData *UnstableInputs
 }
 
 // GetVMOffsets is to send the offset address in vmlinux to dra
@@ -110,7 +125,7 @@ func (ss Server) GetVMOffsets(context.Context, *Empty) (*Empty, error) {
 }
 
 // SendBasicBlockNumber is to get the basic block number from dra
-func (ss Server) SendBasicBlockNumber(ctx context.Context, request *Empty) (*Empty, error) {
+func (ss Server) SendBasicBlockNumber(_ context.Context, request *Empty) (*Empty, error) {
 	ss.stat.BasicBlockNumber = request.Address
 	reply := &Empty{}
 	return reply, nil
@@ -144,7 +159,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 }
 
 // SendDependency is to get depednency information from dra
-func (ss Server) SendDependency(ctx context.Context, request *Dependency) (*Empty, error) {
+func (ss Server) SendDependency(_ context.Context, request *Dependency) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendDependency")
 	d := proto.Clone(request).(*Dependency)
 
@@ -169,49 +184,32 @@ func (ss Server) GetCondition(context.Context, *Empty) (*Conditions, error) {
 }
 
 // SendWriteAddress is to get write address for the condition from dra
-func (ss Server) SendWriteAddress(ctx context.Context, request *WriteAddresses) (*Empty, error) {
+func (ss Server) SendWriteAddress(_ context.Context, _ *WriteAddresses) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendWriteAddress")
 
 	return &Empty{}, nil
 }
 
 // Connect is to connect with syz-fuzzer
-func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
+func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) Connect")
 
 	name := request.Name
-	ss.fuzzerMu.Lock()
-	defer ss.fuzzerMu.Unlock()
+	ss.MuFuzzer.Lock()
+	defer ss.MuFuzzer.Unlock()
 
 	_, ok := ss.fuzzers[name]
 	if !ok {
 		ss.fuzzers[name] = &syzFuzzer{
-			taskMu:     &sync.Mutex{},
-			bootTaskMu: &sync.Mutex{},
-			bootTasks: &Tasks{
-				Name:      name,
-				TaskMap:   map[string]*Task{},
-				TaskArray: []*Task{},
-			},
-			highTasks: &Tasks{
-				Name:      name,
-				TaskMap:   map[string]*Task{},
-				TaskArray: []*Task{},
-			},
-			newTask: &Tasks{
-				Name:      name,
-				TaskMap:   map[string]*Task{},
-				TaskArray: []*Task{},
-			},
-			returnTask: &Tasks{
-				Name:      name,
-				TaskMap:   map[string]*Task{},
-				TaskArray: []*Task{},
-			},
-			returnBootTask: &Tasks{
-				Name:      name,
-				TaskMap:   map[string]*Task{},
-				TaskArray: []*Task{},
+			MuDependency:   &sync.RWMutex{},
+			MuRunTime:      &sync.Mutex{},
+			dataDependency: nil,
+			dataRunTime: &DataRunTime{
+				Tasks:      &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+				Return:     &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+				HighTask:   &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+				BootTask:   &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+				ReturnBoot: &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
 			},
 		}
 	} else {
@@ -220,8 +218,23 @@ func (ss Server) Connect(ctx context.Context, request *Empty) (*Empty, error) {
 	return &Empty{}, nil
 }
 
+func (ss Server) GetDataDependency(_ context.Context, request *Empty) (*DataDependency, error) {
+
+	name := request.Name
+	replay := &DataDependency{}
+	f, ok := ss.fuzzers[name]
+	if !ok {
+		f.MuDependency.RLock()
+		defer f.MuDependency.RUnlock()
+		replay = proto.Clone(f.dataDependency).(*DataDependency)
+	} else {
+
+	}
+	return replay, nil
+}
+
 // SendNewInput is get new input from syz-fuzzer
-func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, error) {
+func (ss Server) SendNewInput(_ context.Context, request *Input) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendNewInput")
 
 	reply := &Empty{}
@@ -242,7 +255,7 @@ func (ss Server) SendNewInput(ctx context.Context, request *Input) (*Empty, erro
 }
 
 // GetTasks ...
-func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
+func (ss Server) GetTasks(_ context.Context, request *Empty) (*Tasks, error) {
 	log.Logf(DebugLevel, "(ss Server) GetTasks")
 
 	name := request.Name
@@ -252,7 +265,7 @@ func (ss Server) GetTasks(ctx context.Context, request *Empty) (*Tasks, error) {
 }
 
 // GetBootTasks for the tasks need to be tested when boot
-func (ss Server) GetBootTasks(ctx context.Context, request *Empty) (*Tasks, error) {
+func (ss Server) GetBootTasks(_ context.Context, request *Empty) (*Tasks, error) {
 	log.Logf(DebugLevel, "(ss Server) GetTasks")
 	name := request.Name
 	tasks := ss.pickBootTask(name)
@@ -260,20 +273,20 @@ func (ss Server) GetBootTasks(ctx context.Context, request *Empty) (*Tasks, erro
 }
 
 // ReturnTasks is to retrun the tasks from syz-fuzzer
-func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error) {
+func (ss Server) ReturnTasks(_ context.Context, request *Tasks) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) ReturnTasks")
 	tasks := proto.Clone(request).(*Tasks)
 
 	f, ok := ss.fuzzers[tasks.Name]
 	if ok {
 		if tasks.Kind == TaskKind_Normal || tasks.Kind == TaskKind_High {
-			f.taskMu.Lock()
-			f.returnTask.AddTasks(tasks)
-			f.taskMu.Unlock()
+			f.MuRunTime.Lock()
+			f.dataRunTime.Return.AddTasks(tasks)
+			f.MuRunTime.Unlock()
 		} else if tasks.Kind == TaskKind_Boot {
-			f.taskMu.Lock()
-			f.returnBootTask.AddTasks(tasks)
-			f.taskMu.Unlock()
+			f.MuRunTime.Lock()
+			f.dataRunTime.ReturnBoot.AddTasks(tasks)
+			f.MuRunTime.Unlock()
 		}
 	} else {
 		log.Fatalf("ReturnTasks with error name")
@@ -283,7 +296,7 @@ func (ss Server) ReturnTasks(ctx context.Context, request *Tasks) (*Empty, error
 }
 
 // SendBootInput is get new input from syz-fuzzer
-func (ss Server) SendBootInput(ctx context.Context, request *Input) (*Empty, error) {
+func (ss Server) SendBootInput(_ context.Context, request *Input) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendBootInput")
 	reply := &Empty{}
 	r := proto.Clone(request).(*Input)
@@ -294,14 +307,15 @@ func (ss Server) SendBootInput(ctx context.Context, request *Input) (*Empty, err
 }
 
 // SendUnstableInput is get unstable input from syz-fuzzer
-func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) (*Empty, error) {
+func (ss Server) SendUnstableInput(_ context.Context, request *UnstableInput) (*Empty, error) {
 	if CollectUnstable {
 		ui := proto.Clone(request).(*UnstableInput)
 		ss.unstableInputMu.Lock()
 		defer ss.unstableInputMu.Unlock()
-		if _, ok := ss.unstableInput[ui.Sig]; ok {
+		if u, ok := ss.unstableInputs.UnstableInput[ui.Sig]; ok {
+			u.mergeUnstableInput(ui)
 		} else {
-			ss.unstableInput[ui.Sig] = ui
+			ss.unstableInputs.UnstableInput[ui.Sig] = ui
 		}
 	}
 
@@ -310,7 +324,7 @@ func (ss Server) SendUnstableInput(ctx context.Context, request *UnstableInput) 
 }
 
 // SendLog is to get log from syz-fuzzer
-func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
+func (ss Server) SendLog(_ context.Context, request *Empty) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) SendLog")
 
 	ss.logMu.Lock()
@@ -326,7 +340,7 @@ func (ss Server) SendLog(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 // SendStat is to get stat from suz-fuzzer
-func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, error) {
+func (ss Server) SendStat(_ context.Context, request *Statistic) (*Empty, error) {
 
 	stat := proto.Clone(request).(*Statistic)
 	ss.statMu.Lock()
@@ -338,7 +352,7 @@ func (ss Server) SendStat(ctx context.Context, request *Statistic) (*Empty, erro
 }
 
 // GetNeed is to random get input from syz-fuzzer, not new input but used as new input.
-func (ss Server) GetNeed(ctx context.Context, request *Empty) (*Empty, error) {
+func (ss Server) GetNeed(context.Context, *Empty) (*Empty, error) {
 
 	reply := &Empty{}
 	if ss.needWriteaddress {
@@ -350,7 +364,7 @@ func (ss Server) GetNeed(ctx context.Context, request *Empty) (*Empty, error) {
 }
 
 // SendNeedInput is to random get input from syz-fuzzer, not new input but used as new input.
-func (ss Server) SendNeedInput(ctx context.Context, request *Input) (*Empty, error) {
+func (ss Server) SendNeedInput(_ context.Context, request *Input) (*Empty, error) {
 	reply := &Empty{}
 	r := proto.Clone(request).(*Input)
 
@@ -373,22 +387,29 @@ func (ss *Server) SyncSignal(signalNum uint64) {
 
 // RunDependencyRPCServer : run the server
 func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
-	ss.taskIndex = 0
 
-	ss.dependencyData = &Data{
+	ss.dataDependency = &DataDependency{
 		Input:            map[string]*Input{},
 		UncoveredAddress: map[uint32]*UncoveredAddress{},
-		CoveredAddress:   map[uint32]*UncoveredAddress{},
 		WriteAddress:     map[uint32]*WriteAddress{},
-		FileOperations:   map[string]*FileOperations{},
-		Tasks:            &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
-		HighTask:         &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
-		BootTask:         &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
-		NewInput:         map[string]*Input{},
+		OtherInput:       map[string]*Input{},
 	}
 
-	ss.fuzzerMu = &sync.Mutex{}
-	ss.fuzzers = make(map[string]*syzFuzzer)
+	ss.dataResult = &DataResult{
+		CoveredAddress: map[uint32]*UncoveredAddress{},
+		FileOperations: map[string]*FileOperations{},
+	}
+
+	ss.dataRunTime = &DataRunTime{
+		Tasks:      &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+		Return:     &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+		HighTask:   &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+		BootTask:   &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+		ReturnBoot: &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
+	}
+
+	ss.MuFuzzer = &sync.Mutex{}
+	ss.fuzzers = map[string]*syzFuzzer{}
 
 	ss.stat = &Statistics{
 		SignalNum:        0,
@@ -413,7 +434,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	ss.newStat = &newStats{newStat: []*Statistic{}}
 
 	ss.dependencyMu = &sync.Mutex{}
-	ss.newDependency = &dependencys{newDependency: []*Dependency{}}
+	ss.newDependency = &dependencies{newDependency: []*Dependency{}}
 
 	ss.newInputMu = &sync.Mutex{}
 	ss.newInput = &Inputs{Input: []*Input{}}
@@ -429,7 +450,12 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
 	if CollectUnstable {
 		ss.unstableInputMu = &sync.Mutex{}
-		ss.unstableInput = map[string]*UnstableInput{}
+		ss.unstableInputs = &UnstableInputs{
+			UnstableInput: map[string]*UnstableInput{},
+		}
+		ss.unstableInputsData = &UnstableInputs{
+			UnstableInput: map[string]*UnstableInput{},
+		}
 	}
 
 	lis, err := net.Listen("tcp", ss.Address)
@@ -468,6 +494,11 @@ func (ss *Server) Update() {
 	for _, i := range input {
 		ss.addInput(i)
 	}
+
+	if CollectPath {
+
+	}
+
 	if len(input) == 0 {
 		t := time.Now()
 		elapsed := t.Sub(ss.timeNew)
@@ -520,18 +551,18 @@ func (ss *Server) Update() {
 	// deal return tasks
 	var returnTask []*Task
 	for _, f := range ss.fuzzers {
-		f.taskMu.Lock()
-		for _, t := range f.returnTask.TaskArray {
+		f.MuRunTime.Lock()
+		for _, t := range f.dataRunTime.Return.TaskArray {
 			returnTask = append(returnTask, t)
 		}
-		f.returnTask.emptyTask()
-		f.taskMu.Unlock()
+		f.dataRunTime.Return.emptyTask()
+		f.MuRunTime.Unlock()
 	}
 	for _, task := range returnTask {
-		if t, ok := ss.dependencyData.Tasks.TaskMap[task.Hash]; ok {
+		if t, ok := ss.dataRunTime.Tasks.TaskMap[task.Hash]; ok {
 			t.mergeTask(task)
 			for u := range t.UncoveredAddress {
-				_, ok := ss.dependencyData.UncoveredAddress[u]
+				_, ok := ss.dataDependency.UncoveredAddress[u]
 				if ok {
 
 				} else {
@@ -540,8 +571,8 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-	sort.Slice(ss.dependencyData.Tasks.TaskArray, func(i, j int) bool {
-		return ss.dependencyData.Tasks.TaskArray[i].getRealPriority() < ss.dependencyData.Tasks.TaskArray[j].getRealPriority()
+	sort.Slice(ss.dataRunTime.Tasks.TaskArray, func(i, j int) bool {
+		return ss.dataRunTime.Tasks.TaskArray[i].getRealPriority() < ss.dataRunTime.Tasks.TaskArray[j].getRealPriority()
 	})
 	returnTask = nil
 
@@ -550,11 +581,11 @@ func (ss *Server) Update() {
 		t := time.Now()
 		elapsed := t.Sub(ss.timeStart)
 		if elapsed.Seconds() > startTime {
-			if len(ss.dependencyData.HighTask.TaskArray) != 0 {
+			if len(ss.dataRunTime.HighTask.TaskArray) != 0 {
 				var task []*Task
-				for _, t := range ss.dependencyData.HighTask.TaskArray {
+				for _, t := range ss.dataRunTime.HighTask.TaskArray {
 					for u := range t.UncoveredAddress {
-						_, ok := ss.dependencyData.UncoveredAddress[u]
+						_, ok := ss.dataDependency.UncoveredAddress[u]
 						if ok {
 
 						} else {
@@ -565,25 +596,25 @@ func (ss *Server) Update() {
 						task = append(task, t)
 					}
 				}
-				ss.dependencyData.HighTask.emptyTask()
+				ss.dataRunTime.HighTask.emptyTask()
 				task = []*Task{}
 				for _, t := range task {
 					t.TaskRunTimeData = []*TaskRunTimeData{}
 				}
 				for _, f := range ss.fuzzers {
-					f.taskMu.Lock()
+					f.MuRunTime.Lock()
 					for _, t := range task {
-						f.highTasks.AddTask(proto.Clone(t).(*Task))
+						f.dataRunTime.HighTask.AddTask(proto.Clone(t).(*Task))
 					}
-					f.taskMu.Unlock()
+					f.MuRunTime.Unlock()
 				}
 				task = nil
 			}
 			{
 				var task []*Task
-				for _, t := range ss.dependencyData.Tasks.TaskArray {
+				for _, t := range ss.dataRunTime.Tasks.TaskArray {
 					for u := range t.UncoveredAddress {
-						_, ok := ss.dependencyData.UncoveredAddress[u]
+						_, ok := ss.dataDependency.UncoveredAddress[u]
 						if ok {
 
 						} else {
@@ -612,31 +643,31 @@ func (ss *Server) Update() {
 					t.TaskRunTimeData = []*TaskRunTimeData{}
 				}
 				for _, f := range ss.fuzzers {
-					f.taskMu.Lock()
-					f.newTask.emptyTask()
+					f.MuRunTime.Lock()
+					f.dataRunTime.Tasks.emptyTask()
 					for _, t := range task {
-						f.newTask.AddTask(proto.Clone(t).(*Task))
+						f.dataRunTime.Tasks.AddTask(proto.Clone(t).(*Task))
 					}
-					f.taskMu.Unlock()
+					f.MuRunTime.Unlock()
 				}
 				task = nil
 			}
 		}
 	} else {
-		ss.dependencyData.HighTask.emptyTask()
-		ss.dependencyData.Tasks.emptyTask()
+		ss.dataRunTime.HighTask.emptyTask()
+		ss.dataRunTime.Tasks.emptyTask()
 	}
 
 	// deal return boot tasks
 	returnBootTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
 	for _, f := range ss.fuzzers {
-		f.taskMu.Lock()
-		returnBootTask.AddTasks(f.returnBootTask)
-		f.returnBootTask.emptyTask()
-		f.taskMu.Unlock()
+		f.MuRunTime.Lock()
+		returnBootTask.AddTasks(f.dataRunTime.ReturnBoot)
+		f.dataRunTime.ReturnBoot.emptyTask()
+		f.MuRunTime.Unlock()
 	}
 	for hash, task := range returnBootTask.TaskMap {
-		if t, ok := ss.dependencyData.BootTask.TaskMap[hash]; ok {
+		if t, ok := ss.dataRunTime.BootTask.TaskMap[hash]; ok {
 			if task.TaskStatus == TaskStatus_covered {
 				t.mergeTask(task)
 			} else {
@@ -644,7 +675,7 @@ func (ss *Server) Update() {
 			}
 			t.mergeTask(task)
 			for u := range t.UncoveredAddress {
-				_, ok := ss.dependencyData.UncoveredAddress[u]
+				_, ok := ss.dataDependency.UncoveredAddress[u]
 				if ok {
 
 				} else {
@@ -653,8 +684,8 @@ func (ss *Server) Update() {
 			}
 		}
 	}
-	sort.Slice(ss.dependencyData.BootTask.TaskArray, func(i, j int) bool {
-		return ss.dependencyData.BootTask.TaskArray[i].getRealPriority() < ss.dependencyData.BootTask.TaskArray[j].getRealPriority()
+	sort.Slice(ss.dataRunTime.BootTask.TaskArray, func(i, j int) bool {
+		return ss.dataRunTime.BootTask.TaskArray[i].getRealPriority() < ss.dataRunTime.BootTask.TaskArray[j].getRealPriority()
 	})
 	returnBootTask = nil
 
@@ -663,12 +694,12 @@ func (ss *Server) Update() {
 		t := time.Now()
 		elapsed := t.Sub(ss.timeStart)
 		if elapsed.Seconds() > startTime {
-			if len(ss.dependencyData.BootTask.TaskArray) != 0 {
+			if len(ss.dataRunTime.BootTask.TaskArray) != 0 {
 				var task []*Task
-				for _, t := range ss.dependencyData.BootTask.TaskArray {
+				for _, t := range ss.dataRunTime.BootTask.TaskArray {
 					if t.TaskStatus == TaskStatus_untested {
 						for u := range t.UncoveredAddress {
-							_, ok := ss.dependencyData.UncoveredAddress[u]
+							_, ok := ss.dataDependency.UncoveredAddress[u]
 							if ok {
 
 							} else {
@@ -684,17 +715,17 @@ func (ss *Server) Update() {
 					t.TaskRunTimeData = []*TaskRunTimeData{}
 				}
 				for _, f := range ss.fuzzers {
-					f.bootTaskMu.Lock()
+					f.MuRunTime.Lock()
 					for _, t := range task {
-						f.bootTasks.AddTask(proto.Clone(t).(*Task))
+						f.dataRunTime.BootTask.AddTask(proto.Clone(t).(*Task))
 					}
-					f.bootTaskMu.Unlock()
+					f.MuRunTime.Unlock()
 				}
 				task = nil
 			}
 		}
 	} else {
-		ss.dependencyData.BootTask.emptyTask()
+		ss.dataRunTime.BootTask.emptyTask()
 	}
 
 	ss.logMu.Lock()
@@ -719,51 +750,44 @@ func (ss *Server) Update() {
 	}
 	newStat = nil
 
-	ss.writeMessageToDisk(ss.stat, "statistics.bin")
-	ss.writeMessageToDisk(ss.dependencyData, "data.bin")
+	ss.writeMessageToDisk(ss.dataDependency, NameDataDependency)
+	ss.writeMessageToDisk(ss.dataResult, NameDataResult)
+	ss.writeMessageToDisk(ss.dataRunTime, NameDataRunTime)
+	ss.writeMessageToDisk(ss.stat, NameStatistics)
 
 	if CollectUnstable {
 		ss.unstableInputMu.Lock()
 		unstableInput := map[string]*UnstableInput{}
-		for sig, ui := range ss.unstableInput {
+		for sig, ui := range ss.unstableInputs.UnstableInput {
 			unstableInput[sig] = ui
 		}
-		ss.unstableInput = map[string]*UnstableInput{}
+		ss.unstableInputs = &UnstableInputs{
+			UnstableInput: nil,
+		}
 		ss.unstableInputMu.Unlock()
 		for sig, ui := range unstableInput {
-			if i, ok := ss.dependencyData.Input[sig]; ok {
-				ui.NewPath = i.Paths
+			if i, ok := ss.unstableInputsData.UnstableInput[sig]; ok {
+				i.mergeUnstableInput(ui)
+				ss.outPutUnstableInput(i)
+			} else {
+				ss.unstableInputsData.UnstableInput[sig] = ui
+				ss.outPutUnstableInput(ui)
 			}
-			ss.writeMessageToDisk(ui, sig)
-			res := ""
-			res += "sig : " + ui.Sig + "\n"
-			res += "program : \n" + string(ui.Program) + "\n"
-			res += "idx : " + fmt.Sprintf("%d", ui.Idx) + "\n"
-			res += "address : " + "0xffffffff" + fmt.Sprintf("%x", ui.Address-5) + "\n"
-			res += "NewPath : \n"
-			for i, p := range ui.NewPath {
-				res += fmt.Sprintf("Number %d test case", i) + "\n"
-				for ii, pp := range p.Path {
-					res += fmt.Sprintf("Number %d syscall", ii) + "\n"
-					for _, a := range pp.Address {
-						res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
-					}
-					res += "\n"
-				}
-				res += "\n"
-			}
-			res += "UnstablePath : \n"
-			for i, p := range ui.UnstablePath {
-				res += fmt.Sprintf("Number %d syscall", i) + "\n"
-				for _, a := range p.Address {
-					res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
-				}
-				res += "\n"
-			}
+		}
+		ss.writeMessageToDisk(ss.unstableInputsData, NameUnstable)
+	}
 
-			f, _ := os.OpenFile(sig+".txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-			_, _ = f.WriteString(res)
-			_ = f.Close()
+	if CheckCondition {
+		d := proto.Clone(ss.dataDependency).(*DataDependency)
+		for _, i := range d.Input {
+			i.Paths = nil
+			i.Call = nil
+		}
+		d.OtherInput = nil
+		for _, f := range ss.fuzzers {
+			f.MuDependency.Lock()
+			f.dataDependency = d
+			f.MuDependency.Unlock()
 		}
 	}
 

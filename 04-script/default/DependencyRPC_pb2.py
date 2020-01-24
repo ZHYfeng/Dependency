@@ -23,29 +23,29 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x13\x44\x65pendencyRPC.proto\x12\x03\x64ra\x1a\nBase.proto\x1a\nTask.proto\x1a\x0bInput.proto\x1a\x0fStatistic.proto\x1a\x10\x44\x65pendency.proto\"\xb9\x06\n\x04\x44\x61ta\x12#\n\x05input\x18\x01 \x03(\x0b\x32\x14.dra.Data.InputEntry\x12:\n\x11uncovered_address\x18\x04 \x03(\x0b\x32\x1f.dra.Data.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x02 \x03(\x0b\x32\x1d.dra.Data.CoveredAddressEntry\x12\x32\n\rwrite_address\x18\x05 \x03(\x0b\x32\x1b.dra.Data.WriteAddressEntry\x12\x36\n\x0f\x66ile_operations\x18\x06 \x03(\x0b\x32\x1d.dra.Data.FileOperationsEntry\x12\x19\n\x05tasks\x18\x07 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\thigh_task\x18\x08 \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\tboot_task\x18\t \x01(\x0b\x32\n.dra.Tasks\x12*\n\tnew_input\x18\x0b \x03(\x0b\x32\x17.dra.Data.NewInputEntry\x1a\x38\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x1aN\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1aL\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1a\x46\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dra.WriteAddress:\x02\x38\x01\x1aJ\n\x13\x46ileOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dra.FileOperations:\x02\x38\x01\x1a;\n\rNewInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x32\xf5\x05\n\rDependencyRPC\x12(\n\x0cGetVMOffsets\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12\x30\n\x14SendBasicBlockNumber\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0bGetNewInput\x12\n.dra.Empty\x1a\x0b.dra.Inputs\"\x00\x12/\n\x0eSendDependency\x12\x0f.dra.Dependency\x1a\n.dra.Empty\"\x00\x12-\n\x0cGetCondition\x12\n.dra.Empty\x1a\x0f.dra.Conditions\"\x00\x12\x35\n\x10SendWriteAddress\x12\x13.dra.WriteAddresses\x1a\n.dra.Empty\"\x00\x12#\n\x07\x43onnect\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0cSendNewInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12$\n\x08GetTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12(\n\x0cGetBootTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12\'\n\x0bReturnTasks\x12\n.dra.Tasks\x1a\n.dra.Empty\"\x00\x12)\n\rSendBootInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12\x35\n\x11SendUnstableInput\x12\x12.dra.UnstableInput\x1a\n.dra.Empty\"\x00\x12#\n\x07SendLog\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x08sendStat\x12\x0e.dra.Statistic\x1a\n.dra.Empty\"\x00\x12#\n\x07GetNeed\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12)\n\rSendNeedInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x13\x44\x65pendencyRPC.proto\x12\x03\x64ra\x1a\nBase.proto\x1a\nTask.proto\x1a\x0bInput.proto\x1a\x0fStatistic.proto\x1a\x10\x44\x65pendency.proto\"\x8e\x04\n\x0e\x44\x61taDependency\x12-\n\x05input\x18\x01 \x03(\x0b\x32\x1e.dra.DataDependency.InputEntry\x12\x44\n\x11uncovered_address\x18\x04 \x03(\x0b\x32).dra.DataDependency.UncoveredAddressEntry\x12<\n\rwrite_address\x18\x05 \x03(\x0b\x32%.dra.DataDependency.WriteAddressEntry\x12\x38\n\x0bother_input\x18\x0b \x03(\x0b\x32#.dra.DataDependency.OtherInputEntry\x1a\x38\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\x1aN\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1a\x46\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dra.WriteAddress:\x02\x38\x01\x1a=\n\x0fOtherInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x05value\x18\x02 \x01(\x0b\x32\n.dra.Input:\x02\x38\x01\"\xa2\x02\n\nDataResult\x12<\n\x0f\x63overed_address\x18\x02 \x03(\x0b\x32#.dra.DataResult.CoveredAddressEntry\x12<\n\x0f\x66ile_operations\x18\x06 \x03(\x0b\x32#.dra.DataResult.FileOperationsEntry\x1aL\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress:\x02\x38\x01\x1aJ\n\x13\x46ileOperationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dra.FileOperations:\x02\x38\x01\"\xa3\x01\n\x0b\x44\x61taRunTime\x12\x19\n\x05tasks\x18\x0b \x01(\x0b\x32\n.dra.Tasks\x12\x1a\n\x06return\x18\x0c \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\thigh_task\x18\r \x01(\x0b\x32\n.dra.Tasks\x12\x1d\n\tboot_task\x18\x14 \x01(\x0b\x32\n.dra.Tasks\x12\x1f\n\x0breturn_boot\x18\x15 \x01(\x0b\x32\n.dra.Tasks2\xad\x06\n\rDependencyRPC\x12(\n\x0cGetVMOffsets\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12\x30\n\x14SendBasicBlockNumber\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x0bGetNewInput\x12\n.dra.Empty\x1a\x0b.dra.Inputs\"\x00\x12/\n\x0eSendDependency\x12\x0f.dra.Dependency\x1a\n.dra.Empty\"\x00\x12-\n\x0cGetCondition\x12\n.dra.Empty\x1a\x0f.dra.Conditions\"\x00\x12\x35\n\x10SendWriteAddress\x12\x13.dra.WriteAddresses\x1a\n.dra.Empty\"\x00\x12#\n\x07\x43onnect\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12\x36\n\x11GetDataDependency\x12\n.dra.Empty\x1a\x13.dra.DataDependency\"\x00\x12(\n\x0cSendNewInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12$\n\x08GetTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12(\n\x0cGetBootTasks\x12\n.dra.Empty\x1a\n.dra.Tasks\"\x00\x12\'\n\x0bReturnTasks\x12\n.dra.Tasks\x1a\n.dra.Empty\"\x00\x12)\n\rSendBootInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x12\x35\n\x11SendUnstableInput\x12\x12.dra.UnstableInput\x1a\n.dra.Empty\"\x00\x12#\n\x07SendLog\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12(\n\x08sendStat\x12\x0e.dra.Statistic\x1a\n.dra.Empty\"\x00\x12#\n\x07GetNeed\x12\n.dra.Empty\x1a\n.dra.Empty\"\x00\x12)\n\rSendNeedInput\x12\n.dra.Input\x1a\n.dra.Empty\"\x00\x62\x06proto3'
   ,
   dependencies=[Base__pb2.DESCRIPTOR,Task__pb2.DESCRIPTOR,Input__pb2.DESCRIPTOR,Statistic__pb2.DESCRIPTOR,Dependency__pb2.DESCRIPTOR,])
 
 
 
 
-_DATA_INPUTENTRY = _descriptor.Descriptor(
+_DATADEPENDENCY_INPUTENTRY = _descriptor.Descriptor(
   name='InputEntry',
-  full_name='dra.Data.InputEntry',
+  full_name='dra.DataDependency.InputEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Data.InputEntry.key', index=0,
+      name='key', full_name='dra.DataDependency.InputEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Data.InputEntry.value', index=1,
+      name='value', full_name='dra.DataDependency.InputEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -63,26 +63,26 @@ _DATA_INPUTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=503,
-  serialized_end=559,
+  serialized_start=356,
+  serialized_end=412,
 )
 
-_DATA_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
+_DATADEPENDENCY_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   name='UncoveredAddressEntry',
-  full_name='dra.Data.UncoveredAddressEntry',
+  full_name='dra.DataDependency.UncoveredAddressEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Data.UncoveredAddressEntry.key', index=0,
+      name='key', full_name='dra.DataDependency.UncoveredAddressEntry.key', index=0,
       number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Data.UncoveredAddressEntry.value', index=1,
+      name='value', full_name='dra.DataDependency.UncoveredAddressEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -100,63 +100,26 @@ _DATA_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=561,
-  serialized_end=639,
+  serialized_start=414,
+  serialized_end=492,
 )
 
-_DATA_COVEREDADDRESSENTRY = _descriptor.Descriptor(
-  name='CoveredAddressEntry',
-  full_name='dra.Data.CoveredAddressEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Data.CoveredAddressEntry.key', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Data.CoveredAddressEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=b'8\001',
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=641,
-  serialized_end=717,
-)
-
-_DATA_WRITEADDRESSENTRY = _descriptor.Descriptor(
+_DATADEPENDENCY_WRITEADDRESSENTRY = _descriptor.Descriptor(
   name='WriteAddressEntry',
-  full_name='dra.Data.WriteAddressEntry',
+  full_name='dra.DataDependency.WriteAddressEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Data.WriteAddressEntry.key', index=0,
+      name='key', full_name='dra.DataDependency.WriteAddressEntry.key', index=0,
       number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Data.WriteAddressEntry.value', index=1,
+      name='value', full_name='dra.DataDependency.WriteAddressEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -174,26 +137,26 @@ _DATA_WRITEADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=719,
-  serialized_end=789,
+  serialized_start=494,
+  serialized_end=564,
 )
 
-_DATA_FILEOPERATIONSENTRY = _descriptor.Descriptor(
-  name='FileOperationsEntry',
-  full_name='dra.Data.FileOperationsEntry',
+_DATADEPENDENCY_OTHERINPUTENTRY = _descriptor.Descriptor(
+  name='OtherInputEntry',
+  full_name='dra.DataDependency.OtherInputEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Data.FileOperationsEntry.key', index=0,
+      name='key', full_name='dra.DataDependency.OtherInputEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Data.FileOperationsEntry.value', index=1,
+      name='value', full_name='dra.DataDependency.OtherInputEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -211,112 +174,40 @@ _DATA_FILEOPERATIONSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=791,
-  serialized_end=865,
+  serialized_start=566,
+  serialized_end=627,
 )
 
-_DATA_NEWINPUTENTRY = _descriptor.Descriptor(
-  name='NewInputEntry',
-  full_name='dra.Data.NewInputEntry',
+_DATADEPENDENCY = _descriptor.Descriptor(
+  name='DataDependency',
+  full_name='dra.DataDependency',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.Data.NewInputEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='dra.Data.NewInputEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=b'8\001',
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=867,
-  serialized_end=926,
-)
-
-_DATA = _descriptor.Descriptor(
-  name='Data',
-  full_name='dra.Data',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='input', full_name='dra.Data.input', index=0,
+      name='input', full_name='dra.DataDependency.input', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='uncovered_address', full_name='dra.Data.uncovered_address', index=1,
+      name='uncovered_address', full_name='dra.DataDependency.uncovered_address', index=1,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='covered_address', full_name='dra.Data.covered_address', index=2,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='write_address', full_name='dra.Data.write_address', index=3,
+      name='write_address', full_name='dra.DataDependency.write_address', index=2,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='file_operations', full_name='dra.Data.file_operations', index=4,
-      number=6, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tasks', full_name='dra.Data.tasks', index=5,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='high_task', full_name='dra.Data.high_task', index=6,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='boot_task', full_name='dra.Data.boot_task', index=7,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='new_input', full_name='dra.Data.new_input', index=8,
+      name='other_input', full_name='dra.DataDependency.other_input', index=3,
       number=11, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -325,7 +216,7 @@ _DATA = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_DATA_INPUTENTRY, _DATA_UNCOVEREDADDRESSENTRY, _DATA_COVEREDADDRESSENTRY, _DATA_WRITEADDRESSENTRY, _DATA_FILEOPERATIONSENTRY, _DATA_NEWINPUTENTRY, ],
+  nested_types=[_DATADEPENDENCY_INPUTENTRY, _DATADEPENDENCY_UNCOVEREDADDRESSENTRY, _DATADEPENDENCY_WRITEADDRESSENTRY, _DATADEPENDENCY_OTHERINPUTENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -335,95 +226,284 @@ _DATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=101,
-  serialized_end=926,
+  serialized_end=627,
 )
 
-_DATA_INPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
-_DATA_INPUTENTRY.containing_type = _DATA
-_DATA_UNCOVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
-_DATA_UNCOVEREDADDRESSENTRY.containing_type = _DATA
-_DATA_COVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
-_DATA_COVEREDADDRESSENTRY.containing_type = _DATA
-_DATA_WRITEADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._WRITEADDRESS
-_DATA_WRITEADDRESSENTRY.containing_type = _DATA
-_DATA_FILEOPERATIONSENTRY.fields_by_name['value'].message_type = Dependency__pb2._FILEOPERATIONS
-_DATA_FILEOPERATIONSENTRY.containing_type = _DATA
-_DATA_NEWINPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
-_DATA_NEWINPUTENTRY.containing_type = _DATA
-_DATA.fields_by_name['input'].message_type = _DATA_INPUTENTRY
-_DATA.fields_by_name['uncovered_address'].message_type = _DATA_UNCOVEREDADDRESSENTRY
-_DATA.fields_by_name['covered_address'].message_type = _DATA_COVEREDADDRESSENTRY
-_DATA.fields_by_name['write_address'].message_type = _DATA_WRITEADDRESSENTRY
-_DATA.fields_by_name['file_operations'].message_type = _DATA_FILEOPERATIONSENTRY
-_DATA.fields_by_name['tasks'].message_type = Task__pb2._TASKS
-_DATA.fields_by_name['high_task'].message_type = Task__pb2._TASKS
-_DATA.fields_by_name['boot_task'].message_type = Task__pb2._TASKS
-_DATA.fields_by_name['new_input'].message_type = _DATA_NEWINPUTENTRY
-DESCRIPTOR.message_types_by_name['Data'] = _DATA
+
+_DATARESULT_COVEREDADDRESSENTRY = _descriptor.Descriptor(
+  name='CoveredAddressEntry',
+  full_name='dra.DataResult.CoveredAddressEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='dra.DataResult.CoveredAddressEntry.key', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='dra.DataResult.CoveredAddressEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=768,
+  serialized_end=844,
+)
+
+_DATARESULT_FILEOPERATIONSENTRY = _descriptor.Descriptor(
+  name='FileOperationsEntry',
+  full_name='dra.DataResult.FileOperationsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='dra.DataResult.FileOperationsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='dra.DataResult.FileOperationsEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=846,
+  serialized_end=920,
+)
+
+_DATARESULT = _descriptor.Descriptor(
+  name='DataResult',
+  full_name='dra.DataResult',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='covered_address', full_name='dra.DataResult.covered_address', index=0,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='file_operations', full_name='dra.DataResult.file_operations', index=1,
+      number=6, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_DATARESULT_COVEREDADDRESSENTRY, _DATARESULT_FILEOPERATIONSENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=630,
+  serialized_end=920,
+)
+
+
+_DATARUNTIME = _descriptor.Descriptor(
+  name='DataRunTime',
+  full_name='dra.DataRunTime',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='tasks', full_name='dra.DataRunTime.tasks', index=0,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='return', full_name='dra.DataRunTime.return', index=1,
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='high_task', full_name='dra.DataRunTime.high_task', index=2,
+      number=13, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='boot_task', full_name='dra.DataRunTime.boot_task', index=3,
+      number=20, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='return_boot', full_name='dra.DataRunTime.return_boot', index=4,
+      number=21, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=923,
+  serialized_end=1086,
+)
+
+_DATADEPENDENCY_INPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
+_DATADEPENDENCY_INPUTENTRY.containing_type = _DATADEPENDENCY
+_DATADEPENDENCY_UNCOVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
+_DATADEPENDENCY_UNCOVEREDADDRESSENTRY.containing_type = _DATADEPENDENCY
+_DATADEPENDENCY_WRITEADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._WRITEADDRESS
+_DATADEPENDENCY_WRITEADDRESSENTRY.containing_type = _DATADEPENDENCY
+_DATADEPENDENCY_OTHERINPUTENTRY.fields_by_name['value'].message_type = Input__pb2._INPUT
+_DATADEPENDENCY_OTHERINPUTENTRY.containing_type = _DATADEPENDENCY
+_DATADEPENDENCY.fields_by_name['input'].message_type = _DATADEPENDENCY_INPUTENTRY
+_DATADEPENDENCY.fields_by_name['uncovered_address'].message_type = _DATADEPENDENCY_UNCOVEREDADDRESSENTRY
+_DATADEPENDENCY.fields_by_name['write_address'].message_type = _DATADEPENDENCY_WRITEADDRESSENTRY
+_DATADEPENDENCY.fields_by_name['other_input'].message_type = _DATADEPENDENCY_OTHERINPUTENTRY
+_DATARESULT_COVEREDADDRESSENTRY.fields_by_name['value'].message_type = Dependency__pb2._UNCOVEREDADDRESS
+_DATARESULT_COVEREDADDRESSENTRY.containing_type = _DATARESULT
+_DATARESULT_FILEOPERATIONSENTRY.fields_by_name['value'].message_type = Dependency__pb2._FILEOPERATIONS
+_DATARESULT_FILEOPERATIONSENTRY.containing_type = _DATARESULT
+_DATARESULT.fields_by_name['covered_address'].message_type = _DATARESULT_COVEREDADDRESSENTRY
+_DATARESULT.fields_by_name['file_operations'].message_type = _DATARESULT_FILEOPERATIONSENTRY
+_DATARUNTIME.fields_by_name['tasks'].message_type = Task__pb2._TASKS
+_DATARUNTIME.fields_by_name['return'].message_type = Task__pb2._TASKS
+_DATARUNTIME.fields_by_name['high_task'].message_type = Task__pb2._TASKS
+_DATARUNTIME.fields_by_name['boot_task'].message_type = Task__pb2._TASKS
+_DATARUNTIME.fields_by_name['return_boot'].message_type = Task__pb2._TASKS
+DESCRIPTOR.message_types_by_name['DataDependency'] = _DATADEPENDENCY
+DESCRIPTOR.message_types_by_name['DataResult'] = _DATARESULT
+DESCRIPTOR.message_types_by_name['DataRunTime'] = _DATARUNTIME
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Data = _reflection.GeneratedProtocolMessageType('Data', (_message.Message,), {
+DataDependency = _reflection.GeneratedProtocolMessageType('DataDependency', (_message.Message,), {
 
   'InputEntry' : _reflection.GeneratedProtocolMessageType('InputEntry', (_message.Message,), {
-    'DESCRIPTOR' : _DATA_INPUTENTRY,
+    'DESCRIPTOR' : _DATADEPENDENCY_INPUTENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Data.InputEntry)
+    # @@protoc_insertion_point(class_scope:dra.DataDependency.InputEntry)
     })
   ,
 
   'UncoveredAddressEntry' : _reflection.GeneratedProtocolMessageType('UncoveredAddressEntry', (_message.Message,), {
-    'DESCRIPTOR' : _DATA_UNCOVEREDADDRESSENTRY,
+    'DESCRIPTOR' : _DATADEPENDENCY_UNCOVEREDADDRESSENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Data.UncoveredAddressEntry)
-    })
-  ,
-
-  'CoveredAddressEntry' : _reflection.GeneratedProtocolMessageType('CoveredAddressEntry', (_message.Message,), {
-    'DESCRIPTOR' : _DATA_COVEREDADDRESSENTRY,
-    '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Data.CoveredAddressEntry)
+    # @@protoc_insertion_point(class_scope:dra.DataDependency.UncoveredAddressEntry)
     })
   ,
 
   'WriteAddressEntry' : _reflection.GeneratedProtocolMessageType('WriteAddressEntry', (_message.Message,), {
-    'DESCRIPTOR' : _DATA_WRITEADDRESSENTRY,
+    'DESCRIPTOR' : _DATADEPENDENCY_WRITEADDRESSENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Data.WriteAddressEntry)
+    # @@protoc_insertion_point(class_scope:dra.DataDependency.WriteAddressEntry)
+    })
+  ,
+
+  'OtherInputEntry' : _reflection.GeneratedProtocolMessageType('OtherInputEntry', (_message.Message,), {
+    'DESCRIPTOR' : _DATADEPENDENCY_OTHERINPUTENTRY,
+    '__module__' : 'DependencyRPC_pb2'
+    # @@protoc_insertion_point(class_scope:dra.DataDependency.OtherInputEntry)
+    })
+  ,
+  'DESCRIPTOR' : _DATADEPENDENCY,
+  '__module__' : 'DependencyRPC_pb2'
+  # @@protoc_insertion_point(class_scope:dra.DataDependency)
+  })
+_sym_db.RegisterMessage(DataDependency)
+_sym_db.RegisterMessage(DataDependency.InputEntry)
+_sym_db.RegisterMessage(DataDependency.UncoveredAddressEntry)
+_sym_db.RegisterMessage(DataDependency.WriteAddressEntry)
+_sym_db.RegisterMessage(DataDependency.OtherInputEntry)
+
+DataResult = _reflection.GeneratedProtocolMessageType('DataResult', (_message.Message,), {
+
+  'CoveredAddressEntry' : _reflection.GeneratedProtocolMessageType('CoveredAddressEntry', (_message.Message,), {
+    'DESCRIPTOR' : _DATARESULT_COVEREDADDRESSENTRY,
+    '__module__' : 'DependencyRPC_pb2'
+    # @@protoc_insertion_point(class_scope:dra.DataResult.CoveredAddressEntry)
     })
   ,
 
   'FileOperationsEntry' : _reflection.GeneratedProtocolMessageType('FileOperationsEntry', (_message.Message,), {
-    'DESCRIPTOR' : _DATA_FILEOPERATIONSENTRY,
+    'DESCRIPTOR' : _DATARESULT_FILEOPERATIONSENTRY,
     '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Data.FileOperationsEntry)
+    # @@protoc_insertion_point(class_scope:dra.DataResult.FileOperationsEntry)
     })
   ,
-
-  'NewInputEntry' : _reflection.GeneratedProtocolMessageType('NewInputEntry', (_message.Message,), {
-    'DESCRIPTOR' : _DATA_NEWINPUTENTRY,
-    '__module__' : 'DependencyRPC_pb2'
-    # @@protoc_insertion_point(class_scope:dra.Data.NewInputEntry)
-    })
-  ,
-  'DESCRIPTOR' : _DATA,
+  'DESCRIPTOR' : _DATARESULT,
   '__module__' : 'DependencyRPC_pb2'
-  # @@protoc_insertion_point(class_scope:dra.Data)
+  # @@protoc_insertion_point(class_scope:dra.DataResult)
   })
-_sym_db.RegisterMessage(Data)
-_sym_db.RegisterMessage(Data.InputEntry)
-_sym_db.RegisterMessage(Data.UncoveredAddressEntry)
-_sym_db.RegisterMessage(Data.CoveredAddressEntry)
-_sym_db.RegisterMessage(Data.WriteAddressEntry)
-_sym_db.RegisterMessage(Data.FileOperationsEntry)
-_sym_db.RegisterMessage(Data.NewInputEntry)
+_sym_db.RegisterMessage(DataResult)
+_sym_db.RegisterMessage(DataResult.CoveredAddressEntry)
+_sym_db.RegisterMessage(DataResult.FileOperationsEntry)
+
+DataRunTime = _reflection.GeneratedProtocolMessageType('DataRunTime', (_message.Message,), {
+  'DESCRIPTOR' : _DATARUNTIME,
+  '__module__' : 'DependencyRPC_pb2'
+  # @@protoc_insertion_point(class_scope:dra.DataRunTime)
+  })
+_sym_db.RegisterMessage(DataRunTime)
 
 
-_DATA_INPUTENTRY._options = None
-_DATA_UNCOVEREDADDRESSENTRY._options = None
-_DATA_COVEREDADDRESSENTRY._options = None
-_DATA_WRITEADDRESSENTRY._options = None
-_DATA_FILEOPERATIONSENTRY._options = None
-_DATA_NEWINPUTENTRY._options = None
+_DATADEPENDENCY_INPUTENTRY._options = None
+_DATADEPENDENCY_UNCOVEREDADDRESSENTRY._options = None
+_DATADEPENDENCY_WRITEADDRESSENTRY._options = None
+_DATADEPENDENCY_OTHERINPUTENTRY._options = None
+_DATARESULT_COVEREDADDRESSENTRY._options = None
+_DATARESULT_FILEOPERATIONSENTRY._options = None
 
 _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   name='DependencyRPC',
@@ -431,8 +511,8 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=929,
-  serialized_end=1686,
+  serialized_start=1089,
+  serialized_end=1902,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetVMOffsets',
@@ -498,9 +578,18 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='GetDataDependency',
+    full_name='dra.DependencyRPC.GetDataDependency',
+    index=7,
+    containing_service=None,
+    input_type=Base__pb2._EMPTY,
+    output_type=_DATADEPENDENCY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='SendNewInput',
     full_name='dra.DependencyRPC.SendNewInput',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=Input__pb2._INPUT,
     output_type=Base__pb2._EMPTY,
@@ -509,7 +598,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetTasks',
     full_name='dra.DependencyRPC.GetTasks',
-    index=8,
+    index=9,
     containing_service=None,
     input_type=Base__pb2._EMPTY,
     output_type=Task__pb2._TASKS,
@@ -518,7 +607,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetBootTasks',
     full_name='dra.DependencyRPC.GetBootTasks',
-    index=9,
+    index=10,
     containing_service=None,
     input_type=Base__pb2._EMPTY,
     output_type=Task__pb2._TASKS,
@@ -527,7 +616,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ReturnTasks',
     full_name='dra.DependencyRPC.ReturnTasks',
-    index=10,
+    index=11,
     containing_service=None,
     input_type=Task__pb2._TASKS,
     output_type=Base__pb2._EMPTY,
@@ -536,7 +625,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SendBootInput',
     full_name='dra.DependencyRPC.SendBootInput',
-    index=11,
+    index=12,
     containing_service=None,
     input_type=Input__pb2._INPUT,
     output_type=Base__pb2._EMPTY,
@@ -545,7 +634,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SendUnstableInput',
     full_name='dra.DependencyRPC.SendUnstableInput',
-    index=12,
+    index=13,
     containing_service=None,
     input_type=Input__pb2._UNSTABLEINPUT,
     output_type=Base__pb2._EMPTY,
@@ -554,7 +643,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SendLog',
     full_name='dra.DependencyRPC.SendLog',
-    index=13,
+    index=14,
     containing_service=None,
     input_type=Base__pb2._EMPTY,
     output_type=Base__pb2._EMPTY,
@@ -563,7 +652,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='sendStat',
     full_name='dra.DependencyRPC.sendStat',
-    index=14,
+    index=15,
     containing_service=None,
     input_type=Statistic__pb2._STATISTIC,
     output_type=Base__pb2._EMPTY,
@@ -572,7 +661,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetNeed',
     full_name='dra.DependencyRPC.GetNeed',
-    index=15,
+    index=16,
     containing_service=None,
     input_type=Base__pb2._EMPTY,
     output_type=Base__pb2._EMPTY,
@@ -581,7 +670,7 @@ _DEPENDENCYRPC = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SendNeedInput',
     full_name='dra.DependencyRPC.SendNeedInput',
-    index=16,
+    index=17,
     containing_service=None,
     input_type=Input__pb2._INPUT,
     output_type=Base__pb2._EMPTY,

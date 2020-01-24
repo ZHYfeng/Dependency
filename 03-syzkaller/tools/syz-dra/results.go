@@ -1,6 +1,7 @@
 package main
 
 import (
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"log"
 	"os"
 	"path/filepath"
@@ -26,7 +27,7 @@ func (r *results) read(path string) {
 			if err != nil {
 				return err
 			}
-			if info.Name() == nameStatistics {
+			if info.Name() == pb.NameStatistics {
 				temp := &result{}
 				r.result = append(r.result, temp)
 

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x0bInput.proto\x12\x03\x64ra\"l\n\x04\x43\x61ll\x12\x0b\n\x03idx\x18\x01 \x01(\r\x12\'\n\x07\x61\x64\x64ress\x18\x02 \x03(\x0b\x32\x16.dra.Call.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xd8\x03\n\x05Input\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\"\n\x04\x63\x61ll\x18\r \x03(\x0b\x32\x14.dra.Input.CallEntry\x12\x19\n\x05paths\x18\x01 \x03(\x0b\x32\n.dra.Paths\x12\x0e\n\x06stable\x18\x0e \x01(\r\x12\r\n\x05total\x18\x0f \x01(\r\x12\x1e\n\x04stat\x18\x15 \x01(\x0e\x32\x10.dra.FuzzingStat\x12;\n\x11uncovered_address\x18\x16 \x03(\x0b\x32 .dra.Input.UncoveredAddressEntry\x12\x33\n\rwrite_address\x18\x19 \x03(\x0b\x32\x1c.dra.Input.WriteAddressEntry\x12\x1b\n\x13program_before_mini\x18\x1e \x01(\x0c\x1a\x36\n\tCallEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Call:\x02\x38\x01\x1a\x37\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"#\n\x06Inputs\x12\x19\n\x05input\x18\x01 \x03(\x0b\x32\n.dra.Input\"\x17\n\x04Path\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x03(\r\"c\n\x05Paths\x12\"\n\x04path\x18\x01 \x03(\x0b\x32\x14.dra.Paths.PathEntry\x1a\x36\n\tPathEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Path:\x02\x38\x01\"\xe6\x01\n\rUnstableInput\x12\x1c\n\x08new_path\x18\x01 \x03(\x0b\x32\n.dra.Paths\x12;\n\runstable_path\x18\x02 \x03(\x0b\x32$.dra.UnstableInput.UnstablePathEntry\x12\x0b\n\x03idx\x18\x03 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\r\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x1a>\n\x11UnstablePathEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Path:\x02\x38\x01*\xca\x01\n\x0b\x46uzzingStat\x12\x0f\n\x0bStatDefault\x10\x00\x12\x10\n\x0cStatGenerate\x10\x01\x12\x0c\n\x08StatFuzz\x10\x02\x12\x11\n\rStatCandidate\x10\x03\x12\x0e\n\nStatTriage\x10\x04\x12\x10\n\x0cStatMinimize\x10\x05\x12\r\n\tStatSmash\x10\x06\x12\x0c\n\x08StatHint\x10\x07\x12\x0c\n\x08StatSeed\x10\x08\x12\x12\n\x0eStatDependency\x10\t\x12\x16\n\x12StatDependencyBoot\x10\nb\x06proto3'
+  serialized_pb=b'\n\x0bInput.proto\x12\x03\x64ra\"l\n\x04\x43\x61ll\x12\x0b\n\x03idx\x18\x01 \x01(\r\x12\'\n\x07\x61\x64\x64ress\x18\x02 \x03(\x0b\x32\x16.dra.Call.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xd8\x03\n\x05Input\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\"\n\x04\x63\x61ll\x18\r \x03(\x0b\x32\x14.dra.Input.CallEntry\x12\x19\n\x05paths\x18\x01 \x03(\x0b\x32\n.dra.Paths\x12\x0e\n\x06stable\x18\x0e \x01(\r\x12\r\n\x05total\x18\x0f \x01(\r\x12\x1e\n\x04stat\x18\x15 \x01(\x0e\x32\x10.dra.FuzzingStat\x12;\n\x11uncovered_address\x18\x16 \x03(\x0b\x32 .dra.Input.UncoveredAddressEntry\x12\x33\n\rwrite_address\x18\x19 \x03(\x0b\x32\x1c.dra.Input.WriteAddressEntry\x12\x1b\n\x13program_before_mini\x18\x1e \x01(\x0c\x1a\x36\n\tCallEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Call:\x02\x38\x01\x1a\x37\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"#\n\x06Inputs\x12\x19\n\x05input\x18\x01 \x03(\x0b\x32\n.dra.Input\"\x17\n\x04Path\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x03(\r\"c\n\x05Paths\x12\"\n\x04path\x18\x01 \x03(\x0b\x32\x14.dra.Paths.PathEntry\x1a\x36\n\tPathEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Path:\x02\x38\x01\"\xb2\x01\n\rUnstableInput\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12!\n\runstable_path\x18\x0c \x03(\x0b\x32\n.dra.Paths\x12\x30\n\x07\x61\x64\x64ress\x18\r \x03(\x0b\x32\x1f.dra.UnstableInput.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\x9a\x01\n\x0eUnstableInputs\x12>\n\x0eunstable_input\x18\x01 \x03(\x0b\x32&.dra.UnstableInputs.UnstableInputEntry\x1aH\n\x12UnstableInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12!\n\x05value\x18\x02 \x01(\x0b\x32\x12.dra.UnstableInput:\x02\x38\x01*\xca\x01\n\x0b\x46uzzingStat\x12\x0f\n\x0bStatDefault\x10\x00\x12\x10\n\x0cStatGenerate\x10\x01\x12\x0c\n\x08StatFuzz\x10\x02\x12\x11\n\rStatCandidate\x10\x03\x12\x0e\n\nStatTriage\x10\x04\x12\x10\n\x0cStatMinimize\x10\x05\x12\r\n\tStatSmash\x10\x06\x12\x0c\n\x08StatHint\x10\x07\x12\x0c\n\x08StatSeed\x10\x08\x12\x12\n\x0eStatDependency\x10\t\x12\x16\n\x12StatDependencyBoot\x10\nb\x06proto3'
 )
 
 _FUZZINGSTAT = _descriptor.EnumDescriptor(
@@ -75,8 +75,8 @@ _FUZZINGSTAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1002,
-  serialized_end=1204,
+  serialized_start=1107,
+  serialized_end=1309,
 )
 _sym_db.RegisterEnumDescriptor(_FUZZINGSTAT)
 
@@ -505,22 +505,111 @@ _PATHS = _descriptor.Descriptor(
 )
 
 
-_UNSTABLEINPUT_UNSTABLEPATHENTRY = _descriptor.Descriptor(
-  name='UnstablePathEntry',
-  full_name='dra.UnstableInput.UnstablePathEntry',
+_UNSTABLEINPUT_ADDRESSENTRY = _descriptor.Descriptor(
+  name='AddressEntry',
+  full_name='dra.UnstableInput.AddressEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='dra.UnstableInput.UnstablePathEntry.key', index=0,
+      name='key', full_name='dra.UnstableInput.AddressEntry.key', index=0,
       number=1, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='value', full_name='dra.UnstableInput.UnstablePathEntry.value', index=1,
+      name='value', full_name='dra.UnstableInput.AddressEntry.value', index=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=82,
+  serialized_end=128,
+)
+
+_UNSTABLEINPUT = _descriptor.Descriptor(
+  name='UnstableInput',
+  full_name='dra.UnstableInput',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='sig', full_name='dra.UnstableInput.sig', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='program', full_name='dra.UnstableInput.program', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='unstable_path', full_name='dra.UnstableInput.unstable_path', index=2,
+      number=12, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='address', full_name='dra.UnstableInput.address', index=3,
+      number=13, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_UNSTABLEINPUT_ADDRESSENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=769,
+  serialized_end=947,
+)
+
+
+_UNSTABLEINPUTS_UNSTABLEINPUTENTRY = _descriptor.Descriptor(
+  name='UnstableInputEntry',
+  full_name='dra.UnstableInputs.UnstableInputEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='dra.UnstableInputs.UnstableInputEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='dra.UnstableInputs.UnstableInputEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -538,63 +627,28 @@ _UNSTABLEINPUT_UNSTABLEPATHENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=937,
-  serialized_end=999,
+  serialized_start=1032,
+  serialized_end=1104,
 )
 
-_UNSTABLEINPUT = _descriptor.Descriptor(
-  name='UnstableInput',
-  full_name='dra.UnstableInput',
+_UNSTABLEINPUTS = _descriptor.Descriptor(
+  name='UnstableInputs',
+  full_name='dra.UnstableInputs',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='new_path', full_name='dra.UnstableInput.new_path', index=0,
+      name='unstable_input', full_name='dra.UnstableInputs.unstable_input', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='unstable_path', full_name='dra.UnstableInput.unstable_path', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='idx', full_name='dra.UnstableInput.idx', index=2,
-      number=3, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='address', full_name='dra.UnstableInput.address', index=3,
-      number=4, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sig', full_name='dra.UnstableInput.sig', index=4,
-      number=11, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='program', full_name='dra.UnstableInput.program', index=5,
-      number=12, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[_UNSTABLEINPUT_UNSTABLEPATHENTRY, ],
+  nested_types=[_UNSTABLEINPUTS_UNSTABLEINPUTENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -603,8 +657,8 @@ _UNSTABLEINPUT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=769,
-  serialized_end=999,
+  serialized_start=950,
+  serialized_end=1104,
 )
 
 _CALL_ADDRESSENTRY.containing_type = _CALL
@@ -622,16 +676,19 @@ _INPUTS.fields_by_name['input'].message_type = _INPUT
 _PATHS_PATHENTRY.fields_by_name['value'].message_type = _PATH
 _PATHS_PATHENTRY.containing_type = _PATHS
 _PATHS.fields_by_name['path'].message_type = _PATHS_PATHENTRY
-_UNSTABLEINPUT_UNSTABLEPATHENTRY.fields_by_name['value'].message_type = _PATH
-_UNSTABLEINPUT_UNSTABLEPATHENTRY.containing_type = _UNSTABLEINPUT
-_UNSTABLEINPUT.fields_by_name['new_path'].message_type = _PATHS
-_UNSTABLEINPUT.fields_by_name['unstable_path'].message_type = _UNSTABLEINPUT_UNSTABLEPATHENTRY
+_UNSTABLEINPUT_ADDRESSENTRY.containing_type = _UNSTABLEINPUT
+_UNSTABLEINPUT.fields_by_name['unstable_path'].message_type = _PATHS
+_UNSTABLEINPUT.fields_by_name['address'].message_type = _UNSTABLEINPUT_ADDRESSENTRY
+_UNSTABLEINPUTS_UNSTABLEINPUTENTRY.fields_by_name['value'].message_type = _UNSTABLEINPUT
+_UNSTABLEINPUTS_UNSTABLEINPUTENTRY.containing_type = _UNSTABLEINPUTS
+_UNSTABLEINPUTS.fields_by_name['unstable_input'].message_type = _UNSTABLEINPUTS_UNSTABLEINPUTENTRY
 DESCRIPTOR.message_types_by_name['Call'] = _CALL
 DESCRIPTOR.message_types_by_name['Input'] = _INPUT
 DESCRIPTOR.message_types_by_name['Inputs'] = _INPUTS
 DESCRIPTOR.message_types_by_name['Path'] = _PATH
 DESCRIPTOR.message_types_by_name['Paths'] = _PATHS
 DESCRIPTOR.message_types_by_name['UnstableInput'] = _UNSTABLEINPUT
+DESCRIPTOR.message_types_by_name['UnstableInputs'] = _UNSTABLEINPUTS
 DESCRIPTOR.enum_types_by_name['FuzzingStat'] = _FUZZINGSTAT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -712,10 +769,10 @@ _sym_db.RegisterMessage(Paths.PathEntry)
 
 UnstableInput = _reflection.GeneratedProtocolMessageType('UnstableInput', (_message.Message,), {
 
-  'UnstablePathEntry' : _reflection.GeneratedProtocolMessageType('UnstablePathEntry', (_message.Message,), {
-    'DESCRIPTOR' : _UNSTABLEINPUT_UNSTABLEPATHENTRY,
+  'AddressEntry' : _reflection.GeneratedProtocolMessageType('AddressEntry', (_message.Message,), {
+    'DESCRIPTOR' : _UNSTABLEINPUT_ADDRESSENTRY,
     '__module__' : 'Input_pb2'
-    # @@protoc_insertion_point(class_scope:dra.UnstableInput.UnstablePathEntry)
+    # @@protoc_insertion_point(class_scope:dra.UnstableInput.AddressEntry)
     })
   ,
   'DESCRIPTOR' : _UNSTABLEINPUT,
@@ -723,7 +780,22 @@ UnstableInput = _reflection.GeneratedProtocolMessageType('UnstableInput', (_mess
   # @@protoc_insertion_point(class_scope:dra.UnstableInput)
   })
 _sym_db.RegisterMessage(UnstableInput)
-_sym_db.RegisterMessage(UnstableInput.UnstablePathEntry)
+_sym_db.RegisterMessage(UnstableInput.AddressEntry)
+
+UnstableInputs = _reflection.GeneratedProtocolMessageType('UnstableInputs', (_message.Message,), {
+
+  'UnstableInputEntry' : _reflection.GeneratedProtocolMessageType('UnstableInputEntry', (_message.Message,), {
+    'DESCRIPTOR' : _UNSTABLEINPUTS_UNSTABLEINPUTENTRY,
+    '__module__' : 'Input_pb2'
+    # @@protoc_insertion_point(class_scope:dra.UnstableInputs.UnstableInputEntry)
+    })
+  ,
+  'DESCRIPTOR' : _UNSTABLEINPUTS,
+  '__module__' : 'Input_pb2'
+  # @@protoc_insertion_point(class_scope:dra.UnstableInputs)
+  })
+_sym_db.RegisterMessage(UnstableInputs)
+_sym_db.RegisterMessage(UnstableInputs.UnstableInputEntry)
 
 
 _CALL_ADDRESSENTRY._options = None
@@ -731,5 +803,6 @@ _INPUT_CALLENTRY._options = None
 _INPUT_UNCOVEREDADDRESSENTRY._options = None
 _INPUT_WRITEADDRESSENTRY._options = None
 _PATHS_PATHENTRY._options = None
-_UNSTABLEINPUT_UNSTABLEPATHENTRY._options = None
+_UNSTABLEINPUT_ADDRESSENTRY._options = None
+_UNSTABLEINPUTS_UNSTABLEINPUTENTRY._options = None
 # @@protoc_insertion_point(module_scope)

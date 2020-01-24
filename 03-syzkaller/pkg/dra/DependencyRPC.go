@@ -1,6 +1,7 @@
 package dra
 
 import (
+	"fmt"
 	"io/ioutil"
 	"math"
 	"os"
@@ -55,8 +56,13 @@ func (m *Input) mergeInput(d *Input) {
 		}
 	}
 
-	for _, p := range d.Paths {
-		m.Paths = append(m.Paths, proto.Clone(p).(*Paths))
+	if CollectPath {
+		if m.Paths == nil {
+			m.Paths = []*Paths{}
+		}
+		for _, p := range d.Paths {
+			m.Paths = append(m.Paths, proto.Clone(p).(*Paths))
+		}
 	}
 
 	for i, c := range d.UncoveredAddress {
@@ -297,22 +303,22 @@ func (ss Server) pickTask(name string) *Tasks {
 	var tasks *Tasks
 	f, ok := ss.fuzzers[name]
 	if ok {
-		f.taskMu.Lock()
-		if len(f.highTasks.TaskArray) > 0 {
-			last := len(f.highTasks.TaskArray)
+		f.MuRunTime.Lock()
+		if len(f.dataRunTime.HighTask.TaskArray) > 0 {
+			last := len(f.dataRunTime.HighTask.TaskArray)
 			if last > TaskNum {
 				last = TaskNum
 			}
-			tasks = f.highTasks.pop(last)
+			tasks = f.dataRunTime.HighTask.pop(last)
 			tasks.Kind = TaskKind_High
 		} else {
-			last := len(f.newTask.TaskArray)
+			last := len(f.dataRunTime.Tasks.TaskArray)
 			if last > TaskNum {
 				last = TaskNum
 			}
-			tasks = f.newTask.pop(last)
+			tasks = f.dataRunTime.Tasks.pop(last)
 		}
-		f.taskMu.Unlock()
+		f.MuRunTime.Unlock()
 	}
 	return tasks
 }
@@ -322,30 +328,30 @@ func (ss Server) pickBootTask(name string) *Tasks {
 	var tasks *Tasks
 	f, ok := ss.fuzzers[name]
 	if ok {
-		f.bootTaskMu.Lock()
-		last := len(f.bootTasks.TaskArray)
-		tasks = f.bootTasks.pop(last)
+		f.MuRunTime.Lock()
+		last := len(f.dataRunTime.BootTask.TaskArray)
+		tasks = f.dataRunTime.BootTask.pop(last)
 		tasks.Kind = TaskKind_Boot
-		f.bootTaskMu.Unlock()
+		f.MuRunTime.Unlock()
 	}
 	return tasks
 }
 
 func (ss *Server) addNewInput(s *Input) {
-	if i, ok := ss.dependencyData.NewInput[s.Sig]; ok {
+	if i, ok := ss.dataDependency.OtherInput[s.Sig]; ok {
 		i.mergeInput(s)
 	} else {
-		ss.dependencyData.NewInput[s.Sig] = s
+		ss.dataDependency.OtherInput[s.Sig] = s
 	}
 
 	return
 }
 
 func (ss *Server) addInput(s *Input) {
-	if i, ok := ss.dependencyData.Input[s.Sig]; ok {
+	if i, ok := ss.dataDependency.Input[s.Sig]; ok {
 		i.mergeInput(s)
 	} else {
-		ss.dependencyData.Input[s.Sig] = s
+		ss.dataDependency.Input[s.Sig] = s
 	}
 
 	ss.addWriteAddressMapInput(s)
@@ -354,7 +360,7 @@ func (ss *Server) addInput(s *Input) {
 	if CollectUnstable {
 
 	} else {
-		ss.dependencyData.Input[s.Sig].Call = make(map[uint32]*Call)
+		ss.dataDependency.Input[s.Sig].Call = make(map[uint32]*Call)
 	}
 	return
 }
@@ -364,7 +370,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 	for index, call := range s.Call {
 		indexBits := uint32(1 << index)
 		for a := range call.Address {
-			if wa, ok := ss.dependencyData.WriteAddress[a]; ok {
+			if wa, ok := ss.dataDependency.WriteAddress[a]; ok {
 				var usefulIndexBits uint32
 				waIndex, ok := wa.Input[sig]
 				if ok {
@@ -380,7 +386,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 					wa.Input[sig] = indexBits
 				}
 				ss.addWriteAddressTask(wa, sig, usefulIndexBits)
-				input, ok := ss.dependencyData.Input[sig]
+				input, ok := ss.dataDependency.Input[sig]
 				if ok {
 					if iIndex, ok := input.WriteAddress[a]; ok {
 						input.WriteAddress[a] = iIndex | indexBits
@@ -401,7 +407,7 @@ func (ss *Server) addWriteAddressMapInput(s *Input) {
 func (ss *Server) addUncoveredAddressMapInput(s *Input) {
 	sig := s.Sig
 	for u1, i1 := range s.UncoveredAddress {
-		if u2, ok := ss.dependencyData.UncoveredAddress[u1]; ok {
+		if u2, ok := ss.dataDependency.UncoveredAddress[u1]; ok {
 			if i2, ok := u2.Input[sig]; ok {
 				u2.Input[sig] = i2 | i1
 			} else {
@@ -416,7 +422,7 @@ func (ss *Server) addUncoveredAddressMapInput(s *Input) {
 }
 
 func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
-	_, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
+	_, ok := ss.dataDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return false
 	}
@@ -425,13 +431,13 @@ func (ss *Server) checkUncoveredAddress(uncoveredAddress uint32) bool {
 }
 
 func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
-	u, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
+	u, ok := ss.dataDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		return
 	}
 
 	for sig := range u.Input {
-		input, ok := ss.dependencyData.Input[sig]
+		input, ok := ss.dataDependency.Input[sig]
 		if !ok {
 			log.Fatalf("deleteUncoveredAddress not find sig")
 			continue
@@ -447,7 +453,7 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 	}
 
 	for wa := range u.WriteAddress {
-		waa, ok := ss.dependencyData.WriteAddress[wa]
+		waa, ok := ss.dataDependency.WriteAddress[wa]
 		if !ok {
 			log.Fatalf("deleteUncoveredAddress not find wa")
 			continue
@@ -461,8 +467,8 @@ func (ss *Server) deleteUncoveredAddress(uncoveredAddress uint32) {
 		}
 	}
 
-	ss.dependencyData.CoveredAddress[uncoveredAddress] = u
-	delete(ss.dependencyData.UncoveredAddress, uncoveredAddress)
+	ss.dataResult.CoveredAddress[uncoveredAddress] = u
+	delete(ss.dataDependency.UncoveredAddress, uncoveredAddress)
 
 	return
 }
@@ -532,10 +538,10 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 		return
 	}
 
-	if i, ok := ss.dependencyData.UncoveredAddress[s.UncoveredAddress]; ok {
+	if i, ok := ss.dataDependency.UncoveredAddress[s.UncoveredAddress]; ok {
 		i.mergeUncoveredAddress(s)
 	} else {
-		ss.dependencyData.UncoveredAddress[s.UncoveredAddress] = s
+		ss.dataDependency.UncoveredAddress[s.UncoveredAddress] = s
 		s.Count = 0
 	}
 	ss.addWriteAddressMapUncoveredAddress(s)
@@ -546,7 +552,7 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 func (ss *Server) addWriteAddressMapUncoveredAddress(s *UncoveredAddress) {
 	uncoveredAddress := s.UncoveredAddress
 	for w1, w3 := range s.WriteAddress {
-		if w2, ok := ss.dependencyData.WriteAddress[w1]; ok {
+		if w2, ok := ss.dataDependency.WriteAddress[w1]; ok {
 			w2.UncoveredAddress[uncoveredAddress] = w3
 		}
 	}
@@ -554,14 +560,14 @@ func (ss *Server) addWriteAddressMapUncoveredAddress(s *UncoveredAddress) {
 }
 
 func (ss *Server) addWriteAddress(s *WriteAddress) {
-	if i, ok := ss.dependencyData.WriteAddress[s.WriteAddress]; ok {
+	if i, ok := ss.dataDependency.WriteAddress[s.WriteAddress]; ok {
 		i.mergeWriteAddress(s)
 	} else {
-		ss.dependencyData.WriteAddress[s.WriteAddress] = s
+		ss.dataDependency.WriteAddress[s.WriteAddress] = s
 	}
 
 	for sig, indexBits1 := range s.Input {
-		waInput, ok := ss.dependencyData.Input[sig]
+		waInput, ok := ss.dataDependency.Input[sig]
 		if ok {
 			indexBits2, ok1 := waInput.WriteAddress[s.WriteAddress]
 			if ok1 {
@@ -581,12 +587,12 @@ func (ss *Server) addWriteAddress(s *WriteAddress) {
 func (ss *Server) addInputTask(d *Input) {
 	sig := d.Sig
 	for u, inputIndexBits := range d.UncoveredAddress {
-		ua, ok := ss.dependencyData.UncoveredAddress[u]
+		ua, ok := ss.dataDependency.UncoveredAddress[u]
 		if !ok {
 			return
 		}
 		for w := range ua.WriteAddress {
-			wa, ok := ss.dependencyData.WriteAddress[w]
+			wa, ok := ss.dataDependency.WriteAddress[w]
 			if !ok {
 				return
 			}
@@ -605,7 +611,7 @@ func (ss *Server) addInputTask(d *Input) {
 
 func (ss *Server) addWriteAddressTask(wa *WriteAddress, writeSig string, indexBits uint32) {
 	for u := range wa.UncoveredAddress {
-		ua, ok := ss.dependencyData.UncoveredAddress[u]
+		ua, ok := ss.dataDependency.UncoveredAddress[u]
 		if !ok {
 			return
 		}
@@ -632,7 +638,7 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 		}
 	}
 
-	if ua, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]; ok {
+	if ua, ok := ss.dataDependency.UncoveredAddress[uncoveredAddress]; ok {
 		if ua.Count < ua.NumberDominatorInstructions*40 {
 			ua.Count += uint32(len(index) * len(writeIndex))
 		} else {
@@ -645,20 +651,20 @@ func (ss *Server) addTasks(sig string, indexBits uint32, writeSig string,
 	for _, i := range index {
 		for _, wi := range writeIndex {
 			if high {
-				//ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.dependencyData.HighTask)
+				//ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.DataDependency.HighTask)
 			}
-			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.dependencyData.Tasks)
+			ss.addTask(ss.getTask(sig, i, writeSig, wi, writeAddress, uncoveredAddress), ss.dataRunTime.Tasks)
 		}
 	}
 	return
 }
 
 func (ss *Server) addBootTasks(sig string, indexBits uint32, uncoveredAddress uint32) {
-	input, ok := ss.dependencyData.Input[sig]
+	input, ok := ss.dataDependency.Input[sig]
 	if !ok {
 		log.Fatalf("addBootTasks do not find sig")
 	}
-	ua, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
+	ua, ok := ss.dataDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("addBootTasks do not find uncovered address")
 	}
@@ -683,7 +689,7 @@ func (ss *Server) addBootTasks(sig string, indexBits uint32, uncoveredAddress ui
 		}
 	}
 	for _, i := range index {
-		ss.addTask(ss.getTask(sig, i, sig, writeIndexBits, uncoveredAddress, uncoveredAddress), ss.dependencyData.BootTask)
+		ss.addTask(ss.getTask(sig, i, sig, writeIndexBits, uncoveredAddress, uncoveredAddress), ss.dataRunTime.BootTask)
 	}
 	return
 }
@@ -718,7 +724,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 
 	task.Hash = task.getHash()
 
-	input, ok := ss.dependencyData.Input[sig]
+	input, ok := ss.dataDependency.Input[sig]
 	if !ok {
 		log.Fatalf("getTask with error sig")
 	}
@@ -726,7 +732,7 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		task.Program = append(task.Program, c)
 	}
 
-	writeInput, ok := ss.dependencyData.Input[writeSig]
+	writeInput, ok := ss.dataDependency.Input[writeSig]
 	if !ok {
 		log.Fatalf("getTask with error writeSig")
 	}
@@ -734,12 +740,12 @@ func (ss *Server) getTask(sig string, index uint32, writeSig string, writeIndex 
 		task.WriteProgram = append(task.WriteProgram, c)
 	}
 
-	wa, ok := ss.dependencyData.WriteAddress[writeAddress]
+	wa, ok := ss.dataDependency.WriteAddress[writeAddress]
 	if !ok {
 		log.Fatalf("getTask with error writeAddress")
 	}
 	task.Kind = wa.Kind
-	ua, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
+	ua, ok := ss.dataDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("getTask with error uncoveredAddress")
 	}
@@ -865,7 +871,7 @@ func (m *RunTimeData) updatePriority(p1 uint32) {
 }
 
 func (ss *Server) getPriority(writeAddress uint32, uncoveredAddress uint32) uint32 {
-	u, ok := ss.dependencyData.UncoveredAddress[uncoveredAddress]
+	u, ok := ss.dataDependency.UncoveredAddress[uncoveredAddress]
 	if !ok {
 		log.Fatalf("getPriority not find uncoveredAddress")
 	}
@@ -891,7 +897,7 @@ func (ss *Server) writeMessageToDisk(message proto.Message, name string) {
 	}
 	temp := name + ".temp"
 	if err := ioutil.WriteFile(temp, out, 0644); err != nil {
-		log.Fatalf("Failed to write dependencyData: %s", err)
+		log.Fatalf("Failed to write DataDependency: %s", err)
 	}
 	old := name + ".old"
 	_ = os.Remove(old)
@@ -961,4 +967,64 @@ func CheckPath(newPath []uint32, unstablePath []uint32) (int, int, int) {
 		}
 	}
 	return newPathIdx, unstablePathIdx, idx
+}
+
+func (m *UnstableInput) mergeUnstableInput(d *UnstableInput) {
+	if d == nil {
+		return
+	}
+	for _, path := range d.UnstablePath {
+		m.UnstablePath = append(m.UnstablePath, path)
+	}
+
+	for address, indexBits := range d.Address {
+		if _, ok := m.Address[address]; ok {
+			m.Address[address] |= indexBits
+		} else {
+			m.Address[address] = indexBits
+		}
+	}
+}
+
+func (ss *Server) outPutUnstableInput(ui *UnstableInput) {
+	res := ""
+	res += "sig : " + ui.Sig + "\n"
+	res += "program : \n" + string(ui.Program) + "\n"
+
+	for address, indexBits := range ui.Address {
+		res += "address : " + "0xffffffff" + fmt.Sprintf("%x", address-5) + "\n"
+		res += "idx : " + fmt.Sprintf("%b", indexBits) + "\n"
+	}
+
+	if input, ok := ss.dataDependency.Input[ui.Sig]; ok {
+		res += "NewPath : \n"
+		for i, p := range input.Paths {
+			res += fmt.Sprintf("Number %d test case", i) + "\n"
+			for ii, pp := range p.Path {
+				res += fmt.Sprintf("Number %d syscall", ii) + "\n"
+				for _, a := range pp.Address {
+					res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
+				}
+				res += "\n"
+			}
+			res += "\n"
+		}
+	}
+
+	res += "UnstablePath : \n"
+	for i, p := range ui.UnstablePath {
+		res += fmt.Sprintf("Number %d test case", i) + "\n"
+		for ii, pp := range p.Path {
+			res += fmt.Sprintf("Number %d syscall", ii) + "\n"
+			for _, a := range pp.Address {
+				res += "0xffffffff" + fmt.Sprintf("%x\n", a-5)
+			}
+			res += "\n"
+		}
+		res += "\n"
+	}
+
+	f, _ := os.OpenFile(ui.Sig+".txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	_, _ = f.WriteString(res)
+	_ = f.Close()
 }
