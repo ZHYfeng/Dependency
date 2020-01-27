@@ -573,6 +573,7 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 		for w := range s.WriteAddress {
 			s.WriteAddressStatus[w] = TaskStatus_not_find_write_input
 		}
+		s.InputStatus = map[string]*Status{}
 		for input, indexBits := range s.Input {
 			temp := &Status{
 				Status: map[uint32]TaskStatus{},
