@@ -313,7 +313,9 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		}
 	}
 	proc.fuzzer.dManager.SendNewInput(&input)
-	proc.checkInput(&input)
+	if pb.CheckCondition {
+		proc.checkInput(&input)
+	}
 }
 
 func reexecutionSuccess(info *ipc.ProgInfo, oldInfo *ipc.CallInfo, call int) bool {

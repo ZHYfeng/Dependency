@@ -32,7 +32,9 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	d.Connect(name)
 	if CheckCondition {
 		d.MuDependency = &sync.RWMutex{}
-		d.DataDependency = &DataDependency{}
+		d.DataDependency = &DataDependency{
+			Input: map[string]*Input{},
+		}
 	}
 }
 
