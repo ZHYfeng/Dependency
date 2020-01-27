@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
+	"fmt"
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
 	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
@@ -9,19 +9,21 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
-func (proc *Proc) dependency(item *WorkDependency) {
-
-	task := item.task
-
-	if proc.dependencyMutateCheckATask(task) {
+func (proc *Proc) dependency(task *pb.Task) string {
+	res := "dependency : " + "\n"
+	r, ok := proc.dependencyMutateCheckATask(task)
+	res += r
+	if ok {
 
 		indexInsert := []int{0, int(task.Index)}
 		for _, i := range indexInsert {
 
+			res += "insert : " + "\n"
 			insertTaskRunTImeData := proc.dependencyMutateInsert(task, i)
 			proc.dependencyMutateCheck(task, insertTaskRunTImeData)
 			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
 
+			res += "remove : " + "\n"
 			removeTaskRunTimeData := proc.dependencyMutateRemove(task, insertTaskRunTImeData)
 			proc.dependencyMutateCheck(task, removeTaskRunTimeData)
 			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
@@ -55,7 +57,7 @@ func (proc *Proc) dependency(item *WorkDependency) {
 	tasks.AddTask(task)
 	proc.fuzzer.dManager.ReturnTasks(tasks)
 
-	return
+	return res
 }
 
 func (proc *Proc) dependencyMutateArguement(task *pb.Task, taskRunTimeData *pb.TaskRunTimeData) {
@@ -94,8 +96,8 @@ func (proc *Proc) executeDependencyHintSeed(p *prog.Prog, call int) {
 	})
 }
 
-func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
-
+func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
+	res := "dependencyMutateCheckATask : " + "\n"
 	ProgWrite, err := proc.fuzzer.target.Deserialize(task.WriteProgram, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
@@ -104,6 +106,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 	idx := int(task.WriteIndex)
 	info := proc.execute(proc.execOptsCover, ProgWrite, ProgNormal, StatDependency)
 	checkWriteAddress1 := checkAddressInArray(task.WriteAddress, info.Calls[idx].Cover)
+	res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", task.WriteAddress, checkWriteAddress1)
 	if checkWriteAddress1 {
 		task.CheckWriteAddress = true
 	} else {
@@ -140,19 +143,23 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 	info = proc.execute(proc.execOptsCover, ProgCondition, ProgNormal, StatDependency)
 	for ua, r := range task.UncoveredAddress {
 		if checkAddressInArray(r.ConditionAddress, info.Calls[idx].Cover) {
+			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, true)
 			r.CheckCondition = true
 			if checkAddressInArray(ua, info.Calls[idx].Cover) {
+				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, true)
 				r.CheckAddress = true
 				r.TaskStatus = pb.TaskStatus_covered
 				task.CoveredAddress[ua] = r
 				temp = append(temp, ua)
 			} else {
+				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, false)
 				r.CheckAddress = false
 				if r.TaskStatus < pb.TaskStatus_tested {
 					r.TaskStatus = pb.TaskStatus_tested
 				}
 			}
 		} else {
+			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, false)
 			r.CheckCondition = false
 			if r.TaskStatus < pb.TaskStatus_unstable_condition {
 				r.TaskStatus = pb.TaskStatus_unstable_condition
@@ -185,7 +192,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 		delete(task.UncoveredAddress, ua)
 	}
 
-	return task.CheckWriteAddress
+	return res, task.CheckWriteAddress
 }
 
 func (proc *Proc) dependencyMutateInsert(task *pb.Task, idx int) *pb.TaskRunTimeData {
@@ -286,8 +293,8 @@ func (proc *Proc) dependencyMutateRemove(task *pb.Task, taskRunTimeData *pb.Task
 }
 
 // kind 1: final 2: remove
-func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskRunTimeData) {
-
+func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskRunTimeData) string {
+	res := "dependencyMutateCheck : " + "\n"
 	Prog, err := proc.fuzzer.target.Deserialize(taskRunTimeData.Program, prog.NonStrict)
 	if err != nil {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
@@ -295,6 +302,7 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 
 	info := proc.execute(proc.execOptsCover, Prog, ProgNormal, StatDependency)
 	checkWriteAddress2 := checkAddressInArray(task.WriteAddress, info.Calls[taskRunTimeData.WriteIdx].Cover)
+	res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", task.WriteAddress, checkWriteAddress2)
 	if checkWriteAddress2 {
 		taskRunTimeData.CheckWriteAddress = true
 	} else {
@@ -304,19 +312,23 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 	var temp []uint32
 	for ua, r := range taskRunTimeData.UncoveredAddress {
 		if checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
+			res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", r.ConditionAddress, true)
 			r.CheckCondition = true
 			if checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
+				res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", ua, true)
 				r.CheckAddress = true
 				r.TaskStatus = pb.TaskStatus_covered
 				taskRunTimeData.CoveredAddress[ua] = r
 				temp = append(temp, ua)
 			} else {
+				res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", ua, false)
 				r.CheckAddress = false
 				if r.TaskStatus < pb.TaskStatus_tested {
 					r.TaskStatus = pb.TaskStatus_tested
 				}
 			}
 		} else {
+			res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", r.ConditionAddress, false)
 			r.CheckCondition = false
 			if r.TaskStatus < pb.TaskStatus_unstable_condition {
 				r.TaskStatus = pb.TaskStatus_unstable_condition
@@ -338,7 +350,7 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 		}
 	}
 
-	return
+	return res
 }
 
 func (proc *Proc) dependencyBoot(item *WorkBoot) {
@@ -420,19 +432,21 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 	return
 }
 
-func (fuzzer *Fuzzer) checkUncoveredAddress(call *pb.Call) (bool, *pb.UncoveredAddress) {
-	for a, ua := range fuzzer.dManager.DataDependency.UncoveredAddress {
-		if _, ok := call.Address[a]; ok {
-			return true, ua
-		}
+func (proc *Proc) checkInput(input *pb.Input) {
+	res := ""
+	proc.fuzzer.dManager.MuDependency.RLock()
+	ua, tasks, r := proc.fuzzer.dManager.DataDependency.GetTaskByInput(input)
+	proc.fuzzer.dManager.MuDependency.RUnlock()
+	res += r
+	for _, t := range tasks {
+		res += proc.dependency(t)
 	}
-	return false, &pb.UncoveredAddress{}
-}
 
-func (proc *Proc) checkUncoveredAddress(input *pb.Input) {
-	for idx, call := range input.Call {
-		if ok, ua := proc.fuzzer.checkUncoveredAddress(call); ok {
+	proc.fuzzer.dManager.SendLog(res)
+	proc.fuzzer.dManager.SSendLog()
 
-		}
-	}
+	proc.fuzzer.dManager.MuDependency.Lock()
+	delete(proc.fuzzer.dManager.DataDependency.UncoveredAddress, ua.UncoveredAddress)
+	proc.fuzzer.dManager.MuDependency.Unlock()
+
 }

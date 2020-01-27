@@ -86,7 +86,7 @@ func (proc *Proc) loop() {
 				proc.execute(proc.execOpts, item.p, item.flags, StatCandidate)
 			case *WorkDependency:
 				statName = pb.FuzzingStat_StatDependency
-				proc.dependency(item)
+				proc.dependency(item.task)
 			case *WorkBoot:
 				statName = pb.FuzzingStat_StatDependency
 				proc.dependencyBoot(item)
@@ -104,7 +104,7 @@ func (proc *Proc) loop() {
 			item := proc.fuzzer.workQueue.dequeueDependency()
 			if item != nil {
 				statName = pb.FuzzingStat_StatDependency
-				proc.dependency(item)
+				proc.dependency(item.task)
 				//}
 			} else {
 				ct := proc.fuzzer.choiceTable
@@ -313,6 +313,7 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		}
 	}
 	proc.fuzzer.dManager.SendNewInput(&input)
+	proc.checkInput(&input)
 }
 
 func reexecutionSuccess(info *ipc.ProgInfo, oldInfo *ipc.CallInfo, call int) bool {

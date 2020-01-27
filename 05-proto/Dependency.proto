@@ -45,6 +45,10 @@ enum UncoveredAddressKind {
     Other = 3;
 }
 
+message Status{
+    map<uint32, taskStatus> status = 1;
+}
+
 message UncoveredAddress {
 
     uint32 condition_address = 1;
@@ -60,6 +64,7 @@ message UncoveredAddress {
     uint32 count = 24;
 
     runTimeData run_time_date = 8;
+    map<string, Status> input_status = 31;
     map<uint32, taskStatus> write_address_status = 32;
     map<int32, uint32> tasks_count = 33;
     map<int32, uint32> write_count = 34;

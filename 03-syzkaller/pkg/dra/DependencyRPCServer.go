@@ -569,7 +569,10 @@ func (ss *Server) Update() {
 					delete(t.UncoveredAddress, u)
 				}
 			}
+		} else {
+			ss.dataRunTime.Tasks.AddTask(task)
 		}
+		ss.dataDependency.updateUncoveredAddress(task)
 	}
 	sort.Slice(ss.dataRunTime.Tasks.TaskArray, func(i, j int) bool {
 		return ss.dataRunTime.Tasks.TaskArray[i].getRealPriority() < ss.dataRunTime.Tasks.TaskArray[j].getRealPriority()
@@ -627,12 +630,9 @@ func (ss *Server) Update() {
 							t.TaskStatus = TaskStatus_testing
 							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
-						} else if t.TaskStatus == TaskStatus_testing {
+						} else if t.TaskStatus < TaskStatus_tested {
 							t.reducePriority()
 							task = append(task, t)
-						} else if t.TaskStatus == TaskStatus_unstable {
-							t.reducePriority()
-							task = append(task, proto.Clone(t).(*Task))
 						}
 						if len(task) > TaskNum {
 							break
