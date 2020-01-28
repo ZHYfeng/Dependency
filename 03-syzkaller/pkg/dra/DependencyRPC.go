@@ -693,6 +693,8 @@ func (m *DataDependency) getTasks(sig string, indexBits uint32, writeSig string,
 			if t < TaskStatus_untested {
 				t = TaskStatus_untested
 			}
+		} else {
+			log.Fatalf("getTasks : can not find the writeAddress")
 		}
 
 		if ua.Count < ua.NumberDominatorInstructions*40 {
@@ -1148,7 +1150,10 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 					ua.WriteAddressStatus[t.WriteAddress] = wts
 				}
 			} else {
-				log.Fatalf("updateUncoveredAddress : can not find the t.WriteAddress")
+				for n := range ua.WriteAddressStatus {
+					log.Logf(0, "ua.WriteAddressStatus : %x", n)
+				}
+				log.Fatalf("updateUncoveredAddress : can not find the t.WriteAddress : %x", t.WriteAddress)
 			}
 
 			status, ok := ua.InputStatus[t.Sig]
