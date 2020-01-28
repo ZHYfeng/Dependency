@@ -312,23 +312,23 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 	var temp []uint32
 	for ua, r := range taskRunTimeData.UncoveredAddress {
 		if checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
-			res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", r.ConditionAddress, true)
+			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, true)
 			r.CheckCondition = true
 			if checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
-				res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", ua, true)
+				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, true)
 				r.CheckAddress = true
 				r.TaskStatus = pb.TaskStatus_covered
 				taskRunTimeData.CoveredAddress[ua] = r
 				temp = append(temp, ua)
 			} else {
-				res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", ua, false)
+				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, false)
 				r.CheckAddress = false
 				if r.TaskStatus < pb.TaskStatus_tested {
 					r.TaskStatus = pb.TaskStatus_tested
 				}
 			}
 		} else {
-			res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", r.ConditionAddress, false)
+			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, false)
 			r.CheckCondition = false
 			if r.TaskStatus < pb.TaskStatus_unstable_condition {
 				r.TaskStatus = pb.TaskStatus_unstable_condition
