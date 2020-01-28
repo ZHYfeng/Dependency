@@ -154,7 +154,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) bool {
 			}
 		} else {
 			r.CheckCondition = false
-			if r.TaskStatus < pb.TaskStatus_unstable_condition {
+			if r.TaskStatus <= pb.TaskStatus_unstable_condition {
 				r.TaskStatus = pb.TaskStatus_unstable_condition
 
 				if pb.CollectUnstable {
