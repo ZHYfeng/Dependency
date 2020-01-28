@@ -203,7 +203,7 @@ func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 		ss.fuzzers[name] = &syzFuzzer{
 			MuDependency:   &sync.RWMutex{},
 			MuRunTime:      &sync.Mutex{},
-			dataDependency: nil,
+			dataDependency: &DataDependency{Input: map[string]*Input{}},
 			dataRunTime: &DataRunTime{
 				Tasks:      &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
 				Return:     &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
@@ -221,14 +221,16 @@ func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 func (ss Server) GetDataDependency(_ context.Context, request *Empty) (*DataDependency, error) {
 
 	name := request.Name
-	replay := &DataDependency{}
+	replay := &DataDependency{
+		Input: map[string]*Input{},
+	}
 	f, ok := ss.fuzzers[name]
 	if !ok {
 		f.MuDependency.RLock()
 		defer f.MuDependency.RUnlock()
 		replay = proto.Clone(f.dataDependency).(*DataDependency)
 	} else {
-
+		log.Fatalf("GetDataDependency with error name")
 	}
 	return replay, nil
 }
