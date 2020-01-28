@@ -769,7 +769,7 @@ func (ss *Server) Update() {
 			unstableInput[sig] = ui
 		}
 		ss.unstableInputs = &UnstableInputs{
-			UnstableInput: nil,
+			UnstableInput: map[string]*UnstableInput{},
 		}
 		ss.unstableInputMu.Unlock()
 		for sig, ui := range unstableInput {
