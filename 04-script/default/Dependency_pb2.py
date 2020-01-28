@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x10\x44\x65pendency.proto\x12\x03\x64ra\x1a\x0bInput.proto\x1a\nTask.proto\"\xfc\x03\n\x0cWriteAddress\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x03 \x01(\r\x12\x0c\n\x04kind\x18\x04 \x01(\r\x12\x42\n\x11uncovered_address\x18\x17 \x03(\x0b\x32\'.dra.WriteAddress.UncoveredAddressEntry\x12O\n\x18\x66ile_operations_function\x18\x18 \x03(\x0b\x32-.dra.WriteAddress.FileOperationsFunctionEntry\x12+\n\x05input\x18\x19 \x03(\x0b\x32\x1c.dra.WriteAddress.InputEntry\x12\'\n\rrun_time_date\x18\x0b \x01(\x0b\x32\x10.dra.runTimeData\x1aT\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\x1a=\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"M\n\x16writeAddressAttributes\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x0e\n\x06repeat\x18\x07 \x01(\r\x12\x0c\n\x04prio\x18\x06 \x01(\r\"\xf9\x06\n\x10UncoveredAddress\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\r\x12\x19\n\x11uncovered_address\x18\x02 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x03 \x03(\r\x12!\n\x19number_arrive_basicblocks\x18\x04 \x01(\r\x12\'\n\x04kind\x18\x05 \x01(\x0e\x32\x19.dra.UncoveredAddressKind\x12%\n\x1dnumber_dominator_instructions\x18\x06 \x01(\r\x12/\n\x05input\x18\x16 \x03(\x0b\x32 .dra.UncoveredAddress.InputEntry\x12>\n\rwrite_address\x18\x17 \x03(\x0b\x32\'.dra.UncoveredAddress.WriteAddressEntry\x12\r\n\x05\x63ount\x18\x18 \x01(\r\x12\'\n\rrun_time_date\x18\x08 \x01(\x0b\x32\x10.dra.runTimeData\x12K\n\x14write_address_status\x18  \x03(\x0b\x32-.dra.UncoveredAddress.WriteAddressStatusEntry\x12:\n\x0btasks_count\x18! \x03(\x0b\x32%.dra.UncoveredAddress.TasksCountEntry\x12:\n\x0bwrite_count\x18\" \x03(\x0b\x32%.dra.UncoveredAddress.WriteCountEntry\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1aP\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\x1aJ\n\x17WriteAddressStatusEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1e\n\x05value\x18\x02 \x01(\x0e\x32\x0f.dra.taskStatus:\x02\x38\x01\x1a\x31\n\x0fTasksCountEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x31\n\x0fWriteCountEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\x83\x01\n\nDependency\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x30\n\x11uncovered_address\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress\x12(\n\rwrite_address\x18\x03 \x03(\x0b\x32\x11.dra.WriteAddress\"\x9e\x02\n\x16\x46ileOperationsFunction\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1c\n\x14\x66ile_operations_name\x18\x02 \x01(\t\x12\'\n\x04kind\x18\x03 \x01(\x0e\x32\x19.dra.file_operations_kind\x12\x0b\n\x03\x63md\x18\x04 \x01(\x04\x12\'\n\rrun_time_date\x18\x05 \x01(\x0b\x32\x10.dra.runTimeData\x12\x44\n\rwrite_address\x18\x0b \x03(\x0b\x32-.dra.FileOperationsFunction.WriteAddressEntry\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xcd\x01\n\x0e\x46ileOperations\x12\x0c\n\x04name\x18\x01 \x01(\t\x12Q\n\x18\x66ile_operations_function\x18\x03 \x03(\x0b\x32/.dra.FileOperations.FileOperationsFunctionEntry\x1aZ\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\x03\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.FileOperationsFunction:\x02\x38\x01\"j\n\x07\x61\x64\x64ress\x12\x0c\n\x04name\x18\x01 \x01(\t\x12$\n\x04\x61\x64\x64r\x18\x02 \x03(\x0b\x32\x16.dra.address.AddrEntry\x1a+\n\tAddrEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xf1\x01\n\tCondition\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\x04\x12#\n\x1bsyzkaller_condition_address\x18\x02 \x01(\r\x12\x19\n\x11uncovered_address\x18\x03 \x01(\x04\x12#\n\x1bsyzkaller_uncovered_address\x18\x04 \x01(\r\x12\x0b\n\x03idx\x18\x05 \x01(\r\x12\x11\n\tsuccessor\x18\x06 \x01(\x04\x12\x1c\n\x14right_branch_address\x18\x07 \x03(\x04\x12&\n\x1esyzkaller_right_branch_address\x18\x08 \x03(\r\"/\n\nConditions\x12!\n\tcondition\x18\n \x03(\x0b\x32\x0e.dra.Condition\"]\n\x0eWriteAddresses\x12!\n\tcondition\x18\x01 \x01(\x0b\x32\x0e.dra.Condition\x12(\n\rwrite_address\x18\x04 \x03(\x0b\x32\x11.dra.WriteAddress*W\n\x14UncoveredAddressKind\x12\x0b\n\x07Outside\x10\x00\x12\x10\n\x0cInputRelated\x10\x01\x12\x15\n\x11\x44\x65pendencyRelated\x10\x02\x12\t\n\x05Other\x10\x03*\x8d\x01\n\x14\x66ile_operations_kind\x12\x0b\n\x07\x64\x65\x66\x61ult\x10\x00\x12\x08\n\x04init\x10\x01\x12\n\n\x06llseek\x10\x02\x12\x08\n\x04read\x10\x03\x12\t\n\x05write\x10\x04\x12\x08\n\x04poll\x10\t\x12\x12\n\x0eunlocked_ioctl\x10\n\x12\x08\n\x04mmap\x10\x0c\x12\x08\n\x04open\x10\x0e\x12\x0b\n\x07release\x10\x10\x62\x06proto3'
+  serialized_pb=b'\n\x10\x44\x65pendency.proto\x12\x03\x64ra\x1a\x0bInput.proto\x1a\nTask.proto\"\xfc\x03\n\x0cWriteAddress\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x03 \x01(\r\x12\x0c\n\x04kind\x18\x04 \x01(\r\x12\x42\n\x11uncovered_address\x18\x17 \x03(\x0b\x32\'.dra.WriteAddress.UncoveredAddressEntry\x12O\n\x18\x66ile_operations_function\x18\x18 \x03(\x0b\x32-.dra.WriteAddress.FileOperationsFunctionEntry\x12+\n\x05input\x18\x19 \x03(\x0b\x32\x1c.dra.WriteAddress.InputEntry\x12\'\n\rrun_time_date\x18\x0b \x01(\x0b\x32\x10.dra.runTimeData\x1aT\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\x1a=\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"M\n\x16writeAddressAttributes\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x0e\n\x06repeat\x18\x07 \x01(\r\x12\x0c\n\x04prio\x18\x06 \x01(\r\"q\n\x06Status\x12\'\n\x06status\x18\x01 \x03(\x0b\x32\x17.dra.Status.StatusEntry\x1a>\n\x0bStatusEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1e\n\x05value\x18\x02 \x01(\x0e\x32\x0f.dra.taskStatus:\x02\x38\x01\"\xf8\x07\n\x10UncoveredAddress\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\r\x12\x19\n\x11uncovered_address\x18\x02 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x03 \x03(\r\x12!\n\x19number_arrive_basicblocks\x18\x04 \x01(\r\x12\'\n\x04kind\x18\x05 \x01(\x0e\x32\x19.dra.UncoveredAddressKind\x12%\n\x1dnumber_dominator_instructions\x18\x06 \x01(\r\x12/\n\x05input\x18\x16 \x03(\x0b\x32 .dra.UncoveredAddress.InputEntry\x12>\n\rwrite_address\x18\x17 \x03(\x0b\x32\'.dra.UncoveredAddress.WriteAddressEntry\x12\r\n\x05\x63ount\x18\x18 \x01(\r\x12\'\n\rrun_time_date\x18\x08 \x01(\x0b\x32\x10.dra.runTimeData\x12<\n\x0cinput_status\x18\x1f \x03(\x0b\x32&.dra.UncoveredAddress.InputStatusEntry\x12K\n\x14write_address_status\x18  \x03(\x0b\x32-.dra.UncoveredAddress.WriteAddressStatusEntry\x12:\n\x0btasks_count\x18! \x03(\x0b\x32%.dra.UncoveredAddress.TasksCountEntry\x12:\n\x0bwrite_count\x18\" \x03(\x0b\x32%.dra.UncoveredAddress.WriteCountEntry\x1a,\n\nInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1aP\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.writeAddressAttributes:\x02\x38\x01\x1a?\n\x10InputStatusEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1a\n\x05value\x18\x02 \x01(\x0b\x32\x0b.dra.Status:\x02\x38\x01\x1aJ\n\x17WriteAddressStatusEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1e\n\x05value\x18\x02 \x01(\x0e\x32\x0f.dra.taskStatus:\x02\x38\x01\x1a\x31\n\x0fTasksCountEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x31\n\x0fWriteCountEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\x83\x01\n\nDependency\x12\x19\n\x05input\x18\x01 \x01(\x0b\x32\n.dra.Input\x12\x30\n\x11uncovered_address\x18\x02 \x01(\x0b\x32\x15.dra.UncoveredAddress\x12(\n\rwrite_address\x18\x03 \x03(\x0b\x32\x11.dra.WriteAddress\"\x9e\x02\n\x16\x46ileOperationsFunction\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1c\n\x14\x66ile_operations_name\x18\x02 \x01(\t\x12\'\n\x04kind\x18\x03 \x01(\x0e\x32\x19.dra.file_operations_kind\x12\x0b\n\x03\x63md\x18\x04 \x01(\x04\x12\'\n\rrun_time_date\x18\x05 \x01(\x0b\x32\x10.dra.runTimeData\x12\x44\n\rwrite_address\x18\x0b \x03(\x0b\x32-.dra.FileOperationsFunction.WriteAddressEntry\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xcd\x01\n\x0e\x46ileOperations\x12\x0c\n\x04name\x18\x01 \x01(\t\x12Q\n\x18\x66ile_operations_function\x18\x03 \x03(\x0b\x32/.dra.FileOperations.FileOperationsFunctionEntry\x1aZ\n\x1b\x46ileOperationsFunctionEntry\x12\x0b\n\x03key\x18\x01 \x01(\x03\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.dra.FileOperationsFunction:\x02\x38\x01\"j\n\x07\x61\x64\x64ress\x12\x0c\n\x04name\x18\x01 \x01(\t\x12$\n\x04\x61\x64\x64r\x18\x02 \x03(\x0b\x32\x16.dra.address.AddrEntry\x1a+\n\tAddrEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xf1\x01\n\tCondition\x12\x19\n\x11\x63ondition_address\x18\x01 \x01(\x04\x12#\n\x1bsyzkaller_condition_address\x18\x02 \x01(\r\x12\x19\n\x11uncovered_address\x18\x03 \x01(\x04\x12#\n\x1bsyzkaller_uncovered_address\x18\x04 \x01(\r\x12\x0b\n\x03idx\x18\x05 \x01(\r\x12\x11\n\tsuccessor\x18\x06 \x01(\x04\x12\x1c\n\x14right_branch_address\x18\x07 \x03(\x04\x12&\n\x1esyzkaller_right_branch_address\x18\x08 \x03(\r\"/\n\nConditions\x12!\n\tcondition\x18\n \x03(\x0b\x32\x0e.dra.Condition\"]\n\x0eWriteAddresses\x12!\n\tcondition\x18\x01 \x01(\x0b\x32\x0e.dra.Condition\x12(\n\rwrite_address\x18\x04 \x03(\x0b\x32\x11.dra.WriteAddress*W\n\x14UncoveredAddressKind\x12\x0b\n\x07Outside\x10\x00\x12\x10\n\x0cInputRelated\x10\x01\x12\x15\n\x11\x44\x65pendencyRelated\x10\x02\x12\t\n\x05Other\x10\x03*\x8d\x01\n\x14\x66ile_operations_kind\x12\x0b\n\x07\x64\x65\x66\x61ult\x10\x00\x12\x08\n\x04init\x10\x01\x12\n\n\x06llseek\x10\x02\x12\x08\n\x04read\x10\x03\x12\t\n\x05write\x10\x04\x12\x08\n\x04poll\x10\t\x12\x12\n\x0eunlocked_ioctl\x10\n\x12\x08\n\x04mmap\x10\x0c\x12\x08\n\x04open\x10\x0e\x12\x0b\n\x07release\x10\x10\x62\x06proto3'
   ,
   dependencies=[Input__pb2.DESCRIPTOR,Task__pb2.DESCRIPTOR,])
 
@@ -50,8 +50,8 @@ _UNCOVEREDADDRESSKIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2659,
-  serialized_end=2746,
+  serialized_start=2901,
+  serialized_end=2988,
 )
 _sym_db.RegisterEnumDescriptor(_UNCOVEREDADDRESSKIND)
 
@@ -105,8 +105,8 @@ _FILE_OPERATIONS_KIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2749,
-  serialized_end=2890,
+  serialized_start=2991,
+  serialized_end=3132,
 )
 _sym_db.RegisterEnumDescriptor(_FILE_OPERATIONS_KIND)
 
@@ -357,6 +357,74 @@ _WRITEADDRESSATTRIBUTES = _descriptor.Descriptor(
 )
 
 
+_STATUS_STATUSENTRY = _descriptor.Descriptor(
+  name='StatusEntry',
+  full_name='dra.Status.StatusEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='dra.Status.StatusEntry.key', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='dra.Status.StatusEntry.value', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=691,
+  serialized_end=753,
+)
+
+_STATUS = _descriptor.Descriptor(
+  name='Status',
+  full_name='dra.Status',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='status', full_name='dra.Status.status', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_STATUS_STATUSENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=640,
+  serialized_end=753,
+)
+
+
 _UNCOVEREDADDRESS_INPUTENTRY = _descriptor.Descriptor(
   name='InputEntry',
   full_name='dra.UncoveredAddress.InputEntry',
@@ -427,8 +495,45 @@ _UNCOVEREDADDRESS_WRITEADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1272,
-  serialized_end=1352,
+  serialized_start=1449,
+  serialized_end=1529,
+)
+
+_UNCOVEREDADDRESS_INPUTSTATUSENTRY = _descriptor.Descriptor(
+  name='InputStatusEntry',
+  full_name='dra.UncoveredAddress.InputStatusEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='dra.UncoveredAddress.InputStatusEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='dra.UncoveredAddress.InputStatusEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1531,
+  serialized_end=1594,
 )
 
 _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY = _descriptor.Descriptor(
@@ -464,8 +569,8 @@ _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1354,
-  serialized_end=1428,
+  serialized_start=1596,
+  serialized_end=1670,
 )
 
 _UNCOVEREDADDRESS_TASKSCOUNTENTRY = _descriptor.Descriptor(
@@ -501,8 +606,8 @@ _UNCOVEREDADDRESS_TASKSCOUNTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1430,
-  serialized_end=1479,
+  serialized_start=1672,
+  serialized_end=1721,
 )
 
 _UNCOVEREDADDRESS_WRITECOUNTENTRY = _descriptor.Descriptor(
@@ -538,8 +643,8 @@ _UNCOVEREDADDRESS_WRITECOUNTENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1481,
-  serialized_end=1530,
+  serialized_start=1723,
+  serialized_end=1772,
 )
 
 _UNCOVEREDADDRESS = _descriptor.Descriptor(
@@ -620,21 +725,28 @@ _UNCOVEREDADDRESS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='write_address_status', full_name='dra.UncoveredAddress.write_address_status', index=10,
+      name='input_status', full_name='dra.UncoveredAddress.input_status', index=10,
+      number=31, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='write_address_status', full_name='dra.UncoveredAddress.write_address_status', index=11,
       number=32, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tasks_count', full_name='dra.UncoveredAddress.tasks_count', index=11,
+      name='tasks_count', full_name='dra.UncoveredAddress.tasks_count', index=12,
       number=33, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='write_count', full_name='dra.UncoveredAddress.write_count', index=12,
+      name='write_count', full_name='dra.UncoveredAddress.write_count', index=13,
       number=34, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -643,7 +755,7 @@ _UNCOVEREDADDRESS = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_UNCOVEREDADDRESS_INPUTENTRY, _UNCOVEREDADDRESS_WRITEADDRESSENTRY, _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY, _UNCOVEREDADDRESS_TASKSCOUNTENTRY, _UNCOVEREDADDRESS_WRITECOUNTENTRY, ],
+  nested_types=[_UNCOVEREDADDRESS_INPUTENTRY, _UNCOVEREDADDRESS_WRITEADDRESSENTRY, _UNCOVEREDADDRESS_INPUTSTATUSENTRY, _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY, _UNCOVEREDADDRESS_TASKSCOUNTENTRY, _UNCOVEREDADDRESS_WRITECOUNTENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -652,8 +764,8 @@ _UNCOVEREDADDRESS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=641,
-  serialized_end=1530,
+  serialized_start=756,
+  serialized_end=1772,
 )
 
 
@@ -697,8 +809,8 @@ _DEPENDENCY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1533,
-  serialized_end=1664,
+  serialized_start=1775,
+  serialized_end=1906,
 )
 
 
@@ -735,8 +847,8 @@ _FILEOPERATIONSFUNCTION_WRITEADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1902,
-  serialized_end=1953,
+  serialized_start=2144,
+  serialized_end=2195,
 )
 
 _FILEOPERATIONSFUNCTION = _descriptor.Descriptor(
@@ -800,8 +912,8 @@ _FILEOPERATIONSFUNCTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1667,
-  serialized_end=1953,
+  serialized_start=1909,
+  serialized_end=2195,
 )
 
 
@@ -838,8 +950,8 @@ _FILEOPERATIONS_FILEOPERATIONSFUNCTIONENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2071,
-  serialized_end=2161,
+  serialized_start=2313,
+  serialized_end=2403,
 )
 
 _FILEOPERATIONS = _descriptor.Descriptor(
@@ -875,8 +987,8 @@ _FILEOPERATIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1956,
-  serialized_end=2161,
+  serialized_start=2198,
+  serialized_end=2403,
 )
 
 
@@ -913,8 +1025,8 @@ _ADDRESS_ADDRENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2226,
-  serialized_end=2269,
+  serialized_start=2468,
+  serialized_end=2511,
 )
 
 _ADDRESS = _descriptor.Descriptor(
@@ -950,8 +1062,8 @@ _ADDRESS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2163,
-  serialized_end=2269,
+  serialized_start=2405,
+  serialized_end=2511,
 )
 
 
@@ -1030,8 +1142,8 @@ _CONDITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2272,
-  serialized_end=2513,
+  serialized_start=2514,
+  serialized_end=2755,
 )
 
 
@@ -1061,8 +1173,8 @@ _CONDITIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2515,
-  serialized_end=2562,
+  serialized_start=2757,
+  serialized_end=2804,
 )
 
 
@@ -1099,8 +1211,8 @@ _WRITEADDRESSES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2564,
-  serialized_end=2657,
+  serialized_start=2806,
+  serialized_end=2899,
 )
 
 _WRITEADDRESS_UNCOVEREDADDRESSENTRY.fields_by_name['value'].message_type = _WRITEADDRESSATTRIBUTES
@@ -1111,9 +1223,14 @@ _WRITEADDRESS.fields_by_name['uncovered_address'].message_type = _WRITEADDRESS_U
 _WRITEADDRESS.fields_by_name['file_operations_function'].message_type = _WRITEADDRESS_FILEOPERATIONSFUNCTIONENTRY
 _WRITEADDRESS.fields_by_name['input'].message_type = _WRITEADDRESS_INPUTENTRY
 _WRITEADDRESS.fields_by_name['run_time_date'].message_type = Task__pb2._RUNTIMEDATA
+_STATUS_STATUSENTRY.fields_by_name['value'].enum_type = Task__pb2._TASKSTATUS
+_STATUS_STATUSENTRY.containing_type = _STATUS
+_STATUS.fields_by_name['status'].message_type = _STATUS_STATUSENTRY
 _UNCOVEREDADDRESS_INPUTENTRY.containing_type = _UNCOVEREDADDRESS
 _UNCOVEREDADDRESS_WRITEADDRESSENTRY.fields_by_name['value'].message_type = _WRITEADDRESSATTRIBUTES
 _UNCOVEREDADDRESS_WRITEADDRESSENTRY.containing_type = _UNCOVEREDADDRESS
+_UNCOVEREDADDRESS_INPUTSTATUSENTRY.fields_by_name['value'].message_type = _STATUS
+_UNCOVEREDADDRESS_INPUTSTATUSENTRY.containing_type = _UNCOVEREDADDRESS
 _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY.fields_by_name['value'].enum_type = Task__pb2._TASKSTATUS
 _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY.containing_type = _UNCOVEREDADDRESS
 _UNCOVEREDADDRESS_TASKSCOUNTENTRY.containing_type = _UNCOVEREDADDRESS
@@ -1122,6 +1239,7 @@ _UNCOVEREDADDRESS.fields_by_name['kind'].enum_type = _UNCOVEREDADDRESSKIND
 _UNCOVEREDADDRESS.fields_by_name['input'].message_type = _UNCOVEREDADDRESS_INPUTENTRY
 _UNCOVEREDADDRESS.fields_by_name['write_address'].message_type = _UNCOVEREDADDRESS_WRITEADDRESSENTRY
 _UNCOVEREDADDRESS.fields_by_name['run_time_date'].message_type = Task__pb2._RUNTIMEDATA
+_UNCOVEREDADDRESS.fields_by_name['input_status'].message_type = _UNCOVEREDADDRESS_INPUTSTATUSENTRY
 _UNCOVEREDADDRESS.fields_by_name['write_address_status'].message_type = _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY
 _UNCOVEREDADDRESS.fields_by_name['tasks_count'].message_type = _UNCOVEREDADDRESS_TASKSCOUNTENTRY
 _UNCOVEREDADDRESS.fields_by_name['write_count'].message_type = _UNCOVEREDADDRESS_WRITECOUNTENTRY
@@ -1142,6 +1260,7 @@ _WRITEADDRESSES.fields_by_name['condition'].message_type = _CONDITION
 _WRITEADDRESSES.fields_by_name['write_address'].message_type = _WRITEADDRESS
 DESCRIPTOR.message_types_by_name['WriteAddress'] = _WRITEADDRESS
 DESCRIPTOR.message_types_by_name['writeAddressAttributes'] = _WRITEADDRESSATTRIBUTES
+DESCRIPTOR.message_types_by_name['Status'] = _STATUS
 DESCRIPTOR.message_types_by_name['UncoveredAddress'] = _UNCOVEREDADDRESS
 DESCRIPTOR.message_types_by_name['Dependency'] = _DEPENDENCY
 DESCRIPTOR.message_types_by_name['FileOperationsFunction'] = _FILEOPERATIONSFUNCTION
@@ -1192,6 +1311,21 @@ writeAddressAttributes = _reflection.GeneratedProtocolMessageType('writeAddressA
   })
 _sym_db.RegisterMessage(writeAddressAttributes)
 
+Status = _reflection.GeneratedProtocolMessageType('Status', (_message.Message,), {
+
+  'StatusEntry' : _reflection.GeneratedProtocolMessageType('StatusEntry', (_message.Message,), {
+    'DESCRIPTOR' : _STATUS_STATUSENTRY,
+    '__module__' : 'Dependency_pb2'
+    # @@protoc_insertion_point(class_scope:dra.Status.StatusEntry)
+    })
+  ,
+  'DESCRIPTOR' : _STATUS,
+  '__module__' : 'Dependency_pb2'
+  # @@protoc_insertion_point(class_scope:dra.Status)
+  })
+_sym_db.RegisterMessage(Status)
+_sym_db.RegisterMessage(Status.StatusEntry)
+
 UncoveredAddress = _reflection.GeneratedProtocolMessageType('UncoveredAddress', (_message.Message,), {
 
   'InputEntry' : _reflection.GeneratedProtocolMessageType('InputEntry', (_message.Message,), {
@@ -1205,6 +1339,13 @@ UncoveredAddress = _reflection.GeneratedProtocolMessageType('UncoveredAddress', 
     'DESCRIPTOR' : _UNCOVEREDADDRESS_WRITEADDRESSENTRY,
     '__module__' : 'Dependency_pb2'
     # @@protoc_insertion_point(class_scope:dra.UncoveredAddress.WriteAddressEntry)
+    })
+  ,
+
+  'InputStatusEntry' : _reflection.GeneratedProtocolMessageType('InputStatusEntry', (_message.Message,), {
+    'DESCRIPTOR' : _UNCOVEREDADDRESS_INPUTSTATUSENTRY,
+    '__module__' : 'Dependency_pb2'
+    # @@protoc_insertion_point(class_scope:dra.UncoveredAddress.InputStatusEntry)
     })
   ,
 
@@ -1235,6 +1376,7 @@ UncoveredAddress = _reflection.GeneratedProtocolMessageType('UncoveredAddress', 
 _sym_db.RegisterMessage(UncoveredAddress)
 _sym_db.RegisterMessage(UncoveredAddress.InputEntry)
 _sym_db.RegisterMessage(UncoveredAddress.WriteAddressEntry)
+_sym_db.RegisterMessage(UncoveredAddress.InputStatusEntry)
 _sym_db.RegisterMessage(UncoveredAddress.WriteAddressStatusEntry)
 _sym_db.RegisterMessage(UncoveredAddress.TasksCountEntry)
 _sym_db.RegisterMessage(UncoveredAddress.WriteCountEntry)
@@ -1316,8 +1458,10 @@ _sym_db.RegisterMessage(WriteAddresses)
 _WRITEADDRESS_UNCOVEREDADDRESSENTRY._options = None
 _WRITEADDRESS_FILEOPERATIONSFUNCTIONENTRY._options = None
 _WRITEADDRESS_INPUTENTRY._options = None
+_STATUS_STATUSENTRY._options = None
 _UNCOVEREDADDRESS_INPUTENTRY._options = None
 _UNCOVEREDADDRESS_WRITEADDRESSENTRY._options = None
+_UNCOVEREDADDRESS_INPUTSTATUSENTRY._options = None
 _UNCOVEREDADDRESS_WRITEADDRESSSTATUSENTRY._options = None
 _UNCOVEREDADDRESS_TASKSCOUNTENTRY._options = None
 _UNCOVEREDADDRESS_WRITECOUNTENTRY._options = None

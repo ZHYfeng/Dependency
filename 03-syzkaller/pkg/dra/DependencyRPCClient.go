@@ -32,7 +32,11 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	d.Connect(name)
 	if CheckCondition {
 		d.MuDependency = &sync.RWMutex{}
-		d.DataDependency = &DataDependency{}
+		d.MuDependency.Lock()
+		d.DataDependency = &DataDependency{
+			Input: map[string]*Input{},
+		}
+		d.MuDependency.Unlock()
 	}
 }
 
@@ -56,7 +60,12 @@ func (d *DRPCClient) GetDataDependency() {
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not Connect: %v", err)
 	}
+	d.MuDependency.Lock()
+	defer d.MuDependency.Unlock()
 	d.DataDependency = proto.Clone(replay).(*DataDependency)
+	if d.DataDependency.Input == nil {
+		d.DataDependency.Input = map[string]*Input{}
+	}
 	return
 }
 

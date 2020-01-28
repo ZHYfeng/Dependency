@@ -203,7 +203,7 @@ func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 		ss.fuzzers[name] = &syzFuzzer{
 			MuDependency:   &sync.RWMutex{},
 			MuRunTime:      &sync.Mutex{},
-			dataDependency: nil,
+			dataDependency: &DataDependency{},
 			dataRunTime: &DataRunTime{
 				Tasks:      &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
 				Return:     &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
@@ -221,14 +221,21 @@ func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 func (ss Server) GetDataDependency(_ context.Context, request *Empty) (*DataDependency, error) {
 
 	name := request.Name
-	replay := &DataDependency{}
+	replay := &DataDependency{
+		Input: map[string]*Input{},
+	}
+	ss.MuFuzzer.Lock()
 	f, ok := ss.fuzzers[name]
-	if !ok {
+	ss.MuFuzzer.Unlock()
+	if ok {
 		f.MuDependency.RLock()
-		defer f.MuDependency.RUnlock()
 		replay = proto.Clone(f.dataDependency).(*DataDependency)
+		f.MuDependency.RUnlock()
 	} else {
-
+		for n := range ss.fuzzers {
+			log.Logf(0, "GetDataDependency name : %s", n)
+		}
+		log.Fatalf("GetDataDependency with error name : %s", name)
 	}
 	return replay, nil
 }
@@ -569,7 +576,10 @@ func (ss *Server) Update() {
 					delete(t.UncoveredAddress, u)
 				}
 			}
+		} else {
+			ss.dataRunTime.Tasks.AddTask(task)
 		}
+		ss.dataDependency.updateUncoveredAddress(task)
 	}
 	sort.Slice(ss.dataRunTime.Tasks.TaskArray, func(i, j int) bool {
 		return ss.dataRunTime.Tasks.TaskArray[i].getRealPriority() < ss.dataRunTime.Tasks.TaskArray[j].getRealPriority()
@@ -627,12 +637,9 @@ func (ss *Server) Update() {
 							t.TaskStatus = TaskStatus_testing
 							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
-						} else if t.TaskStatus == TaskStatus_testing {
+						} else if t.TaskStatus < TaskStatus_tested {
 							t.reducePriority()
 							task = append(task, t)
-						} else if t.TaskStatus == TaskStatus_unstable {
-							t.reducePriority()
-							task = append(task, proto.Clone(t).(*Task))
 						}
 						if len(task) > TaskNum {
 							break
@@ -762,7 +769,7 @@ func (ss *Server) Update() {
 			unstableInput[sig] = ui
 		}
 		ss.unstableInputs = &UnstableInputs{
-			UnstableInput: nil,
+			UnstableInput: map[string]*UnstableInput{},
 		}
 		ss.unstableInputMu.Unlock()
 		for sig, ui := range unstableInput {

@@ -53,7 +53,7 @@ struct TableStruct_Dependency_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[21]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[24]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -82,12 +82,21 @@ extern FileOperationsFunction_WriteAddressEntry_DoNotUseDefaultTypeInternal _Fil
 class FileOperations_FileOperationsFunctionEntry_DoNotUse;
 class FileOperations_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal;
 extern FileOperations_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal _FileOperations_FileOperationsFunctionEntry_DoNotUse_default_instance_;
+class Status;
+class StatusDefaultTypeInternal;
+extern StatusDefaultTypeInternal _Status_default_instance_;
+class Status_StatusEntry_DoNotUse;
+class Status_StatusEntry_DoNotUseDefaultTypeInternal;
+extern Status_StatusEntry_DoNotUseDefaultTypeInternal _Status_StatusEntry_DoNotUse_default_instance_;
 class UncoveredAddress;
 class UncoveredAddressDefaultTypeInternal;
 extern UncoveredAddressDefaultTypeInternal _UncoveredAddress_default_instance_;
 class UncoveredAddress_InputEntry_DoNotUse;
 class UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal;
 extern UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_InputEntry_DoNotUse_default_instance_;
+class UncoveredAddress_InputStatusEntry_DoNotUse;
+class UncoveredAddress_InputStatusEntry_DoNotUseDefaultTypeInternal;
+extern UncoveredAddress_InputStatusEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_InputStatusEntry_DoNotUse_default_instance_;
 class UncoveredAddress_TasksCountEntry_DoNotUse;
 class UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal;
 extern UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_TasksCountEntry_DoNotUse_default_instance_;
@@ -133,8 +142,11 @@ template<> ::dra::FileOperations* Arena::CreateMaybeMessage<::dra::FileOperation
 template<> ::dra::FileOperationsFunction* Arena::CreateMaybeMessage<::dra::FileOperationsFunction>(Arena*);
 template<> ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse>(Arena*);
 template<> ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse>(Arena*);
+template<> ::dra::Status* Arena::CreateMaybeMessage<::dra::Status>(Arena*);
+template<> ::dra::Status_StatusEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::Status_StatusEntry_DoNotUse>(Arena*);
 template<> ::dra::UncoveredAddress* Arena::CreateMaybeMessage<::dra::UncoveredAddress>(Arena*);
 template<> ::dra::UncoveredAddress_InputEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_InputEntry_DoNotUse>(Arena*);
+template<> ::dra::UncoveredAddress_InputStatusEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_InputStatusEntry_DoNotUse>(Arena*);
 template<> ::dra::UncoveredAddress_TasksCountEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_TasksCountEntry_DoNotUse>(Arena*);
 template<> ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_WriteAddressEntry_DoNotUse>(Arena*);
 template<> ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse* Arena::CreateMaybeMessage<::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse>(Arena*);
@@ -696,6 +708,178 @@ class writeAddressAttributes :
 };
 // -------------------------------------------------------------------
 
+class Status_StatusEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Status_StatusEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<Status_StatusEntry_DoNotUse, 
+    ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM,
+    0 > SuperType;
+  Status_StatusEntry_DoNotUse();
+  Status_StatusEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const Status_StatusEntry_DoNotUse& other);
+  static const Status_StatusEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const Status_StatusEntry_DoNotUse*>(&_Status_StatusEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(void*) { return true; }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[5];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class Status :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:dra.Status) */ {
+ public:
+  Status();
+  virtual ~Status();
+
+  Status(const Status& from);
+  Status(Status&& from) noexcept
+    : Status() {
+    *this = ::std::move(from);
+  }
+
+  inline Status& operator=(const Status& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Status& operator=(Status&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const Status& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const Status* internal_default_instance() {
+    return reinterpret_cast<const Status*>(
+               &_Status_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(Status& a, Status& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Status* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Status* New() const final {
+    return CreateMaybeMessage<Status>(nullptr);
+  }
+
+  Status* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Status>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const Status& from);
+  void MergeFrom(const Status& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Status* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "dra.Status";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kStatusFieldNumber = 1,
+  };
+  // map<uint32, .dra.taskStatus> status = 1;
+  int status_size() const;
+  private:
+  int _internal_status_size() const;
+  public:
+  void clear_status();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+      _internal_status() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+      _internal_mutable_status();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+      status() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+      mutable_status();
+
+  // @@protoc_insertion_point(class_scope:dra.Status)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      Status_StatusEntry_DoNotUse,
+      ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM,
+      0 > status_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Dependency_2eproto;
+};
+// -------------------------------------------------------------------
+
 class UncoveredAddress_InputEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_InputEntry_DoNotUse, 
     std::string, ::PROTOBUF_NAMESPACE_ID::uint32,
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
@@ -720,7 +904,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[5];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[7];
   }
 
   public:
@@ -750,7 +934,39 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[6];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[8];
+  }
+
+  public:
+};
+
+// -------------------------------------------------------------------
+
+class UncoveredAddress_InputStatusEntry_DoNotUse : public ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_InputStatusEntry_DoNotUse, 
+    std::string, ::dra::Status,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > {
+public:
+  typedef ::PROTOBUF_NAMESPACE_ID::internal::MapEntry<UncoveredAddress_InputStatusEntry_DoNotUse, 
+    std::string, ::dra::Status,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+    0 > SuperType;
+  UncoveredAddress_InputStatusEntry_DoNotUse();
+  UncoveredAddress_InputStatusEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void MergeFrom(const UncoveredAddress_InputStatusEntry_DoNotUse& other);
+  static const UncoveredAddress_InputStatusEntry_DoNotUse* internal_default_instance() { return reinterpret_cast<const UncoveredAddress_InputStatusEntry_DoNotUse*>(&_UncoveredAddress_InputStatusEntry_DoNotUse_default_instance_); }
+  static bool ValidateKey(std::string* s) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(s->data(), static_cast<int>(s->size()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE, "dra.UncoveredAddress.InputStatusEntry.key");
+ }
+  static bool ValidateValue(void*) { return true; }
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& other) final;
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[9];
   }
 
   public:
@@ -780,7 +996,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[7];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[10];
   }
 
   public:
@@ -810,7 +1026,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[8];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[11];
   }
 
   public:
@@ -840,7 +1056,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[9];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[12];
   }
 
   public:
@@ -890,7 +1106,7 @@ class UncoveredAddress :
                &_UncoveredAddress_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    13;
 
   friend void swap(UncoveredAddress& a, UncoveredAddress& b) {
     a.Swap(&b);
@@ -958,6 +1174,7 @@ class UncoveredAddress :
     kRightBranchAddressFieldNumber = 3,
     kInputFieldNumber = 22,
     kWriteAddressFieldNumber = 23,
+    kInputStatusFieldNumber = 31,
     kWriteAddressStatusFieldNumber = 32,
     kTasksCountFieldNumber = 33,
     kWriteCountFieldNumber = 34,
@@ -1024,6 +1241,23 @@ class UncoveredAddress :
       write_address() const;
   ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::writeAddressAttributes >*
       mutable_write_address();
+
+  // map<string, .dra.Status> input_status = 31;
+  int input_status_size() const;
+  private:
+  int _internal_input_status_size() const;
+  public:
+  void clear_input_status();
+  private:
+  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >&
+      _internal_input_status() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >*
+      _internal_mutable_input_status();
+  public:
+  const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >&
+      input_status() const;
+  ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >*
+      mutable_input_status();
 
   // map<uint32, .dra.taskStatus> write_address_status = 32;
   int write_address_status_size() const;
@@ -1165,6 +1399,12 @@ class UncoveredAddress :
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
       0 > write_address_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
+      UncoveredAddress_InputStatusEntry_DoNotUse,
+      std::string, ::dra::Status,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
+      0 > input_status_;
+  ::PROTOBUF_NAMESPACE_ID::internal::MapField<
       UncoveredAddress_WriteAddressStatusEntry_DoNotUse,
       ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
@@ -1236,7 +1476,7 @@ class Dependency :
                &_Dependency_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    14;
 
   friend void swap(Dependency& a, Dependency& b) {
     a.Swap(&b);
@@ -1387,7 +1627,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[12];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[15];
   }
 
   public:
@@ -1437,7 +1677,7 @@ class FileOperationsFunction :
                &_FileOperationsFunction_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    16;
 
   friend void swap(FileOperationsFunction& a, FileOperationsFunction& b) {
     a.Swap(&b);
@@ -1634,7 +1874,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[14];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[17];
   }
 
   public:
@@ -1684,7 +1924,7 @@ class FileOperations :
                &_FileOperations_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    18;
 
   friend void swap(FileOperations& a, FileOperations& b) {
     a.Swap(&b);
@@ -1828,7 +2068,7 @@ public:
   private:
   static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
     ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_Dependency_2eproto);
-    return ::descriptor_table_Dependency_2eproto.file_level_metadata[16];
+    return ::descriptor_table_Dependency_2eproto.file_level_metadata[19];
   }
 
   public:
@@ -1878,7 +2118,7 @@ class address :
                &_address_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    20;
 
   friend void swap(address& a, address& b) {
     a.Swap(&b);
@@ -2038,7 +2278,7 @@ class Condition :
                &_Condition_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    21;
 
   friend void swap(Condition& a, Condition& b) {
     a.Swap(&b);
@@ -2271,7 +2511,7 @@ class Conditions :
                &_Conditions_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    22;
 
   friend void swap(Conditions& a, Conditions& b) {
     a.Swap(&b);
@@ -2408,7 +2648,7 @@ class WriteAddresses :
                &_WriteAddresses_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    23;
 
   friend void swap(WriteAddresses& a, WriteAddresses& b) {
     a.Swap(&b);
@@ -2804,6 +3044,43 @@ inline void writeAddressAttributes::set_prio(::PROTOBUF_NAMESPACE_ID::uint32 val
 
 // -------------------------------------------------------------------
 
+// Status
+
+// map<uint32, .dra.taskStatus> status = 1;
+inline int Status::_internal_status_size() const {
+  return status_.size();
+}
+inline int Status::status_size() const {
+  return _internal_status_size();
+}
+inline void Status::clear_status() {
+  status_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+Status::_internal_status() const {
+  return status_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >&
+Status::status() const {
+  // @@protoc_insertion_point(field_map:dra.Status.status)
+  return _internal_status();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+Status::_internal_mutable_status() {
+  return status_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::taskStatus >*
+Status::mutable_status() {
+  // @@protoc_insertion_point(field_mutable_map:dra.Status.status)
+  return _internal_mutable_status();
+}
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -3091,6 +3368,35 @@ inline void UncoveredAddress::set_allocated_run_time_date(::dra::runTimeData* ru
   }
   run_time_date_ = run_time_date;
   // @@protoc_insertion_point(field_set_allocated:dra.UncoveredAddress.run_time_date)
+}
+
+// map<string, .dra.Status> input_status = 31;
+inline int UncoveredAddress::_internal_input_status_size() const {
+  return input_status_.size();
+}
+inline int UncoveredAddress::input_status_size() const {
+  return _internal_input_status_size();
+}
+inline void UncoveredAddress::clear_input_status() {
+  input_status_.Clear();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >&
+UncoveredAddress::_internal_input_status() const {
+  return input_status_.GetMap();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >&
+UncoveredAddress::input_status() const {
+  // @@protoc_insertion_point(field_map:dra.UncoveredAddress.input_status)
+  return _internal_input_status();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >*
+UncoveredAddress::_internal_mutable_input_status() {
+  return input_status_.MutableMap();
+}
+inline ::PROTOBUF_NAMESPACE_ID::Map< std::string, ::dra::Status >*
+UncoveredAddress::mutable_input_status() {
+  // @@protoc_insertion_point(field_mutable_map:dra.UncoveredAddress.input_status)
+  return _internal_mutable_input_status();
 }
 
 // map<uint32, .dra.taskStatus> write_address_status = 32;
@@ -4143,6 +4449,12 @@ WriteAddresses::write_address() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
