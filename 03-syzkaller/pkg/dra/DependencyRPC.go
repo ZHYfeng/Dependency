@@ -1162,7 +1162,7 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 				for n := range ua.WriteAddressStatus {
 					log.Logf(0, "ua.WriteAddressStatus : %x", n)
 				}
-				log.Fatalf("updateUncoveredAddress : can not find the t.WriteAddress : %x", t.WriteAddress)
+				log.Logf(0, "updateUncoveredAddress : can not find the t.WriteAddress : %x", t.WriteAddress)
 			}
 
 			status, ok := ua.InputStatus[t.Sig]
@@ -1229,15 +1229,16 @@ func (m *DataDependency) GetTaskByInput(input *Input) (*UncoveredAddress, []*Tas
 	for index, call := range input.Call {
 		indexBits := uint32(1) << index
 		if ua, ok := m.getUncoveredAddressInCall(call); ok {
-			for w := range ua.WriteAddress {
+			for w, _ := range ua.WriteAddress {
 				if wa, ok := m.WriteAddress[w]; ok {
 					for writeSig, wiBits := range wa.Input {
+						res += fmt.Sprintf("get task : uncovered address : %x : write address : %x\n", ua.UncoveredAddress, w)
 						tasks = append(tasks, m.getTasks(input.Sig, indexBits, writeSig, wiBits, w, ua.UncoveredAddress)...)
 					}
 				}
 			}
 			if len(tasks) > 0 {
-				res += "get tasks of " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress-5) + "\n"
+				res += "get tasks of " + fmt.Sprintf("%x", ua.UncoveredAddress) + "\n"
 				res += fmt.Sprintf("number of tasks : %d\n", len(tasks))
 				uua = ua
 				break
