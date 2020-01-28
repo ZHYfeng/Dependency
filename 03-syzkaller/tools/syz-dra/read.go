@@ -21,7 +21,7 @@ func read(path string) {
 		d := &device{}
 		d.read(path)
 	} else if strings.HasPrefix(baseName, pb.NameWithDra) || strings.HasPrefix(baseName, pb.NameWithoutDra) {
-		fmt.Printf("nameWithDra\n")
+		fmt.Printf("nameWithDra or NameWithoutDra\n")
 		r := &results{}
 		r.read(path)
 	} else {

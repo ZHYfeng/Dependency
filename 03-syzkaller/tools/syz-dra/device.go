@@ -183,7 +183,7 @@ func (d *device) checkUncoveredAddress() {
 		})
 		res += "*******************************************\n"
 		for _, uaa := range ua {
-			res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
+			res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress)
 			res += " #inst : " + fmt.Sprintf("%4d", uaa.NumberDominatorInstructions)
 			res += " #input : " + fmt.Sprintf("%3d", len(uaa.Input))
 			res += " #write : " + fmt.Sprintf("%3d", len(uaa.WriteAddress))

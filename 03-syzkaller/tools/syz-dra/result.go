@@ -100,8 +100,8 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
 	res := ""
 	res += "*******************************************\n"
-	res += "condition address : " + fmt.Sprintf("0xffffffff%x", ua.ConditionAddress-5) + "\n"
-	res += "uncovered address : " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress-5) + "\n"
+	res += "condition address : " + fmt.Sprintf("0xffffffff%x", ua.ConditionAddress) + "\n"
+	res += "uncovered address : " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress) + "\n"
 	res += "number_arrive_basic_blocks : " + fmt.Sprintf("%d", ua.NumberArriveBasicblocks) + "\n"
 	res += "number_dominator_instructions(using) : " + fmt.Sprintf("%d", ua.NumberDominatorInstructions) + "\n"
 	res += "*******************************************\n"
@@ -125,17 +125,17 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 	ua.WriteAddressStatus = map[uint32]pb.TaskStatus{}
 	res += "# write : " + fmt.Sprintf("%d", len(ua.WriteAddress)) + "\n"
 	if len(ua.WriteAddress) == 0 {
-		res += "not find write address of " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress-5) + "\n"
+		res += "not find write address of " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress) + "\n"
 	} else {
 		for wa, waa := range ua.WriteAddress {
 			ua.WriteAddressStatus[wa] = pb.TaskStatus_not_find_write_address
 			res += "-------------------------------------------\n"
-			res += "## write address : " + fmt.Sprintf("0xffffffff%x", wa-5) + "\n"
+			res += "## write address : " + fmt.Sprintf("0xffffffff%x", wa) + "\n"
 			res += "Repeat : " + fmt.Sprintf("%d", waa.Repeat) + "\n"
 			res += "Priority : " + fmt.Sprintf("%d", waa.Prio) + "\n"
 			if waaa, ok := r.dataDependency.WriteAddress[wa]; ok {
 				if len(waaa.Input) == 0 {
-					res += "not find write input : " + fmt.Sprintf("0xffffffff%x", wa-5) + "\n"
+					res += "not find write input : " + fmt.Sprintf("0xffffffff%x", wa) + "\n"
 					if ua.RunTimeDate.TaskStatus < pb.TaskStatus_not_find_write_input {
 						ua.RunTimeDate.TaskStatus = pb.TaskStatus_not_find_write_input
 					}
@@ -159,7 +159,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
 				}
 			} else {
-				res += "not find write address : " + fmt.Sprintf("0xffffffff%x", wa-5) + "\n"
+				res += "not find write address : " + fmt.Sprintf("0xffffffff%x", wa) + "\n"
 				if ua.RunTimeDate.TaskStatus < pb.TaskStatus_not_find_write_address {
 					ua.RunTimeDate.TaskStatus = pb.TaskStatus_not_find_write_address
 				}
@@ -195,7 +195,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		res += "uncovered address priority : " + fmt.Sprintf("%d", priority) + "\n"
 		res += "condition program : " + fmt.Sprintf("%d", t.Index) + " : " + t.Sig + "\n"
 		res += fmt.Sprintf("%s", t.Program) + "\n"
-		res += "write address : " + fmt.Sprintf("0xffffffff%x", t.WriteAddress-5) + "\n"
+		res += "write address : " + fmt.Sprintf("0xffffffff%x", t.WriteAddress) + "\n"
 		res += "write program : " + fmt.Sprintf("%d", t.WriteIndex) + " : " + t.WriteSig + "\n"
 		res += fmt.Sprintf("%s", t.WriteProgram) + "\n"
 
