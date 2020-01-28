@@ -227,7 +227,7 @@ func (ss Server) GetDataDependency(_ context.Context, request *Empty) (*DataDepe
 	ss.MuFuzzer.Lock()
 	f, ok := ss.fuzzers[name]
 	ss.MuFuzzer.Unlock()
-	if !ok {
+	if ok {
 		f.MuDependency.RLock()
 		replay = proto.Clone(f.dataDependency).(*DataDependency)
 		f.MuDependency.RUnlock()
