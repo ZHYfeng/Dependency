@@ -86,7 +86,7 @@ func (d *device) checkCoverage() {
 
 	solvedCondition := map[uint32]*pb.RunTimeData{}
 	for _, r := range d.resultsWithDra.result {
-		for _, t := range r.data.Tasks.TaskArray {
+		for _, t := range r.dataRunTime.Tasks.TaskArray {
 			for ca, rt := range t.CoveredAddress {
 				solvedCondition[ca] = rt
 			}
@@ -135,7 +135,7 @@ func (d *device) checkUncoveredAddress() {
 
 	res := ""
 	res += "*******************************************\n"
-	res += "number of uncovered address      : " + fmt.Sprintf("%5d", len(d.base.data.UncoveredAddress)) + "\n"
+	res += "number of uncovered address      : " + fmt.Sprintf("%5d", len(d.base.dataDependency.UncoveredAddress)) + "\n"
 	res += "related to dependency            : " + fmt.Sprintf("%5d", len(d.base.uncoveredAddressDependency)) + "\n"
 	res += "covered by syzkaller with dra    : " + fmt.Sprintf("%5d", len(UADCW)) + "\n"
 	res += "covered by dependency mutate     : " + fmt.Sprintf("%5d", len(UADCWD)) + "\n"
