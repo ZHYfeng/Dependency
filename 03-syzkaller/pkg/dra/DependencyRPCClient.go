@@ -63,6 +63,9 @@ func (d *DRPCClient) GetDataDependency() {
 	d.MuDependency.Lock()
 	defer d.MuDependency.Unlock()
 	d.DataDependency = proto.Clone(replay).(*DataDependency)
+	if d.DataDependency.Input == nil {
+		d.DataDependency.Input = map[string]*Input{}
+	}
 	return
 }
 

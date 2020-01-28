@@ -203,7 +203,7 @@ func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 		ss.fuzzers[name] = &syzFuzzer{
 			MuDependency:   &sync.RWMutex{},
 			MuRunTime:      &sync.Mutex{},
-			dataDependency: &DataDependency{Input: map[string]*Input{}},
+			dataDependency: &DataDependency{},
 			dataRunTime: &DataRunTime{
 				Tasks:      &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
 				Return:     &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
