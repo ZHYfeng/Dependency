@@ -20,12 +20,12 @@ func (proc *Proc) dependency(task *pb.Task) string {
 
 			res += "insert : " + "\n"
 			insertTaskRunTImeData := proc.dependencyMutateInsert(task, i)
-			proc.dependencyMutateCheck(task, insertTaskRunTImeData)
+			res += proc.dependencyMutateCheck(task, insertTaskRunTImeData)
 			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
 
 			res += "remove : " + "\n"
 			removeTaskRunTimeData := proc.dependencyMutateRemove(task, insertTaskRunTImeData)
-			proc.dependencyMutateCheck(task, removeTaskRunTimeData)
+			res += proc.dependencyMutateCheck(task, removeTaskRunTimeData)
 			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
 
 		}
