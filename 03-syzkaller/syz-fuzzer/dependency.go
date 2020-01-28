@@ -447,7 +447,9 @@ func (proc *Proc) checkInput(input *pb.Input) {
 
 	proc.fuzzer.dManager.MuDependency.Lock()
 	if len(tasks) > 0 {
-		delete(proc.fuzzer.dManager.DataDependency.UncoveredAddress, ua.UncoveredAddress)
+		if _, ok := proc.fuzzer.dManager.DataDependency.UncoveredAddress[ua.UncoveredAddress]; ok {
+			delete(proc.fuzzer.dManager.DataDependency.UncoveredAddress, ua.UncoveredAddress)
+		}
 	}
 	proc.fuzzer.dManager.MuDependency.Unlock()
 

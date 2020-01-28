@@ -6,6 +6,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/golang/protobuf/proto"
 	"math/rand"
 	"os"
 	"runtime/debug"
@@ -164,10 +165,10 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 		minimizeAttempts = 3
 	)
 
-	input := pb.Input{
+	input := &pb.Input{
 		Sig:               "",
 		Program:           []byte{},
-		Call:              make(map[uint32]*pb.Call),
+		Call:              map[uint32]*pb.Call{},
 		Paths:             []*pb.Paths{},
 		Stat:              pb.FuzzingStat_StatTriage,
 		ProgramBeforeMini: item.p.Serialize(),
@@ -312,9 +313,9 @@ func (proc *Proc) triageInput(item *WorkTriage) {
 			input.Stat = pb.FuzzingStat(i)
 		}
 	}
-	proc.fuzzer.dManager.SendNewInput(&input)
+	proc.fuzzer.dManager.SendNewInput(input)
 	if pb.CheckCondition {
-		proc.checkInput(&input)
+		proc.checkInput(proto.Clone(input).(*pb.Input))
 	}
 }
 

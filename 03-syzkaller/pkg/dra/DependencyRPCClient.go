@@ -61,11 +61,11 @@ func (d *DRPCClient) GetDataDependency() {
 		log.Fatalf("Dependency gRPC could not Connect: %v", err)
 	}
 	d.MuDependency.Lock()
-	defer d.MuDependency.Unlock()
 	d.DataDependency = proto.Clone(replay).(*DataDependency)
 	if d.DataDependency.Input == nil {
 		d.DataDependency.Input = map[string]*Input{}
 	}
+	d.MuDependency.Unlock()
 	return
 }
 

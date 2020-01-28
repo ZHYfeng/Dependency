@@ -38,6 +38,9 @@ func (m *Input) mergeInput(d *Input) {
 				Address: make(map[uint32]uint32),
 				Idx:     u.Idx,
 			}
+			if m.Call == nil {
+				m.Call = map[uint32]*Call{}
+			}
 			m.Call[i] = call
 		}
 
@@ -1167,9 +1170,11 @@ func (ss *Server) updateUncoveredAddress(t *Task) {
 
 			status, ok := ua.InputStatus[t.Sig]
 			if !ok {
-				ua.InputStatus[t.Sig] = &Status{
+				temp := &Status{
 					Status: map[uint32]TaskStatus{},
 				}
+				ua.InputStatus[t.Sig] = temp
+				status = temp
 				//log.Fatalf("updateUncoveredAddress : can not find the ua.InputStatus[t.Sig]")
 			}
 
