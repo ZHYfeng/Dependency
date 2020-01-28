@@ -1106,7 +1106,7 @@ func (ss *Server) outPutUnstableInput(ui *UnstableInput) {
 	_ = f.Close()
 }
 
-func (m *DataDependency) updateUncoveredAddress(t *Task) {
+func (ss *Server) updateUncoveredAddress(t *Task) {
 	uaTS := map[uint32]TaskStatus{}
 
 	for a, rd := range t.UncoveredAddress {
@@ -1152,7 +1152,7 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 	}
 
 	for a, tt := range uaTS {
-		if ua, ok := m.UncoveredAddress[a]; ok {
+		if ua, ok := ss.dataDependency.UncoveredAddress[a]; ok {
 			if ts, ok := ua.WriteAddressStatus[t.WriteAddress]; ok {
 				if ts < wts {
 					ua.WriteAddressStatus[t.WriteAddress] = wts
@@ -1183,6 +1183,8 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 			}
 
 			// TODO (Yu Hao) : remove other tasks
+
+		} else if _, ok := ss.dataResult.CoveredAddress[a]; ok {
 
 		} else {
 			log.Fatalf("updateUncoveredAddress : can not find the uaTS")

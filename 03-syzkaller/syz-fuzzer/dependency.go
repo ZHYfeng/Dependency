@@ -434,9 +434,9 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 
 func (proc *Proc) checkInput(input *pb.Input) {
 	res := ""
-	proc.fuzzer.dManager.MuDependency.RLock()
+	proc.fuzzer.dManager.MuDependency.Lock()
 	ua, tasks, r := proc.fuzzer.dManager.DataDependency.GetTaskByInput(input)
-	proc.fuzzer.dManager.MuDependency.RUnlock()
+	proc.fuzzer.dManager.MuDependency.Unlock()
 	res += r
 	for _, t := range tasks {
 		res += proc.dependency(t)
