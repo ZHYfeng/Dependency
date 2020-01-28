@@ -579,7 +579,7 @@ func (ss *Server) Update() {
 		} else {
 			ss.dataRunTime.Tasks.AddTask(task)
 		}
-		ss.dataDependency.updateUncoveredAddress(task)
+		ss.updateUncoveredAddress(task)
 	}
 	sort.Slice(ss.dataRunTime.Tasks.TaskArray, func(i, j int) bool {
 		return ss.dataRunTime.Tasks.TaskArray[i].getRealPriority() < ss.dataRunTime.Tasks.TaskArray[j].getRealPriority()
