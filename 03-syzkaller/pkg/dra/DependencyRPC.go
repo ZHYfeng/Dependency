@@ -564,6 +564,9 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 		return
 	}
 
+	res := ""
+	res += fmt.Sprintf("uncovered address : %x\n", s.UncoveredAddress)
+
 	if ii, ok := ss.dataDependency.UncoveredAddress[s.UncoveredAddress]; ok {
 		ii.mergeUncoveredAddress(s)
 	} else {
@@ -571,6 +574,7 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 		s.Count = 0
 		s.WriteAddressStatus = map[uint32]TaskStatus{}
 		for w := range s.WriteAddress {
+			res += fmt.Sprintf("write address : %x\n", w)
 			s.WriteAddressStatus[w] = TaskStatus_not_find_write_input
 		}
 		s.InputStatus = map[string]*Status{}
@@ -593,6 +597,10 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 		}
 	}
 	ss.addWriteAddressMapUncoveredAddress(s)
+
+	ss.logMu.Lock()
+	ss.log.Name += fmt.Sprintf("uncovered address : %x\n", s.UncoveredAddress)
+	ss.logMu.Unlock()
 
 	return
 }
@@ -1150,6 +1158,7 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 					ua.WriteAddressStatus[t.WriteAddress] = wts
 				}
 			} else {
+				log.Logf(0, "uncovered address : %x", a)
 				for n := range ua.WriteAddressStatus {
 					log.Logf(0, "ua.WriteAddressStatus : %x", n)
 				}
