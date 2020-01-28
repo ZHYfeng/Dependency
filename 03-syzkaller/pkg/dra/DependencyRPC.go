@@ -38,6 +38,9 @@ func (m *Input) mergeInput(d *Input) {
 				Address: make(map[uint32]uint32),
 				Idx:     u.Idx,
 			}
+			if m.Call == nil {
+				m.Call = map[uint32]*Call{}
+			}
 			m.Call[i] = call
 		}
 
@@ -568,8 +571,10 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 	res += fmt.Sprintf("uncovered address : %x\n", s.UncoveredAddress)
 
 	if ii, ok := ss.dataDependency.UncoveredAddress[s.UncoveredAddress]; ok {
+		res += fmt.Sprintf("ii.mergeUncoveredAddress(s)\n")
 		ii.mergeUncoveredAddress(s)
 	} else {
+		res += fmt.Sprintf("new uncovered address\n")
 		ss.dataDependency.UncoveredAddress[s.UncoveredAddress] = s
 		s.Count = 0
 		s.WriteAddressStatus = map[uint32]TaskStatus{}
@@ -599,7 +604,7 @@ func (ss *Server) addUncoveredAddress(s *UncoveredAddress) {
 	ss.addWriteAddressMapUncoveredAddress(s)
 
 	ss.logMu.Lock()
-	ss.log.Name += fmt.Sprintf("uncovered address : %x\n", s.UncoveredAddress)
+	ss.log.Name += res
 	ss.logMu.Unlock()
 
 	return
@@ -1106,7 +1111,7 @@ func (ss *Server) outPutUnstableInput(ui *UnstableInput) {
 	_ = f.Close()
 }
 
-func (m *DataDependency) updateUncoveredAddress(t *Task) {
+func (ss *Server) updateUncoveredAddress(t *Task) {
 	uaTS := map[uint32]TaskStatus{}
 
 	for a, rd := range t.UncoveredAddress {
@@ -1152,7 +1157,7 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 	}
 
 	for a, tt := range uaTS {
-		if ua, ok := m.UncoveredAddress[a]; ok {
+		if ua, ok := ss.dataDependency.UncoveredAddress[a]; ok {
 			if ts, ok := ua.WriteAddressStatus[t.WriteAddress]; ok {
 				if ts < wts {
 					ua.WriteAddressStatus[t.WriteAddress] = wts
@@ -1167,9 +1172,11 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 
 			status, ok := ua.InputStatus[t.Sig]
 			if !ok {
-				ua.InputStatus[t.Sig] = &Status{
+				temp := &Status{
 					Status: map[uint32]TaskStatus{},
 				}
+				ua.InputStatus[t.Sig] = temp
+				status = temp
 				//log.Fatalf("updateUncoveredAddress : can not find the ua.InputStatus[t.Sig]")
 			}
 
@@ -1183,6 +1190,8 @@ func (m *DataDependency) updateUncoveredAddress(t *Task) {
 			}
 
 			// TODO (Yu Hao) : remove other tasks
+
+		} else if _, ok := ss.dataResult.CoveredAddress[a]; ok {
 
 		} else {
 			log.Fatalf("updateUncoveredAddress : can not find the uaTS")

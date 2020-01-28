@@ -20,12 +20,12 @@ func (proc *Proc) dependency(task *pb.Task) string {
 
 			res += "insert : " + "\n"
 			insertTaskRunTImeData := proc.dependencyMutateInsert(task, i)
-			proc.dependencyMutateCheck(task, insertTaskRunTImeData)
+			res += proc.dependencyMutateCheck(task, insertTaskRunTImeData)
 			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
 
 			res += "remove : " + "\n"
 			removeTaskRunTimeData := proc.dependencyMutateRemove(task, insertTaskRunTImeData)
-			proc.dependencyMutateCheck(task, removeTaskRunTimeData)
+			res += proc.dependencyMutateCheck(task, removeTaskRunTimeData)
 			proc.dependencyMutateArguement(task, insertTaskRunTImeData)
 
 		}
@@ -161,7 +161,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 		} else {
 			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, false)
 			r.CheckCondition = false
-			if r.TaskStatus < pb.TaskStatus_unstable_condition {
+			if r.TaskStatus <= pb.TaskStatus_unstable_condition {
 				r.TaskStatus = pb.TaskStatus_unstable_condition
 
 				if pb.CollectUnstable {
@@ -434,9 +434,9 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 
 func (proc *Proc) checkInput(input *pb.Input) {
 	res := ""
-	proc.fuzzer.dManager.MuDependency.RLock()
+	proc.fuzzer.dManager.MuDependency.Lock()
 	ua, tasks, r := proc.fuzzer.dManager.DataDependency.GetTaskByInput(input)
-	proc.fuzzer.dManager.MuDependency.RUnlock()
+	proc.fuzzer.dManager.MuDependency.Unlock()
 	res += r
 	for _, t := range tasks {
 		res += proc.dependency(t)
@@ -447,7 +447,9 @@ func (proc *Proc) checkInput(input *pb.Input) {
 
 	proc.fuzzer.dManager.MuDependency.Lock()
 	if len(tasks) > 0 {
-		delete(proc.fuzzer.dManager.DataDependency.UncoveredAddress, ua.UncoveredAddress)
+		if _, ok := proc.fuzzer.dManager.DataDependency.UncoveredAddress[ua.UncoveredAddress]; ok {
+			delete(proc.fuzzer.dManager.DataDependency.UncoveredAddress, ua.UncoveredAddress)
+		}
 	}
 	proc.fuzzer.dManager.MuDependency.Unlock()
 
