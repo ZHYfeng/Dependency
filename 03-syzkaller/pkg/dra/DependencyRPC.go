@@ -115,19 +115,19 @@ func (m *UncoveredAddress) mergeUncoveredAddress(d *UncoveredAddress) {
 
 	m.Count += d.Count
 
-	for wa, t := range m.WriteAddressStatus {
-		if tt, ok := d.WriteAddressStatus[wa]; ok {
+	for wa, t := range d.WriteAddressStatus {
+		if tt, ok := m.WriteAddressStatus[wa]; ok {
 			if tt > t {
 				m.WriteAddressStatus[wa] = tt
 			}
 		} else {
-			log.Fatalf("mergeUncoveredAddress with WriteAddressStatus")
+			log.Fatalf("mergeUncoveredAddress with d.WriteAddressStatus")
 		}
 	}
 
-	for input, status := range m.InputStatus {
+	for input, status := range d.InputStatus {
 		for index, t := range status.Status {
-			if ss, ok := d.InputStatus[input]; ok {
+			if ss, ok := m.InputStatus[input]; ok {
 				if tt, ok := ss.Status[index]; ok {
 					if tt > t {
 						status.Status[index] = tt
