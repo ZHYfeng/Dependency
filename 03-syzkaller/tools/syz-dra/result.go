@@ -10,11 +10,13 @@ import (
 )
 
 type result struct {
-	path       string
-	dirName    string
-	baseName   string
-	data       *pb.Data
-	statistics *pb.Statistics
+	path           string
+	dirName        string
+	baseName       string
+	dataDependency *pb.DataDependency
+	dataResult     *pb.DataResult
+	dataRunTime    *pb.DataRunTime
+	statistics     *pb.Statistics
 
 	uncoveredAddressInput      map[uint32]*pb.UncoveredAddress
 	uncoveredAddressDependency map[uint32]*pb.UncoveredAddress
@@ -30,8 +32,28 @@ func (r *result) read(path string) {
 	if err != nil {
 		log.Fatalln("Error reading file:", err)
 	}
-	r.data = &pb.Data{}
-	if err := proto.Unmarshal(in, r.data); err != nil {
+	r.dataDependency = &pb.DataDependency{}
+	if err := proto.Unmarshal(in, r.dataDependency); err != nil {
+		log.Fatalln("Failed to parse data:", err)
+	}
+
+	fileName = filepath.Join(r.path, pb.NameDataResult)
+	in, err = ioutil.ReadFile(fileName)
+	if err != nil {
+		log.Fatalln("Error reading file:", err)
+	}
+	r.dataResult = &pb.DataResult{}
+	if err := proto.Unmarshal(in, r.dataResult); err != nil {
+		log.Fatalln("Failed to parse data:", err)
+	}
+
+	fileName = filepath.Join(r.path, pb.NameDataRunTime)
+	in, err = ioutil.ReadFile(fileName)
+	if err != nil {
+		log.Fatalln("Error reading file:", err)
+	}
+	r.dataRunTime = &pb.DataRunTime{}
+	if err := proto.Unmarshal(in, r.dataRunTime); err != nil {
 		log.Fatalln("Failed to parse data:", err)
 	}
 
@@ -51,7 +73,7 @@ func (r *result) read(path string) {
 func (r *result) getUncoveredAddress() {
 	r.uncoveredAddressInput = make(map[uint32]*pb.UncoveredAddress)
 	r.uncoveredAddressDependency = make(map[uint32]*pb.UncoveredAddress)
-	for _, ua := range r.data.UncoveredAddress {
+	for _, ua := range r.dataDependency.UncoveredAddress {
 		if ua.Kind == pb.UncoveredAddressKind_InputRelated {
 			r.uncoveredAddressInput[ua.UncoveredAddress] = ua
 		} else if ua.Kind == pb.UncoveredAddressKind_DependencyRelated {
@@ -68,7 +90,7 @@ func (r *result) checkTasks() {
 
 func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
-	ua, ok := r.data.UncoveredAddress[uncoveredAddress]
+	ua, ok := r.dataDependency.UncoveredAddress[uncoveredAddress]
 	if ok {
 
 	} else {
@@ -88,7 +110,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 	res += "# input : " + fmt.Sprintf("%d", len(ua.Input)) + "\n"
 	for sig, indexBits := range ua.Input {
 		res += "-------------------------------------------\n"
-		if input, ok := r.data.Input[sig]; ok {
+		if input, ok := r.dataDependency.Input[sig]; ok {
 			res += "sig : " + input.Sig + "\n"
 			res += "index : " + fmt.Sprintf("%b", indexBits) + "\n"
 			res += fmt.Sprintf("%s", input.Program) + "\n"
@@ -111,7 +133,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 			res += "## write address : " + fmt.Sprintf("0xffffffff%x", wa-5) + "\n"
 			res += "Repeat : " + fmt.Sprintf("%d", waa.Repeat) + "\n"
 			res += "Priority : " + fmt.Sprintf("%d", waa.Prio) + "\n"
-			if waaa, ok := r.data.WriteAddress[wa]; ok {
+			if waaa, ok := r.dataDependency.WriteAddress[wa]; ok {
 				if len(waaa.Input) == 0 {
 					res += "not find write input : " + fmt.Sprintf("0xffffffff%x", wa-5) + "\n"
 					if ua.RunTimeDate.TaskStatus < pb.TaskStatus_not_find_write_input {
@@ -120,7 +142,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 				} else {
 					for sig, indexBits := range waaa.Input {
 						res += "-------------------------------------------\n"
-						if input, ok := r.data.Input[sig]; ok {
+						if input, ok := r.dataDependency.Input[sig]; ok {
 							res += "sig : " + input.Sig + "\n"
 							res += "index : " + fmt.Sprintf("%b", indexBits) + "\n"
 							res += fmt.Sprintf("%s", input.Program) + "\n"
@@ -155,7 +177,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		TaskMap:   map[string]*pb.Task{},
 		TaskArray: []*pb.Task{},
 	}
-	for _, t := range r.data.Tasks.TaskArray {
+	for _, t := range r.dataRunTime.Tasks.TaskArray {
 		if _, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 			tasks.AddTask(t)
 		} else if _, ok := t.CoveredAddress[uncoveredAddress]; ok {
