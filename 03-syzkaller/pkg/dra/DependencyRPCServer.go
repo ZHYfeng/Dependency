@@ -224,16 +224,18 @@ func (ss Server) GetDataDependency(_ context.Context, request *Empty) (*DataDepe
 	replay := &DataDependency{
 		Input: map[string]*Input{},
 	}
+	ss.MuFuzzer.Lock()
 	f, ok := ss.fuzzers[name]
+	ss.MuFuzzer.Unlock()
 	if !ok {
 		f.MuDependency.RLock()
-		defer f.MuDependency.RUnlock()
 		replay = proto.Clone(f.dataDependency).(*DataDependency)
+		f.MuDependency.RUnlock()
 	} else {
 		for n := range ss.fuzzers {
 			log.Logf(0, "GetDataDependency name : %s", n)
 		}
-		log.Fatalf("GetDataDependency with error name %s", name)
+		log.Fatalf("GetDataDependency with error name : %s", name)
 	}
 	return replay, nil
 }
