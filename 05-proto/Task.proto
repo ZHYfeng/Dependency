@@ -23,15 +23,17 @@ enum taskStatus {
 
 message runTimeData {
     uint32 priority = 1;
-    uint32 condition_address = 2;
+    uint32 write_address = 2;
+    uint32 condition_address = 3;
     uint32 address = 4;
     repeated uint32 right_branch_address = 6;
 
     taskStatus task_status = 10;
     bytes program = 12;
     uint32 idx = 13;
-    uint32 rcursive_count = 14;
+    uint32 recursive_count = 14;
 
+    bool checkWrite = 20;
     bool checkCondition = 21;
     bool checkAddress = 22;
     bool checkRightBranchAddress = 23;
@@ -44,7 +46,7 @@ message TaskRunTimeData {
     uint32 write_idx = 5;
     uint32 condition_idx = 6;
 
-    bool check_write_address = 10;
+    bool check = 10;
     map<uint32, runTimeData> uncovered_address = 21;
     map<uint32, runTimeData> covered_address = 23;
 }
@@ -64,11 +66,9 @@ message Task {
     string write_sig = 11;
     uint32 write_index = 12;
     bytes write_program = 13;
-    uint32 write_address = 14;
-
 
     taskStatus task_status = 24;
-    bool check_write_address = 25;
+    bool check = 25;
     // uncovered address, priority
     map<uint32, runTimeData> uncovered_address = 21;
     map<uint32, runTimeData> covered_address = 23;

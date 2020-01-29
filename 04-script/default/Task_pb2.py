@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\nTask.proto\x12\x03\x64ra\"\x94\x02\n\x0brunTimeData\x12\x10\n\x08priority\x18\x01 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x02 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x06 \x03(\r\x12$\n\x0btask_status\x18\n \x01(\x0e\x32\x0f.dra.taskStatus\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\x0b\n\x03idx\x18\r \x01(\r\x12\x16\n\x0ercursive_count\x18\x0e \x01(\r\x12\x16\n\x0e\x63heckCondition\x18\x15 \x01(\x08\x12\x14\n\x0c\x63heckAddress\x18\x16 \x01(\x08\x12\x1f\n\x17\x63heckRightBranchAddress\x18\x17 \x01(\x08\"\x95\x03\n\x0fTaskRunTimeData\x12\x0c\n\x04hash\x18\x01 \x01(\t\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12\x11\n\twrite_idx\x18\x05 \x01(\r\x12\x15\n\rcondition_idx\x18\x06 \x01(\r\x12\x1b\n\x13\x63heck_write_address\x18\n \x01(\x08\x12\x45\n\x11uncovered_address\x18\x15 \x03(\x0b\x32*.dra.TaskRunTimeData.UncoveredAddressEntry\x12\x41\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32(.dra.TaskRunTimeData.CoveredAddressEntry\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xc3\x04\n\x04Task\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07program\x18\x03 \x01(\x0c\x12\x0c\n\x04kind\x18\x04 \x01(\r\x12\x10\n\x08priority\x18\x05 \x01(\x05\x12\x0c\n\x04hash\x18\x06 \x01(\t\x12\r\n\x05\x63ount\x18\x07 \x01(\r\x12\x11\n\twrite_sig\x18\x0b \x01(\t\x12\x13\n\x0bwrite_index\x18\x0c \x01(\r\x12\x15\n\rwrite_program\x18\r \x01(\x0c\x12\x15\n\rwrite_address\x18\x0e \x01(\r\x12$\n\x0btask_status\x18\x18 \x01(\x0e\x32\x0f.dra.taskStatus\x12\x1b\n\x13\x63heck_write_address\x18\x19 \x01(\x08\x12:\n\x11uncovered_address\x18\x15 \x03(\x0b\x32\x1f.dra.Task.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32\x1d.dra.Task.CoveredAddressEntry\x12\x30\n\x12task_run_time_data\x18\x1f \x03(\x0b\x32\x14.dra.TaskRunTimeData\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xb7\x01\n\x05Tasks\x12\x0c\n\x04name\x18) \x01(\t\x12\x1b\n\x04kind\x18* \x01(\x0e\x32\r.dra.TaskKind\x12)\n\x08task_map\x18\x01 \x03(\x0b\x32\x17.dra.Tasks.TaskMapEntry\x12\x1d\n\ntask_array\x18\x02 \x03(\x0b\x32\t.dra.Task\x1a\x39\n\x0cTaskMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Task:\x02\x38\x01*\x8c\x02\n\ntaskStatus\x12\x0c\n\x08untested\x10\x00\x12\x0b\n\x07testing\x10\x01\x12\x1b\n\x0enot_find_input\x10\xfb\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12#\n\x16not_find_write_address\x10\xfc\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12!\n\x14not_find_write_input\x10\xfd\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x12\n\x0eunstable_write\x10\x0b\x12\x16\n\x12unstable_condition\x10\x0c\x12\x13\n\x0funstable_insert\x10\r\x12\x0c\n\x08unstable\x10\x0e\x12\n\n\x06tested\x10\x15\x12\x0b\n\x07\x63overed\x10\x16\x12\r\n\trecursive\x10\x1f\x12\x07\n\x03out\x10 **\n\x08TaskKind\x12\n\n\x06Normal\x10\x00\x12\x08\n\x04High\x10\x01\x12\x08\n\x04\x42oot\x10\x02\x62\x06proto3'
+  serialized_pb=b'\n\nTask.proto\x12\x03\x64ra\"\xc0\x02\n\x0brunTimeData\x12\x10\n\x08priority\x18\x01 \x01(\r\x12\x15\n\rwrite_address\x18\x02 \x01(\r\x12\x19\n\x11\x63ondition_address\x18\x03 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\r\x12\x1c\n\x14right_branch_address\x18\x06 \x03(\r\x12$\n\x0btask_status\x18\n \x01(\x0e\x32\x0f.dra.taskStatus\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\x0b\n\x03idx\x18\r \x01(\r\x12\x17\n\x0frecursive_count\x18\x0e \x01(\r\x12\x12\n\ncheckWrite\x18\x14 \x01(\x08\x12\x16\n\x0e\x63heckCondition\x18\x15 \x01(\x08\x12\x14\n\x0c\x63heckAddress\x18\x16 \x01(\x08\x12\x1f\n\x17\x63heckRightBranchAddress\x18\x17 \x01(\x08\"\x87\x03\n\x0fTaskRunTimeData\x12\x0c\n\x04hash\x18\x01 \x01(\t\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12\x11\n\twrite_idx\x18\x05 \x01(\r\x12\x15\n\rcondition_idx\x18\x06 \x01(\r\x12\r\n\x05\x63heck\x18\n \x01(\x08\x12\x45\n\x11uncovered_address\x18\x15 \x03(\x0b\x32*.dra.TaskRunTimeData.UncoveredAddressEntry\x12\x41\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32(.dra.TaskRunTimeData.CoveredAddressEntry\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\x9e\x04\n\x04Task\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0f\n\x07program\x18\x03 \x01(\x0c\x12\x0c\n\x04kind\x18\x04 \x01(\r\x12\x10\n\x08priority\x18\x05 \x01(\x05\x12\x0c\n\x04hash\x18\x06 \x01(\t\x12\r\n\x05\x63ount\x18\x07 \x01(\r\x12\x11\n\twrite_sig\x18\x0b \x01(\t\x12\x13\n\x0bwrite_index\x18\x0c \x01(\r\x12\x15\n\rwrite_program\x18\r \x01(\x0c\x12$\n\x0btask_status\x18\x18 \x01(\x0e\x32\x0f.dra.taskStatus\x12\r\n\x05\x63heck\x18\x19 \x01(\x08\x12:\n\x11uncovered_address\x18\x15 \x03(\x0b\x32\x1f.dra.Task.UncoveredAddressEntry\x12\x36\n\x0f\x63overed_address\x18\x17 \x03(\x0b\x32\x1d.dra.Task.CoveredAddressEntry\x12\x30\n\x12task_run_time_data\x18\x1f \x03(\x0b\x32\x14.dra.TaskRunTimeData\x1aI\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\x1aG\n\x13\x43overedAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1f\n\x05value\x18\x02 \x01(\x0b\x32\x10.dra.runTimeData:\x02\x38\x01\"\xb7\x01\n\x05Tasks\x12\x0c\n\x04name\x18) \x01(\t\x12\x1b\n\x04kind\x18* \x01(\x0e\x32\r.dra.TaskKind\x12)\n\x08task_map\x18\x01 \x03(\x0b\x32\x17.dra.Tasks.TaskMapEntry\x12\x1d\n\ntask_array\x18\x02 \x03(\x0b\x32\t.dra.Task\x1a\x39\n\x0cTaskMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Task:\x02\x38\x01*\x8c\x02\n\ntaskStatus\x12\x0c\n\x08untested\x10\x00\x12\x0b\n\x07testing\x10\x01\x12\x1b\n\x0enot_find_input\x10\xfb\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12#\n\x16not_find_write_address\x10\xfc\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12!\n\x14not_find_write_input\x10\xfd\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x12\n\x0eunstable_write\x10\x0b\x12\x16\n\x12unstable_condition\x10\x0c\x12\x13\n\x0funstable_insert\x10\r\x12\x0c\n\x08unstable\x10\x0e\x12\n\n\x06tested\x10\x15\x12\x0b\n\x07\x63overed\x10\x16\x12\r\n\trecursive\x10\x1f\x12\x07\n\x03out\x10 **\n\x08TaskKind\x12\n\n\x06Normal\x10\x00\x12\x08\n\x04High\x10\x01\x12\x08\n\x04\x42oot\x10\x02\x62\x06proto3'
 )
 
 _TASKSTATUS = _descriptor.EnumDescriptor(
@@ -83,8 +83,8 @@ _TASKSTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1475,
-  serialized_end=1743,
+  serialized_start=1468,
+  serialized_end=1736,
 )
 _sym_db.RegisterEnumDescriptor(_TASKSTATUS)
 
@@ -110,8 +110,8 @@ _TASKKIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1745,
-  serialized_end=1787,
+  serialized_start=1738,
+  serialized_end=1780,
 )
 _sym_db.RegisterEnumDescriptor(_TASKKIND)
 
@@ -150,70 +150,84 @@ _RUNTIMEDATA = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='condition_address', full_name='dra.runTimeData.condition_address', index=1,
+      name='write_address', full_name='dra.runTimeData.write_address', index=1,
       number=2, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='address', full_name='dra.runTimeData.address', index=2,
+      name='condition_address', full_name='dra.runTimeData.condition_address', index=2,
+      number=3, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='address', full_name='dra.runTimeData.address', index=3,
       number=4, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='right_branch_address', full_name='dra.runTimeData.right_branch_address', index=3,
+      name='right_branch_address', full_name='dra.runTimeData.right_branch_address', index=4,
       number=6, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_status', full_name='dra.runTimeData.task_status', index=4,
+      name='task_status', full_name='dra.runTimeData.task_status', index=5,
       number=10, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='program', full_name='dra.runTimeData.program', index=5,
+      name='program', full_name='dra.runTimeData.program', index=6,
       number=12, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='idx', full_name='dra.runTimeData.idx', index=6,
+      name='idx', full_name='dra.runTimeData.idx', index=7,
       number=13, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='rcursive_count', full_name='dra.runTimeData.rcursive_count', index=7,
+      name='recursive_count', full_name='dra.runTimeData.recursive_count', index=8,
       number=14, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='checkCondition', full_name='dra.runTimeData.checkCondition', index=8,
+      name='checkWrite', full_name='dra.runTimeData.checkWrite', index=9,
+      number=20, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='checkCondition', full_name='dra.runTimeData.checkCondition', index=10,
       number=21, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='checkAddress', full_name='dra.runTimeData.checkAddress', index=9,
+      name='checkAddress', full_name='dra.runTimeData.checkAddress', index=11,
       number=22, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='checkRightBranchAddress', full_name='dra.runTimeData.checkRightBranchAddress', index=10,
+      name='checkRightBranchAddress', full_name='dra.runTimeData.checkRightBranchAddress', index=12,
       number=23, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -232,7 +246,7 @@ _RUNTIMEDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=20,
-  serialized_end=296,
+  serialized_end=340,
 )
 
 
@@ -269,8 +283,8 @@ _TASKRUNTIMEDATA_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=558,
-  serialized_end=631,
+  serialized_start=588,
+  serialized_end=661,
 )
 
 _TASKRUNTIMEDATA_COVEREDADDRESSENTRY = _descriptor.Descriptor(
@@ -306,8 +320,8 @@ _TASKRUNTIMEDATA_COVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=633,
-  serialized_end=704,
+  serialized_start=663,
+  serialized_end=734,
 )
 
 _TASKRUNTIMEDATA = _descriptor.Descriptor(
@@ -346,7 +360,7 @@ _TASKRUNTIMEDATA = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='check_write_address', full_name='dra.TaskRunTimeData.check_write_address', index=4,
+      name='check', full_name='dra.TaskRunTimeData.check', index=4,
       number=10, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -378,8 +392,8 @@ _TASKRUNTIMEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=299,
-  serialized_end=704,
+  serialized_start=343,
+  serialized_end=734,
 )
 
 
@@ -416,8 +430,8 @@ _TASK_UNCOVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=558,
-  serialized_end=631,
+  serialized_start=588,
+  serialized_end=661,
 )
 
 _TASK_COVEREDADDRESSENTRY = _descriptor.Descriptor(
@@ -453,8 +467,8 @@ _TASK_COVEREDADDRESSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=633,
-  serialized_end=704,
+  serialized_start=663,
+  serialized_end=734,
 )
 
 _TASK = _descriptor.Descriptor(
@@ -535,42 +549,35 @@ _TASK = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='write_address', full_name='dra.Task.write_address', index=10,
-      number=14, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='task_status', full_name='dra.Task.task_status', index=11,
+      name='task_status', full_name='dra.Task.task_status', index=10,
       number=24, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='check_write_address', full_name='dra.Task.check_write_address', index=12,
+      name='check', full_name='dra.Task.check', index=11,
       number=25, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='uncovered_address', full_name='dra.Task.uncovered_address', index=13,
+      name='uncovered_address', full_name='dra.Task.uncovered_address', index=12,
       number=21, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='covered_address', full_name='dra.Task.covered_address', index=14,
+      name='covered_address', full_name='dra.Task.covered_address', index=13,
       number=23, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='task_run_time_data', full_name='dra.Task.task_run_time_data', index=15,
+      name='task_run_time_data', full_name='dra.Task.task_run_time_data', index=14,
       number=31, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -588,8 +595,8 @@ _TASK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=707,
-  serialized_end=1286,
+  serialized_start=737,
+  serialized_end=1279,
 )
 
 
@@ -626,8 +633,8 @@ _TASKS_TASKMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1415,
-  serialized_end=1472,
+  serialized_start=1408,
+  serialized_end=1465,
 )
 
 _TASKS = _descriptor.Descriptor(
@@ -677,8 +684,8 @@ _TASKS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1289,
-  serialized_end=1472,
+  serialized_start=1282,
+  serialized_end=1465,
 )
 
 _RUNTIMEDATA.fields_by_name['task_status'].enum_type = _TASKSTATUS

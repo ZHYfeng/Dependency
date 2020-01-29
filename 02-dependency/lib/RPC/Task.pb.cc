@@ -204,13 +204,15 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Task_2eproto::offsets[] PROTOB
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, priority_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, write_address_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, condition_address_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, address_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, right_branch_address_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, task_status_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, program_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, rcursive_count_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, recursive_count_),
+  PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkwrite_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkcondition_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkaddress_),
   PROTOBUF_FIELD_OFFSET(::dra::runTimeData, checkrightbranchaddress_),
@@ -241,7 +243,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Task_2eproto::offsets[] PROTOB
   PROTOBUF_FIELD_OFFSET(::dra::TaskRunTimeData, program_),
   PROTOBUF_FIELD_OFFSET(::dra::TaskRunTimeData, write_idx_),
   PROTOBUF_FIELD_OFFSET(::dra::TaskRunTimeData, condition_idx_),
-  PROTOBUF_FIELD_OFFSET(::dra::TaskRunTimeData, check_write_address_),
+  PROTOBUF_FIELD_OFFSET(::dra::TaskRunTimeData, check_),
   PROTOBUF_FIELD_OFFSET(::dra::TaskRunTimeData, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::TaskRunTimeData, covered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Task_UncoveredAddressEntry_DoNotUse, _has_bits_),
@@ -277,9 +279,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Task_2eproto::offsets[] PROTOB
   PROTOBUF_FIELD_OFFSET(::dra::Task, write_sig_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, write_index_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, write_program_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, write_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, task_status_),
-  PROTOBUF_FIELD_OFFSET(::dra::Task, check_write_address_),
+  PROTOBUF_FIELD_OFFSET(::dra::Task, check_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, covered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Task, task_run_time_data_),
@@ -304,14 +305,14 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Task_2eproto::offsets[] PROTOB
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::dra::runTimeData)},
-  { 16, 23, sizeof(::dra::TaskRunTimeData_UncoveredAddressEntry_DoNotUse)},
-  { 25, 32, sizeof(::dra::TaskRunTimeData_CoveredAddressEntry_DoNotUse)},
-  { 34, -1, sizeof(::dra::TaskRunTimeData)},
-  { 46, 53, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
-  { 55, 62, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
-  { 64, -1, sizeof(::dra::Task)},
-  { 85, 92, sizeof(::dra::Tasks_TaskMapEntry_DoNotUse)},
-  { 94, -1, sizeof(::dra::Tasks)},
+  { 18, 25, sizeof(::dra::TaskRunTimeData_UncoveredAddressEntry_DoNotUse)},
+  { 27, 34, sizeof(::dra::TaskRunTimeData_CoveredAddressEntry_DoNotUse)},
+  { 36, -1, sizeof(::dra::TaskRunTimeData)},
+  { 48, 55, sizeof(::dra::Task_UncoveredAddressEntry_DoNotUse)},
+  { 57, 64, sizeof(::dra::Task_CoveredAddressEntry_DoNotUse)},
+  { 66, -1, sizeof(::dra::Task)},
+  { 86, 93, sizeof(::dra::Tasks_TaskMapEntry_DoNotUse)},
+  { 95, -1, sizeof(::dra::Tasks)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -327,51 +328,51 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_Task_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\nTask.proto\022\003dra\"\224\002\n\013runTimeData\022\020\n\010pri"
-  "ority\030\001 \001(\r\022\031\n\021condition_address\030\002 \001(\r\022\017"
-  "\n\007address\030\004 \001(\r\022\034\n\024right_branch_address\030"
-  "\006 \003(\r\022$\n\013task_status\030\n \001(\0162\017.dra.taskSta"
-  "tus\022\017\n\007program\030\014 \001(\014\022\013\n\003idx\030\r \001(\r\022\026\n\016rcu"
-  "rsive_count\030\016 \001(\r\022\026\n\016checkCondition\030\025 \001("
-  "\010\022\024\n\014checkAddress\030\026 \001(\010\022\037\n\027checkRightBra"
-  "nchAddress\030\027 \001(\010\"\225\003\n\017TaskRunTimeData\022\014\n\004"
-  "hash\030\001 \001(\t\022\017\n\007program\030\002 \001(\014\022\021\n\twrite_idx"
-  "\030\005 \001(\r\022\025\n\rcondition_idx\030\006 \001(\r\022\033\n\023check_w"
-  "rite_address\030\n \001(\010\022E\n\021uncovered_address\030"
-  "\025 \003(\0132*.dra.TaskRunTimeData.UncoveredAdd"
-  "ressEntry\022A\n\017covered_address\030\027 \003(\0132(.dra"
-  ".TaskRunTimeData.CoveredAddressEntry\032I\n\025"
-  "UncoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005va"
-  "lue\030\002 \001(\0132\020.dra.runTimeData:\0028\001\032G\n\023Cover"
-  "edAddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001"
-  "(\0132\020.dra.runTimeData:\0028\001\"\303\004\n\004Task\022\013\n\003sig"
-  "\030\001 \001(\t\022\r\n\005index\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\014"
-  "\n\004kind\030\004 \001(\r\022\020\n\010priority\030\005 \001(\005\022\014\n\004hash\030\006"
-  " \001(\t\022\r\n\005count\030\007 \001(\r\022\021\n\twrite_sig\030\013 \001(\t\022\023"
-  "\n\013write_index\030\014 \001(\r\022\025\n\rwrite_program\030\r \001"
-  "(\014\022\025\n\rwrite_address\030\016 \001(\r\022$\n\013task_status"
-  "\030\030 \001(\0162\017.dra.taskStatus\022\033\n\023check_write_a"
-  "ddress\030\031 \001(\010\022:\n\021uncovered_address\030\025 \003(\0132"
-  "\037.dra.Task.UncoveredAddressEntry\0226\n\017cove"
-  "red_address\030\027 \003(\0132\035.dra.Task.CoveredAddr"
-  "essEntry\0220\n\022task_run_time_data\030\037 \003(\0132\024.d"
-  "ra.TaskRunTimeData\032I\n\025UncoveredAddressEn"
-  "try\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.ru"
-  "nTimeData:\0028\001\032G\n\023CoveredAddressEntry\022\013\n\003"
+  "\n\nTask.proto\022\003dra\"\300\002\n\013runTimeData\022\020\n\010pri"
+  "ority\030\001 \001(\r\022\025\n\rwrite_address\030\002 \001(\r\022\031\n\021co"
+  "ndition_address\030\003 \001(\r\022\017\n\007address\030\004 \001(\r\022\034"
+  "\n\024right_branch_address\030\006 \003(\r\022$\n\013task_sta"
+  "tus\030\n \001(\0162\017.dra.taskStatus\022\017\n\007program\030\014 "
+  "\001(\014\022\013\n\003idx\030\r \001(\r\022\027\n\017recursive_count\030\016 \001("
+  "\r\022\022\n\ncheckWrite\030\024 \001(\010\022\026\n\016checkCondition\030"
+  "\025 \001(\010\022\024\n\014checkAddress\030\026 \001(\010\022\037\n\027checkRigh"
+  "tBranchAddress\030\027 \001(\010\"\207\003\n\017TaskRunTimeData"
+  "\022\014\n\004hash\030\001 \001(\t\022\017\n\007program\030\002 \001(\014\022\021\n\twrite"
+  "_idx\030\005 \001(\r\022\025\n\rcondition_idx\030\006 \001(\r\022\r\n\005che"
+  "ck\030\n \001(\010\022E\n\021uncovered_address\030\025 \003(\0132*.dr"
+  "a.TaskRunTimeData.UncoveredAddressEntry\022"
+  "A\n\017covered_address\030\027 \003(\0132(.dra.TaskRunTi"
+  "meData.CoveredAddressEntry\032I\n\025UncoveredA"
+  "ddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132"
+  "\020.dra.runTimeData:\0028\001\032G\n\023CoveredAddressE"
+  "ntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.r"
+  "unTimeData:\0028\001\"\236\004\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005"
+  "index\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\014\n\004kind\030\004 \001"
+  "(\r\022\020\n\010priority\030\005 \001(\005\022\014\n\004hash\030\006 \001(\t\022\r\n\005co"
+  "unt\030\007 \001(\r\022\021\n\twrite_sig\030\013 \001(\t\022\023\n\013write_in"
+  "dex\030\014 \001(\r\022\025\n\rwrite_program\030\r \001(\014\022$\n\013task"
+  "_status\030\030 \001(\0162\017.dra.taskStatus\022\r\n\005check\030"
+  "\031 \001(\010\022:\n\021uncovered_address\030\025 \003(\0132\037.dra.T"
+  "ask.UncoveredAddressEntry\0226\n\017covered_add"
+  "ress\030\027 \003(\0132\035.dra.Task.CoveredAddressEntr"
+  "y\0220\n\022task_run_time_data\030\037 \003(\0132\024.dra.Task"
+  "RunTimeData\032I\n\025UncoveredAddressEntry\022\013\n\003"
   "key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTimeDa"
-  "ta:\0028\001\"\267\001\n\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004kind\030*"
-  " \001(\0162\r.dra.TaskKind\022)\n\010task_map\030\001 \003(\0132\027."
-  "dra.Tasks.TaskMapEntry\022\035\n\ntask_array\030\002 \003"
-  "(\0132\t.dra.Task\0329\n\014TaskMapEntry\022\013\n\003key\030\001 \001"
-  "(\t\022\030\n\005value\030\002 \001(\0132\t.dra.Task:\0028\001*\214\002\n\ntas"
-  "kStatus\022\014\n\010untested\020\000\022\013\n\007testing\020\001\022\033\n\016no"
-  "t_find_input\020\373\377\377\377\377\377\377\377\377\001\022#\n\026not_find_writ"
-  "e_address\020\374\377\377\377\377\377\377\377\377\001\022!\n\024not_find_write_i"
-  "nput\020\375\377\377\377\377\377\377\377\377\001\022\022\n\016unstable_write\020\013\022\026\n\022u"
-  "nstable_condition\020\014\022\023\n\017unstable_insert\020\r"
-  "\022\014\n\010unstable\020\016\022\n\n\006tested\020\025\022\013\n\007covered\020\026\022"
-  "\r\n\trecursive\020\037\022\007\n\003out\020 **\n\010TaskKind\022\n\n\006N"
-  "ormal\020\000\022\010\n\004High\020\001\022\010\n\004Boot\020\002b\006proto3"
+  "ta:\0028\001\032G\n\023CoveredAddressEntry\022\013\n\003key\030\001 \001"
+  "(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTimeData:\0028\001\""
+  "\267\001\n\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004kind\030* \001(\0162\r."
+  "dra.TaskKind\022)\n\010task_map\030\001 \003(\0132\027.dra.Tas"
+  "ks.TaskMapEntry\022\035\n\ntask_array\030\002 \003(\0132\t.dr"
+  "a.Task\0329\n\014TaskMapEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005v"
+  "alue\030\002 \001(\0132\t.dra.Task:\0028\001*\214\002\n\ntaskStatus"
+  "\022\014\n\010untested\020\000\022\013\n\007testing\020\001\022\033\n\016not_find_"
+  "input\020\373\377\377\377\377\377\377\377\377\001\022#\n\026not_find_write_addre"
+  "ss\020\374\377\377\377\377\377\377\377\377\001\022!\n\024not_find_write_input\020\375\377"
+  "\377\377\377\377\377\377\377\001\022\022\n\016unstable_write\020\013\022\026\n\022unstable"
+  "_condition\020\014\022\023\n\017unstable_insert\020\r\022\014\n\010uns"
+  "table\020\016\022\n\n\006tested\020\025\022\013\n\007covered\020\026\022\r\n\trecu"
+  "rsive\020\037\022\007\n\003out\020 **\n\010TaskKind\022\n\n\006Normal\020\000"
+  "\022\010\n\004High\020\001\022\010\n\004Boot\020\002b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Task_2eproto_deps[1] = {
 };
@@ -389,7 +390,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Tas
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Task_2eproto_once;
 static bool descriptor_table_Task_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Task_2eproto = {
-  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 1795,
+  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 1788,
   &descriptor_table_Task_2eproto_once, descriptor_table_Task_2eproto_sccs, descriptor_table_Task_2eproto_deps, 9, 0,
   schemas, file_default_instances, TableStruct_Task_2eproto::offsets,
   file_level_metadata_Task_2eproto, 9, file_level_enum_descriptors_Task_2eproto, file_level_service_descriptors_Task_2eproto,
@@ -462,8 +463,8 @@ runTimeData::runTimeData(const runTimeData& from)
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
   ::memcpy(&priority_, &from.priority_,
-    static_cast<size_t>(reinterpret_cast<char*>(&rcursive_count_) -
-    reinterpret_cast<char*>(&priority_)) + sizeof(rcursive_count_));
+    static_cast<size_t>(reinterpret_cast<char*>(&checkrightbranchaddress_) -
+    reinterpret_cast<char*>(&priority_)) + sizeof(checkrightbranchaddress_));
   // @@protoc_insertion_point(copy_constructor:dra.runTimeData)
 }
 
@@ -471,8 +472,8 @@ void runTimeData::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_runTimeData_Task_2eproto.base);
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&priority_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&rcursive_count_) -
-      reinterpret_cast<char*>(&priority_)) + sizeof(rcursive_count_));
+      reinterpret_cast<char*>(&checkrightbranchaddress_) -
+      reinterpret_cast<char*>(&priority_)) + sizeof(checkrightbranchaddress_));
 }
 
 runTimeData::~runTimeData() {
@@ -502,8 +503,8 @@ void runTimeData::Clear() {
   right_branch_address_.Clear();
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&priority_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&rcursive_count_) -
-      reinterpret_cast<char*>(&priority_)) + sizeof(rcursive_count_));
+      reinterpret_cast<char*>(&checkrightbranchaddress_) -
+      reinterpret_cast<char*>(&priority_)) + sizeof(checkrightbranchaddress_));
   _internal_metadata_.Clear();
 }
 
@@ -521,9 +522,16 @@ const char* runTimeData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 condition_address = 2;
+      // uint32 write_address = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 condition_address = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
@@ -568,10 +576,17 @@ const char* runTimeData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 rcursive_count = 14;
+      // uint32 recursive_count = 14;
       case 14:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 112)) {
-          rcursive_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          recursive_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // bool checkWrite = 20;
+      case 20:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 160)) {
+          checkwrite_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -628,10 +643,16 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_priority(), target);
   }
 
-  // uint32 condition_address = 2;
+  // uint32 write_address = 2;
+  if (this->write_address() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_write_address(), target);
+  }
+
+  // uint32 condition_address = 3;
   if (this->condition_address() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_condition_address(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_condition_address(), target);
   }
 
   // uint32 address = 4;
@@ -668,10 +689,16 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(13, this->_internal_idx(), target);
   }
 
-  // uint32 rcursive_count = 14;
-  if (this->rcursive_count() != 0) {
+  // uint32 recursive_count = 14;
+  if (this->recursive_count() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(14, this->_internal_rcursive_count(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(14, this->_internal_recursive_count(), target);
+  }
+
+  // bool checkWrite = 20;
+  if (this->checkwrite() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(20, this->_internal_checkwrite(), target);
   }
 
   // bool checkCondition = 21;
@@ -737,7 +764,14 @@ size_t runTimeData::ByteSizeLong() const {
         this->_internal_priority());
   }
 
-  // uint32 condition_address = 2;
+  // uint32 write_address = 2;
+  if (this->write_address() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_write_address());
+  }
+
+  // uint32 condition_address = 3;
   if (this->condition_address() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
@@ -757,6 +791,25 @@ size_t runTimeData::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_task_status());
   }
 
+  // uint32 idx = 13;
+  if (this->idx() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_idx());
+  }
+
+  // uint32 recursive_count = 14;
+  if (this->recursive_count() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_recursive_count());
+  }
+
+  // bool checkWrite = 20;
+  if (this->checkwrite() != 0) {
+    total_size += 2 + 1;
+  }
+
   // bool checkCondition = 21;
   if (this->checkcondition() != 0) {
     total_size += 2 + 1;
@@ -770,20 +823,6 @@ size_t runTimeData::ByteSizeLong() const {
   // bool checkRightBranchAddress = 23;
   if (this->checkrightbranchaddress() != 0) {
     total_size += 2 + 1;
-  }
-
-  // uint32 idx = 13;
-  if (this->idx() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_idx());
-  }
-
-  // uint32 rcursive_count = 14;
-  if (this->rcursive_count() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_rcursive_count());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -825,6 +864,9 @@ void runTimeData::MergeFrom(const runTimeData& from) {
   if (from.priority() != 0) {
     _internal_set_priority(from._internal_priority());
   }
+  if (from.write_address() != 0) {
+    _internal_set_write_address(from._internal_write_address());
+  }
   if (from.condition_address() != 0) {
     _internal_set_condition_address(from._internal_condition_address());
   }
@@ -834,6 +876,15 @@ void runTimeData::MergeFrom(const runTimeData& from) {
   if (from.task_status() != 0) {
     _internal_set_task_status(from._internal_task_status());
   }
+  if (from.idx() != 0) {
+    _internal_set_idx(from._internal_idx());
+  }
+  if (from.recursive_count() != 0) {
+    _internal_set_recursive_count(from._internal_recursive_count());
+  }
+  if (from.checkwrite() != 0) {
+    _internal_set_checkwrite(from._internal_checkwrite());
+  }
   if (from.checkcondition() != 0) {
     _internal_set_checkcondition(from._internal_checkcondition());
   }
@@ -842,12 +893,6 @@ void runTimeData::MergeFrom(const runTimeData& from) {
   }
   if (from.checkrightbranchaddress() != 0) {
     _internal_set_checkrightbranchaddress(from._internal_checkrightbranchaddress());
-  }
-  if (from.idx() != 0) {
-    _internal_set_idx(from._internal_idx());
-  }
-  if (from.rcursive_count() != 0) {
-    _internal_set_rcursive_count(from._internal_rcursive_count());
   }
 }
 
@@ -876,14 +921,16 @@ void runTimeData::InternalSwap(runTimeData* other) {
   program_.Swap(&other->program_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(priority_, other->priority_);
+  swap(write_address_, other->write_address_);
   swap(condition_address_, other->condition_address_);
   swap(address_, other->address_);
   swap(task_status_, other->task_status_);
+  swap(idx_, other->idx_);
+  swap(recursive_count_, other->recursive_count_);
+  swap(checkwrite_, other->checkwrite_);
   swap(checkcondition_, other->checkcondition_);
   swap(checkaddress_, other->checkaddress_);
   swap(checkrightbranchaddress_, other->checkrightbranchaddress_);
-  swap(idx_, other->idx_);
-  swap(rcursive_count_, other->rcursive_count_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata runTimeData::GetMetadata() const {
@@ -953,8 +1000,8 @@ TaskRunTimeData::TaskRunTimeData(const TaskRunTimeData& from)
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
   ::memcpy(&write_idx_, &from.write_idx_,
-    static_cast<size_t>(reinterpret_cast<char*>(&check_write_address_) -
-    reinterpret_cast<char*>(&write_idx_)) + sizeof(check_write_address_));
+    static_cast<size_t>(reinterpret_cast<char*>(&check_) -
+    reinterpret_cast<char*>(&write_idx_)) + sizeof(check_));
   // @@protoc_insertion_point(copy_constructor:dra.TaskRunTimeData)
 }
 
@@ -963,8 +1010,8 @@ void TaskRunTimeData::SharedCtor() {
   hash_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&write_idx_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&check_write_address_) -
-      reinterpret_cast<char*>(&write_idx_)) + sizeof(check_write_address_));
+      reinterpret_cast<char*>(&check_) -
+      reinterpret_cast<char*>(&write_idx_)) + sizeof(check_));
 }
 
 TaskRunTimeData::~TaskRunTimeData() {
@@ -997,8 +1044,8 @@ void TaskRunTimeData::Clear() {
   hash_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&write_idx_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&check_write_address_) -
-      reinterpret_cast<char*>(&write_idx_)) + sizeof(check_write_address_));
+      reinterpret_cast<char*>(&check_) -
+      reinterpret_cast<char*>(&write_idx_)) + sizeof(check_));
   _internal_metadata_.Clear();
 }
 
@@ -1040,10 +1087,10 @@ const char* TaskRunTimeData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool check_write_address = 10;
+      // bool check = 10;
       case 10:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
-          check_write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          check_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1125,10 +1172,10 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_condition_idx(), target);
   }
 
-  // bool check_write_address = 10;
-  if (this->check_write_address() != 0) {
+  // bool check = 10;
+  if (this->check() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(10, this->_internal_check_write_address(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(10, this->_internal_check(), target);
   }
 
   // map<uint32, .dra.runTimeData> uncovered_address = 21;
@@ -1255,8 +1302,8 @@ size_t TaskRunTimeData::ByteSizeLong() const {
         this->_internal_condition_idx());
   }
 
-  // bool check_write_address = 10;
-  if (this->check_write_address() != 0) {
+  // bool check = 10;
+  if (this->check() != 0) {
     total_size += 1 + 1;
   }
 
@@ -1307,8 +1354,8 @@ void TaskRunTimeData::MergeFrom(const TaskRunTimeData& from) {
   if (from.condition_idx() != 0) {
     _internal_set_condition_idx(from._internal_condition_idx());
   }
-  if (from.check_write_address() != 0) {
-    _internal_set_check_write_address(from._internal_check_write_address());
+  if (from.check() != 0) {
+    _internal_set_check(from._internal_check());
   }
 }
 
@@ -1341,7 +1388,7 @@ void TaskRunTimeData::InternalSwap(TaskRunTimeData* other) {
     GetArenaNoVirtual());
   swap(write_idx_, other->write_idx_);
   swap(condition_idx_, other->condition_idx_);
-  swap(check_write_address_, other->check_write_address_);
+  swap(check_, other->check_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TaskRunTimeData::GetMetadata() const {
@@ -1424,8 +1471,8 @@ Task::Task(const Task& from)
     write_program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.write_program_);
   }
   ::memcpy(&index_, &from.index_,
-    static_cast<size_t>(reinterpret_cast<char*>(&check_write_address_) -
-    reinterpret_cast<char*>(&index_)) + sizeof(check_write_address_));
+    static_cast<size_t>(reinterpret_cast<char*>(&task_status_) -
+    reinterpret_cast<char*>(&index_)) + sizeof(task_status_));
   // @@protoc_insertion_point(copy_constructor:dra.Task)
 }
 
@@ -1437,8 +1484,8 @@ void Task::SharedCtor() {
   write_sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&index_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&check_write_address_) -
-      reinterpret_cast<char*>(&index_)) + sizeof(check_write_address_));
+      reinterpret_cast<char*>(&task_status_) -
+      reinterpret_cast<char*>(&index_)) + sizeof(task_status_));
 }
 
 Task::~Task() {
@@ -1478,8 +1525,8 @@ void Task::Clear() {
   write_sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   write_program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&index_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&check_write_address_) -
-      reinterpret_cast<char*>(&index_)) + sizeof(check_write_address_));
+      reinterpret_cast<char*>(&task_status_) -
+      reinterpret_cast<char*>(&index_)) + sizeof(task_status_));
   _internal_metadata_.Clear();
 }
 
@@ -1568,13 +1615,6 @@ const char* Task::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 write_address = 14;
-      case 14:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 112)) {
-          write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
       // map<uint32, .dra.runTimeData> uncovered_address = 21;
       case 21:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 170)) {
@@ -1607,10 +1647,10 @@ const char* Task::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
           _internal_set_task_status(static_cast<::dra::taskStatus>(val));
         } else goto handle_unusual;
         continue;
-      // bool check_write_address = 25;
+      // bool check = 25;
       case 25:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 200)) {
-          check_write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          check_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1724,12 +1764,6 @@ failure:
         13, this->_internal_write_program(), target);
   }
 
-  // uint32 write_address = 14;
-  if (this->write_address() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(14, this->_internal_write_address(), target);
-  }
-
   // map<uint32, .dra.runTimeData> uncovered_address = 21;
   if (!this->_internal_uncovered_address().empty()) {
     typedef ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::runTimeData >::const_pointer
@@ -1799,10 +1833,10 @@ failure:
       24, this->_internal_task_status(), target);
   }
 
-  // bool check_write_address = 25;
-  if (this->check_write_address() != 0) {
+  // bool check = 25;
+  if (this->check() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(25, this->_internal_check_write_address(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(25, this->_internal_check(), target);
   }
 
   // repeated .dra.TaskRunTimeData task_run_time_data = 31;
@@ -1917,6 +1951,11 @@ size_t Task::ByteSizeLong() const {
         this->_internal_count());
   }
 
+  // bool check = 25;
+  if (this->check() != 0) {
+    total_size += 2 + 1;
+  }
+
   // uint32 write_index = 12;
   if (this->write_index() != 0) {
     total_size += 1 +
@@ -1924,22 +1963,10 @@ size_t Task::ByteSizeLong() const {
         this->_internal_write_index());
   }
 
-  // uint32 write_address = 14;
-  if (this->write_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_write_address());
-  }
-
   // .dra.taskStatus task_status = 24;
   if (this->task_status() != 0) {
     total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_task_status());
-  }
-
-  // bool check_write_address = 25;
-  if (this->check_write_address() != 0) {
-    total_size += 2 + 1;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2008,17 +2035,14 @@ void Task::MergeFrom(const Task& from) {
   if (from.count() != 0) {
     _internal_set_count(from._internal_count());
   }
+  if (from.check() != 0) {
+    _internal_set_check(from._internal_check());
+  }
   if (from.write_index() != 0) {
     _internal_set_write_index(from._internal_write_index());
   }
-  if (from.write_address() != 0) {
-    _internal_set_write_address(from._internal_write_address());
-  }
   if (from.task_status() != 0) {
     _internal_set_task_status(from._internal_task_status());
-  }
-  if (from.check_write_address() != 0) {
-    _internal_set_check_write_address(from._internal_check_write_address());
   }
 }
 
@@ -2060,10 +2084,9 @@ void Task::InternalSwap(Task* other) {
   swap(kind_, other->kind_);
   swap(priority_, other->priority_);
   swap(count_, other->count_);
+  swap(check_, other->check_);
   swap(write_index_, other->write_index_);
-  swap(write_address_, other->write_address_);
   swap(task_status_, other->task_status_);
-  swap(check_write_address_, other->check_write_address_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Task::GetMetadata() const {

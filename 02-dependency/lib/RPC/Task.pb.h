@@ -273,14 +273,16 @@ class runTimeData :
     kRightBranchAddressFieldNumber = 6,
     kProgramFieldNumber = 12,
     kPriorityFieldNumber = 1,
-    kConditionAddressFieldNumber = 2,
+    kWriteAddressFieldNumber = 2,
+    kConditionAddressFieldNumber = 3,
     kAddressFieldNumber = 4,
     kTaskStatusFieldNumber = 10,
+    kIdxFieldNumber = 13,
+    kRecursiveCountFieldNumber = 14,
+    kCheckWriteFieldNumber = 20,
     kCheckConditionFieldNumber = 21,
     kCheckAddressFieldNumber = 22,
     kCheckRightBranchAddressFieldNumber = 23,
-    kIdxFieldNumber = 13,
-    kRcursiveCountFieldNumber = 14,
   };
   // repeated uint32 right_branch_address = 6;
   int right_branch_address_size() const;
@@ -329,7 +331,16 @@ class runTimeData :
   void _internal_set_priority(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // uint32 condition_address = 2;
+  // uint32 write_address = 2;
+  void clear_write_address();
+  ::PROTOBUF_NAMESPACE_ID::uint32 write_address() const;
+  void set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_write_address() const;
+  void _internal_set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 condition_address = 3;
   void clear_condition_address();
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address() const;
   void set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
@@ -354,6 +365,33 @@ class runTimeData :
   private:
   ::dra::taskStatus _internal_task_status() const;
   void _internal_set_task_status(::dra::taskStatus value);
+  public:
+
+  // uint32 idx = 13;
+  void clear_idx();
+  ::PROTOBUF_NAMESPACE_ID::uint32 idx() const;
+  void set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_idx() const;
+  void _internal_set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 recursive_count = 14;
+  void clear_recursive_count();
+  ::PROTOBUF_NAMESPACE_ID::uint32 recursive_count() const;
+  void set_recursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_recursive_count() const;
+  void _internal_set_recursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // bool checkWrite = 20;
+  void clear_checkwrite();
+  bool checkwrite() const;
+  void set_checkwrite(bool value);
+  private:
+  bool _internal_checkwrite() const;
+  void _internal_set_checkwrite(bool value);
   public:
 
   // bool checkCondition = 21;
@@ -383,24 +421,6 @@ class runTimeData :
   void _internal_set_checkrightbranchaddress(bool value);
   public:
 
-  // uint32 idx = 13;
-  void clear_idx();
-  ::PROTOBUF_NAMESPACE_ID::uint32 idx() const;
-  void set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_idx() const;
-  void _internal_set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
-  // uint32 rcursive_count = 14;
-  void clear_rcursive_count();
-  ::PROTOBUF_NAMESPACE_ID::uint32 rcursive_count() const;
-  void set_rcursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_rcursive_count() const;
-  void _internal_set_rcursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:dra.runTimeData)
  private:
   class _Internal;
@@ -410,14 +430,16 @@ class runTimeData :
   mutable std::atomic<int> _right_branch_address_cached_byte_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_;
   ::PROTOBUF_NAMESPACE_ID::uint32 priority_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 write_address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_address_;
   ::PROTOBUF_NAMESPACE_ID::uint32 address_;
   int task_status_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 idx_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 recursive_count_;
+  bool checkwrite_;
   bool checkcondition_;
   bool checkaddress_;
   bool checkrightbranchaddress_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 idx_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 rcursive_count_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Task_2eproto;
 };
@@ -596,7 +618,7 @@ class TaskRunTimeData :
     kProgramFieldNumber = 2,
     kWriteIdxFieldNumber = 5,
     kConditionIdxFieldNumber = 6,
-    kCheckWriteAddressFieldNumber = 10,
+    kCheckFieldNumber = 10,
   };
   // map<uint32, .dra.runTimeData> uncovered_address = 21;
   int uncovered_address_size() const;
@@ -682,13 +704,13 @@ class TaskRunTimeData :
   void _internal_set_condition_idx(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // bool check_write_address = 10;
-  void clear_check_write_address();
-  bool check_write_address() const;
-  void set_check_write_address(bool value);
+  // bool check = 10;
+  void clear_check();
+  bool check() const;
+  void set_check(bool value);
   private:
-  bool _internal_check_write_address() const;
-  void _internal_set_check_write_address(bool value);
+  bool _internal_check() const;
+  void _internal_set_check(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:dra.TaskRunTimeData)
@@ -712,7 +734,7 @@ class TaskRunTimeData :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_;
   ::PROTOBUF_NAMESPACE_ID::uint32 write_idx_;
   ::PROTOBUF_NAMESPACE_ID::uint32 condition_idx_;
-  bool check_write_address_;
+  bool check_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Task_2eproto;
 };
@@ -897,10 +919,9 @@ class Task :
     kKindFieldNumber = 4,
     kPriorityFieldNumber = 5,
     kCountFieldNumber = 7,
+    kCheckFieldNumber = 25,
     kWriteIndexFieldNumber = 12,
-    kWriteAddressFieldNumber = 14,
     kTaskStatusFieldNumber = 24,
-    kCheckWriteAddressFieldNumber = 25,
   };
   // map<uint32, .dra.runTimeData> uncovered_address = 21;
   int uncovered_address_size() const;
@@ -1070,6 +1091,15 @@ class Task :
   void _internal_set_count(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
+  // bool check = 25;
+  void clear_check();
+  bool check() const;
+  void set_check(bool value);
+  private:
+  bool _internal_check() const;
+  void _internal_set_check(bool value);
+  public:
+
   // uint32 write_index = 12;
   void clear_write_index();
   ::PROTOBUF_NAMESPACE_ID::uint32 write_index() const;
@@ -1079,15 +1109,6 @@ class Task :
   void _internal_set_write_index(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // uint32 write_address = 14;
-  void clear_write_address();
-  ::PROTOBUF_NAMESPACE_ID::uint32 write_address() const;
-  void set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_write_address() const;
-  void _internal_set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
   // .dra.taskStatus task_status = 24;
   void clear_task_status();
   ::dra::taskStatus task_status() const;
@@ -1095,15 +1116,6 @@ class Task :
   private:
   ::dra::taskStatus _internal_task_status() const;
   void _internal_set_task_status(::dra::taskStatus value);
-  public:
-
-  // bool check_write_address = 25;
-  void clear_check_write_address();
-  bool check_write_address() const;
-  void set_check_write_address(bool value);
-  private:
-  bool _internal_check_write_address() const;
-  void _internal_set_check_write_address(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:dra.Task)
@@ -1133,10 +1145,9 @@ class Task :
   ::PROTOBUF_NAMESPACE_ID::uint32 kind_;
   ::PROTOBUF_NAMESPACE_ID::int32 priority_;
   ::PROTOBUF_NAMESPACE_ID::uint32 count_;
+  bool check_;
   ::PROTOBUF_NAMESPACE_ID::uint32 write_index_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 write_address_;
   int task_status_;
-  bool check_write_address_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Task_2eproto;
 };
@@ -1394,7 +1405,27 @@ inline void runTimeData::set_priority(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   // @@protoc_insertion_point(field_set:dra.runTimeData.priority)
 }
 
-// uint32 condition_address = 2;
+// uint32 write_address = 2;
+inline void runTimeData::clear_write_address() {
+  write_address_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 runTimeData::_internal_write_address() const {
+  return write_address_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 runTimeData::write_address() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.write_address)
+  return _internal_write_address();
+}
+inline void runTimeData::_internal_set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  write_address_ = value;
+}
+inline void runTimeData::set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_write_address(value);
+  // @@protoc_insertion_point(field_set:dra.runTimeData.write_address)
+}
+
+// uint32 condition_address = 3;
 inline void runTimeData::clear_condition_address() {
   condition_address_ = 0u;
 }
@@ -1581,24 +1612,44 @@ inline void runTimeData::set_idx(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   // @@protoc_insertion_point(field_set:dra.runTimeData.idx)
 }
 
-// uint32 rcursive_count = 14;
-inline void runTimeData::clear_rcursive_count() {
-  rcursive_count_ = 0u;
+// uint32 recursive_count = 14;
+inline void runTimeData::clear_recursive_count() {
+  recursive_count_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 runTimeData::_internal_rcursive_count() const {
-  return rcursive_count_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 runTimeData::_internal_recursive_count() const {
+  return recursive_count_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 runTimeData::rcursive_count() const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.rcursive_count)
-  return _internal_rcursive_count();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 runTimeData::recursive_count() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.recursive_count)
+  return _internal_recursive_count();
 }
-inline void runTimeData::_internal_set_rcursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void runTimeData::_internal_set_recursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  rcursive_count_ = value;
+  recursive_count_ = value;
 }
-inline void runTimeData::set_rcursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_rcursive_count(value);
-  // @@protoc_insertion_point(field_set:dra.runTimeData.rcursive_count)
+inline void runTimeData::set_recursive_count(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_recursive_count(value);
+  // @@protoc_insertion_point(field_set:dra.runTimeData.recursive_count)
+}
+
+// bool checkWrite = 20;
+inline void runTimeData::clear_checkwrite() {
+  checkwrite_ = false;
+}
+inline bool runTimeData::_internal_checkwrite() const {
+  return checkwrite_;
+}
+inline bool runTimeData::checkwrite() const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.checkWrite)
+  return _internal_checkwrite();
+}
+inline void runTimeData::_internal_set_checkwrite(bool value) {
+  
+  checkwrite_ = value;
+}
+inline void runTimeData::set_checkwrite(bool value) {
+  _internal_set_checkwrite(value);
+  // @@protoc_insertion_point(field_set:dra.runTimeData.checkWrite)
 }
 
 // bool checkCondition = 21;
@@ -1829,24 +1880,24 @@ inline void TaskRunTimeData::set_condition_idx(::PROTOBUF_NAMESPACE_ID::uint32 v
   // @@protoc_insertion_point(field_set:dra.TaskRunTimeData.condition_idx)
 }
 
-// bool check_write_address = 10;
-inline void TaskRunTimeData::clear_check_write_address() {
-  check_write_address_ = false;
+// bool check = 10;
+inline void TaskRunTimeData::clear_check() {
+  check_ = false;
 }
-inline bool TaskRunTimeData::_internal_check_write_address() const {
-  return check_write_address_;
+inline bool TaskRunTimeData::_internal_check() const {
+  return check_;
 }
-inline bool TaskRunTimeData::check_write_address() const {
-  // @@protoc_insertion_point(field_get:dra.TaskRunTimeData.check_write_address)
-  return _internal_check_write_address();
+inline bool TaskRunTimeData::check() const {
+  // @@protoc_insertion_point(field_get:dra.TaskRunTimeData.check)
+  return _internal_check();
 }
-inline void TaskRunTimeData::_internal_set_check_write_address(bool value) {
+inline void TaskRunTimeData::_internal_set_check(bool value) {
   
-  check_write_address_ = value;
+  check_ = value;
 }
-inline void TaskRunTimeData::set_check_write_address(bool value) {
-  _internal_set_check_write_address(value);
-  // @@protoc_insertion_point(field_set:dra.TaskRunTimeData.check_write_address)
+inline void TaskRunTimeData::set_check(bool value) {
+  _internal_set_check(value);
+  // @@protoc_insertion_point(field_set:dra.TaskRunTimeData.check)
 }
 
 // map<uint32, .dra.runTimeData> uncovered_address = 21;
@@ -2315,26 +2366,6 @@ inline void Task::set_allocated_write_program(std::string* write_program) {
   // @@protoc_insertion_point(field_set_allocated:dra.Task.write_program)
 }
 
-// uint32 write_address = 14;
-inline void Task::clear_write_address() {
-  write_address_ = 0u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Task::_internal_write_address() const {
-  return write_address_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Task::write_address() const {
-  // @@protoc_insertion_point(field_get:dra.Task.write_address)
-  return _internal_write_address();
-}
-inline void Task::_internal_set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  
-  write_address_ = value;
-}
-inline void Task::set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_write_address(value);
-  // @@protoc_insertion_point(field_set:dra.Task.write_address)
-}
-
 // .dra.taskStatus task_status = 24;
 inline void Task::clear_task_status() {
   task_status_ = 0;
@@ -2355,24 +2386,24 @@ inline void Task::set_task_status(::dra::taskStatus value) {
   // @@protoc_insertion_point(field_set:dra.Task.task_status)
 }
 
-// bool check_write_address = 25;
-inline void Task::clear_check_write_address() {
-  check_write_address_ = false;
+// bool check = 25;
+inline void Task::clear_check() {
+  check_ = false;
 }
-inline bool Task::_internal_check_write_address() const {
-  return check_write_address_;
+inline bool Task::_internal_check() const {
+  return check_;
 }
-inline bool Task::check_write_address() const {
-  // @@protoc_insertion_point(field_get:dra.Task.check_write_address)
-  return _internal_check_write_address();
+inline bool Task::check() const {
+  // @@protoc_insertion_point(field_get:dra.Task.check)
+  return _internal_check();
 }
-inline void Task::_internal_set_check_write_address(bool value) {
+inline void Task::_internal_set_check(bool value) {
   
-  check_write_address_ = value;
+  check_ = value;
 }
-inline void Task::set_check_write_address(bool value) {
-  _internal_set_check_write_address(value);
-  // @@protoc_insertion_point(field_set:dra.Task.check_write_address)
+inline void Task::set_check(bool value) {
+  _internal_set_check(value);
+  // @@protoc_insertion_point(field_set:dra.Task.check)
 }
 
 // map<uint32, .dra.runTimeData> uncovered_address = 21;
