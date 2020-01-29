@@ -137,15 +137,16 @@ inline bool taskStatus_Parse(
     taskStatus_descriptor(), name, value);
 }
 enum TaskKind : int {
-  Normal = 0,
+  Boot = 0,
   High = 1,
-  Boot = 2,
+  Ckeck = 3,
+  Normal = 5,
   TaskKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   TaskKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool TaskKind_IsValid(int value);
-constexpr TaskKind TaskKind_MIN = Normal;
-constexpr TaskKind TaskKind_MAX = Boot;
+constexpr TaskKind TaskKind_MIN = Boot;
+constexpr TaskKind TaskKind_MAX = Normal;
 constexpr int TaskKind_ARRAYSIZE = TaskKind_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TaskKind_descriptor();

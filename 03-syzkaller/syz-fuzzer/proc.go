@@ -87,7 +87,7 @@ func (proc *Proc) loop() {
 				proc.execute(proc.execOpts, item.p, item.flags, StatCandidate)
 			case *WorkDependency:
 				statName = pb.FuzzingStat_StatDependency
-				proc.dependency(item.task)
+				proc.dependency(item.task, pb.TaskKind_High)
 			case *WorkBoot:
 				statName = pb.FuzzingStat_StatDependency
 				proc.dependencyBoot(item)
@@ -105,7 +105,7 @@ func (proc *Proc) loop() {
 			item := proc.fuzzer.workQueue.dequeueDependency()
 			if item != nil {
 				statName = pb.FuzzingStat_StatDependency
-				proc.dependency(item.task)
+				proc.dependency(item.task, pb.TaskKind_Normal)
 				//}
 			} else {
 				ct := proc.fuzzer.choiceTable

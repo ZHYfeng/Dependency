@@ -195,7 +195,6 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		res += "uncovered address priority : " + fmt.Sprintf("%d", priority) + "\n"
 		res += "condition program : " + fmt.Sprintf("%d", t.Index) + " : " + t.Sig + "\n"
 		res += fmt.Sprintf("%s", t.Program) + "\n"
-		res += "write address : " + fmt.Sprintf("0xffffffff%x", t.WriteAddress) + "\n"
 		res += "write program : " + fmt.Sprintf("%d", t.WriteIndex) + " : " + t.WriteSig + "\n"
 		res += fmt.Sprintf("%s", t.WriteProgram) + "\n"
 
@@ -203,9 +202,9 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		if t.TaskStatus == pb.TaskStatus_untested {
 			continue
 		}
-		ua.RunTimeDate.RcursiveCount += t.Count
-		res += "check_write_address : " + fmt.Sprintf("%t", t.CheckWriteAddress) + "\n"
-		if t.CheckWriteAddress {
+		ua.RunTimeDate.RecursiveCount += t.Count
+		res += "check : " + fmt.Sprintf("%t", t.Check) + "\n"
+		if t.Check {
 
 		} else {
 			if ua.WriteAddressStatus[t.WriteAddress] < pb.TaskStatus_unstable_write {
@@ -215,6 +214,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		res += "-------------------------------------------\n"
 		if rd, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 			res += "task_status : " + rd.TaskStatus.String() + "\n"
+			res += "check write : " + fmt.Sprintf("%t", rd.CheckWrite) + "\n"
 			res += "check condition : " + fmt.Sprintf("%t", rd.CheckCondition) + "\n"
 			res += "check address : " + fmt.Sprintf("%t", rd.CheckAddress) + "\n"
 			if rd.TaskStatus == pb.TaskStatus_untested {

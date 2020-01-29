@@ -215,6 +215,7 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 			m.Program = append(m.Program, c)
 		}
 		m.Idx = d.Idx
+		m.CheckWrite = d.CheckWrite
 		m.CheckCondition = d.CheckCondition
 		m.CheckAddress = d.CheckAddress
 		m.CheckRightBranchAddress = d.CheckRightBranchAddress
@@ -232,7 +233,7 @@ func (m *TaskRunTimeData) mergeTaskRunTimeData(d *TaskRunTimeData) {
 		return
 	}
 
-	m.CheckWriteAddress = m.CheckWriteAddress || d.CheckWriteAddress
+	m.Check = m.Check || d.Check
 
 	if m.CoveredAddress == nil {
 		m.CoveredAddress = map[uint32]*RunTimeData{}
@@ -311,7 +312,7 @@ func (m *Task) mergeTask(s *Task) {
 		m.TaskStatus = s.TaskStatus
 	}
 
-	m.CheckWriteAddress = s.CheckWriteAddress || m.CheckWriteAddress
+	m.Check = s.Check || m.Check
 
 	if len(m.TaskRunTimeData) == 0 {
 		m.TaskRunTimeData = s.TaskRunTimeData
@@ -833,17 +834,19 @@ func (m *DataDependency) getTask(sig string, index uint32, writeSig string, writ
 	ca := ua.ConditionAddress
 
 	task.UncoveredAddress[uncoveredAddress] = &RunTimeData{
-		Program:                 []byte{},
-		TaskStatus:              TaskStatus_untested,
-		RcursiveCount:           0,
-		Priority:                m.getPriority(task.WriteAddress, uncoveredAddress),
-		Idx:                     index,
-		CheckCondition:          false,
+		Priority:                m.getPriority(writeAddress, uncoveredAddress),
 		ConditionAddress:        ca,
-		CheckAddress:            false,
+		WriteAddress:            writeAddress,
 		Address:                 uncoveredAddress,
-		CheckRightBranchAddress: false,
 		RightBranchAddress:      []uint32{},
+		TaskStatus:              TaskStatus_untested,
+		Program:                 []byte{},
+		Idx:                     index,
+		RecursiveCount:          0,
+		CheckWrite:              false,
+		CheckCondition:          false,
+		CheckAddress:            false,
+		CheckRightBranchAddress: false,
 	}
 
 	return task
@@ -1110,63 +1113,82 @@ func (ss *Server) outPutUnstableInput(ui *UnstableInput) {
 	_ = f.Close()
 }
 
-func (ss *Server) updateUncoveredAddress(t *Task) {
-	uaTS := map[uint32]TaskStatus{}
+func checkTaskStatus(wTS *map[uint32]TaskStatus, uaTS *map[uint32]TaskStatus, rTD map[uint32]*RunTimeData, insert bool) {
+	for _, ua := range rTD {
+		if ua.CheckWrite {
+			if (*wTS)[ua.Address] < TaskStatus_tested {
+				(*wTS)[ua.Address] = TaskStatus_tested
+			}
+		} else {
+			if insert {
+				if (*wTS)[ua.Address] < TaskStatus_unstable_insert {
+					(*wTS)[ua.Address] = TaskStatus_unstable_insert
+				}
 
-	for a, rd := range t.UncoveredAddress {
-		uaTS[a] = rd.TaskStatus
-	}
-
-	wts := TaskStatus_untested
-	if t.CheckWriteAddress {
-		for _, trd := range t.TaskRunTimeData {
-			for _, ua := range trd.UncoveredAddress {
-				if trd.CheckWriteAddress {
-
-					if ua.CheckCondition {
-						if wts < TaskStatus_tested {
-							wts = TaskStatus_tested
-						}
-						if ua.CheckAddress {
-							if uaTS[ua.Address] < TaskStatus_covered {
-								uaTS[ua.Address] = TaskStatus_covered
-							}
-						} else {
-							if uaTS[ua.Address] < TaskStatus_tested {
-								uaTS[ua.Address] = TaskStatus_tested
-							}
-						}
-					} else {
-						if wts < TaskStatus_unstable_insert {
-							wts = TaskStatus_unstable_insert
-						}
-						if uaTS[ua.Address] < TaskStatus_unstable_insert {
-							uaTS[ua.Address] = TaskStatus_unstable_insert
-						}
-					}
-				} else {
-					if wts < TaskStatus_unstable_insert {
-						wts = TaskStatus_unstable_insert
-					}
+			} else {
+				if (*wTS)[ua.Address] < TaskStatus_unstable_write {
+					(*wTS)[ua.Address] = TaskStatus_unstable_write
 				}
 			}
 		}
-	} else {
-		wts = TaskStatus_unstable_write
-	}
 
-	for a, tt := range uaTS {
-		if ua, ok := ss.dataDependency.UncoveredAddress[a]; ok {
-			if ts, ok := ua.WriteAddressStatus[t.WriteAddress]; ok {
-				if ts < wts {
-					ua.WriteAddressStatus[t.WriteAddress] = wts
+		if ua.CheckCondition {
+			if ua.CheckAddress {
+				if (*uaTS)[ua.Address] < TaskStatus_covered {
+					(*uaTS)[ua.Address] = TaskStatus_covered
 				}
 			} else {
-				log.Logf(0, "uncovered address : %x", a)
+				if (*uaTS)[ua.Address] < TaskStatus_tested {
+					(*uaTS)[ua.Address] = TaskStatus_tested
+				}
+			}
+		} else {
+			if insert {
+				if (*uaTS)[ua.Address] < TaskStatus_unstable_insert {
+					(*uaTS)[ua.Address] = TaskStatus_unstable_insert
+				}
+			} else {
+				if (*uaTS)[ua.Address] < TaskStatus_unstable_condition {
+					(*uaTS)[ua.Address] = TaskStatus_unstable_condition
+				}
+			}
+		}
+	}
+}
+
+func (ss *Server) updateUncoveredAddress(t *Task) {
+	wTS := map[uint32]TaskStatus{}
+	uaTS := map[uint32]TaskStatus{}
+
+	for a, _ := range t.UncoveredAddress {
+		wTS[a] = TaskStatus_untested
+		uaTS[a] = TaskStatus_untested
+	}
+
+	checkTaskStatus(&wTS, &uaTS, t.UncoveredAddress, false)
+
+	if t.Check {
+		for _, trd := range t.TaskRunTimeData {
+			checkTaskStatus(&wTS, &uaTS, trd.UncoveredAddress, false)
+		}
+	} else {
+
+	}
+
+	for _, UA := range t.UncoveredAddress {
+
+		if ua, ok := ss.dataDependency.UncoveredAddress[UA.Address]; ok {
+
+			if ts, ok := ua.WriteAddressStatus[UA.WriteAddress]; ok {
+				if ts < wTS[UA.Address] {
+					ua.WriteAddressStatus[UA.WriteAddress] = wTS[UA.Address]
+				}
+			} else {
+				log.Logf(0, "uncovered address : %x", UA.Address)
 				for n := range ua.WriteAddressStatus {
 					log.Logf(0, "ua.WriteAddressStatus : %x", n)
 				}
-				log.Logf(0, "updateUncoveredAddress : can not find the t.WriteAddress : %x", t.WriteAddress)
+				log.Logf(0, "updateUncoveredAddress : can not find the t.WriteAddress : %x", UA.WriteAddress)
 			}
 
 			status, ok := ua.InputStatus[t.Sig]
@@ -1176,21 +1198,19 @@ func (ss *Server) updateUncoveredAddress(t *Task) {
 				}
 				ua.InputStatus[t.Sig] = temp
 				status = temp
-				//log.Fatalf("updateUncoveredAddress : can not find the ua.InputStatus[t.Sig]")
 			}
 
 			if ts, ok := status.Status[t.Index]; ok {
-				if ts < tt {
-					status.Status[t.Index] = tt
+				if ts < uaTS[UA.Address] {
+					status.Status[t.Index] = uaTS[UA.Address]
 				}
 			} else {
-				status.Status[t.Index] = tt
-				//log.Fatalf("updateUncoveredAddress : can not find the status.Status[t.Index]")
+				status.Status[t.Index] = uaTS[UA.Address]
 			}
 
 			// TODO (Yu Hao) : remove other tasks
 
-		} else if _, ok := ss.dataResult.CoveredAddress[a]; ok {
+		} else if _, ok := ss.dataResult.CoveredAddress[UA.Address]; ok {
 
 		} else {
 			log.Fatalf("updateUncoveredAddress : can not find the uaTS")
@@ -1238,10 +1258,12 @@ func (m *DataDependency) GetTaskByInput(input *Input) (*UncoveredAddress, []*Tas
 		indexBits := uint32(1) << index
 		if ua, ok := m.getUncoveredAddressInCall(call); ok {
 			for w, _ := range ua.WriteAddress {
-				if wa, ok := m.WriteAddress[w]; ok {
-					for writeSig, wiBits := range wa.Input {
-						res += fmt.Sprintf("get task : uncovered address : %x : write address : %x\n", ua.UncoveredAddress, w)
-						tasks = append(tasks, m.getTasks(input.Sig, indexBits, writeSig, wiBits, w, ua.UncoveredAddress)...)
+				if ts, ok := ua.WriteAddressStatus[w]; ok && ts < TaskStatus_tested {
+					if wa, ok := m.WriteAddress[w]; ok {
+						for writeSig, wiBits := range wa.Input {
+							res += fmt.Sprintf("get task : uncovered address : %x : write address : %x\n", ua.UncoveredAddress, w)
+							tasks = append(tasks, m.getTasks(input.Sig, indexBits, writeSig, wiBits, w, ua.UncoveredAddress)...)
+						}
 					}
 				}
 			}

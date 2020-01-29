@@ -371,8 +371,8 @@ const char descriptor_table_protodef_Task_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "\377\377\377\377\377\377\377\001\022\022\n\016unstable_write\020\013\022\026\n\022unstable"
   "_condition\020\014\022\023\n\017unstable_insert\020\r\022\014\n\010uns"
   "table\020\016\022\n\n\006tested\020\025\022\013\n\007covered\020\026\022\r\n\trecu"
-  "rsive\020\037\022\007\n\003out\020 **\n\010TaskKind\022\n\n\006Normal\020\000"
-  "\022\010\n\004High\020\001\022\010\n\004Boot\020\002b\006proto3"
+  "rsive\020\037\022\007\n\003out\020 *5\n\010TaskKind\022\010\n\004Boot\020\000\022\010"
+  "\n\004High\020\001\022\t\n\005Ckeck\020\003\022\n\n\006Normal\020\005b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Task_2eproto_deps[1] = {
 };
@@ -390,7 +390,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Tas
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Task_2eproto_once;
 static bool descriptor_table_Task_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Task_2eproto = {
-  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 1788,
+  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 1799,
   &descriptor_table_Task_2eproto_once, descriptor_table_Task_2eproto_sccs, descriptor_table_Task_2eproto_deps, 9, 0,
   schemas, file_default_instances, TableStruct_Task_2eproto::offsets,
   file_level_metadata_Task_2eproto, 9, file_level_enum_descriptors_Task_2eproto, file_level_service_descriptors_Task_2eproto,
@@ -432,7 +432,8 @@ bool TaskKind_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
-    case 2:
+    case 3:
+    case 5:
       return true;
     default:
       return false;

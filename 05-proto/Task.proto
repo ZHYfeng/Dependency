@@ -77,9 +77,10 @@ message Task {
 }
 
 enum TaskKind {
-    Normal = 0;
+    Boot = 0;
     High = 1;
-    Boot = 2;
+    Ckeck = 3;
+    Normal = 5;
 }
 
 message Tasks {
