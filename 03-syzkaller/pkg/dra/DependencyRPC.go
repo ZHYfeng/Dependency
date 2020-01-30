@@ -1116,13 +1116,20 @@ func (ss *Server) outPutUnstableInput(ui *UnstableInput) {
 func checkTaskStatus(wTS *map[uint32]TaskStatus, uaTS *map[uint32]TaskStatus, rTD map[uint32]*RunTimeData, insert bool) {
 	for _, ua := range rTD {
 		if ua.CheckWrite {
-			if (*wTS)[ua.Address] < TaskStatus_tested {
-				(*wTS)[ua.Address] = TaskStatus_tested
+			if insert {
+				if (*wTS)[ua.Address] < TaskStatus_stable_insert_write {
+					(*wTS)[ua.Address] = TaskStatus_stable_insert_write
+				}
+
+			} else {
+				if (*wTS)[ua.Address] < TaskStatus_stable_write {
+					(*wTS)[ua.Address] = TaskStatus_stable_write
+				}
 			}
 		} else {
 			if insert {
-				if (*wTS)[ua.Address] < TaskStatus_unstable_insert {
-					(*wTS)[ua.Address] = TaskStatus_unstable_insert
+				if (*wTS)[ua.Address] == TaskStatus_stable_write {
+					(*wTS)[ua.Address] = TaskStatus_unstable_insert_write
 				}
 
 			} else {
@@ -1138,14 +1145,20 @@ func checkTaskStatus(wTS *map[uint32]TaskStatus, uaTS *map[uint32]TaskStatus, rT
 					(*uaTS)[ua.Address] = TaskStatus_covered
 				}
 			} else {
-				if (*uaTS)[ua.Address] < TaskStatus_tested {
-					(*uaTS)[ua.Address] = TaskStatus_tested
+				if insert {
+					if (*uaTS)[ua.Address] < TaskStatus_tested {
+						(*uaTS)[ua.Address] = TaskStatus_tested
+					}
+				} else {
+					if (*uaTS)[ua.Address] < TaskStatus_stable_condition {
+						(*uaTS)[ua.Address] = TaskStatus_stable_condition
+					}
 				}
 			}
 		} else {
 			if insert {
-				if (*uaTS)[ua.Address] < TaskStatus_unstable_insert {
-					(*uaTS)[ua.Address] = TaskStatus_unstable_insert
+				if (*uaTS)[ua.Address] == TaskStatus_stable_condition {
+					(*uaTS)[ua.Address] = TaskStatus_unstable_insert_condition
 				}
 			} else {
 				if (*uaTS)[ua.Address] < TaskStatus_unstable_condition {

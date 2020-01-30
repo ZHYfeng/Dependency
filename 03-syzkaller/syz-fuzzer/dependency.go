@@ -162,8 +162,8 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 			} else {
 				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", rTD.Address, false)
 				rTD.CheckAddress = false
-				if rTD.TaskStatus < pb.TaskStatus_tested {
-					rTD.TaskStatus = pb.TaskStatus_tested
+				if rTD.TaskStatus < pb.TaskStatus_stable_condition {
+					rTD.TaskStatus = pb.TaskStatus_stable_condition
 				}
 			}
 		} else {
@@ -315,38 +315,38 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 	var temp []uint32
 	for ua, r := range taskRunTimeData.UncoveredAddress {
 
-		checkWriteAddress2 := checkAddressInArray(r.WriteAddress, info.Calls[taskRunTimeData.WriteIdx].Cover)
-		res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", r.WriteAddress, checkWriteAddress2)
-		if checkWriteAddress2 {
+		checkWriteAddress1 := checkAddressInArray(r.WriteAddress, info.Calls[taskRunTimeData.WriteIdx].Cover)
+		res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", r.WriteAddress, checkWriteAddress1)
+		if checkWriteAddress1 {
 			r.CheckWrite = true
-			if checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
-				res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, true)
+			checkWriteAddress2 := checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover)
+			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, checkWriteAddress2)
+			if checkWriteAddress2 {
 				r.CheckCondition = true
-				if checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover) {
-					res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, true)
+				checkWriteAddress3 := checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover)
+				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, checkWriteAddress3)
+				if checkWriteAddress3 {
 					r.CheckAddress = true
 					r.TaskStatus = pb.TaskStatus_covered
 					taskRunTimeData.CoveredAddress[ua] = r
 					temp = append(temp, ua)
 				} else {
-					res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, false)
 					r.CheckAddress = false
 					if r.TaskStatus < pb.TaskStatus_tested {
 						r.TaskStatus = pb.TaskStatus_tested
 					}
 				}
 			} else {
-				res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, false)
 				r.CheckCondition = false
-				if r.TaskStatus < pb.TaskStatus_unstable_condition {
-					r.TaskStatus = pb.TaskStatus_unstable_condition
+				if r.TaskStatus < pb.TaskStatus_unstable_insert_condition {
+					r.TaskStatus = pb.TaskStatus_unstable_insert_condition
 
 				}
 			}
 		} else {
 			r.CheckWrite = false
-			if r.TaskStatus < pb.TaskStatus_unstable_write {
-				r.TaskStatus = pb.TaskStatus_unstable_write
+			if r.TaskStatus < pb.TaskStatus_unstable_insert_write {
+				r.TaskStatus = pb.TaskStatus_unstable_insert_write
 			}
 		}
 	}

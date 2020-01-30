@@ -10,9 +10,16 @@ enum taskStatus {
     not_find_write_input = -3;
 
     unstable_write = 11;
-    unstable_condition = 12;
-    unstable_insert = 13;
-    unstable = 14;
+    stable_write = 12;
+    unstable_condition = 13;
+    stable_condition = 14;
+
+    unstable_insert_write = 15;
+    stable_insert_write = 16;
+    unstable_insert_condition = 17;
+    stable_insert_condition = 18;
+
+    unstable = 19;
 
     tested = 21;
     covered = 22;

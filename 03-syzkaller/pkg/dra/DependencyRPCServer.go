@@ -43,7 +43,7 @@ const (
 	NameWithDra        = "01-result-with-dra"
 	NameWithoutDra     = "02-result-without-dra"
 	NameData           = "data.txt"
-	NameDataDependency = "DataDependency.bin"
+	NameDataDependency = "dataDependency.bin"
 	NameDataResult     = "dataResult.bin"
 	NameDataRunTime    = "dataRunTime.bin"
 	NameStatistics     = "statistics.bin"

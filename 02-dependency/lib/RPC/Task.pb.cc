@@ -364,15 +364,19 @@ const char descriptor_table_protodef_Task_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "dra.TaskKind\022)\n\010task_map\030\001 \003(\0132\027.dra.Tas"
   "ks.TaskMapEntry\022\035\n\ntask_array\030\002 \003(\0132\t.dr"
   "a.Task\0329\n\014TaskMapEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005v"
-  "alue\030\002 \001(\0132\t.dra.Task:\0028\001*\214\002\n\ntaskStatus"
+  "alue\030\002 \001(\0132\t.dra.Task:\0028\001*\217\003\n\ntaskStatus"
   "\022\014\n\010untested\020\000\022\013\n\007testing\020\001\022\033\n\016not_find_"
   "input\020\373\377\377\377\377\377\377\377\377\001\022#\n\026not_find_write_addre"
   "ss\020\374\377\377\377\377\377\377\377\377\001\022!\n\024not_find_write_input\020\375\377"
-  "\377\377\377\377\377\377\377\001\022\022\n\016unstable_write\020\013\022\026\n\022unstable"
-  "_condition\020\014\022\023\n\017unstable_insert\020\r\022\014\n\010uns"
-  "table\020\016\022\n\n\006tested\020\025\022\013\n\007covered\020\026\022\r\n\trecu"
-  "rsive\020\037\022\007\n\003out\020 *5\n\010TaskKind\022\010\n\004Boot\020\000\022\010"
-  "\n\004High\020\001\022\t\n\005Ckeck\020\003\022\n\n\006Normal\020\005b\006proto3"
+  "\377\377\377\377\377\377\377\001\022\022\n\016unstable_write\020\013\022\020\n\014stable_w"
+  "rite\020\014\022\026\n\022unstable_condition\020\r\022\024\n\020stable"
+  "_condition\020\016\022\031\n\025unstable_insert_write\020\017\022"
+  "\027\n\023stable_insert_write\020\020\022\035\n\031unstable_ins"
+  "ert_condition\020\021\022\033\n\027stable_insert_conditi"
+  "on\020\022\022\014\n\010unstable\020\023\022\n\n\006tested\020\025\022\013\n\007covere"
+  "d\020\026\022\r\n\trecursive\020\037\022\007\n\003out\020 *5\n\010TaskKind\022"
+  "\010\n\004Boot\020\000\022\010\n\004High\020\001\022\t\n\005Ckeck\020\003\022\n\n\006Normal"
+  "\020\005b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Task_2eproto_deps[1] = {
 };
@@ -390,7 +394,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Tas
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Task_2eproto_once;
 static bool descriptor_table_Task_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Task_2eproto = {
-  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 1799,
+  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 1930,
   &descriptor_table_Task_2eproto_once, descriptor_table_Task_2eproto_sccs, descriptor_table_Task_2eproto_deps, 9, 0,
   schemas, file_default_instances, TableStruct_Task_2eproto::offsets,
   file_level_metadata_Task_2eproto, 9, file_level_enum_descriptors_Task_2eproto, file_level_service_descriptors_Task_2eproto,
@@ -414,6 +418,11 @@ bool taskStatus_IsValid(int value) {
     case 12:
     case 13:
     case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
     case 21:
     case 22:
     case 31:
