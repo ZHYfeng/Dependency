@@ -105,7 +105,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
 	}
 
-	idx := int(task.WriteIndex)
+	idx1 := int(task.WriteIndex)
 	info1 := proc.execute(proc.execOptsCover, ProgWrite, ProgNormal, StatDependency)
 
 	ProgCondition, err := proc.fuzzer.target.Deserialize(task.Program, prog.NonStrict)
@@ -113,11 +113,11 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 		log.Fatalf("dependency failed to deserialize program from task.Program: %v", err)
 	}
 	var temp []uint32
-	idx = int(task.Index)
+	idx2 := int(task.Index)
 	info2 := proc.execute(proc.execOptsCover, ProgCondition, ProgNormal, StatDependency)
 
 	for _, rTD := range task.UncoveredAddress {
-		check1 := checkAddressInArray(rTD.WriteAddress, info1.Calls[idx].Cover)
+		check1 := checkAddressInArray(rTD.WriteAddress, info1.Calls[idx1].Cover)
 		res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", rTD.ConditionAddress, check1)
 		if check1 {
 			rTD.CheckWrite = true
@@ -149,11 +149,11 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 			}
 		}
 
-		check2 := checkAddressInArray(rTD.ConditionAddress, info2.Calls[idx].Cover)
+		check2 := checkAddressInArray(rTD.ConditionAddress, info2.Calls[idx2].Cover)
 		if check2 {
 			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", rTD.ConditionAddress, true)
 			rTD.CheckCondition = true
-			if checkAddressInArray(rTD.Address, info2.Calls[idx].Cover) {
+			if checkAddressInArray(rTD.Address, info2.Calls[idx2].Cover) {
 				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", rTD.Address, true)
 				rTD.CheckAddress = true
 				rTD.TaskStatus = pb.TaskStatus_covered
