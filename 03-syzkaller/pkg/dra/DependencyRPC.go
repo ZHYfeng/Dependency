@@ -205,6 +205,7 @@ func (m *WriteAddress) mergeWriteAddress(d *WriteAddress) {
 
 func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 	if d == nil {
+		log.Fatalf("mergeRunTimeData with nil d")
 		return
 	}
 
@@ -226,11 +227,12 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 
 func (m *TaskRunTimeData) mergeTaskRunTimeData(d *TaskRunTimeData) {
 	if d == nil {
+		log.Fatalf("mergeTaskRunTimeData with nil d")
 		return
 	}
 
 	if m.Hash != d.Hash {
-		return
+		log.Fatalf("mergeTaskRunTimeData with error hash")
 	}
 
 	m.Check = m.Check || d.Check
@@ -779,7 +781,7 @@ func (ss *Server) addBootTasks(sig string, indexBits uint32, uncoveredAddress ui
 	return
 }
 
-func (m *Task) getHash() string {
+func (m *Task) ComputeHash() string {
 	if m.Hash == "" {
 		m.Hash = m.Sig + strconv.FormatInt(int64(m.Index), 10) + m.WriteSig + strconv.FormatInt(int64(m.WriteIndex), 10)
 	}
@@ -806,7 +808,7 @@ func (m *DataDependency) getTask(sig string, index uint32, writeSig string, writ
 		TaskRunTimeData:  []*TaskRunTimeData{},
 	}
 
-	task.Hash = task.getHash()
+	task.Hash = task.ComputeHash()
 
 	input, ok := m.Input[sig]
 	if !ok {
@@ -866,7 +868,7 @@ func (ss *Server) addTask(task *Task, tasks *Tasks) {
 		log.Fatalf("AddTask more than one uncovered address")
 	}
 
-	hash := task.getHash()
+	hash := task.ComputeHash()
 	if t, ok := tasks.TaskMap[hash]; ok {
 		if _, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 			t.UncoveredAddress[uncoveredAddress].updatePriority(dr.Priority)
@@ -894,10 +896,10 @@ func (m *Tasks) AddTask(t *Task) {
 	if len(m.TaskMap) != len(m.TaskArray) {
 		log.Fatalf("%s : len(m.Task) != len(m.Tasks)", m.Name)
 	}
-	if _, ok := m.TaskMap[t.getHash()]; ok {
+	if _, ok := m.TaskMap[t.ComputeHash()]; ok {
 
 	} else {
-		m.TaskMap[t.getHash()] = t
+		m.TaskMap[t.ComputeHash()] = t
 		m.TaskArray = append(m.TaskArray, t)
 	}
 }
@@ -930,7 +932,7 @@ func (m *Tasks) pop(number int) *Tasks {
 	temp = append(temp, m.TaskArray[:number]...)
 	m.TaskArray = m.TaskArray[number:]
 	for _, t := range temp {
-		delete(m.TaskMap, t.getHash())
+		delete(m.TaskMap, t.ComputeHash())
 		tasks.AddTask(t)
 	}
 	return tasks

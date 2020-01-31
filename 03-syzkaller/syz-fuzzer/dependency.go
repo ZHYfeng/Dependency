@@ -11,6 +11,7 @@ import (
 
 func (proc *Proc) dependency(task *pb.Task, kind pb.TaskKind) string {
 	res := "dependency : " + "\n"
+	res += "task hash : " + task.ComputeHash() + "\n"
 	r, ok := proc.dependencyMutateCheckATask(task)
 	res += r
 	if ok {
@@ -118,7 +119,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 
 	for _, rTD := range task.UncoveredAddress {
 		check1 := checkAddressInArray(rTD.WriteAddress, info1.Calls[idx1].Cover)
-		res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", rTD.ConditionAddress, check1)
+		res += fmt.Sprintf("check write address : %t : 0xffffffff%x\n", check1, rTD.ConditionAddress)
 		if check1 {
 			rTD.CheckWrite = true
 		} else {
@@ -151,23 +152,23 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 
 		check2 := checkAddressInArray(rTD.ConditionAddress, info2.Calls[idx2].Cover)
 		if check2 {
-			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", rTD.ConditionAddress, true)
+			res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", true, rTD.ConditionAddress)
 			rTD.CheckCondition = true
 			if checkAddressInArray(rTD.Address, info2.Calls[idx2].Cover) {
-				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", rTD.Address, true)
+				res += fmt.Sprintf("check uncovered address : %t : 0xffffffff%x\n", true, rTD.Address)
 				rTD.CheckAddress = true
 				rTD.TaskStatus = pb.TaskStatus_covered
 				task.CoveredAddress[rTD.Address] = rTD
 				temp = append(temp, rTD.Address)
 			} else {
-				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", rTD.Address, false)
+				res += fmt.Sprintf("check uncovered address: %t : 0xffffffff%x \n", false, rTD.Address)
 				rTD.CheckAddress = false
 				if rTD.TaskStatus < pb.TaskStatus_stable_condition {
 					rTD.TaskStatus = pb.TaskStatus_stable_condition
 				}
 			}
 		} else {
-			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", rTD.ConditionAddress, false)
+			res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", false, rTD.ConditionAddress)
 			rTD.CheckCondition = false
 			if rTD.TaskStatus <= pb.TaskStatus_unstable_condition {
 				rTD.TaskStatus = pb.TaskStatus_unstable_condition
@@ -316,15 +317,15 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 	for ua, r := range taskRunTimeData.UncoveredAddress {
 
 		checkWriteAddress1 := checkAddressInArray(r.WriteAddress, info.Calls[taskRunTimeData.WriteIdx].Cover)
-		res += fmt.Sprintf("check write address : 0xffffffff%x : %t\n", r.WriteAddress, checkWriteAddress1)
+		res += fmt.Sprintf("check write address : %t : 0xffffffff%x\n", checkWriteAddress1, r.WriteAddress)
 		if checkWriteAddress1 {
 			r.CheckWrite = true
 			checkWriteAddress2 := checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover)
-			res += fmt.Sprintf("check condition address : 0xffffffff%x : %t\n", r.ConditionAddress, checkWriteAddress2)
+			res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", checkWriteAddress2, r.ConditionAddress)
 			if checkWriteAddress2 {
 				r.CheckCondition = true
 				checkWriteAddress3 := checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover)
-				res += fmt.Sprintf("check uncovered address : 0xffffffff%x : %t\n", ua, checkWriteAddress3)
+				res += fmt.Sprintf("check uncovered address : %t : 0xffffffff%x\n", checkWriteAddress3, ua)
 				if checkWriteAddress3 {
 					r.CheckAddress = true
 					r.TaskStatus = pb.TaskStatus_covered

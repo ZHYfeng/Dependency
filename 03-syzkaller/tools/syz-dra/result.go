@@ -199,9 +199,6 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		res += fmt.Sprintf("%s", t.WriteProgram) + "\n"
 
 		ua.TasksCount[int32(t.TaskStatus)]++
-		if t.TaskStatus == pb.TaskStatus_untested {
-			continue
-		}
 		ua.RunTimeDate.RecursiveCount += t.Count
 		res += "check : " + fmt.Sprintf("%t", t.Check) + "\n"
 		res += "-------------------------------------------\n"
@@ -251,6 +248,10 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 						res += "check insert write address : " + fmt.Sprintf("%t", rdd.CheckWrite) + "\n"
 						res += "check condition : " + fmt.Sprintf("%t", rdd.CheckCondition) + "\n"
 						res += "check address : " + fmt.Sprintf("%t", rdd.CheckAddress) + "\n"
+						if rdd.TaskStatus == pb.TaskStatus_untested {
+							continue
+						}
+
 						if rdd.CheckWrite {
 							if rdd.CheckCondition {
 								if rdd.CheckAddress {
