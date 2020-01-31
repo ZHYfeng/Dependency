@@ -119,7 +119,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 
 	for _, rTD := range task.UncoveredAddress {
 		check1 := checkAddressInArray(rTD.WriteAddress, info1.Calls[idx1].Cover)
-		res += fmt.Sprintf("check write address : %t : 0xffffffff%x\n", check1, rTD.ConditionAddress)
+		res += fmt.Sprintf("check write address : %t : 0xffffffff%x\n", check1, rTD.WriteAddress)
 		if check1 {
 			rTD.CheckWrite = true
 		} else {

@@ -185,7 +185,8 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		}
 	}
 	for _, t := range tasks.TaskArray {
-		res += "-------------------------------------------\n"
+		res += "*******************************************\n"
+		res += "task_hash : " + t.ComputeHash() + "\n"
 		res += "task_status : " + t.TaskStatus.String() + "\n"
 		res += "task priority : " + fmt.Sprintf("%d", t.Priority) + "\n"
 		priority := uint32(0)
@@ -240,7 +241,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 				}
 			}
 
-			if t.Check {
+			if t.Check || true {
 				for _, trd := range t.TaskRunTimeData {
 					if rdd, ok := trd.UncoveredAddress[uncoveredAddress]; ok {
 						res += "-------------------------------------------\n"
