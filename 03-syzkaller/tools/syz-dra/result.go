@@ -6,6 +6,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -100,10 +101,10 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
 	res := ""
 	res += "*******************************************\n"
-	res += "condition address : " + fmt.Sprintf("0xffffffff%x", ua.ConditionAddress) + "\n"
-	res += "uncovered address : " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress) + "\n"
-	res += "number_arrive_basic_blocks : " + fmt.Sprintf("%d", ua.NumberArriveBasicblocks) + "\n"
-	res += "number_dominator_instructions(using) : " + fmt.Sprintf("%d", ua.NumberDominatorInstructions) + "\n"
+	res += "condition address 						: " + fmt.Sprintf("0xffffffff%x", ua.ConditionAddress) + "\n"
+	res += "uncovered address 					 	: " + fmt.Sprintf("0xffffffff%x", ua.UncoveredAddress) + "\n"
+	res += "number_arrive_basic_blocks 			 	: " + fmt.Sprintf("%d", ua.NumberArriveBasicblocks) + "\n"
+	res += "number_dominator_instructions(using) 	: " + fmt.Sprintf("%d", ua.NumberDominatorInstructions) + "\n"
 	res += "*******************************************\n"
 
 	res += "*******************************************\n"
@@ -319,4 +320,26 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
 	res += "*******************************************\n"
 	return res
+}
+
+func (r *result) checkStatistic() {
+
+	res := ""
+	res += fmt.Sprintf("singal number 		: %d\n", r.statistics.SignalNum)
+	res += fmt.Sprintf("basic block number	: %d\n", r.statistics.BasicBlockNumber)
+	res += fmt.Sprintf("coverage			: %d\n", len(r.statistics.Coverage.Coverage))
+
+	for _, s := range r.statistics.Stat {
+		res += "-------------------------------------------\n"
+		res += fmt.Sprintf("stat name				: %s\n", s.Name.String())
+		res += fmt.Sprintf("execute number			: %d\n", s.ExecuteNum)
+		res += fmt.Sprintf("time					: %f\n", s.Time)
+		res += fmt.Sprintf("new test case number 	: %d\n", s.NewTestCaseNum)
+		res += fmt.Sprintf("new address number 		: %d\n", s.NewAddressNum)
+		res += "-------------------------------------------\n"
+	}
+
+	f, _ := os.OpenFile(filepath.Join(r.path, pb.NameData), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	_, _ = f.WriteString(res)
+	_ = f.Close()
 }
