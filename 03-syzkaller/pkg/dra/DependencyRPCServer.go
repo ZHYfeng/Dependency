@@ -26,7 +26,7 @@ const (
 	TaskNum             = 40
 	TaskCountLimitation = 30
 
-	DebugLevel = 2
+	DebugLevel = 0
 
 	CollectPath     = true
 	CollectUnstable = true
@@ -233,7 +233,7 @@ func (ss Server) GetDataDependency(_ context.Context, request *Empty) (*DataDepe
 		f.MuDependency.RUnlock()
 	} else {
 		for n := range ss.fuzzers {
-			log.Logf(0, "GetDataDependency name : %s", n)
+			log.Logf(DebugLevel, "GetDataDependency name : %s", n)
 		}
 		log.Fatalf("GetDataDependency with error name : %s", name)
 	}
@@ -286,7 +286,7 @@ func (ss Server) ReturnTasks(_ context.Context, request *Tasks) (*Empty, error) 
 
 	f, ok := ss.fuzzers[tasks.Name]
 	if ok {
-		if tasks.Kind == TaskKind_Normal || tasks.Kind == TaskKind_High {
+		if tasks.Kind == TaskKind_Normal || tasks.Kind == TaskKind_High || tasks.Kind == TaskKind_Ckeck {
 			f.MuRunTime.Lock()
 			f.dataRunTime.Return.AddTasks(tasks)
 			f.MuRunTime.Unlock()
@@ -294,6 +294,8 @@ func (ss Server) ReturnTasks(_ context.Context, request *Tasks) (*Empty, error) 
 			f.MuRunTime.Lock()
 			f.dataRunTime.ReturnBoot.AddTasks(tasks)
 			f.MuRunTime.Unlock()
+		} else {
+			log.Fatalf("ReturnTasks with error kind")
 		}
 	} else {
 		log.Fatalf("ReturnTasks with error name")
@@ -466,7 +468,7 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	}
 
 	lis, err := net.Listen("tcp", ss.Address)
-	log.Logf(0, "drpc on tcp : %s", ss.Address)
+	log.Logf(DebugLevel, "drpc on tcp : %s", ss.Address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
