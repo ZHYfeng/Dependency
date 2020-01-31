@@ -26,7 +26,7 @@ const (
 	TaskNum             = 40
 	TaskCountLimitation = 30
 
-	DebugLevel = 0
+	DebugLevel = 2
 
 	CollectPath     = true
 	CollectUnstable = true
@@ -286,7 +286,15 @@ func (ss Server) ReturnTasks(_ context.Context, request *Tasks) (*Empty, error) 
 
 	f, ok := ss.fuzzers[tasks.Name]
 	if ok {
-		if tasks.Kind == TaskKind_Normal || tasks.Kind == TaskKind_High || tasks.Kind == TaskKind_Ckeck {
+		if tasks.Kind == TaskKind_Normal {
+			f.MuRunTime.Lock()
+			f.dataRunTime.Return.AddTasks(tasks)
+			f.MuRunTime.Unlock()
+		} else if tasks.Kind == TaskKind_High {
+			f.MuRunTime.Lock()
+			f.dataRunTime.Return.AddTasks(tasks)
+			f.MuRunTime.Unlock()
+		} else if tasks.Kind == TaskKind_Ckeck {
 			f.MuRunTime.Lock()
 			f.dataRunTime.Return.AddTasks(tasks)
 			f.MuRunTime.Unlock()
