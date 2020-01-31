@@ -209,7 +209,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 			res += "check condition : " + fmt.Sprintf("%t", rTD.CheckCondition) + "\n"
 			res += "check address : " + fmt.Sprintf("%t", rTD.CheckAddress) + "\n"
 			if rTD.TaskStatus == pb.TaskStatus_untested {
-				continue
+				//continue
 			}
 
 			if rTD.CheckWrite {
@@ -282,7 +282,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 					} else if _, ok := trd.CoveredAddress[uncoveredAddress]; ok {
 						res += "uncoveredAddress in trd.CoveredAddress" + "\n"
 					} else {
-						res += "not test" + "\n"
+						res += "no test" + "\n"
 					}
 				}
 
