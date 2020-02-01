@@ -122,6 +122,9 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 		res += fmt.Sprintf("check write address : %t : 0xffffffff%x\n", check1, rTD.WriteAddress)
 		if check1 {
 			rTD.CheckWrite = true
+			if rTD.TaskStatus <= pb.TaskStatus_stable_write {
+				rTD.TaskStatus = pb.TaskStatus_stable_write
+			}
 		} else {
 			rTD.CheckWrite = false
 			if rTD.TaskStatus <= pb.TaskStatus_unstable_write {

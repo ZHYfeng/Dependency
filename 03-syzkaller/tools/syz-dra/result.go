@@ -204,6 +204,15 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		ua.RunTimeDate.RecursiveCount += t.Count
 		res += "check : " + fmt.Sprintf("%t", t.Check) + "\n"
 		res += "len TaskRunTimeData : " + fmt.Sprintf("%d", len(t.TaskRunTimeData)) + "\n"
+
+		count := 0
+		for _, rTD := range t.UncoveredAddress {
+			if rTD.TaskStatus > pb.TaskStatus_untested {
+				count++
+			}
+		}
+		res += "tested uncovered address : " + fmt.Sprintf("%d", count) + "\n"
+
 		res += "-------------------------------------------\n"
 		if rTD, ok := t.UncoveredAddress[uncoveredAddress]; ok {
 			res += "task_status : " + rTD.TaskStatus.String() + "\n"
