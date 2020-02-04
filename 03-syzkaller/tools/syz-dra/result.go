@@ -211,6 +211,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 				count++
 			}
 		}
+		res += "uncovered address : " + fmt.Sprintf("%d", len(t.UncoveredAddress)) + "\n"
 		res += "tested uncovered address : " + fmt.Sprintf("%d", count) + "\n"
 
 		res += "-------------------------------------------\n"

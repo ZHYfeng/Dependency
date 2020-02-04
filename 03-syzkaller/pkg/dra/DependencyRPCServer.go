@@ -25,6 +25,7 @@ const (
 
 	TaskNum             = 40
 	TaskCountLimitation = 30
+	TaskBase            = 1
 
 	DebugLevel = 2
 
