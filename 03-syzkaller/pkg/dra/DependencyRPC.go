@@ -259,8 +259,8 @@ func (m *TaskRunTimeData) mergeTaskRunTimeData(d *TaskRunTimeData) {
 	}
 
 	for ua, r := range d.UncoveredAddress {
-		if u, ok := m.UncoveredAddress[ua]; ok {
-			m.UncoveredAddress[ua].mergeRunTimeData(u)
+		if _, ok := m.UncoveredAddress[ua]; ok {
+			m.UncoveredAddress[ua].mergeRunTimeData(r)
 		} else {
 			m.UncoveredAddress[ua] = proto.Clone(r).(*RunTimeData)
 		}
@@ -303,8 +303,8 @@ func (m *Task) mergeTask(s *Task) {
 	}
 
 	for ua, r := range s.UncoveredAddress {
-		if u, ok := m.UncoveredAddress[ua]; ok {
-			m.UncoveredAddress[ua].mergeRunTimeData(u)
+		if _, ok := m.UncoveredAddress[ua]; ok {
+			m.UncoveredAddress[ua].mergeRunTimeData(r)
 		} else {
 			m.UncoveredAddress[ua] = proto.Clone(r).(*RunTimeData)
 		}
