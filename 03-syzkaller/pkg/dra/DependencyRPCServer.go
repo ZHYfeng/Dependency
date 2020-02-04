@@ -24,7 +24,7 @@ const (
 	TimeExit        = 3600 * 24
 
 	TaskNum             = 40
-	TaskCountLimitation = 30
+	TaskCountLimitation = 20
 	TaskBase            = 1
 
 	DebugLevel = 2
@@ -642,13 +642,13 @@ func (ss *Server) Update() {
 							delete(t.UncoveredAddress, u)
 						}
 					}
-					if len(t.UncoveredAddress) > 0 && t.Count < TaskCountLimitation {
+					if len(t.UncoveredAddress) > 0 {
 						//if len(t.UncoveredAddress) > 0 {
 						if t.TaskStatus == TaskStatus_untested {
 							t.TaskStatus = TaskStatus_testing
 							t.reducePriority()
 							task = append(task, proto.Clone(t).(*Task))
-						} else if t.TaskStatus < TaskStatus_tested {
+						} else if t.TaskStatus < TaskStatus_tested && t.Count < TaskCountLimitation {
 							t.reducePriority()
 							task = append(task, t)
 						}
