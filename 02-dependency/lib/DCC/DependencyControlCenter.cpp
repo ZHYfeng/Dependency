@@ -294,7 +294,7 @@ namespace dra {
                                                    uint32_t condition, uint32_t address) {
         r->set_program(program);
         r->set_task_status(taskStatus::untested);
-        r->set_rcursive_count(0);
+        r->set_recursive_count(0);
         r->set_idx(idx);
         r->set_checkcondition(false);
         r->set_condition_address(condition);
