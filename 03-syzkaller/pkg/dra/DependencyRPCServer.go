@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 	"os"
+	"path/filepath"
 	"sort"
 	"sync"
 	"time"
@@ -38,6 +39,16 @@ const (
 	CheckCondition = true
 )
 
+var pathHome = os.ExpandEnv("~")
+var pathRoot = filepath.Join(pathHome, "data")
+
+var pathLinux = filepath.Join(pathRoot, "benchmark/linux/13-linux-clang-np")
+var FileVmlinuxObjdump = filepath.Join(pathLinux, "vmlinux.objdump")
+
+var pathGit = filepath.Join(pathRoot, "git")
+var pathRepo = filepath.Join(pathGit, "gopath/src/github.com/ZHYfeng/2018_dependency")
+var PathA2i = filepath.Join(pathRepo, "02-dependency/cmake-build-debug/tools/A2I/a2i")
+
 const (
 	NameDevice         = "dev_"
 	NameBase           = "base"
@@ -50,6 +61,12 @@ const (
 	NameStatistics     = "statistics.bin"
 	NameUnstable       = "unstable.bin"
 	NameUnstableResult = "unstable.txt"
+
+	NameDriver   = "built-in"
+	FileAsm      = NameDriver + ".s"
+	FileTaint    = NameDriver + ".taint"
+	FileFunction = NameDriver + ".function.json"
+	FileBc       = NameDriver + ".bc"
 )
 
 type syzFuzzer struct {

@@ -5,6 +5,7 @@ import (
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -162,6 +163,17 @@ func (d *device) checkUncoveredAddress() {
 	for _, r := range d.resultsWithDra.result {
 
 		r.checkStatistic()
+
+		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")))
+		f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		for _, uaa := range r.uncoveredAddressDependency {
+			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x", uaa.ConditionAddress, uaa.UncoveredAddress))
+		}
+		_ = f.Close()
+
+		cmd := exec.Command(pb.PathA2i, " -asm="+pb.FileAsm, " -objdump="+pb.FileVmlinuxObjdump, " -staticRes=./"+pb.FileTaint, " -function=./"+pb.FileFunction, pb.FileBc)
+		print(cmd.String())
+		_ = cmd.Run()
 
 		for a, uaa := range r.uncoveredAddressDependency {
 			ress := r.checkUncoveredAddress(a)
