@@ -186,7 +186,7 @@ func (d *device) checkUncoveredAddress() {
 
 		for a, uaa := range r.uncoveredAddressDependency {
 			ress := r.checkUncoveredAddress(a)
-			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", a-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 			_, _ = f.WriteString(ress)
 			_ = f.Close()
 			ua = append(ua, uaa)

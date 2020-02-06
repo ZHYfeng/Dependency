@@ -465,7 +465,7 @@ namespace dra {
                     std::cout << "0x" + result + ".txt" << std::endl;
                     std::cout.rdbuf(out.rdbuf());
 
-                    std::cout << "# not covered address address : " << std::hex << not_covered_address << std::endl;
+                    std::cout << "# not covered address address : 0x" << std::hex << not_covered_address << std::endl;
                     if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
                         DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
                         if (db == nullptr) {

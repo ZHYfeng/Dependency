@@ -295,18 +295,18 @@ namespace dra {
     void DBasicBlock::real_dump(int kind) {
         std::cout << "********************************************" << std::endl;
         if (parent != nullptr) {
-            std::cout << "Path : " << parent->Path << std::endl;
-            std::cout << "FunctionName : " << parent->FunctionName << std::endl;
+            std::cout << "Path              : " << parent->Path << std::endl;
+            std::cout << "FunctionName      : " << parent->FunctionName << std::endl;
         }
-        std::cout << "basicblock name : " << name << std::endl;
-        std::cout << "AsmSourceCode : " << AsmSourceCode << std::endl;
-        std::cout << "IR : " << IR << std::endl;
-        std::cout << "CoverKind : " << state << std::endl;
-        std::cout << "trace_pc_address : 0x" << std::hex << trace_pc_address << std::endl;
+        std::cout << "basicblock name   : " << name << std::endl;
+        std::cout << "AsmSourceCode     : " << AsmSourceCode << std::endl;
+        std::cout << "IR                : " << IR << std::endl;
+        std::cout << "CoverKind         : " << state << std::endl;
+        std::cout << "trace_pc_address  : 0x" << std::hex << trace_pc_address << std::endl;
 
         if (this->basicBlock != nullptr) {
-            std::cout << "all dominator uncovered instructions : "
-                      << this->get_number_all_dominator_uncovered_instructions() << std::endl;
+            std::cout << "all dominator uncovered instructions : " <<
+                      std::dec << this->get_number_all_dominator_uncovered_instructions() << std::endl;
             std::cout << "all arrive uncovered instructions : " << this->get_number_arrive_uncovered_instructions()
                       << std::endl;
 
