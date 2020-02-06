@@ -172,6 +172,9 @@ func (d *device) checkUncoveredAddress() {
 		_ = f.Close()
 
 		cmd := exec.Command(pb.PathA2i, " -asm="+pb.FileAsm, " -objdump="+pb.FileVmlinuxObjdump, " -staticRes=./"+pb.FileTaint, " -function=./"+pb.FileFunction, pb.FileBc)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
 		log.Println(cmd.String())
 		err = cmd.Run()
 		if err != nil {
