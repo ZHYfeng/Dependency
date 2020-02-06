@@ -167,7 +167,7 @@ func (d *device) checkUncoveredAddress() {
 		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")))
 		f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 		for _, uaa := range r.uncoveredAddressDependency {
-			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x", uaa.ConditionAddress, uaa.UncoveredAddress))
+			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress, uaa.UncoveredAddress))
 		}
 		_ = f.Close()
 
