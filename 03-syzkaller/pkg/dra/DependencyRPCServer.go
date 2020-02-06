@@ -39,7 +39,7 @@ const (
 	CheckCondition = true
 )
 
-var pathHome = os.ExpandEnv("~")
+var pathHome = os.Getenv("HOME")
 var pathRoot = filepath.Join(pathHome, "data")
 
 var pathLinux = filepath.Join(pathRoot, "benchmark/linux/13-linux-clang-np")
