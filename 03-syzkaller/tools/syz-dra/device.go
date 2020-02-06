@@ -173,7 +173,10 @@ func (d *device) checkUncoveredAddress() {
 
 		cmd := exec.Command(pb.PathA2i, " -asm="+pb.FileAsm, " -objdump="+pb.FileVmlinuxObjdump, " -staticRes=./"+pb.FileTaint, " -function=./"+pb.FileFunction, pb.FileBc)
 		print(cmd.String())
-		_ = cmd.Run()
+		err = cmd.Run()
+		if err != nil {
+			log.Println(err)
+		}
 
 		for a, uaa := range r.uncoveredAddressDependency {
 			ress := r.checkUncoveredAddress(a)
