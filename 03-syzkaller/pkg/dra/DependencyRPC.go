@@ -1079,6 +1079,7 @@ func (ss *Server) outPutUnstableInput(ui *UnstableInput) {
 	res += "sig : " + ui.Sig + "\n"
 	res += "program : \n" + string(ui.Program) + "\n"
 
+	res += "unstable address : " + "\n"
 	for address, indexBits := range ui.Address {
 		res += "address : " + "0xffffffff" + fmt.Sprintf("%x", address-5) + "\n"
 		res += "idx : " + fmt.Sprintf("%b", indexBits) + "\n"

@@ -146,6 +146,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 							Address: c.Cover,
 						}
 					}
+					unstableInput.UnstablePath = append(unstableInput.UnstablePath, paths)
 
 					proc.fuzzer.dManager.SendUnstableInput(unstableInput)
 
@@ -192,7 +193,7 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 							Address: c.Cover,
 						}
 					}
-
+					unstableInput.UnstablePath = append(unstableInput.UnstablePath, paths)
 					proc.fuzzer.dManager.SendUnstableInput(unstableInput)
 
 				}
