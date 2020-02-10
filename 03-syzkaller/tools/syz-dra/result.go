@@ -223,8 +223,18 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 			res += "check write 		: " + fmt.Sprintf("%t", rTD.CheckWrite) + "\n"
 			res += "check condition 	: " + fmt.Sprintf("%t", rTD.CheckCondition) + "\n"
 			res += "check address 		: " + fmt.Sprintf("%t", rTD.CheckAddress) + "\n"
+
 			if rTD.TaskStatus == pb.TaskStatus_untested {
 				continue
+			}
+
+			if len(rTD.RightBranchAddress) == len(rTD.CheckRightBranchAddress) {
+				for i, b := range rTD.CheckRightBranchAddress {
+					res += "check branch address: " + fmt.Sprintf("0xffffffff%x", rTD.RightBranchAddress[i]-5) + "\n"
+					res += "check branch 		: " + fmt.Sprintf("%t", b) + "\n"
+				}
+			} else {
+				res += "len(rTD.RightBranchAddress) != len(rTD.CheckRightBranchAddress)\n"
 			}
 
 			if rTD.CheckWrite {
@@ -266,6 +276,15 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 						res += "check address 				: " + fmt.Sprintf("%t", rdd.CheckAddress) + "\n"
 						if rdd.TaskStatus == pb.TaskStatus_untested {
 							continue
+						}
+
+						if len(rdd.RightBranchAddress) == len(rdd.CheckRightBranchAddress) {
+							for i, b := range rdd.CheckRightBranchAddress {
+								res += "check branch address: " + fmt.Sprintf("0xffffffff%x", rdd.RightBranchAddress[i]-5) + "\n"
+								res += "check branch 		: " + fmt.Sprintf("%t", b) + "\n"
+							}
+						} else {
+							res += "len(rdd.RightBranchAddress) != len(rdd.CheckRightBranchAddress)\n"
 						}
 
 						if rdd.CheckWrite {

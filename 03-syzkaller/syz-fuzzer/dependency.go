@@ -155,24 +155,31 @@ func (proc *Proc) dependencyMutateCheckATask(task *pb.Task) (string, bool) {
 		}
 
 		check2 := checkAddressInArray(rTD.ConditionAddress, info2.Calls[idx2].Cover)
+		res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", check2, rTD.ConditionAddress)
 		if check2 {
-			res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", true, rTD.ConditionAddress)
 			rTD.CheckCondition = true
-			if checkAddressInArray(rTD.Address, info2.Calls[idx2].Cover) {
-				res += fmt.Sprintf("check uncovered address : %t : 0xffffffff%x\n", true, rTD.Address)
+			check3 := checkAddressInArray(rTD.Address, info2.Calls[idx2].Cover)
+			res += fmt.Sprintf("check uncovered address : %t : 0xffffffff%x\n", check3, rTD.Address)
+			if check3 {
 				rTD.CheckAddress = true
 				rTD.TaskStatus = pb.TaskStatus_covered
 				task.CoveredAddress[rTD.Address] = rTD
 				temp = append(temp, rTD.Address)
 			} else {
-				res += fmt.Sprintf("check uncovered address: %t : 0xffffffff%x \n", false, rTD.Address)
 				rTD.CheckAddress = false
 				if rTD.TaskStatus < pb.TaskStatus_stable_condition {
 					rTD.TaskStatus = pb.TaskStatus_stable_condition
 				}
 			}
+			res += fmt.Sprintf("check branch address\n")
+			rTD.CheckRightBranchAddress = []bool{}
+			for _, a := range rTD.RightBranchAddress {
+				check4 := checkAddressInArray(a, info2.Calls[idx2].Cover)
+				res += fmt.Sprintf("check branch address : %t : 0xffffffff%x\n", check4, a)
+				rTD.CheckRightBranchAddress = append(rTD.CheckRightBranchAddress, check4)
+			}
+
 		} else {
-			res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", false, rTD.ConditionAddress)
 			rTD.CheckCondition = false
 			if rTD.TaskStatus <= pb.TaskStatus_unstable_condition {
 				rTD.TaskStatus = pb.TaskStatus_unstable_condition
@@ -320,17 +327,17 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 	var temp []uint32
 	for ua, r := range taskRunTimeData.UncoveredAddress {
 
-		checkWriteAddress1 := checkAddressInArray(r.WriteAddress, info.Calls[taskRunTimeData.WriteIdx].Cover)
-		res += fmt.Sprintf("check write address : %t : 0xffffffff%x\n", checkWriteAddress1, r.WriteAddress)
-		if checkWriteAddress1 {
+		check1 := checkAddressInArray(r.WriteAddress, info.Calls[taskRunTimeData.WriteIdx].Cover)
+		res += fmt.Sprintf("check write address : %t : 0xffffffff%x\n", check1, r.WriteAddress)
+		if check1 {
 			r.CheckWrite = true
-			checkWriteAddress2 := checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover)
-			res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", checkWriteAddress2, r.ConditionAddress)
-			if checkWriteAddress2 {
+			check2 := checkAddressInArray(r.ConditionAddress, info.Calls[taskRunTimeData.ConditionIdx].Cover)
+			res += fmt.Sprintf("check condition address : %t : 0xffffffff%x\n", check2, r.ConditionAddress)
+			if check2 {
 				r.CheckCondition = true
-				checkWriteAddress3 := checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover)
-				res += fmt.Sprintf("check uncovered address : %t : 0xffffffff%x\n", checkWriteAddress3, ua)
-				if checkWriteAddress3 {
+				check3 := checkAddressInArray(ua, info.Calls[taskRunTimeData.ConditionIdx].Cover)
+				res += fmt.Sprintf("check uncovered address : %t : 0xffffffff%x\n", check3, ua)
+				if check3 {
 					r.CheckAddress = true
 					r.TaskStatus = pb.TaskStatus_covered
 					taskRunTimeData.CoveredAddress[ua] = r
@@ -341,6 +348,14 @@ func (proc *Proc) dependencyMutateCheck(task *pb.Task, taskRunTimeData *pb.TaskR
 						r.TaskStatus = pb.TaskStatus_tested
 					}
 				}
+
+				r.CheckRightBranchAddress = []bool{}
+				for _, a := range r.RightBranchAddress {
+					check4 := checkAddressInArray(a, info.Calls[taskRunTimeData.ConditionIdx].Cover)
+					res += fmt.Sprintf("check branch address : %t : 0xffffffff%x\n", check4, a)
+					r.CheckRightBranchAddress = append(r.CheckRightBranchAddress, check4)
+				}
+
 			} else {
 				r.CheckCondition = false
 				if r.TaskStatus < pb.TaskStatus_unstable_insert_condition {
@@ -459,6 +474,8 @@ func (proc *Proc) checkInput(input *pb.Input) {
 	proc.fuzzer.dManager.MuDependency.Unlock()
 	res += r
 	for _, t := range tasks {
+		// mutate the argument
+		t.Kind = 2
 		res += proc.dependency(t, pb.TaskKind_Ckeck)
 	}
 

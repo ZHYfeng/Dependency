@@ -219,7 +219,10 @@ func (m *RunTimeData) mergeRunTimeData(d *RunTimeData) {
 		m.CheckWrite = d.CheckWrite
 		m.CheckCondition = d.CheckCondition
 		m.CheckAddress = d.CheckAddress
-		m.CheckRightBranchAddress = d.CheckRightBranchAddress
+		m.CheckRightBranchAddress = []bool{}
+		for _, b := range d.CheckRightBranchAddress {
+			m.CheckRightBranchAddress = append(m.CheckRightBranchAddress, b)
+		}
 	}
 
 	return
@@ -837,7 +840,7 @@ func (m *DataDependency) getTask(sig string, index uint32, writeSig string, writ
 	}
 	ca := ua.ConditionAddress
 
-	task.UncoveredAddress[uncoveredAddress] = &RunTimeData{
+	RTD := &RunTimeData{
 		Priority:                m.getPriority(writeAddress, uncoveredAddress),
 		ConditionAddress:        ca,
 		WriteAddress:            writeAddress,
@@ -850,8 +853,13 @@ func (m *DataDependency) getTask(sig string, index uint32, writeSig string, writ
 		CheckWrite:              false,
 		CheckCondition:          false,
 		CheckAddress:            false,
-		CheckRightBranchAddress: false,
+		CheckRightBranchAddress: []bool{},
 	}
+	for _, a := range ua.RightBranchAddress {
+		RTD.RightBranchAddress = append(RTD.RightBranchAddress, a)
+	}
+
+	task.UncoveredAddress[uncoveredAddress] = RTD
 
 	return task
 }
