@@ -59,7 +59,7 @@ namespace dra {
                     dra::outputTime(input.program());
 #endif
                     DInput *dInput = DM.getInput(&input);
-                    ckeck_input_dependency(dInput);
+                    check_input_dependency(dInput);
                 }
                 newInput->Clear();
                 delete newInput;
@@ -92,7 +92,7 @@ namespace dra {
         dra::outputTime("GetVmOffsets");
     }
 
-    void DependencyControlCenter::ckeck_input_dependency(DInput *dInput) {
+    void DependencyControlCenter::check_input_dependency(DInput *dInput) {
 #if DEBUG
         std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
                   << std::endl;
@@ -128,6 +128,9 @@ namespace dra {
                 UncoveredAddress *uncoveredAddress = dependency->mutable_uncovered_address();
                 uncoveredAddress->set_condition_address(syzkallerConditionAddress);
                 uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
+                for(auto a : u->right_branch_address()){
+                    uncoveredAddress->add_right_branch_address(DM.getSyzkallerAddress(a));
+                }
 
                 if (this->DM.Address2BB.find(u->uncovered_address()) != this->DM.Address2BB.end()) {
                     DBasicBlock *db = DM.Address2BB[u->uncovered_address()]->parent;
@@ -300,7 +303,6 @@ namespace dra {
         r->set_condition_address(condition);
         r->set_checkaddress(false);
         r->set_address(address);
-        r->set_checkrightbranchaddress(false);
         r->mutable_right_branch_address();
     }
 

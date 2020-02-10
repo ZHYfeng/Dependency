@@ -152,23 +152,34 @@ namespace dra {
         return false;
     }
 
-    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::BasicBlock *b, u_int i) {
+    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::TerminatorInst *end, u_int i) {
         DBasicBlock *Dp;
         DBasicBlock *Db;
         std::string pname = p->getName().str();
-        std::string bname = b->getName().str();
+        std::string bname = end->getSuccessor(i)->getName().str();
         if (parent->BasicBlock.find(bname) != parent->BasicBlock.end()) {
-            Dp = parent->BasicBlock[pname];
             Db = parent->BasicBlock[bname];
             if (parent->BasicBlock.find(pname) != parent->BasicBlock.end()) {
-                DInput *dInput = parent->BasicBlock[pname]->lastInput;
+                Dp = parent->BasicBlock[pname];
+                DInput *dInput = Dp->lastInput;
+
+                std::vector<uint64_t> branch;
+                for(uint64_t j = 0, e = end->getNumSuccessors(); j < e; j++) {
+                    if(end->getSuccessor(j)->hasName()) {
+                        auto n = end->getSuccessor(j)->getName();
+                        if(this->parent->BasicBlock.find(n) != this->parent->BasicBlock.end()) {
+                            branch.push_back(this->parent->BasicBlock[n]->trace_pc_address);
+                        }
+                    }
+                }
+
                 if (Db->state == CoverKind::untest) {
                     Db->setState(CoverKind::uncover);
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->trace_pc_address, Dp->trace_pc_address, i);
+                    dInput->addUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
                 } else if (Db->state == CoverKind::uncover) {
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Db->trace_pc_address, Dp->trace_pc_address, i);
+                    dInput->addUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
                 } else if (Db->state == CoverKind::cover) {
 
                 }
@@ -183,7 +194,7 @@ namespace dra {
             }
 
         } else {
-            std::cout << "inferUncoverBB not find basic block name : " << bname << std::endl;
+            std::cout << "inferUncoverBB not find basic block bname : " << bname << std::endl;
             parent->dump();
             exit(0);
         }
@@ -197,7 +208,7 @@ namespace dra {
         } else {
             for (unsigned int i = 0, end = inst->getNumSuccessors(); i < end; i++) {
                 if (inst->getSuccessor(i)->hasName()) {
-                    inferUncoverBB(s, inst->getSuccessor(i), i);
+                    inferUncoverBB(s, inst, i);
                 } else {
                     inferSuccessors(s, inst->getSuccessor(i));
                 }

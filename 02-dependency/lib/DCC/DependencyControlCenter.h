@@ -34,7 +34,7 @@ namespace dra {
 
         sta::MODS *get_write_basicblock(Condition *u);
 
-        void ckeck_input_dependency(DInput *dInput);
+        void check_input_dependency(DInput *dInput);
 
         void send_dependency(Dependency *dependency);
 

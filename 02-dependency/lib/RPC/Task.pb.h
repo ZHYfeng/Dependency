@@ -277,6 +277,7 @@ class runTimeData :
 
   enum : int {
     kRightBranchAddressFieldNumber = 6,
+    kCheckRightBranchAddressFieldNumber = 23,
     kProgramFieldNumber = 12,
     kPriorityFieldNumber = 1,
     kWriteAddressFieldNumber = 2,
@@ -288,7 +289,6 @@ class runTimeData :
     kCheckWriteFieldNumber = 20,
     kCheckConditionFieldNumber = 21,
     kCheckAddressFieldNumber = 22,
-    kCheckRightBranchAddressFieldNumber = 23,
   };
   // repeated uint32 right_branch_address = 6;
   int right_branch_address_size() const;
@@ -311,6 +311,28 @@ class runTimeData :
       right_branch_address() const;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 >*
       mutable_right_branch_address();
+
+  // repeated bool checkRightBranchAddress = 23;
+  int checkrightbranchaddress_size() const;
+  private:
+  int _internal_checkrightbranchaddress_size() const;
+  public:
+  void clear_checkrightbranchaddress();
+  private:
+  bool _internal_checkrightbranchaddress(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >&
+      _internal_checkrightbranchaddress() const;
+  void _internal_add_checkrightbranchaddress(bool value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >*
+      _internal_mutable_checkrightbranchaddress();
+  public:
+  bool checkrightbranchaddress(int index) const;
+  void set_checkrightbranchaddress(int index, bool value);
+  void add_checkrightbranchaddress(bool value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >&
+      checkrightbranchaddress() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >*
+      mutable_checkrightbranchaddress();
 
   // bytes program = 12;
   void clear_program();
@@ -418,15 +440,6 @@ class runTimeData :
   void _internal_set_checkaddress(bool value);
   public:
 
-  // bool checkRightBranchAddress = 23;
-  void clear_checkrightbranchaddress();
-  bool checkrightbranchaddress() const;
-  void set_checkrightbranchaddress(bool value);
-  private:
-  bool _internal_checkrightbranchaddress() const;
-  void _internal_set_checkrightbranchaddress(bool value);
-  public:
-
   // @@protoc_insertion_point(class_scope:dra.runTimeData)
  private:
   class _Internal;
@@ -434,6 +447,8 @@ class runTimeData :
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint32 > right_branch_address_;
   mutable std::atomic<int> _right_branch_address_cached_byte_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool > checkrightbranchaddress_;
+  mutable std::atomic<int> _checkrightbranchaddress_cached_byte_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_;
   ::PROTOBUF_NAMESPACE_ID::uint32 priority_;
   ::PROTOBUF_NAMESPACE_ID::uint32 write_address_;
@@ -445,7 +460,6 @@ class runTimeData :
   bool checkwrite_;
   bool checkcondition_;
   bool checkaddress_;
-  bool checkrightbranchaddress_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Task_2eproto;
 };
@@ -1698,24 +1712,51 @@ inline void runTimeData::set_checkaddress(bool value) {
   // @@protoc_insertion_point(field_set:dra.runTimeData.checkAddress)
 }
 
-// bool checkRightBranchAddress = 23;
-inline void runTimeData::clear_checkrightbranchaddress() {
-  checkrightbranchaddress_ = false;
+// repeated bool checkRightBranchAddress = 23;
+inline int runTimeData::_internal_checkrightbranchaddress_size() const {
+  return checkrightbranchaddress_.size();
 }
-inline bool runTimeData::_internal_checkrightbranchaddress() const {
+inline int runTimeData::checkrightbranchaddress_size() const {
+  return _internal_checkrightbranchaddress_size();
+}
+inline void runTimeData::clear_checkrightbranchaddress() {
+  checkrightbranchaddress_.Clear();
+}
+inline bool runTimeData::_internal_checkrightbranchaddress(int index) const {
+  return checkrightbranchaddress_.Get(index);
+}
+inline bool runTimeData::checkrightbranchaddress(int index) const {
+  // @@protoc_insertion_point(field_get:dra.runTimeData.checkRightBranchAddress)
+  return _internal_checkrightbranchaddress(index);
+}
+inline void runTimeData::set_checkrightbranchaddress(int index, bool value) {
+  checkrightbranchaddress_.Set(index, value);
+  // @@protoc_insertion_point(field_set:dra.runTimeData.checkRightBranchAddress)
+}
+inline void runTimeData::_internal_add_checkrightbranchaddress(bool value) {
+  checkrightbranchaddress_.Add(value);
+}
+inline void runTimeData::add_checkrightbranchaddress(bool value) {
+  _internal_add_checkrightbranchaddress(value);
+  // @@protoc_insertion_point(field_add:dra.runTimeData.checkRightBranchAddress)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >&
+runTimeData::_internal_checkrightbranchaddress() const {
   return checkrightbranchaddress_;
 }
-inline bool runTimeData::checkrightbranchaddress() const {
-  // @@protoc_insertion_point(field_get:dra.runTimeData.checkRightBranchAddress)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >&
+runTimeData::checkrightbranchaddress() const {
+  // @@protoc_insertion_point(field_list:dra.runTimeData.checkRightBranchAddress)
   return _internal_checkrightbranchaddress();
 }
-inline void runTimeData::_internal_set_checkrightbranchaddress(bool value) {
-  
-  checkrightbranchaddress_ = value;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >*
+runTimeData::_internal_mutable_checkrightbranchaddress() {
+  return &checkrightbranchaddress_;
 }
-inline void runTimeData::set_checkrightbranchaddress(bool value) {
-  _internal_set_checkrightbranchaddress(value);
-  // @@protoc_insertion_point(field_set:dra.runTimeData.checkRightBranchAddress)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< bool >*
+runTimeData::mutable_checkrightbranchaddress() {
+  // @@protoc_insertion_point(field_mutable_list:dra.runTimeData.checkRightBranchAddress)
+  return _internal_mutable_checkrightbranchaddress();
 }
 
 // -------------------------------------------------------------------

@@ -43,7 +43,7 @@ message runTimeData {
     bool checkWrite = 20;
     bool checkCondition = 21;
     bool checkAddress = 22;
-    bool checkRightBranchAddress = 23;
+    repeated bool checkRightBranchAddress = 23;
     //    map<uint32, uint32> right_branch_address = 16;
 }
 

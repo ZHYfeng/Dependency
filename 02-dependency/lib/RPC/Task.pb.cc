@@ -336,7 +336,7 @@ const char descriptor_table_protodef_Task_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "\001(\014\022\013\n\003idx\030\r \001(\r\022\027\n\017recursive_count\030\016 \001("
   "\r\022\022\n\ncheckWrite\030\024 \001(\010\022\026\n\016checkCondition\030"
   "\025 \001(\010\022\024\n\014checkAddress\030\026 \001(\010\022\037\n\027checkRigh"
-  "tBranchAddress\030\027 \001(\010\"\207\003\n\017TaskRunTimeData"
+  "tBranchAddress\030\027 \003(\010\"\207\003\n\017TaskRunTimeData"
   "\022\014\n\004hash\030\001 \001(\t\022\017\n\007program\030\002 \001(\014\022\021\n\twrite"
   "_idx\030\005 \001(\r\022\025\n\rcondition_idx\030\006 \001(\r\022\r\n\005che"
   "ck\030\n \001(\010\022E\n\021uncovered_address\030\025 \003(\0132*.dr"
@@ -466,15 +466,16 @@ runTimeData::runTimeData()
 runTimeData::runTimeData(const runTimeData& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
-      right_branch_address_(from.right_branch_address_) {
+      right_branch_address_(from.right_branch_address_),
+      checkrightbranchaddress_(from.checkrightbranchaddress_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_program().empty()) {
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
   }
   ::memcpy(&priority_, &from.priority_,
-    static_cast<size_t>(reinterpret_cast<char*>(&checkrightbranchaddress_) -
-    reinterpret_cast<char*>(&priority_)) + sizeof(checkrightbranchaddress_));
+    static_cast<size_t>(reinterpret_cast<char*>(&checkaddress_) -
+    reinterpret_cast<char*>(&priority_)) + sizeof(checkaddress_));
   // @@protoc_insertion_point(copy_constructor:dra.runTimeData)
 }
 
@@ -482,8 +483,8 @@ void runTimeData::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_runTimeData_Task_2eproto.base);
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&priority_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&checkrightbranchaddress_) -
-      reinterpret_cast<char*>(&priority_)) + sizeof(checkrightbranchaddress_));
+      reinterpret_cast<char*>(&checkaddress_) -
+      reinterpret_cast<char*>(&priority_)) + sizeof(checkaddress_));
 }
 
 runTimeData::~runTimeData() {
@@ -511,10 +512,11 @@ void runTimeData::Clear() {
   (void) cached_has_bits;
 
   right_branch_address_.Clear();
+  checkrightbranchaddress_.Clear();
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&priority_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&checkrightbranchaddress_) -
-      reinterpret_cast<char*>(&priority_)) + sizeof(checkrightbranchaddress_));
+      reinterpret_cast<char*>(&checkaddress_) -
+      reinterpret_cast<char*>(&priority_)) + sizeof(checkaddress_));
   _internal_metadata_.Clear();
 }
 
@@ -614,10 +616,13 @@ const char* runTimeData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool checkRightBranchAddress = 23;
+      // repeated bool checkRightBranchAddress = 23;
       case 23:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 184)) {
-          checkrightbranchaddress_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 186)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedBoolParser(_internal_mutable_checkrightbranchaddress(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 184) {
+          _internal_add_checkrightbranchaddress(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -723,10 +728,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(22, this->_internal_checkaddress(), target);
   }
 
-  // bool checkRightBranchAddress = 23;
-  if (this->checkrightbranchaddress() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(23, this->_internal_checkrightbranchaddress(), target);
+  // repeated bool checkRightBranchAddress = 23;
+  if (this->_internal_checkrightbranchaddress_size() > 0) {
+    target = stream->WriteFixedPacked(23, _internal_checkrightbranchaddress(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -756,6 +760,21 @@ size_t runTimeData::ByteSizeLong() const {
     }
     int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
     _right_branch_address_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // repeated bool checkRightBranchAddress = 23;
+  {
+    unsigned int count = static_cast<unsigned int>(this->_internal_checkrightbranchaddress_size());
+    size_t data_size = 1UL * count;
+    if (data_size > 0) {
+      total_size += 2 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
+    }
+    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
+    _checkrightbranchaddress_cached_byte_size_.store(cached_size,
                                     std::memory_order_relaxed);
     total_size += data_size;
   }
@@ -830,11 +849,6 @@ size_t runTimeData::ByteSizeLong() const {
     total_size += 2 + 1;
   }
 
-  // bool checkRightBranchAddress = 23;
-  if (this->checkrightbranchaddress() != 0) {
-    total_size += 2 + 1;
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -867,6 +881,7 @@ void runTimeData::MergeFrom(const runTimeData& from) {
   (void) cached_has_bits;
 
   right_branch_address_.MergeFrom(from.right_branch_address_);
+  checkrightbranchaddress_.MergeFrom(from.checkrightbranchaddress_);
   if (from.program().size() > 0) {
 
     program_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_);
@@ -901,9 +916,6 @@ void runTimeData::MergeFrom(const runTimeData& from) {
   if (from.checkaddress() != 0) {
     _internal_set_checkaddress(from._internal_checkaddress());
   }
-  if (from.checkrightbranchaddress() != 0) {
-    _internal_set_checkrightbranchaddress(from._internal_checkrightbranchaddress());
-  }
 }
 
 void runTimeData::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -928,6 +940,7 @@ void runTimeData::InternalSwap(runTimeData* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   right_branch_address_.InternalSwap(&other->right_branch_address_);
+  checkrightbranchaddress_.InternalSwap(&other->checkrightbranchaddress_);
   program_.Swap(&other->program_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(priority_, other->priority_);
@@ -940,7 +953,6 @@ void runTimeData::InternalSwap(runTimeData* other) {
   swap(checkwrite_, other->checkwrite_);
   swap(checkcondition_, other->checkcondition_);
   swap(checkaddress_, other->checkaddress_);
-  swap(checkrightbranchaddress_, other->checkrightbranchaddress_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata runTimeData::GetMetadata() const {
