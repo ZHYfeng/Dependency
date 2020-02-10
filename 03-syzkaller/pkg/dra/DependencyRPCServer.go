@@ -610,7 +610,7 @@ func (ss *Server) Update() {
 		ss.updateUncoveredAddress(task)
 	}
 	sort.Slice(ss.dataRunTime.Tasks.TaskArray, func(i, j int) bool {
-		return ss.dataRunTime.Tasks.TaskArray[i].getRealPriority() < ss.dataRunTime.Tasks.TaskArray[j].getRealPriority()
+		return ss.dataRunTime.Tasks.TaskArray[i].GetPriority() < ss.dataRunTime.Tasks.TaskArray[j].GetPriority()
 	})
 	returnTask = nil
 
