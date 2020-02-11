@@ -115,34 +115,37 @@ func (d *device) checkCoverage() {
 }
 
 func (d *device) checkUncoveredAddress() {
-	UADCW := map[uint32]uint32{}
-	UADCWD := map[uint32]uint32{}
-	UADCWDU := map[uint32]uint32{}
-	UADCWO := map[uint32]uint32{}
-	for a := range d.base.uncoveredAddressDependency {
-		if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
-			UADCW[a] = c
-			if c > 0 {
-				UADCWD[a] = c
-				if _, ok := d.uniqueCoverageWithDra[a]; ok {
-					UADCWDU[a] = c
-				}
-			}
-		}
-		if c, ok := d.resultsWithoutDra.maxCoverage[a]; ok {
-			UADCWO[a] = c
-		}
-	}
 
 	res := ""
-	res += "*******************************************\n"
-	res += "number of uncovered address      : " + fmt.Sprintf("%5d", len(d.base.dataDependency.UncoveredAddress)) + "\n"
-	res += "related to dependency            : " + fmt.Sprintf("%5d", len(d.base.uncoveredAddressDependency)) + "\n"
-	res += "covered by syzkaller with dra    : " + fmt.Sprintf("%5d", len(UADCW)) + "\n"
-	res += "covered by dependency mutate     : " + fmt.Sprintf("%5d", len(UADCWD)) + "\n"
-	res += "unique one of them               : " + fmt.Sprintf("%5d", len(UADCWDU)) + "\n"
-	res += "covered by syzkaller without dra : " + fmt.Sprintf("%5d", len(UADCWO)) + "\n"
-	res += "*******************************************\n"
+	if d.base != nil {
+		UADCW := map[uint32]uint32{}
+		UADCWD := map[uint32]uint32{}
+		UADCWDU := map[uint32]uint32{}
+		UADCWO := map[uint32]uint32{}
+		for a := range d.base.uncoveredAddressDependency {
+			if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
+				UADCW[a] = c
+				if c > 0 {
+					UADCWD[a] = c
+					if _, ok := d.uniqueCoverageWithDra[a]; ok {
+						UADCWDU[a] = c
+					}
+				}
+			}
+			if c, ok := d.resultsWithoutDra.maxCoverage[a]; ok {
+				UADCWO[a] = c
+			}
+		}
+
+		res += "*******************************************\n"
+		res += "number of uncovered address      : " + fmt.Sprintf("%5d", len(d.base.dataDependency.UncoveredAddress)) + "\n"
+		res += "related to dependency            : " + fmt.Sprintf("%5d", len(d.base.uncoveredAddressDependency)) + "\n"
+		res += "covered by syzkaller with dra    : " + fmt.Sprintf("%5d", len(UADCW)) + "\n"
+		res += "covered by dependency mutate     : " + fmt.Sprintf("%5d", len(UADCWD)) + "\n"
+		res += "unique one of them               : " + fmt.Sprintf("%5d", len(UADCWDU)) + "\n"
+		res += "covered by syzkaller without dra : " + fmt.Sprintf("%5d", len(UADCWO)) + "\n"
+		res += "*******************************************\n"
+	}
 
 	_ = os.Chdir(d.path)
 	err := filepath.Walk(d.path,
