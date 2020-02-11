@@ -27,7 +27,7 @@ cat ./address.txt | addr2line -afi -e /data/yhao/benchmark/linux/12-linux-clang-
 ## start qemu
 
 ```shell script
-sudo qemu-system-x86_64   -kernel ~/data/benchmark/linux/13-linux-clang-np/arch/x86/boot/bzImage   -append "console=ttyS0 root=/dev/sda debug earlyprintk=serial slub_debug=QUZ"  -hda ./image/stretch.img   -net user,hostfwd=tcp::10021-:22 -net nic   -enable-kvm   -nographic   -m 2G   -smp 2 -s  -pidfile vm.pid   2>&1 | tee vm.log
+qemu-system-x86_64   -kernel ~/data/benchmark/linux/13-linux-clang-np/arch/x86/boot/bzImage   -append "console=ttyS0 root=/dev/sda debug earlyprintk=serial slub_debug=QUZ"  -hda ./image/stretch.img   -net user,hostfwd=tcp::10021-:22 -net nic   -enable-kvm   -nographic   -m 2G   -smp 2 -s  -pidfile vm.pid   2>&1 | tee vm.log
 ```
 
 ## ssh to qemu

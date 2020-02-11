@@ -171,19 +171,6 @@ func (d *device) checkUncoveredAddress() {
 		}
 		_ = f.Close()
 
-		//cmd := exec.Command(pb.PathA2i, " -asm="+pb.FileAsm+" -objdump="+pb.FileVmlinuxObjdump+" -staticRes=./"+pb.FileTaint+
-		//	" -function=./"+pb.FileFunction+" "+pb.FileBc)
-		cmd := exec.Command(pb.PathA2i, "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-staticRes=./"+pb.FileTaint,
-			"-function=./"+pb.FileFunction, pb.FileBc)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-
-		log.Println(cmd.String())
-		err = cmd.Run()
-		if err != nil {
-			log.Println(err)
-		}
-
 		for a, uaa := range r.uncoveredAddressDependency {
 			ress := r.checkUncoveredAddress(a)
 			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
@@ -228,4 +215,15 @@ func (d *device) checkUncoveredAddress() {
 	f, _ := os.OpenFile(d.dataPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(res)
 	_ = f.Close()
+
+	cmd := exec.Command(pb.PathA2i, "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-staticRes=./"+pb.FileTaint,
+		"-function=./"+pb.FileFunction, pb.FileBc)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	log.Println(cmd.String())
+	err = cmd.Run()
+	if err != nil {
+		log.Println(err)
+	}
 }
