@@ -21,7 +21,7 @@ const (
 	DebugLevel = 2
 
 	CollectPath     = true
-	CollectUnstable = true
+	CollectUnstable = false
 
 	// collect coverage by intersection instead of union.
 	StableCoverage = true
