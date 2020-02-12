@@ -162,6 +162,12 @@ func (d *device) checkUncoveredAddress() {
 		log.Println(err)
 	}
 
+	for _, r := range d.resultsWithoutDra.result {
+
+		r.checkStatistic()
+
+	}
+
 	var ua []*pb.UncoveredAddress
 	for _, r := range d.resultsWithDra.result {
 

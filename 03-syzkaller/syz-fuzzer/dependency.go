@@ -470,24 +470,25 @@ func (proc *Proc) dependencyBoot(item *WorkBoot) {
 func (proc *Proc) checkInput(input *pb.Input) {
 	res := ""
 	proc.fuzzer.dManager.MuDependency.Lock()
-	ua, tasks, r := proc.fuzzer.dManager.DataDependency.GetTaskByInput(input)
+	dd := proto.Clone(proc.fuzzer.dManager.DataDependency).(*pb.DataDependency)
 	proc.fuzzer.dManager.MuDependency.Unlock()
+	ua, tasks, r := dd.GetTaskByInput(input)
 	res += r
 	for _, t := range tasks {
 		// mutate the argument
-		t.Kind = 2
+		//t.Kind = 2
 		res += proc.dependency(t, pb.TaskKind_Ckeck)
 	}
 
 	proc.fuzzer.dManager.SendLog(res)
 	proc.fuzzer.dManager.SSendLog()
 
-	proc.fuzzer.dManager.MuDependency.Lock()
 	if len(tasks) > 0 {
+		proc.fuzzer.dManager.MuDependency.Lock()
 		if _, ok := proc.fuzzer.dManager.DataDependency.UncoveredAddress[ua.UncoveredAddress]; ok {
 			delete(proc.fuzzer.dManager.DataDependency.UncoveredAddress, ua.UncoveredAddress)
 		}
+		proc.fuzzer.dManager.MuDependency.Unlock()
 	}
-	proc.fuzzer.dManager.MuDependency.Unlock()
 
 }
