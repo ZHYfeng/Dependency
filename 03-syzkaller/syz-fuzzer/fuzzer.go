@@ -339,10 +339,6 @@ func (fuzzer *Fuzzer) pollLoop() {
 				}
 			}
 
-			if pb.CheckCondition {
-				fuzzer.dManager.GetDataDependency()
-			}
-
 			for i := 0; i < 2; i++ {
 				newDependencyTasks := fuzzer.dManager.GetTasks(fuzzer.name)
 				if newDependencyTasks.Kind == pb.TaskKind_High {
@@ -360,6 +356,10 @@ func (fuzzer *Fuzzer) pollLoop() {
 						})
 					}
 				}
+			}
+
+			if pb.CheckCondition {
+				fuzzer.dManager.GetDataDependency()
 			}
 
 			fuzzer.dManager.SSendLog()
