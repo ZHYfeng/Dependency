@@ -525,6 +525,8 @@ func (ss *Server) Update() {
 	}
 	coveredInput = nil
 
+	log.Logf(0, "after deal covered input\n")
+
 	// deal new input
 	ss.inputMu.Lock()
 	input := append([]*Input{}, ss.input.Input...)
@@ -533,6 +535,8 @@ func (ss *Server) Update() {
 	for _, i := range input {
 		ss.addInput(i)
 	}
+
+	log.Logf(0, "after deal new input\n")
 
 	if CollectPath {
 
@@ -572,6 +576,8 @@ func (ss *Server) Update() {
 	//}
 	//needInput = nil
 
+	log.Logf(0, "after deal need input\n")
+
 	// deal Dependency
 	ss.dependencyMu.Lock()
 	newDependency := append([]*Dependency{}, ss.newDependency.newDependency...)
@@ -586,6 +592,8 @@ func (ss *Server) Update() {
 		ss.addInputTask(d.Input)
 	}
 	newDependency = nil
+
+	log.Logf(0, "after deal Dependency\n")
 
 	// deal return tasks
 	var returnTask []*Task
@@ -621,6 +629,8 @@ func (ss *Server) Update() {
 		}
 	})
 	returnTask = nil
+
+	log.Logf(0, "after deal return tasks\n")
 
 	// get new tasks
 	if ss.Dependency {
@@ -701,6 +711,8 @@ func (ss *Server) Update() {
 		ss.dataRunTime.Tasks.emptyTask()
 	}
 
+	log.Logf(0, "after get new tasks\n")
+
 	// deal return boot tasks
 	returnBootTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
 	for _, f := range ss.fuzzers {
@@ -731,6 +743,8 @@ func (ss *Server) Update() {
 		return ss.dataRunTime.BootTask.TaskArray[i].getRealPriority() < ss.dataRunTime.BootTask.TaskArray[j].getRealPriority()
 	})
 	returnBootTask = nil
+
+	log.Logf(0, "after deal return boot tasks\n")
 
 	// get boot tasks
 	if ss.Dependency {
@@ -771,6 +785,8 @@ func (ss *Server) Update() {
 		ss.dataRunTime.BootTask.emptyTask()
 	}
 
+	log.Logf(0, "after get boot tasks\n")
+
 	ss.logMu.Lock()
 	var templog = ss.log.Name
 	ss.log.Name = ""
@@ -793,10 +809,14 @@ func (ss *Server) Update() {
 	}
 	newStat = nil
 
+	log.Logf(0, "after deal stat\n")
+
 	ss.writeMessageToDisk(ss.dataDependency, NameDataDependency)
 	ss.writeMessageToDisk(ss.dataResult, NameDataResult)
 	ss.writeMessageToDisk(ss.dataRunTime, NameDataRunTime)
 	ss.writeMessageToDisk(ss.stat, NameStatistics)
+
+	log.Logf(0, "after write\n")
 
 	if CollectUnstable {
 		ss.unstableInputMu.Lock()
@@ -820,6 +840,8 @@ func (ss *Server) Update() {
 		ss.writeMessageToDisk(ss.unstableInputsData, NameUnstable)
 	}
 
+	log.Logf(0, "after CollectUnstable\n")
+
 	if CheckCondition {
 		d := proto.Clone(ss.dataDependency).(*DataDependency)
 		for _, i := range d.Input {
@@ -833,6 +855,8 @@ func (ss *Server) Update() {
 			f.MuDependency.Unlock()
 		}
 	}
+
+	log.Logf(0, "after CheckCondition\n")
 
 	t := time.Now()
 	elapsed := t.Sub(ss.timeStart)
