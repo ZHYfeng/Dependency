@@ -25,8 +25,8 @@
   ],
   "type": "qemu",
   "vm": {
-    "count": 16,
-    "cpu": 2,
+    "count": 32,
+    "cpu": 1,
     "mem": 4096,
     "kernel": "~/data/benchmark/linux/17-linux-clang-np/arch/x86/boot/bzImage"
   }

@@ -1072,7 +1072,7 @@
             "1": "file",
             "0": "system"
           },
-          "name": "snd_seq_release"
+          "name": "snd_ctl_release"
         },
         "unlocked_ioctl": {
           "argument": {
@@ -1088,6 +1088,30 @@
             "0": "system"
           },
           "name": "snd_ctl_open"
+        },
+        "poll": {
+          "argument": {
+            "1": "system",
+            "0": "file"
+          },
+          "name": "snd_ctl_poll"
+        },
+        "read": {
+          "argument": {
+            "3": "user",
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "snd_ctl_read"
+        },
+        "llseek": {
+          "argument": {
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "no_llseek"
         }
       },
       "init": {
@@ -1411,7 +1435,7 @@
       "drivers/rtc"
     ]
   },
-  "dev_snd_timer": {
+  "dev_snd": {
     "enable_syscalls": [
       "syz_open_dev$sndtimer",
       "ioctl$SNDRV_TIMER_IOCTL_PVERSION",
@@ -1427,10 +1451,117 @@
       "ioctl$SNDRV_TIMER_IOCTL_START",
       "ioctl$SNDRV_TIMER_IOCTL_STOP",
       "ioctl$SNDRV_TIMER_IOCTL_CONTINUE",
-      "ioctl$SNDRV_TIMER_IOCTL_PAUSE"
+      "ioctl$SNDRV_TIMER_IOCTL_PAUSE",
+      "syz_open_dev$sndseq",
+      "write$sndseq",
+      "clock_gettime",
+      "ioctl$SNDRV_SEQ_IOCTL_PVERSION",
+      "ioctl$SNDRV_SEQ_IOCTL_CLIENT_ID",
+      "ioctl$SNDRV_SEQ_IOCTL_SYSTEM_INFO",
+      "ioctl$SNDRV_SEQ_IOCTL_RUNNING_MODE",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_CLIENT_INFO",
+      "ioctl$SNDRV_SEQ_IOCTL_SET_CLIENT_INFO",
+      "ioctl$SNDRV_SEQ_IOCTL_CREATE_PORT",
+      "ioctl$SNDRV_SEQ_IOCTL_DELETE_PORT",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_PORT_INFO",
+      "ioctl$SNDRV_SEQ_IOCTL_SET_PORT_INFO",
+      "ioctl$SNDRV_SEQ_IOCTL_SUBSCRIBE_PORT",
+      "ioctl$SNDRV_SEQ_IOCTL_UNSUBSCRIBE_PORT",
+      "ioctl$SNDRV_SEQ_IOCTL_CREATE_QUEUE",
+      "ioctl$SNDRV_SEQ_IOCTL_DELETE_QUEUE",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_QUEUE_INFO",
+      "ioctl$SNDRV_SEQ_IOCTL_SET_QUEUE_INFO",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_NAMED_QUEUE",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_QUEUE_STATUS",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_QUEUE_TEMPO",
+      "ioctl$SNDRV_SEQ_IOCTL_SET_QUEUE_TEMPO",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_QUEUE_TIMER",
+      "ioctl$SNDRV_SEQ_IOCTL_SET_QUEUE_TIMER",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_QUEUE_CLIENT",
+      "ioctl$SNDRV_SEQ_IOCTL_SET_QUEUE_CLIENT",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_CLIENT_POOL",
+      "ioctl$SNDRV_SEQ_IOCTL_SET_CLIENT_POOL",
+      "ioctl$SNDRV_SEQ_IOCTL_REMOVE_EVENTS",
+      "ioctl$SNDRV_SEQ_IOCTL_QUERY_SUBS",
+      "ioctl$SNDRV_SEQ_IOCTL_GET_SUBSCRIPTION",
+      "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_CLIENT",
+      "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_PORT",
+      "syz_open_dev$sndctrl",
+      "ioctl$SNDRV_CTL_IOCTL_PVERSION",
+      "ioctl$SNDRV_CTL_IOCTL_CARD_INFO",
+      "ioctl$SNDRV_CTL_IOCTL_HWDEP_INFO",
+      "ioctl$SNDRV_CTL_IOCTL_PCM_NEXT_DEVICE",
+      "ioctl$SNDRV_CTL_IOCTL_POWER_STATE",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_LIST",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_INFO",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_READ",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_WRITE",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_LOCK",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_UNLOCK",
+      "ioctl$SNDRV_CTL_IOCTL_SUBSCRIBE_EVENTS",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_ADD",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_REPLACE",
+      "ioctl$SNDRV_CTL_IOCTL_ELEM_REMOVE",
+      "ioctl$SNDRV_CTL_IOCTL_TLV_READ",
+      "ioctl$SNDRV_CTL_IOCTL_TLV_WRITE",
+      "ioctl$SNDRV_CTL_IOCTL_TLV_COMMAND",
+      "ioctl$SNDRV_CTL_IOCTL_HWDEP_NEXT_DEVICE",
+      "ioctl$SNDRV_CTL_IOCTL_PCM_INFO",
+      "ioctl$SNDRV_CTL_IOCTL_PCM_PREFER_SUBDEVICE",
+      "ioctl$SNDRV_CTL_IOCTL_RAWMIDI_NEXT_DEVICE",
+      "ioctl$SNDRV_CTL_IOCTL_RAWMIDI_INFO",
+      "ioctl$SNDRV_CTL_IOCTL_RAWMIDI_PREFER_SUBDEVICE"
     ],
     "file_taint": "taint_info___snd_timer_user_ioctl_serialize",
     "function": {
+      "snd_timer_f_ops": {
+        "poll": {
+          "argument": {
+            "1": "system",
+            "0": "file"
+          },
+          "name": "snd_timer_user_poll"
+        },
+        "read": {
+          "argument": {
+            "3": "user",
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "snd_timer_user_read"
+        },
+        "release": {
+          "argument": {
+            "1": "file",
+            "0": "system"
+          },
+          "name": "snd_timer_user_release"
+        },
+        "unlocked_ioctl": {
+          "argument": {
+            "1": "const",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "snd_timer_user_ioctl"
+        },
+        "open": {
+          "argument": {
+            "1": "file",
+            "0": "system"
+          },
+          "name": "snd_timer_user_open"
+        },
+        "llseek": {
+          "argument": {
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "no_llseek"
+        }
+      },
       "snd_seq_f_ops": {
         "poll": {
           "argument": {
@@ -1488,10 +1619,142 @@
           "name": "no_llseek"
         }
       },
+      "snd_ctl_f_ops": {
+        "release": {
+          "argument": {
+            "1": "file",
+            "0": "system"
+          },
+          "name": "snd_ctl_release"
+        },
+        "unlocked_ioctl": {
+          "argument": {
+            "1": "const",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "snd_ctl_ioctl"
+        },
+        "open": {
+          "argument": {
+            "1": "file",
+            "0": "system"
+          },
+          "name": "snd_ctl_open"
+        },
+        "poll": {
+          "argument": {
+            "1": "system",
+            "0": "file"
+          },
+          "name": "snd_ctl_poll"
+        },
+        "read": {
+          "argument": {
+            "3": "user",
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "snd_ctl_read"
+        },
+        "llseek": {
+          "argument": {
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "no_llseek"
+        }
+      },
       "init": {
         "init": {
           "argument": {},
           "name": "snd_sequencer_device_init"
+        },
+        "init1": {
+          "argument": {},
+          "name": "alsa_timer_init"
+        }
+      }
+    },
+    "file_bc": "sound/core/built-in.bc",
+    "path_s": [
+      "sound/core"
+    ]
+  },
+  "dev_snd_timer": {
+    "enable_syscalls": [
+      "syz_open_dev$sndtimer",
+      "ioctl$SNDRV_TIMER_IOCTL_PVERSION",
+      "ioctl$SNDRV_TIMER_IOCTL_NEXT_DEVICE",
+      "ioctl$SNDRV_TIMER_IOCTL_TREAD",
+      "ioctl$SNDRV_TIMER_IOCTL_GINFO",
+      "ioctl$SNDRV_TIMER_IOCTL_GPARAMS",
+      "ioctl$SNDRV_TIMER_IOCTL_GSTATUS",
+      "ioctl$SNDRV_TIMER_IOCTL_SELECT",
+      "ioctl$SNDRV_TIMER_IOCTL_INFO",
+      "ioctl$SNDRV_TIMER_IOCTL_PARAMS",
+      "ioctl$SNDRV_TIMER_IOCTL_STATUS",
+      "ioctl$SNDRV_TIMER_IOCTL_START",
+      "ioctl$SNDRV_TIMER_IOCTL_STOP",
+      "ioctl$SNDRV_TIMER_IOCTL_CONTINUE",
+      "ioctl$SNDRV_TIMER_IOCTL_PAUSE"
+    ],
+    "file_taint": "taint_info___snd_timer_user_ioctl_serialize",
+    "function": {
+      "snd_timer_f_ops": {
+        "poll": {
+          "argument": {
+            "1": "system",
+            "0": "file"
+          },
+          "name": "snd_timer_user_poll"
+        },
+        "read": {
+          "argument": {
+            "3": "user",
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "snd_timer_user_read"
+        },
+        "release": {
+          "argument": {
+            "1": "file",
+            "0": "system"
+          },
+          "name": "snd_timer_user_release"
+        },
+        "unlocked_ioctl": {
+          "argument": {
+            "1": "const",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "snd_timer_user_ioctl"
+        },
+        "open": {
+          "argument": {
+            "1": "file",
+            "0": "system"
+          },
+          "name": "snd_timer_user_open"
+        },
+        "llseek": {
+          "argument": {
+            "1": "user",
+            "2": "user",
+            "0": "file"
+          },
+          "name": "no_llseek"
+        }
+      },
+      "init": {
+        "init": {
+          "argument": {},
+          "name": "alsa_timer_init"
         }
       }
     },

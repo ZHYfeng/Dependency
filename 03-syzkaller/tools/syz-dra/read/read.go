@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	main2 "github.com/ZHYfeng/2018_dependency/03-syzkaller/tools/syz-dra/read"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,11 +19,11 @@ func read(path string) {
 	baseName := filepath.Base(path)
 	if strings.HasPrefix(baseName, pb.NameDevice) {
 		fmt.Printf("nameDevice\n")
-		d := &device{}
+		d := &main2.device{}
 		d.read(path)
 	} else if strings.HasPrefix(baseName, pb.NameWithDra) || strings.HasPrefix(baseName, pb.NameWithoutDra) {
 		fmt.Printf("nameWithDra or NameWithoutDra\n")
-		r := &results{}
+		r := &main2.results{}
 		r.read(path)
 	} else {
 		fmt.Printf("readUnstableInput\n")
