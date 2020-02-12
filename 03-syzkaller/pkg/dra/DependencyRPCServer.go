@@ -350,12 +350,12 @@ func (ss Server) SendUnstableInput(_ context.Context, request *UnstableInput) (*
 	if CollectUnstable {
 		ui := proto.Clone(request).(*UnstableInput)
 		ss.unstableInputMu.Lock()
-		defer ss.unstableInputMu.Unlock()
 		if u, ok := ss.unstableInputs.UnstableInput[ui.Sig]; ok {
 			u.mergeUnstableInput(ui)
 		} else {
 			ss.unstableInputs.UnstableInput[ui.Sig] = ui
 		}
+		ss.unstableInputMu.Unlock()
 	}
 
 	reply := &Empty{}
@@ -820,6 +820,7 @@ func (ss *Server) Update() {
 
 	if CollectUnstable {
 		ss.unstableInputMu.Lock()
+		log.Logf(0, "after ss.unstableInputMu.Lock()\n")
 		unstableInput := map[string]*UnstableInput{}
 		for sig, ui := range ss.unstableInputs.UnstableInput {
 			unstableInput[sig] = ui
@@ -828,6 +829,7 @@ func (ss *Server) Update() {
 			UnstableInput: map[string]*UnstableInput{},
 		}
 		ss.unstableInputMu.Unlock()
+		log.Logf(0, "after ss.unstableInputMu.Unlock()\n")
 		for sig, ui := range unstableInput {
 			if i, ok := ss.unstableInputsData.UnstableInput[sig]; ok {
 				i.mergeUnstableInput(ui)
@@ -837,7 +839,9 @@ func (ss *Server) Update() {
 				ss.outPutUnstableInput(ui)
 			}
 		}
+		log.Logf(0, "after for sig, ui := range unstableInput {\n")
 		ss.writeMessageToDisk(ss.unstableInputsData, NameUnstable)
+		log.Logf(0, "after ss.writeMessageToDisk(ss.unstableInputsData, NameUnstable)\n")
 	}
 
 	log.Logf(0, "after CollectUnstable\n")
