@@ -220,6 +220,7 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 			mgr.mu.Lock()
 			if mgr.firstConnect.IsZero() {
 				mgr.mu.Unlock()
+				log.Logf(0, "if mgr.firstConnect.IsZero() {\n")
 				continue
 			}
 			mgr.fuzzingTime += diff * time.Duration(atomic.LoadUint32(&mgr.numFuzzing))

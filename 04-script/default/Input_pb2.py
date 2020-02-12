@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dra',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x0bInput.proto\x12\x03\x64ra\"l\n\x04\x43\x61ll\x12\x0b\n\x03idx\x18\x01 \x01(\r\x12\'\n\x07\x61\x64\x64ress\x18\x02 \x03(\x0b\x32\x16.dra.Call.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xd8\x03\n\x05Input\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\"\n\x04\x63\x61ll\x18\r \x03(\x0b\x32\x14.dra.Input.CallEntry\x12\x19\n\x05paths\x18\x01 \x03(\x0b\x32\n.dra.Paths\x12\x0e\n\x06stable\x18\x0e \x01(\r\x12\r\n\x05total\x18\x0f \x01(\r\x12\x1e\n\x04stat\x18\x15 \x01(\x0e\x32\x10.dra.FuzzingStat\x12;\n\x11uncovered_address\x18\x16 \x03(\x0b\x32 .dra.Input.UncoveredAddressEntry\x12\x33\n\rwrite_address\x18\x19 \x03(\x0b\x32\x1c.dra.Input.WriteAddressEntry\x12\x1b\n\x13program_before_mini\x18\x1e \x01(\x0c\x1a\x36\n\tCallEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Call:\x02\x38\x01\x1a\x37\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"#\n\x06Inputs\x12\x19\n\x05input\x18\x01 \x03(\x0b\x32\n.dra.Input\"\x17\n\x04Path\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x03(\r\"c\n\x05Paths\x12\"\n\x04path\x18\x01 \x03(\x0b\x32\x14.dra.Paths.PathEntry\x1a\x36\n\tPathEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Path:\x02\x38\x01\"\xb2\x01\n\rUnstableInput\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12!\n\runstable_path\x18\x0c \x03(\x0b\x32\n.dra.Paths\x12\x30\n\x07\x61\x64\x64ress\x18\r \x03(\x0b\x32\x1f.dra.UnstableInput.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\x9a\x01\n\x0eUnstableInputs\x12>\n\x0eunstable_input\x18\x01 \x03(\x0b\x32&.dra.UnstableInputs.UnstableInputEntry\x1aH\n\x12UnstableInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12!\n\x05value\x18\x02 \x01(\x0b\x32\x12.dra.UnstableInput:\x02\x38\x01*\xca\x01\n\x0b\x46uzzingStat\x12\x0f\n\x0bStatDefault\x10\x00\x12\x10\n\x0cStatGenerate\x10\x01\x12\x0c\n\x08StatFuzz\x10\x02\x12\x11\n\rStatCandidate\x10\x03\x12\x0e\n\nStatTriage\x10\x04\x12\x10\n\x0cStatMinimize\x10\x05\x12\r\n\tStatSmash\x10\x06\x12\x0c\n\x08StatHint\x10\x07\x12\x0c\n\x08StatSeed\x10\x08\x12\x12\n\x0eStatDependency\x10\t\x12\x16\n\x12StatDependencyBoot\x10\nb\x06proto3'
+  serialized_pb=b'\n\x0bInput.proto\x12\x03\x64ra\"l\n\x04\x43\x61ll\x12\x0b\n\x03idx\x18\x01 \x01(\r\x12\'\n\x07\x61\x64\x64ress\x18\x02 \x03(\x0b\x32\x16.dra.Call.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\xd8\x03\n\x05Input\x12\x0b\n\x03sig\x18\x0b \x01(\t\x12\x0f\n\x07program\x18\x0c \x01(\x0c\x12\"\n\x04\x63\x61ll\x18\r \x03(\x0b\x32\x14.dra.Input.CallEntry\x12\x19\n\x05paths\x18\x01 \x03(\x0b\x32\n.dra.Paths\x12\x0e\n\x06stable\x18\x0e \x01(\r\x12\r\n\x05total\x18\x0f \x01(\r\x12\x1e\n\x04stat\x18\x15 \x01(\x0e\x32\x10.dra.FuzzingStat\x12;\n\x11uncovered_address\x18\x16 \x03(\x0b\x32 .dra.Input.UncoveredAddressEntry\x12\x33\n\rwrite_address\x18\x19 \x03(\x0b\x32\x1c.dra.Input.WriteAddressEntry\x12\x1b\n\x13program_before_mini\x18\x1e \x01(\x0c\x1a\x36\n\tCallEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Call:\x02\x38\x01\x1a\x37\n\x15UncoveredAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\x1a\x33\n\x11WriteAddressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"#\n\x06Inputs\x12\x19\n\x05input\x18\x01 \x03(\x0b\x32\n.dra.Input\"\x17\n\x04Path\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x03(\r\"c\n\x05Paths\x12\"\n\x04path\x18\x01 \x03(\x0b\x32\x14.dra.Paths.PathEntry\x1a\x36\n\tPathEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x18\n\x05value\x18\x02 \x01(\x0b\x32\t.dra.Path:\x02\x38\x01\"\xb2\x01\n\rUnstableInput\x12\x0b\n\x03sig\x18\x01 \x01(\t\x12\x0f\n\x07program\x18\x02 \x01(\x0c\x12!\n\runstable_path\x18\x0c \x03(\x0b\x32\n.dra.Paths\x12\x30\n\x07\x61\x64\x64ress\x18\r \x03(\x0b\x32\x1f.dra.UnstableInput.AddressEntry\x1a.\n\x0c\x41\x64\x64ressEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\r\n\x05value\x18\x02 \x01(\r:\x02\x38\x01\"\x9a\x01\n\x0eUnstableInputs\x12>\n\x0eunstable_input\x18\x01 \x03(\x0b\x32&.dra.UnstableInputs.UnstableInputEntry\x1aH\n\x12UnstableInputEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12!\n\x05value\x18\x02 \x01(\x0b\x32\x12.dra.UnstableInput:\x02\x38\x01*\xd3\x01\n\x0b\x46uzzingStat\x12\x10\n\x0cStatGenerate\x10\x00\x12\x0c\n\x08StatFuzz\x10\x01\x12\x11\n\rStatCandidate\x10\x02\x12\x0e\n\nStatTriage\x10\x03\x12\x10\n\x0cStatMinimize\x10\x04\x12\r\n\tStatSmash\x10\x05\x12\x0c\n\x08StatHint\x10\x06\x12\x0c\n\x08StatSeed\x10\x07\x12\x12\n\x0eStatDependency\x10\x08\x12\x16\n\x12StatDependencyBoot\x10\t\x12\x18\n\x0bStatDefault\x10\xff\xff\xff\xff\xff\xff\xff\xff\xff\x01\x62\x06proto3'
 )
 
 _FUZZINGSTAT = _descriptor.EnumDescriptor(
@@ -29,69 +29,69 @@ _FUZZINGSTAT = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='StatDefault', index=0, number=0,
+      name='StatGenerate', index=0, number=0,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatGenerate', index=1, number=1,
+      name='StatFuzz', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatFuzz', index=2, number=2,
+      name='StatCandidate', index=2, number=2,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatCandidate', index=3, number=3,
+      name='StatTriage', index=3, number=3,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatTriage', index=4, number=4,
+      name='StatMinimize', index=4, number=4,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatMinimize', index=5, number=5,
+      name='StatSmash', index=5, number=5,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatSmash', index=6, number=6,
+      name='StatHint', index=6, number=6,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatHint', index=7, number=7,
+      name='StatSeed', index=7, number=7,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatSeed', index=8, number=8,
+      name='StatDependency', index=8, number=8,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatDependency', index=9, number=9,
+      name='StatDependencyBoot', index=9, number=9,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='StatDependencyBoot', index=10, number=10,
+      name='StatDefault', index=10, number=-1,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
   serialized_start=1107,
-  serialized_end=1309,
+  serialized_end=1318,
 )
 _sym_db.RegisterEnumDescriptor(_FUZZINGSTAT)
 
 FuzzingStat = enum_type_wrapper.EnumTypeWrapper(_FUZZINGSTAT)
-StatDefault = 0
-StatGenerate = 1
-StatFuzz = 2
-StatCandidate = 3
-StatTriage = 4
-StatMinimize = 5
-StatSmash = 6
-StatHint = 7
-StatSeed = 8
-StatDependency = 9
-StatDependencyBoot = 10
+StatGenerate = 0
+StatFuzz = 1
+StatCandidate = 2
+StatTriage = 3
+StatMinimize = 4
+StatSmash = 5
+StatHint = 6
+StatSeed = 7
+StatDependency = 8
+StatDependencyBoot = 9
+StatDefault = -1
 
 
 

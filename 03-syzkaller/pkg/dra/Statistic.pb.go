@@ -60,7 +60,7 @@ func (m *Statistic) GetName() FuzzingStat {
 	if m != nil {
 		return m.Name
 	}
-	return FuzzingStat_StatDefault
+	return FuzzingStat_StatGenerate
 }
 
 func (m *Statistic) GetExecuteNum() uint64 {

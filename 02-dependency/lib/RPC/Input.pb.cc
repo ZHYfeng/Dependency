@@ -472,12 +472,13 @@ const char descriptor_table_protodef_Input_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "Inputs\022>\n\016unstable_input\030\001 \003(\0132&.dra.Uns"
   "tableInputs.UnstableInputEntry\032H\n\022Unstab"
   "leInputEntry\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\013"
-  "2\022.dra.UnstableInput:\0028\001*\312\001\n\013FuzzingStat"
-  "\022\017\n\013StatDefault\020\000\022\020\n\014StatGenerate\020\001\022\014\n\010S"
-  "tatFuzz\020\002\022\021\n\rStatCandidate\020\003\022\016\n\nStatTria"
-  "ge\020\004\022\020\n\014StatMinimize\020\005\022\r\n\tStatSmash\020\006\022\014\n"
-  "\010StatHint\020\007\022\014\n\010StatSeed\020\010\022\022\n\016StatDepende"
-  "ncy\020\t\022\026\n\022StatDependencyBoot\020\nb\006proto3"
+  "2\022.dra.UnstableInput:\0028\001*\323\001\n\013FuzzingStat"
+  "\022\020\n\014StatGenerate\020\000\022\014\n\010StatFuzz\020\001\022\021\n\rStat"
+  "Candidate\020\002\022\016\n\nStatTriage\020\003\022\020\n\014StatMinim"
+  "ize\020\004\022\r\n\tStatSmash\020\005\022\014\n\010StatHint\020\006\022\014\n\010St"
+  "atSeed\020\007\022\022\n\016StatDependency\020\010\022\026\n\022StatDepe"
+  "ndencyBoot\020\t\022\030\n\013StatDefault\020\377\377\377\377\377\377\377\377\377\001b\006"
+  "proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Input_2eproto_deps[1] = {
 };
@@ -500,7 +501,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Inp
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Input_2eproto_once;
 static bool descriptor_table_Input_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Input_2eproto = {
-  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1317,
+  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1326,
   &descriptor_table_Input_2eproto_once, descriptor_table_Input_2eproto_sccs, descriptor_table_Input_2eproto_deps, 14, 0,
   schemas, file_default_instances, TableStruct_Input_2eproto::offsets,
   file_level_metadata_Input_2eproto, 14, file_level_enum_descriptors_Input_2eproto, file_level_service_descriptors_Input_2eproto,
@@ -515,6 +516,7 @@ const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FuzzingStat_descriptor() {
 }
 bool FuzzingStat_IsValid(int value) {
   switch (value) {
+    case -1:
     case 0:
     case 1:
     case 2:
@@ -525,7 +527,6 @@ bool FuzzingStat_IsValid(int value) {
     case 7:
     case 8:
     case 9:
-    case 10:
       return true;
     default:
       return false;

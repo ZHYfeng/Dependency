@@ -162,7 +162,7 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 	log.Logf(DebugLevel, "(ss Server) GetNewInput len of newInput : %v", last)
 	if last > 0 {
 		last = last - 1
-		reply.Input = append(reply.Input, ss.newInput.Input[last])
+		reply.Input = append(reply.Input, proto.Clone(ss.newInput.Input[last]).(*Input))
 		ss.newInput.Input = ss.newInput.Input[:last]
 	}
 	ss.newInputMu.Unlock()
@@ -172,6 +172,10 @@ func (ss Server) GetNewInput(context.Context, *Empty) (*Inputs, error) {
 		ss.input.Input = append(ss.input.Input, proto.Clone(i).(*Input))
 	}
 	ss.inputMu.Unlock()
+
+	for _, i := range reply.Input {
+		i.Paths = nil
+	}
 
 	return reply, nil
 }

@@ -121,17 +121,17 @@ PROTOBUF_NAMESPACE_CLOSE
 namespace dra {
 
 enum FuzzingStat : int {
-  StatDefault = 0,
-  StatGenerate = 1,
-  StatFuzz = 2,
-  StatCandidate = 3,
-  StatTriage = 4,
-  StatMinimize = 5,
-  StatSmash = 6,
-  StatHint = 7,
-  StatSeed = 8,
-  StatDependency = 9,
-  StatDependencyBoot = 10,
+  StatGenerate = 0,
+  StatFuzz = 1,
+  StatCandidate = 2,
+  StatTriage = 3,
+  StatMinimize = 4,
+  StatSmash = 5,
+  StatHint = 6,
+  StatSeed = 7,
+  StatDependency = 8,
+  StatDependencyBoot = 9,
+  StatDefault = -1,
   FuzzingStat_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   FuzzingStat_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
