@@ -1274,8 +1274,8 @@ func (m *DataDependency) GetTaskByInput(input *Input) (*UncoveredAddress, []*Tas
 		res += "old input" + "\n"
 		i.mergeInput(input)
 	} else {
-		res += "new input" + "\n"
-		m.Input[input.Sig] = input
+		//res += "new input" + "\n"
+		//m.Input[input.Sig] = input
 	}
 	res += string(input.Program) + "\n"
 	var tasks []*Task
