@@ -470,7 +470,7 @@ func (ss *Server) Update() {
 	}
 	coveredInput = nil
 
-	log.Logf(0, "after deal covered input\n")
+	log.Logf(DebugLevel, "after deal covered input\n")
 
 	// deal new input
 	ss.inputMu.Lock()
@@ -481,7 +481,7 @@ func (ss *Server) Update() {
 		ss.addInput(i)
 	}
 
-	log.Logf(0, "after deal new input\n")
+	log.Logf(DebugLevel, "after deal new input\n")
 
 	if CollectPath {
 
@@ -521,7 +521,7 @@ func (ss *Server) Update() {
 	//}
 	//needInput = nil
 
-	log.Logf(0, "after deal need input\n")
+	log.Logf(DebugLevel, "after deal need input\n")
 
 	// deal Dependency
 	ss.dependencyMu.Lock()
@@ -538,7 +538,7 @@ func (ss *Server) Update() {
 	}
 	newDependency = nil
 
-	log.Logf(0, "after deal Dependency\n")
+	log.Logf(DebugLevel, "after deal Dependency\n")
 
 	// deal return tasks
 	var returnTask []*Task
@@ -575,7 +575,7 @@ func (ss *Server) Update() {
 	})
 	returnTask = nil
 
-	log.Logf(0, "after deal return tasks\n")
+	log.Logf(DebugLevel, "after deal return tasks\n")
 
 	// get new tasks
 	if ss.Dependency {
@@ -656,7 +656,7 @@ func (ss *Server) Update() {
 		ss.dataRunTime.Tasks.emptyTask()
 	}
 
-	log.Logf(0, "after get new tasks\n")
+	log.Logf(DebugLevel, "after get new tasks\n")
 
 	// deal return boot tasks
 	returnBootTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
@@ -689,7 +689,7 @@ func (ss *Server) Update() {
 	})
 	returnBootTask = nil
 
-	log.Logf(0, "after deal return boot tasks\n")
+	log.Logf(DebugLevel, "after deal return boot tasks\n")
 
 	// get boot tasks
 	if ss.Dependency {
@@ -730,7 +730,7 @@ func (ss *Server) Update() {
 		ss.dataRunTime.BootTask.emptyTask()
 	}
 
-	log.Logf(0, "after get boot tasks\n")
+	log.Logf(DebugLevel, "after get boot tasks\n")
 
 	ss.logMu.Lock()
 	var templog = ss.log.Name
@@ -754,18 +754,18 @@ func (ss *Server) Update() {
 	}
 	newStat = nil
 
-	log.Logf(0, "after deal stat\n")
+	log.Logf(DebugLevel, "after deal stat\n")
 
 	ss.writeMessageToDisk(ss.dataDependency, NameDataDependency)
 	ss.writeMessageToDisk(ss.dataResult, NameDataResult)
 	ss.writeMessageToDisk(ss.dataRunTime, NameDataRunTime)
 	ss.writeMessageToDisk(ss.stat, NameStatistics)
 
-	log.Logf(0, "after write\n")
+	log.Logf(DebugLevel, "after write\n")
 
 	if CollectUnstable {
 		ss.unstableInputMu.Lock()
-		log.Logf(0, "after ss.unstableInputMu.Lock()\n")
+		log.Logf(DebugLevel, "after ss.unstableInputMu.Lock()\n")
 		unstableInput := map[string]*UnstableInput{}
 		for sig, ui := range ss.unstableInputs.UnstableInput {
 			unstableInput[sig] = ui
@@ -774,7 +774,7 @@ func (ss *Server) Update() {
 			UnstableInput: map[string]*UnstableInput{},
 		}
 		ss.unstableInputMu.Unlock()
-		log.Logf(0, "after ss.unstableInputMu.Unlock()\n")
+		log.Logf(DebugLevel, "after ss.unstableInputMu.Unlock()\n")
 		for sig, ui := range unstableInput {
 			if i, ok := ss.unstableInputsData.UnstableInput[sig]; ok {
 				i.mergeUnstableInput(ui)
@@ -784,12 +784,12 @@ func (ss *Server) Update() {
 				ss.outPutUnstableInput(ui)
 			}
 		}
-		log.Logf(0, "after for sig, ui := range unstableInput {\n")
+		log.Logf(DebugLevel, "after for sig, ui := range unstableInput {\n")
 		ss.writeMessageToDisk(ss.unstableInputsData, NameUnstable)
-		log.Logf(0, "after ss.writeMessageToDisk(ss.unstableInputsData, NameUnstable)\n")
+		log.Logf(DebugLevel, "after ss.writeMessageToDisk(ss.unstableInputsData, NameUnstable)\n")
 	}
 
-	log.Logf(0, "after CollectUnstable\n")
+	log.Logf(DebugLevel, "after CollectUnstable\n")
 
 	if CheckCondition {
 		d := proto.Clone(ss.dataDependency).(*DataDependency)
@@ -805,7 +805,7 @@ func (ss *Server) Update() {
 		}
 	}
 
-	log.Logf(0, "after CheckCondition\n")
+	log.Logf(DebugLevel, "after CheckCondition\n")
 
 	t := time.Now()
 	elapsed := t.Sub(ss.timeStart)
