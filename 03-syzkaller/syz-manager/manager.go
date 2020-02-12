@@ -217,10 +217,12 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 			now := time.Now()
 			diff := now.Sub(lastTime)
 			lastTime = now
+			log.Logf(0, "before mgr.mu.Lock()\n")
 			mgr.mu.Lock()
+			log.Logf(0, "after mgr.mu.Lock()\n")
 			if mgr.firstConnect.IsZero() {
-				mgr.mu.Unlock()
 				log.Logf(0, "if mgr.firstConnect.IsZero() {\n")
+				mgr.mu.Unlock()
 				continue
 			}
 			mgr.fuzzingTime += diff * time.Duration(atomic.LoadUint32(&mgr.numFuzzing))
@@ -233,8 +235,11 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 
 			log.Logf(0, "VMs %v, executed %v, cover %v, crashes %v, repro %v",
 				numFuzzing, executed, signal, crashes, numReproducing)
+			log.Logf(0, "before mgr.ss.SyncSignal(signal)\n")
 			mgr.ss.SyncSignal(signal)
+			log.Logf(0, "before mgr.ss.Update()\n")
 			mgr.ss.Update()
+			log.Logf(0, "after mgr.ss.Update()\n")
 		}
 	}()
 
