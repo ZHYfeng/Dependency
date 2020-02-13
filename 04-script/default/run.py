@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-from default import default
+import default
 
 
 # from default import default
