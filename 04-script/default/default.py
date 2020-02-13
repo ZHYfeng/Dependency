@@ -20,10 +20,8 @@ name_run = "run.py"
 path_default_run = os.path.join(path_git_script, "default", name_run)
 name_run_bash = "run.bash"
 path_default_run_bash = os.path.join(path_git_script, "default", name_run_bash)
-
 name_remove_bash = "remove.bash"
-path_default_remove_bash = os.path.join(
-    path_git_script, "config", name_remove_bash)
+path_default_remove_bash = os.path.join(path_git_script, "default", name_remove_bash)
 
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
