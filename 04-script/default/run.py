@@ -58,6 +58,10 @@ class Process:
         p_cp_built_in = subprocess.Popen(cmd_cp_built_in, shell=True, preexec_fn=os.setsid)
         p_cp_built_in.wait()
 
+        cmd_cp_built_in = "cp ./*_serialize " + self.path
+        p_cp_built_in = subprocess.Popen(cmd_cp_built_in, shell=True, preexec_fn=os.setsid)
+        p_cp_built_in.wait()
+
         f = open(os.path.join(default.path_current, default.file_json), "r")
         c = json.load(f)
         f.close()
