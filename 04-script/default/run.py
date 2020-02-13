@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-import default
+from default import default
 
 
 # from default import default
@@ -62,7 +62,11 @@ class Process:
         p_cp_built_in = subprocess.Popen(cmd_cp_built_in, shell=True, preexec_fn=os.setsid)
         p_cp_built_in.wait()
 
-        f = open(os.path.join(default.path_current, default.file_json), "r")
+        cmd_cp_built_in = "cp " + default.name_dra_json + " " + self.path
+        p_cp_built_in = subprocess.Popen(cmd_cp_built_in, shell=True, preexec_fn=os.setsid)
+        p_cp_built_in.wait()
+
+        f = open(os.path.join(default.path_current, default.name_syzkaller_json), "r")
         c = json.load(f)
         f.close()
 
@@ -70,7 +74,7 @@ class Process:
         c["image"] = os.path.join(self.path, "img", default.file_image)
         c["sshkey"] = os.path.join(self.path, "img", default.file_ssh_key)
 
-        f = open(os.path.join(self.path, default.file_json), "w")
+        f = open(os.path.join(self.path, default.name_syzkaller_json), "w")
         json.dump(c, f, indent=4)
         f.close()
 
@@ -119,7 +123,7 @@ class Process:
 
     def remove(self):
         os.chdir(self.path)
-        cmd_rm_img = "rm -rf img " + default.file_taint + " " + default.file_asm + " " + default.file_bc
+        cmd_rm_img = "rm -rf img " + default.name_taint + " " + default.name_asm + " " + default.name_bc
         p_rm_img = subprocess.Popen(cmd_rm_img, shell=True, preexec_fn=os.setsid)
         p_rm_img.wait()
 
