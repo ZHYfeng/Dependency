@@ -298,13 +298,15 @@ func (m *Task) mergeTask(s *Task) {
 		m.CoveredAddress[u] = proto.Clone(p).(*RunTimeData)
 	}
 
+	if m.UncoveredAddress == nil {
+		m.UncoveredAddress = map[uint32]*RunTimeData{}
+	}
 	for u := range m.UncoveredAddress {
 		_, ok := m.CoveredAddress[u]
 		if ok {
 			delete(m.UncoveredAddress, u)
 		}
 	}
-
 	for ua, r := range s.UncoveredAddress {
 		if _, ok := m.UncoveredAddress[ua]; ok {
 			m.UncoveredAddress[ua].mergeRunTimeData(r)
