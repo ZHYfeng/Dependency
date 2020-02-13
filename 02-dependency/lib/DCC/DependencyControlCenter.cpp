@@ -23,11 +23,10 @@ namespace dra {
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
-    void DependencyControlCenter::init(std::string obj_dump, std::string AssemblySourceCode, std::string InputFilename,
-                                       const std::string &staticRes, const std::string &function,
-                                       const std::string &port_address) {
+    void DependencyControlCenter::init(const std::string obj_dump, const std::string assembly, const std::string bit_code,
+                                       const std::string &config, const std::string &port_address) {
 
-        DM.initializeModule(std::move(obj_dump), std::move(AssemblySourceCode), std::move(InputFilename));
+        DM.initializeModule(std::move(obj_dump), std::move(assembly), std::move(bit_code));
         dra::outputTime("initializeModule");
         dra::outputTime("RealBasicBlockNumber : " + std::to_string(this->DM.Modules->RealBasicBlockNumber));
         dra::outputTime("BasicBlockNumber : " + std::to_string(this->DM.Modules->BasicBlockNumber));

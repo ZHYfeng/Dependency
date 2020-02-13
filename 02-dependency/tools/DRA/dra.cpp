@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
     auto *dcc = new dra::DependencyControlCenter();
 
-    dcc->init(obj_dump, assembly, bit_code, staticRes, function, port);
+    dcc->init(obj_dump, assembly, bit_code, config, port);
 //    dcc->test();
     dcc->run();
     return 0;
