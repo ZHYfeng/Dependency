@@ -6,8 +6,7 @@ encoding = 'utf-8'
 path_home = os.path.expanduser("~")
 path_root = os.path.join(path_home, "data")
 path_git = os.path.join(path_root, "git")
-path_git_repo = os.path.join(
-    path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_git_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
 
 path_result = os.path.join(path_git_repo, "06-result")
 path_git_script = os.path.join(path_git_repo, "04-script")
@@ -44,8 +43,7 @@ name_function = name_driver + ".function.json"
 number_execute = 1
 path_current = os.getcwd()
 path_git = os.path.join(path_root, "git")
-path_repo = os.path.join(
-    path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
+path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
 path_dra = os.path.join(path_repo, "02-dependency/cmake-build-debug/tools/DRA/dra")
 path_syzkaller_manager = os.path.join(path_repo, "03-syzkaller/bin/syz-manager")
 file_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")

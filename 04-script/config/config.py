@@ -79,6 +79,9 @@ def generate_dev_dir():
         # if not os.path.exists(default.name_run_bash):
         #     shutil.copy(default.path_default_run_bash, default.name_run_bash)
 
+        os.makedirs(default.name_with_dra)
+        os.makedirs(default.name_without_dra)
+
         syzkaller_json = read_file_syzkaller_json()
         syzkaller_json["enable_syscalls"] = default_json[device]["enable_syscalls"]
         f = open(default.name_syzkaller_json, "w")
@@ -109,6 +112,9 @@ def generate_dev_dir():
     if not os.path.exists(path):
         os.makedirs(path)
     os.chdir(path)
+
+    os.makedirs(default.name_with_dra)
+    os.makedirs(default.name_without_dra)
 
     syzkaller_json = read_file_syzkaller_json()
     for d in overall:
