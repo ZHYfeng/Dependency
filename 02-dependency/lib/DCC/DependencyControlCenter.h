@@ -22,7 +22,7 @@ namespace dra {
 
         virtual ~DependencyControlCenter();
 
-        void init(const std::string obj_dump, const std::string assembly, const std::string bit_code,
+        void init(const std::string &obj_dump, const std::string &assembly, const std::string &bit_code,
                   const std::string &config, const std::string &port_address = "");
 
         void run();
@@ -56,12 +56,14 @@ namespace dra {
 
         void getFileOperations(std::string *function_name, std::string *file_operations, std::string *kind);
 
+        sta::StaticAnalysisResult* getStaticAnalysisResult(const std::string& path);
+
     private:
         DependencyRPCClient *client{};
         std::string port;
         DataManagement DM;
-        sta::StaticAnalysisResult STA;
-        nlohmann::json function_json;
+        std::map<std::string, sta::StaticAnalysisResult*> STA_map;
+        nlohmann::json config_json;
 
         std::time_t start_time{};
 

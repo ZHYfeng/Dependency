@@ -14,7 +14,6 @@
 #include <sstream>
 #include "general.h"
 
-
 namespace dra {
 
     DependencyControlCenter::DependencyControlCenter() {
@@ -23,24 +22,32 @@ namespace dra {
 
     DependencyControlCenter::~DependencyControlCenter() = default;
 
-    void DependencyControlCenter::init(const std::string obj_dump, const std::string assembly, const std::string bit_code,
-                                       const std::string &config, const std::string &port_address) {
+    void DependencyControlCenter::init(const std::string &obj_dump, const std::string &assembly,
+                                       const std::string &bit_code, const std::string &config,
+                                       const std::string &port_address) {
 
-        DM.initializeModule(std::move(obj_dump), std::move(assembly), std::move(bit_code));
+        DM.initializeModule(obj_dump, assembly, bit_code);
         dra::outputTime("initializeModule");
         dra::outputTime("RealBasicBlockNumber : " + std::to_string(this->DM.Modules->RealBasicBlockNumber));
         dra::outputTime("BasicBlockNumber : " + std::to_string(this->DM.Modules->BasicBlockNumber));
 
+        std::ifstream config_json_ifstream(config);
+        config_json_ifstream >> this->config_json;
+
         //Deserialize the static analysis results.
-        dra::outputTime("staticRes : " + staticRes);
-        this->STA.initStaticRes(staticRes, &this->DM);
+        for (const auto &dev : this->config_json.items()) {
+            std::string staticRes;
+            staticRes.assign(dev.value()["file_taint"]);
+            dra::outputTime("staticRes : " + staticRes);
+            auto sar = new sta::StaticAnalysisResult();
+            this->STA_map[dev.key()] = sar;
+            sar->initStaticRes(staticRes, &this->DM);
+        }
+
         if (!port_address.empty()) {
             this->port = port_address;
             this->setRPCConnection(this->port);
         }
-
-        std::ifstream input_function_json(function);
-        input_function_json >> this->function_json;
     }
 
     void DependencyControlCenter::run() {
@@ -127,7 +134,7 @@ namespace dra {
                 UncoveredAddress *uncoveredAddress = dependency->mutable_uncovered_address();
                 uncoveredAddress->set_condition_address(syzkallerConditionAddress);
                 uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
-                for(auto a : u->right_branch_address()){
+                for (auto a : u->right_branch_address()) {
                     uncoveredAddress->add_right_branch_address(DM.getSyzkallerAddress(a));
                 }
 
@@ -263,7 +270,11 @@ namespace dra {
             dra::outputTime("get useful static analysis result from cache");
 #endif
         } else {
-            sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
+            auto sta = this->getStaticAnalysisResult(p->parent->Path);
+            if (sta == nullptr) {
+                return res;
+            }
+            sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(b, idx);
             if (write_basicblock == nullptr) {
                 // no taint or out side
 
@@ -488,7 +499,11 @@ namespace dra {
 
                             uint64_t idx = 0;
                             llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
-                            sta::MODS *write_basicblock = this->STA.GetAllGlobalWriteBBs(b, idx);
+                            auto sta = this->getStaticAnalysisResult(db->parent->Path);
+                            if (sta == nullptr) {
+                                continue;
+                            }
+                            sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(b, idx);
                             if (write_basicblock == nullptr) {
                                 std::cout << "# no taint or out side" << std::endl;
                             } else if (write_basicblock->empty()) {
@@ -540,7 +555,7 @@ namespace dra {
 
     void DependencyControlCenter::getFileOperations(std::string *function_name, std::string *file_operations,
                                                     std::string *kind) {
-        for (const auto &f1 : this->function_json.items()) {
+        for (const auto &f1 : this->config_json.items()) {
             for (const auto &f2 : f1.value().items()) {
                 if (*function_name == f2.value()["name"]) {
                     file_operations->assign(f1.key());
@@ -555,8 +570,11 @@ namespace dra {
         for (const auto &B : f->BasicBlock) {
             auto b = B.second->basicBlock;
             std::cout << "b name : " << B.second->name << std::endl;
-
-            sta::MODS *allBasicblock = this->STA.GetAllGlobalWriteBBs(b, true);
+            auto sta = this->getStaticAnalysisResult(B.second->parent->Path);
+            if (sta == nullptr) {
+                continue;
+            }
+            sta::MODS *allBasicblock = sta->GetAllGlobalWriteBBs(b, true);
             if (allBasicblock == nullptr) {
                 // no taint or out side
                 std::cout << "allBasicblock == nullptr" << std::endl;
@@ -587,6 +605,20 @@ namespace dra {
         }
 
         exit(0);
+    }
+
+    sta::StaticAnalysisResult *DependencyControlCenter::getStaticAnalysisResult(const std::string &path) {
+        for (const auto &dev : this->config_json.items()) {
+            if (path.find(dev.value()["path_s"]) != std::string::npos) {
+                if (this->STA_map.find(dev.key()) != this->STA_map.end()) {
+                    return this->STA_map[dev.key()];
+                } else {
+                    std::cerr << "can not find static analysis result for dev : " << dev.key() << std::endl;
+                }
+            }
+        }
+        std::cout << "can not find static analysis result for path : " << path << std::endl;
+        return nullptr;
     }
 
 } /* namespace dra */
