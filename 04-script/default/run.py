@@ -76,25 +76,25 @@ class Process:
         self.execute_dra(run_f)
 
     def execute_syzkaller(self, run_f, dra=True):
-        f = open(os.path.join(self.path, default.file_json), "r")
+        f = open(os.path.join(self.path, default.name_syzkaller_json), "r")
         c = json.load(f)
         f.close()
         c["http"] = "127.0.0.1:" + str(get_open_port())
         self.drpc = "127.0.0.1:" + str(get_open_port())
         c["drpc"] = self.drpc
         c["dependency"] = dra
-        f = open(os.path.join(self.path, default.file_json), "w")
+        f = open(os.path.join(self.path, default.name_syzkaller_json), "w")
         json.dump(c, f, indent=4)
         f.close()
 
-        self.cmd_syzkaller = default.path_syzkaller_manager + " -config=./" + default.file_json + " 2>" + default.file_log_syzkaller + " 1>&2 &"
+        self.cmd_syzkaller = default.path_syzkaller_manager + " -config=./" + default.name_syzkaller_json + " 2>" + default.file_log_syzkaller + " 1>&2 &"
         self.t0 = time.time()
         self.real_execute(self.cmd_syzkaller, run_f)
 
     def execute_dra(self, run_f):
-        self.cmd_dra = default.path_dra + " -asm=" + default.file_asm + " -objdump=" + default.file_vmlinux_objdump \
-                       + " -staticRes=./" + default.file_taint + " -function=./" + default.file_function + " -port=" + self.drpc \
-                       + " " + default.file_bc + " 1>" + default.file_log_dra + " 2>&1 &"
+        self.cmd_dra = default.path_dra + " -asm=" + default.name_asm + " -objdump=" + default.file_vmlinux_objdump \
+                       + " -bc = " + default.name_bc + " -port=" + self.drpc \
+                       + " " + default.name_dra_json + " 1>" + default.file_log_dra + " 2>&1 &"
         self.real_execute(self.cmd_dra, run_f)
 
     def real_execute(self, cmd, run_f):

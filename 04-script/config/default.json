@@ -1668,11 +1668,11 @@
         }
       },
       "init": {
-        "init": {
+        "init_seq": {
           "argument": {},
           "name": "snd_sequencer_device_init"
         },
-        "init1": {
+        "init_timer": {
           "argument": {},
           "name": "alsa_timer_init"
         }

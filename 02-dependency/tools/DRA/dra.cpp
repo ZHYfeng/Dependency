@@ -11,13 +11,13 @@
 
 #include "../../lib/DCC/DependencyControlCenter.h"
 
-llvm::cl::opt<std::string> objdump("objdump", llvm::cl::desc("The path of objdump."), llvm::cl::init("./vmlinux.objdump"));
-llvm::cl::opt<std::string> AssemblySourceCode("asm", llvm::cl::desc("The path of assembly source code."), llvm::cl::init("./build-in.s"));
-llvm::cl::opt<std::string> InputFilename(llvm::cl::Positional, llvm::cl::desc("<input bitcode>"), llvm::cl::init("./built-in.bc"));
-//The file holding the serialized static analysis results.
-llvm::cl::opt<std::string> staticRes("staticRes", llvm::cl::desc("The path of serialized static analysis results."), llvm::cl::init("./taint_info_serialize"));
-llvm::cl::opt<std::string> function("function", llvm::cl::desc("The path of function name json."), llvm::cl::init("./built-in.function.json"));
+llvm::cl::opt<std::string> obj_dump("objdump", llvm::cl::desc("The obj dump file."), llvm::cl::init("./vmlinux.objdump"));
+llvm::cl::opt<std::string> assembly("asm", llvm::cl::desc("The assembly source code."), llvm::cl::init("./build-in.s"));
+llvm::cl::opt<std::string> bit_code("bc", llvm::cl::desc("The bit code."), llvm::cl::init("./built-in.bc"));
+
 llvm::cl::opt<std::string> port("port", llvm::cl::desc("The port of grpc."), llvm::cl::init("127.0.0.1:22223"));
+llvm::cl::opt<std::string> config(llvm::cl::Positional, llvm::cl::desc("The dra config file"), llvm::cl::init("dra.json"));
+
 
 int main(int argc, char **argv)
 {
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
     auto *dcc = new dra::DependencyControlCenter();
 
-    dcc->init(objdump, AssemblySourceCode, InputFilename, staticRes, function, port);
+    dcc->init(obj_dump, assembly, bit_code, staticRes, function, port);
 //    dcc->test();
     dcc->run();
     return 0;

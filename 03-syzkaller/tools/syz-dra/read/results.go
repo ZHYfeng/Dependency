@@ -1,4 +1,4 @@
-package read
+package main
 
 import (
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"

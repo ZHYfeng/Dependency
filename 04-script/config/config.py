@@ -11,11 +11,11 @@ def read_s(path, files):
     for file in files:
         for (dir_path, dir_names, file_names) in os.walk(os.path.join(path, file)):
             for file_name in file_names:
-                if file_name.endswith(".s") and file_name != default.file_asm:
+                if file_name.endswith(".s") and file_name != default.name_asm:
                     f = open(os.path.join(dir_path, file_name), "r")
                     ctx_s = ctx_s + "\n" + f.read()
                     f.close()
-    f = open(default.file_asm, "w")
+    f = open(default.name_asm, "w")
     f.write(ctx_s)
     f.close()
     # cat `find -name "*.s"` >> built-in.s
@@ -79,18 +79,24 @@ def generate_dev_dir():
         # if not os.path.exists(default.name_run_bash):
         #     shutil.copy(default.path_default_run_bash, default.name_run_bash)
 
-        c = read_file_syzkaller_json()
-        c["enable_syscalls"] = default_json[device]["enable_syscalls"]
-        f = open("built-in" + ".json", "w")
-        json.dump(c, f, indent=4)
+        syzkaller_json = read_file_syzkaller_json()
+        syzkaller_json["enable_syscalls"] = default_json[device]["enable_syscalls"]
+        f = open(default.name_syzkaller_json, "w")
+        json.dump(syzkaller_json, f, indent=4)
         f.close()
 
+        dra_json = {}
+        dra_json[device] = default_json[device]
+        f = open(default.name_dra_json, "w")
+        json.dump(dra_json, f, indent=4)
+
         read_s(default.path_linux_bc, default_json[device]["path_s"])
-        shutil.copy(os.path.join(default.path_linux_bc, default_json[device]["file_bc"]), default.file_bc)
-        shutil.copy(os.path.join(default.path_taint, default_json[device]["file_taint"]), default.file_taint)
+        shutil.copy(os.path.join(default.path_linux_bc, default_json[device]["file_bc"]), default.name_bc)
+        shutil.copy(os.path.join(default.path_taint, default_json[device]["file_taint"]),
+                    default_json[device]["file_taint"])
         copy_files()
 
-        ff = open(default.file_function, "w")
+        ff = open(default.name_function, "w")
         if "function" in default_json[device]:
             json.dump(default_json[device]["function"], ff, indent=4, sort_keys=True)
         ff.close()
@@ -100,32 +106,30 @@ def generate_dev_dir():
     path = os.path.join(default.path_result, "overall")
     print(path)
 
-    # if os.path.exists(path):
-    #     shutil.rmtree(path)
-
     if not os.path.exists(path):
         os.makedirs(path)
     os.chdir(path)
 
-    c = read_file_syzkaller_json()
+    syzkaller_json = read_file_syzkaller_json()
     for d in overall:
-        c["enable_syscalls"] += default_json[d]["enable_syscalls"]
-    f = open("built-in" + ".json", "w")
-    json.dump(c, f, indent=4)
+        syzkaller_json["enable_syscalls"] += default_json[d]["enable_syscalls"]
+    f = open(default.name_syzkaller_json, "w")
+    json.dump(syzkaller_json, f, indent=4)
     f.close()
+
+    dra_json = {}
+    for d in overall:
+        dra_json[d] = default_json[d]
+    f = open(default.name_dra_json, "w")
+    json.dump(dra_json, f, indent=4)
 
     s_files = []
     for d in overall:
+        shutil.copy(os.path.join(default.path_taint, default_json[d]["file_taint"]),
+                    default_json[d]["file_taint"])
         for s in default_json[d]["path_s"]:
             s_files.append(s)
     read_s(default.path_linux_bc, s_files)
-    shutil.copy(os.path.join(default.path_linux_bc, default.file_bc), default.file_bc)
+    shutil.copy(os.path.join(default.path_linux_bc, default.name_bc), default.name_bc)
 
-    shutil.copy(os.path.join(default.path_taint, default_json[device]["file_taint"]), default.file_taint)
     copy_files()
-
-    ff = open(default.file_function, "w")
-    for d in overall:
-        if "function" in default_json[d]:
-            json.dump(default_json[d]["function"], ff, indent=4, sort_keys=True)
-    ff.close()
