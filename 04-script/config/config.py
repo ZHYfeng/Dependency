@@ -109,6 +109,9 @@ def generate_dev_dir():
     path = os.path.join(default.path_result, "overall")
     print(path)
 
+    if os.path.exists(path):
+        shutil.rmtree(path)
+
     if not os.path.exists(path):
         os.makedirs(path)
     os.chdir(path)
