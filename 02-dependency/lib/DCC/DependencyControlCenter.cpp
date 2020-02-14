@@ -609,7 +609,9 @@ namespace dra {
 
     sta::StaticAnalysisResult *DependencyControlCenter::getStaticAnalysisResult(const std::string &path) {
         for (const auto &dev : this->config_json.items()) {
-            if (path.find(dev.value()["path_s"]) != std::string::npos) {
+            std::string pp = dev.value()["path_s"];
+            std::cout << pp << std::endl;
+            if (path.find(pp) != std::string::npos) {
                 if (this->STA_map.find(dev.key()) != this->STA_map.end()) {
                     return this->STA_map[dev.key()];
                 } else {
@@ -653,11 +655,6 @@ namespace dra {
                         dra::outputTime("allBasicblock->size() == 0");
                         p->dump();
 #endif
-                        std::cout << std::hex << bb.second->trace_pc_address;
-                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
-                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
-                        }
-                        std::cout << std::endl;
                     } else if (!write_basicblock->empty()) {
 #if DEBUG
                         dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
