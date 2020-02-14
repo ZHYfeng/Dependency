@@ -560,10 +560,12 @@ namespace dra {
     void DependencyControlCenter::getFileOperations(std::string *function_name, std::string *file_operations,
                                                     std::string *kind) {
         for (const auto &f1 : this->config_json.items()) {
-            for (const auto &f2 : f1.value().items()) {
-                if (*function_name == f2.value()["name"]) {
-                    file_operations->assign(f1.key());
-                    kind->assign(f2.key());
+            for (const auto &f2 : f1.value()["function"].items()) {
+                for (const auto &f3 : f2.value().items()) {
+                    if (*function_name == f3.value()["name"]) {
+                        file_operations->assign(f2.key());
+                        kind->assign(f3.key());
+                    }
                 }
             }
         }
