@@ -39,6 +39,9 @@ namespace dra {
             std::string staticRes;
             staticRes.assign(dev.value()["file_taint"]);
             dra::outputTime("staticRes : " + staticRes);
+            for (const auto &p : dev.value()["path_s"].items()) {
+                dra::outputTime("path : " + p.value());
+            }
             auto sar = new sta::StaticAnalysisResult();
             this->STA_map[dev.key()] = sar;
             sar->initStaticRes(staticRes, &this->DM);
@@ -620,14 +623,14 @@ namespace dra {
                 }
             }
         }
-        std::cout << "can not find static analysis result for path : " << path << std::endl;
+        std::cerr << "can not find static analysis result for path : " << path << std::endl;
         return nullptr;
     }
 
     void DependencyControlCenter::check_all_condition_() {
         auto *coutbuf = std::cout.rdbuf();
-//        std::ofstream out("address.txt");
-//        std::cout.rdbuf(out.rdbuf());
+        std::ofstream out("address.txt");
+        std::cout.rdbuf(out.rdbuf());
         for (auto &f : *this->DM.Modules->module) {
             outputTime("f : " + f.getName().str());
             auto df = this->DM.Modules->get_DF_from_f(&f);
@@ -671,8 +674,8 @@ namespace dra {
                 }
             }
         }
-//        std::cout.rdbuf(coutbuf);
-//        out.close();
+        std::cout.rdbuf(coutbuf);
+        out.close();
     }
 
 } /* namespace dra */

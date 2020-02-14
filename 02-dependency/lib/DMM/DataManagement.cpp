@@ -27,13 +27,13 @@ namespace dra {
     DataManagement::~DataManagement() = default;
 
     void
-    DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename) {
+    DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string bit_code) {
 #if DEBUG_OBJ_DUMP
         std::string obj = objdump.substr(0, objdump.find(".objdump"));
         std::string Cmd = "addr2line -afi -e " + obj;
         std::cout << "o Cmd :" << Cmd << std::endl;
 #endif
-        Modules->ReadBC(std::move(InputFilename));
+        Modules->ReadBC(std::move(bit_code));
         Modules->ReadObjdump(std::move(objdump));
         Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
         BuildAddress2BB();

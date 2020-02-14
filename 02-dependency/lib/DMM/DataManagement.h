@@ -48,7 +48,7 @@ namespace dra {
 
         virtual ~DataManagement();
 
-        void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string InputFilename);
+        void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string bit_code);
 
         void BuildAddress2BB();
 
