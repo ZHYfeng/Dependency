@@ -11,8 +11,9 @@
 
 #include "../../lib/DCC/DependencyControlCenter.h"
 
-llvm::cl::opt<std::string> obj_dump("objdump", llvm::cl::desc("The obj dump file."), llvm::cl::init("./vmlinux.objdump"));
-llvm::cl::opt<std::string> assembly("asm", llvm::cl::desc("The assembly source code."), llvm::cl::init("./build-in.s"));
+llvm::cl::opt<std::string> obj_dump("objdump", llvm::cl::desc("The obj dump file."),
+                                    llvm::cl::init("./vmlinux.objdump"));
+llvm::cl::opt<std::string> assembly("asm", llvm::cl::desc("The assembly source code."), llvm::cl::init("./built-in.s"));
 llvm::cl::opt<std::string> bit_code("bc", llvm::cl::desc("The bit code."), llvm::cl::init("./built-in.bc"));
 
 llvm::cl::opt<std::string> port("port", llvm::cl::desc("The port of grpc."), llvm::cl::init("127.0.0.1:22223"));
