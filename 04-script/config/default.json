@@ -47,7 +47,7 @@
       "ioctl$CDROM_NEXT_WRITABLE",
       "ioctl$CDROM_LAST_WRITTEN"
     ],
-    "file_taint": "taint_info_cdrom_ioctl_serialize",
+    "file_taint": "taint_info_conf_cdrom_serialize",
     "function": {
       "cdrom_device_ops": {
         "unlocked_ioctl": {
@@ -1869,7 +1869,7 @@
       "ioctl$KVM_GET_DEVICE_ATTR",
       "ioctl$KVM_HAS_DEVICE_ATTR"
     ],
-    "file_taint": "taint_info_kvm_dev_ioctl_serialize",
+    "file_taint": "taint_info_conf_kvm_serialize",
     "function": {
       "kvm_chardev_ops": {
         "unlocked_ioctl": {
@@ -2274,7 +2274,7 @@
       "ioctl$TIOCMIWAIT",
       "ioctl$TIOCGICOUNT"
     ],
-    "file_taint": "taint_info_tty_ioctl_serialize",
+    "file_taint": "taint_info_conf_ptmx_serialize",
     "function": {
       "tty_fops": {
         "unlocked_ioctl": {
@@ -2767,7 +2767,7 @@
       "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_CLIENT",
       "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_PORT"
     ],
-    "file_taint": "taint_info_snd_seq_ioctl_serialize",
+    "file_taint": "taint_info_conf_snd_seq_serialize",
     "function": {
       "snd_seq_f_ops": {
         "poll": {
