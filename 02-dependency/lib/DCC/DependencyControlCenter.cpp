@@ -627,15 +627,18 @@ namespace dra {
 
     void DependencyControlCenter::check_all_condition_() {
         auto *coutbuf = std::cout.rdbuf();
-        std::ofstream out("address.txt");
-        std::cout.rdbuf(out.rdbuf());
+//        std::ofstream out("address.txt");
+//        std::cout.rdbuf(out.rdbuf());
         for (auto &f : *this->DM.Modules->module) {
             auto df = this->DM.Modules->get_DF_from_f(&f);
+            outputTime("df->Path : " + df->Path);
             auto sta = this->getStaticAnalysisResult(df->Path);
             if (sta == nullptr) {
+                outputTime("not find sta");
                 break;
             }
             for (auto &bb : df->BasicBlock) {
+                outputTime("bb : " + bb.second->name);
                 auto fbb = getFinalBB(bb.second->basicBlock);
                 auto inst = fbb->getTerminator();
                 if (inst->getNumSuccessors() > 0) {
@@ -665,8 +668,8 @@ namespace dra {
                 }
             }
         }
-        std::cout.rdbuf(coutbuf);
-        out.close();
+//        std::cout.rdbuf(coutbuf);
+//        out.close();
     }
 
 } /* namespace dra */
