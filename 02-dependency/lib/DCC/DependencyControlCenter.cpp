@@ -596,8 +596,8 @@ namespace dra {
 
     void dra::DependencyControlCenter::test() {
 
-        for (auto ff : this->DM.Modules->Function) {
-            for (auto f : ff.second) {
+        for (const auto &ff : this->DM.Modules->Function) {
+            for (const auto &f : ff.second) {
                 for (auto b : f.second->BasicBlock) {
                     b.second->real_dump();
                 }
@@ -609,13 +609,15 @@ namespace dra {
 
     sta::StaticAnalysisResult *DependencyControlCenter::getStaticAnalysisResult(const std::string &path) {
         for (const auto &dev : this->config_json.items()) {
-            std::string pp = dev.value()["path_s"];
-            std::cout << pp << std::endl;
-            if (path.find(pp) != std::string::npos) {
-                if (this->STA_map.find(dev.key()) != this->STA_map.end()) {
-                    return this->STA_map[dev.key()];
-                } else {
-                    std::cerr << "can not find static analysis result for dev : " << dev.key() << std::endl;
+            auto path_s = dev.value()["path_s"];
+            for (const auto &pp : path_s.items()) {
+                std::cout << pp.key() << std::endl;
+                if (path.find(pp.key()) != std::string::npos) {
+                    if (this->STA_map.find(dev.key()) != this->STA_map.end()) {
+                        return this->STA_map[dev.key()];
+                    } else {
+                        std::cerr << "can not find static analysis result for dev : " << dev.key() << std::endl;
+                    }
                 }
             }
         }
