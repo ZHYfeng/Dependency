@@ -621,4 +621,53 @@ namespace dra {
         return nullptr;
     }
 
+    void DependencyControlCenter::check_all_condition_() {
+        auto *coutbuf = std::cout.rdbuf();
+        std::ofstream out("address.txt");
+        std::cout.rdbuf(out.rdbuf());
+        for (auto &f : *this->DM.Modules->module) {
+            auto df = this->DM.Modules->get_DF_from_f(&f);
+            auto sta = this->getStaticAnalysisResult(df->Path);
+            if (sta == nullptr) {
+                break;
+            }
+            for (auto &bb : df->BasicBlock) {
+                auto fbb = getFinalBB(bb.second->basicBlock);
+                auto inst = fbb->getTerminator();
+                if (inst->getNumSuccessors() > 0) {
+                    sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(fbb, 0);
+                    if (write_basicblock == nullptr) {
+                        // no taint or out side
+#if DEBUG
+                        dra::outputTime("allBasicblock == nullptr");
+                        p->real_dump();
+#endif
+                        std::cout << std::hex << bb.second->trace_pc_address;
+                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
+                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
+                        }
+                        std::cout << std::endl;
+                    } else if (write_basicblock->empty()) {
+                        // unrelated to gv
+#if DEBUG
+                        dra::outputTime("allBasicblock->size() == 0");
+                        p->dump();
+#endif
+                        std::cout << std::hex << bb.second->trace_pc_address;
+                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
+                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
+                        }
+                        std::cout << std::endl;
+                    } else if (!write_basicblock->empty()) {
+#if DEBUG
+                        dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
+#endif
+                    }
+                }
+            }
+        }
+        std::cout.rdbuf(coutbuf);
+        out.close();
+    }
+
 } /* namespace dra */
