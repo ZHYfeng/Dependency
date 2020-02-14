@@ -644,6 +644,9 @@ namespace dra {
                 continue;
             }
             for (auto &bb : df->BasicBlock) {
+                if (bb.second->trace_pc_address == 0) {
+                    continue;
+                }
                 auto fbb = getFinalBB(bb.second->basicBlock);
                 auto inst = fbb->getTerminator();
                 if (inst->getNumSuccessors() > 1) {
