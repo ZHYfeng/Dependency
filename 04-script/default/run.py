@@ -101,7 +101,7 @@ class Process:
 
     def execute_dra(self, run_f):
         self.cmd_dra = default.path_dra + " -asm=" + default.name_asm + " -objdump=" + default.file_vmlinux_objdump \
-                       + " -bc = " + default.name_bc + " -port=" + self.drpc \
+                       + " -bc=" + default.name_bc + " -port=" + self.drpc \
                        + " " + default.name_dra_json + " 1>" + default.file_log_dra + " 2>&1 &"
         self.real_execute(self.cmd_dra, run_f)
 
