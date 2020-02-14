@@ -40,7 +40,8 @@ namespace dra {
             staticRes.assign(dev.value()["file_taint"]);
             dra::outputTime("staticRes : " + staticRes);
             for (const auto &p : dev.value()["path_s"].items()) {
-                dra::outputTime("path : " + p.value());
+                std::string t = p.value();
+                dra::outputTime("path : " + t);
             }
             auto sar = new sta::StaticAnalysisResult();
             this->STA_map[dev.key()] = sar;
