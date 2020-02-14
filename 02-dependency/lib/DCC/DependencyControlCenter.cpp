@@ -644,7 +644,7 @@ namespace dra {
             for (auto &bb : df->BasicBlock) {
                 auto fbb = getFinalBB(bb.second->basicBlock);
                 auto inst = fbb->getTerminator();
-                if (inst->getNumSuccessors() > 0) {
+                if (inst->getNumSuccessors() > 1) {
                     sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(fbb, 0);
                     if (write_basicblock == nullptr) {
                         // no taint or out side
@@ -652,6 +652,7 @@ namespace dra {
                         dra::outputTime("allBasicblock == nullptr");
                         p->real_dump();
 #endif
+                        bb.second->dump();
                         std::cout << std::hex << bb.second->trace_pc_address;
                         for (int i = 0; i < inst->getNumSuccessors(); i++) {
                             std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
