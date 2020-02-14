@@ -633,19 +633,15 @@ namespace dra {
         std::ofstream out("address.txt");
         std::cout.rdbuf(out.rdbuf());
         for (auto &f : *this->DM.Modules->module) {
-            outputTime("f : " + f.getName().str());
             auto df = this->DM.Modules->get_DF_from_f(&f);
             if (df == nullptr) {
                 continue;
             }
-            outputTime("df->Path : " + df->Path);
             auto sta = this->getStaticAnalysisResult(df->Path);
             if (sta == nullptr) {
-                outputTime("not find sta");
                 continue;
             }
             for (auto &bb : df->BasicBlock) {
-                outputTime("bb : " + bb.second->name);
                 auto fbb = getFinalBB(bb.second->basicBlock);
                 auto inst = fbb->getTerminator();
                 if (inst->getNumSuccessors() > 0) {
