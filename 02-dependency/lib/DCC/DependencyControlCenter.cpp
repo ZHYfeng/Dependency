@@ -611,8 +611,7 @@ namespace dra {
         for (const auto &dev : this->config_json.items()) {
             auto path_s = dev.value()["path_s"];
             for (const auto &pp : path_s.items()) {
-                std::cout << pp.key() << std::endl;
-                if (path.find(pp.key()) != std::string::npos) {
+                if (path.find(pp.value()) != std::string::npos) {
                     if (this->STA_map.find(dev.key()) != this->STA_map.end()) {
                         return this->STA_map[dev.key()];
                     } else {
@@ -635,7 +634,7 @@ namespace dra {
             auto sta = this->getStaticAnalysisResult(df->Path);
             if (sta == nullptr) {
                 outputTime("not find sta");
-                break;
+                continue;
             }
             for (auto &bb : df->BasicBlock) {
                 outputTime("bb : " + bb.second->name);
