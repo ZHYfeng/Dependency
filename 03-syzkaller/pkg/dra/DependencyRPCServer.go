@@ -807,9 +807,11 @@ func (ss *Server) Update() {
 
 	log.Logf(DebugLevel, "after CheckCondition\n")
 
-	t := time.Now()
-	elapsed := t.Sub(ss.timeStart)
-	if elapsed.Seconds() > TimeExit {
-		os.Exit(1)
+	if Exit {
+		t := time.Now()
+		elapsed := t.Sub(ss.timeStart)
+		if elapsed.Seconds() > TimeExit {
+			os.Exit(1)
+		}
 	}
 }

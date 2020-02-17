@@ -12,7 +12,9 @@ const (
 	newTime         = 3600
 	bootTime        = 3600
 	TimeWriteToDisk = 3600
-	TimeExit        = 3600 * 24
+
+	Exit     = false
+	TimeExit = 3600 * 24
 
 	TaskNum             = 40
 	TaskCountLimitation = 20
