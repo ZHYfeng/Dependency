@@ -39,6 +39,10 @@ namespace dra {
             std::string staticRes;
             staticRes.assign(dev.value()["file_taint"]);
             dra::outputTime("staticRes : " + staticRes);
+            for (const auto &p : dev.value()["path_s"].items()) {
+                std::string t = p.value();
+                dra::outputTime("path : " + t);
+            }
             auto sar = new sta::StaticAnalysisResult();
             this->STA_map[dev.key()] = sar;
             sar->initStaticRes(staticRes, &this->DM);
@@ -556,10 +560,12 @@ namespace dra {
     void DependencyControlCenter::getFileOperations(std::string *function_name, std::string *file_operations,
                                                     std::string *kind) {
         for (const auto &f1 : this->config_json.items()) {
-            for (const auto &f2 : f1.value().items()) {
-                if (*function_name == f2.value()["name"]) {
-                    file_operations->assign(f1.key());
-                    kind->assign(f2.key());
+            for (const auto &f2 : f1.value()["function"].items()) {
+                for (const auto &f3 : f2.value().items()) {
+                    if (*function_name == f3.value()["name"]) {
+                        file_operations->assign(f2.key());
+                        kind->assign(f3.key());
+                    }
                 }
             }
         }
@@ -596,8 +602,8 @@ namespace dra {
 
     void dra::DependencyControlCenter::test() {
 
-        for (auto ff : this->DM.Modules->Function) {
-            for (auto f : ff.second) {
+        for (const auto &ff : this->DM.Modules->Function) {
+            for (const auto &f : ff.second) {
                 for (auto b : f.second->BasicBlock) {
                     b.second->real_dump();
                 }
@@ -609,16 +615,69 @@ namespace dra {
 
     sta::StaticAnalysisResult *DependencyControlCenter::getStaticAnalysisResult(const std::string &path) {
         for (const auto &dev : this->config_json.items()) {
-            if (path.find(dev.value()["path_s"]) != std::string::npos) {
-                if (this->STA_map.find(dev.key()) != this->STA_map.end()) {
-                    return this->STA_map[dev.key()];
-                } else {
-                    std::cerr << "can not find static analysis result for dev : " << dev.key() << std::endl;
+            auto path_s = dev.value()["path_s"];
+            for (const auto &pp : path_s.items()) {
+                if (path.find(pp.value()) != std::string::npos) {
+                    if (this->STA_map.find(dev.key()) != this->STA_map.end()) {
+                        return this->STA_map[dev.key()];
+                    } else {
+                        std::cerr << "can not find static analysis result for dev : " << dev.key() << std::endl;
+                    }
                 }
             }
         }
-        std::cout << "can not find static analysis result for path : " << path << std::endl;
+        std::cerr << "can not find static analysis result for path : " << path << std::endl;
         return nullptr;
+    }
+
+    void DependencyControlCenter::check_all_condition_() {
+        auto *coutbuf = std::cout.rdbuf();
+        std::ofstream out("address.txt");
+        std::cout.rdbuf(out.rdbuf());
+        for (auto &f : *this->DM.Modules->module) {
+            auto df = this->DM.Modules->get_DF_from_f(&f);
+            if (df == nullptr) {
+                continue;
+            }
+            auto sta = this->getStaticAnalysisResult(df->Path);
+            if (sta == nullptr) {
+                continue;
+            }
+            for (auto &bb : df->BasicBlock) {
+                if (bb.second->trace_pc_address == 0) {
+                    continue;
+                }
+                auto fbb = getFinalBB(bb.second->basicBlock);
+                auto inst = fbb->getTerminator();
+                if (inst->getNumSuccessors() > 1) {
+                    sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(fbb, 0);
+                    if (write_basicblock == nullptr) {
+                        // no taint or out side
+#if DEBUG
+                        dra::outputTime("allBasicblock == nullptr");
+                        p->real_dump();
+#endif
+                        std::cout << std::hex << bb.second->trace_pc_address;
+                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
+                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
+                        }
+                        std::cout << std::endl;
+                    } else if (write_basicblock->empty()) {
+                        // unrelated to gv
+#if DEBUG
+                        dra::outputTime("allBasicblock->size() == 0");
+                        p->dump();
+#endif
+                    } else if (!write_basicblock->empty()) {
+#if DEBUG
+                        dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
+#endif
+                    }
+                }
+            }
+        }
+        std::cout.rdbuf(coutbuf);
+        out.close();
     }
 
 } /* namespace dra */

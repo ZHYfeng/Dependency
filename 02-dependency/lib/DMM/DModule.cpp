@@ -581,7 +581,7 @@ namespace dra {
                 auto f = p[FunctionName];
                 return f;
             } else {
-                std::cerr << "get_DB_from_bb can not find FunctionName : " << FunctionName << std::endl;
+                std::cerr << "get_DF_from_bb can not find FunctionName : " << FunctionName << std::endl;
             }
         } else {
             std::cerr << "get_DF_from_f can not find Path : " << Path << std::endl;

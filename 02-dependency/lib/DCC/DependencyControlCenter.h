@@ -29,6 +29,8 @@ namespace dra {
 
         void check_uncovered_addresses_depednency(const std::string &file);
 
+        void check_all_condition_();
+
         void setRPCConnection(const std::string &grpc_port);
 
         sta::MODS *get_write_basicblock(Condition *u);
