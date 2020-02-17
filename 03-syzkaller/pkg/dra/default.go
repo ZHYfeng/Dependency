@@ -52,9 +52,8 @@ const (
 	NameUnstable       = "unstable.bin"
 	NameUnstableResult = "unstable.txt"
 
-	NameDriver   = "built-in"
-	FileAsm      = NameDriver + ".s"
-	FileTaint    = NameDriver + ".taint"
-	FileFunction = NameDriver + ".function.json"
-	FileBc       = NameDriver + ".bc"
+	NameDriver    = "built-in"
+	FileAsm       = NameDriver + ".s"
+	FileBc        = NameDriver + ".bc"
+	FileDRAConfig = "dra.json"
 )

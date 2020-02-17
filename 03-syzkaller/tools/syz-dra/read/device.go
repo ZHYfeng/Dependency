@@ -103,7 +103,7 @@ func (d *device) checkCoverage() {
 		}
 	}
 	res += "*******************************************\n"
-	res += "solvedCondition         : " + fmt.Sprintf("%5d", len(stableSolvedCondition)) + "\n"
+	res += "solvedCondition         : " + fmt.Sprintf("%5d", len(solvedCondition)) + "\n"
 	res += "stableSolvedCondition   : " + fmt.Sprintf("%5d", len(stableSolvedCondition)) + "\n"
 	res += "unStableSolvedCondition : " + fmt.Sprintf("%5d", len(unStableSolvedCondition)) + "\n"
 	res += "*******************************************\n"
@@ -140,6 +140,57 @@ func (d *device) checkUncoveredAddress() {
 		res += "*******************************************\n"
 		res += "number of uncovered address      : " + fmt.Sprintf("%5d", len(d.base.dataDependency.UncoveredAddress)) + "\n"
 		res += "related to dependency            : " + fmt.Sprintf("%5d", len(d.base.uncoveredAddressDependency)) + "\n"
+		res += "covered by syzkaller with dra    : " + fmt.Sprintf("%5d", len(UADCW)) + "\n"
+		res += "covered by dependency mutate     : " + fmt.Sprintf("%5d", len(UADCWD)) + "\n"
+		res += "unique one of them               : " + fmt.Sprintf("%5d", len(UADCWDU)) + "\n"
+		res += "covered by syzkaller without dra : " + fmt.Sprintf("%5d", len(UADCWO)) + "\n"
+		res += "*******************************************\n"
+	} else {
+		UA := map[uint32]uint32{}
+		UAD := map[uint32]uint32{}
+		UADCW := map[uint32]uint32{}
+		UADCWD := map[uint32]uint32{}
+		UADCWDU := map[uint32]uint32{}
+		UADCWO := map[uint32]uint32{}
+		for _, r := range d.resultsWithDra.result {
+			for a := range r.uncoveredAddressDependency {
+				UA[a] = 0
+				UAD[a] = 0
+				if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
+					UADCW[a] = c
+					if c > 0 {
+						UADCWD[a] = c
+						if _, ok := d.uniqueCoverageWithDra[a]; ok {
+							UADCWDU[a] = c
+						}
+					}
+				}
+				if c, ok := d.resultsWithoutDra.maxCoverage[a]; ok {
+					UADCWO[a] = c
+				}
+			}
+
+			for a := range r.dataResult.CoveredAddress {
+				UA[a] = 0
+				UAD[a] = 0
+				if c, ok := d.resultsWithDra.maxCoverage[a]; ok {
+					UADCW[a] = c
+					if c > 0 {
+						UADCWD[a] = c
+						if _, ok := d.uniqueCoverageWithDra[a]; ok {
+							UADCWDU[a] = c
+						}
+					}
+				}
+				if c, ok := d.resultsWithoutDra.maxCoverage[a]; ok {
+					UADCWO[a] = c
+				}
+			}
+		}
+
+		res += "*******************************************\n"
+		res += "number of uncovered address      : " + fmt.Sprintf("%5d", len(UA)) + "\n"
+		res += "related to dependency            : " + fmt.Sprintf("%5d", len(UAD)) + "\n"
 		res += "covered by syzkaller with dra    : " + fmt.Sprintf("%5d", len(UADCW)) + "\n"
 		res += "covered by dependency mutate     : " + fmt.Sprintf("%5d", len(UADCWD)) + "\n"
 		res += "unique one of them               : " + fmt.Sprintf("%5d", len(UADCWDU)) + "\n"
@@ -225,8 +276,8 @@ func (d *device) checkUncoveredAddress() {
 	_, _ = f.WriteString(res)
 	_ = f.Close()
 
-	cmd := exec.Command(pb.PathA2i, "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-staticRes=./"+pb.FileTaint,
-		"-function=./"+pb.FileFunction, pb.FileBc)
+	cmd := exec.Command(pb.PathA2i, "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-bc="+pb.FileBc, pb.FileDRAConfig)
+
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 

@@ -33,12 +33,10 @@ path_syzkaller = os.path.join(path_git_repo, "03-syzkaller")
 file_syzkaller = os.path.join(path_syzkaller, "bin/syz-manager")
 
 name_driver = "built-in"
-name_taint = name_driver + ".taint"
 name_asm = name_driver + ".s"
 name_bc = name_driver + ".bc"
 name_syzkaller_json = "syzkaller.json"
 name_dra_json = "dra.json"
-name_function = name_driver + ".function.json"
 
 number_execute = 1
 path_current = os.getcwd()
