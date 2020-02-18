@@ -1,0 +1,20 @@
+\section{Implementation}
+
+\subsection{Kernel building}
+
+
+Building the Linux kernel 4.16 with LLVM 7.0 because 4.16 is the last Linux kernel which support LLVM 7.0.
+We use KCOV to collect coverage of each system call,  which is the address in binary vmlinux.
+In order to get more accurate coverage, it could get edge level coverage instead of basic block coverage in LLVM.
+However, some of the edges may still be not instrumented if such instrumentation is considered redundant.
+In LLVM, it could use no-prune to disable pruning.
+In order to get more accurate mapping between binary address and LLVM bitcode, we generate optimized bitcode and binary, which have almost the same control flow graph.
+There is only one \textit{\_\_sanitizer\_cov\_trace\_pc} in each basic block, so we can use this to get the basic block level  mapping between binary address and LLVM bit code.
+
+
+\subsection{static analysis}
+
+
+\subsection{insert write statement}
+
+\subsection{priority}
