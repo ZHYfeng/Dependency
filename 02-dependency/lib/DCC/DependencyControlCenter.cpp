@@ -635,6 +635,7 @@ namespace dra {
         std::ofstream out("address.txt");
         std::cout.rdbuf(out.rdbuf());
         for (auto &f : *this->DM.Modules->module) {
+            std::cerr << "function name : " << f.getName().str() << std::endl;
             auto df = this->DM.Modules->get_DF_from_f(&f);
             if (df == nullptr) {
                 continue;
