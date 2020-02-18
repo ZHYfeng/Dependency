@@ -21,6 +21,8 @@ type result struct {
 
 	uncoveredAddressInput      map[uint32]*pb.UncoveredAddress
 	uncoveredAddressDependency map[uint32]*pb.UncoveredAddress
+	coveredAddressInput        map[uint32]*pb.UncoveredAddress
+	coveredAddressDependency   map[uint32]*pb.UncoveredAddress
 }
 
 func (r *result) read(path string) {
@@ -79,6 +81,15 @@ func (r *result) getUncoveredAddress() {
 			r.uncoveredAddressInput[ua.UncoveredAddress] = ua
 		} else if ua.Kind == pb.UncoveredAddressKind_DependencyRelated {
 			r.uncoveredAddressDependency[ua.UncoveredAddress] = ua
+		} else {
+
+		}
+	}
+	for _, a := range r.dataResult.CoveredAddress {
+		if a.Kind == pb.UncoveredAddressKind_InputRelated {
+			r.coveredAddressInput[a.UncoveredAddress] = a
+		} else if a.Kind == pb.UncoveredAddressKind_DependencyRelated {
+			r.coveredAddressDependency[a.UncoveredAddress] = a
 		} else {
 
 		}

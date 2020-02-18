@@ -188,9 +188,6 @@ func (d *device) checkUncoveredAddress() {
 	res += "unique one of them               : " + fmt.Sprintf("%5d", len(UADCWDU)) + "\n"
 	res += "covered by syzkaller without dra : " + fmt.Sprintf("%5d", len(UADCWO)) + "\n"
 	res += "*******************************************\n"
-	for a := range UADCWD {
-		res += "address covered by dependency : " + fmt.Sprintf("0xffffffff%x", a-5) + "\n"
-	}
 
 	_ = os.Chdir(d.path)
 	err := filepath.Walk(d.path,
@@ -223,9 +220,19 @@ func (d *device) checkUncoveredAddress() {
 		for _, uaa := range r.uncoveredAddressDependency {
 			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress-5, uaa.UncoveredAddress-5))
 		}
+		for _, uaa := range r.coveredAddressDependency {
+			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress-5, uaa.UncoveredAddress-5))
+		}
 		_ = f.Close()
 
 		for a, uaa := range r.uncoveredAddressDependency {
+			ress := r.checkUncoveredAddress(a)
+			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			_, _ = f.WriteString(ress)
+			_ = f.Close()
+			ua = append(ua, uaa)
+		}
+		for a, uaa := range r.coveredAddressDependency {
 			ress := r.checkUncoveredAddress(a)
 			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 			_, _ = f.WriteString(ress)
