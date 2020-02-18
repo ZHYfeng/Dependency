@@ -12,7 +12,9 @@ const (
 	newTime         = 3600
 	bootTime        = 3600
 	TimeWriteToDisk = 3600
-	TimeExit        = 3600 * 24
+
+	Exit     = false
+	TimeExit = 3600 * 24
 
 	TaskNum             = 40
 	TaskCountLimitation = 20
@@ -52,9 +54,8 @@ const (
 	NameUnstable       = "unstable.bin"
 	NameUnstableResult = "unstable.txt"
 
-	NameDriver   = "built-in"
-	FileAsm      = NameDriver + ".s"
-	FileTaint    = NameDriver + ".taint"
-	FileFunction = NameDriver + ".function.json"
-	FileBc       = NameDriver + ".bc"
+	NameDriver    = "built-in"
+	FileAsm       = NameDriver + ".s"
+	FileBc        = NameDriver + ".bc"
+	FileDRAConfig = "dra.json"
 )
