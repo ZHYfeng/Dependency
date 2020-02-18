@@ -635,12 +635,17 @@ namespace dra {
         std::ofstream out("address.txt");
         std::cout.rdbuf(out.rdbuf());
         for (auto &f : *this->DM.Modules->module) {
+            std::cerr << "function name : " << f.getName().str() << std::endl;
+            std::string Path = dra::getFileName(&f);
+            std::cerr << "function path : " << Path << std::endl;
+            auto sta = this->getStaticAnalysisResult(Path);
+            if (sta == nullptr) {
+                continue;
+            } else {
+                std::cerr << "find sta : " << Path << std::endl;
+            }
             auto df = this->DM.Modules->get_DF_from_f(&f);
             if (df == nullptr) {
-                continue;
-            }
-            auto sta = this->getStaticAnalysisResult(df->Path);
-            if (sta == nullptr) {
                 continue;
             }
             for (auto &bb : df->BasicBlock) {
