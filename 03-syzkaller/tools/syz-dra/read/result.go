@@ -76,6 +76,8 @@ func (r *result) read(path string) {
 func (r *result) getUncoveredAddress() {
 	r.uncoveredAddressInput = make(map[uint32]*pb.UncoveredAddress)
 	r.uncoveredAddressDependency = make(map[uint32]*pb.UncoveredAddress)
+	r.coveredAddressInput = make(map[uint32]*pb.UncoveredAddress)
+	r.coveredAddressDependency = make(map[uint32]*pb.UncoveredAddress)
 	for _, ua := range r.dataDependency.UncoveredAddress {
 		if ua.Kind == pb.UncoveredAddressKind_InputRelated {
 			r.uncoveredAddressInput[ua.UncoveredAddress] = ua
