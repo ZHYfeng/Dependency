@@ -104,9 +104,11 @@ func (r *result) checkTasks() {
 
 func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
-	ua, ok := r.dataDependency.UncoveredAddress[uncoveredAddress]
-	if ok {
-
+	var ua *pb.UncoveredAddress
+	if a, ok := r.dataDependency.UncoveredAddress[uncoveredAddress]; ok {
+		ua = a
+	} else if a, ok := r.dataResult.CoveredAddress[uncoveredAddress]; ok {
+		ua = a
 	} else {
 		return ""
 	}
