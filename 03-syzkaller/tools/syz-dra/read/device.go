@@ -188,6 +188,9 @@ func (d *device) checkUncoveredAddress() {
 	res += "unique one of them               : " + fmt.Sprintf("%5d", len(UADCWDU)) + "\n"
 	res += "covered by syzkaller without dra : " + fmt.Sprintf("%5d", len(UADCWO)) + "\n"
 	res += "*******************************************\n"
+	for a := range UADCWD {
+		res += "address covered by dependency : " + fmt.Sprintf("0xffffffff%x", a-5) + "\n"
+	}
 
 	_ = os.Chdir(d.path)
 	err := filepath.Walk(d.path,
