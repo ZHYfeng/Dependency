@@ -228,6 +228,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		}
 		res += "uncovered address 			: " + fmt.Sprintf("%d", len(t.UncoveredAddress)) + "\n"
 		res += "tested uncovered address 	: " + fmt.Sprintf("%d", count) + "\n"
+		res += "covered address 	: " + fmt.Sprintf("%d", len(t.CoveredAddress)) + "\n"
 
 		res += "-------------------------------------------\n"
 		if rTD, ok := t.UncoveredAddress[uncoveredAddress]; ok {
@@ -339,10 +340,114 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
 			}
 
-		} else if _, ok := t.CoveredAddress[uncoveredAddress]; ok {
+		} else if rTD, ok := t.CoveredAddress[uncoveredAddress]; ok {
 			res += "uncoveredAddress in t.covered_address" + "\n"
 			if ua.RunTimeDate.TaskStatus < pb.TaskStatus_covered {
 				ua.RunTimeDate.TaskStatus = pb.TaskStatus_covered
+			}
+
+			res += "task_status 		: " + rTD.TaskStatus.String() + "\n"
+			res += "write address		: " + fmt.Sprintf("0xffffffff%x", rTD.WriteAddress-5) + "\n"
+			res += "condition address 	: " + fmt.Sprintf("0xffffffff%x", rTD.ConditionAddress-5) + "\n"
+			res += "uncovered address 	: " + fmt.Sprintf("0xffffffff%x", rTD.Address-5) + "\n"
+			res += "check write 		: " + fmt.Sprintf("%t", rTD.CheckWrite) + "\n"
+			res += "check condition 	: " + fmt.Sprintf("%t", rTD.CheckCondition) + "\n"
+			res += "check address 		: " + fmt.Sprintf("%t", rTD.CheckAddress) + "\n"
+
+			if len(rTD.RightBranchAddress) == len(rTD.CheckRightBranchAddress) {
+				for i, b := range rTD.CheckRightBranchAddress {
+					res += "check branch address: " + fmt.Sprintf("0xffffffff%x", rTD.RightBranchAddress[i]-5) + "\n"
+					res += "check branch 		: " + fmt.Sprintf("%t", b) + "\n"
+				}
+			} else {
+				res += "len(rTD.RightBranchAddress) != len(rTD.CheckRightBranchAddress)\n"
+			}
+
+			if rTD.CheckWrite {
+				if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_stable_write {
+					ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_stable_write
+				}
+			} else {
+				res += "unstable write address" + "\n"
+				if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_unstable_write {
+					ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_unstable_write
+				}
+			}
+
+			if rTD.CheckCondition {
+				if rTD.CheckAddress {
+					res += "error in rdd.CheckCondition" + "\n"
+					if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_covered {
+						ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_covered
+					}
+				} else {
+					if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_stable_condition && ua.WriteAddressStatus[rTD.WriteAddress] >= pb.TaskStatus_stable_write {
+						ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_stable_condition
+					}
+				}
+			} else {
+				res += "unstable condition address" + "\n"
+				if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_unstable_condition && ua.WriteAddressStatus[rTD.WriteAddress] >= pb.TaskStatus_stable_write {
+					ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_unstable_condition
+				}
+			}
+
+			if t.Check {
+				for _, trd := range t.TaskRunTimeData {
+					if rdd, ok := trd.UncoveredAddress[uncoveredAddress]; ok {
+						res += "-------------------------------------------\n"
+						res += "insert task_status 			: " + rdd.TaskStatus.String() + "\n"
+						res += "check insert write address 	: " + fmt.Sprintf("%t", rdd.CheckWrite) + "\n"
+						res += "check condition 			: " + fmt.Sprintf("%t", rdd.CheckCondition) + "\n"
+						res += "check address 				: " + fmt.Sprintf("%t", rdd.CheckAddress) + "\n"
+						if rdd.TaskStatus == pb.TaskStatus_untested {
+							continue
+						}
+
+						if len(rdd.RightBranchAddress) == len(rdd.CheckRightBranchAddress) {
+							for i, b := range rdd.CheckRightBranchAddress {
+								res += "check branch address: " + fmt.Sprintf("0xffffffff%x", rdd.RightBranchAddress[i]-5) + "\n"
+								res += "check branch 		: " + fmt.Sprintf("%t", b) + "\n"
+							}
+						} else {
+							res += "len(rdd.RightBranchAddress) != len(rdd.CheckRightBranchAddress)\n"
+						}
+
+						if rdd.CheckWrite {
+							if rdd.CheckCondition {
+								if rdd.CheckAddress {
+									res += "error in rdd.CheckCondition" + "\n"
+									if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_covered {
+										ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_covered
+									}
+								} else {
+									res += "useless write address or FP" + "\n"
+									if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_tested {
+										ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_tested
+									}
+								}
+							} else {
+								res += "unstable insert condition address" + "\n"
+								if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_unstable_insert_condition && ua.WriteAddressStatus[rTD.WriteAddress] >= pb.TaskStatus_stable_insert_write {
+									ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_unstable_insert_condition
+								}
+							}
+						} else {
+							res += "unstable insert write address" + "\n"
+							if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_unstable_insert_write && ua.WriteAddressStatus[rTD.WriteAddress] >= pb.TaskStatus_stable_condition {
+								ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_unstable_insert_write
+							}
+						}
+
+					} else if _, ok := trd.CoveredAddress[uncoveredAddress]; ok {
+						res += "coveredAddress in trd.CoveredAddress" + "\n"
+					} else {
+						res += "no test" + "\n"
+					}
+				}
+
+			} else {
+
 			}
 		} else {
 		}
