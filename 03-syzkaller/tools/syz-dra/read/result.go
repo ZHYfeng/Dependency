@@ -376,7 +376,6 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
 			if rTD.CheckCondition {
 				if rTD.CheckAddress {
-					res += "error in rdd.CheckCondition" + "\n"
 					if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_covered {
 						ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_covered
 					}
@@ -416,7 +415,6 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 						if rdd.CheckWrite {
 							if rdd.CheckCondition {
 								if rdd.CheckAddress {
-									res += "error in rdd.CheckCondition" + "\n"
 									if ua.WriteAddressStatus[rTD.WriteAddress] < pb.TaskStatus_covered {
 										ua.WriteAddressStatus[rTD.WriteAddress] = pb.TaskStatus_covered
 									}
