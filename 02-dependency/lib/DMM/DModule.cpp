@@ -348,7 +348,13 @@ namespace dra {
                                             ss << line.at(i);
                                         }
                                         BasicBlockName = ss.str();
+                                        if(function == nullptr){
+                                            std::cout << "function == nullptr" << std:: endl;
+                                            std::cout << "path : " << Path << std:: endl;
+                                            std::cout << "function name : " << FunctionName << std:: endl;
+                                            std::cout << "line : " << line << std:: endl;
 
+                                        }
                                         if (function->BasicBlock.find(BasicBlockName) != function->BasicBlock.end()) {
                                         } else {
                                             function->BasicBlock[BasicBlockName] = new DBasicBlock();
