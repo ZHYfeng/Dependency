@@ -7,6 +7,8 @@ import (
 
 // useful const
 const (
+	ClientMaxReceiveMessageSize = 1024 * 1024 * 100
+
 	//startTime = 10800
 	startTime       = 0
 	newTime         = 3600

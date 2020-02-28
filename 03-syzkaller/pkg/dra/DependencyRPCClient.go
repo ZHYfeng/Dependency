@@ -23,7 +23,12 @@ type DRPCClient struct {
 // RunDependencyRPCClient : run the client
 func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(*address, grpc.WithInsecure())
+	conn, err := grpc.Dial(
+		*address,
+		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(ClientMaxReceiveMessageSize)),
+		grpc.WithInsecure(),
+		//grpc.WithBlock(),
+	)
 	if err != nil {
 		log.Fatalf("Dependency gRPC did not connect: %v", err)
 	}
