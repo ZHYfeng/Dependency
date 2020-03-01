@@ -633,7 +633,7 @@ namespace dra {
     void DependencyControlCenter::check_all_condition_() {
         auto *coutbuf = std::cout.rdbuf();
         std::ofstream out("address.txt");
-        std::cout.rdbuf(out.rdbuf());
+//        std::cout.rdbuf(out.rdbuf());
         for (auto &f : *this->DM.Modules->module) {
             std::cerr << "function name : " << f.getName().str() << std::endl;
             std::string Path = dra::getFileName(&f);
