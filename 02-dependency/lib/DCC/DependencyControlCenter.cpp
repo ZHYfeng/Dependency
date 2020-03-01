@@ -649,6 +649,7 @@ namespace dra {
                 std::cerr << "not find DF" << std::endl;
                 continue;
             }
+            df->dump();
             for (auto &bb : df->BasicBlock) {
 
                 if (bb.second->trace_pc_address == 0) {
