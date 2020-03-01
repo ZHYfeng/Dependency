@@ -20,9 +20,9 @@ namespace dra {
 
 #define TEST 0
 #define DEBUG_MAP 0
-#define DEBUG_BC 0
+#define DEBUG_BC 1
 #define DEBUG_OBJ_DUMP 1
-#define DEBUG_ASM 0
+#define DEBUG_ASM 1
 
 namespace llvm {
     class Module;
