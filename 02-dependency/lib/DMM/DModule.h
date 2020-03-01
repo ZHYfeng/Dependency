@@ -22,7 +22,7 @@ namespace dra {
 #define DEBUG_MAP 0
 #define DEBUG_BC 0
 #define DEBUG_OBJ_DUMP 0
-#define DEBUG_ASM 1
+#define DEBUG_ASM 0
 
 namespace llvm {
     class Module;

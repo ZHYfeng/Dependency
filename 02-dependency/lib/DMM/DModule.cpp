@@ -366,7 +366,7 @@ namespace dra {
                             break;
                         }
                         case '	': {
-#if DEBUG_ASM
+#if DEBUG_ASM || 1
                             std::cout << "tab :" << std::endl;
                             std::cout << "line.size() :" << line.size() << std::endl;
 #endif
@@ -400,10 +400,16 @@ namespace dra {
                                         ss << line.at(i);
                                     }
                                     Inst = ss.str();
-#if DEBUG_ASM
+#if DEBUG_ASM || 1
                                     std::cout << "s Inst :" << Inst << std::endl;
 #endif
                                     if (CallInstNum >= function->InstASM.size()) {
+#if DEBUG_ASM || 1
+                                        std::cout << "CallInstNum : " << CallInstNum << std::endl;
+                                        std::cout << "function->InstASM.size() : " << function->InstASM.size()
+                                                  << std::endl;
+                                        std::cout << "CallInstNum >= function->InstASM.size()" << std::endl;
+#endif
                                     } else {
                                         if (Inst.at(0) == 'c' && Inst.find("call") <= Inst.size()) {
                                             auto *inst = function->InstASM.at(CallInstNum);
