@@ -646,10 +646,12 @@ namespace dra {
             }
             auto df = this->DM.Modules->get_DF_from_f(&f);
             if (df == nullptr) {
+                std::cerr << "not find DF" << std::endl;
                 continue;
             }
             for (auto &bb : df->BasicBlock) {
                 if (bb.second->trace_pc_address == 0) {
+                    std::cerr << "not find trace_pc_address" << std::endl;
                     continue;
                 }
                 auto fbb = getFinalBB(bb.second->basicBlock);
@@ -662,21 +664,23 @@ namespace dra {
                         dra::outputTime("allBasicblock == nullptr");
                         p->real_dump();
 #endif
-                        std::cout << std::hex << bb.second->trace_pc_address;
-                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
-                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
-                        }
-                        std::cout << std::endl;
+                        std::cerr << "write_basicblock == nullptr" << std::endl;
                     } else if (write_basicblock->empty()) {
                         // unrelated to gv
 #if DEBUG
                         dra::outputTime("allBasicblock->size() == 0");
                         p->dump();
 #endif
+                        std::cerr << "write_basicblock->empty()" << std::endl;
                     } else if (!write_basicblock->empty()) {
 #if DEBUG
                         dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
 #endif
+                        std::cout << std::hex << bb.second->trace_pc_address;
+                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
+                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
+                        }
+                        std::cout << std::endl;
                     }
                 }
             }
