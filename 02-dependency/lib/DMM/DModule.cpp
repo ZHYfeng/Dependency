@@ -299,7 +299,7 @@ namespace dra {
                                     std::cout << "FunctionName :" << FunctionName << std::endl;
                                     std::cout << "InstASM.size() :" << function->InstASM.size() << std::endl;
                                     std::cout << "CallInstNum :" << CallInstNum << std::endl;
-                                    std::cout << "tracr_num :" << tracr_num << std::endl;
+                                    std::cout << "trace_num :" << trace_num << std::endl;
                                     for (auto i : function->InstASM) {
                                         std::cout << "OInst :" << i->OInst << std::endl;
                                         std::cout << "SInst :" << i->SInst << std::endl;
