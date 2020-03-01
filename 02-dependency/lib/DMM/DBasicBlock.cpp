@@ -289,12 +289,13 @@ namespace dra {
         std::cout << "IR : " << IR << std::endl;
         std::cout << "CoverKind : " << state << std::endl;
         std::cout << "trace_pc_address : 0x" << std::hex << trace_pc_address << std::endl;
-        dump_inst(this->basicBlock->getTerminator());
-
-        std::string ld;
-        llvm::raw_string_ostream rso(ld);
-        this->basicBlock->print(rso);
-        std::cout << ld;
+        if (this->basicBlock != nullptr) {
+            dump_inst(this->basicBlock->getTerminator());
+            std::string ld;
+            llvm::raw_string_ostream rso(ld);
+            this->basicBlock->print(rso);
+            std::cout << ld;
+        }
 
         for (auto i : this->input) {
             std::cout << "input : " << i.second << " : " << i.first->sig << std::endl;
