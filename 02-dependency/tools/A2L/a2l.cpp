@@ -91,6 +91,7 @@ int main(int argc, char **argv) {
                     start = Result.find("c-f/");
 #else
                     start = Result.find("-np/");
+                    start = Result.find(".16/");
 #endif
                     end = Result.find(':');
                     for (unsigned long i = start + 4; i < end; i++) {

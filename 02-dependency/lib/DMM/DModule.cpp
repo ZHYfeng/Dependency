@@ -512,11 +512,11 @@ namespace dra {
 
     DFunction *DModule::CheckRepeatFunction(std::string Path, std::string FunctionName, FunctionKind kind) {
 
-        if (FunctionName == "vmx_enable_tdp") {
-            std::cerr << "Path : " << Path << std::endl;
-            std::cerr << "FunctionName : " << FunctionName << std::endl;
-            std::cerr << "kind : " << kind << std::endl;
-        }
+//        if (FunctionName == "vmx_enable_tdp") {
+//            std::cerr << "Path : " << Path << std::endl;
+//            std::cerr << "FunctionName : " << FunctionName << std::endl;
+//            std::cerr << "kind : " << kind << std::endl;
+//        }
 
         DFunction *function;
         if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
