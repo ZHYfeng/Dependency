@@ -667,6 +667,11 @@ namespace dra {
                         dra::outputTime("allBasicblock == nullptr");
                         p->real_dump();
 #endif
+                        std::cout << std::hex << bb.second->trace_pc_address;
+                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
+                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
+                        }
+                        std::cout << std::endl;
                         std::cerr << "write_basicblock == nullptr" << std::endl;
                     } else if (write_basicblock->empty()) {
                         // unrelated to gv
@@ -679,11 +684,7 @@ namespace dra {
 #if DEBUG
                         dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
 #endif
-                        std::cout << std::hex << bb.second->trace_pc_address;
-                        for (int i = 0; i < inst->getNumSuccessors(); i++) {
-                            std::cout << "&" << this->DM.get_DB_from_bb(inst->getSuccessor(i))->trace_pc_address;
-                        }
-                        std::cout << std::endl;
+                        std::cerr << "!write_basicblock->empty()" << std::endl;
                     }
                 }
             }
