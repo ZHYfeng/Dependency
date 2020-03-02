@@ -653,8 +653,8 @@ namespace dra {
             for (auto &bb : df->BasicBlock) {
 
                 if (bb.second->trace_pc_address == 0) {
-                    std::cerr << "not find trace_pc_address" << std::endl;
-                    bb.second->dump();
+//                    std::cerr << "not find trace_pc_address" << std::endl;
+//                    bb.second->dump();
                     continue;
                 }
                 auto fbb = getFinalBB(bb.second->basicBlock);
