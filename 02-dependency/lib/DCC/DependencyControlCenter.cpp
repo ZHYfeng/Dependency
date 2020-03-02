@@ -633,7 +633,7 @@ namespace dra {
     void DependencyControlCenter::check_all_condition_() {
         auto *coutbuf = std::cout.rdbuf();
         std::ofstream out("address.txt");
-//        std::cout.rdbuf(out.rdbuf());
+        std::cout.rdbuf(out.rdbuf());
         for (auto &f : *this->DM.Modules->module) {
             std::cerr << "function name : " << f.getName().str() << std::endl;
             std::string Path = dra::getFileName(&f);
@@ -649,7 +649,7 @@ namespace dra {
                 std::cerr << "not find DF" << std::endl;
                 continue;
             }
-            df->dump();
+//            df->dump();
             for (auto &bb : df->BasicBlock) {
 
                 if (bb.second->trace_pc_address == 0) {
