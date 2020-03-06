@@ -80,17 +80,18 @@ class Process:
 
         run_f.write("cd " + path + "\n")
         os.chdir(self.path)
-        self.execute_syzkaller(run_f, dra)
+        self.execute_syzkaller(run_f, dependency_priority=dra)
         self.execute_dra(run_f)
 
-    def execute_syzkaller(self, run_f, dra=True):
+    def execute_syzkaller(self, run_f, dependency_task=False, dependency_priority=False):
         f = open(os.path.join(self.path, default.name_syzkaller_json), "r")
         c = json.load(f)
         f.close()
         c["http"] = "127.0.0.1:" + str(get_open_port())
         self.drpc = "127.0.0.1:" + str(get_open_port())
         c["drpc"] = self.drpc
-        c["dependency"] = dra
+        c["dependency_task"] = dependency_task
+        c["dependency_priority"] = dependency_priority
         f = open(os.path.join(self.path, default.name_syzkaller_json), "w")
         json.dump(c, f, indent=4)
         f.close()
