@@ -31,10 +31,17 @@ type dependencies struct {
 
 // Server is used to implement dra.DependencyServer.
 type Server struct {
-	address    uint32
-	Port       int
-	Address    string
-	Dependency bool
+	address uint32
+	Port    int
+	Address string
+	corpus  *map[string]rpctype.RPCInput
+
+	TimeStart          time.Time
+	TimeNew            time.Time
+	DependencyTask     bool
+	DependencyPriority bool
+	NeedInput          bool
+	NeedBoot           bool
 
 	dataDependency *DataDependency
 	dataResult     *DataResult
@@ -43,12 +50,6 @@ type Server struct {
 
 	MuFuzzer *sync.Mutex
 	fuzzers  map[string]*syzFuzzer
-
-	corpus           *map[string]rpctype.RPCInput
-	timeStart        time.Time
-	timeNew          time.Time
-	needWriteaddress bool
-	needboot         bool
 
 	logMu *sync.Mutex
 	log   *Empty
@@ -339,10 +340,12 @@ func (ss Server) SendStat(_ context.Context, request *Statistic) (*Empty, error)
 func (ss Server) GetNeed(context.Context, *Empty) (*Empty, error) {
 
 	reply := &Empty{}
-	if ss.needWriteaddress {
-		reply.Address = 1
-	} else {
-		reply.Address = 0
+	if NeedInput {
+		if ss.NeedInput {
+			reply.Address = 1
+		} else {
+			reply.Address = 0
+		}
 	}
 	return reply, nil
 }
@@ -372,6 +375,17 @@ func (ss *Server) SyncSignal(signalNum uint64) {
 // RunDependencyRPCServer : run the server
 func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 
+	ss.corpus = corpus
+
+	ss.TimeStart = time.Now()
+	ss.TimeNew = time.Now()
+	if NeedInput {
+		ss.NeedInput = false
+	}
+	if NeedBoot {
+		ss.NeedBoot = false
+	}
+
 	ss.dataDependency = &DataDependency{
 		Input:            map[string]*Input{},
 		UncoveredAddress: map[uint32]*UncoveredAddress{},
@@ -392,9 +406,6 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		ReturnBoot: &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}},
 	}
 
-	ss.MuFuzzer = &sync.Mutex{}
-	ss.fuzzers = map[string]*syzFuzzer{}
-
 	ss.stat = &Statistics{
 		SignalNum:        0,
 		BasicBlockNumber: 0,
@@ -403,10 +414,8 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 		UsefulInput:      []*UsefulInput{},
 	}
 
-	ss.corpus = corpus
-	ss.timeStart = time.Now()
-	ss.timeNew = time.Now()
-	ss.needWriteaddress = false
+	ss.MuFuzzer = &sync.Mutex{}
+	ss.fuzzers = map[string]*syzFuzzer{}
 
 	ss.logMu = &sync.Mutex{}
 	ss.log = &Empty{
@@ -487,29 +496,30 @@ func (ss *Server) Update() {
 
 	}
 
+	// reboot the qemu
 	if len(input) == 0 {
 		t := time.Now()
-		elapsed := t.Sub(ss.timeNew)
-		if elapsed.Seconds() > newTime {
-			ss.needWriteaddress = true
+		elapsed := t.Sub(ss.TimeNew)
+		if NeedInput {
+			if elapsed.Seconds() > TimeNew {
+				ss.NeedInput = true
+			}
 		}
-		if elapsed.Seconds() > bootTime {
-			ss.needboot = true
+		if NeedBoot {
+			if elapsed.Seconds() > TimeBoot {
+				ss.NeedBoot = true
+			}
 		}
 	} else {
-		ss.timeNew = time.Now()
-		ss.needWriteaddress = false
-		ss.needboot = false
+		ss.TimeNew = time.Now()
+		if NeedInput {
+			ss.NeedInput = false
+		}
+		if NeedBoot {
+			ss.NeedBoot = false
+		}
 	}
 	input = nil
-
-	if ss.needWriteaddress {
-		ss.needWriteaddress = false
-	}
-	// reboot the qemu
-	if ss.needboot {
-		ss.needboot = false
-	}
 
 	// deal need input
 	ss.needInputMu.Lock()
@@ -578,10 +588,10 @@ func (ss *Server) Update() {
 	log.Logf(DebugLevel, "after deal return tasks\n")
 
 	// get new tasks
-	if ss.Dependency {
+	if ss.DependencyTask {
 		t := time.Now()
-		elapsed := t.Sub(ss.timeStart)
-		if elapsed.Seconds() > startTime {
+		elapsed := t.Sub(ss.TimeStart)
+		if elapsed.Seconds() > TimeStart {
 			if len(ss.dataRunTime.HighTask.TaskArray) != 0 {
 				var task []*Task
 				for _, t := range ss.dataRunTime.HighTask.TaskArray {
@@ -692,10 +702,10 @@ func (ss *Server) Update() {
 	log.Logf(DebugLevel, "after deal return boot tasks\n")
 
 	// get boot tasks
-	if ss.Dependency {
+	if ss.DependencyTask {
 		t := time.Now()
-		elapsed := t.Sub(ss.timeStart)
-		if elapsed.Seconds() > startTime {
+		elapsed := t.Sub(ss.TimeStart)
+		if elapsed.Seconds() > TimeStart {
 			if len(ss.dataRunTime.BootTask.TaskArray) != 0 {
 				var task []*Task
 				for _, t := range ss.dataRunTime.BootTask.TaskArray {
@@ -809,7 +819,7 @@ func (ss *Server) Update() {
 
 	if Exit {
 		t := time.Now()
-		elapsed := t.Sub(ss.timeStart)
+		elapsed := t.Sub(ss.TimeStart)
 		if elapsed.Seconds() > TimeExit {
 			os.Exit(1)
 		}

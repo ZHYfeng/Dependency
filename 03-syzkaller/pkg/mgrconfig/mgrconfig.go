@@ -26,8 +26,10 @@ type Config struct {
 	HTTP string `json:"http"`
 	//// TCP address to serve gRPC for dependency.
 	DRPC string `json:"drpc"`
-	//// enable dependency
-	Dependency bool `json:"dependency"`
+	//// enable dependency task (default: false).
+	DependencyTask bool `json:"dependency_task"`
+	//// enable dependency task (default: false).
+	DependencyPriority bool `json:"dependency_priority"`
 	// TCP address to serve RPC for fuzzer processes (optional).
 	RPC     string `json:"rpc,omitempty"`
 	Workdir string `json:"workdir"`
@@ -145,6 +147,9 @@ func defaultValues() *Config {
 		Sandbox:   "none",
 		RPC:       ":0",
 		Procs:     1,
+
+		DependencyTask:     false,
+		DependencyPriority: false,
 	}
 }
 

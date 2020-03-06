@@ -9,20 +9,22 @@ import (
 const (
 	ClientMaxReceiveMessageSize = 1024 * 1024 * 100
 
-	//startTime = 10800
-	startTime       = 0
-	newTime         = 3600
-	bootTime        = 3600
+	//TimeStart = 10800
+	TimeStart       = 0
+	TimeNew         = 3600
+	TimeBoot        = 3600
 	TimeWriteToDisk = 3600
+	Exit            = false
+	TimeExit        = 3600 * 24
 
-	Exit     = false
-	TimeExit = 3600 * 24
+	DebugLevel = 2
 
 	TaskNum             = 40
 	TaskCountLimitation = 20
-	TaskBase            = 1
+	TaskCountBase       = 1
 
-	DebugLevel = 2
+	NeedBoot         = false
+	NeedInput = false
 
 	CollectPath     = true
 	CollectUnstable = false

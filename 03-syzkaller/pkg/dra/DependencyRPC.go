@@ -535,7 +535,7 @@ func (ss *Server) addCoveredAddress(input *Input) {
 		}
 	}
 	t := time.Now()
-	elapsed := t.Sub(ss.timeStart)
+	elapsed := t.Sub(ss.TimeStart)
 	ss.stat.Coverage.Time = append(ss.stat.Coverage.Time, &Time{
 		Time: elapsed.Seconds(),
 		Num:  int64(len(ss.stat.Coverage.Coverage)),
@@ -720,7 +720,7 @@ func (m *DataDependency) getTasks(sig string, indexBits uint32, writeSig string,
 			log.Fatalf("getTasks : can not find the writeAddress")
 		}
 
-		if ua.Count < (ua.NumberDominatorInstructions+TaskBase)*TaskNum {
+		if ua.Count < (ua.NumberDominatorInstructions+TaskCountBase)*TaskNum {
 			ua.Count += uint32(len(index) * len(writeIndex))
 		} else {
 			return task
@@ -985,7 +985,7 @@ func (m *DataDependency) getPriority(writeAddress uint32, uncoveredAddress uint3
 
 func (ss *Server) writeMessageToDisk(message proto.Message, name string) {
 	t := time.Now()
-	elapsed := t.Sub(ss.timeStart)
+	elapsed := t.Sub(ss.TimeStart)
 	if elapsed.Seconds() > TimeWriteToDisk {
 
 	}
