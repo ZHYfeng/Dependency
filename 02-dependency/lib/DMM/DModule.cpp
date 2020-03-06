@@ -299,7 +299,7 @@ namespace dra {
                                     std::cout << "FunctionName :" << FunctionName << std::endl;
                                     std::cout << "InstASM.size() :" << function->InstASM.size() << std::endl;
                                     std::cout << "CallInstNum :" << CallInstNum << std::endl;
-                                    std::cout << "tracr_num :" << tracr_num << std::endl;
+                                    std::cout << "trace_num :" << trace_num << std::endl;
                                     for (auto i : function->InstASM) {
                                         std::cout << "OInst :" << i->OInst << std::endl;
                                         std::cout << "SInst :" << i->SInst << std::endl;
@@ -404,6 +404,12 @@ namespace dra {
                                     std::cout << "s Inst :" << Inst << std::endl;
 #endif
                                     if (CallInstNum >= function->InstASM.size()) {
+#if DEBUG_ASM
+                                        std::cout << "CallInstNum : " << CallInstNum << std::endl;
+                                        std::cout << "function->InstASM.size() : " << function->InstASM.size()
+                                                  << std::endl;
+                                        std::cout << "CallInstNum >= function->InstASM.size()" << std::endl;
+#endif
                                     } else {
                                         if (Inst.at(0) == 'c' && Inst.find("call") <= Inst.size()) {
                                             auto *inst = function->InstASM.at(CallInstNum);
@@ -505,6 +511,13 @@ namespace dra {
     }
 
     DFunction *DModule::CheckRepeatFunction(std::string Path, std::string FunctionName, FunctionKind kind) {
+
+//        if (FunctionName == "vmx_enable_tdp") {
+//            std::cerr << "Path : " << Path << std::endl;
+//            std::cerr << "FunctionName : " << FunctionName << std::endl;
+//            std::cerr << "kind : " << kind << std::endl;
+//        }
+
         DFunction *function;
         if ((Function.find(Path) != Function.end()) && (Function[Path].find(FunctionName) != Function[Path].end())) {
             function = Function[Path][FunctionName];

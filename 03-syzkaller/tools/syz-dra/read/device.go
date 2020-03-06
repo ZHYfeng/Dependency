@@ -282,6 +282,7 @@ func (d *device) checkUncoveredAddress() {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
+	log.Println("cmd : ")
 	log.Println(cmd.String())
 	err = cmd.Run()
 	if err != nil {
