@@ -18,6 +18,8 @@ type DRPCClient struct {
 
 	log   string
 	logMu sync.RWMutex
+
+	DependencyPriority bool
 }
 
 // RunDependencyRPCClient : run the client
@@ -34,7 +36,7 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 	}
 	d.name = name
 	d.c = NewDependencyRPCClient(conn)
-	d.Connect(name)
+	d.DependencyPriority = d.Connect(name)
 	if CheckCondition {
 		d.MuDependency = &sync.RWMutex{}
 		d.MuDependency.Lock()
@@ -46,15 +48,21 @@ func (d *DRPCClient) RunDependencyRPCClient(address, name *string) {
 }
 
 // Connect : connect to syz-manager
-func (d *DRPCClient) Connect(name *string) {
+func (d *DRPCClient) Connect(name *string) bool {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-	_, err := d.c.Connect(ctx, &Empty{Name: *name})
+	replay, err := d.c.Connect(ctx, &Empty{Name: *name})
 	if err != nil {
 		log.Fatalf("Dependency gRPC could not Connect: %v", err)
 	}
-	return
+	var res bool
+	if replay.Address == 1 {
+		res = true
+	} else if replay.Address == 0 {
+		res = false
+	}
+	return res
 }
 
 func (d *DRPCClient) GetDataDependency() {

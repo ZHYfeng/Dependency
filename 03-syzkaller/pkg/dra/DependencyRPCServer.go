@@ -163,6 +163,7 @@ func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 	log.Logf(DebugLevel, "(ss Server) Connect")
 
 	name := request.Name
+
 	ss.MuFuzzer.Lock()
 	defer ss.MuFuzzer.Unlock()
 
@@ -183,7 +184,14 @@ func (ss Server) Connect(_ context.Context, request *Empty) (*Empty, error) {
 	} else {
 
 	}
-	return &Empty{}, nil
+
+	res := &Empty{}
+	if ss.DependencyPriority {
+		res.Address = 1
+	} else {
+		res.Address = 0
+	}
+	return res, nil
 }
 
 func (ss Server) GetDataDependency(_ context.Context, request *Empty) (*DataDependency, error) {
@@ -522,16 +530,17 @@ func (ss *Server) Update() {
 	input = nil
 
 	// deal need input
-	ss.needInputMu.Lock()
-	//needInput := append([]*Input{}, ss.needInput.Input...)
-	ss.needInput = &Inputs{Input: []*Input{}}
-	ss.needInputMu.Unlock()
-	//for _, i := range needInput {
-	//	ss.addInput(i)
-	//}
-	//needInput = nil
-
-	log.Logf(DebugLevel, "after deal need input\n")
+	if NeedInput {
+		ss.needInputMu.Lock()
+		needInput := append([]*Input{}, ss.needInput.Input...)
+		ss.needInput = &Inputs{Input: []*Input{}}
+		ss.needInputMu.Unlock()
+		for _, i := range needInput {
+			ss.addInput(i)
+		}
+		needInput = nil
+		log.Logf(DebugLevel, "after deal need input\n")
+	}
 
 	// deal Dependency
 	ss.dependencyMu.Lock()
@@ -668,79 +677,79 @@ func (ss *Server) Update() {
 
 	log.Logf(DebugLevel, "after get new tasks\n")
 
-	// deal return boot tasks
-	returnBootTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
-	for _, f := range ss.fuzzers {
-		f.MuRunTime.Lock()
-		returnBootTask.AddTasks(f.dataRunTime.ReturnBoot)
-		f.dataRunTime.ReturnBoot.emptyTask()
-		f.MuRunTime.Unlock()
-	}
-	for hash, task := range returnBootTask.TaskMap {
-		if t, ok := ss.dataRunTime.BootTask.TaskMap[hash]; ok {
-			if task.TaskStatus == TaskStatus_covered {
-				t.mergeTask(task)
-			} else {
-				t.TaskStatus = TaskStatus_tested
-			}
-			t.mergeTask(task)
-			for u := range t.UncoveredAddress {
-				_, ok := ss.dataDependency.UncoveredAddress[u]
-				if ok {
-
+	if TaskBoot {
+		// deal return boot tasks
+		returnBootTask := &Tasks{Name: "", TaskMap: map[string]*Task{}, TaskArray: []*Task{}}
+		for _, f := range ss.fuzzers {
+			f.MuRunTime.Lock()
+			returnBootTask.AddTasks(f.dataRunTime.ReturnBoot)
+			f.dataRunTime.ReturnBoot.emptyTask()
+			f.MuRunTime.Unlock()
+		}
+		for hash, task := range returnBootTask.TaskMap {
+			if t, ok := ss.dataRunTime.BootTask.TaskMap[hash]; ok {
+				if task.TaskStatus == TaskStatus_covered {
+					t.mergeTask(task)
 				} else {
-					delete(t.UncoveredAddress, u)
+					t.TaskStatus = TaskStatus_tested
+				}
+				t.mergeTask(task)
+				for u := range t.UncoveredAddress {
+					_, ok := ss.dataDependency.UncoveredAddress[u]
+					if ok {
+
+					} else {
+						delete(t.UncoveredAddress, u)
+					}
 				}
 			}
 		}
-	}
-	sort.Slice(ss.dataRunTime.BootTask.TaskArray, func(i, j int) bool {
-		return ss.dataRunTime.BootTask.TaskArray[i].getRealPriority() < ss.dataRunTime.BootTask.TaskArray[j].getRealPriority()
-	})
-	returnBootTask = nil
+		sort.Slice(ss.dataRunTime.BootTask.TaskArray, func(i, j int) bool {
+			return ss.dataRunTime.BootTask.TaskArray[i].getRealPriority() < ss.dataRunTime.BootTask.TaskArray[j].getRealPriority()
+		})
+		returnBootTask = nil
+		log.Logf(DebugLevel, "after deal return boot tasks\n")
 
-	log.Logf(DebugLevel, "after deal return boot tasks\n")
+		// get boot tasks
+		if ss.DependencyTask {
+			t := time.Now()
+			elapsed := t.Sub(ss.TimeStart)
+			if elapsed.Seconds() > TimeStart {
+				if len(ss.dataRunTime.BootTask.TaskArray) != 0 {
+					var task []*Task
+					for _, t := range ss.dataRunTime.BootTask.TaskArray {
+						if t.TaskStatus == TaskStatus_untested {
+							for u := range t.UncoveredAddress {
+								_, ok := ss.dataDependency.UncoveredAddress[u]
+								if ok {
 
-	// get boot tasks
-	if ss.DependencyTask {
-		t := time.Now()
-		elapsed := t.Sub(ss.TimeStart)
-		if elapsed.Seconds() > TimeStart {
-			if len(ss.dataRunTime.BootTask.TaskArray) != 0 {
-				var task []*Task
-				for _, t := range ss.dataRunTime.BootTask.TaskArray {
-					if t.TaskStatus == TaskStatus_untested {
-						for u := range t.UncoveredAddress {
-							_, ok := ss.dataDependency.UncoveredAddress[u]
-							if ok {
-
-							} else {
-								delete(t.UncoveredAddress, u)
+								} else {
+									delete(t.UncoveredAddress, u)
+								}
+							}
+							if len(t.UncoveredAddress) > 0 {
+								task = append(task, t)
 							}
 						}
-						if len(t.UncoveredAddress) > 0 {
-							task = append(task, t)
-						}
 					}
-				}
-				for _, t := range task {
-					t.TaskRunTimeData = []*TaskRunTimeData{}
-				}
-				for _, f := range ss.fuzzers {
-					f.MuRunTime.Lock()
 					for _, t := range task {
-						f.dataRunTime.BootTask.AddTask(proto.Clone(t).(*Task))
+						t.TaskRunTimeData = []*TaskRunTimeData{}
 					}
-					f.MuRunTime.Unlock()
+					for _, f := range ss.fuzzers {
+						f.MuRunTime.Lock()
+						for _, t := range task {
+							f.dataRunTime.BootTask.AddTask(proto.Clone(t).(*Task))
+						}
+						f.MuRunTime.Unlock()
+					}
+					task = nil
 				}
-				task = nil
 			}
+		} else {
+			ss.dataRunTime.BootTask.emptyTask()
 		}
-	} else {
-		ss.dataRunTime.BootTask.emptyTask()
+		log.Logf(DebugLevel, "after get boot tasks\n")
 	}
-
-	log.Logf(DebugLevel, "after get boot tasks\n")
 
 	ss.logMu.Lock()
 	var templog = ss.log.Name

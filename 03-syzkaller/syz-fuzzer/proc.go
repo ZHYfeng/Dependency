@@ -122,7 +122,11 @@ func (proc *Proc) loop() {
 					// Mutate an existing prog.
 					log.Logf(1, "#%v: mutated", proc.pid)
 					p := corpus[proc.rnd.Intn(len(corpus))].Clone()
-					p.Mutate(proc.rnd, programLength, ct, corpus)
+					if proc.fuzzer.dManager.DependencyPriority {
+						p.MutateD(proc.rnd, programLength, ct, corpus)
+					} else {
+						p.Mutate(proc.rnd, programLength, ct, corpus)
+					}
 					proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 					//info := proc.execute(proc.execOpts, p, ProgNormal, StatFuzz)
 					//proc.fuzzer.checkNewCoverage(p, info)
@@ -352,7 +356,11 @@ func (proc *Proc) smashInput(item *WorkSmash) {
 	corpus := proc.fuzzer.corpusSnapshot()
 	for i := 0; i < 100; i++ {
 		p := item.p.Clone()
-		p.Mutate(proc.rnd, programLength, proc.fuzzer.choiceTable, corpus)
+		if proc.fuzzer.dManager.DependencyPriority {
+			p.MutateD(proc.rnd, programLength, proc.fuzzer.choiceTable, corpus)
+		} else {
+			p.Mutate(proc.rnd, programLength, proc.fuzzer.choiceTable, corpus)
+		}
 		log.Logf(1, "#%v: smash mutated", proc.pid)
 		proc.execute(proc.execOpts, p, ProgNormal, StatSmash)
 	}

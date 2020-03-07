@@ -43,6 +43,37 @@ func (p *Prog) Mutate(rs rand.Source, ncalls int, ct *ChoiceTable, corpus []*Pro
 	p.debugValidate()
 }
 
+func (p *Prog) MutateD(rs rand.Source, ncalls int, ct *ChoiceTable, corpus []*Prog) {
+	r := newRand(p.Target, rs)
+	ctx := &mutator{
+		p:      p,
+		r:      r,
+		ncalls: ncalls,
+		ct:     ct,
+		corpus: corpus,
+	}
+	for stop, ok := false, false; !stop; stop = ok && r.oneOf(3) {
+		switch {
+		case r.oneOf(5):
+			// Not all calls have anything squashable,
+			// so this has lower priority in reality.
+			ok = ctx.squashAny()
+		case r.nOutOf(20, 80):
+			ok = ctx.splice()
+		case r.nOutOf(50, 60):
+			ok = ctx.insertCall()
+		case r.nOutOf(9, 10):
+			ok = ctx.mutateArg()
+		default:
+			ok = ctx.removeCall()
+		}
+	}
+	for _, c := range p.Calls {
+		p.Target.SanitizeCall(c)
+	}
+	p.debugValidate()
+}
+
 type mutator struct {
 	p      *Prog
 	r      *randGen

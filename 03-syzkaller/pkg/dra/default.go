@@ -23,8 +23,10 @@ const (
 	TaskCountLimitation = 20
 	TaskCountBase       = 1
 
-	NeedBoot         = false
+	NeedBoot  = false
 	NeedInput = false
+
+	TaskBoot = false
 
 	CollectPath     = true
 	CollectUnstable = false

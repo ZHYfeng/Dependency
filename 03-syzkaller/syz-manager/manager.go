@@ -194,6 +194,8 @@ func RunManager(cfg *mgrconfig.Config, target *prog.Target, sysTarget *targets.T
 	//Create gRPC server.
 	mgr.ss.Address = mgr.cfg.DRPC
 	mgr.ss.DependencyTask = mgr.cfg.DependencyTask
+	mgr.ss.DependencyPriority = mgr.cfg.DependencyPriority
+
 	mgr.ss.RunDependencyRPCServer(&mgr.corpus)
 	mgr.dprot = mgr.ss.Port
 
