@@ -99,10 +99,10 @@ def generate_dev_dir():
                     default_json[device]["file_taint"])
         copy_files()
 
-        ff = open(default.name_function, "w")
-        if "function" in default_json[device]:
-            json.dump(default_json[device]["function"], ff, indent=4, sort_keys=True)
-        ff.close()
+        # ff = open(default.name_dra_json, "w")
+        # if "function" in default_json[device]:
+        #     json.dump(default_json[device]["function"], ff, indent=4, sort_keys=True)
+        # ff.close()
 
     overall = ["dev_cdrom", "dev_kvm", "dev_ptmx", "dev_snd_seq", ]
 
