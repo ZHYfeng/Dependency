@@ -124,7 +124,7 @@ class Process:
 
     def remove(self):
         os.chdir(self.path)
-        cmd_rm_img = "rm -rf img " + default.name_taint + " " + default.name_asm + " " + default.name_bc
+        cmd_rm_img = "rm -rf img " + " " + default.name_asm + " " + default.name_bc
         p_rm_img = subprocess.Popen(cmd_rm_img, shell=True, preexec_fn=os.setsid)
         p_rm_img.wait()
 

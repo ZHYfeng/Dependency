@@ -33,8 +33,8 @@ class Device:
         self.statistic, self.p_value = 0, 0
         self.get_mann_withney_utest()
 
-        self.get_coverage()
-        self.get_base()
+        # self.get_coverage()
+        # self.get_base()
 
     def set_axises(self):
         self.axises.x_axis = self.results_with_dra.axises.x_axis
@@ -281,10 +281,10 @@ class Device:
             for r in self.results_with_dra.results:
                 for t in sort_task_priority:
                     tt = r.data.real_data.tasks.task_map[t[0]]
-                    res += "task : " + " final priority : " + str(t[1]).zfill(22) + " priority : " + str(
-                        tt.priority).zfill(4) + " task status : " + str(pb.taskStatus.Name(
-                        tt.task_status)).zfill(8) + " uncovered address : " + str(
-                        len(tt.uncovered_address)).zfill(3) + " execute count : " + str(tt.count).zfill(3) + "\n"
+                    # res += "task : " + " final priority : " + str(t[1]).zfill(22) + " priority : " + str(
+                    #     tt.priority).zfill(4) + " task status : " + str(pb.taskStatus.Name(
+                    #     tt.task_status)).zfill(8) + " uncovered address : " + str(
+                    #     len(tt.uncovered_address)).zfill(3) + " execute count : " + str(tt.count).zfill(3) + "\n"
 
             f.write(res)
             f.close()
@@ -299,8 +299,8 @@ class Results:
         self.color = color
 
         self.file_result = os.path.join(self.dir_path, default.name_data_result)
-        if os.path.exists(self.file_result):
-            os.remove(self.file_result)
+        # if os.path.exists(self.file_result):
+        #     os.remove(self.file_result)
 
         self.results = []
         self.statistics = stats.stats(self.dir_path)
@@ -311,8 +311,8 @@ class Results:
         self.uncovered_address_dependency = []
         self.max_uncoverage = {}
         self.deal_results()
-        self.get_uncovered_address()
-        self.get_max_coverage()
+        # self.get_uncovered_address()
+        # self.get_max_coverage()
 
     def deal_results(self):
         if os.path.exists(self.dir_path):
@@ -325,41 +325,41 @@ class Results:
                         self.axises.axises.append(r.axis)
         self.axises.deal()
 
-        f = open(self.file_result, "a")
-        f.write("=====================================================\n")
-        f.write("stat:\n")
-        self.statistics.get_average()
-        f.write(str(self.statistics.processed_stat.real_stat))
-        self.statistics.processed_stat.deal_stat()
-        f.write(str(self.statistics.processed_stat.real_stat))
-        f.close()
+        # f = open(self.file_result, "a")
+        # f.write("=====================================================\n")
+        # f.write("stat:\n")
+        # self.statistics.get_average()
+        # f.write(str(self.statistics.processed_stat.real_stat))
+        # self.statistics.processed_stat.deal_stat()
+        # f.write(str(self.statistics.processed_stat.real_stat))
+        # f.close()
 
-    def get_uncovered_address(self):
-        for r in self.results:
-            for a in r.data.real_data.uncovered_address:
-                self.max_uncoverage[a] = r.data.real_data.uncovered_address[a]
-                kind = r.data.real_data.uncovered_address[a].kind
-                if kind == pb.InputRelated:
-                    self.uncovered_address_input.append(a)
-                elif kind == pb.DependnecyRelated:
-                    self.uncovered_address_dependency.append(a)
-
-        remove_address = []
-        for a in self.max_uncoverage:
-            for r in self.results:
-                if a not in r.data.real_data.uncovered_address:
-                    remove_address.append(a)
-                    break
-
-        for a in remove_address:
-            self.max_uncoverage.pop(a)
-
-        f = open(self.file_result, "a")
-        f.write("=====================================================\n")
-        f.write("uncovered address: " + str(len(self.max_uncoverage)) + "\n")
-        for a in self.max_uncoverage:
-            f.write(uncovered_address_str(self.max_uncoverage[a]))
-        f.close()
+    # def get_uncovered_address(self):
+    #     for r in self.results:
+    #         for a in r.data.real_data.uncovered_address:
+    #             self.max_uncoverage[a] = r.data.real_data.uncovered_address[a]
+    #             kind = r.data.real_data.uncovered_address[a].kind
+    #             if kind == pb.InputRelated:
+    #                 self.uncovered_address_input.append(a)
+    #             elif kind == pb.DependnecyRelated:
+    #                 self.uncovered_address_dependency.append(a)
+    #
+    #     remove_address = []
+    #     for a in self.max_uncoverage:
+    #         for r in self.results:
+    #             if a not in r.data.real_data.uncovered_address:
+    #                 remove_address.append(a)
+    #                 break
+    #
+    #     for a in remove_address:
+    #         self.max_uncoverage.pop(a)
+    #
+    #     f = open(self.file_result, "a")
+    #     f.write("=====================================================\n")
+    #     f.write("uncovered address: " + str(len(self.max_uncoverage)) + "\n")
+    #     for a in self.max_uncoverage:
+    #         f.write(uncovered_address_str(self.max_uncoverage[a]))
+    #     f.close()
 
     def get_max_coverage(self):
         for s in self.statistics.statistics:
