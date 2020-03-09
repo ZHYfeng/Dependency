@@ -158,10 +158,10 @@ def main():
     # time.sleep(30)
 
     for i in tasks:
-        i.remove()
+        i.close()
 
     for i in tasks:
-        i.close()
+        i.remove()
 
 
 if __name__ == "__main__":
