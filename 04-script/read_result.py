@@ -4,9 +4,11 @@ import subprocess
 
 import scipy.stats
 
-from default import DependencyRPC_pb2 as pb, default
-from read import data, stats, axis
-from read.data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name, hex_adddress
+import default
+import read_data
+import read_axis
+import read_stats
+from read_data import uncovered_address_str, not_covered_address_str, not_covered_address_file_name, hex_adddress
 
 
 class Device:
@@ -27,7 +29,7 @@ class Device:
         self.results_without_dra = Results(self.path_without_dra, 'C1')
 
         print(self.path_dev)
-        self.axises = axis.axises(self.path_dev)
+        self.axises = read_axis.axises(self.path_dev)
         self.set_axises()
 
         self.statistic, self.p_value = 0, 0
@@ -303,8 +305,8 @@ class Results:
         #     os.remove(self.file_result)
 
         self.results = []
-        self.statistics = stats.stats(self.dir_path)
-        self.axises = axis.axises(self.dir_path, self.color)
+        self.statistics = read_stats.stats(self.dir_path)
+        self.axises = read_axis.axises(self.dir_path, self.color)
 
         self.max_coverage = {}
         self.uncovered_address_input = []
@@ -377,13 +379,13 @@ class result:
         if os.path.exists(self.file_result):
             os.remove(self.file_result)
         # print("self.data = data.data(self.dir_path)")
-        self.data = data.data(self.dir_path)
+        self.data = read_data.data(self.dir_path)
         # print("self.stat = stats.stat(self.dir_path)")
-        self.stat = stats.stat(self.dir_path)
+        self.stat = read_stats.stat(self.dir_path)
         # print("self.stat.get_time_coverage()")
         self.stat.get_time_coverage()
         # print("self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')")
-        self.axis = axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
+        self.axis = read_axis.axis(self.dir_path, self.stat.x_axis, self.stat.y_axis, '-')
 
 
 def read_results(path):

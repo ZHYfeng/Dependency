@@ -9,10 +9,6 @@ import time
 
 import default
 
-
-# from default import default
-
-
 def get_open_port():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(("", 0))

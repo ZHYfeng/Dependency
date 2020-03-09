@@ -1,6 +1,7 @@
 import os
 
-from default import DependencyRPC_pb2 as pb, default
+import DependencyRPC_pb2 as pb
+import default
 
 
 def hex_adddress(address):
