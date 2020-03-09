@@ -98,6 +98,45 @@ func (r *result) getUncoveredAddress() {
 	}
 }
 
+func addStat(s *pb.Statistic, d *pb.Statistic) {
+	if s != nil {
+		s.ExecuteNum += d.ExecuteNum
+		s.Time += d.Time
+		s.NewTestCaseNum += d.NewTestCaseNum
+		s.NewAddressNum += d.NewAddressNum
+	}
+
+	return
+}
+
+func (r *result) getStatistic() {
+	res := ""
+	statistics := proto.Clone(r.statistics).(*pb.Statistics)
+	addStat(statistics.Stat[int32(pb.FuzzingStat_StatTriage)], statistics.Stat[int32(pb.FuzzingStat_StatMinimize)])
+	addStat(statistics.Stat[int32(pb.FuzzingStat_StatSmash)], statistics.Stat[int32(pb.FuzzingStat_StatHint)])
+	addStat(statistics.Stat[int32(pb.FuzzingStat_StatSmash)], statistics.Stat[int32(pb.FuzzingStat_StatSeed)])
+
+	res += "*******************************************\n"
+	res += fmt.Sprintf("SignalNum : %d\n", statistics.SignalNum)
+	res += fmt.Sprintf("BasicBlockNumber : %d\n", statistics.BasicBlockNumber)
+
+	for _, s := range statistics.Stat {
+		res += "-------------------------------------------\n"
+		res += fmt.Sprintf("Name : %s\n", s.Name.String())
+		res += fmt.Sprintf("Name : %d\n", s.ExecuteNum)
+		res += fmt.Sprintf("Name : %f\n", s.Time)
+		res += fmt.Sprintf("Name : %d\n", s.NewTestCaseNum)
+		res += fmt.Sprintf("Name : %d\n", s.NewAddressNum)
+	}
+
+	res += "*******************************************\n"
+
+	fileName := filepath.Join(r.path, pb.NameData)
+	f, _ := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	_, _ = f.WriteString(res)
+	_ = f.Close()
+}
+
 func (r *result) checkTasks() {
 
 }
