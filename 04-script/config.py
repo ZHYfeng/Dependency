@@ -106,7 +106,7 @@ def generate_dev_dir():
 
     overall = ["dev_cdrom", "dev_kvm", "dev_ptmx", "dev_snd_seq", ]
 
-    path = os.path.join(default.path_result, "overall")
+    path = os.path.join(default.path_result, default.name_overall)
     print(path)
 
     if os.path.exists(path):

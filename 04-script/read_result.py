@@ -119,7 +119,7 @@ def read_results(path):
 
     dir_name = os.path.basename(path)
     dir_path = os.path.dirname(path)
-    if dir_name.startswith(default.name_dev):
+    if dir_name.startswith(default.name_dev) or dir_name.startswith(default.name_overall):
         Device(dir_path, dir_name)
     elif dir_name.startswith(default.name_with_dra) or dir_name.startswith(default.name_without_dra):
         path_results = os.path.join(dir_path, dir_name)

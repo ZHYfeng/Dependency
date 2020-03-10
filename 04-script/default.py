@@ -64,6 +64,7 @@ time_run = length * 60  # second
 do_figure = True
 confidence = 0.95
 name_dev = "dev_"
+name_overall = "overall"
 name_stat = "statistics.bin"
 name_data = "data.bin"
 name_data_result = "data.txt"
