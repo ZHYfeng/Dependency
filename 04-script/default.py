@@ -14,13 +14,13 @@ path_taint = os.path.join(path_git_script, "taint_info")
 file_syzkaller_json = os.path.join(path_git_script, "syzkaller.json")
 file_default_json = os.path.join(path_git_script, "default.json")
 name_default = "default.py"
-path_default = os.path.join(path_git_script, "default", name_default)
+path_default = os.path.join(path_git_script, name_default)
 name_run = "run.py"
-path_default_run = os.path.join(path_git_script, "default", name_run)
+path_default_run = os.path.join(path_git_script, name_run)
 name_run_bash = "run.bash"
-path_default_run_bash = os.path.join(path_git_script, "default", name_run_bash)
+path_default_run_bash = os.path.join(path_git_script, name_run_bash)
 name_remove_bash = "remove.bash"
-path_default_remove_bash = os.path.join(path_git_script, "default", name_remove_bash)
+path_default_remove_bash = os.path.join(path_git_script, name_remove_bash)
 
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
