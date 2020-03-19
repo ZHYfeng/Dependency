@@ -47,3 +47,5 @@ else
     echo "[*] Trying to generate work dir"
     python3 04-script/main.py generate ~/data/work
 fi
+
+# sudo apt-get install autoconf automake libtool curl make g++ unzip
