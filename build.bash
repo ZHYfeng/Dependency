@@ -14,7 +14,8 @@ bash ./remove.bash
 cd ..
 git pull
 
-if [ -d $III ]; then
+if [ -d $III ]
+then
     echo "[*] $III exist"
 else 
     mkdir $III
