@@ -98,7 +98,7 @@ namespace dra {
                 grpc::CreateChannel(port, grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
-        client->SendBasicBlockNumber(DM.Modules->BasicBlockNumber);
+        client->SendBasicBlockNumber(DM.Modules->RealBasicBlockNumber);
         dra::outputTime("GetVmOffsets");
     }
 
