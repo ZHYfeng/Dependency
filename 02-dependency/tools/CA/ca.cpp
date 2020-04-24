@@ -3,6 +3,8 @@
  *
  *  Created on: Nov 28, 2018
  *      Author: yhao
+ *
+ *  check all conditions and get addresses.
  */
 #include <llvm/Support/Signals.h>
 #include <llvm/ADT/StringRef.h>
