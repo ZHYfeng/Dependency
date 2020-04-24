@@ -259,8 +259,8 @@ const char descriptor_table_protodef_Statistic_2eproto[] PROTOBUF_SECTION_VARIAB
   "2\r.dra.Coverage\022\'\n\004stat\030\013 \003(\0132\031.dra.Stat"
   "istics.StatEntry\022&\n\014useful_input\030\014 \003(\0132\020"
   ".dra.UsefulInput\032;\n\tStatEntry\022\013\n\003key\030\001 \001"
-  "(\005\022\035\n\005value\030\002 \001(\0132\016.dra.Statistic:\0028\001b\006p"
-  "roto3"
+  "(\005\022\035\n\005value\030\002 \001(\0132\016.dra.Statistic:\0028\001B\007Z"
+  "\005.;drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Statistic_2eproto_deps[1] = {
   &::descriptor_table_Input_2eproto,
@@ -277,7 +277,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Sta
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Statistic_2eproto_once;
 static bool descriptor_table_Statistic_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Statistic_2eproto = {
-  &descriptor_table_Statistic_2eproto_initialized, descriptor_table_protodef_Statistic_2eproto, "Statistic.proto", 685,
+  &descriptor_table_Statistic_2eproto_initialized, descriptor_table_protodef_Statistic_2eproto, "Statistic.proto", 694,
   &descriptor_table_Statistic_2eproto_once, descriptor_table_Statistic_2eproto_sccs, descriptor_table_Statistic_2eproto_deps, 7, 1,
   schemas, file_default_instances, TableStruct_Statistic_2eproto::offsets,
   file_level_metadata_Statistic_2eproto, 7, file_level_enum_descriptors_Statistic_2eproto, file_level_service_descriptors_Statistic_2eproto,

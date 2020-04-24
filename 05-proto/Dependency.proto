@@ -1,9 +1,10 @@
 syntax = "proto3";
 
-package dra;
-
 import "Input.proto";
 import "Task.proto";
+
+package dra;
+option go_package = ".;dra";
 
 message WriteAddress {
 

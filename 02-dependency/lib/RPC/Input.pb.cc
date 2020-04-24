@@ -477,8 +477,8 @@ const char descriptor_table_protodef_Input_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "Candidate\020\002\022\016\n\nStatTriage\020\003\022\020\n\014StatMinim"
   "ize\020\004\022\r\n\tStatSmash\020\005\022\014\n\010StatHint\020\006\022\014\n\010St"
   "atSeed\020\007\022\022\n\016StatDependency\020\010\022\026\n\022StatDepe"
-  "ndencyBoot\020\t\022\030\n\013StatDefault\020\377\377\377\377\377\377\377\377\377\001b\006"
-  "proto3"
+  "ndencyBoot\020\t\022\030\n\013StatDefault\020\377\377\377\377\377\377\377\377\377\001B\007"
+  "Z\005.;drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Input_2eproto_deps[1] = {
 };
@@ -501,7 +501,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Inp
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Input_2eproto_once;
 static bool descriptor_table_Input_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Input_2eproto = {
-  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1326,
+  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1335,
   &descriptor_table_Input_2eproto_once, descriptor_table_Input_2eproto_sccs, descriptor_table_Input_2eproto_deps, 14, 0,
   schemas, file_default_instances, TableStruct_Input_2eproto::offsets,
   file_level_metadata_Input_2eproto, 14, file_level_enum_descriptors_Input_2eproto, file_level_service_descriptors_Input_2eproto,

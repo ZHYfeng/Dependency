@@ -7,6 +7,7 @@ import "Statistic.proto";
 import "Dependency.proto";
 
 package dra;
+option go_package = ".;dra";
 
 // The DependencyRPC service definition.
 service DependencyRPC {

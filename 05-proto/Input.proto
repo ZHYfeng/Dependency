@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package dra;
+option go_package = ".;dra";
 
 enum FuzzingStat {
     StatGenerate = 0;

@@ -842,7 +842,7 @@ const char descriptor_table_protodef_Dependency_2eproto[] PROTOBUF_SECTION_VARIA
   "erations_kind\022\013\n\007default\020\000\022\010\n\004init\020\001\022\n\n\006"
   "llseek\020\002\022\010\n\004read\020\003\022\t\n\005write\020\004\022\010\n\004poll\020\t\022"
   "\022\n\016unlocked_ioctl\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022"
-  "\013\n\007release\020\020b\006proto3"
+  "\013\n\007release\020\020B\007Z\005.;drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Dependency_2eproto_deps[2] = {
   &::descriptor_table_Input_2eproto,
@@ -877,7 +877,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Dependency_2eproto_once;
 static bool descriptor_table_Dependency_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Dependency_2eproto = {
-  &descriptor_table_Dependency_2eproto_initialized, descriptor_table_protodef_Dependency_2eproto, "Dependency.proto", 3140,
+  &descriptor_table_Dependency_2eproto_initialized, descriptor_table_protodef_Dependency_2eproto, "Dependency.proto", 3149,
   &descriptor_table_Dependency_2eproto_once, descriptor_table_Dependency_2eproto_sccs, descriptor_table_Dependency_2eproto_deps, 24, 2,
   schemas, file_default_instances, TableStruct_Dependency_2eproto::offsets,
   file_level_metadata_Dependency_2eproto, 24, file_level_enum_descriptors_Dependency_2eproto, file_level_service_descriptors_Dependency_2eproto,

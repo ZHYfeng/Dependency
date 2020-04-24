@@ -57,7 +57,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_Base_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\nBase.proto\022\003dra\"&\n\005Empty\022\017\n\007address\030\001 "
-  "\001(\r\022\014\n\004name\030\002 \001(\tb\006proto3"
+  "\001(\r\022\014\n\004name\030\002 \001(\tB\007Z\005.;drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Base_2eproto_deps[1] = {
 };
@@ -67,7 +67,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Bas
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Base_2eproto_once;
 static bool descriptor_table_Base_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Base_2eproto = {
-  &descriptor_table_Base_2eproto_initialized, descriptor_table_protodef_Base_2eproto, "Base.proto", 65,
+  &descriptor_table_Base_2eproto_initialized, descriptor_table_protodef_Base_2eproto, "Base.proto", 74,
   &descriptor_table_Base_2eproto_once, descriptor_table_Base_2eproto_sccs, descriptor_table_Base_2eproto_deps, 1, 0,
   schemas, file_default_instances, TableStruct_Base_2eproto::offsets,
   file_level_metadata_Base_2eproto, 1, file_level_enum_descriptors_Base_2eproto, file_level_service_descriptors_Base_2eproto,
