@@ -27,22 +27,23 @@ namespace dra {
     DataManagement::~DataManagement() = default;
 
     void
-    DataManagement::initializeModule(std::string objdump, std::string AssemblySourceCode, std::string bit_code) {
+    DataManagement::initializeModule(const std::string &objdump, const std::string &AssemblySourceCode,
+                                     const std::string &bit_code) {
 #if DEBUG_OBJ_DUMP
         std::string obj = objdump.substr(0, objdump.find(".objdump"));
         std::string Cmd = "addr2line -afi -e " + obj;
         std::cout << "o Cmd :" << Cmd << std::endl;
 #endif
-        Modules->ReadBC(std::move(bit_code));
-        Modules->ReadObjdump(std::move(objdump));
-        Modules->ReadAsmSourceCode(std::move(AssemblySourceCode));
+        Modules->ReadBC(bit_code);
+        Modules->ReadObjdump(objdump);
+        Modules->ReadAsmSourceCode(AssemblySourceCode);
         BuildAddress2BB();
 
     }
 
     void DataManagement::BuildAddress2BB() {
-        for (auto file : Modules->Function) {
-            for (auto function : file.second) {
+        for (const auto &file : Modules->Function) {
+            for (const auto &function : file.second) {
                 if (function.second->isRepeat()) {
 
                 } else {
@@ -54,7 +55,7 @@ namespace dra {
         }
     }
 
-    void DataManagement::getInput(std::string coverfile) {
+    void DataManagement::getInput(const std::string &coverfile) {
 
         std::string Line;
         std::ifstream coverFile(coverfile);
@@ -84,9 +85,9 @@ namespace dra {
             std::cerr << "Unable to open coverfile file " << coverfile << "\n";
         }
 
-        for (auto i : Inputs) {
+        for (const auto &i : Inputs) {
             for (auto ii : i.second->MaxCover) {
-                cover[ii] = std::time(NULL);
+                cover[ii] = std::time(nullptr);
             }
         }
 
@@ -100,21 +101,21 @@ namespace dra {
 #endif
     }
 
-    void DataManagement::getVmOffsets(std::string vmOffsets) {
+    void DataManagement::getVmOffsets(std::string vm_offsets) {
         std::string Line;
-        std::ifstream VmOffsets(vmOffsets);
+        std::ifstream VmOffsets(vm_offsets);
         if (VmOffsets.is_open()) {
             while (getline(VmOffsets, Line)) {
                 this->vmOffsets = std::stoul(Line, nullptr, 10);
                 this->vmOffsets = (this->vmOffsets << 32);
             }
         } else {
-            std::cerr << "Unable to open vmOffsets file " << vmOffsets << "\n";
+            std::cerr << "Unable to open vmOffsets file " << vm_offsets << "\n";
         }
     }
 
     void DataManagement::setInput() {
-        for (auto it : this->Inputs) {
+        for (const auto &it : this->Inputs) {
             std::string sig = it.first;
             for (auto addr : it.second->MaxCover) {
                 if (this->Address2BB.find(addr) != this->Address2BB.end()) {
@@ -129,13 +130,13 @@ namespace dra {
         }
     }
 
-    void DataManagement::setVmOffsets(unsigned long long int vmOffsets) {
-        this->vmOffsets = (vmOffsets << 32);
+    void DataManagement::setVmOffsets(unsigned long long int vm_offsets) {
+        this->vmOffsets = (vm_offsets << 32);
     }
 
     DInput *DataManagement::getInput(Input *input) {
-        std::string sig = input->sig();
-        std::string program = input->program();
+        const std::string &sig = input->sig();
+        const std::string &program = input->program();
 #if DEBUG_INPUT
         std::cout << "sig : " << sig << std::endl;
 #endif
@@ -149,9 +150,9 @@ namespace dra {
             dInput->setProgram(program);
         }
         dInput->Number++;
-        for (auto c : input->call()) {
+        for (const auto &c : input->call()) {
             dInput->idx = c.second.idx();
-            for (auto a : c.second.address()) {
+            for (const auto &a : c.second.address()) {
                 unsigned long long int address = a.first;
 //                unsigned long long int address = a;
                 auto final_address = getRealAddress(address);
@@ -165,7 +166,7 @@ namespace dra {
                 }
 
                 if (this->cover.find(final_address) == this->cover.end()) {
-                    auto current_time = std::time(NULL);
+                    auto current_time = std::time(nullptr);
                     // coverage *c = new coverage();
                     // c->time = current_time;
                     // c->address = final_address;
@@ -209,16 +210,16 @@ namespace dra {
         }
         dInput->dUncoveredAddress.clear();
         for (auto ua : temp) {
-            dInput->dUncoveredAddress.push_back(ua);
+            dInput->addUncoveredAddress(ua);
         }
         return dInput;
     }
 
-    unsigned long long int DataManagement::getRealAddress(unsigned long long int address) {
+    unsigned long long int DataManagement::getRealAddress(unsigned long long int address) const {
         return address + this->vmOffsets - 5;
     }
 
-    unsigned long long int DataManagement::getSyzkallerAddress(unsigned long long int address) {
+    unsigned long long int DataManagement::getSyzkallerAddress(unsigned long long int address) const {
         return address - this->vmOffsets + 5;
     }
 
@@ -279,7 +280,7 @@ namespace dra {
         }
     }
 
-    void DataManagement::dump_cover() {
+    void DataManagement::dump_cover() const {
         std::ofstream out_file("cover_uncover.txt",
                                std::ios_base::out | std::ios_base::app);
         auto current_time = std::time(nullptr);
@@ -334,7 +335,7 @@ namespace dra {
         }
     }
 
-    DBasicBlock *DataManagement::get_DB_from_bb(llvm::BasicBlock *b) {
+    DBasicBlock *DataManagement::get_DB_from_bb(llvm::BasicBlock *b) const {
         return this->Modules->get_DB_from_bb(b);
     }
 
@@ -347,14 +348,13 @@ namespace dra {
         if (this->Address2BB.find(u->condition_address()) != this->Address2BB.end()) {
             res = true;
         } else {
-            std::cerr << "can not find condition_address : " << std::hex << u->condition_address()
-                      << std::endl;
+            std::cerr << "can not find condition_address : " << std::hex << u->condition_address() << std::endl;
         }
 
         return res;
     }
 
-    void DataManagement::set_condition(Condition *c) {
+    void DataManagement::set_condition(Condition *c) const {
         if (c->right_branch_address_size() != c->syzkaller_right_branch_address_size()) {
             c->set_syzkaller_condition_address(this->getSyzkallerAddress(c->condition_address()));
             c->set_syzkaller_uncovered_address(this->getSyzkallerAddress(c->uncovered_address()));

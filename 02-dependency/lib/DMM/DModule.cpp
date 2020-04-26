@@ -18,13 +18,14 @@ namespace dra {
 
     DModule::DModule() : addr2line(new dra::address()) {
         Function.reserve(PATH_SIZE);
-        this->RealBasicBlockNumber = 0;
-        this->BasicBlockNumber = 0;
+        this->NumberBasicBlock = 0;
+        this->NumberBasicBlockReal = 0;
+        this->NumberBasicBlockCovered = 0;
     }
 
     DModule::~DModule() = default;
 
-    void DModule::ReadBC(std::string InputFilename) {
+    void DModule::ReadBC(const std::string &InputFilename) {
 #if DEBUG_BC
         std::cout << "*************************************************" << std::endl;
         std::cout << "****************ReadIR***************************" << std::endl;
@@ -52,15 +53,15 @@ namespace dra {
         DFunction *function;
         for (auto &it : *Module) {
             std::string Path = dra::getFileName(&it);
-            if (Path != "") {
+            if (!Path.empty()) {
                 std::string name = it.getName().str();
                 std::string FunctionName = dra::getFunctionName(&it);
                 function = CheckRepeatFunction(Path, FunctionName, dra::FunctionKind::IR);
                 function->IRName = name;
                 function->InitIRFunction(&it);
                 function->parent = this;
-                this->RealBasicBlockNumber += function->RealBasicBlockNum;
-                this->BasicBlockNumber += function->BasicBlockNum;
+                this->NumberBasicBlock += function->NumberBasicBlock;
+                this->NumberBasicBlockReal += function->NumberBasicBlockReal;
             } else {
 
             }
@@ -85,7 +86,7 @@ namespace dra {
         return data;
     }
 
-    void dra::DModule::ReadObjdump(std::string objdump) {
+    void dra::DModule::ReadObjdump(const std::string &objdump) {
         std::string Line;
         std::string Addr;
         std::string FunctionName;
@@ -629,6 +630,11 @@ namespace dra {
     DBasicBlock *DModule::get_DB_from_i(llvm::Instruction *i) {
         llvm::BasicBlock *bb = i->getParent();
         return get_DB_from_bb(bb);
+    }
+
+    void DModule::add_number_basic_block_covered() {
+        this->NumberBasicBlockCovered++;
+
     }
 
 } /* namespace dra */

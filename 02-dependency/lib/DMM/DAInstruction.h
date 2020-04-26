@@ -29,7 +29,7 @@ namespace dra {
 
         void update(CoverKind kind, DInput *input);
 
-        void setAddr(std::string addr);
+        void setAddr(const std::string& addr);
 
     public:
         CoverKind state;

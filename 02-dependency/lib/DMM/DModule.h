@@ -38,11 +38,11 @@ namespace dra {
 
         std::string exec(std::string cmd);
 
-        void ReadObjdump(std::string objdump);
+        void ReadObjdump(const std::string& objdump);
 
         void ReadAsmSourceCode(std::string AssemblySourceCode);
 
-        void ReadBC(std::string InputFilename);
+        void ReadBC(const std::string& InputFilename);
 
         void BuildLLVMFunction(llvm::Module *Module);
 
@@ -58,13 +58,17 @@ namespace dra {
 
         DBasicBlock *get_DB_from_i(llvm::Instruction *i);
 
+        void add_number_basic_block_covered();
+
     public:
         std::unique_ptr<llvm::Module> module;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
         std::unique_ptr<dra::address> addr2line;
 
-        uint32_t RealBasicBlockNumber;
-        uint32_t BasicBlockNumber;
+        uint32_t NumberBasicBlock;
+        uint32_t NumberBasicBlockReal;
+        uint32_t NumberBasicBlockCovered;
+
         std::unordered_map<std::string, DFunction *> RepeatBCFunction;
         std::unordered_map<std::string, DFunction *> RepeatOFunction;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> RepeatSFunction;

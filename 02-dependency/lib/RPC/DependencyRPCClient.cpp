@@ -33,12 +33,26 @@ namespace dra {
         }
     }
 
-    void DependencyRPCClient::SendBasicBlockNumber(uint32_t BasicBlockNumber) {
+    void DependencyRPCClient::SendNumberBasicBlock(uint32_t NumberBasicBlock) {
         Empty request;
         Empty reply;
         grpc::ClientContext context;
-        request.set_address(BasicBlockNumber);
-        grpc::Status status = stub_->SendBasicBlockNumber(&context, request, &reply);
+        request.set_address(NumberBasicBlock);
+        grpc::Status status = stub_->SendNumberBasicBlock(&context, request, &reply);
+        if (status.ok()) {
+            return;
+        } else {
+            std::cerr << status.error_code() << ": " << status.error_message() << std::endl;
+            return;
+        }
+    }
+
+    void DependencyRPCClient::SendNumberBasicBlockCovered(uint32_t NumberBasicBlockCovered) {
+        Empty request;
+        Empty reply;
+        grpc::ClientContext context;
+        request.set_address(NumberBasicBlockCovered);
+        grpc::Status status = stub_->SendNumberBasicBlockCovered(&context, request, &reply);
         if (status.ok()) {
             return;
         } else {

@@ -28,8 +28,8 @@ namespace dra {
 
         DM.initializeModule(obj_dump, assembly, bit_code);
         dra::outputTime("initializeModule");
-        dra::outputTime("RealBasicBlockNumber : " + std::to_string(this->DM.Modules->RealBasicBlockNumber));
-        dra::outputTime("BasicBlockNumber : " + std::to_string(this->DM.Modules->BasicBlockNumber));
+        dra::outputTime("NumberBasicBlock : " + std::to_string(this->DM.Modules->NumberBasicBlock));
+        dra::outputTime("NumberBasicBlockReal : " + std::to_string(this->DM.Modules->NumberBasicBlockReal));
 
         std::ifstream config_json_ifstream(config);
         config_json_ifstream >> this->config_json;
@@ -69,7 +69,7 @@ namespace dra {
                     dra::outputTime(input.program());
 #endif
                     DInput *dInput = DM.getInput(&input);
-                    check_input_dependency(dInput);
+                    check_input(dInput);
                 }
                 newInput->Clear();
                 delete newInput;
@@ -86,7 +86,10 @@ namespace dra {
 //            this->DM.dump_cover();
 //            this->DM.dump_uncover();
 
-            check_condition_depednency();
+            this->check_condition();
+
+            this->send_number_basicblock_covered();
+
             if (client->Check() == nullptr) {
                 break;
             }
@@ -98,11 +101,11 @@ namespace dra {
                 grpc::CreateChannel(port, grpc::InsecureChannelCredentials()));
         unsigned long long int vmOffsets = client->GetVmOffsets();
         DM.setVmOffsets(vmOffsets);
-        client->SendBasicBlockNumber(DM.Modules->RealBasicBlockNumber);
+        this->client->SendNumberBasicBlock(DM.Modules->NumberBasicBlockReal);
         dra::outputTime("GetVmOffsets");
     }
 
-    void DependencyControlCenter::check_input_dependency(DInput *dInput) {
+    void DependencyControlCenter::check_input(DInput *dInput) {
 #if DEBUG
         std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
                   << std::endl;
@@ -116,14 +119,7 @@ namespace dra {
 
             if (this->DM.check_uncovered_address(u)) {
 
-                //                if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
-                //                    this->DM.uncover[u->uncovered_address()]->belong_to_Driver = true;
-                //                }
-
                 auto *dependency = new Dependency();
-                Input *input = dependency->mutable_input();
-                input->set_sig(dInput->sig);
-                input->set_program(dInput->program);
 
                 unsigned long long int syzkallerConditionAddress = DM.getSyzkallerAddress(u->condition_address());
                 unsigned long long int syzkallerUncoveredAddress = DM.getSyzkallerAddress(u->uncovered_address());
@@ -134,7 +130,6 @@ namespace dra {
                 std::cout << "condition getSyzkallerAddress : " << std::hex << syzkallerConditionAddress << "\n";
                 std::cout << "uncovered getSyzkallerAddress : " << std::hex << syzkallerUncoveredAddress << "\n";
 #endif
-
                 UncoveredAddress *uncoveredAddress = dependency->mutable_uncovered_address();
                 uncoveredAddress->set_condition_address(syzkallerConditionAddress);
                 uncoveredAddress->set_uncovered_address(syzkallerUncoveredAddress);
@@ -152,63 +147,39 @@ namespace dra {
                             db->get_number_all_dominator_uncovered_instructions());
                 }
 
-//                if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
-//                    DBasicBlock *db = DM.Address2BB[u->condition_address()]->parent;
-//                    uncoveredAddress->set_number_arrive_basicblocks(db->get_number_arrive_uncovered_instructions());
-//                    uncoveredAddress->set_number_dominator_instructions(
-//                            db->get_number_all_dominator_uncovered_instructions());
-//                }
-
-                (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
-                (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
-
-                set_runtime_data(uncoveredAddress->mutable_run_time_date(), input->program(), u->idx(),
-                                 syzkallerConditionAddress, syzkallerUncoveredAddress);
-
                 sta::MODS *write_basicblock = this->get_write_basicblock(u);
                 if (write_basicblock == nullptr) {
-                    uncoveredAddress->set_kind(UncoveredAddressKind::Outside);
+                    uncoveredAddress->set_kind(UncoveredAddressKind::UncoveredAddressInputRelated);
                 } else if (write_basicblock->empty()) {
-                    uncoveredAddress->set_kind(UncoveredAddressKind::InputRelated);
+                    uncoveredAddress->set_kind(UncoveredAddressKind::UncoveredAddressDependencyRelated);
                 } else if (!write_basicblock->empty()) {
-                    uncoveredAddress->set_kind(UncoveredAddressKind::DependencyRelated);
+                    uncoveredAddress->set_kind(UncoveredAddressKind::UncoveredAddressDependencyRelated);
 
-                    //                    if (this->DM.uncover.find(u->uncovered_address()) != this->DM.uncover.end()) {
-                    //                        this->DM.uncover[u->uncovered_address()]->related_to_gv = true;
-                    //                    }
+                    Input *input = dependency->mutable_input();
+                    input->set_sig(dInput->sig);
+                    input->set_program(dInput->program);
+                    (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
+                    (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
+                    set_runtime_data(uncoveredAddress->mutable_run_time_date(), input->program(), u->idx(),
+                                     syzkallerConditionAddress, syzkallerUncoveredAddress);
 
                     for (auto &x : *write_basicblock) {
-                        //                        WriteAddress *writeAddress = new WriteAddress;
-                        //                        (*uncoveredAddress->mutable_write_address())[syzkallerUncoveredAddress] = *writeAddress;
                         WriteAddress *writeAddress = dependency->add_write_address();
-
-                        get_write_address(x, u, writeAddress);
-                        writeAddressAttributes *waa = get_write_addresses_adttributes(x);
+                        write_basic_block_to_address(x, u, writeAddress);
+                        auto *waa = new writeAddressAttributes();
+                        write_basic_block_to_adttributes(x, waa);
                         (*uncoveredAddress->mutable_write_address())[waa->write_address()] = *waa;
                         (*writeAddress->mutable_uncovered_address())[syzkallerUncoveredAddress] = *waa;
-
                         set_runtime_data(writeAddress->mutable_run_time_date(), input->program(), u->idx(),
                                          syzkallerConditionAddress, syzkallerUncoveredAddress);
-
-                        //                        std::cout << "writeAddress->mutable_write_syscall()->size() : "
-                        //                                  << writeAddress->mutable_write_syscall()->size() << std::endl;
-                        //
-                        //                        for(auto &wc : *writeAddress->mutable_write_syscall()){
-                        ////                            set_runtime_data(wc.second.mutable_run_time_date(), dependency->program(),
-                        ////                                             u->idx(), syzkallerConditionAddress, writeAddress->write_address());
-                        ////                            std::cout << "write_syscall.run_time_date().program() : "
-                        ////                                      << wc.second.run_time_date().program() << std::endl;
-                        //                            set_runtime_data(wc.mutable_run_time_date(), input->program(),
-                        //                                             u->idx(), syzkallerConditionAddress, writeAddress->write_address());
-                        //                            std::cout << "write_syscall.run_time_date().program() : "
-                        //                                      << wc.run_time_date().program() << std::endl;
-                        //                        }
                     }
 
-                    this->send_dependency(dependency);
                 }
+                this->send_dependency(dependency);
                 dependency->Clear();
                 delete dependency;
+            } else {
+
             }
         }
     }
@@ -281,24 +252,23 @@ namespace dra {
             sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(b, idx);
             if (write_basicblock == nullptr) {
                 // no taint or out side
-
 #if DEBUG
                 dra::outputTime("allBasicblock == nullptr");
                 p->real_dump();
 #endif
             } else if (write_basicblock->empty()) {
-                // unrelated to gv
+                // related to gv but can not find write statements
                 res = write_basicblock;
 #if DEBUG
                 dra::outputTime("allBasicblock->size() == 0");
                 p->dump();
 #endif
             } else if (!write_basicblock->empty()) {
+                // related to gv and find write statements
                 res = write_basicblock;
 #if DEBUG
                 dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
 #endif
-
             }
 
             this->staticResult[b].insert(std::pair<uint64_t, sta::MODS *>(idx, res));
@@ -320,8 +290,8 @@ namespace dra {
         r->mutable_right_branch_address();
     }
 
-    void DependencyControlCenter::get_write_address(sta::Mod *write_basicblock, Condition *condition,
-                                                    WriteAddress *writeAddress) {
+    void DependencyControlCenter::write_basic_block_to_address(sta::Mod *write_basicblock, Condition *condition,
+                                                               WriteAddress *writeAddress) {
 
         DBasicBlock *db = this->DM.get_DB_from_bb(write_basicblock->B);
         unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
@@ -354,9 +324,12 @@ namespace dra {
         }
 
         writeAddress->set_write_address(write_address);
-        writeAddress->set_condition_address(condition->syzkaller_condition_address());
         writeAddress->mutable_run_time_date();
-        writeAddress->set_kind(write_basicblock->is_trait_fixed() ? 1 : 0);
+        if (write_basicblock->is_trait_fixed()) {
+            writeAddress->set_kind(WriteStatementConstant);
+        } else {
+            writeAddress->set_kind(WriteStatementNonconstant);
+        }
 
         //        auto function_name = "ioctl";
         //        std::cout << "for (auto c : *cmd_ctx) {" << std::endl;
@@ -410,18 +383,16 @@ namespace dra {
         }
     }
 
-    writeAddressAttributes *DependencyControlCenter::get_write_addresses_adttributes(sta::Mod *write_basicblock) {
-        auto *res = new writeAddressAttributes();
+    void
+    DependencyControlCenter::write_basic_block_to_adttributes(sta::Mod *write_basicblock, writeAddressAttributes *waa) {
         DBasicBlock *db = this->DM.get_DB_from_bb(write_basicblock->B);
         unsigned int write_address = DM.getSyzkallerAddress(db->trace_pc_address);
-        res->set_write_address(write_address);
-        res->set_repeat(write_basicblock->repeat);
-        res->set_prio(write_basicblock->prio + 100);
-
-        return res;
+        waa->set_write_address(write_address);
+        waa->set_repeat(write_basicblock->repeat);
+        waa->set_prio(write_basicblock->prio + 100);
     }
 
-    void DependencyControlCenter::check_condition_depednency() {
+    void DependencyControlCenter::check_condition() {
         dra::Conditions *cs = client->GetCondition();
         if (cs != nullptr) {
             for (auto condition : *cs->mutable_condition()) {
@@ -432,7 +403,7 @@ namespace dra {
                     wa->set_allocated_condition(&condition);
                     for (auto &x : *write_basicblock) {
                         WriteAddress *writeAddress = wa->add_write_address();
-                        get_write_address(x, &condition, writeAddress);
+                        write_basic_block_to_address(x, &condition, writeAddress);
                     }
                     send_write_address(wa);
                 }
@@ -691,6 +662,10 @@ namespace dra {
         }
         std::cout.rdbuf(coutbuf);
         out.close();
+    }
+
+    void DependencyControlCenter::send_number_basicblock_covered() {
+        this->client->SendNumberBasicBlockCovered(DM.Modules->NumberBasicBlockCovered);
     }
 
 } /* namespace dra */

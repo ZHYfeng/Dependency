@@ -23,7 +23,7 @@ namespace dra {
     DAInstruction::~DAInstruction() = default;
 
     void DAInstruction::setState(CoverKind kind) {
-        if (state == CoverKind::cover && kind == CoverKind::uncover) {
+        if (kind > state) {
             std::cerr << "error InstIR kind" << "\n";
         }
         state = kind;
@@ -40,7 +40,7 @@ namespace dra {
         }
     }
 
-    void DAInstruction::setAddr(std::string addr) {
+    void DAInstruction::setAddr(const std::string& addr) {
         this->Address = addr;
         this->address = std::stoul(addr, nullptr, 16);
 

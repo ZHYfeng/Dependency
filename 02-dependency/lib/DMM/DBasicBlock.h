@@ -43,7 +43,7 @@ namespace dra {
 
         bool inferCoverBB(DInput *dInput, llvm::BasicBlock *b);
 
-        void inferUncoverBB(llvm::BasicBlock *p, llvm::TerminatorInst *end, u_int i);
+        void inferUncoverBB(llvm::BasicBlock *p, llvm::TerminatorInst *end, u_int i) const;
 
         void inferSuccessors(llvm::BasicBlock *s, llvm::BasicBlock *b);
 
@@ -67,21 +67,15 @@ namespace dra {
 
         void real_dump(int kind = 0);
 
-        bool set_arrive(dra::DBasicBlock *db);
-
-        void set_critical_condition();
-
-        void add_critical_condition(dra::DBasicBlock *db, uint64_t condition);
-
         DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
 
-        uint32_t get_number_uncovered_instructions();
+        uint32_t get_number_uncovered_instructions() const;
 
         void get_function_call(std::set<llvm::Function *> &res);
 
-        uint32_t get_number_arrive_uncovered_instructions();
+        uint32_t get_number_arrive_uncovered_instructions() const;
 
-        uint32_t get_number_all_dominator_uncovered_instructions();
+        uint32_t get_number_all_dominator_uncovered_instructions() const;
 
     public:
         bool IR;
@@ -103,9 +97,6 @@ namespace dra {
         DInput *lastInput;
 
         std::map<dra::DBasicBlock *, uint64_t> arrive;
-        std::map<dra::DBasicBlock *, Condition *> critical_condition;
-
-        std::set<llvm::BasicBlock *> useLessPred;
     };
 
 } /* namespace dra */

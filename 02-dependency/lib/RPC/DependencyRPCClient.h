@@ -25,7 +25,9 @@ namespace dra {
 
         uint32_t GetVmOffsets();
 
-        void SendBasicBlockNumber(uint32_t BasicBlockNumber);
+        void SendNumberBasicBlock(uint32_t NumberBasicBlock);
+
+        void SendNumberBasicBlockCovered(uint32_t NumberBasicBlockCovered);
 
         Inputs *GetNewInput();
 

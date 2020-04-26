@@ -33,20 +33,22 @@ namespace dra {
 
         void setRPCConnection(const std::string &grpc_port);
 
+        void send_number_basicblock_covered();
+
+        void check_input(DInput *dInput);
+
         sta::MODS *get_write_basicblock(Condition *u);
 
-        void check_input_dependency(DInput *dInput);
+        void write_basic_block_to_address(sta::Mod *write_basicblock, Condition *condition, WriteAddress *writeAddress);
 
-        void send_dependency(Dependency *dependency);
-
-        void get_write_address(sta::Mod *write_basicblock, Condition *condition, WriteAddress *writeAddress);
-
-        writeAddressAttributes *get_write_addresses_adttributes(sta::Mod *write_basicblock);
+        void write_basic_block_to_adttributes(sta::Mod *write_basicblock, writeAddressAttributes *waa);
 
         static void set_runtime_data(runTimeData *r, const std::string &program, uint32_t idx, uint32_t condition,
                                      uint32_t address);
 
-        void check_condition_depednency();
+        void send_dependency(Dependency *dependency);
+
+        void check_condition();
 
         void send_write_address(WriteAddresses *writeAddress);
 

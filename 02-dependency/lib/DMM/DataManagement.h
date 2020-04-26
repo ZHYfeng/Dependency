@@ -48,23 +48,23 @@ namespace dra {
 
         virtual ~DataManagement();
 
-        void initializeModule(std::string objdump, std::string AssemblySourceCode, std::string bit_code);
+        void initializeModule(const std::string& objdump, const std::string& AssemblySourceCode, const std::string& bit_code);
 
         void BuildAddress2BB();
 
-        void getVmOffsets(std::string vmOffsets);
+        void getVmOffsets(std::string vm_offsets);
 
-        void setVmOffsets(unsigned long long int vmOffsets);
+        void setVmOffsets(unsigned long long int vm_offsets);
 
-        void getInput(std::string coverfile);
+        void getInput(const std::string& coverfile);
 
         DInput *getInput(Input *input);
 
         void setInput();
 
-        unsigned long long int getRealAddress(unsigned long long int address);
+        unsigned long long int getRealAddress(unsigned long long int address) const;
 
-        unsigned long long int getSyzkallerAddress(unsigned long long int address);
+        unsigned long long int getSyzkallerAddress(unsigned long long int address) const;
 
         bool isDriver(unsigned long long int address);
 
@@ -72,17 +72,17 @@ namespace dra {
 
         void dump_address(unsigned long long int address);
 
-        void dump_cover();
+        void dump_cover() const;
 
         void dump_uncover();
 
-        void dump_ctxs(std::vector<llvm::Instruction *> *ctx);
+        static void dump_ctxs(std::vector<llvm::Instruction *> *ctx);
 
-        DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b);
+        DBasicBlock *get_DB_from_bb(llvm::BasicBlock *b) const;
 
         DBasicBlock *get_DB_from_i(llvm::Instruction *i);
 
-        void set_condition(Condition *);
+        void set_condition(Condition *) const;
 
 
     public:

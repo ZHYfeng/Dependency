@@ -76,16 +76,15 @@ namespace dra {
     }
 
     void DBasicBlock::setState(CoverKind kind) {
-
-        if (kind == CoverKind::cover) {
-            state = kind;
-        } else if (kind == CoverKind::uncover) {
-            if (state == CoverKind::cover) {
-                std::cout << "cover to uncover basic block name : " << name << std::endl;
-                parent->dump();
-                exit(0);
-            }
+        if (kind < state) {
+            std::cout << "cover to uncover basic block name : " << name << std::endl;
+            parent->dump();
+            exit(0);
         }
+        if (kind == CoverKind::cover && state != CoverKind::cover) {
+            this->parent->add_number_basic_block_covered();
+        }
+        state = kind;
     }
 
     void DBasicBlock::update(CoverKind kind, DInput *dInput) {
@@ -152,7 +151,7 @@ namespace dra {
         return false;
     }
 
-    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::TerminatorInst *end, u_int i) {
+    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::TerminatorInst *end, u_int i) const {
         DBasicBlock *Dp;
         DBasicBlock *Db;
         std::string pname = p->getName().str();
@@ -164,10 +163,10 @@ namespace dra {
                 DInput *dInput = Dp->lastInput;
 
                 std::vector<uint64_t> branch;
-                for(uint64_t j = 0, e = end->getNumSuccessors(); j < e; j++) {
-                    if(end->getSuccessor(j)->hasName()) {
+                for (uint64_t j = 0, e = end->getNumSuccessors(); j < e; j++) {
+                    if (end->getSuccessor(j)->hasName()) {
                         auto n = end->getSuccessor(j)->getName();
-                        if(this->parent->BasicBlock.find(n) != this->parent->BasicBlock.end()) {
+                        if (this->parent->BasicBlock.find(n) != this->parent->BasicBlock.end()) {
                             branch.push_back(this->parent->BasicBlock[n]->trace_pc_address);
                         }
                     }
@@ -176,10 +175,12 @@ namespace dra {
                 if (Db->state == CoverKind::untest) {
                     Db->setState(CoverKind::uncover);
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
+                    dInput->addUncoveredAddress(
+                            dInput->getUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i));
                 } else if (Db->state == CoverKind::uncover) {
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
+                    dInput->addUncoveredAddress(
+                            dInput->getUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i));
                 } else if (Db->state == CoverKind::cover) {
 
                 }
@@ -362,80 +363,6 @@ namespace dra {
         std::cout << "--------------------------------------------" << std::endl;
     }
 
-    // not work if there is a switch with more than 64 cases.
-    bool DBasicBlock::set_arrive(dra::DBasicBlock *db) {
-        bool res = false;
-        uint64_t Num = 0;
-        auto *inst = dra::getFinalBB(this->basicBlock)->getTerminator();
-        for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
-            if (inst->getSuccessor(i) == db->basicBlock) {
-                Num = i;
-                if (this->arrive.find(db) != this->arrive.end()) {
-                    if ((this->arrive[db] & 1U << i) > 0) {
-
-                    } else {
-                        this->arrive[db] |= 1U << i;
-                        res = true;
-                    }
-                } else {
-                    this->arrive[db] = 1U << i;
-                    res = true;
-                }
-            }
-        }
-
-        for (auto bb : db->arrive) {
-            if (this->arrive.find(bb.first) != this->arrive.end()) {
-                if ((this->arrive[bb.first] & 1U << Num) > 0) {
-
-                } else {
-                    this->arrive[bb.first] |= 1U << Num;
-                    res = true;
-                }
-            } else {
-                this->arrive[bb.first] = 1U << Num;
-                res = true;
-            }
-        }
-        return res;
-    }
-
-    void DBasicBlock::set_critical_condition() {
-
-        if (this->basicBlock == nullptr) {
-
-        } else {
-            auto *fb = dra::getFinalBB(this->basicBlock);
-            auto *inst = fb->getTerminator();
-            auto successor_num = inst->getNumSuccessors();
-            for (auto bb : this->arrive) {
-                if (bb.second == ((1U << successor_num) - 1)) {
-
-                } else {
-                    bb.first->add_critical_condition(this, bb.second);
-                }
-            }
-        }
-    }
-
-    void DBasicBlock::add_critical_condition(dra::DBasicBlock *db, uint64_t condition) {
-        auto *c = new Condition();
-        c->set_condition_address(db->trace_pc_address);
-        c->set_successor(condition);
-        auto *inst = dra::getFinalBB(db->basicBlock)->getTerminator();
-        for (uint64_t i = 0, end = inst->getNumSuccessors(); i < end; i++) {
-            auto temp = this->get_DB_from_bb(inst->getSuccessor(i));
-            if (condition && 1U << i) {
-                c->add_right_branch_address(temp->trace_pc_address);
-//                (*c->mutable_right_branch_address())[temp->trace_pc_address] = 0;
-            } else {
-//                c->add_wrong_branch_address(temp->trace_pc_address);
-//                (*c->mutable_wrong_branch_address())[temp->trace_pc_address] = 0;
-            }
-        }
-        this->critical_condition[db] = c;
-    }
-
     DBasicBlock *DBasicBlock::get_DB_from_bb(llvm::BasicBlock *b) {
         llvm::BasicBlock *bb = dra::getRealBB(b);
         std::string bbname = bb->getName().str();
@@ -443,7 +370,7 @@ namespace dra {
         return db;
     }
 
-    uint32_t DBasicBlock::get_number_uncovered_instructions() {
+    uint32_t DBasicBlock::get_number_uncovered_instructions() const {
         if (this->state == CoverKind::cover) {
             return 0;
         } else {
@@ -463,38 +390,15 @@ namespace dra {
         }
     }
 
-    uint32_t DBasicBlock::get_number_arrive_uncovered_instructions() {
-        std::set<llvm::Function *> uncovered_function;
-        std::set<llvm::Function *> new_uncovered_functions;
-        uncovered_function.insert(this->parent->function);
-        uint32_t number_uncovered_instructions = this->get_number_uncovered_instructions();
-        for (auto b : this->arrive) {
-            if (b.first->state != CoverKind::cover) {
-                number_uncovered_instructions =
-                        number_uncovered_instructions + b.first->get_number_uncovered_instructions();
-            }
-            b.first->get_function_call(new_uncovered_functions);
+    uint32_t DBasicBlock::get_number_arrive_uncovered_instructions() const {
+        if (this->basicBlock != nullptr) {
+            return this->parent->get_number_uncovered_instructions(this->basicBlock);
+        } else {
+            return 0;
         }
-        while (!new_uncovered_functions.empty()) {
-            std::set<llvm::Function *> temp;
-            for (auto f : new_uncovered_functions) {
-                uncovered_function.insert(f);
-                DFunction *df = this->parent->parent->get_DF_from_f(f);
-                number_uncovered_instructions += df->get_number_uncovered_instructions();
-                df->get_function_call(temp);
-            }
-            new_uncovered_functions.clear();
-            for (auto f : temp) {
-                if (uncovered_function.find(f) == uncovered_function.end()) {
-                    new_uncovered_functions.insert(f);
-                    uncovered_function.insert(f);
-                }
-            }
-        }
-        return number_uncovered_instructions;
     }
 
-    uint32_t DBasicBlock::get_number_all_dominator_uncovered_instructions() {
+    uint32_t DBasicBlock::get_number_all_dominator_uncovered_instructions() const {
         if (this->basicBlock != nullptr) {
             return this->parent->get_number_dominator_uncovered_instructions(this->basicBlock);
         } else {

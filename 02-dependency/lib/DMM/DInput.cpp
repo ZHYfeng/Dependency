@@ -102,20 +102,20 @@ namespace dra {
 #endif
     }
 
-    void DInput::addUncoveredAddress(uint64_t condition, uint64_t uncovered, const std::vector<uint64_t>& branch, int i) {
-        auto *d = new Condition();
-        d->set_condition_address(condition);
-        d->set_uncovered_address(uncovered);
-        d->set_idx(this->idx);
-        d->set_successor(1 << i);
-        dUncoveredAddress.push_back(d);
-//
-//        std::cout << "uncovered trace_pc_address : " << std::hex << trace_pc_address << std::endl;
-//        std::cout << "conditionAddress : " << std::hex << conditionAddress << std::endl;
-
+    Condition *
+    DInput::getUncoveredAddress(uint64_t condition, uint64_t uncovered, const std::vector<uint64_t> &branch, int i) {
+        auto *c = new Condition();
+        c->set_condition_address(condition);
+        c->set_uncovered_address(uncovered);
+        c->set_idx(this->idx);
+        c->set_successor(1 << i);
         for (auto a : branch) {
-            d->add_right_branch_address(a);
+            c->add_right_branch_address(a);
         }
+        return c;
     }
 
+    void DInput::addUncoveredAddress(Condition *c) {
+        dUncoveredAddress.push_back(c);
+    }
 } /* namespace dra */

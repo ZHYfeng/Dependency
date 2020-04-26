@@ -57,31 +57,23 @@ namespace dra {
 
         void setKind(FunctionKind kind);
 
-        bool isMap();
+        bool isMap() const;
 
         bool isRepeat() const;
 
         void setRepeat(bool repeat);
 
-        void dump();
-
-        void inferUseLessPred(llvm::BasicBlock *b);
-
-        void inferUseLessPred();
-
-        void compute_arrive();
-
-        void get_terminator(std::vector<dra::DBasicBlock *> &terminator_bb);
-
-        void set_pred_successor(DBasicBlock *db);
-
-        void set_critical_condition();
+        void dump() const;
 
         uint32_t get_number_uncovered_instructions();
 
         void get_function_call(std::set<llvm::Function *> &res);
 
+        uint32_t get_number_uncovered_instructions(llvm::BasicBlock *b);
+
         uint32_t get_number_dominator_uncovered_instructions(llvm::BasicBlock *b);
+
+        void add_number_basic_block_covered();
 
     public:
         bool Objudump;
@@ -104,14 +96,14 @@ namespace dra {
         unsigned int CallInstNum;
         unsigned int JumpInstNum;
         std::vector<DAInstruction *> InstASM;
-        unsigned int RealBasicBlockNum;
-        unsigned int BasicBlockNum;
+        unsigned int NumberBasicBlock;
+        unsigned int NumberBasicBlockReal;
         std::unordered_map<std::string, DBasicBlock *> BasicBlock;
 
         std::vector<llvm::BasicBlock *> path;
         std::set<llvm::BasicBlock *> order;
 
-        bool critical_condition;
+        u_int32_t NumberBasicBlockCovered{};
 
         bool uncovered_basicblock;
         llvm::DominatorTree *DT{};
