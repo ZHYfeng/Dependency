@@ -162,17 +162,44 @@ template<> ::dra::writeAddressAttributes* Arena::CreateMaybeMessage<::dra::write
 PROTOBUF_NAMESPACE_CLOSE
 namespace dra {
 
+enum WriteStatementKind : int {
+  WriteStatementConstant = 0,
+  WriteStatementNonconstant = 1,
+  WriteStatementDependencyRelated = 2,
+  WriteStatementNotDependencyRelated = 3,
+  WriteStatementKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  WriteStatementKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool WriteStatementKind_IsValid(int value);
+constexpr WriteStatementKind WriteStatementKind_MIN = WriteStatementConstant;
+constexpr WriteStatementKind WriteStatementKind_MAX = WriteStatementNotDependencyRelated;
+constexpr int WriteStatementKind_ARRAYSIZE = WriteStatementKind_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* WriteStatementKind_descriptor();
+template<typename T>
+inline const std::string& WriteStatementKind_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, WriteStatementKind>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function WriteStatementKind_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    WriteStatementKind_descriptor(), enum_t_value);
+}
+inline bool WriteStatementKind_Parse(
+    const std::string& name, WriteStatementKind* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<WriteStatementKind>(
+    WriteStatementKind_descriptor(), name, value);
+}
 enum UncoveredAddressKind : int {
-  Outside = 0,
-  InputRelated = 1,
-  DependencyRelated = 2,
-  Other = 3,
+  UncoveredAddressOutside = 0,
+  UncoveredAddressInputRelated = 1,
+  UncoveredAddressDependencyRelated = 2,
+  UncoveredAddressOther = 3,
   UncoveredAddressKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   UncoveredAddressKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool UncoveredAddressKind_IsValid(int value);
-constexpr UncoveredAddressKind UncoveredAddressKind_MIN = Outside;
-constexpr UncoveredAddressKind UncoveredAddressKind_MAX = Other;
+constexpr UncoveredAddressKind UncoveredAddressKind_MIN = UncoveredAddressOutside;
+constexpr UncoveredAddressKind UncoveredAddressKind_MAX = UncoveredAddressOther;
 constexpr int UncoveredAddressKind_ARRAYSIZE = UncoveredAddressKind_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UncoveredAddressKind_descriptor();
@@ -430,7 +457,6 @@ class WriteAddress :
     kInputFieldNumber = 25,
     kRunTimeDateFieldNumber = 11,
     kWriteAddressFieldNumber = 2,
-    kConditionAddressFieldNumber = 3,
     kKindFieldNumber = 4,
   };
   // map<uint32, .dra.writeAddressAttributes> uncovered_address = 23;
@@ -508,22 +534,13 @@ class WriteAddress :
   void _internal_set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // uint32 condition_address = 3;
-  void clear_condition_address();
-  ::PROTOBUF_NAMESPACE_ID::uint32 condition_address() const;
-  void set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_condition_address() const;
-  void _internal_set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value);
-  public:
-
-  // uint32 kind = 4;
+  // .dra.WriteStatementKind kind = 4;
   void clear_kind();
-  ::PROTOBUF_NAMESPACE_ID::uint32 kind() const;
-  void set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::dra::WriteStatementKind kind() const;
+  void set_kind(::dra::WriteStatementKind value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_kind() const;
-  void _internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::dra::WriteStatementKind _internal_kind() const;
+  void _internal_set_kind(::dra::WriteStatementKind value);
   public:
 
   // @@protoc_insertion_point(class_scope:dra.WriteAddress)
@@ -551,8 +568,7 @@ class WriteAddress :
       0 > input_;
   ::dra::runTimeData* run_time_date_;
   ::PROTOBUF_NAMESPACE_ID::uint32 write_address_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 condition_address_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 kind_;
+  int kind_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Dependency_2eproto;
 };
@@ -2795,42 +2811,22 @@ inline void WriteAddress::set_write_address(::PROTOBUF_NAMESPACE_ID::uint32 valu
   // @@protoc_insertion_point(field_set:dra.WriteAddress.write_address)
 }
 
-// uint32 condition_address = 3;
-inline void WriteAddress::clear_condition_address() {
-  condition_address_ = 0u;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 WriteAddress::_internal_condition_address() const {
-  return condition_address_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint32 WriteAddress::condition_address() const {
-  // @@protoc_insertion_point(field_get:dra.WriteAddress.condition_address)
-  return _internal_condition_address();
-}
-inline void WriteAddress::_internal_set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  
-  condition_address_ = value;
-}
-inline void WriteAddress::set_condition_address(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_condition_address(value);
-  // @@protoc_insertion_point(field_set:dra.WriteAddress.condition_address)
-}
-
-// uint32 kind = 4;
+// .dra.WriteStatementKind kind = 4;
 inline void WriteAddress::clear_kind() {
-  kind_ = 0u;
+  kind_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 WriteAddress::_internal_kind() const {
-  return kind_;
+inline ::dra::WriteStatementKind WriteAddress::_internal_kind() const {
+  return static_cast< ::dra::WriteStatementKind >(kind_);
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 WriteAddress::kind() const {
+inline ::dra::WriteStatementKind WriteAddress::kind() const {
   // @@protoc_insertion_point(field_get:dra.WriteAddress.kind)
   return _internal_kind();
 }
-inline void WriteAddress::_internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void WriteAddress::_internal_set_kind(::dra::WriteStatementKind value) {
   
   kind_ = value;
 }
-inline void WriteAddress::set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void WriteAddress::set_kind(::dra::WriteStatementKind value) {
   _internal_set_kind(value);
   // @@protoc_insertion_point(field_set:dra.WriteAddress.kind)
 }
@@ -4502,6 +4498,11 @@ WriteAddresses::write_address() const {
 
 PROTOBUF_NAMESPACE_OPEN
 
+template <> struct is_proto_enum< ::dra::WriteStatementKind> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::dra::WriteStatementKind>() {
+  return ::dra::WriteStatementKind_descriptor();
+}
 template <> struct is_proto_enum< ::dra::UncoveredAddressKind> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::dra::UncoveredAddressKind>() {

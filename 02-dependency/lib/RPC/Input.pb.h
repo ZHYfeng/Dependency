@@ -536,35 +536,18 @@ class Input :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPathsFieldNumber = 1,
     kCallFieldNumber = 13,
+    kPathsFieldNumber = 16,
     kUncoveredAddressFieldNumber = 22,
     kWriteAddressFieldNumber = 25,
     kSigFieldNumber = 11,
     kProgramFieldNumber = 12,
     kProgramBeforeMiniFieldNumber = 30,
-    kStatFieldNumber = 21,
     kStableFieldNumber = 14,
-    kTotalFieldNumber = 15,
+    kNumberConditionsFieldNumber = 17,
+    kNumberConditionsDependencyFieldNumber = 18,
+    kStatFieldNumber = 21,
   };
-  // repeated .dra.Paths paths = 1;
-  int paths_size() const;
-  private:
-  int _internal_paths_size() const;
-  public:
-  void clear_paths();
-  ::dra::Paths* mutable_paths(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >*
-      mutable_paths();
-  private:
-  const ::dra::Paths& _internal_paths(int index) const;
-  ::dra::Paths* _internal_add_paths();
-  public:
-  const ::dra::Paths& paths(int index) const;
-  ::dra::Paths* add_paths();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >&
-      paths() const;
-
   // map<uint32, .dra.Call> call = 13;
   int call_size() const;
   private:
@@ -581,6 +564,24 @@ class Input :
       call() const;
   ::PROTOBUF_NAMESPACE_ID::Map< ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call >*
       mutable_call();
+
+  // repeated .dra.Paths paths = 16;
+  int paths_size() const;
+  private:
+  int _internal_paths_size() const;
+  public:
+  void clear_paths();
+  ::dra::Paths* mutable_paths(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >*
+      mutable_paths();
+  private:
+  const ::dra::Paths& _internal_paths(int index) const;
+  ::dra::Paths* _internal_add_paths();
+  public:
+  const ::dra::Paths& paths(int index) const;
+  ::dra::Paths* add_paths();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths >&
+      paths() const;
 
   // map<uint32, uint32> uncovered_address = 22;
   int uncovered_address_size() const;
@@ -664,15 +665,6 @@ class Input :
   std::string* _internal_mutable_program_before_mini();
   public:
 
-  // .dra.FuzzingStat stat = 21;
-  void clear_stat();
-  ::dra::FuzzingStat stat() const;
-  void set_stat(::dra::FuzzingStat value);
-  private:
-  ::dra::FuzzingStat _internal_stat() const;
-  void _internal_set_stat(::dra::FuzzingStat value);
-  public:
-
   // uint32 stable = 14;
   void clear_stable();
   ::PROTOBUF_NAMESPACE_ID::uint32 stable() const;
@@ -682,13 +674,31 @@ class Input :
   void _internal_set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // uint32 total = 15;
-  void clear_total();
-  ::PROTOBUF_NAMESPACE_ID::uint32 total() const;
-  void set_total(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 number_conditions = 17;
+  void clear_number_conditions();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_conditions() const;
+  void set_number_conditions(::PROTOBUF_NAMESPACE_ID::uint32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_total() const;
-  void _internal_set_total(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_conditions() const;
+  void _internal_set_number_conditions(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 number_conditions_dependency = 18;
+  void clear_number_conditions_dependency();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_conditions_dependency() const;
+  void set_number_conditions_dependency(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_conditions_dependency() const;
+  void _internal_set_number_conditions_dependency(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // .dra.FuzzingStat stat = 21;
+  void clear_stat();
+  ::dra::FuzzingStat stat() const;
+  void set_stat(::dra::FuzzingStat value);
+  private:
+  ::dra::FuzzingStat _internal_stat() const;
+  void _internal_set_stat(::dra::FuzzingStat value);
   public:
 
   // @@protoc_insertion_point(class_scope:dra.Input)
@@ -696,13 +706,13 @@ class Input :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths > paths_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
       Input_CallEntry_DoNotUse,
       ::PROTOBUF_NAMESPACE_ID::uint32, ::dra::Call,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32,
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_MESSAGE,
       0 > call_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::Paths > paths_;
   ::PROTOBUF_NAMESPACE_ID::internal::MapField<
       Input_UncoveredAddressEntry_DoNotUse,
       ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::uint32,
@@ -718,9 +728,10 @@ class Input :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sig_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr program_before_mini_;
-  int stat_;
   ::PROTOBUF_NAMESPACE_ID::uint32 stable_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 total_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_conditions_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_conditions_dependency_;
+  int stat_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Input_2eproto;
 };
@@ -1798,7 +1809,27 @@ Input::mutable_call() {
   return _internal_mutable_call();
 }
 
-// repeated .dra.Paths paths = 1;
+// uint32 stable = 14;
+inline void Input::clear_stable() {
+  stable_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::_internal_stable() const {
+  return stable_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::stable() const {
+  // @@protoc_insertion_point(field_get:dra.Input.stable)
+  return _internal_stable();
+}
+inline void Input::_internal_set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  stable_ = value;
+}
+inline void Input::set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_stable(value);
+  // @@protoc_insertion_point(field_set:dra.Input.stable)
+}
+
+// repeated .dra.Paths paths = 16;
 inline int Input::_internal_paths_size() const {
   return paths_.size();
 }
@@ -1837,44 +1868,44 @@ Input::paths() const {
   return paths_;
 }
 
-// uint32 stable = 14;
-inline void Input::clear_stable() {
-  stable_ = 0u;
+// uint32 number_conditions = 17;
+inline void Input::clear_number_conditions() {
+  number_conditions_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::_internal_stable() const {
-  return stable_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::_internal_number_conditions() const {
+  return number_conditions_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::stable() const {
-  // @@protoc_insertion_point(field_get:dra.Input.stable)
-  return _internal_stable();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::number_conditions() const {
+  // @@protoc_insertion_point(field_get:dra.Input.number_conditions)
+  return _internal_number_conditions();
 }
-inline void Input::_internal_set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Input::_internal_set_number_conditions(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  stable_ = value;
+  number_conditions_ = value;
 }
-inline void Input::set_stable(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_stable(value);
-  // @@protoc_insertion_point(field_set:dra.Input.stable)
+inline void Input::set_number_conditions(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_conditions(value);
+  // @@protoc_insertion_point(field_set:dra.Input.number_conditions)
 }
 
-// uint32 total = 15;
-inline void Input::clear_total() {
-  total_ = 0u;
+// uint32 number_conditions_dependency = 18;
+inline void Input::clear_number_conditions_dependency() {
+  number_conditions_dependency_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::_internal_total() const {
-  return total_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::_internal_number_conditions_dependency() const {
+  return number_conditions_dependency_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::total() const {
-  // @@protoc_insertion_point(field_get:dra.Input.total)
-  return _internal_total();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Input::number_conditions_dependency() const {
+  // @@protoc_insertion_point(field_get:dra.Input.number_conditions_dependency)
+  return _internal_number_conditions_dependency();
 }
-inline void Input::_internal_set_total(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Input::_internal_set_number_conditions_dependency(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  total_ = value;
+  number_conditions_dependency_ = value;
 }
-inline void Input::set_total(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_total(value);
-  // @@protoc_insertion_point(field_set:dra.Input.total)
+inline void Input::set_number_conditions_dependency(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_conditions_dependency(value);
+  // @@protoc_insertion_point(field_set:dra.Input.number_conditions_dependency)
 }
 
 // .dra.FuzzingStat stat = 21;

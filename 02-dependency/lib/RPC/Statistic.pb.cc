@@ -217,7 +217,10 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Statistic_2eproto::offsets[] P
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::dra::Statistics, signalnum_),
-  PROTOBUF_FIELD_OFFSET(::dra::Statistics, basic_block_number_),
+  PROTOBUF_FIELD_OFFSET(::dra::Statistics, number_basic_block_),
+  PROTOBUF_FIELD_OFFSET(::dra::Statistics, number_basic_block_real_),
+  PROTOBUF_FIELD_OFFSET(::dra::Statistics, number_basic_block_covered_),
+  PROTOBUF_FIELD_OFFSET(::dra::Statistics, number_basic_block_uncovered_),
   PROTOBUF_FIELD_OFFSET(::dra::Statistics, coverage_),
   PROTOBUF_FIELD_OFFSET(::dra::Statistics, stat_),
   PROTOBUF_FIELD_OFFSET(::dra::Statistics, useful_input_),
@@ -254,13 +257,16 @@ const char descriptor_table_protodef_Statistic_2eproto[] PROTOBUF_SECTION_VARIAB
   "\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"X\n\013Useful"
   "Input\022\031\n\005input\030\001 \001(\0132\n.dra.Input\022\014\n\004time"
   "\030\002 \001(\001\022\013\n\003num\030\003 \001(\004\022\023\n\013new_address\030\004 \003(\r"
-  "\"\352\001\n\nStatistics\022\021\n\tsignalNum\030\001 \001(\004\022\032\n\022ba"
-  "sic_block_number\030\n \001(\r\022\037\n\010coverage\030\010 \001(\013"
-  "2\r.dra.Coverage\022\'\n\004stat\030\013 \003(\0132\031.dra.Stat"
-  "istics.StatEntry\022&\n\014useful_input\030\014 \003(\0132\020"
-  ".dra.UsefulInput\032;\n\tStatEntry\022\013\n\003key\030\001 \001"
-  "(\005\022\035\n\005value\030\002 \001(\0132\016.dra.Statistic:\0028\001B\007Z"
-  "\005.;drab\006proto3"
+  "\"\325\002\n\nStatistics\022\021\n\tsignalNum\030\001 \001(\004\022\032\n\022nu"
+  "mber_basic_block\030\003 \001(\r\022\037\n\027number_basic_b"
+  "lock_real\030\004 \001(\r\022\"\n\032number_basic_block_co"
+  "vered\030\005 \001(\r\022$\n\034number_basic_block_uncove"
+  "red\030\006 \001(\r\022\037\n\010coverage\030\010 \001(\0132\r.dra.Covera"
+  "ge\022\'\n\004stat\030\013 \003(\0132\031.dra.Statistics.StatEn"
+  "try\022&\n\014useful_input\030\014 \003(\0132\020.dra.UsefulIn"
+  "put\032;\n\tStatEntry\022\013\n\003key\030\001 \001(\005\022\035\n\005value\030\002"
+  " \001(\0132\016.dra.Statistic:\0028\001B\007Z\005.;drab\006proto"
+  "3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Statistic_2eproto_deps[1] = {
   &::descriptor_table_Input_2eproto,
@@ -277,7 +283,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Sta
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Statistic_2eproto_once;
 static bool descriptor_table_Statistic_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Statistic_2eproto = {
-  &descriptor_table_Statistic_2eproto_initialized, descriptor_table_protodef_Statistic_2eproto, "Statistic.proto", 694,
+  &descriptor_table_Statistic_2eproto_initialized, descriptor_table_protodef_Statistic_2eproto, "Statistic.proto", 801,
   &descriptor_table_Statistic_2eproto_once, descriptor_table_Statistic_2eproto_sccs, descriptor_table_Statistic_2eproto_deps, 7, 1,
   schemas, file_default_instances, TableStruct_Statistic_2eproto::offsets,
   file_level_metadata_Statistic_2eproto, 7, file_level_enum_descriptors_Statistic_2eproto, file_level_service_descriptors_Statistic_2eproto,
@@ -1427,16 +1433,16 @@ Statistics::Statistics(const Statistics& from)
     coverage_ = nullptr;
   }
   ::memcpy(&signalnum_, &from.signalnum_,
-    static_cast<size_t>(reinterpret_cast<char*>(&basic_block_number_) -
-    reinterpret_cast<char*>(&signalnum_)) + sizeof(basic_block_number_));
+    static_cast<size_t>(reinterpret_cast<char*>(&number_basic_block_uncovered_) -
+    reinterpret_cast<char*>(&signalnum_)) + sizeof(number_basic_block_uncovered_));
   // @@protoc_insertion_point(copy_constructor:dra.Statistics)
 }
 
 void Statistics::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Statistics_Statistic_2eproto.base);
   ::memset(&coverage_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&basic_block_number_) -
-      reinterpret_cast<char*>(&coverage_)) + sizeof(basic_block_number_));
+      reinterpret_cast<char*>(&number_basic_block_uncovered_) -
+      reinterpret_cast<char*>(&coverage_)) + sizeof(number_basic_block_uncovered_));
 }
 
 Statistics::~Statistics() {
@@ -1470,8 +1476,8 @@ void Statistics::Clear() {
   }
   coverage_ = nullptr;
   ::memset(&signalnum_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&basic_block_number_) -
-      reinterpret_cast<char*>(&signalnum_)) + sizeof(basic_block_number_));
+      reinterpret_cast<char*>(&number_basic_block_uncovered_) -
+      reinterpret_cast<char*>(&signalnum_)) + sizeof(number_basic_block_uncovered_));
   _internal_metadata_.Clear();
 }
 
@@ -1489,17 +1495,38 @@ const char* Statistics::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
+      // uint32 number_basic_block = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          number_basic_block_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 number_basic_block_real = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          number_basic_block_real_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 number_basic_block_covered = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          number_basic_block_covered_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 number_basic_block_uncovered = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          number_basic_block_uncovered_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // .dra.Coverage coverage = 8;
       case 8:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
           ptr = ctx->ParseMessage(_internal_mutable_coverage(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // uint32 basic_block_number = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
-          basic_block_number_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1559,18 +1586,36 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_signalnum(), target);
   }
 
+  // uint32 number_basic_block = 3;
+  if (this->number_basic_block() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_number_basic_block(), target);
+  }
+
+  // uint32 number_basic_block_real = 4;
+  if (this->number_basic_block_real() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_number_basic_block_real(), target);
+  }
+
+  // uint32 number_basic_block_covered = 5;
+  if (this->number_basic_block_covered() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->_internal_number_basic_block_covered(), target);
+  }
+
+  // uint32 number_basic_block_uncovered = 6;
+  if (this->number_basic_block_uncovered() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_number_basic_block_uncovered(), target);
+  }
+
   // .dra.Coverage coverage = 8;
   if (this->has_coverage()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
         8, _Internal::coverage(this), target, stream);
-  }
-
-  // uint32 basic_block_number = 10;
-  if (this->basic_block_number() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(10, this->_internal_basic_block_number(), target);
   }
 
   // map<int32, .dra.Statistic> stat = 11;
@@ -1658,11 +1703,32 @@ size_t Statistics::ByteSizeLong() const {
         this->_internal_signalnum());
   }
 
-  // uint32 basic_block_number = 10;
-  if (this->basic_block_number() != 0) {
+  // uint32 number_basic_block = 3;
+  if (this->number_basic_block() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_basic_block_number());
+        this->_internal_number_basic_block());
+  }
+
+  // uint32 number_basic_block_real = 4;
+  if (this->number_basic_block_real() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_number_basic_block_real());
+  }
+
+  // uint32 number_basic_block_covered = 5;
+  if (this->number_basic_block_covered() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_number_basic_block_covered());
+  }
+
+  // uint32 number_basic_block_uncovered = 6;
+  if (this->number_basic_block_uncovered() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_number_basic_block_uncovered());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1704,8 +1770,17 @@ void Statistics::MergeFrom(const Statistics& from) {
   if (from.signalnum() != 0) {
     _internal_set_signalnum(from._internal_signalnum());
   }
-  if (from.basic_block_number() != 0) {
-    _internal_set_basic_block_number(from._internal_basic_block_number());
+  if (from.number_basic_block() != 0) {
+    _internal_set_number_basic_block(from._internal_number_basic_block());
+  }
+  if (from.number_basic_block_real() != 0) {
+    _internal_set_number_basic_block_real(from._internal_number_basic_block_real());
+  }
+  if (from.number_basic_block_covered() != 0) {
+    _internal_set_number_basic_block_covered(from._internal_number_basic_block_covered());
+  }
+  if (from.number_basic_block_uncovered() != 0) {
+    _internal_set_number_basic_block_uncovered(from._internal_number_basic_block_uncovered());
   }
 }
 
@@ -1734,7 +1809,10 @@ void Statistics::InternalSwap(Statistics* other) {
   useful_input_.InternalSwap(&other->useful_input_);
   swap(coverage_, other->coverage_);
   swap(signalnum_, other->signalnum_);
-  swap(basic_block_number_, other->basic_block_number_);
+  swap(number_basic_block_, other->number_basic_block_);
+  swap(number_basic_block_real_, other->number_basic_block_real_);
+  swap(number_basic_block_covered_, other->number_basic_block_covered_);
+  swap(number_basic_block_uncovered_, other->number_basic_block_uncovered_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Statistics::GetMetadata() const {

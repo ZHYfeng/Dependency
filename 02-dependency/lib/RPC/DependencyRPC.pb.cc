@@ -334,27 +334,29 @@ const char descriptor_table_protodef_DependencyRPC_2eproto[] PROTOBUF_SECTION_VA
   "sks\022\032\n\006return\030\014 \001(\0132\n.dra.Tasks\022\035\n\thigh_"
   "task\030\r \001(\0132\n.dra.Tasks\022\035\n\tboot_task\030\024 \001("
   "\0132\n.dra.Tasks\022\037\n\013return_boot\030\025 \001(\0132\n.dra"
-  ".Tasks2\255\006\n\rDependencyRPC\022(\n\014GetVMOffsets"
-  "\022\n.dra.Empty\032\n.dra.Empty\"\000\0220\n\024SendBasicB"
-  "lockNumber\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n\013"
-  "GetNewInput\022\n.dra.Empty\032\013.dra.Inputs\"\000\022/"
-  "\n\016SendDependency\022\017.dra.Dependency\032\n.dra."
-  "Empty\"\000\022-\n\014GetCondition\022\n.dra.Empty\032\017.dr"
-  "a.Conditions\"\000\0225\n\020SendWriteAddress\022\023.dra"
-  ".WriteAddresses\032\n.dra.Empty\"\000\022#\n\007Connect"
-  "\022\n.dra.Empty\032\n.dra.Empty\"\000\0226\n\021GetDataDep"
-  "endency\022\n.dra.Empty\032\023.dra.DataDependency"
-  "\"\000\022(\n\014SendNewInput\022\n.dra.Input\032\n.dra.Emp"
-  "ty\"\000\022$\n\010GetTasks\022\n.dra.Empty\032\n.dra.Tasks"
-  "\"\000\022(\n\014GetBootTasks\022\n.dra.Empty\032\n.dra.Tas"
-  "ks\"\000\022\'\n\013ReturnTasks\022\n.dra.Tasks\032\n.dra.Em"
-  "pty\"\000\022)\n\rSendBootInput\022\n.dra.Input\032\n.dra"
-  ".Empty\"\000\0225\n\021SendUnstableInput\022\022.dra.Unst"
-  "ableInput\032\n.dra.Empty\"\000\022#\n\007SendLog\022\n.dra"
-  ".Empty\032\n.dra.Empty\"\000\022(\n\010sendStat\022\016.dra.S"
-  "tatistic\032\n.dra.Empty\"\000\022#\n\007GetNeed\022\n.dra."
-  "Empty\032\n.dra.Empty\"\000\022)\n\rSendNeedInput\022\n.d"
-  "ra.Input\032\n.dra.Empty\"\000B\007Z\005.;drab\006proto3"
+  ".Tasks2\346\006\n\rDependencyRPC\022(\n\014GetVMOffsets"
+  "\022\n.dra.Empty\032\n.dra.Empty\"\000\0220\n\024SendNumber"
+  "BasicBlock\022\n.dra.Empty\032\n.dra.Empty\"\000\0227\n\033"
+  "SendNumberBasicBlockCovered\022\n.dra.Empty\032"
+  "\n.dra.Empty\"\000\022(\n\013GetNewInput\022\n.dra.Empty"
+  "\032\013.dra.Inputs\"\000\022/\n\016SendDependency\022\017.dra."
+  "Dependency\032\n.dra.Empty\"\000\022-\n\014GetCondition"
+  "\022\n.dra.Empty\032\017.dra.Conditions\"\000\0225\n\020SendW"
+  "riteAddress\022\023.dra.WriteAddresses\032\n.dra.E"
+  "mpty\"\000\022#\n\007Connect\022\n.dra.Empty\032\n.dra.Empt"
+  "y\"\000\0226\n\021GetDataDependency\022\n.dra.Empty\032\023.d"
+  "ra.DataDependency\"\000\022(\n\014SendNewInput\022\n.dr"
+  "a.Input\032\n.dra.Empty\"\000\022$\n\010GetTasks\022\n.dra."
+  "Empty\032\n.dra.Tasks\"\000\022(\n\014GetBootTasks\022\n.dr"
+  "a.Empty\032\n.dra.Tasks\"\000\022\'\n\013ReturnTasks\022\n.d"
+  "ra.Tasks\032\n.dra.Empty\"\000\022)\n\rSendBootInput\022"
+  "\n.dra.Input\032\n.dra.Empty\"\000\0225\n\021SendUnstabl"
+  "eInput\022\022.dra.UnstableInput\032\n.dra.Empty\"\000"
+  "\022#\n\007SendLog\022\n.dra.Empty\032\n.dra.Empty\"\000\022(\n"
+  "\010sendStat\022\016.dra.Statistic\032\n.dra.Empty\"\000\022"
+  "#\n\007GetNeed\022\n.dra.Empty\032\n.dra.Empty\"\000\022)\n\r"
+  "SendNeedInput\022\n.dra.Input\032\n.dra.Empty\"\000B"
+  "\007Z\005.;drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_DependencyRPC_2eproto_deps[5] = {
   &::descriptor_table_Base_2eproto,
@@ -377,7 +379,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_DependencyRPC_2eproto_once;
 static bool descriptor_table_DependencyRPC_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_DependencyRPC_2eproto = {
-  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1919,
+  &descriptor_table_DependencyRPC_2eproto_initialized, descriptor_table_protodef_DependencyRPC_2eproto, "DependencyRPC.proto", 1976,
   &descriptor_table_DependencyRPC_2eproto_once, descriptor_table_DependencyRPC_2eproto_sccs, descriptor_table_DependencyRPC_2eproto_deps, 9, 5,
   schemas, file_default_instances, TableStruct_DependencyRPC_2eproto::offsets,
   file_level_metadata_DependencyRPC_2eproto, 9, file_level_enum_descriptors_DependencyRPC_2eproto, file_level_service_descriptors_DependencyRPC_2eproto,

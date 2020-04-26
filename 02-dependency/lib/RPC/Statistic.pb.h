@@ -930,7 +930,10 @@ class Statistics :
     kUsefulInputFieldNumber = 12,
     kCoverageFieldNumber = 8,
     kSignalNumFieldNumber = 1,
-    kBasicBlockNumberFieldNumber = 10,
+    kNumberBasicBlockFieldNumber = 3,
+    kNumberBasicBlockRealFieldNumber = 4,
+    kNumberBasicBlockCoveredFieldNumber = 5,
+    kNumberBasicBlockUncoveredFieldNumber = 6,
   };
   // map<int32, .dra.Statistic> stat = 11;
   int stat_size() const;
@@ -991,13 +994,40 @@ class Statistics :
   void _internal_set_signalnum(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // uint32 basic_block_number = 10;
-  void clear_basic_block_number();
-  ::PROTOBUF_NAMESPACE_ID::uint32 basic_block_number() const;
-  void set_basic_block_number(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  // uint32 number_basic_block = 3;
+  void clear_number_basic_block();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block() const;
+  void set_number_basic_block(::PROTOBUF_NAMESPACE_ID::uint32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_basic_block_number() const;
-  void _internal_set_basic_block_number(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_basic_block() const;
+  void _internal_set_number_basic_block(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 number_basic_block_real = 4;
+  void clear_number_basic_block_real();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block_real() const;
+  void set_number_basic_block_real(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_basic_block_real() const;
+  void _internal_set_number_basic_block_real(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 number_basic_block_covered = 5;
+  void clear_number_basic_block_covered();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block_covered() const;
+  void set_number_basic_block_covered(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_basic_block_covered() const;
+  void _internal_set_number_basic_block_covered(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  public:
+
+  // uint32 number_basic_block_uncovered = 6;
+  void clear_number_basic_block_uncovered();
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block_uncovered() const;
+  void set_number_basic_block_uncovered(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_number_basic_block_uncovered() const;
+  void _internal_set_number_basic_block_uncovered(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:dra.Statistics)
@@ -1014,7 +1044,10 @@ class Statistics :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::dra::UsefulInput > useful_input_;
   ::dra::Coverage* coverage_;
   ::PROTOBUF_NAMESPACE_ID::uint64 signalnum_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 basic_block_number_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block_real_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block_covered_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 number_basic_block_uncovered_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Statistic_2eproto;
 };
@@ -1438,24 +1471,84 @@ inline void Statistics::set_signalnum(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:dra.Statistics.signalNum)
 }
 
-// uint32 basic_block_number = 10;
-inline void Statistics::clear_basic_block_number() {
-  basic_block_number_ = 0u;
+// uint32 number_basic_block = 3;
+inline void Statistics::clear_number_basic_block() {
+  number_basic_block_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::_internal_basic_block_number() const {
-  return basic_block_number_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::_internal_number_basic_block() const {
+  return number_basic_block_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::basic_block_number() const {
-  // @@protoc_insertion_point(field_get:dra.Statistics.basic_block_number)
-  return _internal_basic_block_number();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::number_basic_block() const {
+  // @@protoc_insertion_point(field_get:dra.Statistics.number_basic_block)
+  return _internal_number_basic_block();
 }
-inline void Statistics::_internal_set_basic_block_number(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Statistics::_internal_set_number_basic_block(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  basic_block_number_ = value;
+  number_basic_block_ = value;
 }
-inline void Statistics::set_basic_block_number(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_basic_block_number(value);
-  // @@protoc_insertion_point(field_set:dra.Statistics.basic_block_number)
+inline void Statistics::set_number_basic_block(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_basic_block(value);
+  // @@protoc_insertion_point(field_set:dra.Statistics.number_basic_block)
+}
+
+// uint32 number_basic_block_real = 4;
+inline void Statistics::clear_number_basic_block_real() {
+  number_basic_block_real_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::_internal_number_basic_block_real() const {
+  return number_basic_block_real_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::number_basic_block_real() const {
+  // @@protoc_insertion_point(field_get:dra.Statistics.number_basic_block_real)
+  return _internal_number_basic_block_real();
+}
+inline void Statistics::_internal_set_number_basic_block_real(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  number_basic_block_real_ = value;
+}
+inline void Statistics::set_number_basic_block_real(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_basic_block_real(value);
+  // @@protoc_insertion_point(field_set:dra.Statistics.number_basic_block_real)
+}
+
+// uint32 number_basic_block_covered = 5;
+inline void Statistics::clear_number_basic_block_covered() {
+  number_basic_block_covered_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::_internal_number_basic_block_covered() const {
+  return number_basic_block_covered_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::number_basic_block_covered() const {
+  // @@protoc_insertion_point(field_get:dra.Statistics.number_basic_block_covered)
+  return _internal_number_basic_block_covered();
+}
+inline void Statistics::_internal_set_number_basic_block_covered(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  number_basic_block_covered_ = value;
+}
+inline void Statistics::set_number_basic_block_covered(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_basic_block_covered(value);
+  // @@protoc_insertion_point(field_set:dra.Statistics.number_basic_block_covered)
+}
+
+// uint32 number_basic_block_uncovered = 6;
+inline void Statistics::clear_number_basic_block_uncovered() {
+  number_basic_block_uncovered_ = 0u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::_internal_number_basic_block_uncovered() const {
+  return number_basic_block_uncovered_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Statistics::number_basic_block_uncovered() const {
+  // @@protoc_insertion_point(field_get:dra.Statistics.number_basic_block_uncovered)
+  return _internal_number_basic_block_uncovered();
+}
+inline void Statistics::_internal_set_number_basic_block_uncovered(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  
+  number_basic_block_uncovered_ = value;
+}
+inline void Statistics::set_number_basic_block_uncovered(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_number_basic_block_uncovered(value);
+  // @@protoc_insertion_point(field_set:dra.Statistics.number_basic_block_uncovered)
 }
 
 // .dra.Coverage coverage = 8;

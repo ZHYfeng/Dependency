@@ -29,10 +29,12 @@ message Input {
     string sig = 11; // hash value for each input from syzkaller
     bytes program = 12;
     map<uint32, Call> call = 13;
-    repeated Paths paths = 1;
 
-    uint32 stable = 14;
-    uint32 total = 15;
+    uint32 stable = 14; // whether the input is stable
+
+    repeated Paths paths = 16; // different paths if unstable
+    uint32 number_conditions = 17;
+    uint32 number_conditions_dependency = 18;
 
     // for dependency
     FuzzingStat stat = 21;

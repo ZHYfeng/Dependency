@@ -6,20 +6,23 @@ import "Task.proto";
 package dra;
 option go_package = ".;dra";
 
+enum WriteStatementKind {
+    WriteStatementConstant = 0;
+    WriteStatementNonconstant = 1;
+    WriteStatementDependencyRelated = 2;
+    WriteStatementNotDependencyRelated = 3;
+}
+
 message WriteAddress {
 
     // the address writes to global variable
     uint32 write_address = 2;
-    // the address of condition which is related to this global variable
-    uint32 condition_address = 3;
 
     //    map<uint32, Input> write_input = 4;
     //    map<uint32, Syscall> write_syscall = 5;
     //    repeated Input write_input = 4;
     //    repeated Syscall write_syscall = 5;
-    // 0 is undef
-    // 1 is constant
-    uint32 kind = 4;
+    WriteStatementKind kind = 4;
 
     // uncovered address,
     map<uint32, writeAddressAttributes> uncovered_address = 23;
@@ -40,10 +43,10 @@ message writeAddressAttributes {
 }
 
 enum UncoveredAddressKind {
-    Outside = 0;
-    InputRelated = 1;
-    DependencyRelated = 2;
-    Other = 3;
+    UncoveredAddressOutside = 0;
+    UncoveredAddressInputRelated = 1;
+    UncoveredAddressDependencyRelated = 2;
+    UncoveredAddressOther = 3;
 }
 
 message Status{

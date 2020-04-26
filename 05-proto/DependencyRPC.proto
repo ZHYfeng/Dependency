@@ -15,7 +15,9 @@ service DependencyRPC {
     // DRA and syz-manager
     rpc GetVMOffsets (Empty) returns (Empty) {
     }
-    rpc SendBasicBlockNumber (Empty) returns (Empty) {
+    rpc SendNumberBasicBlock (Empty) returns (Empty) {
+    }
+    rpc SendNumberBasicBlockCovered (Empty) returns (Empty) {
     }
     rpc GetNewInput (Empty) returns (Inputs) {
     }

@@ -342,9 +342,10 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Input_2eproto::offsets[] PROTO
   PROTOBUF_FIELD_OFFSET(::dra::Input, sig_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, program_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, call_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, paths_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, stable_),
-  PROTOBUF_FIELD_OFFSET(::dra::Input, total_),
+  PROTOBUF_FIELD_OFFSET(::dra::Input, paths_),
+  PROTOBUF_FIELD_OFFSET(::dra::Input, number_conditions_),
+  PROTOBUF_FIELD_OFFSET(::dra::Input, number_conditions_dependency_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, stat_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Input, write_address_),
@@ -417,14 +418,14 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 25, 32, sizeof(::dra::Input_UncoveredAddressEntry_DoNotUse)},
   { 34, 41, sizeof(::dra::Input_WriteAddressEntry_DoNotUse)},
   { 43, -1, sizeof(::dra::Input)},
-  { 58, -1, sizeof(::dra::Inputs)},
-  { 64, -1, sizeof(::dra::Path)},
-  { 70, 77, sizeof(::dra::Paths_PathEntry_DoNotUse)},
-  { 79, -1, sizeof(::dra::Paths)},
-  { 85, 92, sizeof(::dra::UnstableInput_AddressEntry_DoNotUse)},
-  { 94, -1, sizeof(::dra::UnstableInput)},
-  { 103, 110, sizeof(::dra::UnstableInputs_UnstableInputEntry_DoNotUse)},
-  { 112, -1, sizeof(::dra::UnstableInputs)},
+  { 59, -1, sizeof(::dra::Inputs)},
+  { 65, -1, sizeof(::dra::Path)},
+  { 71, 78, sizeof(::dra::Paths_PathEntry_DoNotUse)},
+  { 80, -1, sizeof(::dra::Paths)},
+  { 86, 93, sizeof(::dra::UnstableInput_AddressEntry_DoNotUse)},
+  { 95, -1, sizeof(::dra::UnstableInput)},
+  { 104, 111, sizeof(::dra::UnstableInputs_UnstableInputEntry_DoNotUse)},
+  { 113, -1, sizeof(::dra::UnstableInputs)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -448,37 +449,38 @@ const char descriptor_table_protodef_Input_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "\n\013Input.proto\022\003dra\"l\n\004Call\022\013\n\003idx\030\001 \001(\r\022"
   "\'\n\007address\030\002 \003(\0132\026.dra.Call.AddressEntry"
   "\032.\n\014AddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002"
-  " \001(\r:\0028\001\"\330\003\n\005Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007progr"
+  " \001(\r:\0028\001\"\212\004\n\005Input\022\013\n\003sig\030\013 \001(\t\022\017\n\007progr"
   "am\030\014 \001(\014\022\"\n\004call\030\r \003(\0132\024.dra.Input.CallE"
-  "ntry\022\031\n\005paths\030\001 \003(\0132\n.dra.Paths\022\016\n\006stabl"
-  "e\030\016 \001(\r\022\r\n\005total\030\017 \001(\r\022\036\n\004stat\030\025 \001(\0162\020.d"
-  "ra.FuzzingStat\022;\n\021uncovered_address\030\026 \003("
-  "\0132 .dra.Input.UncoveredAddressEntry\0223\n\rw"
-  "rite_address\030\031 \003(\0132\034.dra.Input.WriteAddr"
-  "essEntry\022\033\n\023program_before_mini\030\036 \001(\014\0326\n"
-  "\tCallEntry\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t"
-  ".dra.Call:\0028\001\0327\n\025UncoveredAddressEntry\022\013"
-  "\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\0323\n\021WriteA"
-  "ddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:"
-  "\0028\001\"#\n\006Inputs\022\031\n\005input\030\001 \003(\0132\n.dra.Input"
-  "\"\027\n\004Path\022\017\n\007address\030\001 \003(\r\"c\n\005Paths\022\"\n\004pa"
-  "th\030\001 \003(\0132\024.dra.Paths.PathEntry\0326\n\tPathEn"
-  "try\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001(\0132\t.dra.Pa"
-  "th:\0028\001\"\262\001\n\rUnstableInput\022\013\n\003sig\030\001 \001(\t\022\017\n"
-  "\007program\030\002 \001(\014\022!\n\runstable_path\030\014 \003(\0132\n."
-  "dra.Paths\0220\n\007address\030\r \003(\0132\037.dra.Unstabl"
-  "eInput.AddressEntry\032.\n\014AddressEntry\022\013\n\003k"
-  "ey\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\232\001\n\016Unstable"
-  "Inputs\022>\n\016unstable_input\030\001 \003(\0132&.dra.Uns"
-  "tableInputs.UnstableInputEntry\032H\n\022Unstab"
-  "leInputEntry\022\013\n\003key\030\001 \001(\t\022!\n\005value\030\002 \001(\013"
-  "2\022.dra.UnstableInput:\0028\001*\323\001\n\013FuzzingStat"
-  "\022\020\n\014StatGenerate\020\000\022\014\n\010StatFuzz\020\001\022\021\n\rStat"
-  "Candidate\020\002\022\016\n\nStatTriage\020\003\022\020\n\014StatMinim"
-  "ize\020\004\022\r\n\tStatSmash\020\005\022\014\n\010StatHint\020\006\022\014\n\010St"
-  "atSeed\020\007\022\022\n\016StatDependency\020\010\022\026\n\022StatDepe"
-  "ndencyBoot\020\t\022\030\n\013StatDefault\020\377\377\377\377\377\377\377\377\377\001B\007"
-  "Z\005.;drab\006proto3"
+  "ntry\022\016\n\006stable\030\016 \001(\r\022\031\n\005paths\030\020 \003(\0132\n.dr"
+  "a.Paths\022\031\n\021number_conditions\030\021 \001(\r\022$\n\034nu"
+  "mber_conditions_dependency\030\022 \001(\r\022\036\n\004stat"
+  "\030\025 \001(\0162\020.dra.FuzzingStat\022;\n\021uncovered_ad"
+  "dress\030\026 \003(\0132 .dra.Input.UncoveredAddress"
+  "Entry\0223\n\rwrite_address\030\031 \003(\0132\034.dra.Input"
+  ".WriteAddressEntry\022\033\n\023program_before_min"
+  "i\030\036 \001(\014\0326\n\tCallEntry\022\013\n\003key\030\001 \001(\r\022\030\n\005val"
+  "ue\030\002 \001(\0132\t.dra.Call:\0028\001\0327\n\025UncoveredAddr"
+  "essEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001"
+  "\0323\n\021WriteAddressEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005va"
+  "lue\030\002 \001(\r:\0028\001\"#\n\006Inputs\022\031\n\005input\030\001 \003(\0132\n"
+  ".dra.Input\"\027\n\004Path\022\017\n\007address\030\001 \003(\r\"c\n\005P"
+  "aths\022\"\n\004path\030\001 \003(\0132\024.dra.Paths.PathEntry"
+  "\0326\n\tPathEntry\022\013\n\003key\030\001 \001(\r\022\030\n\005value\030\002 \001("
+  "\0132\t.dra.Path:\0028\001\"\262\001\n\rUnstableInput\022\013\n\003si"
+  "g\030\001 \001(\t\022\017\n\007program\030\002 \001(\014\022!\n\runstable_pat"
+  "h\030\014 \003(\0132\n.dra.Paths\0220\n\007address\030\r \003(\0132\037.d"
+  "ra.UnstableInput.AddressEntry\032.\n\014Address"
+  "Entry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\001\"\232\001"
+  "\n\016UnstableInputs\022>\n\016unstable_input\030\001 \003(\013"
+  "2&.dra.UnstableInputs.UnstableInputEntry"
+  "\032H\n\022UnstableInputEntry\022\013\n\003key\030\001 \001(\t\022!\n\005v"
+  "alue\030\002 \001(\0132\022.dra.UnstableInput:\0028\001*\323\001\n\013F"
+  "uzzingStat\022\020\n\014StatGenerate\020\000\022\014\n\010StatFuzz"
+  "\020\001\022\021\n\rStatCandidate\020\002\022\016\n\nStatTriage\020\003\022\020\n"
+  "\014StatMinimize\020\004\022\r\n\tStatSmash\020\005\022\014\n\010StatHi"
+  "nt\020\006\022\014\n\010StatSeed\020\007\022\022\n\016StatDependency\020\010\022\026"
+  "\n\022StatDependencyBoot\020\t\022\030\n\013StatDefault\020\377\377"
+  "\377\377\377\377\377\377\377\001B\007Z\005.;drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Input_2eproto_deps[1] = {
 };
@@ -501,7 +503,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Inp
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Input_2eproto_once;
 static bool descriptor_table_Input_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Input_2eproto = {
-  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1335,
+  &descriptor_table_Input_2eproto_initialized, descriptor_table_protodef_Input_2eproto, "Input.proto", 1385,
   &descriptor_table_Input_2eproto_once, descriptor_table_Input_2eproto_sccs, descriptor_table_Input_2eproto_deps, 14, 0,
   schemas, file_default_instances, TableStruct_Input_2eproto::offsets,
   file_level_metadata_Input_2eproto, 14, file_level_enum_descriptors_Input_2eproto, file_level_service_descriptors_Input_2eproto,
@@ -878,9 +880,9 @@ Input::Input(const Input& from)
   if (!from._internal_program_before_mini().empty()) {
     program_before_mini_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_before_mini_);
   }
-  ::memcpy(&stat_, &from.stat_,
-    static_cast<size_t>(reinterpret_cast<char*>(&total_) -
-    reinterpret_cast<char*>(&stat_)) + sizeof(total_));
+  ::memcpy(&stable_, &from.stable_,
+    static_cast<size_t>(reinterpret_cast<char*>(&stat_) -
+    reinterpret_cast<char*>(&stable_)) + sizeof(stat_));
   // @@protoc_insertion_point(copy_constructor:dra.Input)
 }
 
@@ -889,9 +891,9 @@ void Input::SharedCtor() {
   sig_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_before_mini_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&stat_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&total_) -
-      reinterpret_cast<char*>(&stat_)) + sizeof(total_));
+  ::memset(&stable_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&stat_) -
+      reinterpret_cast<char*>(&stable_)) + sizeof(stat_));
 }
 
 Input::~Input() {
@@ -920,16 +922,16 @@ void Input::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  paths_.Clear();
   call_.Clear();
+  paths_.Clear();
   uncovered_address_.Clear();
   write_address_.Clear();
   sig_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   program_before_mini_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&stat_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&total_) -
-      reinterpret_cast<char*>(&stat_)) + sizeof(total_));
+  ::memset(&stable_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&stat_) -
+      reinterpret_cast<char*>(&stable_)) + sizeof(stat_));
   _internal_metadata_.Clear();
 }
 
@@ -940,18 +942,6 @@ const char* Input::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // repeated .dra.Paths paths = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_paths(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else goto handle_unusual;
-        continue;
       // string sig = 11;
       case 11:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
@@ -988,10 +978,29 @@ const char* Input::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 total = 15;
-      case 15:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 120)) {
-          total_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+      // repeated .dra.Paths paths = 16;
+      case 16:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 130)) {
+          ptr -= 2;
+          do {
+            ptr += 2;
+            ptr = ctx->ParseMessage(_internal_add_paths(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<130>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // uint32 number_conditions = 17;
+      case 17:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 136)) {
+          number_conditions_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 number_conditions_dependency = 18;
+      case 18:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 144)) {
+          number_conditions_dependency_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1061,14 +1070,6 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .dra.Paths paths = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_paths_size()); i < n; i++) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_paths(i), target, stream);
-  }
-
   // string sig = 11;
   if (this->sig().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
@@ -1122,10 +1123,24 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(14, this->_internal_stable(), target);
   }
 
-  // uint32 total = 15;
-  if (this->total() != 0) {
+  // repeated .dra.Paths paths = 16;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_paths_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(15, this->_internal_total(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(16, this->_internal_paths(i), target, stream);
+  }
+
+  // uint32 number_conditions = 17;
+  if (this->number_conditions() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(17, this->_internal_number_conditions(), target);
+  }
+
+  // uint32 number_conditions_dependency = 18;
+  if (this->number_conditions_dependency() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(18, this->_internal_number_conditions_dependency(), target);
   }
 
   // .dra.FuzzingStat stat = 21;
@@ -1219,13 +1234,6 @@ size_t Input::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .dra.Paths paths = 1;
-  total_size += 1UL * this->_internal_paths_size();
-  for (const auto& msg : this->paths_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
   // map<uint32, .dra.Call> call = 13;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_call_size());
@@ -1233,6 +1241,13 @@ size_t Input::ByteSizeLong() const {
       it = this->_internal_call().begin();
       it != this->_internal_call().end(); ++it) {
     total_size += Input_CallEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+  }
+
+  // repeated .dra.Paths paths = 16;
+  total_size += 2UL * this->_internal_paths_size();
+  for (const auto& msg : this->paths_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // map<uint32, uint32> uncovered_address = 22;
@@ -1274,12 +1289,6 @@ size_t Input::ByteSizeLong() const {
         this->_internal_program_before_mini());
   }
 
-  // .dra.FuzzingStat stat = 21;
-  if (this->stat() != 0) {
-    total_size += 2 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_stat());
-  }
-
   // uint32 stable = 14;
   if (this->stable() != 0) {
     total_size += 1 +
@@ -1287,11 +1296,24 @@ size_t Input::ByteSizeLong() const {
         this->_internal_stable());
   }
 
-  // uint32 total = 15;
-  if (this->total() != 0) {
-    total_size += 1 +
+  // uint32 number_conditions = 17;
+  if (this->number_conditions() != 0) {
+    total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_total());
+        this->_internal_number_conditions());
+  }
+
+  // uint32 number_conditions_dependency = 18;
+  if (this->number_conditions_dependency() != 0) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_number_conditions_dependency());
+  }
+
+  // .dra.FuzzingStat stat = 21;
+  if (this->stat() != 0) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_stat());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1325,8 +1347,8 @@ void Input::MergeFrom(const Input& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  paths_.MergeFrom(from.paths_);
   call_.MergeFrom(from.call_);
+  paths_.MergeFrom(from.paths_);
   uncovered_address_.MergeFrom(from.uncovered_address_);
   write_address_.MergeFrom(from.write_address_);
   if (from.sig().size() > 0) {
@@ -1341,14 +1363,17 @@ void Input::MergeFrom(const Input& from) {
 
     program_before_mini_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.program_before_mini_);
   }
-  if (from.stat() != 0) {
-    _internal_set_stat(from._internal_stat());
-  }
   if (from.stable() != 0) {
     _internal_set_stable(from._internal_stable());
   }
-  if (from.total() != 0) {
-    _internal_set_total(from._internal_total());
+  if (from.number_conditions() != 0) {
+    _internal_set_number_conditions(from._internal_number_conditions());
+  }
+  if (from.number_conditions_dependency() != 0) {
+    _internal_set_number_conditions_dependency(from._internal_number_conditions_dependency());
+  }
+  if (from.stat() != 0) {
+    _internal_set_stat(from._internal_stat());
   }
 }
 
@@ -1373,8 +1398,8 @@ bool Input::IsInitialized() const {
 void Input::InternalSwap(Input* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  paths_.InternalSwap(&other->paths_);
   call_.Swap(&other->call_);
+  paths_.InternalSwap(&other->paths_);
   uncovered_address_.Swap(&other->uncovered_address_);
   write_address_.Swap(&other->write_address_);
   sig_.Swap(&other->sig_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
@@ -1383,9 +1408,10 @@ void Input::InternalSwap(Input* other) {
     GetArenaNoVirtual());
   program_before_mini_.Swap(&other->program_before_mini_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  swap(stat_, other->stat_);
   swap(stable_, other->stable_);
-  swap(total_, other->total_);
+  swap(number_conditions_, other->number_conditions_);
+  swap(number_conditions_dependency_, other->number_conditions_dependency_);
+  swap(stat_, other->stat_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Input::GetMetadata() const {

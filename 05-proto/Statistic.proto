@@ -34,7 +34,10 @@ message UsefulInput {
 
 message Statistics {
     uint64 signalNum = 1;
-    uint32 basic_block_number = 10;
+    uint32 number_basic_block = 3;
+    uint32 number_basic_block_real = 4;
+    uint32 number_basic_block_covered = 5;
+    uint32 number_basic_block_uncovered = 6;
     Coverage coverage = 8;
     map<int32, Statistic> stat = 11;
     repeated UsefulInput useful_input = 12;
