@@ -39,6 +39,10 @@ namespace dra {
 
         sta::MODS *get_write_basicblock(Condition *u);
 
+        sta::MODS *get_write_basicblock(u_int64_t address, u_int32_t idx = 0);
+
+        sta::MODS *get_write_basicblock(dra::DBasicBlock *dbb, u_int32_t idx);
+
         void write_basic_block_to_address(sta::Mod *write_basicblock, Condition *condition, WriteAddress *writeAddress);
 
         void write_basic_block_to_adttributes(sta::Mod *write_basicblock, writeAddressAttributes *waa);

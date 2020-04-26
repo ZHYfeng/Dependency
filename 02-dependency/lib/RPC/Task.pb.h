@@ -141,6 +141,33 @@ inline bool taskStatus_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<taskStatus>(
     taskStatus_descriptor(), name, value);
 }
+enum WriteStatementKind : int {
+  WriteStatementConstant = 0,
+  WriteStatementNonconstant = 1,
+  WriteStatementDependencyRelated = 2,
+  WriteStatementNotDependencyRelated = 3,
+  WriteStatementKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  WriteStatementKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool WriteStatementKind_IsValid(int value);
+constexpr WriteStatementKind WriteStatementKind_MIN = WriteStatementConstant;
+constexpr WriteStatementKind WriteStatementKind_MAX = WriteStatementNotDependencyRelated;
+constexpr int WriteStatementKind_ARRAYSIZE = WriteStatementKind_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* WriteStatementKind_descriptor();
+template<typename T>
+inline const std::string& WriteStatementKind_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, WriteStatementKind>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function WriteStatementKind_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    WriteStatementKind_descriptor(), enum_t_value);
+}
+inline bool WriteStatementKind_Parse(
+    const std::string& name, WriteStatementKind* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<WriteStatementKind>(
+    WriteStatementKind_descriptor(), name, value);
+}
 enum TaskKind : int {
   Boot = 0,
   High = 1,
@@ -1084,13 +1111,13 @@ class Task :
   void _internal_set_index(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // uint32 kind = 4;
+  // .dra.WriteStatementKind kind = 4;
   void clear_kind();
-  ::PROTOBUF_NAMESPACE_ID::uint32 kind() const;
-  void set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::dra::WriteStatementKind kind() const;
+  void set_kind(::dra::WriteStatementKind value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_kind() const;
-  void _internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::dra::WriteStatementKind _internal_kind() const;
+  void _internal_set_kind(::dra::WriteStatementKind value);
   public:
 
   // int32 priority = 5;
@@ -1162,7 +1189,7 @@ class Task :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr write_sig_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr write_program_;
   ::PROTOBUF_NAMESPACE_ID::uint32 index_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 kind_;
+  int kind_;
   ::PROTOBUF_NAMESPACE_ID::int32 priority_;
   ::PROTOBUF_NAMESPACE_ID::uint32 count_;
   bool check_;
@@ -2153,22 +2180,22 @@ inline void Task::set_allocated_program(std::string* program) {
   // @@protoc_insertion_point(field_set_allocated:dra.Task.program)
 }
 
-// uint32 kind = 4;
+// .dra.WriteStatementKind kind = 4;
 inline void Task::clear_kind() {
-  kind_ = 0u;
+  kind_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Task::_internal_kind() const {
-  return kind_;
+inline ::dra::WriteStatementKind Task::_internal_kind() const {
+  return static_cast< ::dra::WriteStatementKind >(kind_);
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Task::kind() const {
+inline ::dra::WriteStatementKind Task::kind() const {
   // @@protoc_insertion_point(field_get:dra.Task.kind)
   return _internal_kind();
 }
-inline void Task::_internal_set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Task::_internal_set_kind(::dra::WriteStatementKind value) {
   
   kind_ = value;
 }
-inline void Task::set_kind(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Task::set_kind(::dra::WriteStatementKind value) {
   _internal_set_kind(value);
   // @@protoc_insertion_point(field_set:dra.Task.kind)
 }
@@ -2734,6 +2761,11 @@ template <> struct is_proto_enum< ::dra::taskStatus> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::dra::taskStatus>() {
   return ::dra::taskStatus_descriptor();
+}
+template <> struct is_proto_enum< ::dra::WriteStatementKind> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::dra::WriteStatementKind>() {
+  return ::dra::WriteStatementKind_descriptor();
 }
 template <> struct is_proto_enum< ::dra::TaskKind> : ::std::true_type {};
 template <>

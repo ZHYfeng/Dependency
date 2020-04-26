@@ -483,7 +483,7 @@ static void InitDefaultsscc_info_writeAddressAttributes_Dependency_2eproto() {
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_writeAddressAttributes_Dependency_2eproto}, {}};
 
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_Dependency_2eproto[24];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Dependency_2eproto[3];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Dependency_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Dependency_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -835,19 +835,15 @@ const char descriptor_table_protodef_Dependency_2eproto[] PROTOBUF_SECTION_VARIA
   "ditions\022!\n\tcondition\030\n \003(\0132\016.dra.Conditi"
   "on\"]\n\016WriteAddresses\022!\n\tcondition\030\001 \001(\0132"
   "\016.dra.Condition\022(\n\rwrite_address\030\004 \003(\0132\021"
-  ".dra.WriteAddress*\234\001\n\022WriteStatementKind"
-  "\022\032\n\026WriteStatementConstant\020\000\022\035\n\031WriteSta"
-  "tementNonconstant\020\001\022#\n\037WriteStatementDep"
-  "endencyRelated\020\002\022&\n\"WriteStatementNotDep"
-  "endencyRelated\020\003*\227\001\n\024UncoveredAddressKin"
-  "d\022\033\n\027UncoveredAddressOutside\020\000\022 \n\034Uncove"
-  "redAddressInputRelated\020\001\022%\n!UncoveredAdd"
-  "ressDependencyRelated\020\002\022\031\n\025UncoveredAddr"
-  "essOther\020\003*\215\001\n\024file_operations_kind\022\013\n\007d"
-  "efault\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010\n\004read\020\003"
-  "\022\t\n\005write\020\004\022\010\n\004poll\020\t\022\022\n\016unlocked_ioctl\020"
-  "\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n\007release\020\020B\007Z\005.;"
-  "drab\006proto3"
+  ".dra.WriteAddress*\227\001\n\024UncoveredAddressKi"
+  "nd\022\033\n\027UncoveredAddressOutside\020\000\022 \n\034Uncov"
+  "eredAddressInputRelated\020\001\022%\n!UncoveredAd"
+  "dressDependencyRelated\020\002\022\031\n\025UncoveredAdd"
+  "ressOther\020\003*\215\001\n\024file_operations_kind\022\013\n\007"
+  "default\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010\n\004read\020"
+  "\003\022\t\n\005write\020\004\022\010\n\004poll\020\t\022\022\n\016unlocked_ioctl"
+  "\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n\007release\020\020B\007Z\005."
+  ";drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Dependency_2eproto_deps[2] = {
   &::descriptor_table_Input_2eproto,
@@ -882,7 +878,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dep
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Dependency_2eproto_once;
 static bool descriptor_table_Dependency_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Dependency_2eproto = {
-  &descriptor_table_Dependency_2eproto_initialized, descriptor_table_protodef_Dependency_2eproto, "Dependency.proto", 3371,
+  &descriptor_table_Dependency_2eproto_initialized, descriptor_table_protodef_Dependency_2eproto, "Dependency.proto", 3212,
   &descriptor_table_Dependency_2eproto_once, descriptor_table_Dependency_2eproto_sccs, descriptor_table_Dependency_2eproto_deps, 24, 2,
   schemas, file_default_instances, TableStruct_Dependency_2eproto::offsets,
   file_level_metadata_Dependency_2eproto, 24, file_level_enum_descriptors_Dependency_2eproto, file_level_service_descriptors_Dependency_2eproto,
@@ -891,25 +887,9 @@ const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Depend
 // Force running AddDescriptors() at dynamic initialization time.
 static bool dynamic_init_dummy_Dependency_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Dependency_2eproto), true);
 namespace dra {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* WriteStatementKind_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Dependency_2eproto);
-  return file_level_enum_descriptors_Dependency_2eproto[0];
-}
-bool WriteStatementKind_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-      return true;
-    default:
-      return false;
-  }
-}
-
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UncoveredAddressKind_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Dependency_2eproto);
-  return file_level_enum_descriptors_Dependency_2eproto[1];
+  return file_level_enum_descriptors_Dependency_2eproto[0];
 }
 bool UncoveredAddressKind_IsValid(int value) {
   switch (value) {
@@ -925,7 +905,7 @@ bool UncoveredAddressKind_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_operations_kind_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Dependency_2eproto);
-  return file_level_enum_descriptors_Dependency_2eproto[2];
+  return file_level_enum_descriptors_Dependency_2eproto[1];
 }
 bool file_operations_kind_IsValid(int value) {
   switch (value) {

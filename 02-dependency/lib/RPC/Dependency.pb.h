@@ -162,33 +162,6 @@ template<> ::dra::writeAddressAttributes* Arena::CreateMaybeMessage<::dra::write
 PROTOBUF_NAMESPACE_CLOSE
 namespace dra {
 
-enum WriteStatementKind : int {
-  WriteStatementConstant = 0,
-  WriteStatementNonconstant = 1,
-  WriteStatementDependencyRelated = 2,
-  WriteStatementNotDependencyRelated = 3,
-  WriteStatementKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  WriteStatementKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
-};
-bool WriteStatementKind_IsValid(int value);
-constexpr WriteStatementKind WriteStatementKind_MIN = WriteStatementConstant;
-constexpr WriteStatementKind WriteStatementKind_MAX = WriteStatementNotDependencyRelated;
-constexpr int WriteStatementKind_ARRAYSIZE = WriteStatementKind_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* WriteStatementKind_descriptor();
-template<typename T>
-inline const std::string& WriteStatementKind_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, WriteStatementKind>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function WriteStatementKind_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    WriteStatementKind_descriptor(), enum_t_value);
-}
-inline bool WriteStatementKind_Parse(
-    const std::string& name, WriteStatementKind* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<WriteStatementKind>(
-    WriteStatementKind_descriptor(), name, value);
-}
 enum UncoveredAddressKind : int {
   UncoveredAddressOutside = 0,
   UncoveredAddressInputRelated = 1,
@@ -4498,11 +4471,6 @@ WriteAddresses::write_address() const {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::dra::WriteStatementKind> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::dra::WriteStatementKind>() {
-  return ::dra::WriteStatementKind_descriptor();
-}
 template <> struct is_proto_enum< ::dra::UncoveredAddressKind> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::dra::UncoveredAddressKind>() {

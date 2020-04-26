@@ -25,58 +25,6 @@ const (
 // of the legacy proto package is being used.
 const _ = proto.ProtoPackageIsVersion4
 
-type WriteStatementKind int32
-
-const (
-	WriteStatementKind_WriteStatementConstant             WriteStatementKind = 0
-	WriteStatementKind_WriteStatementNonconstant          WriteStatementKind = 1
-	WriteStatementKind_WriteStatementDependencyRelated    WriteStatementKind = 2
-	WriteStatementKind_WriteStatementNotDependencyRelated WriteStatementKind = 3
-)
-
-// Enum value maps for WriteStatementKind.
-var (
-	WriteStatementKind_name = map[int32]string{
-		0: "WriteStatementConstant",
-		1: "WriteStatementNonconstant",
-		2: "WriteStatementDependencyRelated",
-		3: "WriteStatementNotDependencyRelated",
-	}
-	WriteStatementKind_value = map[string]int32{
-		"WriteStatementConstant":             0,
-		"WriteStatementNonconstant":          1,
-		"WriteStatementDependencyRelated":    2,
-		"WriteStatementNotDependencyRelated": 3,
-	}
-)
-
-func (x WriteStatementKind) Enum() *WriteStatementKind {
-	p := new(WriteStatementKind)
-	*p = x
-	return p
-}
-
-func (x WriteStatementKind) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (WriteStatementKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_Dependency_proto_enumTypes[0].Descriptor()
-}
-
-func (WriteStatementKind) Type() protoreflect.EnumType {
-	return &file_Dependency_proto_enumTypes[0]
-}
-
-func (x WriteStatementKind) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use WriteStatementKind.Descriptor instead.
-func (WriteStatementKind) EnumDescriptor() ([]byte, []int) {
-	return file_Dependency_proto_rawDescGZIP(), []int{0}
-}
-
 type UncoveredAddressKind int32
 
 const (
@@ -113,11 +61,11 @@ func (x UncoveredAddressKind) String() string {
 }
 
 func (UncoveredAddressKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_Dependency_proto_enumTypes[1].Descriptor()
+	return file_Dependency_proto_enumTypes[0].Descriptor()
 }
 
 func (UncoveredAddressKind) Type() protoreflect.EnumType {
-	return &file_Dependency_proto_enumTypes[1]
+	return &file_Dependency_proto_enumTypes[0]
 }
 
 func (x UncoveredAddressKind) Number() protoreflect.EnumNumber {
@@ -126,7 +74,7 @@ func (x UncoveredAddressKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UncoveredAddressKind.Descriptor instead.
 func (UncoveredAddressKind) EnumDescriptor() ([]byte, []int) {
-	return file_Dependency_proto_rawDescGZIP(), []int{1}
+	return file_Dependency_proto_rawDescGZIP(), []int{0}
 }
 
 type FileOperationsKind int32
@@ -183,11 +131,11 @@ func (x FileOperationsKind) String() string {
 }
 
 func (FileOperationsKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_Dependency_proto_enumTypes[2].Descriptor()
+	return file_Dependency_proto_enumTypes[1].Descriptor()
 }
 
 func (FileOperationsKind) Type() protoreflect.EnumType {
-	return &file_Dependency_proto_enumTypes[2]
+	return &file_Dependency_proto_enumTypes[1]
 }
 
 func (x FileOperationsKind) Number() protoreflect.EnumNumber {
@@ -196,7 +144,7 @@ func (x FileOperationsKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use FileOperationsKind.Descriptor instead.
 func (FileOperationsKind) EnumDescriptor() ([]byte, []int) {
-	return file_Dependency_proto_rawDescGZIP(), []int{2}
+	return file_Dependency_proto_rawDescGZIP(), []int{1}
 }
 
 type WriteAddress struct {
@@ -1269,37 +1217,27 @@ var file_Dependency_proto_rawDesc = []byte{
 	0x69, 0x6f, 0x6e, 0x12, 0x36, 0x0a, 0x0d, 0x77, 0x72, 0x69, 0x74, 0x65, 0x5f, 0x61, 0x64, 0x64,
 	0x72, 0x65, 0x73, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x64, 0x72, 0x61,
 	0x2e, 0x57, 0x72, 0x69, 0x74, 0x65, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x0c, 0x77,
-	0x72, 0x69, 0x74, 0x65, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x2a, 0x9c, 0x01, 0x0a, 0x12,
-	0x57, 0x72, 0x69, 0x74, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x4b, 0x69,
-	0x6e, 0x64, 0x12, 0x1a, 0x0a, 0x16, 0x57, 0x72, 0x69, 0x74, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65,
-	0x6d, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x74, 0x10, 0x00, 0x12, 0x1d,
-	0x0a, 0x19, 0x57, 0x72, 0x69, 0x74, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65, 0x6d, 0x65, 0x6e, 0x74,
-	0x4e, 0x6f, 0x6e, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x61, 0x6e, 0x74, 0x10, 0x01, 0x12, 0x23, 0x0a,
-	0x1f, 0x57, 0x72, 0x69, 0x74, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x44,
-	0x65, 0x70, 0x65, 0x6e, 0x64, 0x65, 0x6e, 0x63, 0x79, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x65, 0x64,
-	0x10, 0x02, 0x12, 0x26, 0x0a, 0x22, 0x57, 0x72, 0x69, 0x74, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65,
-	0x6d, 0x65, 0x6e, 0x74, 0x4e, 0x6f, 0x74, 0x44, 0x65, 0x70, 0x65, 0x6e, 0x64, 0x65, 0x6e, 0x63,
-	0x79, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x65, 0x64, 0x10, 0x03, 0x2a, 0x97, 0x01, 0x0a, 0x14, 0x55,
-	0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x4b,
-	0x69, 0x6e, 0x64, 0x12, 0x1b, 0x0a, 0x17, 0x55, 0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64,
-	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x4f, 0x75, 0x74, 0x73, 0x69, 0x64, 0x65, 0x10, 0x00,
-	0x12, 0x20, 0x0a, 0x1c, 0x55, 0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64, 0x41, 0x64, 0x64,
-	0x72, 0x65, 0x73, 0x73, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x65, 0x64,
-	0x10, 0x01, 0x12, 0x25, 0x0a, 0x21, 0x55, 0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64, 0x41,
-	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x44, 0x65, 0x70, 0x65, 0x6e, 0x64, 0x65, 0x6e, 0x63, 0x79,
-	0x52, 0x65, 0x6c, 0x61, 0x74, 0x65, 0x64, 0x10, 0x02, 0x12, 0x19, 0x0a, 0x15, 0x55, 0x6e, 0x63,
-	0x6f, 0x76, 0x65, 0x72, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x4f, 0x74, 0x68,
-	0x65, 0x72, 0x10, 0x03, 0x2a, 0x8d, 0x01, 0x0a, 0x14, 0x66, 0x69, 0x6c, 0x65, 0x5f, 0x6f, 0x70,
-	0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x5f, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x0b, 0x0a,
-	0x07, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x10, 0x00, 0x12, 0x08, 0x0a, 0x04, 0x69, 0x6e,
-	0x69, 0x74, 0x10, 0x01, 0x12, 0x0a, 0x0a, 0x06, 0x6c, 0x6c, 0x73, 0x65, 0x65, 0x6b, 0x10, 0x02,
-	0x12, 0x08, 0x0a, 0x04, 0x72, 0x65, 0x61, 0x64, 0x10, 0x03, 0x12, 0x09, 0x0a, 0x05, 0x77, 0x72,
-	0x69, 0x74, 0x65, 0x10, 0x04, 0x12, 0x08, 0x0a, 0x04, 0x70, 0x6f, 0x6c, 0x6c, 0x10, 0x09, 0x12,
-	0x12, 0x0a, 0x0e, 0x75, 0x6e, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x5f, 0x69, 0x6f, 0x63, 0x74,
-	0x6c, 0x10, 0x0a, 0x12, 0x08, 0x0a, 0x04, 0x6d, 0x6d, 0x61, 0x70, 0x10, 0x0c, 0x12, 0x08, 0x0a,
-	0x04, 0x6f, 0x70, 0x65, 0x6e, 0x10, 0x0e, 0x12, 0x0b, 0x0a, 0x07, 0x72, 0x65, 0x6c, 0x65, 0x61,
-	0x73, 0x65, 0x10, 0x10, 0x42, 0x07, 0x5a, 0x05, 0x2e, 0x3b, 0x64, 0x72, 0x61, 0x62, 0x06, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x69, 0x74, 0x65, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x2a, 0x97, 0x01, 0x0a, 0x14,
+	0x55, 0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x4b, 0x69, 0x6e, 0x64, 0x12, 0x1b, 0x0a, 0x17, 0x55, 0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65,
+	0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x4f, 0x75, 0x74, 0x73, 0x69, 0x64, 0x65, 0x10,
+	0x00, 0x12, 0x20, 0x0a, 0x1c, 0x55, 0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64, 0x41, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x49, 0x6e, 0x70, 0x75, 0x74, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x65,
+	0x64, 0x10, 0x01, 0x12, 0x25, 0x0a, 0x21, 0x55, 0x6e, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64,
+	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x44, 0x65, 0x70, 0x65, 0x6e, 0x64, 0x65, 0x6e, 0x63,
+	0x79, 0x52, 0x65, 0x6c, 0x61, 0x74, 0x65, 0x64, 0x10, 0x02, 0x12, 0x19, 0x0a, 0x15, 0x55, 0x6e,
+	0x63, 0x6f, 0x76, 0x65, 0x72, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x4f, 0x74,
+	0x68, 0x65, 0x72, 0x10, 0x03, 0x2a, 0x8d, 0x01, 0x0a, 0x14, 0x66, 0x69, 0x6c, 0x65, 0x5f, 0x6f,
+	0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x5f, 0x6b, 0x69, 0x6e, 0x64, 0x12, 0x0b,
+	0x0a, 0x07, 0x64, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x10, 0x00, 0x12, 0x08, 0x0a, 0x04, 0x69,
+	0x6e, 0x69, 0x74, 0x10, 0x01, 0x12, 0x0a, 0x0a, 0x06, 0x6c, 0x6c, 0x73, 0x65, 0x65, 0x6b, 0x10,
+	0x02, 0x12, 0x08, 0x0a, 0x04, 0x72, 0x65, 0x61, 0x64, 0x10, 0x03, 0x12, 0x09, 0x0a, 0x05, 0x77,
+	0x72, 0x69, 0x74, 0x65, 0x10, 0x04, 0x12, 0x08, 0x0a, 0x04, 0x70, 0x6f, 0x6c, 0x6c, 0x10, 0x09,
+	0x12, 0x12, 0x0a, 0x0e, 0x75, 0x6e, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x5f, 0x69, 0x6f, 0x63,
+	0x74, 0x6c, 0x10, 0x0a, 0x12, 0x08, 0x0a, 0x04, 0x6d, 0x6d, 0x61, 0x70, 0x10, 0x0c, 0x12, 0x08,
+	0x0a, 0x04, 0x6f, 0x70, 0x65, 0x6e, 0x10, 0x0e, 0x12, 0x0b, 0x0a, 0x07, 0x72, 0x65, 0x6c, 0x65,
+	0x61, 0x73, 0x65, 0x10, 0x10, 0x42, 0x07, 0x5a, 0x05, 0x2e, 0x3b, 0x64, 0x72, 0x61, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1314,72 +1252,72 @@ func file_Dependency_proto_rawDescGZIP() []byte {
 	return file_Dependency_proto_rawDescData
 }
 
-var file_Dependency_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_Dependency_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_Dependency_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_Dependency_proto_goTypes = []interface{}{
-	(WriteStatementKind)(0),        // 0: dra.WriteStatementKind
-	(UncoveredAddressKind)(0),      // 1: dra.UncoveredAddressKind
-	(FileOperationsKind)(0),        // 2: dra.file_operations_kind
-	(*WriteAddress)(nil),           // 3: dra.WriteAddress
-	(*WriteAddressAttributes)(nil), // 4: dra.writeAddressAttributes
-	(*Status)(nil),                 // 5: dra.Status
-	(*UncoveredAddress)(nil),       // 6: dra.UncoveredAddress
-	(*Dependency)(nil),             // 7: dra.Dependency
-	(*FileOperationsFunction)(nil), // 8: dra.FileOperationsFunction
-	(*FileOperations)(nil),         // 9: dra.FileOperations
-	(*Address)(nil),                // 10: dra.address
-	(*Condition)(nil),              // 11: dra.Condition
-	(*Conditions)(nil),             // 12: dra.Conditions
-	(*WriteAddresses)(nil),         // 13: dra.WriteAddresses
-	nil,                            // 14: dra.WriteAddress.UncoveredAddressEntry
-	nil,                            // 15: dra.WriteAddress.FileOperationsFunctionEntry
-	nil,                            // 16: dra.WriteAddress.InputEntry
-	nil,                            // 17: dra.Status.StatusEntry
-	nil,                            // 18: dra.UncoveredAddress.InputEntry
-	nil,                            // 19: dra.UncoveredAddress.WriteAddressEntry
-	nil,                            // 20: dra.UncoveredAddress.InputStatusEntry
-	nil,                            // 21: dra.UncoveredAddress.WriteAddressStatusEntry
-	nil,                            // 22: dra.UncoveredAddress.TasksCountEntry
-	nil,                            // 23: dra.UncoveredAddress.WriteCountEntry
-	nil,                            // 24: dra.FileOperationsFunction.WriteAddressEntry
-	nil,                            // 25: dra.FileOperations.FileOperationsFunctionEntry
-	nil,                            // 26: dra.address.AddrEntry
+	(UncoveredAddressKind)(0),      // 0: dra.UncoveredAddressKind
+	(FileOperationsKind)(0),        // 1: dra.file_operations_kind
+	(*WriteAddress)(nil),           // 2: dra.WriteAddress
+	(*WriteAddressAttributes)(nil), // 3: dra.writeAddressAttributes
+	(*Status)(nil),                 // 4: dra.Status
+	(*UncoveredAddress)(nil),       // 5: dra.UncoveredAddress
+	(*Dependency)(nil),             // 6: dra.Dependency
+	(*FileOperationsFunction)(nil), // 7: dra.FileOperationsFunction
+	(*FileOperations)(nil),         // 8: dra.FileOperations
+	(*Address)(nil),                // 9: dra.address
+	(*Condition)(nil),              // 10: dra.Condition
+	(*Conditions)(nil),             // 11: dra.Conditions
+	(*WriteAddresses)(nil),         // 12: dra.WriteAddresses
+	nil,                            // 13: dra.WriteAddress.UncoveredAddressEntry
+	nil,                            // 14: dra.WriteAddress.FileOperationsFunctionEntry
+	nil,                            // 15: dra.WriteAddress.InputEntry
+	nil,                            // 16: dra.Status.StatusEntry
+	nil,                            // 17: dra.UncoveredAddress.InputEntry
+	nil,                            // 18: dra.UncoveredAddress.WriteAddressEntry
+	nil,                            // 19: dra.UncoveredAddress.InputStatusEntry
+	nil,                            // 20: dra.UncoveredAddress.WriteAddressStatusEntry
+	nil,                            // 21: dra.UncoveredAddress.TasksCountEntry
+	nil,                            // 22: dra.UncoveredAddress.WriteCountEntry
+	nil,                            // 23: dra.FileOperationsFunction.WriteAddressEntry
+	nil,                            // 24: dra.FileOperations.FileOperationsFunctionEntry
+	nil,                            // 25: dra.address.AddrEntry
+	(WriteStatementKind)(0),        // 26: dra.WriteStatementKind
 	(*RunTimeData)(nil),            // 27: dra.runTimeData
 	(*Input)(nil),                  // 28: dra.Input
 	(TaskStatus)(0),                // 29: dra.taskStatus
 }
 var file_Dependency_proto_depIdxs = []int32{
-	0,  // 0: dra.WriteAddress.kind:type_name -> dra.WriteStatementKind
-	14, // 1: dra.WriteAddress.uncovered_address:type_name -> dra.WriteAddress.UncoveredAddressEntry
-	15, // 2: dra.WriteAddress.file_operations_function:type_name -> dra.WriteAddress.FileOperationsFunctionEntry
-	16, // 3: dra.WriteAddress.input:type_name -> dra.WriteAddress.InputEntry
+	26, // 0: dra.WriteAddress.kind:type_name -> dra.WriteStatementKind
+	13, // 1: dra.WriteAddress.uncovered_address:type_name -> dra.WriteAddress.UncoveredAddressEntry
+	14, // 2: dra.WriteAddress.file_operations_function:type_name -> dra.WriteAddress.FileOperationsFunctionEntry
+	15, // 3: dra.WriteAddress.input:type_name -> dra.WriteAddress.InputEntry
 	27, // 4: dra.WriteAddress.run_time_date:type_name -> dra.runTimeData
-	17, // 5: dra.Status.status:type_name -> dra.Status.StatusEntry
-	1,  // 6: dra.UncoveredAddress.kind:type_name -> dra.UncoveredAddressKind
-	18, // 7: dra.UncoveredAddress.input:type_name -> dra.UncoveredAddress.InputEntry
-	19, // 8: dra.UncoveredAddress.write_address:type_name -> dra.UncoveredAddress.WriteAddressEntry
+	16, // 5: dra.Status.status:type_name -> dra.Status.StatusEntry
+	0,  // 6: dra.UncoveredAddress.kind:type_name -> dra.UncoveredAddressKind
+	17, // 7: dra.UncoveredAddress.input:type_name -> dra.UncoveredAddress.InputEntry
+	18, // 8: dra.UncoveredAddress.write_address:type_name -> dra.UncoveredAddress.WriteAddressEntry
 	27, // 9: dra.UncoveredAddress.run_time_date:type_name -> dra.runTimeData
-	20, // 10: dra.UncoveredAddress.input_status:type_name -> dra.UncoveredAddress.InputStatusEntry
-	21, // 11: dra.UncoveredAddress.write_address_status:type_name -> dra.UncoveredAddress.WriteAddressStatusEntry
-	22, // 12: dra.UncoveredAddress.tasks_count:type_name -> dra.UncoveredAddress.TasksCountEntry
-	23, // 13: dra.UncoveredAddress.write_count:type_name -> dra.UncoveredAddress.WriteCountEntry
+	19, // 10: dra.UncoveredAddress.input_status:type_name -> dra.UncoveredAddress.InputStatusEntry
+	20, // 11: dra.UncoveredAddress.write_address_status:type_name -> dra.UncoveredAddress.WriteAddressStatusEntry
+	21, // 12: dra.UncoveredAddress.tasks_count:type_name -> dra.UncoveredAddress.TasksCountEntry
+	22, // 13: dra.UncoveredAddress.write_count:type_name -> dra.UncoveredAddress.WriteCountEntry
 	28, // 14: dra.Dependency.input:type_name -> dra.Input
-	6,  // 15: dra.Dependency.uncovered_address:type_name -> dra.UncoveredAddress
-	3,  // 16: dra.Dependency.write_address:type_name -> dra.WriteAddress
-	2,  // 17: dra.FileOperationsFunction.kind:type_name -> dra.file_operations_kind
+	5,  // 15: dra.Dependency.uncovered_address:type_name -> dra.UncoveredAddress
+	2,  // 16: dra.Dependency.write_address:type_name -> dra.WriteAddress
+	1,  // 17: dra.FileOperationsFunction.kind:type_name -> dra.file_operations_kind
 	27, // 18: dra.FileOperationsFunction.run_time_date:type_name -> dra.runTimeData
-	24, // 19: dra.FileOperationsFunction.write_address:type_name -> dra.FileOperationsFunction.WriteAddressEntry
-	25, // 20: dra.FileOperations.file_operations_function:type_name -> dra.FileOperations.FileOperationsFunctionEntry
-	26, // 21: dra.address.addr:type_name -> dra.address.AddrEntry
-	11, // 22: dra.Conditions.condition:type_name -> dra.Condition
-	11, // 23: dra.WriteAddresses.condition:type_name -> dra.Condition
-	3,  // 24: dra.WriteAddresses.write_address:type_name -> dra.WriteAddress
-	4,  // 25: dra.WriteAddress.UncoveredAddressEntry.value:type_name -> dra.writeAddressAttributes
+	23, // 19: dra.FileOperationsFunction.write_address:type_name -> dra.FileOperationsFunction.WriteAddressEntry
+	24, // 20: dra.FileOperations.file_operations_function:type_name -> dra.FileOperations.FileOperationsFunctionEntry
+	25, // 21: dra.address.addr:type_name -> dra.address.AddrEntry
+	10, // 22: dra.Conditions.condition:type_name -> dra.Condition
+	10, // 23: dra.WriteAddresses.condition:type_name -> dra.Condition
+	2,  // 24: dra.WriteAddresses.write_address:type_name -> dra.WriteAddress
+	3,  // 25: dra.WriteAddress.UncoveredAddressEntry.value:type_name -> dra.writeAddressAttributes
 	29, // 26: dra.Status.StatusEntry.value:type_name -> dra.taskStatus
-	4,  // 27: dra.UncoveredAddress.WriteAddressEntry.value:type_name -> dra.writeAddressAttributes
-	5,  // 28: dra.UncoveredAddress.InputStatusEntry.value:type_name -> dra.Status
+	3,  // 27: dra.UncoveredAddress.WriteAddressEntry.value:type_name -> dra.writeAddressAttributes
+	4,  // 28: dra.UncoveredAddress.InputStatusEntry.value:type_name -> dra.Status
 	29, // 29: dra.UncoveredAddress.WriteAddressStatusEntry.value:type_name -> dra.taskStatus
-	8,  // 30: dra.FileOperations.FileOperationsFunctionEntry.value:type_name -> dra.FileOperationsFunction
+	7,  // 30: dra.FileOperations.FileOperationsFunctionEntry.value:type_name -> dra.FileOperationsFunction
 	31, // [31:31] is the sub-list for method output_type
 	31, // [31:31] is the sub-list for method input_type
 	31, // [31:31] is the sub-list for extension type_name
@@ -1533,7 +1471,7 @@ func file_Dependency_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_Dependency_proto_rawDesc,
-			NumEnums:      3,
+			NumEnums:      2,
 			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   0,

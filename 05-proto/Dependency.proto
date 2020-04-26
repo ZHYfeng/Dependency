@@ -6,13 +6,6 @@ import "Task.proto";
 package dra;
 option go_package = ".;dra";
 
-enum WriteStatementKind {
-    WriteStatementConstant = 0;
-    WriteStatementNonconstant = 1;
-    WriteStatementDependencyRelated = 2;
-    WriteStatementNotDependencyRelated = 3;
-}
-
 message WriteAddress {
 
     // the address writes to global variable

@@ -29,7 +29,9 @@ namespace dra {
 
         void setCover(const std::string &cover, unsigned long long int vmOffsets);
 
-        Condition* getUncoveredAddress(uint64_t condition, uint64_t uncovered, const std::vector<uint64_t>& branch, int i);
+        Condition* getCondition(uint64_t condition, uint64_t uncovered, const std::vector<uint64_t>& branch, int i) const;
+
+        void addConditionAddress(uint64_t c);
 
         void addUncoveredAddress(Condition *c);
 
@@ -42,6 +44,7 @@ namespace dra {
         std::set<unsigned long long int> MiniCover;
 
         unsigned long long int idx;
+        std::set<uint32_t> dConditionAddress; // all dConditionAddress comes from llvm bc
         std::vector<Condition *> dUncoveredAddress; // all dUncoveredAddress comes from llvm bc
     };
 

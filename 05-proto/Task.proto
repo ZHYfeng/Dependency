@@ -29,6 +29,13 @@ enum taskStatus {
     out = 32;
 }
 
+enum WriteStatementKind {
+    WriteStatementConstant = 0;
+    WriteStatementNonconstant = 1;
+    WriteStatementDependencyRelated = 2;
+    WriteStatementNotDependencyRelated = 3;
+}
+
 message runTimeData {
     uint32 priority = 1;
     uint32 write_address = 2;
@@ -64,9 +71,7 @@ message Task {
     uint32 index = 2;
     bytes program = 3;
 
-    // 0 is undef
-    // 1 is constant
-    uint32 kind = 4;
+    WriteStatementKind kind = 4;
     int32 priority = 5;
     string hash = 6;
     uint32 count = 7;

@@ -103,7 +103,7 @@ namespace dra {
     }
 
     Condition *
-    DInput::getUncoveredAddress(uint64_t condition, uint64_t uncovered, const std::vector<uint64_t> &branch, int i) {
+    DInput::getCondition(uint64_t condition, uint64_t uncovered, const std::vector<uint64_t> &branch, int i) const {
         auto *c = new Condition();
         c->set_condition_address(condition);
         c->set_uncovered_address(uncovered);
@@ -113,6 +113,10 @@ namespace dra {
             c->add_right_branch_address(a);
         }
         return c;
+    }
+
+    void DInput::addConditionAddress(uint64_t condition) {
+        dConditionAddress.insert(condition);
     }
 
     void DInput::addUncoveredAddress(Condition *c) {

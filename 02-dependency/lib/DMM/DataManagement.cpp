@@ -196,14 +196,6 @@ namespace dra {
         for (auto ua : dInput->dUncoveredAddress) {
             if (this->cover.find(ua->uncovered_address()) == this->cover.end()) {
                 temp.push_back(ua);
-//                if (this->uncover.find(ua->uncovered_address()) == this->uncover.end()) {
-//                    auto current_time = std::time(nullptr);
-//                    auto ui = new uncover_info();
-//                    ui->time = current_time;
-//                    ui->address = ua->uncovered_address();
-//                    ui->condition_address = ua->condition_address();
-//                    this->uncover[ua->uncovered_address()] = ui;
-//                }
             } else {
                 delete ua;
             }
@@ -212,6 +204,7 @@ namespace dra {
         for (auto ua : temp) {
             dInput->addUncoveredAddress(ua);
         }
+
         return dInput;
     }
 

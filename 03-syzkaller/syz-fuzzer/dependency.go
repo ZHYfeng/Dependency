@@ -64,7 +64,7 @@ func (proc *Proc) dependency(task *pb.Task, kind pb.TaskKind) string {
 
 func (proc *Proc) dependencyMutateArguement(task *pb.Task, taskRunTimeData *pb.TaskRunTimeData) {
 
-	if task.Check && task.Kind == 2 {
+	if task.Check && task.Kind == pb.WriteStatementKind_WriteStatementNonconstant {
 		if taskRunTimeData.ConditionIdx > taskRunTimeData.WriteIdx {
 			if !proc.fuzzer.comparisonTracingEnabled {
 

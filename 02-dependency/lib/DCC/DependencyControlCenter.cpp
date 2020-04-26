@@ -110,6 +110,15 @@ namespace dra {
         std::cout << "dUncoveredAddress size : " << std::dec << dInput->dUncoveredAddress.size()
                   << std::endl;
 #endif
+
+        u_int32_t number_conditions = dInput->dConditionAddress.size();
+        u_int32_t number_conditions_dependency = 0;
+        for (auto c : dInput->dConditionAddress) {
+            if (get_write_basicblock(c) != nullptr) {
+                number_conditions_dependency++;
+            }
+        }
+
         uint64_t i = 0;
         for (auto u : dInput->dUncoveredAddress) {
             i++;
@@ -155,11 +164,14 @@ namespace dra {
                 } else if (!write_basicblock->empty()) {
                     uncoveredAddress->set_kind(UncoveredAddressKind::UncoveredAddressDependencyRelated);
 
+                    (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
+
                     Input *input = dependency->mutable_input();
                     input->set_sig(dInput->sig);
                     input->set_program(dInput->program);
+                    input->set_number_conditions(number_conditions);
+                    input->set_number_conditions_dependency(number_conditions_dependency);
                     (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
-                    (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
                     set_runtime_data(uncoveredAddress->mutable_run_time_date(), input->program(), u->idx(),
                                      syzkallerConditionAddress, syzkallerUncoveredAddress);
 
@@ -204,77 +216,6 @@ namespace dra {
             }
         } else {
         }
-    }
-
-
-    sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u) {
-
-        sta::MODS *res = nullptr;
-        llvm::BasicBlock *b;
-        dra::DBasicBlock *p;
-        if (this->DM.Address2BB.find(u->condition_address()) != this->DM.Address2BB.end()) {
-            p = DM.Address2BB[u->condition_address()]->parent;
-#if DEBUG
-            p->dump();
-#endif
-            b = dra::getFinalBB(p->basicBlock);
-        } else {
-            return res;
-        }
-#if DEBUG
-        dra::outputTime("GetAllGlobalWriteBBs : ");
-#endif
-
-        int64_t successor = u->successor();
-        int64_t idx;
-        if (successor == 1) {
-            idx = 0;
-        } else if (successor == 2) {
-            idx = 1;
-        } else {
-            idx = 0;
-#if DEBUG_ERR && DEBUG
-            std::cerr << "switch case : " << std::hex << successor << std::endl;
-#endif
-        }
-
-        if ((this->staticResult.find(b) != this->staticResult.end()) &&
-            (this->staticResult[b].find(idx) != this->staticResult[b].end())) {
-            res = this->staticResult[b][idx];
-#if DEBUG
-            dra::outputTime("get useful static analysis result from cache");
-#endif
-        } else {
-            auto sta = this->getStaticAnalysisResult(p->parent->Path);
-            if (sta == nullptr) {
-                return res;
-            }
-            sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(b, idx);
-            if (write_basicblock == nullptr) {
-                // no taint or out side
-#if DEBUG
-                dra::outputTime("allBasicblock == nullptr");
-                p->real_dump();
-#endif
-            } else if (write_basicblock->empty()) {
-                // related to gv but can not find write statements
-                res = write_basicblock;
-#if DEBUG
-                dra::outputTime("allBasicblock->size() == 0");
-                p->dump();
-#endif
-            } else if (!write_basicblock->empty()) {
-                // related to gv and find write statements
-                res = write_basicblock;
-#if DEBUG
-                dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
-#endif
-            }
-
-            this->staticResult[b].insert(std::pair<uint64_t, sta::MODS *>(idx, res));
-        }
-
-        return res;
     }
 
     void DependencyControlCenter::set_runtime_data(runTimeData *r, const std::string &program, uint32_t idx,
@@ -666,6 +607,86 @@ namespace dra {
 
     void DependencyControlCenter::send_number_basicblock_covered() {
         this->client->SendNumberBasicBlockCovered(DM.Modules->NumberBasicBlockCovered);
+    }
+
+
+    sta::MODS *DependencyControlCenter::get_write_basicblock(Condition *u) {
+        int64_t successor = u->successor();
+        int64_t idx;
+        if (successor == 1) {
+            idx = 0;
+        } else if (successor == 2) {
+            idx = 1;
+        } else {
+            idx = 0;
+#if DEBUG_ERR && DEBUG
+            std::cerr << "switch case : " << std::hex << successor << std::endl;
+#endif
+        }
+        return get_write_basicblock(u->condition_address(), idx);
+
+    }
+
+
+    sta::MODS *DependencyControlCenter::get_write_basicblock(u_int64_t address, u_int32_t idx) {
+        dra::DBasicBlock *dbb;
+        if (this->DM.Address2BB.find(address) != this->DM.Address2BB.end()) {
+            dbb = DM.Address2BB[address]->parent;
+#if DEBUG
+            dbb->dump();
+#endif
+            return get_write_basicblock(dbb, idx);
+
+        } else {
+            return nullptr;
+        }
+    }
+
+    sta::MODS *DependencyControlCenter::get_write_basicblock(dra::DBasicBlock *dbb, u_int32_t idx) {
+        sta::MODS *res = nullptr;
+        auto *bb = dra::getFinalBB(dbb->basicBlock);
+
+
+#if DEBUG
+        dra::outputTime("GetAllGlobalWriteBBs : ");
+#endif
+        if ((this->staticResult.find(bb) != this->staticResult.end()) &&
+            (this->staticResult[bb].find(idx) != this->staticResult[bb].end())) {
+            res = this->staticResult[bb][idx];
+#if DEBUG
+            dra::outputTime("get useful static analysis result from cache");
+#endif
+        } else {
+            auto sta = this->getStaticAnalysisResult(dbb->parent->Path);
+            if (sta == nullptr) {
+                return res;
+            }
+            sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(bb, idx);
+            if (write_basicblock == nullptr) {
+                // no taint or out side
+#if DEBUG
+                dra::outputTime("allBasicblock == nullptr");
+                dbb->real_dump();
+#endif
+            } else if (write_basicblock->empty()) {
+                // related to gv but can not find write statements
+                res = write_basicblock;
+#if DEBUG
+                dra::outputTime("allBasicblock->size() == 0");
+                dbb->dump();
+#endif
+            } else if (!write_basicblock->empty()) {
+                // related to gv and find write statements
+                res = write_basicblock;
+#if DEBUG
+                dra::outputTime("get useful static analysis result : " + std::to_string(write_basicblock->size()));
+#endif
+            }
+
+            this->staticResult[bb].insert(std::pair<uint64_t, sta::MODS *>(idx, res));
+        }
+
+        return res;
     }
 
 } /* namespace dra */

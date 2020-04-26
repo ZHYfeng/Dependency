@@ -194,7 +194,7 @@ static void InitDefaultsscc_info_runTimeData_Task_2eproto() {
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_runTimeData_Task_2eproto}, {}};
 
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_Task_2eproto[9];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Task_2eproto[2];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Task_2eproto[3];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Task_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Task_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -346,37 +346,42 @@ const char descriptor_table_protodef_Task_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "ddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132"
   "\020.dra.runTimeData:\0028\001\032G\n\023CoveredAddressE"
   "ntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.r"
-  "unTimeData:\0028\001\"\236\004\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005"
-  "index\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022\014\n\004kind\030\004 \001"
-  "(\r\022\020\n\010priority\030\005 \001(\005\022\014\n\004hash\030\006 \001(\t\022\r\n\005co"
-  "unt\030\007 \001(\r\022\021\n\twrite_sig\030\013 \001(\t\022\023\n\013write_in"
-  "dex\030\014 \001(\r\022\025\n\rwrite_program\030\r \001(\014\022$\n\013task"
-  "_status\030\030 \001(\0162\017.dra.taskStatus\022\r\n\005check\030"
-  "\031 \001(\010\022:\n\021uncovered_address\030\025 \003(\0132\037.dra.T"
-  "ask.UncoveredAddressEntry\0226\n\017covered_add"
-  "ress\030\027 \003(\0132\035.dra.Task.CoveredAddressEntr"
-  "y\0220\n\022task_run_time_data\030\037 \003(\0132\024.dra.Task"
-  "RunTimeData\032I\n\025UncoveredAddressEntry\022\013\n\003"
-  "key\030\001 \001(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTimeDa"
-  "ta:\0028\001\032G\n\023CoveredAddressEntry\022\013\n\003key\030\001 \001"
-  "(\r\022\037\n\005value\030\002 \001(\0132\020.dra.runTimeData:\0028\001\""
-  "\267\001\n\005Tasks\022\014\n\004name\030) \001(\t\022\033\n\004kind\030* \001(\0162\r."
-  "dra.TaskKind\022)\n\010task_map\030\001 \003(\0132\027.dra.Tas"
-  "ks.TaskMapEntry\022\035\n\ntask_array\030\002 \003(\0132\t.dr"
-  "a.Task\0329\n\014TaskMapEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005v"
-  "alue\030\002 \001(\0132\t.dra.Task:\0028\001*\217\003\n\ntaskStatus"
-  "\022\014\n\010untested\020\000\022\013\n\007testing\020\001\022\033\n\016not_find_"
-  "input\020\373\377\377\377\377\377\377\377\377\001\022#\n\026not_find_write_addre"
-  "ss\020\374\377\377\377\377\377\377\377\377\001\022!\n\024not_find_write_input\020\375\377"
-  "\377\377\377\377\377\377\377\001\022\022\n\016unstable_write\020\013\022\020\n\014stable_w"
-  "rite\020\014\022\026\n\022unstable_condition\020\r\022\024\n\020stable"
-  "_condition\020\016\022\031\n\025unstable_insert_write\020\017\022"
-  "\027\n\023stable_insert_write\020\020\022\035\n\031unstable_ins"
-  "ert_condition\020\021\022\033\n\027stable_insert_conditi"
-  "on\020\022\022\014\n\010unstable\020\023\022\n\n\006tested\020\025\022\013\n\007covere"
-  "d\020\026\022\r\n\trecursive\020\037\022\007\n\003out\020 *5\n\010TaskKind\022"
-  "\010\n\004Boot\020\000\022\010\n\004High\020\001\022\t\n\005Ckeck\020\003\022\n\n\006Normal"
-  "\020\005B\007Z\005.;drab\006proto3"
+  "unTimeData:\0028\001\"\267\004\n\004Task\022\013\n\003sig\030\001 \001(\t\022\r\n\005"
+  "index\030\002 \001(\r\022\017\n\007program\030\003 \001(\014\022%\n\004kind\030\004 \001"
+  "(\0162\027.dra.WriteStatementKind\022\020\n\010priority\030"
+  "\005 \001(\005\022\014\n\004hash\030\006 \001(\t\022\r\n\005count\030\007 \001(\r\022\021\n\twr"
+  "ite_sig\030\013 \001(\t\022\023\n\013write_index\030\014 \001(\r\022\025\n\rwr"
+  "ite_program\030\r \001(\014\022$\n\013task_status\030\030 \001(\0162\017"
+  ".dra.taskStatus\022\r\n\005check\030\031 \001(\010\022:\n\021uncove"
+  "red_address\030\025 \003(\0132\037.dra.Task.UncoveredAd"
+  "dressEntry\0226\n\017covered_address\030\027 \003(\0132\035.dr"
+  "a.Task.CoveredAddressEntry\0220\n\022task_run_t"
+  "ime_data\030\037 \003(\0132\024.dra.TaskRunTimeData\032I\n\025"
+  "UncoveredAddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005va"
+  "lue\030\002 \001(\0132\020.dra.runTimeData:\0028\001\032G\n\023Cover"
+  "edAddressEntry\022\013\n\003key\030\001 \001(\r\022\037\n\005value\030\002 \001"
+  "(\0132\020.dra.runTimeData:\0028\001\"\267\001\n\005Tasks\022\014\n\004na"
+  "me\030) \001(\t\022\033\n\004kind\030* \001(\0162\r.dra.TaskKind\022)\n"
+  "\010task_map\030\001 \003(\0132\027.dra.Tasks.TaskMapEntry"
+  "\022\035\n\ntask_array\030\002 \003(\0132\t.dra.Task\0329\n\014TaskM"
+  "apEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value\030\002 \001(\0132\t.dr"
+  "a.Task:\0028\001*\217\003\n\ntaskStatus\022\014\n\010untested\020\000\022"
+  "\013\n\007testing\020\001\022\033\n\016not_find_input\020\373\377\377\377\377\377\377\377\377"
+  "\001\022#\n\026not_find_write_address\020\374\377\377\377\377\377\377\377\377\001\022!"
+  "\n\024not_find_write_input\020\375\377\377\377\377\377\377\377\377\001\022\022\n\016uns"
+  "table_write\020\013\022\020\n\014stable_write\020\014\022\026\n\022unsta"
+  "ble_condition\020\r\022\024\n\020stable_condition\020\016\022\031\n"
+  "\025unstable_insert_write\020\017\022\027\n\023stable_inser"
+  "t_write\020\020\022\035\n\031unstable_insert_condition\020\021"
+  "\022\033\n\027stable_insert_condition\020\022\022\014\n\010unstabl"
+  "e\020\023\022\n\n\006tested\020\025\022\013\n\007covered\020\026\022\r\n\trecursiv"
+  "e\020\037\022\007\n\003out\020 *\234\001\n\022WriteStatementKind\022\032\n\026W"
+  "riteStatementConstant\020\000\022\035\n\031WriteStatemen"
+  "tNonconstant\020\001\022#\n\037WriteStatementDependen"
+  "cyRelated\020\002\022&\n\"WriteStatementNotDependen"
+  "cyRelated\020\003*5\n\010TaskKind\022\010\n\004Boot\020\000\022\010\n\004Hig"
+  "h\020\001\022\t\n\005Ckeck\020\003\022\n\n\006Normal\020\005B\007Z\005.;drab\006pro"
+  "to3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Task_2eproto_deps[1] = {
 };
@@ -394,7 +399,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Tas
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Task_2eproto_once;
 static bool descriptor_table_Task_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Task_2eproto = {
-  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 1939,
+  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 2123,
   &descriptor_table_Task_2eproto_once, descriptor_table_Task_2eproto_sccs, descriptor_table_Task_2eproto_deps, 9, 0,
   schemas, file_default_instances, TableStruct_Task_2eproto::offsets,
   file_level_metadata_Task_2eproto, 9, file_level_enum_descriptors_Task_2eproto, file_level_service_descriptors_Task_2eproto,
@@ -433,9 +438,25 @@ bool taskStatus_IsValid(int value) {
   }
 }
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TaskKind_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* WriteStatementKind_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Task_2eproto);
   return file_level_enum_descriptors_Task_2eproto[1];
+}
+bool WriteStatementKind_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TaskKind_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Task_2eproto);
+  return file_level_enum_descriptors_Task_2eproto[2];
 }
 bool TaskKind_IsValid(int value) {
   switch (value) {
@@ -1583,11 +1604,12 @@ const char* Task::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 kind = 4;
+      // .dra.WriteStatementKind kind = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          kind_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
+          _internal_set_kind(static_cast<::dra::WriteStatementKind>(val));
         } else goto handle_unusual;
         continue;
       // int32 priority = 5;
@@ -1736,10 +1758,11 @@ failure:
         3, this->_internal_program(), target);
   }
 
-  // uint32 kind = 4;
+  // .dra.WriteStatementKind kind = 4;
   if (this->kind() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_kind(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      4, this->_internal_kind(), target);
   }
 
   // int32 priority = 5;
@@ -1952,11 +1975,10 @@ size_t Task::ByteSizeLong() const {
         this->_internal_index());
   }
 
-  // uint32 kind = 4;
+  // .dra.WriteStatementKind kind = 4;
   if (this->kind() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_kind());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   // int32 priority = 5;

@@ -81,17 +81,22 @@ type Server struct {
 	unstableInputsData *UnstableInputs
 }
 
+func (ss Server) SendNumberBasicBlock(ctx context.Context, empty *Empty) (*Empty, error) {
+	ss.stat.NumberBasicBlockReal = empty.Address
+	reply := &Empty{}
+	return reply, nil
+}
+
+func (ss Server) SendNumberBasicBlockCovered(ctx context.Context, empty *Empty) (*Empty, error) {
+	ss.stat.NumberBasicBlockCovered = empty.Address
+	reply := &Empty{}
+	return reply, nil
+}
+
 // GetVMOffsets is to send the offset address in vmlinux to dra
 func (ss Server) GetVMOffsets(context.Context, *Empty) (*Empty, error) {
 	reply := &Empty{}
 	reply.Address = ss.address
-	return reply, nil
-}
-
-// SendBasicBlockNumber is to get the basic block number from dra
-func (ss Server) SendBasicBlockNumber(_ context.Context, request *Empty) (*Empty, error) {
-	ss.stat.BasicBlockNumber = request.Address
-	reply := &Empty{}
 	return reply, nil
 }
 
@@ -415,11 +420,14 @@ func (ss *Server) RunDependencyRPCServer(corpus *map[string]rpctype.RPCInput) {
 	}
 
 	ss.stat = &Statistics{
-		SignalNum:        0,
-		BasicBlockNumber: 0,
-		Coverage:         &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
-		Stat:             map[int32]*Statistic{},
-		UsefulInput:      []*UsefulInput{},
+		SignalNum:                 0,
+		NumberBasicBlock:          0,
+		NumberBasicBlockReal:      0,
+		NumberBasicBlockCovered:   0,
+		NumberBasicBlockUncovered: 0,
+		Coverage:                  &Coverage{Coverage: map[uint32]uint32{}, Time: []*Time{}},
+		Stat:                      map[int32]*Statistic{},
+		UsefulInput:               []*UsefulInput{},
 	}
 
 	ss.MuFuzzer = &sync.Mutex{}
@@ -548,12 +556,16 @@ func (ss *Server) Update() {
 	ss.newDependency.newDependency = []*Dependency{}
 	ss.dependencyMu.Unlock()
 	for _, d := range newDependency {
-		for _, wa := range d.WriteAddress {
-			ss.addWriteAddress(wa)
+		if d.UncoveredAddress.Kind == UncoveredAddressKind_UncoveredAddressDependencyRelated {
+			for _, wa := range d.WriteAddress {
+				ss.addWriteAddress(wa)
+			}
+			ss.addUncoveredAddress(d.UncoveredAddress)
+			ss.addInput(d.Input)
+			ss.addInputTask(d.Input)
+		} else if d.UncoveredAddress.Kind == UncoveredAddressKind_UncoveredAddressInputRelated {
+			ss.addUncoveredAddress(d.UncoveredAddress)
 		}
-		ss.addUncoveredAddress(d.UncoveredAddress)
-		ss.addInput(d.Input)
-		ss.addInputTask(d.Input)
 	}
 	newDependency = nil
 

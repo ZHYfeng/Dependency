@@ -28,12 +28,13 @@ const (
 
 	TaskBoot = false
 
-	CollectPath     = true
+	// collect original path
+	CollectPath     = false
+	// if the path is unstable, collect all of them
 	CollectUnstable = false
-
 	// collect coverage by intersection instead of union.
 	StableCoverage = true
-	// check Condition address in syz-fuzzer
+	// check uncovered Condition address in syz-fuzzer once find new test case
 	CheckCondition = true
 )
 

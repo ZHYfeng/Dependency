@@ -151,7 +151,7 @@ namespace dra {
         return false;
     }
 
-    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::TerminatorInst *end, u_int i) const {
+    void DBasicBlock::inferUncoverBB(llvm::BasicBlock *p, llvm::TerminatorInst *end, u_int32_t i) const {
         DBasicBlock *Dp;
         DBasicBlock *Db;
         std::string pname = p->getName().str();
@@ -172,15 +172,16 @@ namespace dra {
                     }
                 }
 
+                dInput->addConditionAddress(Dp->trace_pc_address);
                 if (Db->state == CoverKind::untest) {
                     Db->setState(CoverKind::uncover);
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(
-                            dInput->getUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i));
+                    auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
+                    dInput->addUncoveredAddress(ca);
                 } else if (Db->state == CoverKind::uncover) {
                     Db->addNewInput(dInput);
-                    dInput->addUncoveredAddress(
-                            dInput->getUncoveredAddress(Dp->trace_pc_address, Db->trace_pc_address, branch, i));
+                    auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
+                    dInput->addUncoveredAddress(ca);
                 } else if (Db->state == CoverKind::cover) {
 
                 }
