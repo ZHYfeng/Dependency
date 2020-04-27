@@ -561,8 +561,10 @@ func (ss *Server) Update() {
 				ss.addWriteAddress(wa)
 			}
 			ss.addUncoveredAddress(d.UncoveredAddress)
-			ss.addInput(d.Input)
-			ss.addInputTask(d.Input)
+			if d.Input != nil {
+				ss.addInput(d.Input)
+				ss.addInputTask(d.Input)
+			}
 		} else if d.UncoveredAddress.Kind == UncoveredAddressKind_UncoveredAddressInputRelated {
 			ss.addUncoveredAddress(d.UncoveredAddress)
 		}
