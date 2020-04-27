@@ -37,7 +37,7 @@ name_bc = name_driver + ".bc"
 name_syzkaller_json = "syzkaller.json"
 name_dra_json = "dra.json"
 
-number_execute = 8
+number_execute = 1
 path_current = os.getcwd()
 path_git = os.path.join(path_root, "git")
 path_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_dependency")
