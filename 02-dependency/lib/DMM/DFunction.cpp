@@ -211,10 +211,12 @@ namespace dra {
         std::set<llvm::Function *> new_uncovered_functions;
         uncovered_function.insert(this->function);
 
-        for (const auto& bb: this->BasicBlock) {
-            if (llvm::isPotentiallyReachable(b, bb.second->basicBlock, this->DT)) {
-                count = count + bb.second->get_number_uncovered_instructions();
-                bb.second->get_function_call(new_uncovered_functions);
+        for (const auto &bb: this->BasicBlock) {
+            if (bb.second->basicBlock != nullptr) {
+                if (llvm::isPotentiallyReachable(b, bb.second->basicBlock, this->DT)) {
+                    count = count + bb.second->get_number_uncovered_instructions();
+                    bb.second->get_function_call(new_uncovered_functions);
+                }
             }
         }
 

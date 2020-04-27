@@ -23,8 +23,8 @@ namespace dra {
     DAInstruction::~DAInstruction() = default;
 
     void DAInstruction::setState(CoverKind kind) {
-        if (kind > state) {
-            std::cerr << "error InstIR kind" << "\n";
+        if (kind < state) {
+            std::cerr << "error InstASM kind" << "\n";
         }
         state = kind;
     }
