@@ -1,12 +1,9 @@
 #! /usr/bin/python3
 import os
-import subprocess
 
 import scipy.stats
 
-import default
-import read_axis
-import read_stats
+from python import read_stats, read_axis, default
 
 
 class Device:

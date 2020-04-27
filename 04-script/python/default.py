@@ -11,21 +11,20 @@ path_git_repo = os.path.join(path_git, "gopath/src/github.com/ZHYfeng/2018_depen
 path_result = os.path.join(path_git_repo, "06-result")
 path_git_script = os.path.join(path_git_repo, "04-script")
 path_taint = os.path.join(path_git_script, "taint_info")
-file_syzkaller_json = os.path.join(path_git_script, "syzkaller.json")
-file_default_json = os.path.join(path_git_script, "default.json")
+file_syzkaller_json = os.path.join(path_git_script, "json/syzkaller.json")
+file_default_json = os.path.join(path_git_script, "json/default.json")
 name_default = "default.py"
-path_default = os.path.join(path_git_script, name_default)
+path_default = os.path.join(path_git_script, "python", name_default)
 name_run = "run.py"
-path_default_run = os.path.join(path_git_script, name_run)
+path_default_run = os.path.join(path_git_script, "python", name_run)
 name_run_bash = "run.bash"
-path_default_run_bash = os.path.join(path_git_script, name_run_bash)
+path_default_run_bash = os.path.join(path_git_script, "bash", name_run_bash)
 name_remove_bash = "remove.bash"
-path_default_remove_bash = os.path.join(path_git_script, name_remove_bash)
+path_default_remove_bash = os.path.join(path_git_script, "bash", name_remove_bash)
 
 name_with_dra = "01-result-with-dra"
 name_without_dra = "02-result-without-dra"
-path_linux_bc = os.path.join(
-    path_root, "benchmark/linux/16-linux-clang-np-bc-f")
+path_linux_bc = os.path.join(path_root, "benchmark/linux/16-linux-clang-np-bc-f")
 path_linux = os.path.join(path_root, "benchmark/linux/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 
@@ -56,9 +55,8 @@ file_ssh_key = "stretch.id_rsa"
 file_log_run = "log_run.bash"
 file_log_syzkaller = "log_syzkaller.log"
 file_log_dra = "log_dra.log"
-file_run = "run.bash"
 
-length = 1 * 24 * 60
+length = 1 * 48 * 60
 time_run = length * 60  # second
 
 do_figure = True

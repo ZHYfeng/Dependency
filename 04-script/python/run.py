@@ -7,7 +7,8 @@ import subprocess
 import sys
 import time
 
-import default
+from python import default
+
 
 def get_open_port():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -76,7 +77,7 @@ class Process:
 
         run_f.write("cd " + path + "\n")
         os.chdir(self.path)
-        self.execute_syzkaller(run_f, dependency_priority=dra)
+        self.execute_syzkaller(run_f, dependency_task=dra)
         self.execute_dra(run_f)
 
     def execute_syzkaller(self, run_f, dependency_task=False, dependency_priority=False):
@@ -131,9 +132,9 @@ def main():
         dra = False
 
     if dra:
-        path_run = os.path.join(default.path_current, default.name_with_dra, default.file_run)
+        path_run = os.path.join(default.path_current, default.name_with_dra, default.name_run_bash)
     else:
-        path_run = os.path.join(default.path_current, default.name_without_dra, default.file_run)
+        path_run = os.path.join(default.path_current, default.name_without_dra, default.name_run_bash)
     run_f = open(path_run, "a")
     run_f.write("#!/bin/bash\n\n")
     run_f.write("PID=()\n")
