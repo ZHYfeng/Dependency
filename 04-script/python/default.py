@@ -56,7 +56,7 @@ file_log_run = "log_run.bash"
 file_log_syzkaller = "log_syzkaller.log"
 file_log_dra = "log_dra.log"
 
-length = 1 * 48 * 60
+length = 2 * 24 * 60
 time_run = length * 60  # second
 
 do_figure = True
