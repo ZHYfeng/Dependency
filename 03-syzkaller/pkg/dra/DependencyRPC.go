@@ -360,6 +360,14 @@ func (ss Server) pickTask(name string) *Tasks {
 		}
 		f.MuRunTime.Unlock()
 	}
+	if tasks == nil {
+		tasks = &Tasks{
+			Name:      name,
+			Kind:      TaskKind_Normal,
+			TaskMap:   map[string]*Task{},
+			TaskArray: []*Task{},
+		}
+	}
 	return tasks
 }
 
