@@ -663,7 +663,7 @@ func (ss *Server) Update() {
 							t.reducePriority()
 							task = append(task, t)
 						}
-						if len(task) > TaskNum {
+						if len(task) > TaskQueueNumber {
 							break
 						}
 					}

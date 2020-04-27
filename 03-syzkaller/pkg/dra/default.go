@@ -9,8 +9,8 @@ import (
 const (
 	ClientMaxReceiveMessageSize = 1024 * 1024 * 100
 
-	//TimeStart = 10800
-	TimeStart       = 0
+	TimeStart = 10800
+	//TimeStart       = 0
 	TimeNew         = 3600
 	TimeBoot        = 3600
 	TimeWriteToDisk = 3600
@@ -19,8 +19,8 @@ const (
 
 	DebugLevel = 2
 
-	TaskNum             = 40
-	TaskCountLimitation = 20
+	TaskQueueNumber     = 4
+	TaskCountLimitation = 2
 	TaskCountBase       = 1
 
 	NeedBoot  = false
@@ -29,7 +29,7 @@ const (
 	TaskBoot = false
 
 	// collect original path
-	CollectPath     = false
+	CollectPath = false
 	// if the path is unstable, collect all of them
 	CollectUnstable = false
 	// collect coverage by intersection instead of union.

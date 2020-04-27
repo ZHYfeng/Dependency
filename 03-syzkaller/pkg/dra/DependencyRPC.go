@@ -345,15 +345,16 @@ func (ss Server) pickTask(name string) *Tasks {
 		f.MuRunTime.Lock()
 		if len(f.dataRunTime.HighTask.TaskArray) > 0 {
 			last := len(f.dataRunTime.HighTask.TaskArray)
-			if last > TaskNum {
-				last = TaskNum
+			if last > TaskQueueNumber {
+				last = TaskQueueNumber
 			}
 			tasks = f.dataRunTime.HighTask.pop(last)
 			tasks.Kind = TaskKind_High
-		} else {
+		}
+		if len(f.dataRunTime.Tasks.TaskArray) > 0 {
 			last := len(f.dataRunTime.Tasks.TaskArray)
-			if last > TaskNum {
-				last = TaskNum
+			if last > TaskQueueNumber {
+				last = TaskQueueNumber
 			}
 			tasks = f.dataRunTime.Tasks.pop(last)
 		}
@@ -720,7 +721,7 @@ func (m *DataDependency) getTasks(sig string, indexBits uint32, writeSig string,
 			log.Fatalf("getTasks : can not find the writeAddress")
 		}
 
-		if ua.Count < (ua.NumberDominatorInstructions+TaskCountBase)*TaskNum {
+		if ua.Count < (ua.NumberDominatorInstructions+TaskCountBase)*TaskCountLimitation {
 			ua.Count += uint32(len(index) * len(writeIndex))
 		} else {
 			return task
