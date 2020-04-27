@@ -3,7 +3,7 @@ import statistics
 
 import matplotlib.pyplot as plt
 
-from python import default
+import default
 
 
 class axis:

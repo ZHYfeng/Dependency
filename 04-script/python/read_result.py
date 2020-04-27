@@ -3,7 +3,7 @@ import os
 
 import scipy.stats
 
-from python import read_stats, read_axis, default
+import read_stats, read_axis, default
 
 
 class Device:

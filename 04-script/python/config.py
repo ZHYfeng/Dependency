@@ -3,7 +3,7 @@ import json
 import os
 import shutil
 
-from python import default
+import default
 
 
 def read_s(path, files):

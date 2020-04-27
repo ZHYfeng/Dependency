@@ -1,6 +1,6 @@
 import os
 
-from python import Statistic_pb2 as pb, default
+import Statistic_pb2 as pb, default
 
 
 class stats:

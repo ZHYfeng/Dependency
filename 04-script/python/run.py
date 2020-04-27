@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-from python import default
+import default
 
 
 def get_open_port():

@@ -1,6 +1,6 @@
 import sys
 
-from python import default, config, read_result
+import default, config, read_result
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
