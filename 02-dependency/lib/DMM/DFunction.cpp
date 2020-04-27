@@ -225,8 +225,10 @@ namespace dra {
             for (auto f : new_uncovered_functions) {
                 uncovered_function.insert(f);
                 DFunction *df = this->parent->get_DF_from_f(f);
-                count += df->get_number_uncovered_instructions();
-                df->get_function_call(temp);
+                if (df != nullptr) {
+                    count += df->get_number_uncovered_instructions();
+                    df->get_function_call(temp);
+                }
             }
             new_uncovered_functions.clear();
             for (auto f : temp) {
