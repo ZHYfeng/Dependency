@@ -51,6 +51,8 @@ func (d *device) read(path string) {
 
 	d.checkCoverage()
 	d.checkUncoveredAddress()
+	d.checkStatistic()
+
 }
 
 func (d *device) checkCoverage() {
@@ -288,4 +290,22 @@ func (d *device) checkUncoveredAddress() {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func (d *device) checkStatistic() {
+	name := d.baseName
+
+	f := func(gs func(r *result) *statistic) {
+		var ss []*statistic
+		for _, r := range d.resultsWithDra.result {
+			ss = append(ss, gs(r))
+		}
+		s := average(ss)
+		s.Name = name
+		s.output(d.dirName)
+	}
+
+	f(prevalent)
+	f(write_statement)
+	f(unstable)
 }

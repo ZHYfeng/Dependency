@@ -79,18 +79,18 @@ func (r *result) getUncoveredAddress() {
 	r.coveredAddressInput = make(map[uint32]*pb.UncoveredAddress)
 	r.coveredAddressDependency = make(map[uint32]*pb.UncoveredAddress)
 	for _, ua := range r.dataDependency.UncoveredAddress {
-		if ua.Kind == pb.UncoveredAddressKind_InputRelated {
+		if ua.Kind == pb.UncoveredAddressKind_UncoveredAddressInputRelated {
 			r.uncoveredAddressInput[ua.UncoveredAddress] = ua
-		} else if ua.Kind == pb.UncoveredAddressKind_DependencyRelated {
+		} else if ua.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
 			r.uncoveredAddressDependency[ua.UncoveredAddress] = ua
 		} else {
 
 		}
 	}
 	for _, a := range r.dataResult.CoveredAddress {
-		if a.Kind == pb.UncoveredAddressKind_InputRelated {
+		if a.Kind == pb.UncoveredAddressKind_UncoveredAddressInputRelated {
 			r.coveredAddressInput[a.UncoveredAddress] = a
-		} else if a.Kind == pb.UncoveredAddressKind_DependencyRelated {
+		} else if a.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
 			r.coveredAddressDependency[a.UncoveredAddress] = a
 		} else {
 
@@ -118,7 +118,8 @@ func (r *result) getStatistic() {
 
 	res += "*******************************************\n"
 	res += fmt.Sprintf("SignalNum : %d\n", statistics.SignalNum)
-	res += fmt.Sprintf("BasicBlockNumber : %d\n", statistics.BasicBlockNumber)
+	res += fmt.Sprintf("NumberBasicBlock : %d\n", statistics.NumberBasicBlock)
+	res += fmt.Sprintf("NumberBasicBlockReal : %d\n", statistics.NumberBasicBlockReal)
 
 	for _, s := range statistics.Stat {
 		res += "-------------------------------------------\n"
@@ -515,7 +516,7 @@ func (r *result) checkStatistic() {
 
 	res := ""
 	res += fmt.Sprintf("singal number 		: %d\n", r.statistics.SignalNum)
-	res += fmt.Sprintf("basic block number	: %d\n", r.statistics.BasicBlockNumber)
+	res += fmt.Sprintf("basic block number	: %d\n", r.statistics.NumberBasicBlock)
 	res += fmt.Sprintf("coverage			: %d\n", len(r.statistics.Coverage.Coverage))
 
 	for _, s := range r.statistics.Stat {
