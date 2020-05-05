@@ -13,7 +13,8 @@ type results struct {
 	baseName string
 	result   []*result
 
-	maxCoverage map[uint32]uint32
+	maxCoverage                map[uint32]uint32
+	uncoveredAddressDependency map[uint32]*pb.UncoveredAddress
 }
 
 func (r *results) read(path string) {
@@ -43,6 +44,16 @@ func (r *results) read(path string) {
 	for _, rr := range r.result {
 		for a, c := range rr.statistics.Coverage.Coverage {
 			r.maxCoverage[a] += c
+		}
+	}
+
+	r.getUncoveredAddressDependency()
+}
+
+func (r *results) getUncoveredAddressDependency() {
+	for _, rr := range r.result {
+		for a, ua := range rr.dataDependency.UncoveredAddress {
+			r.uncoveredAddressDependency[a] = ua
 		}
 	}
 }

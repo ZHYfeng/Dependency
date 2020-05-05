@@ -49,9 +49,9 @@ func (d *device) read(path string) {
 	_ = os.Remove(filepath.Join(d.path, pb.NameData))
 	fmt.Printf("remove %s\n", pb.NameData)
 
+	d.checkStatistic()
 	d.checkCoverage()
 	d.checkUncoveredAddress()
-	d.checkStatistic()
 
 }
 
@@ -212,70 +212,79 @@ func (d *device) checkUncoveredAddress() {
 
 	}
 
-	var ua []*pb.UncoveredAddress
+	uacount := map[uint32]uint32{}
+	temp := map[uint32]*pb.UncoveredAddress{}
 	for _, r := range d.resultsWithDra.result {
 
 		r.checkStatistic()
 
-		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")))
-		f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-		for _, uaa := range r.uncoveredAddressDependency {
-			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress-5, uaa.UncoveredAddress-5))
-		}
-		for _, uaa := range r.coveredAddressDependency {
-			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress-5, uaa.UncoveredAddress-5))
-		}
-		_ = f.Close()
-
-		for a, uaa := range r.uncoveredAddressDependency {
-			ress := r.checkUncoveredAddress(a)
-			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-			_, _ = f.WriteString(ress)
-			_ = f.Close()
-			ua = append(ua, uaa)
-		}
-		for a, uaa := range r.coveredAddressDependency {
-			ress := r.checkUncoveredAddress(a)
-			f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-			_, _ = f.WriteString(ress)
-			_ = f.Close()
-			ua = append(ua, uaa)
-		}
-
-		uaStatus := map[pb.TaskStatus]uint32{}
-		for _, uaa := range ua {
-			uaStatus[uaa.RunTimeDate.TaskStatus]++
-		}
-		res += "*******************************************\n"
-		for ts, c := range uaStatus {
-			res += ts.String() + fmt.Sprintf("%5d", c) + "\n"
-		}
-		res += "*******************************************\n"
-
-		sort.Slice(ua, func(i, j int) bool {
-			return ua[i].NumberDominatorInstructions < ua[j].NumberDominatorInstructions
-		})
-		res += "*******************************************\n"
-		for _, uaa := range ua {
-			res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
-			res += " #inst : " + fmt.Sprintf("%4d", uaa.NumberDominatorInstructions)
-			res += " #input : " + fmt.Sprintf("%3d", len(uaa.Input))
-			res += " #write : " + fmt.Sprintf("%3d", len(uaa.WriteAddress))
-			count := uint32(0)
-			for _, c := range uaa.TasksCount {
-				count += c
+		for aa, uaa := range r.uncoveredAddressDependency {
+			temp[aa] = uaa
+			if c, ok := uacount[aa]; ok {
+				uacount[aa] = c + 1
+			} else {
+				uacount[aa] = 1
 			}
-			res += " #task : " + fmt.Sprintf("%5d", count)
-			count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
-			res += " #tested : " + fmt.Sprintf("%5d", count)
-			res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RecursiveCount)
-			res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
-			res += "\n"
 		}
-		res += "*******************************************\n"
 	}
 
-	f, _ := os.OpenFile(d.dataPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	aua := map[uint32]*pb.UncoveredAddress{}
+	cc := uint32(len(d.resultsWithDra.result))
+	for a, c := range uacount {
+		if c == cc {
+			aua[a] = temp[a]
+		}
+	}
+
+	_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")))
+	f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+
+	for a, uaa := range aua {
+		_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress-5, uaa.UncoveredAddress-5))
+
+		ff, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		for _, r := range d.resultsWithDra.result {
+			ress := r.checkUncoveredAddress(a)
+			_, _ = ff.WriteString(ress)
+		}
+		_ = ff.Close()
+
+	}
+	_ = f.Close()
+
+	uaStatus := map[pb.TaskStatus]uint32{}
+	for _, uaa := range aua {
+		uaStatus[uaa.RunTimeDate.TaskStatus]++
+	}
+	res += "*******************************************\n"
+	for ts, c := range uaStatus {
+		res += ts.String() + fmt.Sprintf("%5d", c) + "\n"
+	}
+	res += "*******************************************\n"
+
+	sort.Slice(aua, func(i, j int) bool {
+		return aua[uint32(i)].NumberDominatorInstructions < aua[uint32(j)].NumberDominatorInstructions
+	})
+	res += "*******************************************\n"
+	for _, uaa := range temp {
+		res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
+		res += " #inst : " + fmt.Sprintf("%4d", uaa.NumberDominatorInstructions)
+		res += " #input : " + fmt.Sprintf("%3d", len(uaa.Input))
+		res += " #write : " + fmt.Sprintf("%3d", len(uaa.WriteAddress))
+		count := uint32(0)
+		for _, c := range uaa.TasksCount {
+			count += c
+		}
+		res += " #task : " + fmt.Sprintf("%5d", count)
+		count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
+		res += " #tested : " + fmt.Sprintf("%5d", count)
+		res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RecursiveCount)
+		res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
+		res += "\n"
+	}
+	res += "*******************************************\n"
+
+	f, _ = os.OpenFile(d.dataPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(res)
 	_ = f.Close()
 
