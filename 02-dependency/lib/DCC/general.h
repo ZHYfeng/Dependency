@@ -27,6 +27,8 @@ namespace dra {
     std::string getFunctionName(llvm::Function *f);
 
     void dump_inst(llvm::Instruction *inst);
+
+    std::string dump_inst_booltin(llvm::Instruction *inst);
 }
 
 #endif //INC_2018_DEPENDENCY_GENERAL_H

@@ -104,4 +104,29 @@ namespace dra {
         std::cout << "https://elixir.bootlin.com/linux/v4.16/source/" << Path << "#L" << line << std::endl;
 
     }
+
+    std::string dump_inst_booltin(llvm::Instruction *inst) {
+        std::string res;
+
+        if (inst != nullptr) {
+//            inst->dump();
+        } else {
+            return res;
+        }
+        auto b = inst->getParent();
+        auto f = b->getParent();
+
+        unsigned int line = 1;
+        std::string Path = dra::getFileName(f);
+        if (inst->hasMetadata()) {
+            const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
+            Path = debugInfo->getFilename().str();
+            line = debugInfo->getLine();
+        }
+
+        res += "https://elixir.bootlin.com/linux/v4.16/source/" + Path + "#L" + std::to_string(line);
+        return res;
+    }
+
+
 }

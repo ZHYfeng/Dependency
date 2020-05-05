@@ -369,6 +369,9 @@ namespace dra {
         std::string Line;
         std::stringstream ss;
         std::ifstream objdumpFile(file);
+
+        std::ofstream ws("write_statement.txt");
+
         auto *coutbuf = std::cout.rdbuf();
         if (objdumpFile.is_open()) {
             while (getline(objdumpFile, Line)) {
@@ -401,6 +404,10 @@ namespace dra {
                             continue;
                         } else {
                             db->real_dump(1);
+
+
+                            ws << std::hex << not_covered_address << "##"
+                               << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
                         }
                     }
 
@@ -413,17 +420,16 @@ namespace dra {
                         } else {
                             db->real_dump(0);
 
-                            uint64_t idx = 0;
-                            llvm::BasicBlock *b = dra::getFinalBB(db->basicBlock);
-                            auto sta = this->getStaticAnalysisResult(db->parent->Path);
-                            if (sta == nullptr) {
-                                continue;
-                            }
-                            sta::MODS *write_basicblock = sta->GetAllGlobalWriteBBs(b, idx);
+                            ws << std::hex << condition_address << "##"
+                               << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                            ws << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
+                            ws << "\n";
+
+                            sta::MODS *write_basicblock = get_write_basicblock(db);
                             if (write_basicblock == nullptr) {
                                 std::cout << "# no taint or out side" << std::endl;
                             } else if (write_basicblock->empty()) {
-                                std::cout << "# unrelated to gv" << std::endl;
+                                std::cout << "# related to gv but not find write statement" << std::endl;
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 for (auto &x : *write_basicblock) {
@@ -436,7 +442,7 @@ namespace dra {
                                         for (auto cmd : c->cmd) {
                                             std::cout << "cmd hex: " << std::hex << cmd << "\n";
                                         }
-                                        this->DM.dump_ctxs(&c->ctx);
+                                        dra::DataManagement::dump_ctxs(&c->ctx);
                                         auto ctx = c->ctx;
                                         auto inst = ctx.begin();
                                         std::string funtion_name = getFunctionName((*inst)->getParent()->getParent());
@@ -457,6 +463,11 @@ namespace dra {
                                         std::cout << "index : " << index << std::endl;
                                     }
                                     std::cout << "--------------------------------------------" << std::endl;
+
+                                    ws << " ## ##" << tdb->trace_pc_address
+                                       << dra::dump_inst_booltin(getRealBB(tdb->basicBlock)->getTerminator()) << "##"
+                                       << x->is_trait_fixed() << "##";
+                                    ws << "\n";
                                 }
                             }
                         }
