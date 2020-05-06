@@ -726,7 +726,7 @@ func (m *DataDependency) getTasks(sig string, indexBits uint32, writeSig string,
 				t = TaskStatus_untested
 			}
 		} else {
-			log.Fatalf("getTasks : can not find the writeAddress")
+			ua.WriteAddressStatus[writeAddress] = TaskStatus_untested
 		}
 
 		if ua.Count < (ua.NumberDominatorInstructions+TaskCountBase)*TaskCountLimitation {
