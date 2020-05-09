@@ -305,7 +305,6 @@ func (d *device) checkUncoveredAddress() {
 
 func (d *device) checkStatistic() {
 	name := d.baseName
-
 	f := func(gs func(r *result) *statistic) {
 		var ss []*statistic
 		for _, r := range d.resultsWithDra.result {

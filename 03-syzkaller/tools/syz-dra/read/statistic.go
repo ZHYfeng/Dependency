@@ -16,7 +16,8 @@ type statistic struct {
 }
 
 func (s *statistic) output(dir string) {
-	path := filepath.Join(dir, s.Name, ".txt")
+	path := filepath.Join(dir, s.Name, s.Name + ".txt")
+	fmt.Printf("statistic path : %s\n", path)
 	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(fmt.Sprintf("%s", s.Name))
 	for _, v := range s.data {
