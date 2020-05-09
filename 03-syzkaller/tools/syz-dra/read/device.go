@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
+
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 )
 
 type device struct {
@@ -212,34 +213,36 @@ func (d *device) checkUncoveredAddress() {
 
 	}
 
-	uacount := map[uint32]uint32{}
+	uncovering_address_count := map[uint32]uint32{}
 	temp := map[uint32]*pb.UncoveredAddress{}
 	for _, r := range d.resultsWithDra.result {
 
 		r.checkStatistic()
 
 		for aa, uaa := range r.uncoveredAddressDependency {
-			temp[aa] = uaa
-			if c, ok := uacount[aa]; ok {
-				uacount[aa] = c + 1
-			} else {
-				uacount[aa] = 1
+			if len(uaa.WriteAddress) > 0 {
+				temp[aa] = uaa
+				if c, ok := uncovering_address_count[aa]; ok {
+					uncovering_address_count[aa] = c + 1
+				} else {
+					uncovering_address_count[aa] = 1
+				}
 			}
 		}
 	}
 
-	aua := map[uint32]*pb.UncoveredAddress{}
-	cc := uint32(len(d.resultsWithDra.result))
-	for a, c := range uacount {
-		if c == cc {
-			aua[a] = temp[a]
+	all_uncovering_address := map[uint32]*pb.UncoveredAddress{}
+	result_size := uint32(len(d.resultsWithDra.result))
+	for a, c := range uncovering_address_count {
+		if c == result_size {
+			all_uncovering_address[a] = temp[a]
 		}
 	}
 
 	_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")))
 	f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 
-	for a, uaa := range aua {
+	for a, uaa := range all_uncovering_address {
 		_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress-5, uaa.UncoveredAddress-5))
 
 		ff, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
@@ -253,7 +256,7 @@ func (d *device) checkUncoveredAddress() {
 	_ = f.Close()
 
 	uaStatus := map[pb.TaskStatus]uint32{}
-	for _, uaa := range aua {
+	for _, uaa := range all_uncovering_address {
 		uaStatus[uaa.RunTimeDate.TaskStatus]++
 	}
 	res += "*******************************************\n"
@@ -262,8 +265,8 @@ func (d *device) checkUncoveredAddress() {
 	}
 	res += "*******************************************\n"
 
-	sort.Slice(aua, func(i, j int) bool {
-		return aua[uint32(i)].NumberDominatorInstructions < aua[uint32(j)].NumberDominatorInstructions
+	sort.Slice(all_uncovering_address, func(i, j int) bool {
+		return all_uncovering_address[uint32(i)].NumberDominatorInstructions < all_uncovering_address[uint32(j)].NumberDominatorInstructions
 	})
 	res += "*******************************************\n"
 	for _, uaa := range temp {

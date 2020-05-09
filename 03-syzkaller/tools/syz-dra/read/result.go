@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
-	"github.com/golang/protobuf/proto"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"github.com/golang/protobuf/proto"
 )
 
 type result struct {
@@ -144,15 +145,18 @@ func (r *result) checkTasks() {
 
 func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 
+	// fmt.Printf("0xffffffff%x\n", uncoveredAddress)
 	var ua *pb.UncoveredAddress
 	if a, ok := r.dataDependency.UncoveredAddress[uncoveredAddress]; ok {
 		ua = a
+		// fmt.Printf("find in dataDependency\n")
 	} else if a, ok := r.dataResult.CoveredAddress[uncoveredAddress]; ok {
 		ua = a
+		// fmt.Printf("find in dataResult\n")
 	} else {
 		return ""
 	}
-	fmt.Printf("0xffffffff%x\n", ua.UncoveredAddress)
+	// fmt.Printf("%v\n", ua)
 	ua.RunTimeDate.TaskStatus = pb.TaskStatus_not_find_input
 
 	res := ""

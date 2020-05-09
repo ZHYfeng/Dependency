@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"os"
 	"path/filepath"
+
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 )
 
 type statistic struct {
@@ -123,15 +124,17 @@ func write_statement(r *result) *statistic {
 	res.data[index+2] = 0
 	res.data[index+3] = 0
 	for _, ua := range r.dataDependency.UncoveredAddress {
-		res.data[index+0] += uint32(len(ua.WriteAddress))
-		for wa := range ua.WriteAddress {
-			if ws, ok := r.dataDependency.WriteAddress[wa]; ok {
-				if ws.Kind == pb.WriteStatementKind_WriteStatementConstant {
-					res.data[index+1]++
-				} else if ws.Kind == pb.WriteStatementKind_WriteStatementNonconstant {
-					res.data[index+2]++
-				} else {
+		if len(ua.WriteAddress) > 0 {
+			res.data[index+0] += uint32(len(ua.WriteAddress))
+			for wa := range ua.WriteAddress {
+				if ws, ok := r.dataDependency.WriteAddress[wa]; ok {
+					if ws.Kind == pb.WriteStatementKind_WriteStatementConstant {
+						res.data[index+1]++
+					} else if ws.Kind == pb.WriteStatementKind_WriteStatementNonconstant {
+						res.data[index+2]++
+					} else {
 
+					}
 				}
 			}
 		}
