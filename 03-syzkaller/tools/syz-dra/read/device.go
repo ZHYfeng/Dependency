@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
@@ -265,9 +264,9 @@ func (d *device) checkUncoveredAddress() {
 	}
 	res += "*******************************************\n"
 
-	sort.Slice(all_uncovering_address, func(i, j int) bool {
-		return all_uncovering_address[uint32(i)].NumberDominatorInstructions < all_uncovering_address[uint32(j)].NumberDominatorInstructions
-	})
+	// sort.Slice(all_uncovering_address, func(i, j int) bool {
+	// 	return all_uncovering_address[uint32(i)].NumberDominatorInstructions < all_uncovering_address[uint32(j)].NumberDominatorInstructions
+	// })
 	res += "*******************************************\n"
 	for _, uaa := range temp {
 		res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
