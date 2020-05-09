@@ -23,6 +23,9 @@ func (r *results) read(path string) {
 	r.baseName = filepath.Base(path)
 
 	r.result = []*result{}
+	r.maxCoverage = map[uint32]uint32{}
+	r.uncoveredAddressDependency = map[uint32]*pb.UncoveredAddress{}
+
 	err := filepath.Walk(r.path,
 		func(path string, info os.FileInfo, err error) error {
 			if err != nil {
