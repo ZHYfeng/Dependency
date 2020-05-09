@@ -41,6 +41,7 @@ func average(ss []*statistic) *statistic {
 		for _, t := range ss[0].tag {
 			res.tag = append(res.tag, t)
 		}
+		res.data = make([]uint32, len(res.tag))
 	} else {
 		return nil
 	}
@@ -48,13 +49,13 @@ func average(ss []*statistic) *statistic {
 		if s.Kind != res.Kind {
 			return nil
 		} else {
-			for _, d := range ss[0].data {
-				res.data = append(res.data, d)
+			for i, d := range s.data {
+				res.data[i] += d
 			}
 		}
 	}
 	for i := range res.data {
-		res.data[i] /= uint32(len(res.data))
+		res.data[i] /= uint32(len(ss))
 	}
 	return res
 }
@@ -80,6 +81,7 @@ func prevalent(r *result) *statistic {
 
 	index = 0
 	res.data[index+0] = r.statistics.NumberBasicBlockReal
+	fmt.Printf("r.statistics.NumberBasicBlockReal : %d\n", r.statistics.NumberBasicBlockReal)
 	res.data[index+1] = r.statistics.NumberBasicBlockCovered
 	res.data[index+2] = res.data[index+0] - res.data[index+1]
 	res.data[index+3] = uint32(len(r.dataDependency.UncoveredAddress))
@@ -120,19 +122,20 @@ func write_statement(r *result) *statistic {
 	index := 0
 
 	index = 0
-	res.data[index+0] = uint32(len(r.dataDependency.UncoveredAddress))
+	res.data[index+0] = 0
 	res.data[index+1] = 0
 	res.data[index+2] = 0
 	res.data[index+3] = 0
 	for _, ua := range r.dataDependency.UncoveredAddress {
 		if len(ua.WriteAddress) > 0 {
-			res.data[index+0] += uint32(len(ua.WriteAddress))
+			res.data[index+0] += 1
+			res.data[index+1] += uint32(len(ua.WriteAddress))
 			for wa := range ua.WriteAddress {
 				if ws, ok := r.dataDependency.WriteAddress[wa]; ok {
 					if ws.Kind == pb.WriteStatementKind_WriteStatementConstant {
-						res.data[index+1]++
-					} else if ws.Kind == pb.WriteStatementKind_WriteStatementNonconstant {
 						res.data[index+2]++
+					} else if ws.Kind == pb.WriteStatementKind_WriteStatementNonconstant {
+						res.data[index+3]++
 					} else {
 
 					}
@@ -171,12 +174,22 @@ func unstable(r *result) *statistic {
 	index := 0
 
 	index = 0
+	res.data[index+0] = 0
 	res.data[index+1] = 0
 	res.data[index+2] = 0
-	res.data[index+0] = uint32(len(r.dataDependency.Input))
 	for _, i := range r.dataDependency.Input {
-		res.data[index+1] += i.NumberConditions
-		res.data[index+2] += i.NumberConditionsDependency
+		if len(i.UncoveredAddress) > 0 {
+			res.data[index+0] += 1
+			res.data[index+1] += uint32(len(i.UncoveredAddress))
+			// fmt.Printf("len(i.UncoveredAddress) : %d\n", len(i.UncoveredAddress))
+			for address := range i.UncoveredAddress {
+				if ua, ok := r.dataDependency.UncoveredAddress[address]; ok {
+					if ua.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
+						res.data[index+2] += 1
+					}
+				}
+			}
+		}
 	}
 	res.data[index+1] /= res.data[index+0]
 	res.data[index+2] /= res.data[index+0]
