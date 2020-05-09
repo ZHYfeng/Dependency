@@ -152,6 +152,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 	} else {
 		return ""
 	}
+	fmt.Printf("0xffffffff%x\n", ua.UncoveredAddress)
 	ua.RunTimeDate.TaskStatus = pb.TaskStatus_not_find_input
 
 	res := ""
