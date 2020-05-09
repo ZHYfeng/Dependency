@@ -90,6 +90,13 @@ func (m *Input) mergeInput(d *Input) {
 		}
 	}
 
+	if m.NumberConditions < d.NumberConditions {
+		m.NumberConditions = d.NumberConditions
+	}
+	if m.NumberConditionsDependency < d.NumberConditionsDependency {
+		m.NumberConditionsDependency = d.NumberConditionsDependency
+	}
+
 	return
 }
 
