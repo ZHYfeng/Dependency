@@ -365,120 +365,6 @@ namespace dra {
         }
     }
 
-    void DependencyControlCenter::check_uncovered_addresses_depednency(const std::string &file) {
-        std::string Line;
-        std::stringstream ss;
-        std::ifstream objdumpFile(file);
-
-        std::ofstream ws("write_statement.txt");
-
-        auto *coutbuf = std::cout.rdbuf();
-        if (objdumpFile.is_open()) {
-            while (getline(objdumpFile, Line)) {
-                uint64_t condition_address = 0, not_covered_address = 0;
-                uint64_t s = Line.find('&');
-                if (s < Line.size()) {
-                    ss.str("");
-                    for (unsigned long i = 0; i < s; i++) {
-                        ss << Line.at(i);
-                    }
-                    condition_address = std::stoul(ss.str(), nullptr, 16);
-                    ss.str("");
-                    for (unsigned long i = s + 1; i < Line.size(); i++) {
-                        ss << Line.at(i);
-                    }
-                    not_covered_address = std::stoul(ss.str(), nullptr, 16);
-
-                    std::stringstream stream;
-                    stream << std::hex << condition_address;
-                    std::string result(stream.str());
-                    std::ofstream out("0x" + result + ".txt");
-                    std::cout << "0x" + result + ".txt" << std::endl;
-                    std::cout.rdbuf(out.rdbuf());
-
-                    std::cout << "# not covered address address : 0x" << std::hex << not_covered_address << std::endl;
-                    if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
-                        DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
-                        if (db == nullptr) {
-                            std::cout << "db == nullptr" << std::endl;
-                            continue;
-                        } else {
-                            db->real_dump(1);
-
-
-                            ws << std::hex << not_covered_address << "##"
-                               << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
-                        }
-                    }
-
-                    std::cout << "# condition address : " << std::hex << condition_address << std::endl;
-                    if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
-                        DBasicBlock *db = DM.Address2BB[condition_address]->parent;
-                        if (db == nullptr) {
-                            std::cout << "db == nullptr" << std::endl;
-                            continue;
-                        } else {
-                            db->real_dump(0);
-
-                            ws << std::hex << condition_address << "##"
-                               << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
-                            ws << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
-                            ws << "\n";
-
-                            sta::MODS *write_basicblock = get_write_basicblock(db);
-                            if (write_basicblock == nullptr) {
-                                std::cout << "# no taint or out side" << std::endl;
-                            } else if (write_basicblock->empty()) {
-                                std::cout << "# related to gv but not find write statement" << std::endl;
-                            } else if (!write_basicblock->empty()) {
-                                std::cout << "# write address : " << write_basicblock->size() << std::endl;
-                                for (auto &x : *write_basicblock) {
-                                    DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
-                                    tdb->real_dump(2);
-                                    std::cout << "repeat : " << x->repeat << std::endl;
-                                    std::cout << "priority : " << x->prio + 100 << std::endl;
-                                    std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
-                                    for (auto c : *cmd_ctx) {
-                                        for (auto cmd : c->cmd) {
-                                            std::cout << "cmd hex: " << std::hex << cmd << "\n";
-                                        }
-                                        dra::DataManagement::dump_ctxs(&c->ctx);
-                                        auto ctx = c->ctx;
-                                        auto inst = ctx.begin();
-                                        std::string funtion_name = getFunctionName((*inst)->getParent()->getParent());
-                                        std::string file_operations;
-                                        std::string kind;
-                                        this->getFileOperations(&funtion_name, &file_operations, &kind);
-                                        int index = 0;
-                                        for (int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
-                                            if (file_operations_kind_Name(static_cast<file_operations_kind>(i)) ==
-                                                kind) {
-                                                index = i;
-                                                break;
-                                            }
-                                        }
-                                        std::cout << "funtion_name : " << funtion_name << std::endl;
-                                        std::cout << "file_operations : " << file_operations << std::endl;
-                                        std::cout << "kind : " << kind << std::endl;
-                                        std::cout << "index : " << index << std::endl;
-                                    }
-                                    std::cout << "--------------------------------------------" << std::endl;
-
-                                    ws << " ## ##" << tdb->trace_pc_address
-                                       << dra::dump_inst_booltin(getRealBB(tdb->basicBlock)->getTerminator()) << "##"
-                                       << x->is_trait_fixed() << "##";
-                                    ws << "\n";
-                                }
-                            }
-                        }
-                    }
-                    std::cout.rdbuf(coutbuf);
-                    out.close();
-                }
-            }
-        }
-        objdumpFile.close();
-    }
 
     void DependencyControlCenter::getFileOperations(std::string *function_name, std::string *file_operations,
                                                     std::string *kind) {
@@ -653,9 +539,9 @@ namespace dra {
         }
     }
 
-    sta::MODS *DependencyControlCenter::get_write_basicblock(dra::DBasicBlock *dbb, u_int32_t idx) {
+    sta::MODS *DependencyControlCenter::get_write_basicblock(dra::DBasicBlock *db, u_int32_t idx) {
         sta::MODS *res = nullptr;
-        auto *bb = dra::getFinalBB(dbb->basicBlock);
+        auto *bb = dra::getFinalBB(db->basicBlock);
 
 
 #if DEBUG
@@ -668,7 +554,7 @@ namespace dra {
             dra::outputTime("get useful static analysis result from cache");
 #endif
         } else {
-            auto sta = this->getStaticAnalysisResult(dbb->parent->Path);
+            auto sta = this->getStaticAnalysisResult(db->parent->Path);
             if (sta == nullptr) {
                 return res;
             }
@@ -677,14 +563,14 @@ namespace dra {
                 // no taint or out side
 #if DEBUG
                 dra::outputTime("allBasicblock == nullptr");
-                dbb->real_dump();
+                db->real_dump();
 #endif
             } else if (write_basicblock->empty()) {
                 // related to gv but can not find write statements
                 res = write_basicblock;
 #if DEBUG
                 dra::outputTime("allBasicblock->size() == 0");
-                dbb->dump();
+                db->dump();
 #endif
             } else if (!write_basicblock->empty()) {
                 // related to gv and find write statements
@@ -698,6 +584,192 @@ namespace dra {
         }
 
         return res;
+    }
+
+
+    void DependencyControlCenter::check_uncovering_addresses_dependnency(const std::string &file) {
+
+        std::stringstream ss;
+
+        std::ifstream conditions(file);
+        std::string Line;
+
+        std::ofstream ND("conditionND.txt");
+        std::ofstream DN("conditionDN.txt");
+        std::ofstream D("conditionD.txt");
+
+        auto *coutbuf = std::cout.rdbuf();
+        if (conditions.is_open()) {
+            while (getline(conditions, Line)) {
+                uint64_t condition_address = 0, not_covered_address = 0;
+                uint64_t s = Line.find('&');
+                if (s < Line.size()) {
+                    ss.str("");
+                    for (unsigned long i = 0; i < s; i++) {
+                        ss << Line.at(i);
+                    }
+                    condition_address = std::stoul(ss.str(), nullptr, 16);
+                    ss.str("");
+                    for (unsigned long i = s + 1; i < Line.size(); i++) {
+                        ss << Line.at(i);
+                    }
+                    not_covered_address = std::stoul(ss.str(), nullptr, 16);
+
+                    std::stringstream stream;
+                    stream << std::hex << condition_address;
+                    std::string result(stream.str());
+                    std::ofstream out("0x" + result + ".txt");
+                    std::cout << "0x" + result + ".txt" << std::endl;
+                    std::cout.rdbuf(out.rdbuf());
+
+                    std::cout << "# uncovering address address : 0x" << std::hex << not_covered_address << std::endl;
+                    if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
+                        DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
+                        if (db == nullptr) {
+                            std::cout << "db == nullptr" << std::endl;
+                            continue;
+                        } else {
+                            db->real_dump(1);
+
+
+                            D << std::hex << not_covered_address << "##"
+                              << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                        }
+                    }
+
+                    std::cout << "# condition address : " << std::hex << condition_address << std::endl;
+                    if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
+                        DBasicBlock *db = DM.Address2BB[condition_address]->parent;
+                        if (db == nullptr) {
+                            std::cout << "db == nullptr" << std::endl;
+                            continue;
+                        } else {
+                            db->real_dump(0);
+
+                            sta::MODS *write_basicblock = get_write_basicblock(db);
+                            if (write_basicblock == nullptr) {
+                                std::cout << "# no taint or out side" << std::endl;
+
+                                ND << std::hex << condition_address << "##"
+                                   << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                                ND << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
+                                ND << "\n";
+
+                            } else if (write_basicblock->empty()) {
+                                std::cout << "# related to gv but not find write statement" << std::endl;
+
+                                DN << std::hex << condition_address << "##"
+                                   << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                                DN << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
+                                DN << "\n";
+
+
+                            } else if (!write_basicblock->empty()) {
+                                std::cout << "# write address : " << write_basicblock->size() << std::endl;
+
+                                D << std::hex << condition_address << "##"
+                                  << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                                D << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
+                                D << "\n";
+
+                                for (auto &x : *write_basicblock) {
+                                    DBasicBlock *tdb = this->DM.get_DB_from_bb(x->B);
+                                    tdb->real_dump(2);
+                                    std::cout << "repeat : " << x->repeat << std::endl;
+                                    std::cout << "priority : " << x->prio + 100 << std::endl;
+                                    std::vector<sta::cmd_ctx *> *cmd_ctx = x->get_cmd_ctx();
+                                    for (auto c : *cmd_ctx) {
+                                        for (auto cmd : c->cmd) {
+                                            std::cout << "cmd hex: " << std::hex << cmd << "\n";
+                                        }
+                                        dra::DataManagement::dump_ctxs(&c->ctx);
+                                        auto ctx = c->ctx;
+                                        auto inst = ctx.begin();
+                                        std::string funtion_name = getFunctionName((*inst)->getParent()->getParent());
+                                        std::string file_operations;
+                                        std::string kind;
+                                        this->getFileOperations(&funtion_name, &file_operations, &kind);
+                                        int index = 0;
+                                        for (int i = file_operations_kind_MIN; i < file_operations_kind_MAX; i++) {
+                                            if (file_operations_kind_Name(static_cast<file_operations_kind>(i)) ==
+                                                kind) {
+                                                index = i;
+                                                break;
+                                            }
+                                        }
+                                        std::cout << "funtion_name : " << funtion_name << std::endl;
+                                        std::cout << "file_operations : " << file_operations << std::endl;
+                                        std::cout << "kind : " << kind << std::endl;
+                                        std::cout << "index : " << index << std::endl;
+                                    }
+                                    std::cout << "--------------------------------------------" << std::endl;
+
+                                    D << " @ @" << tdb->trace_pc_address << "@"
+                                      << dra::dump_inst_booltin(getRealBB(tdb->basicBlock)->getTerminator()) << "@"
+                                      << x->is_trait_fixed() << "@";
+                                    D << "\n";
+                                }
+                            }
+                        }
+                    }
+                    std::cout.rdbuf(coutbuf);
+                    out.close();
+                }
+            }
+        }
+        conditions.close();
+    }
+
+    void DependencyControlCenter::check_write_addresses_dependency(const std::string &file) {
+
+        std::ifstream write(file);
+        std::string Line;
+
+        uint32_t dependency = 0;
+        uint32_t not_dependency = 0;
+        uint32_t other = 0;
+
+        if (write.is_open()) {
+            while (getline(write, Line)) {
+                uint64_t write_address = std::stoul(Line, nullptr, 16);
+
+                if (this->DM.Address2BB.find(write_address) != this->DM.Address2BB.end()) {
+                    DBasicBlock *db = DM.Address2BB[write_address]->parent;
+                    if (db == nullptr) {
+                        std::cout << "db == nullptr" << std::endl;
+                        other++;
+                        continue;
+                    } else {
+                        if (this->is_dependency(db)) {
+                            dependency++;
+                        } else {
+                            not_dependency++;
+                        }
+                    }
+                }
+            }
+        }
+        write.close();
+
+        std::ofstream result("statistic.txt");
+        uint32_t total = dependency + not_dependency + other;
+        result << std::to_string(total) << "@" << std::to_string(dependency) << "@"
+               << std::to_string(dependency * 100 / total) << "@" << std::to_string(not_dependency) << "@"
+               << std::to_string(other) << std::endl;
+    }
+
+    bool DependencyControlCenter::is_dependency(dra::DBasicBlock *db) {
+        for (auto *Pred : llvm::predecessors(getRealBB(db->basicBlock))) {
+            auto db1 = this->DM.get_DB_from_bb(Pred);
+            if (this->get_write_basicblock(db1) == nullptr) {
+                if (this->is_dependency(db1)) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
 } /* namespace dra */

@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"os"
 	"path/filepath"
-
-	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 )
 
 type statistic struct {
@@ -16,12 +15,12 @@ type statistic struct {
 }
 
 func (s *statistic) output(dir string) {
-	path := filepath.Join(dir, s.Name, s.Name + ".txt")
+	path := filepath.Join(dir, s.Name+".txt")
 	fmt.Printf("statistic path : %s\n", path)
 	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(fmt.Sprintf("%s", s.Name))
 	for _, v := range s.data {
-		_, _ = f.WriteString(fmt.Sprintf("##%d", v))
+		_, _ = f.WriteString(fmt.Sprintf("@%d", v))
 	}
 	_, _ = f.WriteString(fmt.Sprintf("\n"))
 	_ = f.Close()
@@ -63,14 +62,16 @@ func average(ss []*statistic) *statistic {
 func prevalent(r *result) *statistic {
 	res := &statistic{
 		Kind: "prevalent",
-		Name: "",
+		Name: r.baseName,
 		tag: []string{
 			"NumberBasicBlockReal",
 			"NumberCovered",
 			"NumberUncovered",
+			"%",
 			"NumberUnresolvedConditions",
 			"NumberNotDependency",
 			"NumberDependency",
+			"%",
 			"NumberInstructions",
 			"NumberInstructionsDominator",
 		},
@@ -79,42 +80,44 @@ func prevalent(r *result) *statistic {
 	res.data = make([]uint32, len(res.tag))
 	index := 0
 
-	index = 0
 	res.data[index+0] = r.statistics.NumberBasicBlockReal
 	fmt.Printf("r.statistics.NumberBasicBlockReal : %d\n", r.statistics.NumberBasicBlockReal)
 	res.data[index+1] = r.statistics.NumberBasicBlockCovered
 	res.data[index+2] = res.data[index+0] - res.data[index+1]
-	res.data[index+3] = uint32(len(r.dataDependency.UncoveredAddress))
+	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	index += 4
 
-	index = 4
-	res.data[index+0] = 0
+	res.data[index+0] = uint32(len(r.dataDependency.UncoveredAddress))
 	res.data[index+1] = 0
 	res.data[index+2] = 0
-	res.data[index+3] = 0
+	res.data[index+4] = 0
+	res.data[index+5] = 0
 	for _, u := range r.dataDependency.UncoveredAddress {
 		if u.Kind == pb.UncoveredAddressKind_UncoveredAddressInputRelated {
-			res.data[index+0]++
-		} else if u.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
 			res.data[index+1]++
-			res.data[index+2] += u.NumberArriveBasicblocks
-			res.data[index+3] += u.NumberDominatorInstructions
+		} else if u.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
+			res.data[index+2]++
+			res.data[index+4] += u.NumberArriveBasicblocks
+			res.data[index+5] += u.NumberDominatorInstructions
 		}
 	}
-	res.data[index+2] /= res.data[index+1]
-	res.data[index+3] /= res.data[index+1]
+	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	res.data[index+4] /= res.data[index+1]
+	res.data[index+5] /= res.data[index+1]
+	index += 6
+
 	return res
 }
 
-func write_statement(r *result) *statistic {
+func writeStatement(r *result) *statistic {
 	res := &statistic{
-		Kind: "write_statement",
-		Name: "",
+		Kind: "writeStatement",
+		Name: r.baseName,
 		tag: []string{
 			"NumberConditions",
 			"NumberWriteStatement",
 			"NumberConstant",
 			"NumberExpression",
-			"NumberUseful",
 		},
 		data: nil,
 	}
@@ -147,54 +150,69 @@ func write_statement(r *result) *statistic {
 	res.data[index+1] /= res.data[index+0]
 	res.data[index+2] /= res.data[index+0]
 	res.data[index+3] /= res.data[index+0]
+	index += 4
+
 	return res
 }
 
-func unstable(r *result) *statistic {
+func controlFlow(r *result) *statistic {
 	res := &statistic{
-		Kind: "unstable",
-		Name: "",
+		Kind: "controlFlow",
+		Name: r.baseName,
 		tag: []string{
-			"NumberInput",
+			"NumberTestCase",
 			"NumberCondition",
 			"NumberDependency",
-			"NumberTaskCondition",
-			"NumberStable",
-			"NumberUnstable",
-			"NumberTaskWrite",
-			"NumberStable",
-			"NumberUnstable",
-			"NumberCombination",
-			"NumberStable",
-			"NumberUnstable",
+			"%",
 		},
 		data: nil,
 	}
 	res.data = make([]uint32, len(res.tag))
 	index := 0
 
-	index = 0
 	res.data[index+0] = 0
 	res.data[index+1] = 0
 	res.data[index+2] = 0
 	for _, i := range r.dataDependency.Input {
 		if len(i.UncoveredAddress) > 0 {
 			res.data[index+0] += 1
-			res.data[index+1] += uint32(len(i.UncoveredAddress))
-			// fmt.Printf("len(i.UncoveredAddress) : %d\n", len(i.UncoveredAddress))
-			for address := range i.UncoveredAddress {
-				if ua, ok := r.dataDependency.UncoveredAddress[address]; ok {
-					if ua.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
-						res.data[index+2] += 1
-					}
-				}
-			}
+
+			res.data[index+1] = i.NumberConditions
+			res.data[index+2] = i.NumberConditionsDependency
+
 		}
 	}
 	res.data[index+1] /= res.data[index+0]
 	res.data[index+2] /= res.data[index+0]
+	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	index += 4
 
-	index = 3
+	return res
+}
+
+func unstable(r *result) *statistic {
+	res := &statistic{
+		Kind: "unstable",
+		Name: r.baseName,
+		tag: []string{
+			"NumberTaskCondition",
+			"NumberStable",
+			"NumberUnstable",
+			"%",
+			"NumberTaskWrite",
+			"NumberStable",
+			"NumberUnstable",
+			"%",
+			"NumberCombination",
+			"NumberStable",
+			"NumberUnstable",
+			"%",
+		},
+		data: nil,
+	}
+	res.data = make([]uint32, len(res.tag))
+	index := 0
+
 	for _, t := range r.dataRunTime.Tasks.TaskArray {
 		for _, ua := range t.UncoveredAddress {
 			if ua.CheckCondition {
@@ -205,8 +223,9 @@ func unstable(r *result) *statistic {
 		}
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
+	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	index += 4
 
-	index = 6
 	for _, t := range r.dataRunTime.Tasks.TaskArray {
 		for _, ua := range t.UncoveredAddress {
 			if ua.CheckWrite {
@@ -217,8 +236,9 @@ func unstable(r *result) *statistic {
 		}
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
+	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	index += 4
 
-	index = 9
 	for _, t := range r.dataRunTime.Tasks.TaskArray {
 		for _, tr := range t.TaskRunTimeData {
 			for _, t := range tr.UncoveredAddress {
@@ -231,6 +251,41 @@ func unstable(r *result) *statistic {
 		}
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
+	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	index += 4
+
+	return res
+}
+
+func recursive(r *result) *statistic {
+	res := &statistic{
+		Kind: "recursive",
+		Name: r.baseName,
+		tag: []string{
+			"NumberWriteStatement",
+			"NumberCovering",
+			"NumberUncovering",
+			"%",
+			"NumberDependency",
+			"%",
+		},
+		data: nil,
+	}
+	res.data = make([]uint32, len(res.tag))
+	index := 0
+
+	for _, wa := range r.dataDependency.WriteAddress {
+		res.data[index+0]++
+		if len(wa.Input) > 0 {
+			res.data[index+1]++
+		} else {
+			res.data[index+2]++
+		}
+	}
+	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	res.data[index+4] = 0
+	res.data[index+5] = res.data[index+4] * 100 / res.data[index+2]
+	index += 6
 
 	return res
 }

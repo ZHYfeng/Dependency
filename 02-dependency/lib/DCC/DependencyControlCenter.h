@@ -27,7 +27,9 @@ namespace dra {
 
         void run();
 
-        void check_uncovered_addresses_depednency(const std::string &file);
+        void check_uncovering_addresses_dependnency(const std::string &file);
+
+        void check_write_addresses_dependency(const std::string &file);
 
         void check_all_condition_();
 
@@ -41,7 +43,7 @@ namespace dra {
 
         sta::MODS *get_write_basicblock(u_int64_t address, u_int32_t idx = 0);
 
-        sta::MODS *get_write_basicblock(dra::DBasicBlock *dbb, u_int32_t idx = 0);
+        sta::MODS *get_write_basicblock(dra::DBasicBlock *db, u_int32_t idx = 0);
 
         void write_basic_block_to_address(sta::Mod *write_basicblock, Condition *condition, WriteAddress *writeAddress);
 
@@ -65,6 +67,8 @@ namespace dra {
         void getFileOperations(std::string *function_name, std::string *file_operations, std::string *kind);
 
         sta::StaticAnalysisResult* getStaticAnalysisResult(const std::string& path);
+
+        bool is_dependency(dra::DBasicBlock *db);
 
     private:
         DependencyRPCClient *client{};

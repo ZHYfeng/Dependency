@@ -191,131 +191,191 @@ func (d *device) checkUncoveredAddress() {
 	res += "covered by syzkaller without dra : " + fmt.Sprintf("%5d", len(UADCWO)) + "\n"
 	res += "*******************************************\n"
 
-	_ = os.Chdir(d.path)
-	err := filepath.Walk(d.path,
-		func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if strings.HasPrefix(info.Name(), "0x") {
-				_ = os.Remove(path)
-			}
-			return nil
-		})
-	if err != nil {
-		log.Println(err)
-	}
-
 	for _, r := range d.resultsWithoutDra.result {
 
 		r.checkStatistic()
 
 	}
 
-	uncovering_address_count := map[uint32]uint32{}
-	temp := map[uint32]*pb.UncoveredAddress{}
-	for _, r := range d.resultsWithDra.result {
+	resultSize := uint32(len(d.resultsWithDra.result))
 
-		r.checkStatistic()
+	write := func() {
+		writeAddressCount := map[uint32]uint32{}
+		tempWA := map[uint32]*pb.WriteAddress{}
+		for _, r := range d.resultsWithDra.result {
 
-		for aa, uaa := range r.uncoveredAddressDependency {
-			if len(uaa.WriteAddress) > 0 {
-				temp[aa] = uaa
-				if c, ok := uncovering_address_count[aa]; ok {
-					uncovering_address_count[aa] = c + 1
-				} else {
-					uncovering_address_count[aa] = 1
+			for address, writeAddress := range r.dataDependency.WriteAddress {
+				if len(writeAddress.Input) == 0 {
+					tempWA[address] = writeAddress
+					if c, ok := writeAddressCount[address]; ok {
+						writeAddressCount[address] = c + 1
+					} else {
+						writeAddressCount[address] = 1
+					}
 				}
 			}
 		}
-	}
 
-	all_uncovering_address := map[uint32]*pb.UncoveredAddress{}
-	result_size := uint32(len(d.resultsWithDra.result))
-	for a, c := range uncovering_address_count {
-		if c == result_size {
-			all_uncovering_address[a] = temp[a]
+		allWriteAddress := map[uint32]*pb.WriteAddress{}
+		for address, count := range writeAddressCount {
+			if count == resultSize {
+				allWriteAddress[address] = tempWA[address]
+			}
 		}
+
+		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("write.txt")))
+		f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("write.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+
+		for address := range allWriteAddress {
+			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x\n", address-5))
+		}
+		_ = f.Close()
 	}
+	write()
 
-	_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")))
-	f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("not_covered.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-
-	for a, uaa := range all_uncovering_address {
-		_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uaa.ConditionAddress-5, uaa.UncoveredAddress-5))
-
-		ff, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uaa.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	uncovering := func() {
+		uncoveringAddressCount := map[uint32]uint32{}
+		tempUA := map[uint32]*pb.UncoveredAddress{}
 		for _, r := range d.resultsWithDra.result {
-			ress := r.checkUncoveredAddress(a)
-			_, _ = ff.WriteString(ress)
+
+			r.checkStatistic()
+
+			for address, uncoveringAddress := range r.dataDependency.UncoveredAddress {
+				tempUA[address] = uncoveringAddress
+				if c, ok := uncoveringAddressCount[address]; ok {
+					uncoveringAddressCount[address] = c + 1
+				} else {
+					uncoveringAddressCount[address] = 1
+				}
+			}
 		}
-		_ = ff.Close()
 
-	}
-	_ = f.Close()
-
-	uaStatus := map[pb.TaskStatus]uint32{}
-	for _, uaa := range all_uncovering_address {
-		uaStatus[uaa.RunTimeDate.TaskStatus]++
-	}
-	res += "*******************************************\n"
-	for ts, c := range uaStatus {
-		res += ts.String() + fmt.Sprintf("%5d", c) + "\n"
-	}
-	res += "*******************************************\n"
-
-	// sort.Slice(all_uncovering_address, func(i, j int) bool {
-	// 	return all_uncovering_address[uint32(i)].NumberDominatorInstructions < all_uncovering_address[uint32(j)].NumberDominatorInstructions
-	// })
-	res += "*******************************************\n"
-	for _, uaa := range temp {
-		res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
-		res += " #inst : " + fmt.Sprintf("%4d", uaa.NumberDominatorInstructions)
-		res += " #input : " + fmt.Sprintf("%3d", len(uaa.Input))
-		res += " #write : " + fmt.Sprintf("%3d", len(uaa.WriteAddress))
-		count := uint32(0)
-		for _, c := range uaa.TasksCount {
-			count += c
+		allUncoveringAddress := map[uint32]*pb.UncoveredAddress{}
+		for address, count := range uncoveringAddressCount {
+			if count == resultSize {
+				allUncoveringAddress[address] = tempUA[address]
+			}
 		}
-		res += " #task : " + fmt.Sprintf("%5d", count)
-		count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
-		res += " #tested : " + fmt.Sprintf("%5d", count)
-		res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RecursiveCount)
-		res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
-		res += "\n"
+
+		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("uncovering.txt")))
+		f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("uncovering.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+
+		_ = os.Chdir(d.path)
+		err := filepath.Walk(d.path,
+			func(path string, info os.FileInfo, err error) error {
+				if err != nil {
+					return err
+				}
+				if strings.HasPrefix(info.Name(), "0x") {
+					_ = os.Remove(path)
+				}
+				return nil
+			})
+		if err != nil {
+			log.Println(err)
+		}
+
+		for address, uncoveringAddress := range allUncoveringAddress {
+			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uncoveringAddress.ConditionAddress-5, uncoveringAddress.UncoveredAddress-5))
+
+			ff, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uncoveringAddress.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			for _, r := range d.resultsWithDra.result {
+				ress := r.checkUncoveredAddress(address)
+				_, _ = ff.WriteString(ress)
+			}
+			_ = ff.Close()
+
+		}
+		_ = f.Close()
+
+		uaStatus := map[pb.TaskStatus]uint32{}
+		for _, uaa := range allUncoveringAddress {
+			uaStatus[uaa.RunTimeDate.TaskStatus]++
+		}
+		res += "*******************************************\n"
+		for ts, c := range uaStatus {
+			res += ts.String() + fmt.Sprintf("%5d", c) + "\n"
+		}
+		res += "*******************************************\n"
+
+		// sort.Slice(all_uncovering_address, func(i, j int) bool {
+		// 	return all_uncovering_address[uint32(i)].NumberDominatorInstructions < all_uncovering_address[uint32(j)].NumberDominatorInstructions
+		// })
+		res += "*******************************************\n"
+		for _, uaa := range tempUA {
+			res += " uncovered address : " + fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
+			res += " #inst : " + fmt.Sprintf("%4d", uaa.NumberDominatorInstructions)
+			res += " #input : " + fmt.Sprintf("%3d", len(uaa.Input))
+			res += " #write : " + fmt.Sprintf("%3d", len(uaa.WriteAddress))
+			count := uint32(0)
+			for _, c := range uaa.TasksCount {
+				count += c
+			}
+			res += " #task : " + fmt.Sprintf("%5d", count)
+			count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
+			res += " #tested : " + fmt.Sprintf("%5d", count)
+			res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RecursiveCount)
+			res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
+			res += "\n"
+		}
+		res += "*******************************************\n"
+
+		f, _ = os.OpenFile(d.dataPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		_, _ = f.WriteString(res)
+		_ = f.Close()
+
+		_ = os.Chdir(d.path)
+		err = filepath.Walk(d.path,
+			func(path string, info os.FileInfo, err error) error {
+				if err != nil {
+					return err
+				}
+				if strings.HasPrefix(info.Name(), "condition") {
+					_ = os.Remove(path)
+				}
+				return nil
+			})
+		if err != nil {
+			log.Println(err)
+		}
+		cmd := exec.Command(pb.PathA2i, "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-bc="+pb.FileBc, pb.FileDRAConfig)
+
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		log.Println("cmd : ")
+		log.Println(cmd.String())
+		err = cmd.Run()
+		if err != nil {
+			log.Println(err)
+		}
 	}
-	res += "*******************************************\n"
+	uncovering()
 
-	f, _ = os.OpenFile(d.dataPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-	_, _ = f.WriteString(res)
-	_ = f.Close()
-
-	cmd := exec.Command(pb.PathA2i, "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-bc="+pb.FileBc, pb.FileDRAConfig)
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	log.Println("cmd : ")
-	log.Println(cmd.String())
-	err = cmd.Run()
-	if err != nil {
-		log.Println(err)
-	}
 }
 
 func (d *device) checkStatistic() {
+
 	name := d.baseName
+
+	path := filepath.Join(d.path, name+".txt")
+	_ = os.Remove(path)
+
 	f := func(gs func(r *result) *statistic) {
 		var ss []*statistic
 		for _, r := range d.resultsWithDra.result {
-			ss = append(ss, gs(r))
+			tempS := gs(r)
+			tempS.output(d.path)
+			ss = append(ss, tempS)
 		}
 		s := average(ss)
 		s.Name = name
-		s.output(d.dirName)
+		s.output(d.path)
 	}
 
 	f(prevalent)
-	f(write_statement)
+	f(writeStatement)
+	f(controlFlow)
 	f(unstable)
+	f(recursive)
 }

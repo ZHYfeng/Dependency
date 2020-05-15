@@ -59,10 +59,11 @@ const (
 	NameDataRunTime    = "dataRunTime.bin"
 	NameStatistics     = "statistics.bin"
 	NameUnstable       = "unstable.bin"
-	NameUnstableResult = "unstable.txt"
 
 	NameDriver    = "built-in"
 	FileAsm       = NameDriver + ".s"
 	FileBc        = NameDriver + ".bc"
 	FileDRAConfig = "dra.json"
+
+	NameResultUnstable = "unstable.txt"
 )
