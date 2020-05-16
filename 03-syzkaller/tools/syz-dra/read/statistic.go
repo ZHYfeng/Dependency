@@ -11,7 +11,7 @@ type statistic struct {
 	Kind string
 	Name string
 	tag  []string
-	data []uint32
+	data []float64
 }
 
 func (s *statistic) output(dir string) {
@@ -32,7 +32,7 @@ func average(ss []*statistic) *statistic {
 		Kind: "",
 		Name: "",
 		tag:  []string{},
-		data: []uint32{},
+		data: []float64{},
 	}
 	if len(ss) > 0 {
 		res.Kind = ss[0].Kind
@@ -40,7 +40,7 @@ func average(ss []*statistic) *statistic {
 		for _, t := range ss[0].tag {
 			res.tag = append(res.tag, t)
 		}
-		res.data = make([]uint32, len(res.tag))
+		res.data = make([]float64, len(res.tag))
 	} else {
 		return nil
 	}
@@ -54,7 +54,7 @@ func average(ss []*statistic) *statistic {
 		}
 	}
 	for i := range res.data {
-		res.data[i] /= uint32(len(ss))
+		res.data[i] /= float64(len(ss))
 	}
 	return res
 }
@@ -77,12 +77,12 @@ func prevalent(r *result) *statistic {
 		},
 		data: nil,
 	}
-	res.data = make([]uint32, len(res.tag))
+	res.data = make([]float64, len(res.tag))
 	index := 0
 
-	res.data[index+0] = r.statistics.NumberBasicBlockReal
+	res.data[index+0] = float64(r.statistics.NumberBasicBlockReal)
 	fmt.Printf("r.statistics.NumberBasicBlockReal : %d\n", r.statistics.NumberBasicBlockReal)
-	res.data[index+1] = r.statistics.NumberBasicBlockCovered
+	res.data[index+1] = float64(r.statistics.NumberBasicBlockCovered)
 	res.data[index+2] = res.data[index+0] - res.data[index+1]
 	if res.data[index+0] == 0 {
 		res.data[index+3] = 100
@@ -91,7 +91,7 @@ func prevalent(r *result) *statistic {
 	}
 	index += 4
 
-	res.data[index+0] = uint32(len(r.dataDependency.UncoveredAddress))
+	res.data[index+0] = float64(len(r.dataDependency.UncoveredAddress))
 	res.data[index+1] = 0
 	res.data[index+2] = 0
 	res.data[index+4] = 0
@@ -101,8 +101,8 @@ func prevalent(r *result) *statistic {
 			res.data[index+1]++
 		} else if u.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
 			res.data[index+2]++
-			res.data[index+4] += u.NumberArriveBasicblocks
-			res.data[index+5] += u.NumberDominatorInstructions
+			res.data[index+4] += float64(u.NumberArriveBasicblocks)
+			res.data[index+5] += float64(u.NumberDominatorInstructions)
 		}
 	}
 	if res.data[index+0] == 0 {
@@ -129,7 +129,7 @@ func writeStatement(r *result) *statistic {
 		},
 		data: nil,
 	}
-	res.data = make([]uint32, len(res.tag))
+	res.data = make([]float64, len(res.tag))
 	index := 0
 
 	index = 0
@@ -140,7 +140,7 @@ func writeStatement(r *result) *statistic {
 	for _, ua := range r.dataDependency.UncoveredAddress {
 		if len(ua.WriteAddress) > 0 {
 			res.data[index+0] += 1
-			res.data[index+1] += uint32(len(ua.WriteAddress))
+			res.data[index+1] += float64(len(ua.WriteAddress))
 			for wa := range ua.WriteAddress {
 				if ws, ok := r.dataDependency.WriteAddress[wa]; ok {
 					if ws.Kind == pb.WriteStatementKind_WriteStatementConstant {
@@ -175,7 +175,7 @@ func controlFlow(r *result) *statistic {
 		},
 		data: nil,
 	}
-	res.data = make([]uint32, len(res.tag))
+	res.data = make([]float64, len(res.tag))
 	index := 0
 
 	res.data[index+0] = 0
@@ -185,9 +185,18 @@ func controlFlow(r *result) *statistic {
 		if len(i.UncoveredAddress) > 0 {
 			res.data[index+0] += 1
 
-			res.data[index+1] = i.NumberConditions
-			res.data[index+2] = i.NumberConditionsDependency
+			//res.data[index+1] = float64(i.NumberConditions)
+			//res.data[index+2] = float64(i.NumberConditionsDependency)
 
+			res.data[index+1] += float64(len(i.UncoveredAddress))
+			// fmt.Printf("len(i.UncoveredAddress) : %d\n", len(i.UncoveredAddress))
+			for address := range i.UncoveredAddress {
+				if ua, ok := r.dataDependency.UncoveredAddress[address]; ok {
+					if ua.Kind == pb.UncoveredAddressKind_UncoveredAddressDependencyRelated {
+						res.data[index+2] += 1
+					}
+				}
+			}
 		}
 	}
 	res.data[index+1] /= res.data[index+0]
@@ -222,7 +231,7 @@ func unstable(r *result) *statistic {
 		},
 		data: nil,
 	}
-	res.data = make([]uint32, len(res.tag))
+	res.data = make([]float64, len(res.tag))
 	index := 0
 
 	for _, t := range r.dataRunTime.Tasks.TaskArray {
@@ -295,7 +304,7 @@ func recursive(r *result) *statistic {
 		},
 		data: nil,
 	}
-	res.data = make([]uint32, len(res.tag))
+	res.data = make([]float64, len(res.tag))
 	index := 0
 
 	for _, wa := range r.dataDependency.WriteAddress {
