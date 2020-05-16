@@ -71,7 +71,7 @@ namespace dra {
 
     void dump_inst(llvm::Instruction *inst) {
         if (inst != nullptr) {
-//            inst->dump();
+            // inst->dump();
         } else {
             return;
         }
@@ -80,14 +80,18 @@ namespace dra {
 
         unsigned int line = 1;
         std::string Path = dra::getFileName(f);
-        if (inst->hasMetadata()) {
+        if (inst->hasMetadata())
+        {
             const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
-            Path = debugInfo->getFilename().str();
-            std::cout << Path << " : ";
-            line = debugInfo->getLine();
-            unsigned int column = debugInfo->getColumn();
-            std::cout << std::dec << line << " : ";
-            std::cout << column << " : ";
+            if (debugInfo)
+            {
+                Path = debugInfo->getFilename().str();
+                std::cout << Path << " : ";
+                line = debugInfo->getLine();
+                unsigned int column = debugInfo->getColumn();
+                std::cout << std::dec << line << " : ";
+                std::cout << column << " : ";
+            }
         }
 
         std::string FunctionName = dra::getFunctionName(f);
@@ -120,8 +124,11 @@ namespace dra {
         std::string Path = dra::getFileName(f);
         if (inst->hasMetadata()) {
             const llvm::DebugLoc &debugInfo = inst->getDebugLoc();
-            Path = debugInfo->getFilename().str();
-            line = debugInfo->getLine();
+            if (debugInfo)
+            {
+                Path = debugInfo->getFilename().str();
+                line = debugInfo->getLine();
+            }
         }
 
         res += "https://elixir.bootlin.com/linux/v4.16/source/" + Path + "#L" + std::to_string(line);
