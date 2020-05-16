@@ -157,6 +157,23 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		return ""
 	}
 	// fmt.Printf("%v\n", ua)
+	if ua.Kind == pb.UncoveredAddressKind_UncoveredAddressInputRelated {
+		ua.RunTimeDate = &pb.RunTimeData{
+			Priority:                0,
+			WriteAddress:            0,
+			ConditionAddress:        0,
+			Address:                 0,
+			RightBranchAddress:      nil,
+			TaskStatus:              0,
+			Program:                 nil,
+			Idx:                     0,
+			RecursiveCount:          0,
+			CheckWrite:              false,
+			CheckCondition:          false,
+			CheckAddress:            false,
+			CheckRightBranchAddress: nil,
+		}
+	}
 	ua.RunTimeDate.TaskStatus = pb.TaskStatus_not_find_input
 
 	res := ""
