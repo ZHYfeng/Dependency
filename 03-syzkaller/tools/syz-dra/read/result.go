@@ -157,7 +157,7 @@ func (r *result) checkUncoveredAddress(uncoveredAddress uint32) string {
 		return ""
 	}
 	// fmt.Printf("%v\n", ua)
-	if ua.Kind == pb.UncoveredAddressKind_UncoveredAddressInputRelated {
+	if ua.RunTimeDate == nil {
 		ua.RunTimeDate = &pb.RunTimeData{
 			Priority:                0,
 			WriteAddress:            0,
