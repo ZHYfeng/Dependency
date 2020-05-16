@@ -118,6 +118,11 @@ namespace dra {
                 number_conditions_dependency++;
             }
         }
+#if !DEBUG
+        std::cout << "number_conditions : " << std::dec << number_conditions << std::endl;
+        std::cout << "number_conditions_dependency : " << std::dec << number_conditions_dependency << std::endl;
+#endif
+
 
         uint64_t i = 0;
         for (auto u : dInput->dUncoveredAddress) {
@@ -156,6 +161,13 @@ namespace dra {
                             db->get_number_all_dominator_uncovered_instructions());
                 }
 
+                Input *input = dependency->mutable_input();
+                input->set_sig(dInput->sig);
+                input->set_program(dInput->program);
+                input->set_number_conditions(number_conditions);
+                input->set_number_conditions_dependency(number_conditions_dependency);
+                (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
+
                 sta::MODS *write_basicblock = this->get_write_basicblock(u);
                 if (write_basicblock == nullptr) {
                     uncoveredAddress->set_kind(UncoveredAddressKind::UncoveredAddressInputRelated);
@@ -166,12 +178,6 @@ namespace dra {
 
                     (*uncoveredAddress->mutable_input())[dInput->sig] = u->idx();
 
-                    Input *input = dependency->mutable_input();
-                    input->set_sig(dInput->sig);
-                    input->set_program(dInput->program);
-                    input->set_number_conditions(number_conditions);
-                    input->set_number_conditions_dependency(number_conditions_dependency);
-                    (*input->mutable_uncovered_address())[syzkallerUncoveredAddress] = u->idx();
                     set_runtime_data(uncoveredAddress->mutable_run_time_date(), input->program(), u->idx(),
                                      syzkallerConditionAddress, syzkallerUncoveredAddress);
 
