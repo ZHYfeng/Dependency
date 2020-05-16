@@ -84,7 +84,11 @@ func prevalent(r *result) *statistic {
 	fmt.Printf("r.statistics.NumberBasicBlockReal : %d\n", r.statistics.NumberBasicBlockReal)
 	res.data[index+1] = r.statistics.NumberBasicBlockCovered
 	res.data[index+2] = res.data[index+0] - res.data[index+1]
-	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	if res.data[index+0] == 0 {
+		res.data[index+3] = 100
+	} else {
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	}
 	index += 4
 
 	res.data[index+0] = uint32(len(r.dataDependency.UncoveredAddress))
@@ -101,7 +105,11 @@ func prevalent(r *result) *statistic {
 			res.data[index+5] += u.NumberDominatorInstructions
 		}
 	}
-	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	if res.data[index+0] == 0 {
+		res.data[index+3] = 100
+	} else {
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	}
 	res.data[index+4] /= res.data[index+1]
 	res.data[index+5] /= res.data[index+1]
 	index += 6
@@ -184,7 +192,11 @@ func controlFlow(r *result) *statistic {
 	}
 	res.data[index+1] /= res.data[index+0]
 	res.data[index+2] /= res.data[index+0]
-	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	if res.data[index+0] == 0 {
+		res.data[index+3] = 100
+	} else {
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	}
 	index += 4
 
 	return res
@@ -223,7 +235,11 @@ func unstable(r *result) *statistic {
 		}
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
-	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	if res.data[index+0] == 0 {
+		res.data[index+3] = 100
+	} else {
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	}
 	index += 4
 
 	for _, t := range r.dataRunTime.Tasks.TaskArray {
@@ -236,7 +252,11 @@ func unstable(r *result) *statistic {
 		}
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
-	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	if res.data[index+0] == 0 {
+		res.data[index+3] = 100
+	} else {
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	}
 	index += 4
 
 	for _, t := range r.dataRunTime.Tasks.TaskArray {
@@ -251,7 +271,11 @@ func unstable(r *result) *statistic {
 		}
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
-	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	if res.data[index+0] == 0 {
+		res.data[index+3] = 100
+	} else {
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	}
 	index += 4
 
 	return res
@@ -282,9 +306,17 @@ func recursive(r *result) *statistic {
 			res.data[index+2]++
 		}
 	}
-	res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	if res.data[index+0] == 0 {
+		res.data[index+3] = 100
+	} else {
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+	}
 	res.data[index+4] = 0
-	res.data[index+5] = res.data[index+4] * 100 / res.data[index+2]
+	if res.data[index+0] == 0 {
+		res.data[index+5] = 100
+	} else {
+		res.data[index+5] = res.data[index+4] * 100 / res.data[index+2]
+	}
 	index += 6
 
 	return res
