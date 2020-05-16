@@ -765,6 +765,7 @@ namespace dra {
         FILE *fp;
         fp = fopen("statistic.txt","w");
         fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
+        fclose(fp);
         // char buf[1024];
         // std::sprintf(buf, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
         // std::ofstream result("statistic.txt");
