@@ -314,8 +314,13 @@ func (d *device) checkUncoveredAddress() {
 			res += " #task : " + fmt.Sprintf("%5d", count)
 			count -= uaa.TasksCount[int32(pb.TaskStatus_untested)]
 			res += " #tested : " + fmt.Sprintf("%5d", count)
-			res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RecursiveCount)
-			res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
+			if uaa.RunTimeDate == nil {
+
+			} else {
+				res += " #count : " + fmt.Sprintf("%7d", uaa.RunTimeDate.RecursiveCount)
+				res += " kind : " + uaa.RunTimeDate.TaskStatus.String()
+
+			}
 			res += "\n"
 		}
 		res += "*******************************************\n"
