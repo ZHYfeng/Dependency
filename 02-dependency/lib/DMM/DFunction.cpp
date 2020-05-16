@@ -89,9 +89,11 @@ namespace dra {
     }
 
     void DFunction::setState(CoverKind kind) {
-        if (kind > state) {
+#if DEBUG_ERR
+        if (kind 《 state) {
             std::cerr << "error DFunction kind" << "\n";
         }
+#endif
         state = kind;
     }
 

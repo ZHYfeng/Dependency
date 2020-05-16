@@ -595,10 +595,14 @@ namespace dra {
                 auto f = p[FunctionName];
                 return f;
             } else {
+#if DEBUG_ERR
                 std::cerr << "get_DF_from_bb can not find FunctionName : " << FunctionName << std::endl;
+#endif
             }
         } else {
+#if DEBUG_ERR
             std::cerr << "get_DF_from_f can not find Path : " << Path << std::endl;
+#endif
         }
         return nullptr;
     }

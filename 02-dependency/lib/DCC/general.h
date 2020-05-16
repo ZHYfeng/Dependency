@@ -12,7 +12,7 @@
 #include <llvm/IR/BasicBlock.h>
 
 #define DEBUG 0
-#define DEBUG_ERR 1
+#define DEBUG_ERR 0
 
 namespace dra {
 
