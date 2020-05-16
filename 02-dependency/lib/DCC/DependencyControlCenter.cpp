@@ -629,17 +629,14 @@ namespace dra {
                     std::cout.rdbuf(out.rdbuf());
 
                     std::cout << "# uncovering address address : 0x" << std::hex << not_covered_address << std::endl;
+                    DBasicBlock *db_ua;
                     if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
-                        DBasicBlock *db = DM.Address2BB[not_covered_address]->parent;
-                        if (db == nullptr) {
-                            std::cout << "db == nullptr" << std::endl;
+                        db_ua = DM.Address2BB[not_covered_address]->parent;
+                        if (db_ua == nullptr) {
+                            std::cout << "db_ua == nullptr" << std::endl;
                             continue;
                         } else {
-                            db->real_dump(1);
-
-
-                            D << std::hex << not_covered_address << "##"
-                              << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                            db_ua->real_dump(1);
                         }
                     }
 
@@ -656,6 +653,9 @@ namespace dra {
                             if (write_basicblock == nullptr) {
                                 std::cout << "# no taint or out side" << std::endl;
 
+
+                                ND << std::hex << not_covered_address << "##"
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getTerminator()) << "##";
                                 ND << std::hex << condition_address << "##"
                                    << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
                                 ND << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
@@ -664,6 +664,8 @@ namespace dra {
                             } else if (write_basicblock->empty()) {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
+                                DN << std::hex << not_covered_address << "##"
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getTerminator()) << "##";
                                 DN << std::hex << condition_address << "##"
                                    << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
                                 DN << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
@@ -672,7 +674,9 @@ namespace dra {
 
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
-
+                                
+                                D << std::hex << not_covered_address << "##"
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getTerminator()) << "##";
                                 D << std::hex << condition_address << "##"
                                   << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
                                 D << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
@@ -731,9 +735,9 @@ namespace dra {
         std::ifstream write(file);
         std::string Line;
 
-        uint32_t dependency = 0;
-        uint32_t not_dependency = 0;
-        uint32_t other = 0;
+        float_t dependency = 0;
+        float_t not_dependency = 0;
+        float_t other = 0;
 
         if (write.is_open()) {
             while (getline(write, Line)) {
@@ -756,12 +760,13 @@ namespace dra {
             }
         }
         write.close();
-
-        std::ofstream result("statistic.txt");
+        
         uint32_t total = dependency + not_dependency + other;
-        result << std::to_string(total) << "@" << std::to_string(dependency) << "@"
-               << std::to_string(dependency * 100 / total) << "@" << std::to_string(not_dependency) << "@"
-               << std::to_string(other) << std::endl;
+
+        char buf[1024];
+        std::sprintf(buf, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
+        std::ofstream result("statistic.txt");
+        result << std::string(buf);
     }
 
     bool DependencyControlCenter::is_dependency(dra::DBasicBlock *db) {

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 	"os"
 	"path/filepath"
+
+	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 )
 
 type statistic struct {
@@ -20,7 +21,7 @@ func (s *statistic) output(dir string) {
 	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(fmt.Sprintf("%s", s.Name))
 	for _, v := range s.data {
-		_, _ = f.WriteString(fmt.Sprintf("@%d", v))
+		_, _ = f.WriteString(fmt.Sprintf("@%.2f", v))
 	}
 	_, _ = f.WriteString(fmt.Sprintf("\n"))
 	_ = f.Close()
