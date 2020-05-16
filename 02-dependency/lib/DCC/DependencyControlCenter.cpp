@@ -655,9 +655,9 @@ namespace dra {
 
 
                                 ND << std::hex << not_covered_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getTerminator()) << "##";
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "##";
                                 ND << std::hex << condition_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "##";
                                 ND << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
                                 ND << "\n";
 
@@ -665,9 +665,9 @@ namespace dra {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
                                 DN << std::hex << not_covered_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getTerminator()) << "##";
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "##";
                                 DN << std::hex << condition_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "##";
                                 DN << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
                                 DN << "\n";
 
@@ -676,9 +676,9 @@ namespace dra {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 
                                 D << std::hex << not_covered_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getTerminator()) << "##";
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "##";
                                 D << std::hex << condition_address << "##"
-                                  << dra::dump_inst_booltin(getRealBB(db->basicBlock)->getTerminator()) << "##";
+                                  << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "##";
                                 D << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
                                 D << "\n";
 
@@ -713,9 +713,8 @@ namespace dra {
                                         std::cout << "index : " << index << std::endl;
                                     }
                                     std::cout << "--------------------------------------------" << std::endl;
-
                                     D << " @ @" << tdb->trace_pc_address << "@"
-                                      << dra::dump_inst_booltin(getRealBB(tdb->basicBlock)->getTerminator()) << "@"
+                                      << dra::dump_inst_booltin(getRealBB(tdb->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@"
                                       << x->is_trait_fixed() << "@";
                                     D << "\n";
                                 }
@@ -761,12 +760,15 @@ namespace dra {
         }
         write.close();
         
-        uint32_t total = dependency + not_dependency + other;
+        float_t total = dependency + not_dependency + other;
 
-        char buf[1024];
-        std::sprintf(buf, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
-        std::ofstream result("statistic.txt");
-        result << std::string(buf);
+        FILE *fp;
+        fp = fopen("statistic.txt","w");
+        fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
+        // char buf[1024];
+        // std::sprintf(buf, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
+        // std::ofstream result("statistic.txt");
+        // result << std::string(buf);
     }
 
     bool DependencyControlCenter::is_dependency(dra::DBasicBlock *db) {
