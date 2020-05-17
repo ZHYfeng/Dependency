@@ -205,7 +205,7 @@ func controlFlow(r *result) *statistic {
 	if res.data[index+0] == 0 {
 		res.data[index+3] = 100
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+		res.data[index+3] = res.data[index+2] * 100 / res.data[index+1]
 	}
 	index += 4
 
