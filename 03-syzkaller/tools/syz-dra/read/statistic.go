@@ -86,9 +86,9 @@ func prevalent(r *result) *statistic {
 	res.data[index+1] = float64(r.statistics.NumberBasicBlockCovered)
 	res.data[index+2] = res.data[index+0] - res.data[index+1]
 	if res.data[index+0] == 0 {
-		res.data[index+3] = 100
+		res.data[index+3] = 1
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+		res.data[index+3] = res.data[index+2] / res.data[index+0]
 	}
 	index += 4
 
@@ -107,9 +107,9 @@ func prevalent(r *result) *statistic {
 		}
 	}
 	if res.data[index+0] == 0 {
-		res.data[index+3] = 100
+		res.data[index+3] = 1
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+		res.data[index+3] = res.data[index+2] / res.data[index+0]
 	}
 	res.data[index+4] /= res.data[index+1]
 	res.data[index+5] /= res.data[index+1]
@@ -203,9 +203,9 @@ func controlFlow(r *result) *statistic {
 	res.data[index+1] /= res.data[index+0]
 	res.data[index+2] /= res.data[index+0]
 	if res.data[index+0] == 0 {
-		res.data[index+3] = 100
+		res.data[index+3] = 1
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+1]
+		res.data[index+3] = res.data[index+2] / res.data[index+1]
 	}
 	index += 4
 
@@ -246,9 +246,9 @@ func unstable(r *result) *statistic {
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
 	if res.data[index+0] == 0 {
-		res.data[index+3] = 100
+		res.data[index+3] = 1
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+		res.data[index+3] = res.data[index+2] / res.data[index+0]
 	}
 	index += 4
 
@@ -263,9 +263,9 @@ func unstable(r *result) *statistic {
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
 	if res.data[index+0] == 0 {
-		res.data[index+3] = 100
+		res.data[index+3] = 1
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+		res.data[index+3] = res.data[index+2] / res.data[index+0]
 	}
 	index += 4
 
@@ -282,9 +282,9 @@ func unstable(r *result) *statistic {
 	}
 	res.data[index+0] = res.data[index+1] + res.data[index+2]
 	if res.data[index+0] == 0 {
-		res.data[index+3] = 100
+		res.data[index+3] = 1
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+		res.data[index+3] = res.data[index+2] / res.data[index+0]
 	}
 	index += 4
 
@@ -317,15 +317,15 @@ func recursive(r *result) *statistic {
 		}
 	}
 	if res.data[index+0] == 0 {
-		res.data[index+3] = 100
+		res.data[index+3] = 1
 	} else {
-		res.data[index+3] = res.data[index+2] * 100 / res.data[index+0]
+		res.data[index+3] = res.data[index+2] / res.data[index+0]
 	}
 	res.data[index+4] = 0
 	if res.data[index+0] == 0 {
-		res.data[index+5] = 100
+		res.data[index+5] = 1
 	} else {
-		res.data[index+5] = res.data[index+4] * 100 / res.data[index+2]
+		res.data[index+5] = res.data[index+4] / res.data[index+2]
 	}
 	index += 6
 
