@@ -654,32 +654,32 @@ namespace dra {
                                 std::cout << "# no taint or out side" << std::endl;
 
 
-                                ND << std::hex << not_covered_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "##";
-                                ND << std::hex << condition_address << "##"
-                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "##";
-                                ND << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
+                                ND << std::hex << not_covered_address << "@"
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
+                                ND << std::hex << condition_address << "@"
+                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
+                                ND << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 ND << "\n";
 
                             } else if (write_basicblock->empty()) {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
-                                DN << std::hex << not_covered_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "##";
-                                DN << std::hex << condition_address << "##"
-                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "##";
-                                DN << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
+                                DN << std::hex << not_covered_address << "@"
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
+                                DN << std::hex << condition_address << "@"
+                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
+                                DN << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 DN << "\n";
 
 
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 
-                                D << std::hex << not_covered_address << "##"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "##";
-                                D << std::hex << condition_address << "##"
-                                  << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "##";
-                                D << getFunctionName(db->basicBlock->getParent()) << "##" << db->name << "##";
+                                D << std::hex << not_covered_address << "@"
+                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
+                                D << std::hex << condition_address << "@"
+                                  << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
+                                D << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 D << "\n";
 
                                 for (auto &x : *write_basicblock) {
