@@ -749,34 +749,38 @@ namespace dra {
                         other++;
                         continue;
                     } else {
-                        if (this->is_dependency(db)) {
+                        if (this->is_dependency(db, 0)) {
                             dependency++;
                         } else {
                             not_dependency++;
                         }
                     }
+                    FILE *fp;
+                    fp = fopen("statistic.txt","w");
+                    float_t total = dependency + not_dependency + other;
+                    fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
+                    fclose(fp);
+
                 }
             }
         }
         write.close();
         
-        float_t total = dependency + not_dependency + other;
-
-        FILE *fp;
-        fp = fopen("statistic.txt","w");
-        fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
-        fclose(fp);
+        
         // char buf[1024];
         // std::sprintf(buf, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
         // std::ofstream result("statistic.txt");
         // result << std::string(buf);
     }
 
-    bool DependencyControlCenter::is_dependency(dra::DBasicBlock *db) {
+    bool DependencyControlCenter::is_dependency(dra::DBasicBlock *db, u_int64_t count) {
+        if (count > 200) {
+            return false;
+        }
         for (auto *Pred : llvm::predecessors(getRealBB(db->basicBlock))) {
             auto db1 = this->DM.get_DB_from_bb(Pred);
             if (this->get_write_basicblock(db1) == nullptr) {
-                if (this->is_dependency(db1)) {
+                if (this->is_dependency(db1, count+1)) {
                     return true;
                 }
             } else {

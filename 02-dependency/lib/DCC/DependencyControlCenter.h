@@ -68,7 +68,7 @@ namespace dra {
 
         sta::StaticAnalysisResult* getStaticAnalysisResult(const std::string& path);
 
-        bool is_dependency(dra::DBasicBlock *db);
+        bool is_dependency(dra::DBasicBlock *db, u_int64_t count);
 
     private:
         DependencyRPCClient *client{};

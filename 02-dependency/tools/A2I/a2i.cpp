@@ -38,8 +38,8 @@ int main(int argc, char **argv) {
     auto *dcc = new dra::DependencyControlCenter();
 
     dcc->init(obj_dump, assembly, bit_code, config);
-    dcc->check_uncovering_addresses_dependnency(uncovering);
     dcc->check_write_addresses_dependency(write);
+    dcc->check_uncovering_addresses_dependnency(uncovering);
 
     return 0;
 }
