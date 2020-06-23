@@ -640,7 +640,7 @@ namespace dra {
                         }
                     }
 
-                    std::cout << "# condition address : " << std::hex << condition_address << std::endl;
+                    std::cout << "# condition address : 0x" << std::hex << condition_address << std::endl;
                     if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
                         DBasicBlock *db = DM.Address2BB[condition_address]->parent;
                         if (db == nullptr) {
@@ -654,9 +654,9 @@ namespace dra {
                                 std::cout << "# no taint or out side" << std::endl;
 
 
-                                ND << std::hex << not_covered_address << "@"
+                                ND << "0x" << std::hex << not_covered_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
-                                ND << std::hex << condition_address << "@"
+                                ND << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
                                 ND << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 ND << "\n";
@@ -664,9 +664,9 @@ namespace dra {
                             } else if (write_basicblock->empty()) {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
-                                DN << std::hex << not_covered_address << "@"
+                                DN << "0x" << std::hex << not_covered_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
-                                DN << std::hex << condition_address << "@"
+                                DN << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
                                 DN << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 DN << "\n";
@@ -675,9 +675,9 @@ namespace dra {
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 
-                                D << std::hex << not_covered_address << "@"
+                                D << "0x" << std::hex << not_covered_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
-                                D << std::hex << condition_address << "@"
+                                D << "0x" << std::hex << condition_address << "@"
                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
                                 D << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 D << "\n";
@@ -713,7 +713,7 @@ namespace dra {
                                         std::cout << "index : " << index << std::endl;
                                     }
                                     std::cout << "--------------------------------------------" << std::endl;
-                                    D << " @ @" << tdb->trace_pc_address << "@"
+                                    D << " @ @" << "0x" << tdb->trace_pc_address << "@"
                                       << dra::dump_inst_booltin(getRealBB(tdb->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@"
                                       << x->is_trait_fixed() << "@";
                                     D << "\n";
@@ -759,7 +759,7 @@ namespace dra {
                     fp = fopen("statistic.txt","w");
                     float_t total = dependency + not_dependency + other;
                     if(total == 0) {
-                        fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1,not_dependency,other);
+                        fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1.0,not_dependency,other);
                     } else {
                         fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency / total,not_dependency,other);
                     }
