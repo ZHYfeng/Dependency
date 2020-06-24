@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
-
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	"os"
 )
 
 type statistic struct {
@@ -15,11 +13,10 @@ type statistic struct {
 	data []float64
 }
 
-func (s *statistic) output(dir string) {
-	path := filepath.Join(dir, s.Name+".txt")
+func (s *statistic) output(path string) {
 	fmt.Printf("statistic path : %s\n", path)
 	f, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-	_, _ = f.WriteString(fmt.Sprintf("%s", s.Name))
+	_, _ = f.WriteString(fmt.Sprintf("%s", s.Kind))
 	for _, v := range s.data {
 		_, _ = f.WriteString(fmt.Sprintf("@%.2f", v))
 	}

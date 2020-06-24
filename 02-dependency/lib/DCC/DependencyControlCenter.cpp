@@ -759,9 +759,9 @@ namespace dra {
                     fp = fopen("statistic.txt","w");
                     float_t total = dependency + not_dependency + other;
                     if(total == 0) {
-                        fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1.0,not_dependency,other);
+                        fprintf(fp, "UncoveringWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1.0,not_dependency,other);
                     } else {
-                        fprintf(fp, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency / total,not_dependency,other);
+                        fprintf(fp, "UncoveringWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency / total,not_dependency,other);
                     }
                     fclose(fp);
 

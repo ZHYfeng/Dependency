@@ -1,26 +1,33 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
 
-	"os"
 	"path/filepath"
 	"strings"
 )
 
+var cmd = flag.String("cmd", "read", "read data")
+var path = flag.String("path", ".", "the path of data")
+var a2i = flag.Bool("a2i", false, "enable a2i")
+
 func main() {
-	if len(os.Args) == 2 {
-		read(os.Args[1])
+
+	flag.Parse()
+	switch *cmd {
+	case "read":
+		read(*path, *a2i)
 	}
 }
 
-func read(path string) {
+func read(path string, a2i bool) {
 	baseName := filepath.Base(path)
 	if strings.HasPrefix(baseName, pb.NameDevice) {
 		fmt.Printf("nameDevice\n")
 		d := &device{}
-		d.read(path)
+		d.read(path, a2i)
 	} else if strings.HasPrefix(baseName, pb.NameWithDra) || strings.HasPrefix(baseName, pb.NameWithoutDra) {
 		fmt.Printf("nameWithDra or NameWithoutDra\n")
 		r := &results{}
