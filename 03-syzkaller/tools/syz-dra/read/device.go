@@ -312,7 +312,9 @@ func (d *device) checkUncoveredAddress() {
 		res += fmt.Sprintf("@%33s", uaa.Kind.String())
 		res += "\n"
 	}
-	f, _ = os.OpenFile(filepath.Join(d.path, "uncovering_more.txt"), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	path := filepath.Join(d.path, fmt.Sprintf("write.txt"))
+	_ = os.Remove(path)
+	f, _ = os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(res)
 	_ = f.Close()
 
