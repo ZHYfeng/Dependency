@@ -248,8 +248,32 @@ func (d *device) checkUncoveredAddress() {
 		}
 	}
 
+	for address, uncoveringAddress := range allUncoveringAddress {
+		ress := ""
+		for _, r := range d.resultsWithDra.result {
+			ress = r.checkUncoveredAddress(address)
+		}
+
+		path := filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uncoveringAddress.ConditionAddress-5))
+		if _, err := os.Stat(path); err == nil {
+			// path/to/whatever exists
+
+		} else if os.IsNotExist(err) {
+			// path/to/whatever does *not* exist
+			ff, _ := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			_, _ = ff.WriteString(ress)
+			_ = ff.Close()
+
+		} else {
+			// Schrodinger: file may or may not exist. See err for details.
+			// Therefore, do *NOT* use !os.IsNotExist(err) to test for file existence
+		}
+
+	}
+
 	uaStatus := map[pb.TaskStatus]uint32{}
 	for _, uaa := range allUncoveringAddress {
+
 		uaStatus[uaa.RunTimeDate.TaskStatus]++
 	}
 	res += "*******************************************\n"
