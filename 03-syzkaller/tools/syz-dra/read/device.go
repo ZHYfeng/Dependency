@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
@@ -287,9 +286,6 @@ func (d *device) checkUncoveredAddress() {
 	_ = f.Close()
 
 	res = ""
-	sort.Slice(allUncoveringAddress, func(i, j int) bool {
-		return allUncoveringAddress[uint32(i)].NumberDominatorInstructions < allUncoveringAddress[uint32(j)].NumberDominatorInstructions
-	})
 	res += "UncoveringAddress @Inst@Input@WA @task @Tested@ Count "
 	res += fmt.Sprintf("@%25s", "Kind")
 	for _, uaa := range allUncoveringAddress {
