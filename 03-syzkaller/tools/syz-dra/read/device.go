@@ -288,6 +288,7 @@ func (d *device) checkUncoveredAddress() {
 	res = ""
 	res += "UncoveringAddress @Inst@Input@WA @task @Tested@ Count "
 	res += fmt.Sprintf("@%25s", "Kind")
+	res += "\n"
 	for _, uaa := range allUncoveringAddress {
 		res += fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
 		res += fmt.Sprintf("@%4d", uaa.NumberDominatorInstructions)
