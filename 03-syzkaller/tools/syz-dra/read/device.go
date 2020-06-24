@@ -288,9 +288,10 @@ func (d *device) checkUncoveredAddress() {
 	res = ""
 	res += "UncoveringAddress @Inst@Input@WA @task @Tested@ Count "
 	res += fmt.Sprintf("@%25s", "Kind")
+	res += fmt.Sprintf("@%33s", "UncoveringAddressKind")
 	res += "\n"
 	for _, uaa := range allUncoveringAddress {
-		res += fmt.Sprintf("0xffffffff%x", uaa.UncoveredAddress-5)
+		res += fmt.Sprintf("0xffffffff%8x", uaa.UncoveredAddress-5)
 		res += fmt.Sprintf("@%4d", uaa.NumberDominatorInstructions)
 		res += fmt.Sprintf("@%5d", len(uaa.Input))
 		res += fmt.Sprintf("@%3d", len(uaa.WriteAddress))
@@ -308,6 +309,7 @@ func (d *device) checkUncoveredAddress() {
 			res += fmt.Sprintf("@%25s", uaa.RunTimeDate.TaskStatus.String())
 
 		}
+		res += fmt.Sprintf("@%33s", uaa.Kind.String())
 		res += "\n"
 	}
 	f, _ = os.OpenFile(filepath.Join(d.path, "uncovering_more.txt"), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
