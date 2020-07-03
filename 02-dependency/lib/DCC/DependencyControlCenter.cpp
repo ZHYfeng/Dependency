@@ -607,7 +607,7 @@ namespace dra {
         auto *coutbuf = std::cout.rdbuf();
         if (conditions.is_open()) {
             while (getline(conditions, Line)) {
-                uint64_t condition_address = 0, not_covered_address = 0;
+                uint64_t condition_address = 0, unconvering_address = 0;
                 uint64_t s = Line.find('&');
                 if (s < Line.size()) {
                     ss.str("");
@@ -619,19 +619,19 @@ namespace dra {
                     for (unsigned long i = s + 1; i < Line.size(); i++) {
                         ss << Line.at(i);
                     }
-                    not_covered_address = std::stoul(ss.str(), nullptr, 16);
+                    unconvering_address = std::stoul(ss.str(), nullptr, 16);
 
                     std::stringstream stream;
-                    stream << std::hex << condition_address;
+                    stream << std::hex << unconvering_address;
                     std::string result(stream.str());
                     std::ofstream out("0x" + result + ".txt");
                     std::cout << "0x" + result + ".txt" << std::endl;
                     std::cout.rdbuf(out.rdbuf());
 
-                    std::cout << "# uncovering address address : 0x" << std::hex << not_covered_address << std::endl;
+                    std::cout << "# uncovering address address : 0x" << std::hex << unconvering_address << std::endl;
                     DBasicBlock *db_ua;
-                    if (this->DM.Address2BB.find(not_covered_address) != this->DM.Address2BB.end()) {
-                        db_ua = DM.Address2BB[not_covered_address]->parent;
+                    if (this->DM.Address2BB.find(unconvering_address) != this->DM.Address2BB.end()) {
+                        db_ua = DM.Address2BB[unconvering_address]->parent;
                         if (db_ua == nullptr) {
                             std::cout << "db_ua == nullptr" << std::endl;
                             continue;
@@ -654,7 +654,7 @@ namespace dra {
                                 std::cout << "# no taint or out side" << std::endl;
 
 
-                                ND << "0x" << std::hex << not_covered_address << "@"
+                                ND << "0x" << std::hex << unconvering_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 ND << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
@@ -664,7 +664,7 @@ namespace dra {
                             } else if (write_basicblock->empty()) {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
-                                DN << "0x" << std::hex << not_covered_address << "@"
+                                DN << "0x" << std::hex << unconvering_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 DN << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
@@ -675,7 +675,7 @@ namespace dra {
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 
-                                D << "0x" << std::hex << not_covered_address << "@"
+                                D << "0x" << std::hex << unconvering_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 D << "0x" << std::hex << condition_address << "@"
                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";

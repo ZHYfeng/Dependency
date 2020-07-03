@@ -253,7 +253,7 @@ func (d *device) checkUncoveredAddress() {
 			ress = r.checkUncoveredAddress(address)
 		}
 
-		path := filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uncoveringAddress.ConditionAddress-5))
+		path := filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uncoveringAddress.UncoveredAddress-5))
 		if _, err := os.Stat(path); err == nil {
 			// path/to/whatever exists
 
@@ -350,7 +350,7 @@ func (d *device) checkUncoveredAddress() {
 			log.Println(err)
 		}
 		for address, uncoveringAddress := range allUncoveringAddress {
-			ff, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uncoveringAddress.ConditionAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+			ff, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("0xffffffff%x.txt", uncoveringAddress.UncoveredAddress-5)), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 			for _, r := range d.resultsWithDra.result {
 				ress := r.checkUncoveredAddress(address)
 				_, _ = ff.WriteString(ress)
