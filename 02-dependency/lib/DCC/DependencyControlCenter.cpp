@@ -624,7 +624,7 @@ namespace dra {
                     std::stringstream stream;
                     stream << std::hex << unconvering_address;
                     std::string result(stream.str());
-                    std::ofstream out("0x" + result + ".txt");
+                    std::ofstream out("0x" + result + ".txt", std::ios_base::app);
                     std::cout << "0x" + result + ".txt" << std::endl;
                     std::cout.rdbuf(out.rdbuf());
 
