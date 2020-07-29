@@ -812,15 +812,14 @@ namespace dra {
                     } else {
                         coverage++;
                     }
-                    FILE *fp;
-                    fp = fopen("statistic.txt","a+");
-                    fprintf(fp, "intersection@%.2f@\n",coverage);
-                    fclose(fp);
-
                 }
             }
         }
         write.close();
+        FILE *fp;
+        fp = fopen("statistic.txt","a+");
+        fprintf(fp, "intersection@%.2f@\n",coverage);
+        fclose(fp);
     }
 
 } /* namespace dra */
