@@ -341,8 +341,8 @@ func (d *device) checkUncoveredAddress() {
 		}
 		_ = f.Close()
 
-		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("intersection.txt")))
-		f, _ = os.OpenFile(filepath.Join(d.path, fmt.Sprintf("intersection.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("union_coverage.txt")))
+		f, _ = os.OpenFile(filepath.Join(d.path, fmt.Sprintf("union_coverage.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 
 		for address := range d.resultsWithDra.maxCoverage {
 			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x\n", address-5))

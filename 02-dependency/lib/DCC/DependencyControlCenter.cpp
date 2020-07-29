@@ -818,7 +818,7 @@ namespace dra {
         write.close();
         FILE *fp;
         fp = fopen("statistic.txt","a+");
-        fprintf(fp, "intersection@%.2f@\n",coverage);
+        fprintf(fp, "union@%.2f@\n",coverage);
         fclose(fp);
     }
 
