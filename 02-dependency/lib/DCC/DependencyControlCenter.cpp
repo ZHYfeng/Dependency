@@ -756,7 +756,7 @@ namespace dra {
                         }
                     }
                     FILE *fp;
-                    fp = fopen("statistic.txt","w+");
+                    fp = fopen("statistic.txt","a+");
                     float_t total = dependency + not_dependency + other;
                     if(total == 0) {
                         fprintf(fp, "UncoveredWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1.0,not_dependency,other);
@@ -813,7 +813,7 @@ namespace dra {
                         coverage++;
                     }
                     FILE *fp;
-                    fp = fopen("statistic.txt","w+");
+                    fp = fopen("statistic.txt","a+");
                     fprintf(fp, "intersection@%.2f@\n",coverage);
                     fclose(fp);
 
