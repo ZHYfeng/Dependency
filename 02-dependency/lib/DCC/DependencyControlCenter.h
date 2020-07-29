@@ -27,9 +27,11 @@ namespace dra {
 
         void run();
 
-        void check_uncovering_addresses_dependnency(const std::string &file);
+        void check_coverage(const std::string &file);
 
         void check_write_addresses_dependency(const std::string &file);
+
+        void check_uncovered_addresses_dependnency(const std::string &file);
 
         void check_all_condition_();
 

@@ -318,7 +318,7 @@ func (d *device) checkUncoveredAddress() {
 		res += fmt.Sprintf("@%33s", uaa.Kind.String())
 		res += "\n"
 	}
-	path := filepath.Join(d.path, fmt.Sprintf("uncovering_more.txt"))
+	path := filepath.Join(d.path, fmt.Sprintf("uncovered_more.txt"))
 	_ = os.Remove(path)
 	f, _ = os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	_, _ = f.WriteString(res)
@@ -333,11 +333,19 @@ func (d *device) checkUncoveredAddress() {
 		}
 		_ = f.Close()
 
-		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("uncovering.txt")))
-		f, _ = os.OpenFile(filepath.Join(d.path, fmt.Sprintf("uncovering.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("uncovered.txt")))
+		f, _ = os.OpenFile(filepath.Join(d.path, fmt.Sprintf("uncovered.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 
 		for _, uncoveringAddress := range allUncoveringAddress {
 			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x&0xffffffff%x\n", uncoveringAddress.ConditionAddress-5, uncoveringAddress.UncoveredAddress-5))
+		}
+		_ = f.Close()
+
+		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("intersection.txt")))
+		f, _ = os.OpenFile(filepath.Join(d.path, fmt.Sprintf("intersection.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+
+		for address := range d.resultsWithDra.maxCoverage {
+			_, _ = f.WriteString(fmt.Sprintf("0xffffffff%x\n", address-5))
 		}
 		_ = f.Close()
 

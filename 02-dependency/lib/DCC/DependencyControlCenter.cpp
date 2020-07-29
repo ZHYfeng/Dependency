@@ -593,7 +593,7 @@ namespace dra {
     }
 
 
-    void DependencyControlCenter::check_uncovering_addresses_dependnency(const std::string &file) {
+    void DependencyControlCenter::check_uncovered_addresses_dependnency(const std::string &file) {
 
         std::stringstream ss;
 
@@ -607,7 +607,7 @@ namespace dra {
         auto *coutbuf = std::cout.rdbuf();
         if (conditions.is_open()) {
             while (getline(conditions, Line)) {
-                uint64_t condition_address = 0, unconvering_address = 0;
+                uint64_t condition_address = 0, unconvered_address = 0;
                 uint64_t s = Line.find('&');
                 if (s < Line.size()) {
                     ss.str("");
@@ -619,19 +619,19 @@ namespace dra {
                     for (unsigned long i = s + 1; i < Line.size(); i++) {
                         ss << Line.at(i);
                     }
-                    unconvering_address = std::stoul(ss.str(), nullptr, 16);
+                    unconvered_address = std::stoul(ss.str(), nullptr, 16);
 
                     std::stringstream stream;
-                    stream << std::hex << unconvering_address;
+                    stream << std::hex << unconvered_address;
                     std::string result(stream.str());
                     std::ofstream out("0x" + result + ".txt", std::ios_base::app);
                     std::cout << "0x" + result + ".txt" << std::endl;
                     std::cout.rdbuf(out.rdbuf());
 
-                    std::cout << "# uncovering address address : 0x" << std::hex << unconvering_address << std::endl;
+                    std::cout << "# Uncovered address address : 0x" << std::hex << unconvered_address << std::endl;
                     DBasicBlock *db_ua;
-                    if (this->DM.Address2BB.find(unconvering_address) != this->DM.Address2BB.end()) {
-                        db_ua = DM.Address2BB[unconvering_address]->parent;
+                    if (this->DM.Address2BB.find(unconvered_address) != this->DM.Address2BB.end()) {
+                        db_ua = DM.Address2BB[unconvered_address]->parent;
                         if (db_ua == nullptr) {
                             std::cout << "db_ua == nullptr" << std::endl;
                             continue;
@@ -654,7 +654,7 @@ namespace dra {
                                 std::cout << "# no taint or out side" << std::endl;
 
 
-                                ND << "0x" << std::hex << unconvering_address << "@"
+                                ND << "0x" << std::hex << unconvered_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 ND << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
@@ -664,7 +664,7 @@ namespace dra {
                             } else if (write_basicblock->empty()) {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
-                                DN << "0x" << std::hex << unconvering_address << "@"
+                                DN << "0x" << std::hex << unconvered_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 DN << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
@@ -675,7 +675,7 @@ namespace dra {
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
                                 
-                                D << "0x" << std::hex << unconvering_address << "@"
+                                D << "0x" << std::hex << unconvered_address << "@"
                                    << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 D << "0x" << std::hex << condition_address << "@"
                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
@@ -756,12 +756,12 @@ namespace dra {
                         }
                     }
                     FILE *fp;
-                    fp = fopen("statistic.txt","w");
+                    fp = fopen("statistic.txt","w+");
                     float_t total = dependency + not_dependency + other;
                     if(total == 0) {
-                        fprintf(fp, "UncoveringWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1.0,not_dependency,other);
+                        fprintf(fp, "UncoveredWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1.0,not_dependency,other);
                     } else {
-                        fprintf(fp, "UncoveringWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency / total,not_dependency,other);
+                        fprintf(fp, "UncoveredWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency / total,not_dependency,other);
                     }
                     fclose(fp);
 
@@ -792,6 +792,35 @@ namespace dra {
             }
         }
         return false;
+    }
+
+    void DependencyControlCenter::check_coverage(const std::string &file) {
+        std::ifstream write(file);
+        std::string Line;
+
+        float_t coverage = 0;
+
+        if (write.is_open()) {
+            while (getline(write, Line)) {
+                uint64_t write_address = std::stoul(Line, nullptr, 16);
+
+                if (this->DM.Address2BB.find(write_address) != this->DM.Address2BB.end()) {
+                    DBasicBlock *db = DM.Address2BB[write_address]->parent;
+                    if (db == nullptr) {
+                        std::cout << "db == nullptr" << std::endl;
+                        continue;
+                    } else {
+                        coverage++;
+                    }
+                    FILE *fp;
+                    fp = fopen("statistic.txt","w+");
+                    fprintf(fp, "intersection@%.2f@\n",coverage);
+                    fclose(fp);
+
+                }
+            }
+        }
+        write.close();
     }
 
 } /* namespace dra */
