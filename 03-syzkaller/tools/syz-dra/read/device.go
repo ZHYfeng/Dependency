@@ -58,6 +58,13 @@ func (d *device) read(path string, a2i bool) {
 }
 
 func (d *device) checkCoverage() {
+
+	res := ""
+	res += "*******************************************\n"
+	res += "intersectionCoverageWithDra     : " + fmt.Sprintf("%5d", len(d.resultsWithDra.maxCoverage)) + "\n"
+	res += "intersectionCoverageWithoutDra  : " + fmt.Sprintf("%5d", len(d.resultsWithoutDra.maxCoverage)) + "\n"
+	res += "*******************************************\n"
+
 	d.uniqueCoverageWithDra = map[uint32]uint32{}
 	d.uniqueCoverageWithoutDra = map[uint32]uint32{}
 	d.unionCoverage = map[uint32]uint32{}
@@ -80,7 +87,6 @@ func (d *device) checkCoverage() {
 		d.unionCoverage[a] += c
 	}
 
-	res := ""
 	res += "*******************************************\n"
 	res += "coverage : " + "\n"
 	res += "uniqueCoverageWithDra    : " + fmt.Sprintf("%5d", len(d.uniqueCoverageWithDra)) + "\n"
