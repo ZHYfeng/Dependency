@@ -59,8 +59,23 @@ func (d *device) read(path string, a2i bool) {
 
 func (d *device) checkCoverage() {
 
+	ucd := map[uint32]uint32{}
+	for _, r := range d.resultsWithDra.result {
+		for uc := range r.uncoveredAddressDependency {
+			ucd[uc]++
+		}
+	}
+	size := uint32(len(d.resultsWithDra.result))
+	intersection_ucd := 0
+	for _, c := range ucd {
+		if c == size {
+			intersection_ucd++
+		}
+	}
+
 	res := ""
 	res += "*******************************************\n"
+	res += "intersection uc                 : " + fmt.Sprintf("%5d", intersection_ucd) + "\n"
 	res += "intersectionCoverageWithDra     : " + fmt.Sprintf("%5d", len(d.resultsWithDra.maxCoverage)) + "\n"
 	res += "intersectionCoverageWithoutDra  : " + fmt.Sprintf("%5d", len(d.resultsWithoutDra.maxCoverage)) + "\n"
 	res += "*******************************************\n"
