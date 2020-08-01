@@ -277,14 +277,14 @@ func unstable(r *result) *statistic {
 			for _, tr := range t.TaskRunTimeData {
 				for _, t := range tr.UncoveredAddress {
 					if t.CheckWrite && t.CheckCondition {
-						res.data[index+1]++
-						goto next
-					} else {
 
+					} else {
+						res.data[index+2]++
+						goto next
 					}
 				}
 			}
-			res.data[index+2]++
+			res.data[index+1]++
 		next:
 		}
 	}
