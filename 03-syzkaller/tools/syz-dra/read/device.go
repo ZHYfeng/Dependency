@@ -66,16 +66,16 @@ func (d *device) checkCoverage() {
 		}
 	}
 	size := uint32(len(d.resultsWithDra.result))
-	intersection_ucd := 0
-	for _, c := range ucd {
+	intersection_ucd := map[uint32]uint32{}
+	for a, c := range ucd {
 		if c == size {
-			intersection_ucd++
+			intersection_ucd[a] = 0
 		}
 	}
 
 	res := ""
 	res += "*******************************************\n"
-	res += "intersection uc                 : " + fmt.Sprintf("%5d", intersection_ucd) + "\n"
+	res += "intersection uc                 : " + fmt.Sprintf("%5d", len(intersection_ucd)) + "\n"
 	res += "intersectionCoverageWithDra     : " + fmt.Sprintf("%5d", len(d.resultsWithDra.maxCoverage)) + "\n"
 	res += "intersectionCoverageWithoutDra  : " + fmt.Sprintf("%5d", len(d.resultsWithoutDra.maxCoverage)) + "\n"
 	res += "*******************************************\n"
@@ -109,6 +109,19 @@ func (d *device) checkCoverage() {
 	res += "unionCoverage            : " + fmt.Sprintf("%5d", len(d.unionCoverage)) + "\n"
 	res += "intersectionCoverage     : " + fmt.Sprintf("%5d", len(d.intersectionCoverage)) + "\n"
 	res += "*******************************************\n"
+
+	temp := map[int]uint32{}
+	for a := range intersection_ucd {
+		for i, r := range d.resultsWithDra.result {
+			if _, ok := r.statistics.Coverage.Coverage[a]; ok {
+				temp[i]++
+			}
+		}
+		if _, ok := d.resultsWithDra.maxCoverage[a]; ok {
+			temp[-1]++
+		}
+	}
+	res += "temp: " + fmt.Sprintf("%v", temp) + "\n"
 
 	solvedCondition := map[uint32]*pb.RunTimeData{}
 	for _, r := range d.resultsWithDra.result {
