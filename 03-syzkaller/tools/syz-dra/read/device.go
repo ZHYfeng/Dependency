@@ -352,6 +352,21 @@ func (d *device) checkUncoveredAddress() {
 	_, _ = f.WriteString(res)
 	_ = f.Close()
 
+	_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("coverage.txt")))
+	f, _ = os.OpenFile(filepath.Join(d.path, fmt.Sprintf("coverage.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+
+	t := 0.0
+	if len(d.resultsWithDra.result) > 0 {
+		r := d.resultsWithDra.result[0]
+		for _, time := range r.statistics.Coverage.Time {
+			if time.Time > t {
+				_, _ = f.WriteString(fmt.Sprintf("%f@%d\n", t, time.Num))
+				t += 60
+			}
+		}
+	}
+	_ = f.Close()
+
 	if d.a2i {
 		_ = os.Remove(filepath.Join(d.path, fmt.Sprintf("write.txt")))
 		f, _ := os.OpenFile(filepath.Join(d.path, fmt.Sprintf("write.txt")), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
