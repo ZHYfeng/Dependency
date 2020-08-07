@@ -1324,3 +1324,18 @@ func (m *DataDependency) GetTaskByInput(input *Input) (*UncoveredAddress, []*Tas
 	}
 	return uua, tasks, res
 }
+
+func writeMessageToDisk(message proto.Message, name string) {
+	out, err := proto.Marshal(message)
+	if err != nil {
+		log.Fatalf("Failed to encode address: %s", err)
+	}
+	temp := name + ".temp"
+	if err := ioutil.WriteFile(temp, out, 0644); err != nil {
+		log.Fatalf("Failed to write DataDependency: %s", err)
+	}
+	old := name + ".old"
+	_ = os.Remove(old)
+	_ = os.Rename(name, old)
+	_ = os.Rename(temp, name)
+}
