@@ -385,7 +385,7 @@ func (d *device) checkUncoveredAddress() {
 				}
 			}
 			for ; t < max_time; t += 600 {
-				_, _ = f.WriteString(fmt.Sprintf("%f@%d\n", t/100, new_max))
+				_, _ = f.WriteString(fmt.Sprintf("%f@%d\n", t/3600, new_max))
 			}
 			_ = f.Close()
 		}
