@@ -380,7 +380,7 @@ func (d *device) checkUncoveredAddress() {
 			t := 0.0
 			for _, time := range r.statistics.Coverage.Time {
 				if time.Time > t {
-					_, _ = f.WriteString(fmt.Sprintf("%f@%d\n", t/100, int(time.Num)*new_max/max))
+					_, _ = f.WriteString(fmt.Sprintf("%f@%d\n", t/3600, int(time.Num)*new_max/max))
 					t += 600
 				}
 			}
