@@ -864,6 +864,16 @@ namespace dra {
         fp = fopen("statistic.txt","a+");
         fprintf(fp, "union@%.2f@\n",coverage);
         fclose(fp);
+
+        std::ofstream UF("UncoveredFunctions.txt");
+        for(const auto& temp : this->DM.Modules->Function) {
+            for(const auto& df : temp.second) {
+                if(df.second->state != CoverKind::cover) {
+                    UF << df.second->FunctionName << "\n";
+                }
+            }
+        }
+        UF.close();
     }
 
 } /* namespace dra */
