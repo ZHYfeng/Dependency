@@ -160,7 +160,6 @@ namespace dra {
             Db = parent->BasicBlock[bname];
             if (parent->BasicBlock.find(pname) != parent->BasicBlock.end()) {
                 Dp = parent->BasicBlock[pname];
-                DInput *dInput = Dp->lastInput;
 
                 std::vector<uint64_t> branch;
                 for (uint64_t j = 0, e = end->getNumSuccessors(); j < e; j++) {
@@ -172,16 +171,23 @@ namespace dra {
                     }
                 }
 
-                dInput->addConditionAddress(Dp->trace_pc_address);
+                DInput *dInput = Dp->lastInput;
+                if(dInput != nullptr) {
+                    dInput->addConditionAddress(Dp->trace_pc_address);
+                }
                 if (Db->state == CoverKind::untest) {
                     Db->setState(CoverKind::uncover);
-                    Db->addNewInput(dInput);
-                    auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
-                    dInput->addUncoveredAddress(ca);
+                    if(dInput != nullptr) {
+                        Db->addNewInput(dInput);
+                        auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
+                        dInput->addUncoveredAddress(ca);
+                    }
                 } else if (Db->state == CoverKind::uncover) {
-                    Db->addNewInput(dInput);
-                    auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
-                    dInput->addUncoveredAddress(ca);
+                    if(dInput != nullptr) {
+                        Db->addNewInput(dInput);
+                        auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
+                        dInput->addUncoveredAddress(ca);
+                    }
                 } else if (Db->state == CoverKind::cover) {
 
                 }
