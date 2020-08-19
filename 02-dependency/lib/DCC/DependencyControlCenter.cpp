@@ -156,9 +156,10 @@ namespace dra {
                     //                    std::set<llvm::BasicBlock *> bbs;
                     //                    this->STA._get_all_successors(db->basicBlock, bbs);
                     //                    uint32_t bbcount = bbs.size();
-                    uncoveredAddress->set_number_arrive_basicblocks(db->get_number_arrive_uncovered_instructions());
+                    std::set<dra::DBasicBlock *> temp;
+                    uncoveredAddress->set_number_arrive_basicblocks(db->get_arrive_uncovered_instructions(temp));
                     uncoveredAddress->set_number_dominator_instructions(
-                            db->get_number_all_dominator_uncovered_instructions());
+                            db->get_all_dominator_uncovered_instructions(temp));
                 }
 
                 Input *input = dependency->mutable_input();
@@ -604,6 +605,10 @@ namespace dra {
         std::ofstream DN("conditionDN.txt");
         std::ofstream D("conditionD.txt");
 
+        std::set<dra::DBasicBlock *> Uncover;
+        std::set<dra::DBasicBlock *> DependencyUncover;
+        std::set<dra::DBasicBlock *> NotDependencyUncover;
+
         auto *coutbuf = std::cout.rdbuf();
         if (conditions.is_open()) {
             while (getline(conditions, Line)) {
@@ -661,6 +666,8 @@ namespace dra {
                                 ND << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 ND << "\n";
 
+                                db->get_arrive_uncovered_instructions(NotDependencyUncover);
+
                             } else if (write_basicblock->empty()) {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
@@ -671,6 +678,7 @@ namespace dra {
                                 DN << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
                                 DN << "\n";
 
+                                db->get_arrive_uncovered_instructions(DependencyUncover);
 
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
@@ -718,6 +726,9 @@ namespace dra {
                                       << x->is_trait_fixed() << "@";
                                     D << "\n";
                                 }
+
+                                db->get_arrive_uncovered_instructions(DependencyUncover);
+
                             }
                         }
                     }
@@ -727,6 +738,37 @@ namespace dra {
             }
         }
         conditions.close();
+        ND.close();
+        DN.close();
+        D.close();
+
+        for(auto db : DependencyUncover){
+            Uncover.insert(db);
+        }
+        for(auto db : NotDependencyUncover){
+            Uncover.insert(db);
+        }
+
+        FILE *fp;
+        fp = fopen("statistic.txt","a+");
+        uint64_t number;
+        number = 0;
+        for(auto db : Uncover){
+            number += db->get_number_uncovered_instructions();
+        }
+        fprintf(fp, "Uncover@%lu@%lu@\n",Uncover.size(), number);
+        number = 0;
+        for(auto db : DependencyUncover){
+            number += db->get_number_uncovered_instructions();
+        }
+        fprintf(fp, "DependencyUncover@%lu@%lu@\n",DependencyUncover.size(), number);
+        number = 0;
+        for(auto db : NotDependencyUncover){
+            number += db->get_number_uncovered_instructions();
+        }
+        fprintf(fp, "NotDependencyUncover@%lu@%lu@\n",NotDependencyUncover.size(), number);
+        fclose(fp);
+
     }
 
     void DependencyControlCenter::check_write_addresses_dependency(const std::string &file) {
@@ -805,7 +847,9 @@ namespace dra {
                 uint64_t write_address = std::stoul(Line, nullptr, 16);
 
                 if (this->DM.Address2BB.find(write_address) != this->DM.Address2BB.end()) {
-                    DBasicBlock *db = DM.Address2BB[write_address]->parent;
+                    auto DInst = DM.Address2BB[write_address];
+                    DInst->update(CoverKind::cover, nullptr);
+                    DBasicBlock *db = DInst->parent;
                     if (db == nullptr) {
                         std::cout << "db == nullptr" << std::endl;
                         continue;

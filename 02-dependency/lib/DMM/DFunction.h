@@ -65,13 +65,13 @@ namespace dra {
 
         void dump() const;
 
-        uint32_t get_number_uncovered_instructions();
+        uint32_t get_number_uncovered_instructions(std::set<dra::DBasicBlock *> &res);
 
         void get_function_call(std::set<llvm::Function *> &res);
 
-        uint32_t get_number_uncovered_instructions(llvm::BasicBlock *b);
+        uint32_t get_uncovered_instructions(llvm::BasicBlock *b, std::set<dra::DBasicBlock *> &res);
 
-        uint32_t get_number_dominator_uncovered_instructions(llvm::BasicBlock *b);
+        uint32_t get_dominator_uncovered_instructions(llvm::BasicBlock *b, std::set<dra::DBasicBlock *> &res);
 
         void add_number_basic_block_covered();
 

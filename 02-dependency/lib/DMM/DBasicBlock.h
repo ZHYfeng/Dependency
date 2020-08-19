@@ -73,9 +73,9 @@ namespace dra {
 
         void get_function_call(std::set<llvm::Function *> &res);
 
-        uint32_t get_number_arrive_uncovered_instructions() const;
+        uint32_t get_arrive_uncovered_instructions(std::set<dra::DBasicBlock *> &res) const;
 
-        uint32_t get_number_all_dominator_uncovered_instructions() const;
+        uint32_t get_all_dominator_uncovered_instructions(std::set<dra::DBasicBlock *> &res) const;
 
     public:
         bool IR;

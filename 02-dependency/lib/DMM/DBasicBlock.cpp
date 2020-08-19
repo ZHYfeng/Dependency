@@ -272,6 +272,9 @@ namespace dra {
     }
 
     void DBasicBlock::addNewInput(DInput *i) {
+        if(i == nullptr) {
+            return;
+        }
         this->lastInput = i;
         if (this->input.find(i) == this->input.end()) {
             this->input[i] = 1U << i->idx;
@@ -319,9 +322,10 @@ namespace dra {
         std::cout << "trace_pc_address  : 0x" << std::hex << trace_pc_address << std::endl;
 
         if (this->basicBlock != nullptr) {
+            std::set<dra::DBasicBlock *> res;
             std::cout << "all dominator uncovered instructions : " <<
-                      std::dec << this->get_number_all_dominator_uncovered_instructions() << std::endl;
-            std::cout << "all arrive uncovered instructions : " << this->get_number_arrive_uncovered_instructions()
+                      std::dec << this->get_all_dominator_uncovered_instructions(res) << std::endl;
+            std::cout << "all arrive uncovered instructions : " << this->get_arrive_uncovered_instructions(res)
                       << std::endl;
 
             std::string ld;
@@ -391,17 +395,17 @@ namespace dra {
         }
     }
 
-    uint32_t DBasicBlock::get_number_arrive_uncovered_instructions() const {
+    uint32_t DBasicBlock::get_arrive_uncovered_instructions(std::set<dra::DBasicBlock *> &res) const {
         if (this->basicBlock != nullptr) {
-            return this->parent->get_number_uncovered_instructions(this->basicBlock);
+            return this->parent->get_uncovered_instructions(this->basicBlock, res);
         } else {
             return 0;
         }
     }
 
-    uint32_t DBasicBlock::get_number_all_dominator_uncovered_instructions() const {
+    uint32_t DBasicBlock::get_all_dominator_uncovered_instructions(std::set<dra::DBasicBlock *> &res) const {
         if (this->basicBlock != nullptr) {
-            return this->parent->get_number_dominator_uncovered_instructions(this->basicBlock);
+            return this->parent->get_dominator_uncovered_instructions(this->basicBlock, res);
         } else {
             return 0;
         }
