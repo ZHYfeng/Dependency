@@ -90,7 +90,7 @@ namespace dra {
 
     void DFunction::setState(CoverKind kind) {
 #if DEBUG_ERR
-        if (kind 《 state) {
+        if (kind < state) {
             std::cerr << "error DFunction kind" << "\n";
         }
 #endif

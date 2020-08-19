@@ -868,7 +868,7 @@ namespace dra {
         std::ofstream UF("UncoveredFunctions.txt");
         for(const auto& temp : this->DM.Modules->Function) {
             for(const auto& df : temp.second) {
-                if(df.second->state != CoverKind::cover) {
+                if(df.second->state != CoverKind::cover && df.second->isIR()) {
                     UF << df.second->FunctionName << "\n";
                 }
             }
