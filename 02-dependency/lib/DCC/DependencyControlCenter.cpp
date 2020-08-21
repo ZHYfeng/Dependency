@@ -609,6 +609,10 @@ namespace dra {
         std::set<dra::DBasicBlock *> DependencyUncover;
         std::set<dra::DBasicBlock *> NotDependencyUncover;
 
+        std::set<dra::DBasicBlock *> DUncover;
+        std::set<dra::DBasicBlock *> DDependencyUncover;
+        std::set<dra::DBasicBlock *> DNotDependencyUncover;
+
         auto *coutbuf = std::cout.rdbuf();
         if (conditions.is_open()) {
             while (getline(conditions, Line)) {
@@ -667,6 +671,7 @@ namespace dra {
                                 ND << "\n";
 
                                 db->get_arrive_uncovered_instructions(NotDependencyUncover);
+                                db->get_all_dominator_uncovered_instructions(DNotDependencyUncover);
 
                             } else if (write_basicblock->empty()) {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
@@ -679,6 +684,7 @@ namespace dra {
                                 DN << "\n";
 
                                 db->get_arrive_uncovered_instructions(DependencyUncover);
+                                db->get_all_dominator_uncovered_instructions(DDependencyUncover);
 
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
@@ -728,6 +734,7 @@ namespace dra {
                                 }
 
                                 db->get_arrive_uncovered_instructions(DependencyUncover);
+                                db->get_all_dominator_uncovered_instructions(DDependencyUncover);
 
                             }
                         }
@@ -749,6 +756,13 @@ namespace dra {
             Uncover.insert(db);
         }
 
+        for(auto db : DDependencyUncover){
+            DUncover.insert(db);
+        }
+        for(auto db : DNotDependencyUncover){
+            DUncover.insert(db);
+        }
+
         FILE *fp;
         fp = fopen("statistic.txt","a+");
         uint64_t number;
@@ -767,6 +781,22 @@ namespace dra {
             number += db->get_number_uncovered_instructions();
         }
         fprintf(fp, "NotDependencyUncover@%lu@%lu@\n",NotDependencyUncover.size(), number);
+
+        number = 0;
+        for(auto db : DUncover){
+            number += db->get_number_uncovered_instructions();
+        }
+        fprintf(fp, "DUncover@%lu@%lu@\n",DUncover.size(), number);
+        number = 0;
+        for(auto db : DDependencyUncover){
+            number += db->get_number_uncovered_instructions();
+        }
+        fprintf(fp, "DDependencyUncover@%lu@%lu@\n",DDependencyUncover.size(), number);
+        number = 0;
+        for(auto db : DNotDependencyUncover){
+            number += db->get_number_uncovered_instructions();
+        }
+        fprintf(fp, "DNotDependencyUncover@%lu@%lu@\n",DNotDependencyUncover.size(), number);
         fclose(fp);
 
     }
