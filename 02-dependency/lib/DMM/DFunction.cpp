@@ -186,8 +186,10 @@ namespace dra {
         if (b->hasName()) {
             std::string Name = b->getName().str();
             if (BasicBlock.find(Name) != BasicBlock.end()) {
-                count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
-                res.insert(this->BasicBlock[Name]);
+                if(this->BasicBlock[Name]->state != CoverKind::cover) {
+                    count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
+                    res.insert(this->BasicBlock[Name]);
+                }
             }
         }
 
@@ -207,8 +209,10 @@ namespace dra {
         if (b->hasName()) {
             std::string Name = b->getName().str();
             if (BasicBlock.find(Name) != BasicBlock.end()) {
-                count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
-                res.insert(this->BasicBlock[Name]);
+                if(this->BasicBlock[Name]->state != CoverKind::cover){
+                    count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
+                    res.insert(this->BasicBlock[Name]);
+                }
             }
         }
 
@@ -219,9 +223,11 @@ namespace dra {
         for (const auto &bb: this->BasicBlock) {
             if (bb.second->basicBlock != nullptr) {
                 if (llvm::isPotentiallyReachable(b, bb.second->basicBlock, this->DT)) {
-                    count = count + bb.second->get_number_uncovered_instructions();
-                    res.insert(bb.second);
-                    bb.second->get_function_call(new_uncovered_functions);
+                    if (bb.second->state != CoverKind::cover){
+                        count = count + bb.second->get_number_uncovered_instructions();
+                        res.insert(bb.second);
+                        bb.second->get_function_call(new_uncovered_functions);
+                    }
                 }
             }
         }
@@ -232,8 +238,10 @@ namespace dra {
                 uncovered_function.insert(f);
                 DFunction *df = this->parent->get_DF_from_f(f);
                 if (df != nullptr) {
-                    count += df->get_number_uncovered_instructions(res);
-                    df->get_function_call(temp);
+                    if(df->state != CoverKind::cover){
+                        count += df->get_number_uncovered_instructions(res);
+                        df->get_function_call(temp);
+                    }
                 }
             }
             new_uncovered_functions.clear();

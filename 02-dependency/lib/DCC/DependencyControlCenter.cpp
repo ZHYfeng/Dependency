@@ -733,8 +733,8 @@ namespace dra {
                                     D << "\n";
                                 }
 
-                                db->get_arrive_uncovered_instructions(DependencyUncover);
-                                db->get_all_dominator_uncovered_instructions(DDependencyUncover);
+                                db_ua->get_arrive_uncovered_instructions(DependencyUncover);
+                                db_ua->get_all_dominator_uncovered_instructions(DDependencyUncover);
 
                             }
                         }
