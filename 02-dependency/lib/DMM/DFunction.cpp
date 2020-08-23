@@ -194,7 +194,12 @@ namespace dra {
         }
 
         for (auto c : DT->getNode(b)->getChildren()) {
-            count = count + this->get_dominator_uncovered_instructions(c->getBlock(), res);
+            std::string Name = c->getBlock()->getName().str();
+            if (BasicBlock.find(Name) != BasicBlock.end()) {
+                if(this->BasicBlock[Name]->state != CoverKind::cover) {
+                    count = count + this->get_dominator_uncovered_instructions(c->getBlock(), res);
+                }
+            }
         }
         return count;
     }
