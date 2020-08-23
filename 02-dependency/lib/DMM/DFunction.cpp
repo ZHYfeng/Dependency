@@ -193,7 +193,7 @@ namespace dra {
             }
         }
 
-        for (auto c : DT->getNode(b)->getChildren()) {
+        for (auto c : DT->getNode(dra::getFinalBB(b))->getChildren()) {
             std::string Name = c->getBlock()->getName().str();
             if (BasicBlock.find(Name) != BasicBlock.end()) {
                 if(this->BasicBlock[Name]->state != CoverKind::cover) {
