@@ -166,7 +166,7 @@ namespace dra {
     uint32_t DFunction::get_number_uncovered_instructions(std::map<std::string, dra::DBasicBlock *> &res) {
         uint64_t uncovered_basicblock_number = 0;
         for (const auto &b : this->BasicBlock) {
-            if (b.second->state != CoverKind::cover &&  b.second->basicBlock->hasName()) {
+            if (b.second->state != CoverKind::cover && b.second->basicBlock != nullptr && b.second->basicBlock->hasName()) {
                 uncovered_basicblock_number += b.second->get_number_uncovered_instructions();
                 res[this->FunctionName + b.first] = b.second;
             }
@@ -230,7 +230,7 @@ namespace dra {
         uncovered_function.insert(this->function);
 
         for (const auto &bb: this->BasicBlock) {
-            if (bb.second->basicBlock != nullptr && bb.second->basicBlock->hasName()) {
+            if (bb.second->basicBlock != nullptr && bb.second->basicBlock != nullptr && bb.second->basicBlock->hasName()) {
                 if (llvm::isPotentiallyReachable(b, bb.second->basicBlock, this->DT)) {
                     if (bb.second->state != CoverKind::cover) {
                         count = count + bb.second->get_number_uncovered_instructions();
