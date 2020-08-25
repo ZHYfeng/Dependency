@@ -328,7 +328,7 @@ namespace dra {
         std::cout << "trace_pc_address  : 0x" << std::hex << trace_pc_address << std::endl;
 
         if (this->basicBlock != nullptr) {
-            std::set<dra::DBasicBlock *> res;
+            std::map<std::string, dra::DBasicBlock *> res;
             std::cout << "all dominator uncovered instructions : " <<
                       std::dec << this->get_all_dominator_uncovered_instructions(res) << std::endl;
             std::cout << "all arrive uncovered instructions : " << this->get_arrive_uncovered_instructions(res)
@@ -401,7 +401,7 @@ namespace dra {
         }
     }
 
-    uint32_t DBasicBlock::get_arrive_uncovered_instructions(std::set<dra::DBasicBlock *> &res) const {
+    uint32_t DBasicBlock::get_arrive_uncovered_instructions(std::map<std::string, dra::DBasicBlock *> &res) const {
         if (this->basicBlock != nullptr) {
             return this->parent->get_uncovered_instructions(this->basicBlock, res);
         } else {
@@ -409,7 +409,7 @@ namespace dra {
         }
     }
 
-    uint32_t DBasicBlock::get_all_dominator_uncovered_instructions(std::set<dra::DBasicBlock *> &res) const {
+    uint32_t DBasicBlock::get_all_dominator_uncovered_instructions(std::map<std::string, dra::DBasicBlock *> &res) const {
         if (this->basicBlock != nullptr) {
             return this->parent->get_dominator_uncovered_instructions(this->basicBlock, res);
         } else {

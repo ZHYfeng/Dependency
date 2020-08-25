@@ -163,12 +163,12 @@ namespace dra {
         std::cout << "--------------------------------------------" << std::endl;
     }
 
-    uint32_t DFunction::get_number_uncovered_instructions(std::set<dra::DBasicBlock *> &res) {
+    uint32_t DFunction::get_number_uncovered_instructions(std::map<std::string, dra::DBasicBlock *> &res) {
         uint64_t uncovered_basicblock_number = 0;
         for (const auto &b : this->BasicBlock) {
-            if (b.second->state != CoverKind::cover) {
+            if (b.second->state != CoverKind::cover &&  b.second->basicBlock->hasName()) {
                 uncovered_basicblock_number += b.second->get_number_uncovered_instructions();
-                res.insert(b.second);
+                res[this->FunctionName + b.first] = b.second;
             }
         }
         return 0;
@@ -181,23 +181,26 @@ namespace dra {
     }
 
 
-    uint32_t DFunction::get_dominator_uncovered_instructions(llvm::BasicBlock *b, std::set<dra::DBasicBlock *> &res) {
+    uint32_t DFunction::get_dominator_uncovered_instructions(llvm::BasicBlock *b,
+                                                             std::map<std::string, dra::DBasicBlock *> &res) {
         uint32_t count = 0;
         if (b->hasName()) {
             std::string Name = b->getName().str();
             if (BasicBlock.find(Name) != BasicBlock.end()) {
-                if(this->BasicBlock[Name]->state != CoverKind::cover) {
+                if (this->BasicBlock[Name]->state != CoverKind::cover) {
                     count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
-                    res.insert(this->BasicBlock[Name]);
+                    res[this->FunctionName + Name] = this->BasicBlock[Name];
                 }
             }
         }
 
         for (auto c : DT->getNode(dra::getFinalBB(b))->getChildren()) {
-            std::string Name = c->getBlock()->getName().str();
-            if (BasicBlock.find(Name) != BasicBlock.end()) {
-                if(this->BasicBlock[Name]->state != CoverKind::cover) {
-                    count = count + this->get_dominator_uncovered_instructions(c->getBlock(), res);
+            if(c->getBlock()->hasName()){
+                std::string Name = c->getBlock()->getName().str();
+                if (BasicBlock.find(Name) != BasicBlock.end()) {
+                    if (this->BasicBlock[Name]->state != CoverKind::cover) {
+                        count = count + this->get_dominator_uncovered_instructions(c->getBlock(), res);
+                    }
                 }
             }
         }
@@ -209,14 +212,15 @@ namespace dra {
         this->parent->add_number_basic_block_covered();
     }
 
-    uint32_t DFunction::get_uncovered_instructions(llvm::BasicBlock *b, std::set<dra::DBasicBlock *> &res) {
+    uint32_t
+    DFunction::get_uncovered_instructions(llvm::BasicBlock *b, std::map<std::string, dra::DBasicBlock *> &res) {
         uint32_t count = 0;
         if (b->hasName()) {
             std::string Name = b->getName().str();
             if (BasicBlock.find(Name) != BasicBlock.end()) {
-                if(this->BasicBlock[Name]->state != CoverKind::cover){
+                if (this->BasicBlock[Name]->state != CoverKind::cover) {
                     count = count + this->BasicBlock[Name]->get_number_uncovered_instructions();
-                    res.insert(this->BasicBlock[Name]);
+                    res[this->FunctionName + Name] = this->BasicBlock[Name];
                 }
             }
         }
@@ -226,11 +230,11 @@ namespace dra {
         uncovered_function.insert(this->function);
 
         for (const auto &bb: this->BasicBlock) {
-            if (bb.second->basicBlock != nullptr) {
+            if (bb.second->basicBlock != nullptr && bb.second->basicBlock->hasName()) {
                 if (llvm::isPotentiallyReachable(b, bb.second->basicBlock, this->DT)) {
-                    if (bb.second->state != CoverKind::cover){
+                    if (bb.second->state != CoverKind::cover) {
                         count = count + bb.second->get_number_uncovered_instructions();
-                        res.insert(bb.second);
+                        res[this->FunctionName + bb.first] = bb.second;
                         bb.second->get_function_call(new_uncovered_functions);
                     }
                 }
@@ -243,7 +247,7 @@ namespace dra {
                 uncovered_function.insert(f);
                 DFunction *df = this->parent->get_DF_from_f(f);
                 if (df != nullptr) {
-                    if(df->state != CoverKind::cover){
+                    if (df->state != CoverKind::cover) {
                         count += df->get_number_uncovered_instructions(res);
                         df->get_function_call(temp);
                     }

@@ -156,7 +156,7 @@ namespace dra {
                     //                    std::set<llvm::BasicBlock *> bbs;
                     //                    this->STA._get_all_successors(db->basicBlock, bbs);
                     //                    uint32_t bbcount = bbs.size();
-                    std::set<dra::DBasicBlock *> temp;
+                    std::map<std::string, dra::DBasicBlock *> temp;
                     uncoveredAddress->set_number_arrive_basicblocks(db->get_arrive_uncovered_instructions(temp));
                     uncoveredAddress->set_number_dominator_instructions(
                             db->get_all_dominator_uncovered_instructions(temp));
@@ -605,13 +605,13 @@ namespace dra {
         std::ofstream DN("conditionDN.txt");
         std::ofstream D("conditionD.txt");
 
-        std::set<dra::DBasicBlock *> Uncover;
-        std::set<dra::DBasicBlock *> DependencyUncover;
-        std::set<dra::DBasicBlock *> NotDependencyUncover;
+        std::map<std::string, dra::DBasicBlock *> Uncover;
+        std::map<std::string, dra::DBasicBlock *> DependencyUncover;
+        std::map<std::string, dra::DBasicBlock *> NotDependencyUncover;
 
-        std::set<dra::DBasicBlock *> DUncover;
-        std::set<dra::DBasicBlock *> DDependencyUncover;
-        std::set<dra::DBasicBlock *> DNotDependencyUncover;
+        std::map<std::string, dra::DBasicBlock *> DUncover;
+        std::map<std::string, dra::DBasicBlock *> DDependencyUncover;
+        std::map<std::string, dra::DBasicBlock *> DNotDependencyUncover;
 
         auto *coutbuf = std::cout.rdbuf();
         if (conditions.is_open()) {
@@ -767,34 +767,34 @@ namespace dra {
         fp = fopen("statistic.txt","a+");
         uint64_t number;
         number = 0;
-        for(auto db : Uncover){
-            number += db->get_number_uncovered_instructions();
+        for(const auto& db : Uncover){
+            number += db.second->get_number_uncovered_instructions();
         }
         fprintf(fp, "Uncover@%lu@%lu@\n",Uncover.size(), number);
         number = 0;
-        for(auto db : DependencyUncover){
-            number += db->get_number_uncovered_instructions();
+        for(const auto& db : DependencyUncover){
+            number += db.second->get_number_uncovered_instructions();
         }
         fprintf(fp, "DependencyUncover@%lu@%lu@\n",DependencyUncover.size(), number);
         number = 0;
-        for(auto db : NotDependencyUncover){
-            number += db->get_number_uncovered_instructions();
+        for(const auto& db : NotDependencyUncover){
+            number += db.second->get_number_uncovered_instructions();
         }
         fprintf(fp, "NotDependencyUncover@%lu@%lu@\n",NotDependencyUncover.size(), number);
 
         number = 0;
-        for(auto db : DUncover){
-            number += db->get_number_uncovered_instructions();
+        for(const auto& db : DUncover){
+            number += db.second->get_number_uncovered_instructions();
         }
         fprintf(fp, "DUncover@%lu@%lu@\n",DUncover.size(), number);
         number = 0;
-        for(auto db : DDependencyUncover){
-            number += db->get_number_uncovered_instructions();
+        for(const auto& db : DDependencyUncover){
+            number += db.second->get_number_uncovered_instructions();
         }
         fprintf(fp, "DDependencyUncover@%lu@%lu@\n",DDependencyUncover.size(), number);
         number = 0;
-        for(auto db : DNotDependencyUncover){
-            number += db->get_number_uncovered_instructions();
+        for(const auto& db : DNotDependencyUncover){
+            number += db.second->get_number_uncovered_instructions();
         }
         fprintf(fp, "DNotDependencyUncover@%lu@%lu@\n",DNotDependencyUncover.size(), number);
         fclose(fp);
