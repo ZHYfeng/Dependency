@@ -98,7 +98,7 @@ namespace dra {
 
     void DFunction::update(CoverKind kind) {
 
-        if (this->state < CoverKind::untested && kind >= CoverKind::untested) {
+        if (this->state < CoverKind::untest && kind >= CoverKind::untest) {
             updateUntestedState();
         }
         setState(kind);
@@ -109,7 +109,7 @@ namespace dra {
             std::set<llvm::Function *> res;
             db.second->get_function_call(res);
             for (auto f: res) {
-                this->parent->get_DF_from_f(f)->update(CoverKind::untested);
+                this->parent->get_DF_from_f(f)->update(CoverKind::untest);
             }
         }
     }
