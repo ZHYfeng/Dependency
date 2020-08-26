@@ -400,10 +400,9 @@ namespace dra {
                     llvm::Function *f = cs.getCalledFunction();
                     if (f == this->parent->function) {
 
+                    } else if (f== nullptr) {
+
                     } else {
-                        if (f== nullptr){
-                            cs->dump();
-                        }
                         res.insert(f);
                     }
                 }
