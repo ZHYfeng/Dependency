@@ -909,13 +909,13 @@ namespace dra {
         FILE *fp;
         fp = fopen("statistic.txt", "a+");
         fprintf(fp, "union@%.2f@\n", coverage);
-        fprintf(fp, "coverage@d@\n", count);
+        fprintf(fp, "coverage@%lu@\n", count);
         fclose(fp);
 
         std::ofstream UF("UncoveredFunctions.txt");
         for (const auto &temp : this->DM.Modules->Function) {
             for (const auto &df : temp.second) {
-                if (df.second->state != CoverKind::cover && df.second->isIR()) {
+                if (df.second->state > CoverKind::outside && df.second->state < CoverKind::cover && df.second->isIR()) {
                     UF << df.second->FunctionName << "\n";
                 }
             }

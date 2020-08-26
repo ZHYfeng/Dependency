@@ -109,7 +109,8 @@ namespace dra {
             std::set<llvm::Function *> res;
             db.second->get_function_call(res);
             for (auto f: res) {
-                this->parent->get_DF_from_f(f)->update(CoverKind::untest);
+                if(this->parent->get_DF_from_f(f))
+                    this->parent->get_DF_from_f(f)->update(CoverKind::untest);
             }
         }
     }

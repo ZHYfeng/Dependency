@@ -45,13 +45,15 @@ namespace dra {
     }
 
     std::string getFileName(llvm::Function *f) {
-        llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
-        f->getAllMetadata(MDs);
-        for (auto &MD : MDs) {
-            if (llvm::MDNode *N = MD.second) {
-                if (auto *SP = llvm::dyn_cast<llvm::DISubprogram>(N)) {
-                    std::string Path = SP->getFilename().str();
-                    return Path;
+        if (f->hasMetadata()){
+            llvm::SmallVector<std::pair<unsigned, llvm::MDNode *>, 4> MDs;
+            f->getAllMetadata(MDs);
+            for (auto &MD : MDs) {
+                if (llvm::MDNode *N = MD.second) {
+                    if (auto *SP = llvm::dyn_cast<llvm::DISubprogram>(N)) {
+                        std::string Path = SP->getFilename().str();
+                        return Path;
+                    }
                 }
             }
         }
