@@ -26,7 +26,7 @@ namespace dra {
         AsmSourceCode = false;
         basicBlock = nullptr;
         parent = nullptr;
-        state = CoverKind::untest;
+        state = CoverKind::outside;
         tracr_num = 0;
         this->lastInput = nullptr;
         this->number_instructions = 1;
@@ -135,7 +135,7 @@ namespace dra {
         std::string bname = b->getName().str();
         if (parent->BasicBlock.find(bname) != parent->BasicBlock.end()) {
             Db = parent->BasicBlock[bname];
-            if (Db->state == CoverKind::untest || Db->state == CoverKind::uncover) {
+            if (Db->state < CoverKind::cover) {
                 Db->setState(CoverKind::cover);
                 Db->input.clear();
                 this->addNewInput(dInput);
@@ -172,18 +172,12 @@ namespace dra {
                 }
 
                 DInput *dInput = Dp->lastInput;
-                if(dInput != nullptr) {
+                if (dInput != nullptr) {
                     dInput->addConditionAddress(Dp->trace_pc_address);
                 }
-                if (Db->state == CoverKind::untest) {
+                if (Db->state < CoverKind::cover) {
                     Db->setState(CoverKind::uncover);
-                    if(dInput != nullptr) {
-                        Db->addNewInput(dInput);
-                        auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
-                        dInput->addUncoveredAddress(ca);
-                    }
-                } else if (Db->state == CoverKind::uncover) {
-                    if(dInput != nullptr) {
+                    if (dInput != nullptr) {
                         Db->addNewInput(dInput);
                         auto *ca = dInput->getCondition(Dp->trace_pc_address, Db->trace_pc_address, branch, i);
                         dInput->addUncoveredAddress(ca);
@@ -278,7 +272,7 @@ namespace dra {
     }
 
     void DBasicBlock::addNewInput(DInput *i) {
-        if(i == nullptr) {
+        if (i == nullptr) {
             return;
         }
         this->lastInput = i;
@@ -393,9 +387,26 @@ namespace dra {
         for (auto i : this->InstIR) {
             if (i->i->getOpcode() == llvm::Instruction::Call) {
                 llvm::CallSite cs(i->i);
-                llvm::Function *f = cs.getCalledFunction();
-                if (f != nullptr && f != this->parent->function) {
-                    res.insert(f);
+                if (cs.isIndirectCall()) {
+                    cs->dump();
+                    llvm::Type *t = cs.getCalledValue()->getType();
+                    llvm::FunctionType *ft = llvm::cast<llvm::FunctionType>(llvm::cast<llvm::PointerType>(t)->getElementType());
+                    ft->dump();
+                    for (auto &f: *this->parent->parent->module) {
+                        if(f.getFunctionType() == ft){
+                            f.dump();
+                            res.insert(&f);
+                            break;
+                        }
+                    }
+
+                } else {
+                    llvm::Function *f = cs.getCalledFunction();
+                    if (f == this->parent->function) {
+
+                    } else {
+                        res.insert(f);
+                    }
                 }
             }
         }
@@ -409,7 +420,8 @@ namespace dra {
         }
     }
 
-    uint32_t DBasicBlock::get_all_dominator_uncovered_instructions(std::map<std::string, dra::DBasicBlock *> &res) const {
+    uint32_t
+    DBasicBlock::get_all_dominator_uncovered_instructions(std::map<std::string, dra::DBasicBlock *> &res) const {
         if (this->basicBlock != nullptr) {
             return this->parent->get_dominator_uncovered_instructions(this->basicBlock, res);
         } else {

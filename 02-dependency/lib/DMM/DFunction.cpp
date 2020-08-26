@@ -29,7 +29,7 @@ namespace dra {
         function = nullptr;
         parent = nullptr;
 
-        state = CoverKind::untest;
+        state = CoverKind::outside;
 
         InstNum = 0;
         CallInstNum = 0;
@@ -89,15 +89,30 @@ namespace dra {
     }
 
     void DFunction::setState(CoverKind kind) {
-#if DEBUG_ERR
         if (kind < state) {
-            std::cerr << "error DFunction kind" << "\n";
+
+        } else {
+            state = kind;
         }
-#endif
-        state = kind;
     }
 
-    void DFunction::update(CoverKind kind) { setState(kind); }
+    void DFunction::update(CoverKind kind) {
+
+        if (this->state < CoverKind::untested && kind >= CoverKind::untested) {
+            updateUntestedState();
+        }
+        setState(kind);
+    }
+
+    void DFunction::updateUntestedState() {
+        for (auto db: this->BasicBlock) {
+            std::set<llvm::Function *> res;
+            db.second->get_function_call(res);
+            for (auto f: res) {
+                this->parent->get_DF_from_f(f)->update(CoverKind::untested);
+            }
+        }
+    }
 
     bool DFunction::isObjudump() const { return Objudump; }
 
@@ -166,7 +181,8 @@ namespace dra {
     uint32_t DFunction::get_number_uncovered_instructions(std::map<std::string, dra::DBasicBlock *> &res) {
         uint64_t uncovered_basicblock_number = 0;
         for (const auto &b : this->BasicBlock) {
-            if (b.second->state != CoverKind::cover && b.second->basicBlock != nullptr && b.second->basicBlock->hasName()) {
+            if (b.second->state != CoverKind::cover && b.second->basicBlock != nullptr &&
+                b.second->basicBlock->hasName()) {
                 uncovered_basicblock_number += b.second->get_number_uncovered_instructions();
                 res[this->FunctionName + b.first] = b.second;
             }
@@ -195,7 +211,7 @@ namespace dra {
         }
 
         for (auto c : DT->getNode(dra::getFinalBB(b))->getChildren()) {
-            if(c->getBlock()->hasName()){
+            if (c->getBlock()->hasName()) {
                 std::string Name = c->getBlock()->getName().str();
                 if (BasicBlock.find(Name) != BasicBlock.end()) {
                     if (this->BasicBlock[Name]->state != CoverKind::cover) {
@@ -230,7 +246,8 @@ namespace dra {
         uncovered_function.insert(this->function);
 
         for (const auto &bb: this->BasicBlock) {
-            if (bb.second->basicBlock != nullptr && bb.second->basicBlock != nullptr && bb.second->basicBlock->hasName()) {
+            if (bb.second->basicBlock != nullptr && bb.second->basicBlock != nullptr &&
+                bb.second->basicBlock->hasName()) {
                 if (llvm::isPotentiallyReachable(b, bb.second->basicBlock, this->DT)) {
                     if (bb.second->state != CoverKind::cover) {
                         count = count + bb.second->get_number_uncovered_instructions();

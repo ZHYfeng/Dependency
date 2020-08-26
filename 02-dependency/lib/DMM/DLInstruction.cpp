@@ -15,14 +15,14 @@ namespace dra {
 
     DLInstruction::DLInstruction() :
             i(nullptr), parent(nullptr), Line(0) {
-        state = CoverKind::untest;
+        state = CoverKind::outside;
 
     }
 
     DLInstruction::~DLInstruction() = default;
 
     void DLInstruction::setState(CoverKind kind) {
-        if (state == CoverKind::cover && kind == CoverKind::uncover) {
+        if (state == CoverKind::cover && kind < CoverKind::cover) {
             std::cerr << "error InstIR kind" << "\n";
         }
         state = kind;

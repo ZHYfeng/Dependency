@@ -664,7 +664,8 @@ namespace dra {
 
 
                                 ND << "0x" << std::hex << unconvered_address << "@"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
+                                   << dra::dump_inst_booltin(
+                                           getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 ND << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
                                 ND << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
@@ -677,7 +678,8 @@ namespace dra {
                                 std::cout << "# related to gv but not find write statement" << std::endl;
 
                                 DN << "0x" << std::hex << unconvered_address << "@"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
+                                   << dra::dump_inst_booltin(
+                                           getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 DN << "0x" << std::hex << condition_address << "@"
                                    << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
                                 DN << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
@@ -688,9 +690,10 @@ namespace dra {
 
                             } else if (!write_basicblock->empty()) {
                                 std::cout << "# write address : " << write_basicblock->size() << std::endl;
-                                
+
                                 D << "0x" << std::hex << unconvered_address << "@"
-                                   << dra::dump_inst_booltin(getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
+                                  << dra::dump_inst_booltin(
+                                          getRealBB(db_ua->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@";
                                 D << "0x" << std::hex << condition_address << "@"
                                   << dra::dump_inst_booltin(getFinalBB(db->basicBlock)->getTerminator()) << "@";
                                 D << getFunctionName(db->basicBlock->getParent()) << "@" << db->name << "@";
@@ -728,7 +731,8 @@ namespace dra {
                                     }
                                     std::cout << "--------------------------------------------" << std::endl;
                                     D << " @ @" << "0x" << tdb->trace_pc_address << "@"
-                                      << dra::dump_inst_booltin(getRealBB(tdb->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@"
+                                      << dra::dump_inst_booltin(
+                                              getRealBB(tdb->basicBlock)->getFirstNonPHIOrDbgOrLifetime()) << "@"
                                       << x->is_trait_fixed() << "@";
                                     D << "\n";
                                 }
@@ -749,54 +753,54 @@ namespace dra {
         DN.close();
         D.close();
 
-        for(auto db : DependencyUncover){
+        for (auto db : DependencyUncover) {
             Uncover.insert(db);
         }
-        for(auto db : NotDependencyUncover){
+        for (auto db : NotDependencyUncover) {
             Uncover.insert(db);
         }
 
-        for(auto db : DDependencyUncover){
+        for (auto db : DDependencyUncover) {
             DUncover.insert(db);
         }
-        for(auto db : DNotDependencyUncover){
+        for (auto db : DNotDependencyUncover) {
             DUncover.insert(db);
         }
 
         FILE *fp;
-        fp = fopen("statistic.txt","a+");
+        fp = fopen("statistic.txt", "a+");
         uint64_t number;
         number = 0;
-        for(const auto& db : Uncover){
+        for (const auto &db : Uncover) {
             number += db.second->get_number_uncovered_instructions();
         }
-        fprintf(fp, "Uncover@%lu@%lu@\n",Uncover.size(), number);
+        fprintf(fp, "Uncover@%lu@%lu@\n", Uncover.size(), number);
         number = 0;
-        for(const auto& db : DependencyUncover){
+        for (const auto &db : DependencyUncover) {
             number += db.second->get_number_uncovered_instructions();
         }
-        fprintf(fp, "DependencyUncover@%lu@%lu@\n",DependencyUncover.size(), number);
+        fprintf(fp, "DependencyUncover@%lu@%lu@\n", DependencyUncover.size(), number);
         number = 0;
-        for(const auto& db : NotDependencyUncover){
+        for (const auto &db : NotDependencyUncover) {
             number += db.second->get_number_uncovered_instructions();
         }
-        fprintf(fp, "NotDependencyUncover@%lu@%lu@\n",NotDependencyUncover.size(), number);
+        fprintf(fp, "NotDependencyUncover@%lu@%lu@\n", NotDependencyUncover.size(), number);
 
         number = 0;
-        for(const auto& db : DUncover){
+        for (const auto &db : DUncover) {
             number += db.second->get_number_uncovered_instructions();
         }
-        fprintf(fp, "DUncover@%lu@%lu@\n",DUncover.size(), number);
+        fprintf(fp, "DUncover@%lu@%lu@\n", DUncover.size(), number);
         number = 0;
-        for(const auto& db : DDependencyUncover){
+        for (const auto &db : DDependencyUncover) {
             number += db.second->get_number_uncovered_instructions();
         }
-        fprintf(fp, "DDependencyUncover@%lu@%lu@\n",DDependencyUncover.size(), number);
+        fprintf(fp, "DDependencyUncover@%lu@%lu@\n", DDependencyUncover.size(), number);
         number = 0;
-        for(const auto& db : DNotDependencyUncover){
+        for (const auto &db : DNotDependencyUncover) {
             number += db.second->get_number_uncovered_instructions();
         }
-        fprintf(fp, "DNotDependencyUncover@%lu@%lu@\n",DNotDependencyUncover.size(), number);
+        fprintf(fp, "DNotDependencyUncover@%lu@%lu@\n", DNotDependencyUncover.size(), number);
         fclose(fp);
 
     }
@@ -828,12 +832,14 @@ namespace dra {
                         }
                     }
                     FILE *fp;
-                    fp = fopen("statistic.txt","a+");
+                    fp = fopen("statistic.txt", "a+");
                     float_t total = dependency + not_dependency + other;
-                    if(total == 0) {
-                        fprintf(fp, "UncoveredWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,1.0,not_dependency,other);
+                    if (total == 0) {
+                        fprintf(fp, "UncoveredWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n", total, dependency, 1.0, not_dependency,
+                                other);
                     } else {
-                        fprintf(fp, "UncoveredWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency / total,not_dependency,other);
+                        fprintf(fp, "UncoveredWS@%.2f@%.2f@%.2f@%.2f@%.2f@\n", total, dependency, dependency / total,
+                                not_dependency, other);
                     }
                     fclose(fp);
 
@@ -841,8 +847,8 @@ namespace dra {
             }
         }
         write.close();
-        
-        
+
+
         // char buf[1024];
         // std::sprintf(buf, "%.2f@%.2f@%.2f@%.2f@%.2f@\n",total,dependency,dependency * 100 / total,not_dependency,other);
         // std::ofstream result("statistic.txt");
@@ -856,7 +862,7 @@ namespace dra {
         for (auto *Pred : llvm::predecessors(getRealBB(db->basicBlock))) {
             auto db1 = this->DM.get_DB_from_bb(Pred);
             if (this->get_write_basicblock(db1) == nullptr) {
-                if (this->is_dependency(db1, count+1)) {
+                if (this->is_dependency(db1, count + 1)) {
                     return true;
                 }
             } else {
@@ -890,15 +896,26 @@ namespace dra {
             }
         }
         write.close();
+
+        uint64_t count = 0;
+        for (const auto &temp : this->DM.Modules->Function) {
+            for (const auto &df : temp.second) {
+                if (df.second->state > CoverKind::outside && df.second->isIR()) {
+                    count += df.second->NumberBasicBlockReal;
+                }
+            }
+        }
+
         FILE *fp;
-        fp = fopen("statistic.txt","a+");
-        fprintf(fp, "union@%.2f@\n",coverage);
+        fp = fopen("statistic.txt", "a+");
+        fprintf(fp, "union@%.2f@\n", coverage);
+        fprintf(fp, "coverage@d@\n", count);
         fclose(fp);
 
         std::ofstream UF("UncoveredFunctions.txt");
-        for(const auto& temp : this->DM.Modules->Function) {
-            for(const auto& df : temp.second) {
-                if(df.second->state != CoverKind::cover && df.second->isIR()) {
+        for (const auto &temp : this->DM.Modules->Function) {
+            for (const auto &df : temp.second) {
+                if (df.second->state != CoverKind::cover && df.second->isIR()) {
                     UF << df.second->FunctionName << "\n";
                 }
             }

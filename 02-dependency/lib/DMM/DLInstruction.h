@@ -13,7 +13,7 @@
 
 namespace dra {
     enum CoverKind {
-        other, untest, uncover, cover,
+        other, outside, untested, uncover, cover,
     };
 
     class DBasicBlock;

@@ -14,7 +14,7 @@
 namespace dra {
 
     DAInstruction::DAInstruction() {
-        state = CoverKind::untest;
+        state = CoverKind::outside;
         parent = nullptr;
         address = 0;
 

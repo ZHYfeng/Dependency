@@ -43,6 +43,8 @@ namespace dra {
 
         void update(CoverKind kind);
 
+        void updateUntestedState();
+
         bool isObjudump() const;
 
         void setObjudump(bool objudump);
