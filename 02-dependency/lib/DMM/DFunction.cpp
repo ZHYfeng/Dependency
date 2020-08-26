@@ -98,10 +98,13 @@ namespace dra {
 
     void DFunction::update(CoverKind kind) {
 
+
         if (this->state < CoverKind::untest && kind >= CoverKind::untest) {
+            setState(kind);
             updateUntestedState();
+        } else {
+            setState(kind);
         }
-        setState(kind);
     }
 
     void DFunction::updateUntestedState() {
