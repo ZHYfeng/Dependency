@@ -644,4 +644,19 @@ namespace dra {
 
     }
 
+    std::set<llvm::Function *> DModule::get_f_from_ft(llvm::FunctionType *ft) {
+        if (this->Ft.find(ft) != this->Ft.end()){
+            return this->Ft[ft];
+        } else {
+            auto *res = new std::set<llvm::Function *>;
+            for (auto &f: *this->module) {
+                if(f.getFunctionType() == ft){
+                    res->insert(&f);
+                }
+            }
+            this->Ft[ft] = *res;
+            return *res;
+        }
+    }
+
 } /* namespace dra */

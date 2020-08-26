@@ -389,11 +389,10 @@ namespace dra {
                 llvm::CallSite cs(i->i);
                 if (cs.isIndirectCall()) {
                     llvm::Type *t = cs.getCalledValue()->getType();
-                    llvm::FunctionType *ft = llvm::cast<llvm::FunctionType>(llvm::cast<llvm::PointerType>(t)->getElementType());
-                    for (auto &f: *this->parent->parent->module) {
-                        if(f.getFunctionType() == ft){
-                            res.insert(&f);
-                        }
+                    auto *ft = llvm::cast<llvm::FunctionType>(llvm::cast<llvm::PointerType>(t)->getElementType());
+                    auto fs = this->parent->parent->get_f_from_ft(ft);
+                    for (auto &f: fs) {
+                        res.insert(f);
                     }
 
                 } else {

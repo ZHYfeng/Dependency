@@ -108,13 +108,11 @@ namespace dra {
     }
 
     void DFunction::updateUntestedState() {
-        for (auto db: this->BasicBlock) {
-            std::set<llvm::Function *> res;
-            db.second->get_function_call(res);
-            for (auto f: res) {
-                if(this->parent->get_DF_from_f(f))
-                    this->parent->get_DF_from_f(f)->update(CoverKind::untest);
-            }
+        std::set<llvm::Function *> res;
+        this->get_function_call(res);
+        for (auto f: res) {
+            if(this->parent->get_DF_from_f(f))
+                this->parent->get_DF_from_f(f)->update(CoverKind::untest);
         }
     }
 

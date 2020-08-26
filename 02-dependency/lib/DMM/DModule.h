@@ -60,6 +60,8 @@ namespace dra {
 
         void add_number_basic_block_covered();
 
+        std::set<llvm::Function *> get_f_from_ft(llvm::FunctionType *ft);
+
     public:
         std::unique_ptr<llvm::Module> module;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> Function;
@@ -72,6 +74,8 @@ namespace dra {
         std::unordered_map<std::string, DFunction *> RepeatBCFunction;
         std::unordered_map<std::string, DFunction *> RepeatOFunction;
         std::unordered_map<std::string, std::unordered_map<std::string, DFunction *>> RepeatSFunction;
+
+        std::unordered_map<llvm::FunctionType *, std::set<llvm::Function *>> Ft;
 
     };
 
