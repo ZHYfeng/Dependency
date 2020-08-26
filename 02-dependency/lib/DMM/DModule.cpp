@@ -587,6 +587,9 @@ namespace dra {
     }
 
     DFunction *DModule::get_DF_from_f(llvm::Function *f) {
+        if (f == nullptr) {
+            return nullptr;
+        }
         std::string Path = dra::getFileName(f);
         std::string FunctionName = dra::getFunctionName(f);
         if (this->Function.find(Path) != this->Function.end()) {

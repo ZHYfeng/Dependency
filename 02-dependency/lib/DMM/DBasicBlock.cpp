@@ -405,6 +405,9 @@ namespace dra {
                     if (f == this->parent->function) {
 
                     } else {
+                        if (f== nullptr){
+                            cs->dump();
+                        }
                         res.insert(f);
                     }
                 }
