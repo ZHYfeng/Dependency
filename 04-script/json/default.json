@@ -1867,7 +1867,11 @@
       "ioctl$KVM_SET_NESTED_STATE",
       "ioctl$KVM_SET_DEVICE_ATTR",
       "ioctl$KVM_GET_DEVICE_ATTR",
-      "ioctl$KVM_HAS_DEVICE_ATTR"
+      "ioctl$KVM_HAS_DEVICE_ATTR",
+      "syz_kvm_setup_cpu$x86",
+      "syz_kvm_setup_cpu$arm64",
+      "close",
+      "mmap"
     ],
     "file_taint": "taint_info_conf_kvm_serialize",
     "function": {
@@ -2272,7 +2276,12 @@
       "ioctl$TCSETXF",
       "ioctl$TCSETXW",
       "ioctl$TIOCMIWAIT",
-      "ioctl$TIOCGICOUNT"
+      "ioctl$TIOCGICOUNT",
+      "read",
+      "write",
+      "poll",
+      "close",
+      "fsync"
     ],
     "file_taint": "taint_info_conf_ptmx_serialize",
     "function": {
@@ -2765,7 +2774,10 @@
       "ioctl$SNDRV_SEQ_IOCTL_QUERY_SUBS",
       "ioctl$SNDRV_SEQ_IOCTL_GET_SUBSCRIPTION",
       "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_CLIENT",
-      "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_PORT"
+      "ioctl$SNDRV_SEQ_IOCTL_QUERY_NEXT_PORT",
+      "read",
+      "close",
+      "poll"
     ],
     "file_taint": "taint_info_conf_snd_seq_serialize",
     "function": {
