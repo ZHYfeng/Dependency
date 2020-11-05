@@ -921,6 +921,16 @@ namespace dra {
             }
         }
         UF.close();
+
+        std::ofstream OF("OutsideFunctions.txt");
+        for (const auto &temp : this->DM.Modules->Function) {
+            for (const auto &df : temp.second) {
+                if (df.second->state <= CoverKind::outside && df.second->isIR()) {
+                    OF << df.second->FunctionName << "\n";
+                }
+            }
+        }
+        OF.close();
     }
 
 } /* namespace dra */
