@@ -941,7 +941,7 @@ namespace dra {
         std::ofstream control_dependency("control_dependency.txt");
         uint64_t condition_address;
 
-        auto check_predsuccess = [&, this]() {
+        auto check_control_dependency = [&, this]() {
             control_dependency << "@condition address@0x" << std::hex << condition_address;
             if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
                 DBasicBlock *db = DM.Address2BB[condition_address]->parent;
@@ -950,30 +950,31 @@ namespace dra {
                 } else {
                     sta::MODS *write_basicblock = get_write_basicblock(db);
                     if (write_basicblock == nullptr) {
-                        if(auto ups = db->basicBlock->getUniquePredecessor()) {
-                            auto temp = this->DM.get_DB_from_bb(ups);
-                            sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
-                            if (temp_write_basicblock != nullptr) {
-                                control_dependency << "@Yes" << std::endl;
-                                return;
-                            }
-                        }
-//                        for (auto it = pred_begin(db->basicBlock), et = pred_end(db->basicBlock); it != et; ++it) {
-//                            auto temp = this->DM.get_DB_from_bb(*it);
+//                        for(auto i : db->basicBlock)
+//                        if(auto ups = db->basicBlock->getUniquePredecessor()) {
+//                            auto temp = this->DM.get_DB_from_bb(ups);
 //                            sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
 //                            if (temp_write_basicblock != nullptr) {
 //                                control_dependency << "@Yes" << std::endl;
 //                                return;
 //                            }
-//                            for (auto itt = pred_begin(*it), ett = pred_end(*itt); itt != ett; ++itt) {
-//                                temp = this->DM.get_DB_from_bb(*itt);
-//                                temp_write_basicblock = get_write_basicblock(temp);
-//                                if (temp_write_basicblock != nullptr) {
-//                                    control_dependency << "@Yes" << std::endl;
-//                                    return;
-//                                }
-//                            }
 //                        }
+                        for (auto it: predecessors(db->basicBlock)) {
+                            auto temp = this->DM.get_DB_from_bb(it);
+                            sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
+                            if (temp_write_basicblock != nullptr) {
+                                control_dependency << "@Yes" << std::endl;
+                                return;
+                            }
+                            for (auto itt : predecessors(it)) {
+                                temp = this->DM.get_DB_from_bb(itt);
+                                temp_write_basicblock = get_write_basicblock(temp);
+                                if (temp_write_basicblock != nullptr) {
+                                    control_dependency << "@Yes" << std::endl;
+                                    return;
+                                }
+                            }
+                        }
                         control_dependency << "@No" << std::endl;
                         return;
                     } else {
@@ -1004,7 +1005,7 @@ namespace dra {
                     continue;
                 }
                 condition_address = std::stoul(Line.substr(pos_start + 1, 18), nullptr, 16);
-                check_predsuccess();
+                check_control_dependency();
             }
         }
 
