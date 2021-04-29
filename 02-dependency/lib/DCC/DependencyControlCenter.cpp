@@ -950,22 +950,30 @@ namespace dra {
                 } else {
                     sta::MODS *write_basicblock = get_write_basicblock(db);
                     if (write_basicblock == nullptr) {
-                        for (auto it = pred_begin(db->basicBlock), et = pred_end(db->basicBlock); it != et; ++it) {
-                            auto temp = this->DM.get_DB_from_bb(*it);
+                        if(auto ups = db->basicBlock->getUniquePredecessor()) {
+                            auto temp = this->DM.get_DB_from_bb(ups);
                             sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
                             if (temp_write_basicblock != nullptr) {
                                 control_dependency << "@Yes" << std::endl;
                                 return;
                             }
-                            for (auto itt = pred_begin(*it), ett = pred_end(*itt); itt != ett; ++itt) {
-                                temp = this->DM.get_DB_from_bb(*itt);
-                                temp_write_basicblock = get_write_basicblock(temp);
-                                if (temp_write_basicblock != nullptr) {
-                                    control_dependency << "@Yes" << std::endl;
-                                    return;
-                                }
-                            }
                         }
+//                        for (auto it = pred_begin(db->basicBlock), et = pred_end(db->basicBlock); it != et; ++it) {
+//                            auto temp = this->DM.get_DB_from_bb(*it);
+//                            sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
+//                            if (temp_write_basicblock != nullptr) {
+//                                control_dependency << "@Yes" << std::endl;
+//                                return;
+//                            }
+//                            for (auto itt = pred_begin(*it), ett = pred_end(*itt); itt != ett; ++itt) {
+//                                temp = this->DM.get_DB_from_bb(*itt);
+//                                temp_write_basicblock = get_write_basicblock(temp);
+//                                if (temp_write_basicblock != nullptr) {
+//                                    control_dependency << "@Yes" << std::endl;
+//                                    return;
+//                                }
+//                            }
+//                        }
                         control_dependency << "@No" << std::endl;
                         return;
                     } else {
