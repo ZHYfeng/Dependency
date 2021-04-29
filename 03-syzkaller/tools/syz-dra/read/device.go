@@ -32,6 +32,7 @@ func (d *device) read(path string, a2i bool) {
 	d.path = path
 	d.dirName = filepath.Dir(path)
 	d.baseName = filepath.Base(path)
+	fmt.Printf("name : %s\n", d.baseName)
 	d.dataPath = filepath.Join(path, pb.NameData)
 	d.a2i = a2i
 
@@ -483,8 +484,10 @@ func (d *device) checkStatistic() {
 			ss = append(ss, tempS)
 		}
 		s := average(ss)
-		s.Name = name
-		s.output(path)
+		if s != nil {
+			s.Name = name
+			s.output(path)
+		}
 	}
 
 	f(prevalent)

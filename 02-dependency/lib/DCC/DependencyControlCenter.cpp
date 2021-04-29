@@ -118,7 +118,7 @@ namespace dra {
                 number_conditions_dependency++;
             }
         }
-#if !DEBUG
+#if DEBUG
         std::cout << "number_conditions : " << std::dec << number_conditions << std::endl;
         std::cout << "number_conditions_dependency : " << std::dec << number_conditions_dependency << std::endl;
 #endif

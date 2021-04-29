@@ -58,7 +58,7 @@ ioctl$KVM_SET_PIT2(fd fd_kvmvm, cmd const[KVM_SET_PIT2], arg ptr[in, kvm_pit_sta
 ioctl$KVM_PPC_GET_SMMU_INFO(fd fd_kvmvm, cmd const[KVM_PPC_GET_SMMU_INFO], arg buffer[out])
 ioctl$KVM_IRQFD(fd fd_kvmvm, cmd const[KVM_IRQFD], arg ptr[in, kvm_irqfd])
 ioctl$KVM_PPC_ALLOCATE_HTAB(fd fd_kvmvm, cmd const[KVM_PPC_ALLOCATE_HTAB], arg ptr[in, int32])
-ioctl$KVM_CREATE_DEVICE(fd fd_kvmvm, cmd const[KVM_CREATE_DEVICE], arg ptr[inout, kvm_create_device]) fd_kvmdev
+ioctl$KVM_CREATE_DEVICE(fd fd_kvmvm, cmd const[KVM_CREATE_DEVICE], arg ptr[inout, kvm_create_device])
 ioctl$KVM_REGISTER_COALESCED_MMIO(fd fd_kvmvm, cmd const[KVM_REGISTER_COALESCED_MMIO], arg ptr[in, kvm_coalesced_mmio_zone])
 ioctl$KVM_UNREGISTER_COALESCED_MMIO(fd fd_kvmvm, cmd const[KVM_UNREGISTER_COALESCED_MMIO], arg ptr[in, kvm_coalesced_mmio_zone])
 ioctl$KVM_SET_NR_MMU_PAGES(fd fd_kvmvm, cmd const[KVM_SET_NR_MMU_PAGES], arg intptr)
@@ -307,7 +307,7 @@ kvm_device_attr {
 
 kvm_create_device {
 	type	flags[kvm_device_type, int32]
-	fd	fd_kvmdev[opt]
+	fd	fd_kvmdev[out]
 	flags	flags[kvm_device_flags, int32]
 }
 
@@ -496,7 +496,7 @@ kvm_userspace_memory_region {
 	flags	flags[kvm_mem_region_flags, int32]
 	paddr	flags[kvm_guest_addrs, int64]
 	size	len[addr, int64]
-	addr	vma[1:2]
+	addr	ptr[in, text[x86_real]]
 }
 
 kvm_vcpu_events {
