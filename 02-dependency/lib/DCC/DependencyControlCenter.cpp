@@ -952,21 +952,6 @@ namespace dra {
                     sta::MODS *write_basicblock = get_write_basicblock(db);
                     if (write_basicblock == nullptr) {
                         for (auto it: predecessors(db->basicBlock)) {
-                            for (auto &i : *(db->basicBlock)) {
-                                if (i.getOpcode() == llvm::Instruction::Call) {
-                                    const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
-//                                    if (cs.isInlineAsm()) {
-//                                        control_dependency << "@Yes@isInlineAsm" << std::endl;
-//                                        return;
-//                                    }
-                                    if (auto tf = cs.getCalledFunction()) {
-                                        if (!tf->isDeclaration()) {
-                                            control_dependency << "@Yes@isDeclaration" << std::endl;
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
                             auto temp = this->DM.get_DB_from_bb(it);
                             sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
                             if (temp_write_basicblock != nullptr) {
@@ -979,6 +964,22 @@ namespace dra {
                                 if (temp_write_basicblock != nullptr) {
                                     control_dependency << "@Yes@itt" << std::endl;
                                     return;
+                                }
+                            }
+                            for (auto &i : *(db->basicBlock)) {
+                                if (i.getOpcode() == llvm::Instruction::Call) {
+                                    const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
+
+                                    if (auto tf = cs.getCalledFunction()) {
+                                        if (!tf->isDeclaration()) {
+                                            control_dependency << "@Yes@isDeclaration" << std::endl;
+                                            return;
+                                        }
+                                    }
+                                    if (cs.isInlineAsm()) {
+                                        control_dependency << "@Yes@isInlineAsm" << std::endl;
+                                        return;
+                                    }
                                 }
                             }
                         }
