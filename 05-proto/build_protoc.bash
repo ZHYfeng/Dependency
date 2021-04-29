@@ -5,9 +5,8 @@ PROTO=$PWD
 export PATH=/home/yu/data/2018-Dependency/build/bin:$PATH
 
 protoc --cpp_out=../02-dependency/lib/RPC ./*.proto
-# protoc --grpc_out=../02-dependency/lib/RPC --plugin=protoc-gen-grpc=/home/yu/data/2018-Dependency/build/bin/grpc_cpp_plugin ./DependencyRPC.proto
-protoc --grpc_out=../02-dependency/lib/RPC --plugin=protoc-gen-grpc=/home/yhao016/data/build/bin/grpc_cpp_plugin ./DependencyRPC.proto
-# protoc --grpc_out=../02-dependency/lib/RPC --plugin=protoc-gen-grpc=/use/local/bin/grpc_cpp_plugin ./DependencyRPC.proto
+protoc --grpc_out=../02-dependency/lib/RPC --plugin=protoc-gen-grpc=/home/yu/data/2018-Dependency/build/bin/grpc_cpp_plugin ./DependencyRPC.proto
+# protoc --grpc_out=../02-dependency/lib/RPC --plugin=protoc-gen-grpc=/home/yhao016/data/build/bin/grpc_cpp_plugin ./DependencyRPC.proto
 
 protoc --go_out=plugins=grpc:../03-syzkaller/pkg/dra \
  --go_opt=MBase.proto=$PROTO Base.proto \
