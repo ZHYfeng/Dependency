@@ -992,7 +992,6 @@ namespace dra {
                 if (pos_end - pos_start != 18) {
                     std::cout << "pos_end - pos_start != 18" << std::endl;
                     std::cout << Line << std::endl;
-                    break;
                 }
                 uint64_t uncovered_address = std::stoul(Line.substr(pos_start, 18), nullptr, 16);
                 pos_start = pos_end;
@@ -1002,7 +1001,7 @@ namespace dra {
                 if (pos_end - pos_start != 19) {
                     std::cout << "pos_end - pos_start != 19" << std::endl;
                     std::cout << Line << std::endl;
-                    break;
+                    continue;
                 }
                 condition_address = std::stoul(Line.substr(pos_start + 1, 18), nullptr, 16);
                 check_predsuccess();
