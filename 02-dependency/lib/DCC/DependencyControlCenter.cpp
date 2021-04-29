@@ -979,6 +979,7 @@ namespace dra {
 
         if (not_dependency.is_open()) {
             while (getline(not_dependency, Line)) {
+                pos_start = 0;
                 pos_end = Line.find(delimiter, pos_start + 1);
                 if (pos_end - pos_start != 18) {
                     std::cout << "pos_end - pos_start != 18" << std::endl;
@@ -989,11 +990,11 @@ namespace dra {
                 pos_end = Line.find(delimiter, pos_start + 1);
                 pos_start = pos_end;
                 pos_end = Line.find(delimiter, pos_start + 1);
-                if (pos_end - pos_start != 18) {
-                    std::cout << "pos_end - pos_start != 18" << std::endl;
+                if (pos_end - pos_start != 19) {
+                    std::cout << "pos_end - pos_start != 19" << std::endl;
                     break;
                 }
-                condition_address = std::stoul(Line.substr(pos_start, 18), nullptr, 16);
+                condition_address = std::stoul(Line.substr(pos_start + 1, 18), nullptr, 16);
                 check_predsuccess();
             }
         }
