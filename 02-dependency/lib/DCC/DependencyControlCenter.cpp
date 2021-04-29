@@ -966,20 +966,30 @@ namespace dra {
                                     return;
                                 }
                             }
-                            for (auto &i : *(db->basicBlock)) {
+                            for (auto &i : *(it)) {
                                 if (i.getOpcode() == llvm::Instruction::Call) {
                                     const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
-
                                     if (auto tf = cs.getCalledFunction()) {
                                         if (!tf->isDeclaration()) {
                                             control_dependency << "@Yes@isDeclaration" << std::endl;
                                             return;
                                         }
                                     }
-                                    if (cs.isInlineAsm()) {
-                                        control_dependency << "@Yes@isInlineAsm" << std::endl;
+                                }
+                            }
+                        }
+                        for (auto &i : *(db->basicBlock)) {
+                            if (i.getOpcode() == llvm::Instruction::Call) {
+                                const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
+                                if (auto tf = cs.getCalledFunction()) {
+                                    if (!tf->isDeclaration()) {
+                                        control_dependency << "@Yes@isDeclaration" << std::endl;
                                         return;
                                     }
+                                }
+                                if (cs.isInlineAsm()) {
+                                    control_dependency << "@Yes@isInlineAsm" << std::endl;
+                                    return;
                                 }
                             }
                         }
