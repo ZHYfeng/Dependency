@@ -605,7 +605,7 @@ namespace sta {
                         }
                     }//Inst
                     std::cout << "not find inst : " << inst << " find bb : " << bb << std::endl;
-                    bbb->dump();
+                    // bbb->dump();
 
                 } else {
                     for (auto &it : *f->function) {
@@ -618,11 +618,11 @@ namespace sta {
                                 }
                             }
                             std::cout << "not find inst : " << inst << std::endl;
-                            it.dump();
+                            // it.dump();
                         }
                     }
                     std::cout << "not find bb : " << bb << std::endl;
-                    f->function->dump();
+                    // f->function->dump();
                 }
             } else {
                 std::cout << "not find function" << std::endl;
