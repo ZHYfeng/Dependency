@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package dra;
-option go_package = ".;dra";
+// option go_package = "/home/yu/data/2018-Dependency/2018-Dependency/05-proto/dra";
 
 enum taskStatus {
     untested = 0;

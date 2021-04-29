@@ -11,7 +11,7 @@ cd protobuf
 git checkout tags/v3.11.0
 git submodule update --init --recursive
 ./autogen.sh
-./configure --prefix=/home/yuh/data/build  --disable-shared
+./configure --prefix=/home/yu/data/2018-Dependency/build  --disable-shared
 make -j12
 make install
 sudo ldconfig
@@ -21,11 +21,11 @@ sudo ldconfig
 
 ```shell
 sudo apt -y install build-essential autoconf libtool pkg-config libgflags-dev libgtest-dev libc++-dev
-git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
+git clone -b v1.25.0 https://github.com/grpc/grpc
 cd grpc
 git submodule update --init --recursive
 make HAS_SYSTEM_PROTOBUF=false -j12
-make install prefix=/home/yuh/data/build
+make install prefix=/home/yu/data/2018-Dependency/build
 sudo ldconfig
 ```
 

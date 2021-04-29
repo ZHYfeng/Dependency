@@ -3,7 +3,6 @@ syntax = "proto3";
 import "Input.proto";
 
 package dra;
-option go_package = ".;dra";
 
 message Statistic {
     FuzzingStat name = 1;

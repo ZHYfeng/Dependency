@@ -1,14 +1,6 @@
 #!/bin/bash
-
-if [ -z "$III" ]
-then
-    III=$HOME/data/build
-else
-    echo "\$III is " $III
-fi
-
 ./autogen.sh
-./configure --prefix=$III  --disable-shared
+./configure --prefix=/home/yu/data/2018-Dependency/build  --disable-shared
 make clean
 make -j12
 make install

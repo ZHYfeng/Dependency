@@ -380,8 +380,7 @@ const char descriptor_table_protodef_Task_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "tNonconstant\020\001\022#\n\037WriteStatementDependen"
   "cyRelated\020\002\022&\n\"WriteStatementNotDependen"
   "cyRelated\020\003*5\n\010TaskKind\022\010\n\004Boot\020\000\022\010\n\004Hig"
-  "h\020\001\022\t\n\005Ckeck\020\003\022\n\n\006Normal\020\005B\007Z\005.;drab\006pro"
-  "to3"
+  "h\020\001\022\t\n\005Ckeck\020\003\022\n\n\006Normal\020\005b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Task_2eproto_deps[1] = {
 };
@@ -399,7 +398,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Tas
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Task_2eproto_once;
 static bool descriptor_table_Task_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Task_2eproto = {
-  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 2123,
+  &descriptor_table_Task_2eproto_initialized, descriptor_table_protodef_Task_2eproto, "Task.proto", 2114,
   &descriptor_table_Task_2eproto_once, descriptor_table_Task_2eproto_sccs, descriptor_table_Task_2eproto_deps, 9, 0,
   schemas, file_default_instances, TableStruct_Task_2eproto::offsets,
   file_level_metadata_Task_2eproto, 9, file_level_enum_descriptors_Task_2eproto, file_level_service_descriptors_Task_2eproto,
