@@ -955,10 +955,11 @@ namespace dra {
                             for (auto &i : *(db->basicBlock)) {
                                 if (i.getOpcode() == llvm::Instruction::Call) {
                                     const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
-                                    if (cs.isInlineAsm()) {
-                                        control_dependency << "@Yes@isInlineAsm" << std::endl;
-                                        return;
-                                    } else if (auto tf = cs.getCalledFunction()) {
+//                                    if (cs.isInlineAsm()) {
+//                                        control_dependency << "@Yes@isInlineAsm" << std::endl;
+//                                        return;
+//                                    }
+                                    if (auto tf = cs.getCalledFunction()) {
                                         if (!tf->isDeclaration()) {
                                             control_dependency << "@Yes@isDeclaration" << std::endl;
                                             return;
