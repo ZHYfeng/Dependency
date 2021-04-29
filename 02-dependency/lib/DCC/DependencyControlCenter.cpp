@@ -593,7 +593,6 @@ namespace dra {
         return res;
     }
 
-
     void DependencyControlCenter::check_uncovered_addresses_dependnency(const std::string &file) {
 
         std::stringstream ss;
@@ -932,5 +931,76 @@ namespace dra {
         }
         OF.close();
     }
+
+    void DependencyControlCenter::check_control_dependency(const std::string &file) {
+        std::ifstream not_dependency(file);
+        std::string Line;
+        std::string delimiter = "@";
+        uint64_t pos_start = 0;
+        uint64_t pos_end = 0;
+        std::ofstream control_dependency("control_dependency.txt");
+        uint64_t condition_address;
+
+        auto check_predsuccess = [&, this]() {
+            control_dependency << "@condition address@0x" << std::hex << condition_address;
+            if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
+                DBasicBlock *db = DM.Address2BB[condition_address]->parent;
+                if (db == nullptr) {
+                    goto error;
+                } else {
+                    sta::MODS *write_basicblock = get_write_basicblock(db);
+                    if (write_basicblock == nullptr) {
+                        for (auto it = pred_begin(db->basicBlock), et = pred_end(db->basicBlock); it != et; ++it) {
+                            auto temp = this->DM.get_DB_from_bb(*it);
+                            sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
+                            if (temp_write_basicblock != nullptr) {
+                                control_dependency << "@Yes" << std::endl;
+                                return;
+                            }
+                            for (auto itt = pred_begin(*it), ett = pred_end(*itt); itt != ett; ++itt) {
+                                temp = this->DM.get_DB_from_bb(*itt);
+                                temp_write_basicblock = get_write_basicblock(temp);
+                                if (temp_write_basicblock != nullptr) {
+                                    control_dependency << "@Yes" << std::endl;
+                                    return;
+                                }
+                            }
+                        }
+                        control_dependency << "@No" << std::endl;
+                        return;
+                    } else {
+                        goto error;
+                    }
+                }
+            }
+            error:
+            control_dependency << "@Error" << std::endl;
+        };
+
+        if (not_dependency.is_open()) {
+            while (getline(not_dependency, Line)) {
+                pos_end = Line.find(delimiter, pos_start + 1);
+                if (pos_end - pos_start != 18) {
+                    std::cout << "pos_end - pos_start != 18" << std::endl;
+                    break;
+                }
+                uint64_t uncovered_address = std::stoul(Line.substr(pos_start, 18), nullptr, 16);
+                pos_start = pos_end;
+                pos_end = Line.find(delimiter, pos_start + 1);
+                pos_start = pos_end;
+                pos_end = Line.find(delimiter, pos_start + 1);
+                if (pos_end - pos_start != 18) {
+                    std::cout << "pos_end - pos_start != 18" << std::endl;
+                    break;
+                }
+                condition_address = std::stoul(Line.substr(pos_start, 18), nullptr, 16);
+                check_predsuccess();
+            }
+        }
+
+        not_dependency.close();
+        control_dependency.close();
+    }
+
 
 } /* namespace dra */

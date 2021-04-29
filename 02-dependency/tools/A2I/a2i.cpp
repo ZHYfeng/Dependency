@@ -21,11 +21,13 @@ llvm::cl::opt<std::string> bit_code("bc", llvm::cl::desc("The bit code."), llvm:
 llvm::cl::opt<std::string> config(llvm::cl::Positional, llvm::cl::desc("The dra config file"),
                                   llvm::cl::init("dra.json"));
 llvm::cl::opt<std::string> union_coverage("union_coverage", llvm::cl::desc("The file of union coverage."),
-                                     llvm::cl::init("./union_coverage.txt"));
+                                          llvm::cl::init("./union_coverage.txt"));
 llvm::cl::opt<std::string> write("write", llvm::cl::desc("The file of write address."),
-                                      llvm::cl::init("./write.txt"));
+                                 llvm::cl::init("./write.txt"));
 llvm::cl::opt<std::string> uncovered("uncovered", llvm::cl::desc("The file of uncovered address."),
                                      llvm::cl::init("./uncovered.txt"));
+llvm::cl::opt<std::string> not_dependency("not_dependency", llvm::cl::desc("The file of not dependency."),
+                                          llvm::cl::init("./conditionND.txt"));
 
 int main(int argc, char **argv) {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
@@ -40,9 +42,11 @@ int main(int argc, char **argv) {
     auto *dcc = new dra::DependencyControlCenter();
 
     dcc->init(obj_dump, assembly, bit_code, config);
-    dcc->check_coverage(union_coverage);
-    dcc->check_write_addresses_dependency(write);
-    dcc->check_uncovered_addresses_dependnency(uncovered);
+//    dcc->check_coverage(union_coverage);
+//    dcc->check_write_addresses_dependency(write);
+//    dcc->check_uncovered_addresses_dependnency(uncovered);
+    dcc->check_control_dependency(not_dependency);
+
 
     return 0;
 }

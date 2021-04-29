@@ -33,6 +33,8 @@ namespace dra {
 
         void check_uncovered_addresses_dependnency(const std::string &file);
 
+        void check_control_dependency(const std::string &file);
+
         void check_all_condition_();
 
         void setRPCConnection(const std::string &grpc_port);
