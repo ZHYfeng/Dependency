@@ -11,6 +11,7 @@
 #include <utility>
 #include <grpcpp/grpcpp.h>
 #include <llvm/IR/DebugInfoMetadata.h>
+#include <llvm/IR/InstrTypes.h>
 #include <sstream>
 #include "general.h"
 
@@ -950,16 +951,21 @@ namespace dra {
                 } else {
                     sta::MODS *write_basicblock = get_write_basicblock(db);
                     if (write_basicblock == nullptr) {
-//                        for(auto i : db->basicBlock)
-//                        if(auto ups = db->basicBlock->getUniquePredecessor()) {
-//                            auto temp = this->DM.get_DB_from_bb(ups);
-//                            sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
-//                            if (temp_write_basicblock != nullptr) {
-//                                control_dependency << "@Yes" << std::endl;
-//                                return;
-//                            }
-//                        }
                         for (auto it: predecessors(db->basicBlock)) {
+                            for (auto &i : *(db->basicBlock)) {
+                                if (i.getOpcode() == llvm::Instruction::Call) {
+                                    const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
+                                    if (cs.isInlineAsm()) {
+                                        control_dependency << "@Yes" << std::endl;
+                                        return;
+                                    } else if (auto tf = cs.getCalledFunction()) {
+                                        if (!tf->isDeclaration()) {
+                                            control_dependency << "@Yes" << std::endl;
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
                             auto temp = this->DM.get_DB_from_bb(it);
                             sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
                             if (temp_write_basicblock != nullptr) {
