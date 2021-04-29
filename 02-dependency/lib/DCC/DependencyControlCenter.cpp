@@ -956,11 +956,11 @@ namespace dra {
                                 if (i.getOpcode() == llvm::Instruction::Call) {
                                     const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
                                     if (cs.isInlineAsm()) {
-                                        control_dependency << "@Yes" << std::endl;
+                                        control_dependency << "@Yes@isInlineAsm" << std::endl;
                                         return;
                                     } else if (auto tf = cs.getCalledFunction()) {
                                         if (!tf->isDeclaration()) {
-                                            control_dependency << "@Yes" << std::endl;
+                                            control_dependency << "@Yes@isDeclaration" << std::endl;
                                             return;
                                         }
                                     }
@@ -969,14 +969,14 @@ namespace dra {
                             auto temp = this->DM.get_DB_from_bb(it);
                             sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
                             if (temp_write_basicblock != nullptr) {
-                                control_dependency << "@Yes" << std::endl;
+                                control_dependency << "@Yes@it" << std::endl;
                                 return;
                             }
                             for (auto itt : predecessors(it)) {
                                 temp = this->DM.get_DB_from_bb(itt);
                                 temp_write_basicblock = get_write_basicblock(temp);
                                 if (temp_write_basicblock != nullptr) {
-                                    control_dependency << "@Yes" << std::endl;
+                                    control_dependency << "@Yes@itt" << std::endl;
                                     return;
                                 }
                             }
