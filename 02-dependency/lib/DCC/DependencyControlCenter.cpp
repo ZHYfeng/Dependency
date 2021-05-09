@@ -941,11 +941,17 @@ namespace dra {
         uint64_t pos_end = 0;
         std::ofstream control_dependency("control_dependency.txt");
         uint64_t condition_address;
+        uint64_t uncovered_address;
 
         auto check_control_dependency = [&, this]() {
-            control_dependency << "@condition address@0x" << std::hex << condition_address;
+            std::map<std::string, dra::DBasicBlock *> temp;
+            control_dependency << "@0x" << std::hex << uncovered_address;
             if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
                 DBasicBlock *db = DM.Address2BB[condition_address]->parent;
+                std::map<std::string, dra::DBasicBlock *> temp;
+                control_dependency << "@" << std::dec << db->get_all_dominator_uncovered_instructions(temp);;
+                control_dependency << "@" << std::dec << temp.size();
+
                 if (db == nullptr) {
                     goto error;
                 } else {
@@ -955,14 +961,14 @@ namespace dra {
                             auto temp = this->DM.get_DB_from_bb(it);
                             sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
                             if (temp_write_basicblock != nullptr) {
-                                control_dependency << "@Yes@it" << std::endl;
+                                control_dependency << "@it" << std::endl;
                                 return;
                             }
                             for (auto itt : predecessors(it)) {
                                 temp = this->DM.get_DB_from_bb(itt);
                                 temp_write_basicblock = get_write_basicblock(temp);
                                 if (temp_write_basicblock != nullptr) {
-                                    control_dependency << "@Yes@itt" << std::endl;
+                                    control_dependency << "@itt" << std::endl;
                                     return;
                                 }
                             }
@@ -971,7 +977,7 @@ namespace dra {
                                     const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
                                     if (auto tf = cs.getCalledFunction()) {
                                         if (!tf->isDeclaration()) {
-                                            control_dependency << "@Yes@isDeclaration" << std::endl;
+                                            control_dependency << "@isDeclaration" << std::endl;
                                             return;
                                         }
                                     }
@@ -983,12 +989,12 @@ namespace dra {
                                 const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
                                 if (auto tf = cs.getCalledFunction()) {
                                     if (!tf->isDeclaration()) {
-                                        control_dependency << "@Yes@isDeclaration" << std::endl;
+                                        control_dependency << "@isDeclaration" << std::endl;
                                         return;
                                     }
                                 }
                                 if (cs.isInlineAsm()) {
-                                    control_dependency << "@Yes@isInlineAsm" << std::endl;
+                                    control_dependency << "@isInlineAsm" << std::endl;
                                     return;
                                 }
                             }
@@ -1012,7 +1018,7 @@ namespace dra {
                     std::cout << "pos_end - pos_start != 18" << std::endl;
                     std::cout << Line << std::endl;
                 }
-                uint64_t uncovered_address = std::stoul(Line.substr(pos_start, 18), nullptr, 16);
+                uncovered_address = std::stoul(Line.substr(pos_start, 18), nullptr, 16);
                 pos_start = pos_end;
                 pos_end = Line.find(delimiter, pos_start + 1);
                 pos_start = pos_end;
