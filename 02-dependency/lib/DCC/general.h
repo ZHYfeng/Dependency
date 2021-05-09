@@ -2,8 +2,8 @@
 // Created by yhao on 7/18/19.
 //
 
-#ifndef INC_2018-Dependency_GENERAL_H
-#define INC_2018-Dependency_GENERAL_H
+#ifndef INC_2018_Dependency_GENERAL_H
+#define INC_2018_Dependency_GENERAL_H
 
 #include <string>
 #include <csetjmp>
@@ -31,4 +31,4 @@ namespace dra {
     std::string dump_inst_booltin(llvm::Instruction *inst);
 }
 
-#endif //INC_2018-Dependency_GENERAL_H
+#endif //INC_2018_Dependency_GENERAL_H
