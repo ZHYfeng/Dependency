@@ -80,3 +80,5 @@ The path of Linux kernel: `/home/yuh/data/benchmark/linux`.
 
 `13-linux-clang-np/` is the Linux kernel with new driver.
 `16-linux-clang-np-bc-f/` is `13-linux-clang-np/` with bc file.
+
+~/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/cmake-build-debug/tools/A2I/a2i -objdump=/home/yhao016/data/2018-Dependency/13-linux-clang-np/vmlinux.objdump
