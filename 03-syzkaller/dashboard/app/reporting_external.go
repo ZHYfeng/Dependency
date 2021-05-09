@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/dashboard/dashapi"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/log"
 )

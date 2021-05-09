@@ -20,14 +20,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/html"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/signal"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/vcs"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/cover"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/html"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/signal"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/vcs"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys"
 )
 
 func (mgr *Manager) initHTTP() {

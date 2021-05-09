@@ -13,9 +13,9 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ast"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/serializer"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/ast"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/serializer"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/targets"
 )
 
 var flagUpdate = flag.Bool("update", false, "reformat all.txt")

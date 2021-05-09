@@ -1,4 +1,4 @@
-# 2018_dependency
+# 2018-Dependency
 
 ## Install Protocol Buffers C++
 
@@ -29,10 +29,10 @@ make install prefix=/home/yu/data/2018-Dependency/build
 sudo ldconfig
 ```
 
-## build 2018_dependency
+## build 2018-Dependency
 ```shell
-git clone git@github.com:ZHYfeng/2018_dependency.git
-cd 2018_dependency
+git clone git@github.com:ZHYfeng/2018-Dependency.git
+cd 2018-Dependency
 bash build.bash
 ```
 

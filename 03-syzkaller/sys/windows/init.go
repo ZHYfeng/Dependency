@@ -4,7 +4,7 @@
 package windows
 
 import (
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
 )
 
 func InitTarget(target *prog.Target) {

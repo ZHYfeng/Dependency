@@ -6,12 +6,12 @@ package main
 import (
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/hash"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/report"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/report"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
 )
 
 func (mgr *Manager) hubSyncLoop() {

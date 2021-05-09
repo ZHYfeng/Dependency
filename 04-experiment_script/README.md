@@ -24,13 +24,13 @@ python3 -m pip install --user scipy
 ## run dra
 
 ```shell script
-/data/yhao/git/2018_dependency/build/tools/DRA/dra -asm=/data/yhao/benchmark/linux/16-linux-clang-np-bc-f/built-in.s -objdump=/data/yhao/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=/data/yhao/benchmark/linux/result/taint_info/taint_info_tty_ioctl_serialize /data/yhao/benchmark/linux/16-linux-clang-np-bc-f/built-in.bc 2>&1 | tee ./result-cpp.log
+/data/yhao/git/2018-Dependency/build/tools/DRA/dra -asm=/data/yhao/benchmark/linux/16-linux-clang-np-bc-f/built-in.s -objdump=/data/yhao/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=/data/yhao/benchmark/linux/result/taint_info/taint_info_tty_ioctl_serialize /data/yhao/benchmark/linux/16-linux-clang-np-bc-f/built-in.bc 2>&1 | tee ./result-cpp.log
 ```
 
 ## test
 
 ```shell script
-/data/yhao/git/2018_dependency/build/tools/DRA/dra -asm=/home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.s -objdump=/data/yhao/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=/data/yhao/git/work/result/taint_info/taint_info_tty_ioctl_serialize -port=127.0.0.1:22223 /home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.bc 2>&1 | tee ./result-cpp.log
+/data/yhao/git/2018-Dependency/build/tools/DRA/dra -asm=/home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.s -objdump=/data/yhao/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=/data/yhao/git/work/result/taint_info/taint_info_tty_ioctl_serialize -port=127.0.0.1:22223 /home/yuh/data/benchmark/linux/16-linux-clang-np-bc-f/drivers/tty/built-in.bc 2>&1 | tee ./result-cpp.log
 ```
 
 ## run syzkaller
@@ -74,7 +74,7 @@ sudo rm -fr ./cover_uncover.txt dependency.log result-cpp.log result-syzkaller.l
 ## run a2i
 
 ```shell script
-/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/build/tools/A2I/a2i -asm=built-in.s -objdump=/home/yuh/data/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=built-in.taint built-in.bc
+/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018-Dependency/02-dependency/build/tools/A2I/a2i -asm=built-in.s -objdump=/home/yuh/data/benchmark/linux/13-linux-clang-np/vmlinux.objdump -staticRes=built-in.taint built-in.bc
 ```
 
 ## prepare kernel
@@ -84,7 +84,7 @@ llvm-link -o built-in.bc arch/x86/kernel/head64.bc arch/x86/kernel/ebda.bc arch/
 llvm-dis built-in.bc
 rm -rf built-in.s
 cat `find -name "*.s"` >> built-in.s
-/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/build/tools/A2L/a2l -objdump=vmlinux.objdump
+/home/yuh/data/git/gopath/src/github.com/ZHYfeng/2018-Dependency/02-dependency/build/tools/A2L/a2l -objdump=vmlinux.objdump
 ```
 
 ```shell script

@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/config"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/gce"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/qemu"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/config"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/vm/gce"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/vm/qemu"
 )
 
 func TestCanned(t *testing.T) {

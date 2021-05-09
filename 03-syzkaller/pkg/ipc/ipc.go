@@ -5,7 +5,7 @@ package ipc
 
 import (
 	"fmt"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
 	"io"
 	"io/ioutil"
 	"os"
@@ -16,10 +16,10 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/signal"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/cover"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/signal"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
 )
 
 // Configuration flags for Config.Flags.

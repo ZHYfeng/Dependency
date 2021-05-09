@@ -6,9 +6,9 @@
 package rpctype
 
 import (
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/host"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/ipc"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/signal"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/host"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/signal"
 )
 
 type RPCInput struct {

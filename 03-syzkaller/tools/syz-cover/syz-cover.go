@@ -27,9 +27,9 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/cover"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/targets"
 )
 
 func main() {

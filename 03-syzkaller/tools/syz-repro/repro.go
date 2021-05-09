@@ -9,14 +9,14 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/csource"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/report"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/repro"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/vm"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/csource"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/report"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/repro"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/vm"
 )
 
 var (

@@ -4,7 +4,7 @@
 // 	protoc        v3.11.0
 // source: DependencyRPC.proto
 
-package _05_proto
+package dra
 
 import (
 	context "context"

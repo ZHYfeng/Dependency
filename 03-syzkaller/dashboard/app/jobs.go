@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/dashboard/dashapi"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/email"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/vcs"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/email"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/vcs"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	db "google.golang.org/appengine/datastore"

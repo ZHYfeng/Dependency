@@ -17,10 +17,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/config"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/vm/vmimpl"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/config"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/vm/vmimpl"
 )
 
 func init() {

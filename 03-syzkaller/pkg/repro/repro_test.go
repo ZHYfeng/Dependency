@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/csource"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/csource"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
 )
 
 func initTest(t *testing.T) (*rand.Rand, int) {
