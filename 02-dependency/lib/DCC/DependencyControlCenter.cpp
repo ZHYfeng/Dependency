@@ -943,6 +943,8 @@ namespace dra {
         uint64_t condition_address;
         uint64_t uncovered_address;
 
+        std::cout << "check_control_dependency" << std::endl;
+
         auto check_control_dependency = [&, this]() {
             std::map<std::string, dra::DBasicBlock *> temp;
             control_dependency << "@0x" << std::hex << uncovered_address;
