@@ -982,6 +982,9 @@ namespace dra {
                                             control_dependency << "@isDeclaration" << std::endl;
                                             return;
                                         }
+                                    } else {
+                                        control_dependency << "@indirect" << std::endl;
+                                        return;
                                     }
                                 }
                             }
@@ -994,6 +997,9 @@ namespace dra {
                                         control_dependency << "@isDeclaration" << std::endl;
                                         return;
                                     }
+                                } else {
+                                    control_dependency << "@indirect" << std::endl;
+                                    return;
                                 }
                                 if (cs.isInlineAsm()) {
                                     control_dependency << "@isInlineAsm" << std::endl;
