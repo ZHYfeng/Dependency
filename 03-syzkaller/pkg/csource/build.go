@@ -11,9 +11,9 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/targets"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/targets"
 )
 
 // Build builds a C program from source src and returns name of the resulting binary.

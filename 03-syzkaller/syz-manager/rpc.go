@@ -7,12 +7,12 @@ import (
 	"net"
 	"sync"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/cover"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/signal"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/cover"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/signal"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys"
 )
 
 type RPCServer struct {

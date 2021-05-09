@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
 )
 
 func parseSyscall(scanner *bufio.Scanner) (int, *Syscall) {

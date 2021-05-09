@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/dashboard/dashapi"
 )
 
 func TestReportBug(t *testing.T) {

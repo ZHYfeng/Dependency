@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/compiler"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/compiler"
 )
 
 type fuchsia struct{}

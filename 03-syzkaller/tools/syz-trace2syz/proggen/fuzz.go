@@ -4,8 +4,8 @@
 package proggen
 
 import (
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
-	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/linux/gen" // pull in the target
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/linux/gen" // pull in the target
 )
 
 var linuxTarget = func() *prog.Target {

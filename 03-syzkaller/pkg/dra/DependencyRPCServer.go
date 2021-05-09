@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/rpctype"
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 )

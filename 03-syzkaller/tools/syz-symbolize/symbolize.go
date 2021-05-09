@@ -10,8 +10,8 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/report"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/report"
 )
 
 var (

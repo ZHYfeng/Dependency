@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
-	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys/openbsd/gen"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/openbsd/gen"
 )
 
 func TestSanitizeMknodCall(t *testing.T) {

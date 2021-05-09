@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	pb "github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/dra"
+	pb "github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/dra"
 
 	"path/filepath"
 	"strings"

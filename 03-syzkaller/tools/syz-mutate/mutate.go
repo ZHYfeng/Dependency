@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/mgrconfig"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/prog"
-	_ "github.com/ZHYfeng/2018_dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys"
 )
 
 var (

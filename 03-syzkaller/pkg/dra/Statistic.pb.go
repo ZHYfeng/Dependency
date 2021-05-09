@@ -4,7 +4,7 @@
 // 	protoc        v3.11.0
 // source: Statistic.proto
 
-package _05_proto
+package dra
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

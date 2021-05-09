@@ -5,7 +5,7 @@ package prog
 
 import (
 	"fmt"
-	"github.com/ZHYfeng/2018_dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
 	"math/rand"
 	"unsafe"
 )
