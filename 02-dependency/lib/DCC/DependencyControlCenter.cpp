@@ -13,6 +13,8 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/InstrTypes.h>
 #include <sstream>
+#include <llvm/IR/IntrinsicInst.h>
+#include <llvm/IR/InlineAsm.h>
 #include "general.h"
 
 namespace dra {
@@ -946,17 +948,22 @@ namespace dra {
         std::cout << "check_control_dependency" << std::endl;
 
         auto check_control_dependency = [&, this]() {
-            std::map<std::string, dra::DBasicBlock *> temp;
             control_dependency << "@0x" << std::hex << uncovered_address;
             if (this->DM.Address2BB.find(condition_address) != this->DM.Address2BB.end()) {
                 DBasicBlock *db = DM.Address2BB[condition_address]->parent;
-                std::map<std::string, dra::DBasicBlock *> temp;
-                control_dependency << "@" << std::dec << db->get_all_dominator_uncovered_instructions(temp);;
-                control_dependency << "@" << std::dec << temp.size();
+                std::map<std::string, dra::DBasicBlock *> temp1;
+                control_dependency << "@" << std::dec << db->get_all_dominator_uncovered_instructions(temp1);;
+                control_dependency << "@" << std::dec << temp1.size();
 
                 if (db == nullptr) {
                     goto error;
                 } else {
+
+                    std::string str;
+                    llvm::raw_string_ostream dump(str);
+                    db->basicBlock->print(dump);
+//                    control_dependency << str << std::endl;
+
                     sta::MODS *write_basicblock = get_write_basicblock(db);
                     if (write_basicblock == nullptr) {
                         for (auto it: predecessors(db->basicBlock)) {
@@ -966,7 +973,7 @@ namespace dra {
                                 control_dependency << "@it" << std::endl;
                                 return;
                             }
-                            for (auto itt : predecessors(it)) {
+                            for (auto itt : predecessors(temp->basicBlock)) {
                                 temp = this->DM.get_DB_from_bb(itt);
                                 temp_write_basicblock = get_write_basicblock(temp);
                                 if (temp_write_basicblock != nullptr) {
@@ -974,39 +981,94 @@ namespace dra {
                                     return;
                                 }
                             }
-                            for (auto &i : *(it)) {
+                            auto b = temp->basicBlock;
+                            do {
+
+                                for (auto &i : *(b)) {
+                                    if (i.getOpcode() == llvm::Instruction::Call) {
+                                        std::string str;
+                                        llvm::raw_string_ostream dump(str);
+                                        i.print(dump);
+//                                        control_dependency << str << std::endl;
+                                        if (llvm::isa<llvm::DbgInfoIntrinsic>(i)) {
+                                            continue;
+                                        }
+                                        const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
+                                        if (auto tf = cs.getCalledFunction()) {
+                                            if (tf->getName().str().find("__sanitizer_cov") != std::string::npos) {
+                                            } else if (tf->getName().str().find("__asan") != std::string::npos) {
+                                            } else if (tf->getName().str().find("llvm") != std::string::npos) {
+                                            } else if (tf->isDeclaration()) {
+                                                control_dependency << "@it_isDeclaration" << std::endl;
+                                                return;
+                                            }
+                                        } else {
+                                            std::string str;
+                                            llvm::raw_string_ostream dump(str);
+                                            cs.getCalledValue()->print(dump);
+                                            if (str.find("asm sideeffect") != std::string::npos) {
+                                                continue;
+                                            }
+                                            if (cs.isInlineAsm()) {
+                                                std::string str;
+                                                llvm::raw_string_ostream dump(str);
+                                                cs.getCalledValue()->print(dump);
+//                                                control_dependency << str << std::endl;
+                                                control_dependency << "@it_isInlineAsm" << std::endl;
+                                                return;
+                                            }
+//                                            control_dependency << "@it_indirect" << std::endl;
+                                        }
+                                    }
+                                }
+
+                                b = b->getNextNode();
+                            } while (b && !b->hasName());
+                        }
+
+                        auto b = db->basicBlock;
+                        do {
+                            for (auto &i : *(db->basicBlock)) {
                                 if (i.getOpcode() == llvm::Instruction::Call) {
+                                    std::string str;
+                                    llvm::raw_string_ostream dump(str);
+                                    i.print(dump);
+//                                    control_dependency << str << std::endl;
+                                    if (llvm::isa<llvm::DbgInfoIntrinsic>(i)) {
+                                        continue;
+                                    }
                                     const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
                                     if (auto tf = cs.getCalledFunction()) {
-                                        if (!tf->isDeclaration()) {
+                                        if (tf->getName().str().find("__sanitizer_cov") != std::string::npos) {
+                                        } else if (tf->getName().str().find("__asan") != std::string::npos) {
+                                        } else if (tf->getName().str().find("llvm") != std::string::npos) {
+                                        } else if (tf->isDeclaration()) {
                                             control_dependency << "@isDeclaration" << std::endl;
                                             return;
                                         }
                                     } else {
-                                        control_dependency << "@indirect" << std::endl;
-                                        return;
+                                        std::string str;
+                                        llvm::raw_string_ostream dump(str);
+                                        cs.getCalledValue()->print(dump);
+                                        if (str.find("asm sideeffect") != std::string::npos) {
+                                            continue;
+                                        }
+                                        if (cs.isInlineAsm()) {
+                                            std::string str;
+                                            llvm::raw_string_ostream dump(str);
+                                            cs.getCalledValue()->print(dump);
+//                                            control_dependency << str << std::endl;
+                                            control_dependency << "@isInlineAsm" << std::endl;
+                                            return;
+                                        }
+//                                        control_dependency << "@indirect" << std::endl;
                                     }
                                 }
                             }
-                        }
-                        for (auto &i : *(db->basicBlock)) {
-                            if (i.getOpcode() == llvm::Instruction::Call) {
-                                const llvm::CallInst &cs = llvm::cast<llvm::CallInst>(i);
-                                if (auto tf = cs.getCalledFunction()) {
-                                    if (!tf->isDeclaration()) {
-                                        control_dependency << "@isDeclaration" << std::endl;
-                                        return;
-                                    }
-                                } else {
-                                    control_dependency << "@indirect" << std::endl;
-                                    return;
-                                }
-                                if (cs.isInlineAsm()) {
-                                    control_dependency << "@isInlineAsm" << std::endl;
-                                    return;
-                                }
-                            }
-                        }
+
+                            b = b->getNextNode();
+                        } while (b && !b->hasName());
+
                         control_dependency << "@No" << std::endl;
                         return;
                     } else {
