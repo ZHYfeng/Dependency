@@ -1028,6 +1028,7 @@ namespace dra {
 
                         auto b = db->basicBlock;
                         uint64_t indirect = 0;
+                        uint64_t call = 0;
                         do {
                             for (auto &i : *(db->basicBlock)) {
                                 if (i.getOpcode() == llvm::Instruction::Call) {
@@ -1046,6 +1047,8 @@ namespace dra {
                                         } else if (tf->isDeclaration()) {
                                             control_dependency << "@isDeclaration" << std::endl;
                                             return;
+                                        } else {
+                                            call = 1;
                                         }
                                     } else {
                                         std::string str;
@@ -1072,6 +1075,8 @@ namespace dra {
                         } while (b && !b->hasName());
                         if (indirect) {
                             control_dependency << "@indirect" << std::endl;
+                        } else if (call) {
+                            control_dependency << "@call" << std::endl;
                         } else {
                             control_dependency << "@No" << std::endl;
                         }
