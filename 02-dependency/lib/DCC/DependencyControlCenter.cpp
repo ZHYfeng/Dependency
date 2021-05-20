@@ -1027,6 +1027,7 @@ namespace dra {
                         }
 
                         auto b = db->basicBlock;
+                        uint64_t indirect = 0;
                         do {
                             for (auto &i : *(db->basicBlock)) {
                                 if (i.getOpcode() == llvm::Instruction::Call) {
@@ -1061,6 +1062,7 @@ namespace dra {
                                             control_dependency << "@isInlineAsm" << std::endl;
                                             return;
                                         }
+                                        indirect = 1;
 //                                        control_dependency << "@indirect" << std::endl;
                                     }
                                 }
@@ -1068,8 +1070,11 @@ namespace dra {
 
                             b = b->getNextNode();
                         } while (b && !b->hasName());
-
-                        control_dependency << "@No" << std::endl;
+                        if (indirect) {
+                            control_dependency << "@indirect" << std::endl;
+                        } else {
+                            control_dependency << "@No" << std::endl;
+                        }
                         return;
                     } else {
                         goto error;
