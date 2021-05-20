@@ -966,6 +966,10 @@ namespace dra {
 
                     sta::MODS *write_basicblock = get_write_basicblock(db);
                     if (write_basicblock == nullptr) {
+
+                        uint64_t indirect = 0;
+                        uint64_t call = 0;
+
                         for (auto it: predecessors(db->basicBlock)) {
                             auto temp = this->DM.get_DB_from_bb(it);
                             sta::MODS *temp_write_basicblock = get_write_basicblock(temp);
@@ -1001,6 +1005,8 @@ namespace dra {
                                             } else if (tf->isDeclaration()) {
                                                 control_dependency << "@it_isDeclaration" << std::endl;
                                                 return;
+                                            } else {
+                                                call = 1;
                                             }
                                         } else {
                                             std::string str;
@@ -1017,6 +1023,7 @@ namespace dra {
                                                 control_dependency << "@it_isInlineAsm" << std::endl;
                                                 return;
                                             }
+                                            indirect = 1;
 //                                            control_dependency << "@it_indirect" << std::endl;
                                         }
                                     }
@@ -1027,8 +1034,6 @@ namespace dra {
                         }
 
                         auto b = db->basicBlock;
-                        uint64_t indirect = 0;
-                        uint64_t call = 0;
                         do {
                             for (auto &i : *(db->basicBlock)) {
                                 if (i.getOpcode() == llvm::Instruction::Call) {
