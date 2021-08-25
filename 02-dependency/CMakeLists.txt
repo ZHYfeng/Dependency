@@ -9,6 +9,10 @@ include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs bitwriter core ipo irreader instcombine instrumentation target linker analysis scalaropts support)
 
+message(STATUS "LLVM_INCLUDE_DIRS: ${LLVM_INCLUDE_DIRS}")
+message(STATUS "LLVM_DEFINITIONS: ${LLVM_DEFINITIONS}")
+message(STATUS "llvm_libs: ${llvm_libs}")
+
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(YOUR_PKG REQUIRED IMPORTED_TARGET grpc grpc++ protobuf)
 #pkg-config --cflags --libs protobuf grpc++ grpc

@@ -1,5 +1,20 @@
 # 2018-Dependency
 
+## build llvm
+
+```shell
+wget http://releases.llvm.org/7.0.0/llvm-7.0.0.src.tar.xz
+tar -xf llvm-7.0.0.src.tar.xz
+wget http://releases.llvm.org/7.0.0/cfe-7.0.0.src.tar.xz
+tar -xf cfe-7.0.0.src.tar.xz
+mv cfe-7.0.0.src llvm-7.0.0.src/tools/clang
+mkdir llvm
+cd llvm
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_RTTI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/yhao016/data/18-Dependency/install/ ../llvm-7.0.0.src/
+make -j16
+make install
+```
+
 ## Install Protocol Buffers C++
 
 notice: remove the default protobuf and install new!
@@ -11,7 +26,7 @@ cd protobuf
 git checkout tags/v3.11.0
 git submodule update --init --recursive
 ./autogen.sh
-./configure --prefix=/home/yu/data/2018-Dependency/build  --disable-shared
+./configure --prefix=/home/yhao016/data/18-Dependency/install  --disable-shared
 make -j12
 make install
 sudo ldconfig
@@ -25,7 +40,7 @@ git clone -b v1.25.0 https://github.com/grpc/grpc
 cd grpc
 git submodule update --init --recursive
 make HAS_SYSTEM_PROTOBUF=false -j12
-make install prefix=/home/yu/data/2018-Dependency/build
+make install prefix=/home/yhao016/data/18-Dependency/install
 sudo ldconfig
 ```
 
@@ -81,4 +96,4 @@ The path of Linux kernel: `/home/yuh/data/benchmark/linux`.
 `13-linux-clang-np/` is the Linux kernel with new driver.
 `16-linux-clang-np-bc-f/` is `13-linux-clang-np/` with bc file.
 
-~/data/git/gopath/src/github.com/ZHYfeng/2018_dependency/02-dependency/cmake-build-debug/tools/A2I/a2i -objdump=/home/yhao016/data/2018-Dependency/13-linux-clang-np/vmlinux.objdump
+~/data/git/gopath/src/github.com/ZHYfeng/2018-Dependency/02-dependency/cmake-build-debug/tools/A2I/a2i -objdump=/home/yhao016/data/2018-Dependency/13-linux-clang-np/vmlinux.objdump
