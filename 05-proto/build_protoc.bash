@@ -2,7 +2,6 @@
 echo "[*] Trying to generate protoc"
 
 PROTO=$PWD
-export PATH=/home/yu/data/2018-Dependency/build/bin:$PATH
 
 protoc --cpp_out=../02-dependency/lib/RPC ./*.proto
 # protoc --grpc_out=../02-dependency/lib/RPC --plugin=protoc-gen-grpc=/home/yu/data/2018-Dependency/build/bin/grpc_cpp_plugin ./DependencyRPC.proto
