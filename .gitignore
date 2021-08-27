@@ -43,7 +43,7 @@ ld.so.cache
 # IDE
 */workspace.xml
 .vscode/*
-06-result/*
+# 06-result/*
 */.idea/*
 built-in*
 *img*
