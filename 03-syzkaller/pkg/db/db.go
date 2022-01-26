@@ -18,9 +18,9 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/hash"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/osutil"
 )
 
 type DB struct {

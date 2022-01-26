@@ -4,8 +4,8 @@
 package host
 
 import (
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
 )
 
 // DetectSupportedSyscalls returns list on supported and unsupported syscalls on the host.

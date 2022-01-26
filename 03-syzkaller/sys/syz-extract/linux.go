@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/compiler"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/compiler"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/osutil"
 )
 
 type linux struct{}

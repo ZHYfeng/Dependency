@@ -9,14 +9,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/host"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/ipc"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/rpctype"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/runtest"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/host"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/runtest"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/sys"
 )
 
 type checkArgs struct {

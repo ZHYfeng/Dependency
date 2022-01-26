@@ -9,9 +9,9 @@ import (
 	"io/ioutil"
 	"math/rand"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/tools/syz-trace2syz/parser"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/tools/syz-trace2syz/parser"
 )
 
 func ParseFile(filename string, target *prog.Target) ([]*prog.Prog, error) {

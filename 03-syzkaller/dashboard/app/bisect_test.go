@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/dashboard/dashapi"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/email"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/email"
 )
 
 func TestBisectCause(t *testing.T) {

@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/symbolizer"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/targets"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/symbolizer"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/sys/targets"
 )
 
 type akaros struct {

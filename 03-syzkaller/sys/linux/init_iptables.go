@@ -6,7 +6,7 @@ package linux
 import (
 	"strings"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
 )
 
 func (arch *arch) generateIptables(g *prog.Gen, typ prog.Type, old prog.Arg) (

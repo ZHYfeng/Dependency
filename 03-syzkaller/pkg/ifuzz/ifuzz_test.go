@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/ifuzz"
-	_ "github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/ifuzz/generated"
+	. "github.com/ZHYfeng/Dependency/03-syzkaller/pkg/ifuzz"
+	_ "github.com/ZHYfeng/Dependency/03-syzkaller/pkg/ifuzz/generated"
 )
 
 func TestMode(t *testing.T) {

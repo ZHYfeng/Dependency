@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/html"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/html"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"

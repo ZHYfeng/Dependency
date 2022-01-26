@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
 	"github.com/golang/protobuf/proto"
 )
 

@@ -16,9 +16,9 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/dashboard/dashapi"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/email"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/email"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/hash"
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	db "google.golang.org/appengine/datastore"

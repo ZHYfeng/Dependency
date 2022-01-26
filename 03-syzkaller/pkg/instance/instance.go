@@ -16,15 +16,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/build"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/csource"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/mgrconfig"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/report"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/vcs"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/vm"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/build"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/csource"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/report"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/vcs"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/vm"
 )
 
 type Env struct {

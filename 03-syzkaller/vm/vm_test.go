@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/mgrconfig"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/report"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/vm/vmimpl"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/mgrconfig"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/report"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/vm/vmimpl"
 )
 
 type testPool struct {

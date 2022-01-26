@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/dashboard/dashapi"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/dashboard/dashapi"
 )
 
 // Normal workflow:

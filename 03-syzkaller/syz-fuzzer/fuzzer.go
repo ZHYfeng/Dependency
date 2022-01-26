@@ -14,18 +14,18 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/hash"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/host"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/ipc"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/ipc/ipcconfig"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/rpctype"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/signal"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
-	_ "github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/host"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/ipc"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/ipc/ipcconfig"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/rpctype"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/signal"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/Dependency/03-syzkaller/sys"
 
-	pb "github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/dra"
+	pb "github.com/ZHYfeng/Dependency/03-syzkaller/pkg/dra"
 )
 
 type Fuzzer struct {

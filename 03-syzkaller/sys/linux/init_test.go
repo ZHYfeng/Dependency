@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
-	_ "github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/linux/gen"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/Dependency/03-syzkaller/sys/linux/gen"
 )
 
 func TestSanitize(t *testing.T) {

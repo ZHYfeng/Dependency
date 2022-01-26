@@ -22,13 +22,13 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/config"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/gce"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/gcs"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/kd"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/vm/vmimpl"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/config"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/gce"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/gcs"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/kd"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/vm/vmimpl"
 )
 
 func init() {

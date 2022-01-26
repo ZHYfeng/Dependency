@@ -7,8 +7,8 @@ import (
 	"bytes"
 	"runtime"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys/targets"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/sys/targets"
 )
 
 func InitTarget(target *prog.Target) {

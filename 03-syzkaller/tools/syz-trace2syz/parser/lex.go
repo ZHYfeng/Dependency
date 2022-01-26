@@ -10,7 +10,7 @@ package parser
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/log"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/log"
 	"strconv"
 	"strings"
 )

@@ -12,11 +12,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/db"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/hash"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/osutil"
-	"github.com/ZHYfeng/2018-Dependency/03-syzkaller/prog"
-	_ "github.com/ZHYfeng/2018-Dependency/03-syzkaller/sys"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/db"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/hash"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/pkg/osutil"
+	"github.com/ZHYfeng/Dependency/03-syzkaller/prog"
+	_ "github.com/ZHYfeng/Dependency/03-syzkaller/sys"
 )
 
 func main() {

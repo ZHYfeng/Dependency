@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	pb "github.com/ZHYfeng/2018-Dependency/03-syzkaller/pkg/dra"
+	pb "github.com/ZHYfeng/Dependency/03-syzkaller/pkg/dra"
 	"github.com/golang/protobuf/proto"
 )
 
