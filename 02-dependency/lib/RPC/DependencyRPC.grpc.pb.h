@@ -13,28 +13,17 @@
 #include <grpcpp/impl/codegen/client_callback.h>
 #include <grpcpp/impl/codegen/client_context.h>
 #include <grpcpp/impl/codegen/completion_queue.h>
+#include <grpcpp/impl/codegen/message_allocator.h>
 #include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_callback_handlers.h>
 #include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
 #include <grpcpp/impl/codegen/sync_stream.h>
-
-namespace grpc_impl {
-class CompletionQueue;
-class ServerCompletionQueue;
-class ServerContext;
-}  // namespace grpc_impl
-
-namespace grpc {
-namespace experimental {
-template <typename RequestT, typename ResponseT>
-class MessageAllocator;
-}  // namespace experimental
-}  // namespace grpc
 
 namespace dra {
 
@@ -182,90 +171,54 @@ class DependencyRPC final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::dra::Empty>> PrepareAsyncSendNeedInput(::grpc::ClientContext* context, const ::dra::Input& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::dra::Empty>>(PrepareAsyncSendNeedInputRaw(context, request, cq));
     }
-    class experimental_async_interface {
+    class async_interface {
      public:
-      virtual ~experimental_async_interface() {}
+      virtual ~async_interface() {}
       // DRA and syz-manager
       virtual void GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetVMOffsets(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void GetVMOffsets(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendNumberBasicBlock(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNumberBasicBlock(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNumberBasicBlock(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendNumberBasicBlock(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendNumberBasicBlock(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void GetNewInput(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Inputs* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Inputs* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetNewInput(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Inputs* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void GetNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Inputs* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetNewInput(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Inputs* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendDependency(::grpc::ClientContext* context, const ::dra::Dependency* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendDependency(::grpc::ClientContext* context, const ::dra::Dependency* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendDependency(::grpc::ClientContext* context, const ::dra::Dependency* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void GetCondition(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Conditions* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetCondition(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Conditions* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetCondition(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Conditions* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void GetCondition(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Conditions* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetCondition(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Conditions* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendWriteAddress(::grpc::ClientContext* context, const ::dra::WriteAddresses* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendWriteAddress(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendWriteAddress(::grpc::ClientContext* context, const ::dra::WriteAddresses* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendWriteAddress(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendWriteAddress(::grpc::ClientContext* context, const ::dra::WriteAddresses* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // syz-fuzzer and syz-manager
       virtual void Connect(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Connect(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Connect(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void Connect(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void Connect(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void GetDataDependency(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::DataDependency* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetDataDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::DataDependency* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetDataDependency(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::DataDependency* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void GetDataDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::DataDependency* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetDataDependency(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::DataDependency* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendNewInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNewInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendNewInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void GetTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void GetTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void GetBootTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetBootTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetBootTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void GetBootTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetBootTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void ReturnTasks(::grpc::ClientContext* context, const ::dra::Tasks* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void ReturnTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void ReturnTasks(::grpc::ClientContext* context, const ::dra::Tasks* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void ReturnTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void ReturnTasks(::grpc::ClientContext* context, const ::dra::Tasks* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendBootInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendBootInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendBootInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendBootInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendBootInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendUnstableInput(::grpc::ClientContext* context, const ::dra::UnstableInput* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendUnstableInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendUnstableInput(::grpc::ClientContext* context, const ::dra::UnstableInput* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendUnstableInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendUnstableInput(::grpc::ClientContext* context, const ::dra::UnstableInput* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendLog(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendLog(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendLog(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendLog(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendLog(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void sendStat(::grpc::ClientContext* context, const ::dra::Statistic* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void sendStat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void sendStat(::grpc::ClientContext* context, const ::dra::Statistic* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void sendStat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void sendStat(::grpc::ClientContext* context, const ::dra::Statistic* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void GetNeed(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetNeed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetNeed(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void GetNeed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void GetNeed(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void SendNeedInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNeedInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SendNeedInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
-      virtual void SendNeedInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void SendNeedInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
-    virtual class experimental_async_interface* experimental_async() { return nullptr; }
-  private:
+    typedef class async_interface experimental_async_interface;
+    virtual class async_interface* async() { return nullptr; }
+    class async_interface* experimental_async() { return async(); }
+   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::dra::Empty>* AsyncGetVMOffsetsRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::dra::Empty>* PrepareAsyncGetVMOffsetsRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::dra::Empty>* AsyncSendNumberBasicBlockRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) = 0;
@@ -307,7 +260,7 @@ class DependencyRPC final {
   };
   class Stub final : public StubInterface {
    public:
-    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
     ::grpc::Status GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty& request, ::dra::Empty* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::dra::Empty>> AsyncGetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::dra::Empty>>(AsyncGetVMOffsetsRaw(context, request, cq));
@@ -441,96 +394,58 @@ class DependencyRPC final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::dra::Empty>> PrepareAsyncSendNeedInput(::grpc::ClientContext* context, const ::dra::Input& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::dra::Empty>>(PrepareAsyncSendNeedInputRaw(context, request, cq));
     }
-    class experimental_async final :
-      public StubInterface::experimental_async_interface {
+    class async final :
+      public StubInterface::async_interface {
      public:
       void GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void GetVMOffsets(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void GetVMOffsets(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetVMOffsets(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendNumberBasicBlock(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNumberBasicBlock(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNumberBasicBlock(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendNumberBasicBlock(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendNumberBasicBlock(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendNumberBasicBlockCovered(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetNewInput(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Inputs* response, std::function<void(::grpc::Status)>) override;
-      void GetNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Inputs* response, std::function<void(::grpc::Status)>) override;
-      void GetNewInput(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Inputs* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void GetNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Inputs* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetNewInput(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Inputs* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendDependency(::grpc::ClientContext* context, const ::dra::Dependency* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendDependency(::grpc::ClientContext* context, const ::dra::Dependency* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendDependency(::grpc::ClientContext* context, const ::dra::Dependency* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetCondition(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Conditions* response, std::function<void(::grpc::Status)>) override;
-      void GetCondition(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Conditions* response, std::function<void(::grpc::Status)>) override;
-      void GetCondition(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Conditions* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void GetCondition(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Conditions* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetCondition(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Conditions* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendWriteAddress(::grpc::ClientContext* context, const ::dra::WriteAddresses* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendWriteAddress(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendWriteAddress(::grpc::ClientContext* context, const ::dra::WriteAddresses* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendWriteAddress(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendWriteAddress(::grpc::ClientContext* context, const ::dra::WriteAddresses* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void Connect(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void Connect(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void Connect(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void Connect(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void Connect(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetDataDependency(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::DataDependency* response, std::function<void(::grpc::Status)>) override;
-      void GetDataDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::DataDependency* response, std::function<void(::grpc::Status)>) override;
-      void GetDataDependency(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::DataDependency* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void GetDataDependency(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::DataDependency* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetDataDependency(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::DataDependency* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendNewInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNewInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendNewInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendNewInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) override;
-      void GetTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) override;
-      void GetTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void GetTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetBootTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) override;
-      void GetBootTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, std::function<void(::grpc::Status)>) override;
-      void GetBootTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void GetBootTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Tasks* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetBootTasks(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Tasks* response, ::grpc::ClientUnaryReactor* reactor) override;
       void ReturnTasks(::grpc::ClientContext* context, const ::dra::Tasks* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void ReturnTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void ReturnTasks(::grpc::ClientContext* context, const ::dra::Tasks* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void ReturnTasks(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void ReturnTasks(::grpc::ClientContext* context, const ::dra::Tasks* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendBootInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendBootInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendBootInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendBootInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendBootInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendUnstableInput(::grpc::ClientContext* context, const ::dra::UnstableInput* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendUnstableInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendUnstableInput(::grpc::ClientContext* context, const ::dra::UnstableInput* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendUnstableInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendUnstableInput(::grpc::ClientContext* context, const ::dra::UnstableInput* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendLog(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendLog(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendLog(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendLog(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendLog(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void sendStat(::grpc::ClientContext* context, const ::dra::Statistic* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void sendStat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void sendStat(::grpc::ClientContext* context, const ::dra::Statistic* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void sendStat(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void sendStat(::grpc::ClientContext* context, const ::dra::Statistic* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetNeed(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void GetNeed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void GetNeed(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void GetNeed(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void GetNeed(::grpc::ClientContext* context, const ::dra::Empty* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SendNeedInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNeedInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, std::function<void(::grpc::Status)>) override;
-      void SendNeedInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
-      void SendNeedInput(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::dra::Empty* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void SendNeedInput(::grpc::ClientContext* context, const ::dra::Input* request, ::dra::Empty* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
-      explicit experimental_async(Stub* stub): stub_(stub) { }
+      explicit async(Stub* stub): stub_(stub) { }
       Stub* stub() { return stub_; }
       Stub* stub_;
     };
-    class experimental_async_interface* experimental_async() override { return &async_stub_; }
+    class async* async() override { return &async_stub_; }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    class experimental_async async_stub_{this};
+    class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::dra::Empty>* AsyncGetVMOffsetsRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::dra::Empty>* PrepareAsyncGetVMOffsetsRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::dra::Empty>* AsyncSendNumberBasicBlockRaw(::grpc::ClientContext* context, const ::dra::Empty& request, ::grpc::CompletionQueue* cq) override;
@@ -999,27 +914,22 @@ class DependencyRPC final {
   };
   typedef WithAsyncMethod_GetVMOffsets<WithAsyncMethod_SendNumberBasicBlock<WithAsyncMethod_SendNumberBasicBlockCovered<WithAsyncMethod_GetNewInput<WithAsyncMethod_SendDependency<WithAsyncMethod_GetCondition<WithAsyncMethod_SendWriteAddress<WithAsyncMethod_Connect<WithAsyncMethod_GetDataDependency<WithAsyncMethod_SendNewInput<WithAsyncMethod_GetTasks<WithAsyncMethod_GetBootTasks<WithAsyncMethod_ReturnTasks<WithAsyncMethod_SendBootInput<WithAsyncMethod_SendUnstableInput<WithAsyncMethod_SendLog<WithAsyncMethod_sendStat<WithAsyncMethod_GetNeed<WithAsyncMethod_SendNeedInput<Service > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetVMOffsets : public BaseClass {
+  class WithCallbackMethod_GetVMOffsets : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetVMOffsets() {
-      ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetVMOffsets(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_GetVMOffsets() {
+      ::grpc::Service::MarkMethodCallback(0,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Empty* response) { return this->GetVMOffsets(context, request, response); }));}
     void SetMessageAllocatorFor_GetVMOffsets(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(0))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetVMOffsets() override {
+    ~WithCallbackMethod_GetVMOffsets() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1027,30 +937,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetVMOffsets(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetVMOffsets(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendNumberBasicBlock : public BaseClass {
+  class WithCallbackMethod_SendNumberBasicBlock : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendNumberBasicBlock() {
-      ::grpc::Service::experimental().MarkMethodCallback(1,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendNumberBasicBlock(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendNumberBasicBlock() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Empty* response) { return this->SendNumberBasicBlock(context, request, response); }));}
     void SetMessageAllocatorFor_SendNumberBasicBlock(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(1))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendNumberBasicBlock() override {
+    ~WithCallbackMethod_SendNumberBasicBlock() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1058,30 +964,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNumberBasicBlock(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNumberBasicBlock(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendNumberBasicBlockCovered : public BaseClass {
+  class WithCallbackMethod_SendNumberBasicBlockCovered : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendNumberBasicBlockCovered() {
-      ::grpc::Service::experimental().MarkMethodCallback(2,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendNumberBasicBlockCovered(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendNumberBasicBlockCovered() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Empty* response) { return this->SendNumberBasicBlockCovered(context, request, response); }));}
     void SetMessageAllocatorFor_SendNumberBasicBlockCovered(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(2))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendNumberBasicBlockCovered() override {
+    ~WithCallbackMethod_SendNumberBasicBlockCovered() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1089,30 +991,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNumberBasicBlockCovered(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNumberBasicBlockCovered(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetNewInput : public BaseClass {
+  class WithCallbackMethod_GetNewInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetNewInput() {
-      ::grpc::Service::experimental().MarkMethodCallback(3,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Inputs>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Inputs* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetNewInput(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_GetNewInput() {
+      ::grpc::Service::MarkMethodCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Inputs>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Inputs* response) { return this->GetNewInput(context, request, response); }));}
     void SetMessageAllocatorFor_GetNewInput(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Inputs>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Inputs>*>(
-          ::grpc::Service::experimental().GetHandler(3))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Inputs>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Inputs>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetNewInput() override {
+    ~WithCallbackMethod_GetNewInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1120,30 +1018,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetNewInput(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Inputs* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetNewInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Inputs* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendDependency : public BaseClass {
+  class WithCallbackMethod_SendDependency : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendDependency() {
-      ::grpc::Service::experimental().MarkMethodCallback(4,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Dependency, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Dependency* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendDependency(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendDependency() {
+      ::grpc::Service::MarkMethodCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Dependency, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Dependency* request, ::dra::Empty* response) { return this->SendDependency(context, request, response); }));}
     void SetMessageAllocatorFor_SendDependency(
-        ::grpc::experimental::MessageAllocator< ::dra::Dependency, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Dependency, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(4))
+        ::grpc::MessageAllocator< ::dra::Dependency, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Dependency, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendDependency() override {
+    ~WithCallbackMethod_SendDependency() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1151,30 +1045,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendDependency(::grpc::ServerContext* /*context*/, const ::dra::Dependency* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendDependency(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Dependency* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetCondition : public BaseClass {
+  class WithCallbackMethod_GetCondition : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetCondition() {
-      ::grpc::Service::experimental().MarkMethodCallback(5,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Conditions>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Conditions* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetCondition(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_GetCondition() {
+      ::grpc::Service::MarkMethodCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Conditions>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Conditions* response) { return this->GetCondition(context, request, response); }));}
     void SetMessageAllocatorFor_GetCondition(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Conditions>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Conditions>*>(
-          ::grpc::Service::experimental().GetHandler(5))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Conditions>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Conditions>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetCondition() override {
+    ~WithCallbackMethod_GetCondition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1182,30 +1072,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetCondition(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Conditions* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetCondition(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Conditions* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendWriteAddress : public BaseClass {
+  class WithCallbackMethod_SendWriteAddress : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendWriteAddress() {
-      ::grpc::Service::experimental().MarkMethodCallback(6,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::WriteAddresses, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::WriteAddresses* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendWriteAddress(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendWriteAddress() {
+      ::grpc::Service::MarkMethodCallback(6,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::WriteAddresses, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::WriteAddresses* request, ::dra::Empty* response) { return this->SendWriteAddress(context, request, response); }));}
     void SetMessageAllocatorFor_SendWriteAddress(
-        ::grpc::experimental::MessageAllocator< ::dra::WriteAddresses, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::WriteAddresses, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(6))
+        ::grpc::MessageAllocator< ::dra::WriteAddresses, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::WriteAddresses, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendWriteAddress() override {
+    ~WithCallbackMethod_SendWriteAddress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1213,30 +1099,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendWriteAddress(::grpc::ServerContext* /*context*/, const ::dra::WriteAddresses* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendWriteAddress(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::WriteAddresses* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_Connect : public BaseClass {
+  class WithCallbackMethod_Connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_Connect() {
-      ::grpc::Service::experimental().MarkMethodCallback(7,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->Connect(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_Connect() {
+      ::grpc::Service::MarkMethodCallback(7,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Empty* response) { return this->Connect(context, request, response); }));}
     void SetMessageAllocatorFor_Connect(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(7))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_Connect() override {
+    ~WithCallbackMethod_Connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1244,30 +1126,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Connect(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* Connect(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetDataDependency : public BaseClass {
+  class WithCallbackMethod_GetDataDependency : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetDataDependency() {
-      ::grpc::Service::experimental().MarkMethodCallback(8,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::DataDependency>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::DataDependency* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetDataDependency(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_GetDataDependency() {
+      ::grpc::Service::MarkMethodCallback(8,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::DataDependency>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::DataDependency* response) { return this->GetDataDependency(context, request, response); }));}
     void SetMessageAllocatorFor_GetDataDependency(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::DataDependency>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::DataDependency>*>(
-          ::grpc::Service::experimental().GetHandler(8))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::DataDependency>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::DataDependency>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetDataDependency() override {
+    ~WithCallbackMethod_GetDataDependency() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1275,30 +1153,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetDataDependency(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::DataDependency* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetDataDependency(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::DataDependency* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendNewInput : public BaseClass {
+  class WithCallbackMethod_SendNewInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendNewInput() {
-      ::grpc::Service::experimental().MarkMethodCallback(9,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Input* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendNewInput(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendNewInput() {
+      ::grpc::Service::MarkMethodCallback(9,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Input* request, ::dra::Empty* response) { return this->SendNewInput(context, request, response); }));}
     void SetMessageAllocatorFor_SendNewInput(
-        ::grpc::experimental::MessageAllocator< ::dra::Input, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(9))
+        ::grpc::MessageAllocator< ::dra::Input, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendNewInput() override {
+    ~WithCallbackMethod_SendNewInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1306,30 +1180,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNewInput(::grpc::ServerContext* /*context*/, const ::dra::Input* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNewInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Input* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetTasks : public BaseClass {
+  class WithCallbackMethod_GetTasks : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetTasks() {
-      ::grpc::Service::experimental().MarkMethodCallback(10,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Tasks* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetTasks(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_GetTasks() {
+      ::grpc::Service::MarkMethodCallback(10,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Tasks* response) { return this->GetTasks(context, request, response); }));}
     void SetMessageAllocatorFor_GetTasks(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Tasks>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>*>(
-          ::grpc::Service::experimental().GetHandler(10))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Tasks>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetTasks() override {
+    ~WithCallbackMethod_GetTasks() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1337,30 +1207,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetTasks(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Tasks* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetTasks(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Tasks* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetBootTasks : public BaseClass {
+  class WithCallbackMethod_GetBootTasks : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetBootTasks() {
-      ::grpc::Service::experimental().MarkMethodCallback(11,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Tasks* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetBootTasks(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_GetBootTasks() {
+      ::grpc::Service::MarkMethodCallback(11,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Tasks* response) { return this->GetBootTasks(context, request, response); }));}
     void SetMessageAllocatorFor_GetBootTasks(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Tasks>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>*>(
-          ::grpc::Service::experimental().GetHandler(11))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Tasks>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Tasks>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetBootTasks() override {
+    ~WithCallbackMethod_GetBootTasks() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1368,30 +1234,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetBootTasks(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Tasks* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetBootTasks(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Tasks* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_ReturnTasks : public BaseClass {
+  class WithCallbackMethod_ReturnTasks : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_ReturnTasks() {
-      ::grpc::Service::experimental().MarkMethodCallback(12,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Tasks, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Tasks* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->ReturnTasks(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_ReturnTasks() {
+      ::grpc::Service::MarkMethodCallback(12,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Tasks, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Tasks* request, ::dra::Empty* response) { return this->ReturnTasks(context, request, response); }));}
     void SetMessageAllocatorFor_ReturnTasks(
-        ::grpc::experimental::MessageAllocator< ::dra::Tasks, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Tasks, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(12))
+        ::grpc::MessageAllocator< ::dra::Tasks, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(12);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Tasks, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_ReturnTasks() override {
+    ~WithCallbackMethod_ReturnTasks() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1399,30 +1261,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ReturnTasks(::grpc::ServerContext* /*context*/, const ::dra::Tasks* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* ReturnTasks(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Tasks* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendBootInput : public BaseClass {
+  class WithCallbackMethod_SendBootInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendBootInput() {
-      ::grpc::Service::experimental().MarkMethodCallback(13,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Input* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendBootInput(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendBootInput() {
+      ::grpc::Service::MarkMethodCallback(13,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Input* request, ::dra::Empty* response) { return this->SendBootInput(context, request, response); }));}
     void SetMessageAllocatorFor_SendBootInput(
-        ::grpc::experimental::MessageAllocator< ::dra::Input, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(13))
+        ::grpc::MessageAllocator< ::dra::Input, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(13);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendBootInput() override {
+    ~WithCallbackMethod_SendBootInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1430,30 +1288,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendBootInput(::grpc::ServerContext* /*context*/, const ::dra::Input* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendBootInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Input* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendUnstableInput : public BaseClass {
+  class WithCallbackMethod_SendUnstableInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendUnstableInput() {
-      ::grpc::Service::experimental().MarkMethodCallback(14,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::UnstableInput, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::UnstableInput* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendUnstableInput(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendUnstableInput() {
+      ::grpc::Service::MarkMethodCallback(14,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::UnstableInput, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::UnstableInput* request, ::dra::Empty* response) { return this->SendUnstableInput(context, request, response); }));}
     void SetMessageAllocatorFor_SendUnstableInput(
-        ::grpc::experimental::MessageAllocator< ::dra::UnstableInput, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::UnstableInput, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(14))
+        ::grpc::MessageAllocator< ::dra::UnstableInput, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(14);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::UnstableInput, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendUnstableInput() override {
+    ~WithCallbackMethod_SendUnstableInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1461,30 +1315,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendUnstableInput(::grpc::ServerContext* /*context*/, const ::dra::UnstableInput* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendUnstableInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::UnstableInput* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendLog : public BaseClass {
+  class WithCallbackMethod_SendLog : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendLog() {
-      ::grpc::Service::experimental().MarkMethodCallback(15,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendLog(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendLog() {
+      ::grpc::Service::MarkMethodCallback(15,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Empty* response) { return this->SendLog(context, request, response); }));}
     void SetMessageAllocatorFor_SendLog(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(15))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(15);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendLog() override {
+    ~WithCallbackMethod_SendLog() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1492,30 +1342,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendLog(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendLog(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_sendStat : public BaseClass {
+  class WithCallbackMethod_sendStat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_sendStat() {
-      ::grpc::Service::experimental().MarkMethodCallback(16,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Statistic, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Statistic* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->sendStat(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_sendStat() {
+      ::grpc::Service::MarkMethodCallback(16,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Statistic, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Statistic* request, ::dra::Empty* response) { return this->sendStat(context, request, response); }));}
     void SetMessageAllocatorFor_sendStat(
-        ::grpc::experimental::MessageAllocator< ::dra::Statistic, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Statistic, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(16))
+        ::grpc::MessageAllocator< ::dra::Statistic, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Statistic, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_sendStat() override {
+    ~WithCallbackMethod_sendStat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1523,30 +1369,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void sendStat(::grpc::ServerContext* /*context*/, const ::dra::Statistic* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* sendStat(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Statistic* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_GetNeed : public BaseClass {
+  class WithCallbackMethod_GetNeed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_GetNeed() {
-      ::grpc::Service::experimental().MarkMethodCallback(17,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Empty* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->GetNeed(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_GetNeed() {
+      ::grpc::Service::MarkMethodCallback(17,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Empty* request, ::dra::Empty* response) { return this->GetNeed(context, request, response); }));}
     void SetMessageAllocatorFor_GetNeed(
-        ::grpc::experimental::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(17))
+        ::grpc::MessageAllocator< ::dra::Empty, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(17);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Empty, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_GetNeed() override {
+    ~WithCallbackMethod_GetNeed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1554,30 +1396,26 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetNeed(::grpc::ServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetNeed(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Empty* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_SendNeedInput : public BaseClass {
+  class WithCallbackMethod_SendNeedInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_SendNeedInput() {
-      ::grpc::Service::experimental().MarkMethodCallback(18,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>(
-          [this](::grpc::ServerContext* context,
-                 const ::dra::Input* request,
-                 ::dra::Empty* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   return this->SendNeedInput(context, request, response, controller);
-                 }));
-    }
+    WithCallbackMethod_SendNeedInput() {
+      ::grpc::Service::MarkMethodCallback(18,
+          new ::grpc::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::dra::Input* request, ::dra::Empty* response) { return this->SendNeedInput(context, request, response); }));}
     void SetMessageAllocatorFor_SendNeedInput(
-        ::grpc::experimental::MessageAllocator< ::dra::Input, ::dra::Empty>* allocator) {
-      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>*>(
-          ::grpc::Service::experimental().GetHandler(18))
+        ::grpc::MessageAllocator< ::dra::Input, ::dra::Empty>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(18);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::dra::Input, ::dra::Empty>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~ExperimentalWithCallbackMethod_SendNeedInput() override {
+    ~WithCallbackMethod_SendNeedInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -1585,9 +1423,11 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNeedInput(::grpc::ServerContext* /*context*/, const ::dra::Input* /*request*/, ::dra::Empty* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNeedInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::dra::Input* /*request*/, ::dra::Empty* /*response*/)  { return nullptr; }
   };
-  typedef ExperimentalWithCallbackMethod_GetVMOffsets<ExperimentalWithCallbackMethod_SendNumberBasicBlock<ExperimentalWithCallbackMethod_SendNumberBasicBlockCovered<ExperimentalWithCallbackMethod_GetNewInput<ExperimentalWithCallbackMethod_SendDependency<ExperimentalWithCallbackMethod_GetCondition<ExperimentalWithCallbackMethod_SendWriteAddress<ExperimentalWithCallbackMethod_Connect<ExperimentalWithCallbackMethod_GetDataDependency<ExperimentalWithCallbackMethod_SendNewInput<ExperimentalWithCallbackMethod_GetTasks<ExperimentalWithCallbackMethod_GetBootTasks<ExperimentalWithCallbackMethod_ReturnTasks<ExperimentalWithCallbackMethod_SendBootInput<ExperimentalWithCallbackMethod_SendUnstableInput<ExperimentalWithCallbackMethod_SendLog<ExperimentalWithCallbackMethod_sendStat<ExperimentalWithCallbackMethod_GetNeed<ExperimentalWithCallbackMethod_SendNeedInput<Service > > > > > > > > > > > > > > > > > > > ExperimentalCallbackService;
+  typedef WithCallbackMethod_GetVMOffsets<WithCallbackMethod_SendNumberBasicBlock<WithCallbackMethod_SendNumberBasicBlockCovered<WithCallbackMethod_GetNewInput<WithCallbackMethod_SendDependency<WithCallbackMethod_GetCondition<WithCallbackMethod_SendWriteAddress<WithCallbackMethod_Connect<WithCallbackMethod_GetDataDependency<WithCallbackMethod_SendNewInput<WithCallbackMethod_GetTasks<WithCallbackMethod_GetBootTasks<WithCallbackMethod_ReturnTasks<WithCallbackMethod_SendBootInput<WithCallbackMethod_SendUnstableInput<WithCallbackMethod_SendLog<WithCallbackMethod_sendStat<WithCallbackMethod_GetNeed<WithCallbackMethod_SendNeedInput<Service > > > > > > > > > > > > > > > > > > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetVMOffsets : public BaseClass {
    private:
@@ -2292,21 +2132,17 @@ class DependencyRPC final {
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetVMOffsets : public BaseClass {
+  class WithRawCallbackMethod_GetVMOffsets : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetVMOffsets() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetVMOffsets(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_GetVMOffsets() {
+      ::grpc::Service::MarkMethodRawCallback(0,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetVMOffsets(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetVMOffsets() override {
+    ~WithRawCallbackMethod_GetVMOffsets() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2314,24 +2150,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetVMOffsets(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetVMOffsets(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendNumberBasicBlock : public BaseClass {
+  class WithRawCallbackMethod_SendNumberBasicBlock : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendNumberBasicBlock() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(1,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendNumberBasicBlock(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendNumberBasicBlock() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendNumberBasicBlock(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendNumberBasicBlock() override {
+    ~WithRawCallbackMethod_SendNumberBasicBlock() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2339,24 +2172,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNumberBasicBlock(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNumberBasicBlock(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendNumberBasicBlockCovered : public BaseClass {
+  class WithRawCallbackMethod_SendNumberBasicBlockCovered : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendNumberBasicBlockCovered() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(2,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendNumberBasicBlockCovered(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendNumberBasicBlockCovered() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendNumberBasicBlockCovered(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendNumberBasicBlockCovered() override {
+    ~WithRawCallbackMethod_SendNumberBasicBlockCovered() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2364,24 +2194,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNumberBasicBlockCovered(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNumberBasicBlockCovered(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetNewInput : public BaseClass {
+  class WithRawCallbackMethod_GetNewInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetNewInput() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(3,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetNewInput(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_GetNewInput() {
+      ::grpc::Service::MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetNewInput(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetNewInput() override {
+    ~WithRawCallbackMethod_GetNewInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2389,24 +2216,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetNewInput(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetNewInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendDependency : public BaseClass {
+  class WithRawCallbackMethod_SendDependency : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendDependency() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(4,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendDependency(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendDependency() {
+      ::grpc::Service::MarkMethodRawCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendDependency(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendDependency() override {
+    ~WithRawCallbackMethod_SendDependency() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2414,24 +2238,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendDependency(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendDependency(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetCondition : public BaseClass {
+  class WithRawCallbackMethod_GetCondition : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetCondition() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(5,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetCondition(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_GetCondition() {
+      ::grpc::Service::MarkMethodRawCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetCondition(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetCondition() override {
+    ~WithRawCallbackMethod_GetCondition() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2439,24 +2260,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetCondition(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetCondition(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendWriteAddress : public BaseClass {
+  class WithRawCallbackMethod_SendWriteAddress : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendWriteAddress() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(6,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendWriteAddress(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendWriteAddress() {
+      ::grpc::Service::MarkMethodRawCallback(6,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendWriteAddress(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendWriteAddress() override {
+    ~WithRawCallbackMethod_SendWriteAddress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2464,24 +2282,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendWriteAddress(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendWriteAddress(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_Connect : public BaseClass {
+  class WithRawCallbackMethod_Connect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_Connect() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(7,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->Connect(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_Connect() {
+      ::grpc::Service::MarkMethodRawCallback(7,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Connect(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_Connect() override {
+    ~WithRawCallbackMethod_Connect() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2489,24 +2304,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Connect(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* Connect(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetDataDependency : public BaseClass {
+  class WithRawCallbackMethod_GetDataDependency : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetDataDependency() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(8,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetDataDependency(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_GetDataDependency() {
+      ::grpc::Service::MarkMethodRawCallback(8,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetDataDependency(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetDataDependency() override {
+    ~WithRawCallbackMethod_GetDataDependency() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2514,24 +2326,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetDataDependency(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetDataDependency(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendNewInput : public BaseClass {
+  class WithRawCallbackMethod_SendNewInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendNewInput() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(9,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendNewInput(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendNewInput() {
+      ::grpc::Service::MarkMethodRawCallback(9,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendNewInput(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendNewInput() override {
+    ~WithRawCallbackMethod_SendNewInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2539,24 +2348,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNewInput(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNewInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetTasks : public BaseClass {
+  class WithRawCallbackMethod_GetTasks : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetTasks() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(10,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetTasks(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_GetTasks() {
+      ::grpc::Service::MarkMethodRawCallback(10,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetTasks(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetTasks() override {
+    ~WithRawCallbackMethod_GetTasks() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2564,24 +2370,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetTasks(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetTasks(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetBootTasks : public BaseClass {
+  class WithRawCallbackMethod_GetBootTasks : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetBootTasks() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(11,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetBootTasks(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_GetBootTasks() {
+      ::grpc::Service::MarkMethodRawCallback(11,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetBootTasks(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetBootTasks() override {
+    ~WithRawCallbackMethod_GetBootTasks() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2589,24 +2392,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetBootTasks(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetBootTasks(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_ReturnTasks : public BaseClass {
+  class WithRawCallbackMethod_ReturnTasks : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_ReturnTasks() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(12,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->ReturnTasks(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_ReturnTasks() {
+      ::grpc::Service::MarkMethodRawCallback(12,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ReturnTasks(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_ReturnTasks() override {
+    ~WithRawCallbackMethod_ReturnTasks() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2614,24 +2414,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ReturnTasks(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* ReturnTasks(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendBootInput : public BaseClass {
+  class WithRawCallbackMethod_SendBootInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendBootInput() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(13,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendBootInput(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendBootInput() {
+      ::grpc::Service::MarkMethodRawCallback(13,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendBootInput(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendBootInput() override {
+    ~WithRawCallbackMethod_SendBootInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2639,24 +2436,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendBootInput(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendBootInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendUnstableInput : public BaseClass {
+  class WithRawCallbackMethod_SendUnstableInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendUnstableInput() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(14,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendUnstableInput(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendUnstableInput() {
+      ::grpc::Service::MarkMethodRawCallback(14,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendUnstableInput(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendUnstableInput() override {
+    ~WithRawCallbackMethod_SendUnstableInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2664,24 +2458,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendUnstableInput(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendUnstableInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendLog : public BaseClass {
+  class WithRawCallbackMethod_SendLog : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendLog() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(15,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendLog(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendLog() {
+      ::grpc::Service::MarkMethodRawCallback(15,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendLog(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendLog() override {
+    ~WithRawCallbackMethod_SendLog() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2689,24 +2480,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendLog(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendLog(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_sendStat : public BaseClass {
+  class WithRawCallbackMethod_sendStat : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_sendStat() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(16,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->sendStat(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_sendStat() {
+      ::grpc::Service::MarkMethodRawCallback(16,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->sendStat(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_sendStat() override {
+    ~WithRawCallbackMethod_sendStat() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2714,24 +2502,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void sendStat(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* sendStat(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_GetNeed : public BaseClass {
+  class WithRawCallbackMethod_GetNeed : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_GetNeed() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(17,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->GetNeed(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_GetNeed() {
+      ::grpc::Service::MarkMethodRawCallback(17,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetNeed(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_GetNeed() override {
+    ~WithRawCallbackMethod_GetNeed() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2739,24 +2524,21 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetNeed(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* GetNeed(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_SendNeedInput : public BaseClass {
+  class WithRawCallbackMethod_SendNeedInput : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_SendNeedInput() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(18,
-        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this](::grpc::ServerContext* context,
-                 const ::grpc::ByteBuffer* request,
-                 ::grpc::ByteBuffer* response,
-                 ::grpc::experimental::ServerCallbackRpcController* controller) {
-                   this->SendNeedInput(context, request, response, controller);
-                 }));
+    WithRawCallbackMethod_SendNeedInput() {
+      ::grpc::Service::MarkMethodRawCallback(18,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SendNeedInput(context, request, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_SendNeedInput() override {
+    ~WithRawCallbackMethod_SendNeedInput() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
@@ -2764,7 +2546,8 @@ class DependencyRPC final {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SendNeedInput(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual ::grpc::ServerUnaryReactor* SendNeedInput(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetVMOffsets : public BaseClass {
@@ -2773,7 +2556,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_GetVMOffsets() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_GetVMOffsets<BaseClass>::StreamedGetVMOffsets, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Empty>* streamer) {
+                       return this->StreamedGetVMOffsets(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetVMOffsets() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2793,7 +2583,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendNumberBasicBlock() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendNumberBasicBlock<BaseClass>::StreamedSendNumberBasicBlock, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Empty>* streamer) {
+                       return this->StreamedSendNumberBasicBlock(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendNumberBasicBlock() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2813,7 +2610,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendNumberBasicBlockCovered() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendNumberBasicBlockCovered<BaseClass>::StreamedSendNumberBasicBlockCovered, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Empty>* streamer) {
+                       return this->StreamedSendNumberBasicBlockCovered(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendNumberBasicBlockCovered() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2833,7 +2637,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_GetNewInput() {
       ::grpc::Service::MarkMethodStreamed(3,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Inputs>(std::bind(&WithStreamedUnaryMethod_GetNewInput<BaseClass>::StreamedGetNewInput, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Inputs>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Inputs>* streamer) {
+                       return this->StreamedGetNewInput(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetNewInput() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2853,7 +2664,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendDependency() {
       ::grpc::Service::MarkMethodStreamed(4,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Dependency, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendDependency<BaseClass>::StreamedSendDependency, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Dependency, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Dependency, ::dra::Empty>* streamer) {
+                       return this->StreamedSendDependency(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendDependency() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2873,7 +2691,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_GetCondition() {
       ::grpc::Service::MarkMethodStreamed(5,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Conditions>(std::bind(&WithStreamedUnaryMethod_GetCondition<BaseClass>::StreamedGetCondition, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Conditions>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Conditions>* streamer) {
+                       return this->StreamedGetCondition(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetCondition() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2893,7 +2718,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendWriteAddress() {
       ::grpc::Service::MarkMethodStreamed(6,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::WriteAddresses, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendWriteAddress<BaseClass>::StreamedSendWriteAddress, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::WriteAddresses, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::WriteAddresses, ::dra::Empty>* streamer) {
+                       return this->StreamedSendWriteAddress(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendWriteAddress() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2913,7 +2745,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_Connect() {
       ::grpc::Service::MarkMethodStreamed(7,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_Connect<BaseClass>::StreamedConnect, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Empty>* streamer) {
+                       return this->StreamedConnect(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_Connect() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2933,7 +2772,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_GetDataDependency() {
       ::grpc::Service::MarkMethodStreamed(8,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::DataDependency>(std::bind(&WithStreamedUnaryMethod_GetDataDependency<BaseClass>::StreamedGetDataDependency, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::DataDependency>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::DataDependency>* streamer) {
+                       return this->StreamedGetDataDependency(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetDataDependency() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2953,7 +2799,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendNewInput() {
       ::grpc::Service::MarkMethodStreamed(9,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Input, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendNewInput<BaseClass>::StreamedSendNewInput, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Input, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Input, ::dra::Empty>* streamer) {
+                       return this->StreamedSendNewInput(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendNewInput() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2973,7 +2826,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_GetTasks() {
       ::grpc::Service::MarkMethodStreamed(10,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Tasks>(std::bind(&WithStreamedUnaryMethod_GetTasks<BaseClass>::StreamedGetTasks, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Tasks>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Tasks>* streamer) {
+                       return this->StreamedGetTasks(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetTasks() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2993,7 +2853,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_GetBootTasks() {
       ::grpc::Service::MarkMethodStreamed(11,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Tasks>(std::bind(&WithStreamedUnaryMethod_GetBootTasks<BaseClass>::StreamedGetBootTasks, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Tasks>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Tasks>* streamer) {
+                       return this->StreamedGetBootTasks(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetBootTasks() override {
       BaseClassMustBeDerivedFromService(this);
@@ -3013,7 +2880,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_ReturnTasks() {
       ::grpc::Service::MarkMethodStreamed(12,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Tasks, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_ReturnTasks<BaseClass>::StreamedReturnTasks, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Tasks, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Tasks, ::dra::Empty>* streamer) {
+                       return this->StreamedReturnTasks(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_ReturnTasks() override {
       BaseClassMustBeDerivedFromService(this);
@@ -3033,7 +2907,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendBootInput() {
       ::grpc::Service::MarkMethodStreamed(13,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Input, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendBootInput<BaseClass>::StreamedSendBootInput, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Input, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Input, ::dra::Empty>* streamer) {
+                       return this->StreamedSendBootInput(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendBootInput() override {
       BaseClassMustBeDerivedFromService(this);
@@ -3053,7 +2934,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendUnstableInput() {
       ::grpc::Service::MarkMethodStreamed(14,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::UnstableInput, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendUnstableInput<BaseClass>::StreamedSendUnstableInput, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::UnstableInput, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::UnstableInput, ::dra::Empty>* streamer) {
+                       return this->StreamedSendUnstableInput(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendUnstableInput() override {
       BaseClassMustBeDerivedFromService(this);
@@ -3073,7 +2961,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendLog() {
       ::grpc::Service::MarkMethodStreamed(15,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendLog<BaseClass>::StreamedSendLog, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Empty>* streamer) {
+                       return this->StreamedSendLog(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendLog() override {
       BaseClassMustBeDerivedFromService(this);
@@ -3093,7 +2988,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_sendStat() {
       ::grpc::Service::MarkMethodStreamed(16,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Statistic, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_sendStat<BaseClass>::StreamedsendStat, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Statistic, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Statistic, ::dra::Empty>* streamer) {
+                       return this->StreamedsendStat(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_sendStat() override {
       BaseClassMustBeDerivedFromService(this);
@@ -3113,7 +3015,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_GetNeed() {
       ::grpc::Service::MarkMethodStreamed(17,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Empty, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_GetNeed<BaseClass>::StreamedGetNeed, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Empty, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Empty, ::dra::Empty>* streamer) {
+                       return this->StreamedGetNeed(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_GetNeed() override {
       BaseClassMustBeDerivedFromService(this);
@@ -3133,7 +3042,14 @@ class DependencyRPC final {
    public:
     WithStreamedUnaryMethod_SendNeedInput() {
       ::grpc::Service::MarkMethodStreamed(18,
-        new ::grpc::internal::StreamedUnaryHandler< ::dra::Input, ::dra::Empty>(std::bind(&WithStreamedUnaryMethod_SendNeedInput<BaseClass>::StreamedSendNeedInput, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::dra::Input, ::dra::Empty>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::dra::Input, ::dra::Empty>* streamer) {
+                       return this->StreamedSendNeedInput(context,
+                         streamer);
+                  }));
     }
     ~WithStreamedUnaryMethod_SendNeedInput() override {
       BaseClassMustBeDerivedFromService(this);

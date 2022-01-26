@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package dra;
+option go_package = ".;dra";
 
 message Empty {
     uint32 address = 1;

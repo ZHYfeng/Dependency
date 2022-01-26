@@ -14,474 +14,328 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Condition_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_FileOperations_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_FileOperationsFunction_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FileOperationsFunction_WriteAddressEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Input_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_Input_Input_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Status_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Status_StatusEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<7> scc_info_UncoveredAddress_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_InputEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UncoveredAddress_InputStatusEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_TasksCountEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UncoveredAddress_WriteAddressEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_WriteCountEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_WriteAddress_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_WriteAddress_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_WriteAddress_InputEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_WriteAddress_UncoveredAddressEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_address_AddrEntry_DoNotUse_Dependency_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Task_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_runTimeData_Task_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_Dependency_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_writeAddressAttributes_Dependency_2eproto;
+
+PROTOBUF_PRAGMA_INIT_SEG
 namespace dra {
-class WriteAddress_UncoveredAddressEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WriteAddress_UncoveredAddressEntry_DoNotUse> _instance;
-} _WriteAddress_UncoveredAddressEntry_DoNotUse_default_instance_;
-class WriteAddress_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WriteAddress_FileOperationsFunctionEntry_DoNotUse> _instance;
-} _WriteAddress_FileOperationsFunctionEntry_DoNotUse_default_instance_;
-class WriteAddress_InputEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WriteAddress_InputEntry_DoNotUse> _instance;
-} _WriteAddress_InputEntry_DoNotUse_default_instance_;
-class WriteAddressDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WriteAddress> _instance;
-} _WriteAddress_default_instance_;
-class writeAddressAttributesDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<writeAddressAttributes> _instance;
-} _writeAddressAttributes_default_instance_;
-class Status_StatusEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Status_StatusEntry_DoNotUse> _instance;
-} _Status_StatusEntry_DoNotUse_default_instance_;
-class StatusDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Status> _instance;
-} _Status_default_instance_;
-class UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UncoveredAddress_InputEntry_DoNotUse> _instance;
-} _UncoveredAddress_InputEntry_DoNotUse_default_instance_;
-class UncoveredAddress_WriteAddressEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UncoveredAddress_WriteAddressEntry_DoNotUse> _instance;
-} _UncoveredAddress_WriteAddressEntry_DoNotUse_default_instance_;
-class UncoveredAddress_InputStatusEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UncoveredAddress_InputStatusEntry_DoNotUse> _instance;
-} _UncoveredAddress_InputStatusEntry_DoNotUse_default_instance_;
-class UncoveredAddress_WriteAddressStatusEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UncoveredAddress_WriteAddressStatusEntry_DoNotUse> _instance;
-} _UncoveredAddress_WriteAddressStatusEntry_DoNotUse_default_instance_;
-class UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UncoveredAddress_TasksCountEntry_DoNotUse> _instance;
-} _UncoveredAddress_TasksCountEntry_DoNotUse_default_instance_;
-class UncoveredAddress_WriteCountEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UncoveredAddress_WriteCountEntry_DoNotUse> _instance;
-} _UncoveredAddress_WriteCountEntry_DoNotUse_default_instance_;
-class UncoveredAddressDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<UncoveredAddress> _instance;
-} _UncoveredAddress_default_instance_;
-class DependencyDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Dependency> _instance;
-} _Dependency_default_instance_;
-class FileOperationsFunction_WriteAddressEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FileOperationsFunction_WriteAddressEntry_DoNotUse> _instance;
-} _FileOperationsFunction_WriteAddressEntry_DoNotUse_default_instance_;
-class FileOperationsFunctionDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FileOperationsFunction> _instance;
-} _FileOperationsFunction_default_instance_;
-class FileOperations_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FileOperations_FileOperationsFunctionEntry_DoNotUse> _instance;
-} _FileOperations_FileOperationsFunctionEntry_DoNotUse_default_instance_;
-class FileOperationsDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FileOperations> _instance;
-} _FileOperations_default_instance_;
-class address_AddrEntry_DoNotUseDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<address_AddrEntry_DoNotUse> _instance;
-} _address_AddrEntry_DoNotUse_default_instance_;
-class addressDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<address> _instance;
-} _address_default_instance_;
-class ConditionDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Condition> _instance;
-} _Condition_default_instance_;
-class ConditionsDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Conditions> _instance;
-} _Conditions_default_instance_;
-class WriteAddressesDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WriteAddresses> _instance;
-} _WriteAddresses_default_instance_;
+constexpr WriteAddress_UncoveredAddressEntry_DoNotUse::WriteAddress_UncoveredAddressEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct WriteAddress_UncoveredAddressEntry_DoNotUseDefaultTypeInternal {
+  constexpr WriteAddress_UncoveredAddressEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~WriteAddress_UncoveredAddressEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    WriteAddress_UncoveredAddressEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT WriteAddress_UncoveredAddressEntry_DoNotUseDefaultTypeInternal _WriteAddress_UncoveredAddressEntry_DoNotUse_default_instance_;
+constexpr WriteAddress_FileOperationsFunctionEntry_DoNotUse::WriteAddress_FileOperationsFunctionEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct WriteAddress_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal {
+  constexpr WriteAddress_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~WriteAddress_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    WriteAddress_FileOperationsFunctionEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT WriteAddress_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal _WriteAddress_FileOperationsFunctionEntry_DoNotUse_default_instance_;
+constexpr WriteAddress_InputEntry_DoNotUse::WriteAddress_InputEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct WriteAddress_InputEntry_DoNotUseDefaultTypeInternal {
+  constexpr WriteAddress_InputEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~WriteAddress_InputEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    WriteAddress_InputEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT WriteAddress_InputEntry_DoNotUseDefaultTypeInternal _WriteAddress_InputEntry_DoNotUse_default_instance_;
+constexpr WriteAddress::WriteAddress(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : uncovered_address_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , file_operations_function_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , input_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , run_time_date_(nullptr)
+  , write_address_(0u)
+  , kind_(0)
+{}
+struct WriteAddressDefaultTypeInternal {
+  constexpr WriteAddressDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~WriteAddressDefaultTypeInternal() {}
+  union {
+    WriteAddress _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT WriteAddressDefaultTypeInternal _WriteAddress_default_instance_;
+constexpr writeAddressAttributes::writeAddressAttributes(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : write_address_(0u)
+  , prio_(0u)
+  , repeat_(0u){}
+struct writeAddressAttributesDefaultTypeInternal {
+  constexpr writeAddressAttributesDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~writeAddressAttributesDefaultTypeInternal() {}
+  union {
+    writeAddressAttributes _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT writeAddressAttributesDefaultTypeInternal _writeAddressAttributes_default_instance_;
+constexpr Status_StatusEntry_DoNotUse::Status_StatusEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct Status_StatusEntry_DoNotUseDefaultTypeInternal {
+  constexpr Status_StatusEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~Status_StatusEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    Status_StatusEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT Status_StatusEntry_DoNotUseDefaultTypeInternal _Status_StatusEntry_DoNotUse_default_instance_;
+constexpr Status::Status(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : status_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}){}
+struct StatusDefaultTypeInternal {
+  constexpr StatusDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~StatusDefaultTypeInternal() {}
+  union {
+    Status _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT StatusDefaultTypeInternal _Status_default_instance_;
+constexpr UncoveredAddress_InputEntry_DoNotUse::UncoveredAddress_InputEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal {
+  constexpr UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    UncoveredAddress_InputEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UncoveredAddress_InputEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_InputEntry_DoNotUse_default_instance_;
+constexpr UncoveredAddress_WriteAddressEntry_DoNotUse::UncoveredAddress_WriteAddressEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct UncoveredAddress_WriteAddressEntry_DoNotUseDefaultTypeInternal {
+  constexpr UncoveredAddress_WriteAddressEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UncoveredAddress_WriteAddressEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    UncoveredAddress_WriteAddressEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UncoveredAddress_WriteAddressEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_WriteAddressEntry_DoNotUse_default_instance_;
+constexpr UncoveredAddress_InputStatusEntry_DoNotUse::UncoveredAddress_InputStatusEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct UncoveredAddress_InputStatusEntry_DoNotUseDefaultTypeInternal {
+  constexpr UncoveredAddress_InputStatusEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UncoveredAddress_InputStatusEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    UncoveredAddress_InputStatusEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UncoveredAddress_InputStatusEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_InputStatusEntry_DoNotUse_default_instance_;
+constexpr UncoveredAddress_WriteAddressStatusEntry_DoNotUse::UncoveredAddress_WriteAddressStatusEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct UncoveredAddress_WriteAddressStatusEntry_DoNotUseDefaultTypeInternal {
+  constexpr UncoveredAddress_WriteAddressStatusEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UncoveredAddress_WriteAddressStatusEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    UncoveredAddress_WriteAddressStatusEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UncoveredAddress_WriteAddressStatusEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_WriteAddressStatusEntry_DoNotUse_default_instance_;
+constexpr UncoveredAddress_TasksCountEntry_DoNotUse::UncoveredAddress_TasksCountEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal {
+  constexpr UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    UncoveredAddress_TasksCountEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UncoveredAddress_TasksCountEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_TasksCountEntry_DoNotUse_default_instance_;
+constexpr UncoveredAddress_WriteCountEntry_DoNotUse::UncoveredAddress_WriteCountEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct UncoveredAddress_WriteCountEntry_DoNotUseDefaultTypeInternal {
+  constexpr UncoveredAddress_WriteCountEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UncoveredAddress_WriteCountEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    UncoveredAddress_WriteCountEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UncoveredAddress_WriteCountEntry_DoNotUseDefaultTypeInternal _UncoveredAddress_WriteCountEntry_DoNotUse_default_instance_;
+constexpr UncoveredAddress::UncoveredAddress(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : right_branch_address_()
+  , _right_branch_address_cached_byte_size_(0)
+  , input_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , write_address_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , input_status_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , write_address_status_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , tasks_count_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , write_count_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , run_time_date_(nullptr)
+  , condition_address_(0u)
+  , uncovered_address_(0u)
+  , number_arrive_basicblocks_(0u)
+  , kind_(0)
+
+  , number_dominator_instructions_(0u)
+  , count_(0u){}
+struct UncoveredAddressDefaultTypeInternal {
+  constexpr UncoveredAddressDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~UncoveredAddressDefaultTypeInternal() {}
+  union {
+    UncoveredAddress _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UncoveredAddressDefaultTypeInternal _UncoveredAddress_default_instance_;
+constexpr Dependency::Dependency(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : write_address_()
+  , input_(nullptr)
+  , uncovered_address_(nullptr){}
+struct DependencyDefaultTypeInternal {
+  constexpr DependencyDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~DependencyDefaultTypeInternal() {}
+  union {
+    Dependency _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DependencyDefaultTypeInternal _Dependency_default_instance_;
+constexpr FileOperationsFunction_WriteAddressEntry_DoNotUse::FileOperationsFunction_WriteAddressEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct FileOperationsFunction_WriteAddressEntry_DoNotUseDefaultTypeInternal {
+  constexpr FileOperationsFunction_WriteAddressEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FileOperationsFunction_WriteAddressEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    FileOperationsFunction_WriteAddressEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FileOperationsFunction_WriteAddressEntry_DoNotUseDefaultTypeInternal _FileOperationsFunction_WriteAddressEntry_DoNotUse_default_instance_;
+constexpr FileOperationsFunction::FileOperationsFunction(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : write_address_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , file_operations_name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , run_time_date_(nullptr)
+  , cmd_(uint64_t{0u})
+  , kind_(0)
+{}
+struct FileOperationsFunctionDefaultTypeInternal {
+  constexpr FileOperationsFunctionDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FileOperationsFunctionDefaultTypeInternal() {}
+  union {
+    FileOperationsFunction _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FileOperationsFunctionDefaultTypeInternal _FileOperationsFunction_default_instance_;
+constexpr FileOperations_FileOperationsFunctionEntry_DoNotUse::FileOperations_FileOperationsFunctionEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct FileOperations_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal {
+  constexpr FileOperations_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FileOperations_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    FileOperations_FileOperationsFunctionEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FileOperations_FileOperationsFunctionEntry_DoNotUseDefaultTypeInternal _FileOperations_FileOperationsFunctionEntry_DoNotUse_default_instance_;
+constexpr FileOperations::FileOperations(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : file_operations_function_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct FileOperationsDefaultTypeInternal {
+  constexpr FileOperationsDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FileOperationsDefaultTypeInternal() {}
+  union {
+    FileOperations _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FileOperationsDefaultTypeInternal _FileOperations_default_instance_;
+constexpr address_AddrEntry_DoNotUse::address_AddrEntry_DoNotUse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized){}
+struct address_AddrEntry_DoNotUseDefaultTypeInternal {
+  constexpr address_AddrEntry_DoNotUseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~address_AddrEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    address_AddrEntry_DoNotUse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT address_AddrEntry_DoNotUseDefaultTypeInternal _address_AddrEntry_DoNotUse_default_instance_;
+constexpr address::address(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : addr_(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{})
+  , name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct addressDefaultTypeInternal {
+  constexpr addressDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~addressDefaultTypeInternal() {}
+  union {
+    address _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT addressDefaultTypeInternal _address_default_instance_;
+constexpr Condition::Condition(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : right_branch_address_()
+  , _right_branch_address_cached_byte_size_(0)
+  , syzkaller_right_branch_address_()
+  , _syzkaller_right_branch_address_cached_byte_size_(0)
+  , condition_address_(uint64_t{0u})
+  , uncovered_address_(uint64_t{0u})
+  , syzkaller_condition_address_(0u)
+  , syzkaller_uncovered_address_(0u)
+  , successor_(uint64_t{0u})
+  , idx_(0u){}
+struct ConditionDefaultTypeInternal {
+  constexpr ConditionDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ConditionDefaultTypeInternal() {}
+  union {
+    Condition _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ConditionDefaultTypeInternal _Condition_default_instance_;
+constexpr Conditions::Conditions(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : condition_(){}
+struct ConditionsDefaultTypeInternal {
+  constexpr ConditionsDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ConditionsDefaultTypeInternal() {}
+  union {
+    Conditions _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ConditionsDefaultTypeInternal _Conditions_default_instance_;
+constexpr WriteAddresses::WriteAddresses(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : write_address_()
+  , condition_(nullptr){}
+struct WriteAddressesDefaultTypeInternal {
+  constexpr WriteAddressesDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~WriteAddressesDefaultTypeInternal() {}
+  union {
+    WriteAddresses _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT WriteAddressesDefaultTypeInternal _WriteAddresses_default_instance_;
 }  // namespace dra
-static void InitDefaultsscc_info_Condition_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_Condition_default_instance_;
-    new (ptr) ::dra::Condition();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::Condition::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Condition_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Condition_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_Conditions_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_Conditions_default_instance_;
-    new (ptr) ::dra::Conditions();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::Conditions::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Conditions_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Conditions_Dependency_2eproto}, {
-      &scc_info_Condition_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_Dependency_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_Dependency_default_instance_;
-    new (ptr) ::dra::Dependency();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::Dependency::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_Dependency_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 3, 0, InitDefaultsscc_info_Dependency_Dependency_2eproto}, {
-      &scc_info_Input_Input_2eproto.base,
-      &scc_info_UncoveredAddress_Dependency_2eproto.base,
-      &scc_info_WriteAddress_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_FileOperations_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_FileOperations_default_instance_;
-    new (ptr) ::dra::FileOperations();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::FileOperations::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_FileOperations_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_FileOperations_Dependency_2eproto}, {
-      &scc_info_FileOperations_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_FileOperations_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_FileOperations_FileOperationsFunctionEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse();
-  }
-  ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_FileOperations_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_FileOperations_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto}, {
-      &scc_info_FileOperationsFunction_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_FileOperationsFunction_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_FileOperationsFunction_default_instance_;
-    new (ptr) ::dra::FileOperationsFunction();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::FileOperationsFunction::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_FileOperationsFunction_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_FileOperationsFunction_Dependency_2eproto}, {
-      &scc_info_runTimeData_Task_2eproto.base,
-      &scc_info_FileOperationsFunction_WriteAddressEntry_DoNotUse_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_FileOperationsFunction_WriteAddressEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_FileOperationsFunction_WriteAddressEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse();
-  }
-  ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FileOperationsFunction_WriteAddressEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_FileOperationsFunction_WriteAddressEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_Status_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_Status_default_instance_;
-    new (ptr) ::dra::Status();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::Status::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Status_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Status_Dependency_2eproto}, {
-      &scc_info_Status_StatusEntry_DoNotUse_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_Status_StatusEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_Status_StatusEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::Status_StatusEntry_DoNotUse();
-  }
-  ::dra::Status_StatusEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Status_StatusEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Status_StatusEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_UncoveredAddress_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_UncoveredAddress_default_instance_;
-    new (ptr) ::dra::UncoveredAddress();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::UncoveredAddress::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<7> scc_info_UncoveredAddress_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 7, 0, InitDefaultsscc_info_UncoveredAddress_Dependency_2eproto}, {
-      &scc_info_UncoveredAddress_InputEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_UncoveredAddress_WriteAddressEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_runTimeData_Task_2eproto.base,
-      &scc_info_UncoveredAddress_InputStatusEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_UncoveredAddress_TasksCountEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_UncoveredAddress_WriteCountEntry_DoNotUse_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_UncoveredAddress_InputEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_UncoveredAddress_InputEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::UncoveredAddress_InputEntry_DoNotUse();
-  }
-  ::dra::UncoveredAddress_InputEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_InputEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_UncoveredAddress_InputEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_UncoveredAddress_InputStatusEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_UncoveredAddress_InputStatusEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::UncoveredAddress_InputStatusEntry_DoNotUse();
-  }
-  ::dra::UncoveredAddress_InputStatusEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UncoveredAddress_InputStatusEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_UncoveredAddress_InputStatusEntry_DoNotUse_Dependency_2eproto}, {
-      &scc_info_Status_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_UncoveredAddress_TasksCountEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_UncoveredAddress_TasksCountEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::UncoveredAddress_TasksCountEntry_DoNotUse();
-  }
-  ::dra::UncoveredAddress_TasksCountEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_TasksCountEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_UncoveredAddress_TasksCountEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_UncoveredAddress_WriteAddressEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_UncoveredAddress_WriteAddressEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse();
-  }
-  ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_UncoveredAddress_WriteAddressEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_UncoveredAddress_WriteAddressEntry_DoNotUse_Dependency_2eproto}, {
-      &scc_info_writeAddressAttributes_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse();
-  }
-  ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_UncoveredAddress_WriteCountEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_UncoveredAddress_WriteCountEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::UncoveredAddress_WriteCountEntry_DoNotUse();
-  }
-  ::dra::UncoveredAddress_WriteCountEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UncoveredAddress_WriteCountEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_UncoveredAddress_WriteCountEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_WriteAddress_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_WriteAddress_default_instance_;
-    new (ptr) ::dra::WriteAddress();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::WriteAddress::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_WriteAddress_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 4, 0, InitDefaultsscc_info_WriteAddress_Dependency_2eproto}, {
-      &scc_info_WriteAddress_UncoveredAddressEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_WriteAddress_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_WriteAddress_InputEntry_DoNotUse_Dependency_2eproto.base,
-      &scc_info_runTimeData_Task_2eproto.base,}};
-
-static void InitDefaultsscc_info_WriteAddress_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_WriteAddress_FileOperationsFunctionEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse();
-  }
-  ::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_WriteAddress_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_WriteAddress_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_WriteAddress_InputEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_WriteAddress_InputEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::WriteAddress_InputEntry_DoNotUse();
-  }
-  ::dra::WriteAddress_InputEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_WriteAddress_InputEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_WriteAddress_InputEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_WriteAddress_UncoveredAddressEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_WriteAddress_UncoveredAddressEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::WriteAddress_UncoveredAddressEntry_DoNotUse();
-  }
-  ::dra::WriteAddress_UncoveredAddressEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_WriteAddress_UncoveredAddressEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_WriteAddress_UncoveredAddressEntry_DoNotUse_Dependency_2eproto}, {
-      &scc_info_writeAddressAttributes_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_WriteAddresses_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_WriteAddresses_default_instance_;
-    new (ptr) ::dra::WriteAddresses();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::WriteAddresses::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_WriteAddresses_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_WriteAddresses_Dependency_2eproto}, {
-      &scc_info_Condition_Dependency_2eproto.base,
-      &scc_info_WriteAddress_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_address_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_address_default_instance_;
-    new (ptr) ::dra::address();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::address::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_address_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_address_Dependency_2eproto}, {
-      &scc_info_address_AddrEntry_DoNotUse_Dependency_2eproto.base,}};
-
-static void InitDefaultsscc_info_address_AddrEntry_DoNotUse_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_address_AddrEntry_DoNotUse_default_instance_;
-    new (ptr) ::dra::address_AddrEntry_DoNotUse();
-  }
-  ::dra::address_AddrEntry_DoNotUse::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_address_AddrEntry_DoNotUse_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_address_AddrEntry_DoNotUse_Dependency_2eproto}, {}};
-
-static void InitDefaultsscc_info_writeAddressAttributes_Dependency_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::dra::_writeAddressAttributes_default_instance_;
-    new (ptr) ::dra::writeAddressAttributes();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::dra::writeAddressAttributes::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_writeAddressAttributes_Dependency_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_writeAddressAttributes_Dependency_2eproto}, {}};
-
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_Dependency_2eproto[24];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Dependency_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Dependency_2eproto = nullptr;
@@ -492,6 +346,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse, value_),
   0,
@@ -501,6 +356,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse, value_),
   0,
@@ -510,6 +366,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress_InputEntry_DoNotUse, value_),
   0,
@@ -519,6 +376,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, write_address_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, kind_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddress, uncovered_address_),
@@ -530,6 +388,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, write_address_),
   PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, repeat_),
   PROTOBUF_FIELD_OFFSET(::dra::writeAddressAttributes, prio_),
@@ -538,6 +397,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::Status_StatusEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::Status_StatusEntry_DoNotUse, value_),
   0,
@@ -547,12 +407,14 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::Status, status_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputEntry_DoNotUse, value_),
   0,
@@ -562,6 +424,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse, value_),
   0,
@@ -571,6 +434,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputStatusEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_InputStatusEntry_DoNotUse, value_),
   0,
@@ -580,6 +444,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse, value_),
   0,
@@ -589,6 +454,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_TasksCountEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_TasksCountEntry_DoNotUse, value_),
   0,
@@ -598,6 +464,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteCountEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress_WriteCountEntry_DoNotUse, value_),
   0,
@@ -607,6 +474,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, condition_address_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::UncoveredAddress, right_branch_address_),
@@ -626,6 +494,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::Dependency, input_),
   PROTOBUF_FIELD_OFFSET(::dra::Dependency, uncovered_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Dependency, write_address_),
@@ -634,6 +503,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse, value_),
   0,
@@ -643,6 +513,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, name_),
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, file_operations_name_),
   PROTOBUF_FIELD_OFFSET(::dra::FileOperationsFunction, kind_),
@@ -654,6 +525,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse, value_),
   0,
@@ -663,6 +535,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::FileOperations, name_),
   PROTOBUF_FIELD_OFFSET(::dra::FileOperations, file_operations_function_),
   PROTOBUF_FIELD_OFFSET(::dra::address_AddrEntry_DoNotUse, _has_bits_),
@@ -670,6 +543,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::address_AddrEntry_DoNotUse, key_),
   PROTOBUF_FIELD_OFFSET(::dra::address_AddrEntry_DoNotUse, value_),
   0,
@@ -679,6 +553,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::address, name_),
   PROTOBUF_FIELD_OFFSET(::dra::address, addr_),
   ~0u,  // no _has_bits_
@@ -686,6 +561,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::Condition, condition_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Condition, syzkaller_condition_address_),
   PROTOBUF_FIELD_OFFSET(::dra::Condition, uncovered_address_),
@@ -699,40 +575,42 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Dependency_2eproto::offsets[] 
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::Conditions, condition_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, condition_),
   PROTOBUF_FIELD_OFFSET(::dra::WriteAddresses, write_address_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 7, sizeof(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse)},
-  { 9, 16, sizeof(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse)},
-  { 18, 25, sizeof(::dra::WriteAddress_InputEntry_DoNotUse)},
-  { 27, -1, sizeof(::dra::WriteAddress)},
-  { 38, -1, sizeof(::dra::writeAddressAttributes)},
-  { 46, 53, sizeof(::dra::Status_StatusEntry_DoNotUse)},
-  { 55, -1, sizeof(::dra::Status)},
-  { 61, 68, sizeof(::dra::UncoveredAddress_InputEntry_DoNotUse)},
-  { 70, 77, sizeof(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse)},
-  { 79, 86, sizeof(::dra::UncoveredAddress_InputStatusEntry_DoNotUse)},
-  { 88, 95, sizeof(::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse)},
-  { 97, 104, sizeof(::dra::UncoveredAddress_TasksCountEntry_DoNotUse)},
-  { 106, 113, sizeof(::dra::UncoveredAddress_WriteCountEntry_DoNotUse)},
-  { 115, -1, sizeof(::dra::UncoveredAddress)},
-  { 134, -1, sizeof(::dra::Dependency)},
-  { 142, 149, sizeof(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse)},
-  { 151, -1, sizeof(::dra::FileOperationsFunction)},
-  { 162, 169, sizeof(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse)},
-  { 171, -1, sizeof(::dra::FileOperations)},
-  { 178, 185, sizeof(::dra::address_AddrEntry_DoNotUse)},
-  { 187, -1, sizeof(::dra::address)},
-  { 194, -1, sizeof(::dra::Condition)},
-  { 207, -1, sizeof(::dra::Conditions)},
-  { 213, -1, sizeof(::dra::WriteAddresses)},
+  { 0, 8, -1, sizeof(::dra::WriteAddress_UncoveredAddressEntry_DoNotUse)},
+  { 10, 18, -1, sizeof(::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse)},
+  { 20, 28, -1, sizeof(::dra::WriteAddress_InputEntry_DoNotUse)},
+  { 30, -1, -1, sizeof(::dra::WriteAddress)},
+  { 42, -1, -1, sizeof(::dra::writeAddressAttributes)},
+  { 51, 59, -1, sizeof(::dra::Status_StatusEntry_DoNotUse)},
+  { 61, -1, -1, sizeof(::dra::Status)},
+  { 68, 76, -1, sizeof(::dra::UncoveredAddress_InputEntry_DoNotUse)},
+  { 78, 86, -1, sizeof(::dra::UncoveredAddress_WriteAddressEntry_DoNotUse)},
+  { 88, 96, -1, sizeof(::dra::UncoveredAddress_InputStatusEntry_DoNotUse)},
+  { 98, 106, -1, sizeof(::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse)},
+  { 108, 116, -1, sizeof(::dra::UncoveredAddress_TasksCountEntry_DoNotUse)},
+  { 118, 126, -1, sizeof(::dra::UncoveredAddress_WriteCountEntry_DoNotUse)},
+  { 128, -1, -1, sizeof(::dra::UncoveredAddress)},
+  { 148, -1, -1, sizeof(::dra::Dependency)},
+  { 157, 165, -1, sizeof(::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse)},
+  { 167, -1, -1, sizeof(::dra::FileOperationsFunction)},
+  { 179, 187, -1, sizeof(::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse)},
+  { 189, -1, -1, sizeof(::dra::FileOperations)},
+  { 197, 205, -1, sizeof(::dra::address_AddrEntry_DoNotUse)},
+  { 207, -1, -1, sizeof(::dra::address)},
+  { 215, -1, -1, sizeof(::dra::Condition)},
+  { 229, -1, -1, sizeof(::dra::Conditions)},
+  { 236, -1, -1, sizeof(::dra::WriteAddresses)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -842,50 +720,26 @@ const char descriptor_table_protodef_Dependency_2eproto[] PROTOBUF_SECTION_VARIA
   "ressOther\020\003*\215\001\n\024file_operations_kind\022\013\n\007"
   "default\020\000\022\010\n\004init\020\001\022\n\n\006llseek\020\002\022\010\n\004read\020"
   "\003\022\t\n\005write\020\004\022\010\n\004poll\020\t\022\022\n\016unlocked_ioctl"
-  "\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n\007release\020\020b\006pro"
-  "to3"
+  "\020\n\022\010\n\004mmap\020\014\022\010\n\004open\020\016\022\013\n\007release\020\020B\007Z\005."
+  ";drab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Dependency_2eproto_deps[2] = {
   &::descriptor_table_Input_2eproto,
   &::descriptor_table_Task_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Dependency_2eproto_sccs[24] = {
-  &scc_info_Condition_Dependency_2eproto.base,
-  &scc_info_Conditions_Dependency_2eproto.base,
-  &scc_info_Dependency_Dependency_2eproto.base,
-  &scc_info_FileOperations_Dependency_2eproto.base,
-  &scc_info_FileOperations_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_FileOperationsFunction_Dependency_2eproto.base,
-  &scc_info_FileOperationsFunction_WriteAddressEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_Status_Dependency_2eproto.base,
-  &scc_info_Status_StatusEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_UncoveredAddress_Dependency_2eproto.base,
-  &scc_info_UncoveredAddress_InputEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_UncoveredAddress_InputStatusEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_UncoveredAddress_TasksCountEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_UncoveredAddress_WriteAddressEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_UncoveredAddress_WriteAddressStatusEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_UncoveredAddress_WriteCountEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_WriteAddress_Dependency_2eproto.base,
-  &scc_info_WriteAddress_FileOperationsFunctionEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_WriteAddress_InputEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_WriteAddress_UncoveredAddressEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_WriteAddresses_Dependency_2eproto.base,
-  &scc_info_address_Dependency_2eproto.base,
-  &scc_info_address_AddrEntry_DoNotUse_Dependency_2eproto.base,
-  &scc_info_writeAddressAttributes_Dependency_2eproto.base,
-};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Dependency_2eproto_once;
-static bool descriptor_table_Dependency_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Dependency_2eproto = {
-  &descriptor_table_Dependency_2eproto_initialized, descriptor_table_protodef_Dependency_2eproto, "Dependency.proto", 3203,
-  &descriptor_table_Dependency_2eproto_once, descriptor_table_Dependency_2eproto_sccs, descriptor_table_Dependency_2eproto_deps, 24, 2,
+  false, false, 3212, descriptor_table_protodef_Dependency_2eproto, "Dependency.proto", 
+  &descriptor_table_Dependency_2eproto_once, descriptor_table_Dependency_2eproto_deps, 2, 24,
   schemas, file_default_instances, TableStruct_Dependency_2eproto::offsets,
-  file_level_metadata_Dependency_2eproto, 24, file_level_enum_descriptors_Dependency_2eproto, file_level_service_descriptors_Dependency_2eproto,
+  file_level_metadata_Dependency_2eproto, file_level_enum_descriptors_Dependency_2eproto, file_level_service_descriptors_Dependency_2eproto,
 };
+PROTOBUF_ATTRIBUTE_WEAK const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable* descriptor_table_Dependency_2eproto_getter() {
+  return &descriptor_table_Dependency_2eproto;
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_Dependency_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Dependency_2eproto), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptorsRunner dynamic_init_dummy_Dependency_2eproto(&descriptor_table_Dependency_2eproto);
 namespace dra {
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UncoveredAddressKind_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Dependency_2eproto);
@@ -935,13 +789,10 @@ void WriteAddress_UncoveredAddressEntry_DoNotUse::MergeFrom(const WriteAddress_U
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata WriteAddress_UncoveredAddressEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[0]);
 }
-void WriteAddress_UncoveredAddressEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
@@ -952,13 +803,10 @@ void WriteAddress_FileOperationsFunctionEntry_DoNotUse::MergeFrom(const WriteAdd
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata WriteAddress_FileOperationsFunctionEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[1]);
 }
-void WriteAddress_FileOperationsFunctionEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
@@ -969,20 +817,13 @@ void WriteAddress_InputEntry_DoNotUse::MergeFrom(const WriteAddress_InputEntry_D
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata WriteAddress_InputEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[2]);
 }
-void WriteAddress_InputEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
-void WriteAddress::InitAsDefaultInstance() {
-  ::dra::_WriteAddress_default_instance_._instance.get_mutable()->run_time_date_ = const_cast< ::dra::runTimeData*>(
-      ::dra::runTimeData::internal_default_instance());
-}
 class WriteAddress::_Internal {
  public:
   static const ::dra::runTimeData& run_time_date(const WriteAddress* msg);
@@ -993,20 +834,26 @@ WriteAddress::_Internal::run_time_date(const WriteAddress* msg) {
   return *msg->run_time_date_;
 }
 void WriteAddress::clear_run_time_date() {
-  if (GetArenaNoVirtual() == nullptr && run_time_date_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && run_time_date_ != nullptr) {
     delete run_time_date_;
   }
   run_time_date_ = nullptr;
 }
-WriteAddress::WriteAddress()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+WriteAddress::WriteAddress(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  uncovered_address_(arena),
+  file_operations_function_(arena),
+  input_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.WriteAddress)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.WriteAddress)
 }
 WriteAddress::WriteAddress(const WriteAddress& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   uncovered_address_.MergeFrom(from.uncovered_address_);
   file_operations_function_.MergeFrom(from.file_operations_function_);
   input_.MergeFrom(from.input_);
@@ -1022,29 +869,39 @@ WriteAddress::WriteAddress(const WriteAddress& from)
 }
 
 void WriteAddress::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_WriteAddress_Dependency_2eproto.base);
-  ::memset(&run_time_date_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&kind_) -
-      reinterpret_cast<char*>(&run_time_date_)) + sizeof(kind_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&run_time_date_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&kind_) -
+    reinterpret_cast<char*>(&run_time_date_)) + sizeof(kind_));
 }
 
 WriteAddress::~WriteAddress() {
   // @@protoc_insertion_point(destructor:dra.WriteAddress)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void WriteAddress::SharedDtor() {
+inline void WriteAddress::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete run_time_date_;
 }
 
+void WriteAddress::ArenaDtor(void* object) {
+  WriteAddress* _this = reinterpret_cast< WriteAddress* >(object);
+  (void)_this;
+  _this->uncovered_address_. ~MapField();
+  _this->file_operations_function_. ~MapField();
+  _this->input_. ~MapField();
+}
+inline void WriteAddress::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena) {
+  if (arena != nullptr) {
+    arena->OwnCustomDestructor(this, &WriteAddress::ArenaDtor);
+  }
+}
 void WriteAddress::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const WriteAddress& WriteAddress::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_WriteAddress_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void WriteAddress::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.WriteAddress)
@@ -1055,14 +912,14 @@ void WriteAddress::Clear() {
   uncovered_address_.Clear();
   file_operations_function_.Clear();
   input_.Clear();
-  if (GetArenaNoVirtual() == nullptr && run_time_date_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && run_time_date_ != nullptr) {
     delete run_time_date_;
   }
   run_time_date_ = nullptr;
   ::memset(&write_address_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&kind_) -
       reinterpret_cast<char*>(&write_address_)) + sizeof(kind_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* WriteAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -1070,29 +927,31 @@ const char* WriteAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint32 write_address = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .dra.WriteStatementKind kind = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_kind(static_cast<::dra::WriteStatementKind>(val));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .dra.runTimeData run_time_date = 11;
       case 11:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
           ptr = ctx->ParseMessage(_internal_mutable_run_time_date(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<uint32, .dra.writeAddressAttributes> uncovered_address = 23;
       case 23:
@@ -1104,7 +963,8 @@ const char* WriteAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<186>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<string, uint32> file_operations_function = 24;
       case 24:
@@ -1116,7 +976,8 @@ const char* WriteAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<194>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<string, uint32> input = 25;
       case 25:
@@ -1128,25 +989,29 @@ const char* WriteAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<202>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -1157,20 +1022,20 @@ failure:
   (void) cached_has_bits;
 
   // uint32 write_address = 2;
-  if (this->write_address() != 0) {
+  if (this->_internal_write_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_write_address(), target);
   }
 
   // .dra.WriteStatementKind kind = 4;
-  if (this->kind() != 0) {
+  if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       4, this->_internal_kind(), target);
   }
 
   // .dra.runTimeData run_time_date = 11;
-  if (this->has_run_time_date()) {
+  if (this->_internal_has_run_time_date()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -1216,6 +1081,7 @@ failure:
     typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
     struct Utf8Check {
       static void Check(ConstPtr p) {
+        (void)p;
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1257,6 +1123,7 @@ failure:
     typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
     struct Utf8Check {
       static void Check(ConstPtr p) {
+        (void)p;
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -1292,7 +1159,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.WriteAddress)
   return target;
@@ -1334,75 +1201,58 @@ size_t WriteAddress::ByteSizeLong() const {
   }
 
   // .dra.runTimeData run_time_date = 11;
-  if (this->has_run_time_date()) {
+  if (this->_internal_has_run_time_date()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *run_time_date_);
   }
 
   // uint32 write_address = 2;
-  if (this->write_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_write_address());
+  if (this->_internal_write_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_write_address());
   }
 
   // .dra.WriteStatementKind kind = 4;
-  if (this->kind() != 0) {
+  if (this->_internal_kind() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void WriteAddress::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.WriteAddress)
-  GOOGLE_DCHECK_NE(&from, this);
-  const WriteAddress* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<WriteAddress>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.WriteAddress)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.WriteAddress)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData WriteAddress::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    WriteAddress::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*WriteAddress::GetClassData() const { return &_class_data_; }
+
+void WriteAddress::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<WriteAddress *>(to)->MergeFrom(
+      static_cast<const WriteAddress &>(from));
 }
+
 
 void WriteAddress::MergeFrom(const WriteAddress& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.WriteAddress)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   uncovered_address_.MergeFrom(from.uncovered_address_);
   file_operations_function_.MergeFrom(from.file_operations_function_);
   input_.MergeFrom(from.input_);
-  if (from.has_run_time_date()) {
+  if (from._internal_has_run_time_date()) {
     _internal_mutable_run_time_date()->::dra::runTimeData::MergeFrom(from._internal_run_time_date());
   }
-  if (from.write_address() != 0) {
+  if (from._internal_write_address() != 0) {
     _internal_set_write_address(from._internal_write_address());
   }
-  if (from.kind() != 0) {
+  if (from._internal_kind() != 0) {
     _internal_set_kind(from._internal_kind());
   }
-}
-
-void WriteAddress::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.WriteAddress)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void WriteAddress::CopyFrom(const WriteAddress& from) {
@@ -1418,37 +1268,42 @@ bool WriteAddress::IsInitialized() const {
 
 void WriteAddress::InternalSwap(WriteAddress* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  uncovered_address_.Swap(&other->uncovered_address_);
-  file_operations_function_.Swap(&other->file_operations_function_);
-  input_.Swap(&other->input_);
-  swap(run_time_date_, other->run_time_date_);
-  swap(write_address_, other->write_address_);
-  swap(kind_, other->kind_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  uncovered_address_.InternalSwap(&other->uncovered_address_);
+  file_operations_function_.InternalSwap(&other->file_operations_function_);
+  input_.InternalSwap(&other->input_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(WriteAddress, kind_)
+      + sizeof(WriteAddress::kind_)
+      - PROTOBUF_FIELD_OFFSET(WriteAddress, run_time_date_)>(
+          reinterpret_cast<char*>(&run_time_date_),
+          reinterpret_cast<char*>(&other->run_time_date_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata WriteAddress::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[3]);
 }
-
 
 // ===================================================================
 
-void writeAddressAttributes::InitAsDefaultInstance() {
-}
 class writeAddressAttributes::_Internal {
  public:
 };
 
-writeAddressAttributes::writeAddressAttributes()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+writeAddressAttributes::writeAddressAttributes(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.writeAddressAttributes)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.writeAddressAttributes)
 }
 writeAddressAttributes::writeAddressAttributes(const writeAddressAttributes& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&write_address_, &from.write_address_,
     static_cast<size_t>(reinterpret_cast<char*>(&repeat_) -
     reinterpret_cast<char*>(&write_address_)) + sizeof(repeat_));
@@ -1456,27 +1311,32 @@ writeAddressAttributes::writeAddressAttributes(const writeAddressAttributes& fro
 }
 
 void writeAddressAttributes::SharedCtor() {
-  ::memset(&write_address_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&repeat_) -
-      reinterpret_cast<char*>(&write_address_)) + sizeof(repeat_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&write_address_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&repeat_) -
+    reinterpret_cast<char*>(&write_address_)) + sizeof(repeat_));
 }
 
 writeAddressAttributes::~writeAddressAttributes() {
   // @@protoc_insertion_point(destructor:dra.writeAddressAttributes)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void writeAddressAttributes::SharedDtor() {
+inline void writeAddressAttributes::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
+void writeAddressAttributes::ArenaDtor(void* object) {
+  writeAddressAttributes* _this = reinterpret_cast< writeAddressAttributes* >(object);
+  (void)_this;
+}
+void writeAddressAttributes::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void writeAddressAttributes::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const writeAddressAttributes& writeAddressAttributes::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_writeAddressAttributes_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void writeAddressAttributes::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.writeAddressAttributes)
@@ -1487,7 +1347,7 @@ void writeAddressAttributes::Clear() {
   ::memset(&write_address_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&repeat_) -
       reinterpret_cast<char*>(&write_address_)) + sizeof(repeat_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* writeAddressAttributes::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -1495,46 +1355,51 @@ const char* writeAddressAttributes::_InternalParse(const char* ptr, ::PROTOBUF_N
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint32 write_address = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          write_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 prio = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
-          prio_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          prio_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 repeat = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
-          repeat_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          repeat_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -1545,26 +1410,26 @@ failure:
   (void) cached_has_bits;
 
   // uint32 write_address = 2;
-  if (this->write_address() != 0) {
+  if (this->_internal_write_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_write_address(), target);
   }
 
   // uint32 prio = 6;
-  if (this->prio() != 0) {
+  if (this->_internal_prio() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_prio(), target);
   }
 
   // uint32 repeat = 7;
-  if (this->repeat() != 0) {
+  if (this->_internal_repeat() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(7, this->_internal_repeat(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.writeAddressAttributes)
   return target;
@@ -1579,73 +1444,52 @@ size_t writeAddressAttributes::ByteSizeLong() const {
   (void) cached_has_bits;
 
   // uint32 write_address = 2;
-  if (this->write_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_write_address());
+  if (this->_internal_write_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_write_address());
   }
 
   // uint32 prio = 6;
-  if (this->prio() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_prio());
+  if (this->_internal_prio() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_prio());
   }
 
   // uint32 repeat = 7;
-  if (this->repeat() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_repeat());
+  if (this->_internal_repeat() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_repeat());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void writeAddressAttributes::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.writeAddressAttributes)
-  GOOGLE_DCHECK_NE(&from, this);
-  const writeAddressAttributes* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<writeAddressAttributes>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.writeAddressAttributes)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.writeAddressAttributes)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData writeAddressAttributes::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    writeAddressAttributes::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*writeAddressAttributes::GetClassData() const { return &_class_data_; }
+
+void writeAddressAttributes::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<writeAddressAttributes *>(to)->MergeFrom(
+      static_cast<const writeAddressAttributes &>(from));
 }
+
 
 void writeAddressAttributes::MergeFrom(const writeAddressAttributes& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.writeAddressAttributes)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.write_address() != 0) {
+  if (from._internal_write_address() != 0) {
     _internal_set_write_address(from._internal_write_address());
   }
-  if (from.prio() != 0) {
+  if (from._internal_prio() != 0) {
     _internal_set_prio(from._internal_prio());
   }
-  if (from.repeat() != 0) {
+  if (from._internal_repeat() != 0) {
     _internal_set_repeat(from._internal_repeat());
   }
-}
-
-void writeAddressAttributes::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.writeAddressAttributes)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void writeAddressAttributes::CopyFrom(const writeAddressAttributes& from) {
@@ -1661,16 +1505,20 @@ bool writeAddressAttributes::IsInitialized() const {
 
 void writeAddressAttributes::InternalSwap(writeAddressAttributes* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(write_address_, other->write_address_);
-  swap(prio_, other->prio_);
-  swap(repeat_, other->repeat_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(writeAddressAttributes, repeat_)
+      + sizeof(writeAddressAttributes::repeat_)
+      - PROTOBUF_FIELD_OFFSET(writeAddressAttributes, write_address_)>(
+          reinterpret_cast<char*>(&write_address_),
+          reinterpret_cast<char*>(&other->write_address_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata writeAddressAttributes::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[4]);
 }
-
 
 // ===================================================================
 
@@ -1681,55 +1529,61 @@ void Status_StatusEntry_DoNotUse::MergeFrom(const Status_StatusEntry_DoNotUse& o
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata Status_StatusEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[5]);
 }
-void Status_StatusEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
-void Status::InitAsDefaultInstance() {
-}
 class Status::_Internal {
  public:
 };
 
-Status::Status()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Status::Status(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  status_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.Status)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.Status)
 }
 Status::Status(const Status& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   status_.MergeFrom(from.status_);
   // @@protoc_insertion_point(copy_constructor:dra.Status)
 }
 
 void Status::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Status_Dependency_2eproto.base);
 }
 
 Status::~Status() {
   // @@protoc_insertion_point(destructor:dra.Status)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void Status::SharedDtor() {
+inline void Status::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
+void Status::ArenaDtor(void* object) {
+  Status* _this = reinterpret_cast< Status* >(object);
+  (void)_this;
+  _this->status_. ~MapField();
+}
+inline void Status::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena) {
+  if (arena != nullptr) {
+    arena->OwnCustomDestructor(this, &Status::ArenaDtor);
+  }
+}
 void Status::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Status& Status::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Status_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Status::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.Status)
@@ -1738,7 +1592,7 @@ void Status::Clear() {
   (void) cached_has_bits;
 
   status_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Status::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -1746,7 +1600,6 @@ const char* Status::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // map<uint32, .dra.taskStatus> status = 1;
       case 1:
@@ -1758,25 +1611,29 @@ const char* Status::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -1819,7 +1676,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.Status)
   return target;
@@ -1842,45 +1699,30 @@ size_t Status::ByteSizeLong() const {
     total_size += Status_StatusEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void Status::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.Status)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Status* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Status>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Status)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Status)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Status::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    Status::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Status::GetClassData() const { return &_class_data_; }
+
+void Status::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Status *>(to)->MergeFrom(
+      static_cast<const Status &>(from));
 }
+
 
 void Status::MergeFrom(const Status& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.Status)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   status_.MergeFrom(from.status_);
-}
-
-void Status::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.Status)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Status::CopyFrom(const Status& from) {
@@ -1896,14 +1738,15 @@ bool Status::IsInitialized() const {
 
 void Status::InternalSwap(Status* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  status_.Swap(&other->status_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  status_.InternalSwap(&other->status_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Status::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[6]);
 }
-
 
 // ===================================================================
 
@@ -1914,13 +1757,10 @@ void UncoveredAddress_InputEntry_DoNotUse::MergeFrom(const UncoveredAddress_Inpu
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress_InputEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[7]);
 }
-void UncoveredAddress_InputEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
@@ -1931,13 +1771,10 @@ void UncoveredAddress_WriteAddressEntry_DoNotUse::MergeFrom(const UncoveredAddre
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress_WriteAddressEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[8]);
 }
-void UncoveredAddress_WriteAddressEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
@@ -1948,13 +1785,10 @@ void UncoveredAddress_InputStatusEntry_DoNotUse::MergeFrom(const UncoveredAddres
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress_InputStatusEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[9]);
 }
-void UncoveredAddress_InputStatusEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
@@ -1965,13 +1799,10 @@ void UncoveredAddress_WriteAddressStatusEntry_DoNotUse::MergeFrom(const Uncovere
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress_WriteAddressStatusEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[10]);
 }
-void UncoveredAddress_WriteAddressStatusEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
@@ -1982,13 +1813,10 @@ void UncoveredAddress_TasksCountEntry_DoNotUse::MergeFrom(const UncoveredAddress
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress_TasksCountEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[11]);
 }
-void UncoveredAddress_TasksCountEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
@@ -1999,20 +1827,13 @@ void UncoveredAddress_WriteCountEntry_DoNotUse::MergeFrom(const UncoveredAddress
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress_WriteCountEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[12]);
 }
-void UncoveredAddress_WriteCountEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
-void UncoveredAddress::InitAsDefaultInstance() {
-  ::dra::_UncoveredAddress_default_instance_._instance.get_mutable()->run_time_date_ = const_cast< ::dra::runTimeData*>(
-      ::dra::runTimeData::internal_default_instance());
-}
 class UncoveredAddress::_Internal {
  public:
   static const ::dra::runTimeData& run_time_date(const UncoveredAddress* msg);
@@ -2023,21 +1844,31 @@ UncoveredAddress::_Internal::run_time_date(const UncoveredAddress* msg) {
   return *msg->run_time_date_;
 }
 void UncoveredAddress::clear_run_time_date() {
-  if (GetArenaNoVirtual() == nullptr && run_time_date_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && run_time_date_ != nullptr) {
     delete run_time_date_;
   }
   run_time_date_ = nullptr;
 }
-UncoveredAddress::UncoveredAddress()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+UncoveredAddress::UncoveredAddress(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  right_branch_address_(arena),
+  input_(arena),
+  write_address_(arena),
+  input_status_(arena),
+  write_address_status_(arena),
+  tasks_count_(arena),
+  write_count_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.UncoveredAddress)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.UncoveredAddress)
 }
 UncoveredAddress::UncoveredAddress(const UncoveredAddress& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       right_branch_address_(from.right_branch_address_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   input_.MergeFrom(from.input_);
   write_address_.MergeFrom(from.write_address_);
   input_status_.MergeFrom(from.input_status_);
@@ -2056,29 +1887,42 @@ UncoveredAddress::UncoveredAddress(const UncoveredAddress& from)
 }
 
 void UncoveredAddress::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_UncoveredAddress_Dependency_2eproto.base);
-  ::memset(&run_time_date_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&count_) -
-      reinterpret_cast<char*>(&run_time_date_)) + sizeof(count_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&run_time_date_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&count_) -
+    reinterpret_cast<char*>(&run_time_date_)) + sizeof(count_));
 }
 
 UncoveredAddress::~UncoveredAddress() {
   // @@protoc_insertion_point(destructor:dra.UncoveredAddress)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void UncoveredAddress::SharedDtor() {
+inline void UncoveredAddress::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete run_time_date_;
 }
 
+void UncoveredAddress::ArenaDtor(void* object) {
+  UncoveredAddress* _this = reinterpret_cast< UncoveredAddress* >(object);
+  (void)_this;
+  _this->input_. ~MapField();
+  _this->write_address_. ~MapField();
+  _this->input_status_. ~MapField();
+  _this->write_address_status_. ~MapField();
+  _this->tasks_count_. ~MapField();
+  _this->write_count_. ~MapField();
+}
+inline void UncoveredAddress::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena) {
+  if (arena != nullptr) {
+    arena->OwnCustomDestructor(this, &UncoveredAddress::ArenaDtor);
+  }
+}
 void UncoveredAddress::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const UncoveredAddress& UncoveredAddress::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_UncoveredAddress_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void UncoveredAddress::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.UncoveredAddress)
@@ -2093,14 +1937,14 @@ void UncoveredAddress::Clear() {
   write_address_status_.Clear();
   tasks_count_.Clear();
   write_count_.Clear();
-  if (GetArenaNoVirtual() == nullptr && run_time_date_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && run_time_date_ != nullptr) {
     delete run_time_date_;
   }
   run_time_date_ = nullptr;
   ::memset(&condition_address_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&count_) -
       reinterpret_cast<char*>(&condition_address_)) + sizeof(count_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -2108,21 +1952,22 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint32 condition_address = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 uncovered_address = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          uncovered_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          uncovered_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated uint32 right_branch_address = 3;
       case 3:
@@ -2130,38 +1975,43 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt32Parser(_internal_mutable_right_branch_address(), ptr, ctx);
           CHK_(ptr);
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24) {
-          _internal_add_right_branch_address(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr));
+          _internal_add_right_branch_address(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 number_arrive_basicblocks = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          number_arrive_basicblocks_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          number_arrive_basicblocks_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .dra.UncoveredAddressKind kind = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_kind(static_cast<::dra::UncoveredAddressKind>(val));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 number_dominator_instructions = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
-          number_dominator_instructions_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          number_dominator_instructions_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .dra.runTimeData run_time_date = 8;
       case 8:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
           ptr = ctx->ParseMessage(_internal_mutable_run_time_date(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<string, uint32> input = 22;
       case 22:
@@ -2173,7 +2023,8 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<178>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<uint32, .dra.writeAddressAttributes> write_address = 23;
       case 23:
@@ -2185,14 +2036,16 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<186>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 count = 24;
       case 24:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 192)) {
-          count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<string, .dra.Status> input_status = 31;
       case 31:
@@ -2204,7 +2057,8 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<250>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<uint32, .dra.taskStatus> write_address_status = 32;
       case 32:
@@ -2216,7 +2070,8 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<258>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<int32, uint32> tasks_count = 33;
       case 33:
@@ -2228,7 +2083,8 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<266>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<int32, uint32> write_count = 34;
       case 34:
@@ -2240,25 +2096,29 @@ const char* UncoveredAddress::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<274>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -2269,13 +2129,13 @@ failure:
   (void) cached_has_bits;
 
   // uint32 condition_address = 1;
-  if (this->condition_address() != 0) {
+  if (this->_internal_condition_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->_internal_condition_address(), target);
   }
 
   // uint32 uncovered_address = 2;
-  if (this->uncovered_address() != 0) {
+  if (this->_internal_uncovered_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_uncovered_address(), target);
   }
@@ -2290,26 +2150,26 @@ failure:
   }
 
   // uint32 number_arrive_basicblocks = 4;
-  if (this->number_arrive_basicblocks() != 0) {
+  if (this->_internal_number_arrive_basicblocks() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_number_arrive_basicblocks(), target);
   }
 
   // .dra.UncoveredAddressKind kind = 5;
-  if (this->kind() != 0) {
+  if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       5, this->_internal_kind(), target);
   }
 
   // uint32 number_dominator_instructions = 6;
-  if (this->number_dominator_instructions() != 0) {
+  if (this->_internal_number_dominator_instructions() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(6, this->_internal_number_dominator_instructions(), target);
   }
 
   // .dra.runTimeData run_time_date = 8;
-  if (this->has_run_time_date()) {
+  if (this->_internal_has_run_time_date()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -2324,6 +2184,7 @@ failure:
     typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
     struct Utf8Check {
       static void Check(ConstPtr p) {
+        (void)p;
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -2389,7 +2250,7 @@ failure:
   }
 
   // uint32 count = 24;
-  if (this->count() != 0) {
+  if (this->_internal_count() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(24, this->_internal_count(), target);
   }
@@ -2402,6 +2263,7 @@ failure:
     typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
     struct Utf8Check {
       static void Check(ConstPtr p) {
+        (void)p;
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -2530,7 +2392,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.UncoveredAddress)
   return target;
@@ -2614,81 +2476,64 @@ size_t UncoveredAddress::ByteSizeLong() const {
   }
 
   // .dra.runTimeData run_time_date = 8;
-  if (this->has_run_time_date()) {
+  if (this->_internal_has_run_time_date()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *run_time_date_);
   }
 
   // uint32 condition_address = 1;
-  if (this->condition_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_condition_address());
+  if (this->_internal_condition_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_condition_address());
   }
 
   // uint32 uncovered_address = 2;
-  if (this->uncovered_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_uncovered_address());
+  if (this->_internal_uncovered_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_uncovered_address());
   }
 
   // uint32 number_arrive_basicblocks = 4;
-  if (this->number_arrive_basicblocks() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_number_arrive_basicblocks());
+  if (this->_internal_number_arrive_basicblocks() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_number_arrive_basicblocks());
   }
 
   // .dra.UncoveredAddressKind kind = 5;
-  if (this->kind() != 0) {
+  if (this->_internal_kind() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   // uint32 number_dominator_instructions = 6;
-  if (this->number_dominator_instructions() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_number_dominator_instructions());
+  if (this->_internal_number_dominator_instructions() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_number_dominator_instructions());
   }
 
   // uint32 count = 24;
-  if (this->count() != 0) {
+  if (this->_internal_count() != 0) {
     total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->_internal_count());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void UncoveredAddress::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.UncoveredAddress)
-  GOOGLE_DCHECK_NE(&from, this);
-  const UncoveredAddress* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<UncoveredAddress>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.UncoveredAddress)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.UncoveredAddress)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UncoveredAddress::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    UncoveredAddress::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UncoveredAddress::GetClassData() const { return &_class_data_; }
+
+void UncoveredAddress::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<UncoveredAddress *>(to)->MergeFrom(
+      static_cast<const UncoveredAddress &>(from));
 }
+
 
 void UncoveredAddress::MergeFrom(const UncoveredAddress& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.UncoveredAddress)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2699,34 +2544,28 @@ void UncoveredAddress::MergeFrom(const UncoveredAddress& from) {
   write_address_status_.MergeFrom(from.write_address_status_);
   tasks_count_.MergeFrom(from.tasks_count_);
   write_count_.MergeFrom(from.write_count_);
-  if (from.has_run_time_date()) {
+  if (from._internal_has_run_time_date()) {
     _internal_mutable_run_time_date()->::dra::runTimeData::MergeFrom(from._internal_run_time_date());
   }
-  if (from.condition_address() != 0) {
+  if (from._internal_condition_address() != 0) {
     _internal_set_condition_address(from._internal_condition_address());
   }
-  if (from.uncovered_address() != 0) {
+  if (from._internal_uncovered_address() != 0) {
     _internal_set_uncovered_address(from._internal_uncovered_address());
   }
-  if (from.number_arrive_basicblocks() != 0) {
+  if (from._internal_number_arrive_basicblocks() != 0) {
     _internal_set_number_arrive_basicblocks(from._internal_number_arrive_basicblocks());
   }
-  if (from.kind() != 0) {
+  if (from._internal_kind() != 0) {
     _internal_set_kind(from._internal_kind());
   }
-  if (from.number_dominator_instructions() != 0) {
+  if (from._internal_number_dominator_instructions() != 0) {
     _internal_set_number_dominator_instructions(from._internal_number_dominator_instructions());
   }
-  if (from.count() != 0) {
+  if (from._internal_count() != 0) {
     _internal_set_count(from._internal_count());
   }
-}
-
-void UncoveredAddress::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.UncoveredAddress)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void UncoveredAddress::CopyFrom(const UncoveredAddress& from) {
@@ -2742,36 +2581,30 @@ bool UncoveredAddress::IsInitialized() const {
 
 void UncoveredAddress::InternalSwap(UncoveredAddress* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   right_branch_address_.InternalSwap(&other->right_branch_address_);
-  input_.Swap(&other->input_);
-  write_address_.Swap(&other->write_address_);
-  input_status_.Swap(&other->input_status_);
-  write_address_status_.Swap(&other->write_address_status_);
-  tasks_count_.Swap(&other->tasks_count_);
-  write_count_.Swap(&other->write_count_);
-  swap(run_time_date_, other->run_time_date_);
-  swap(condition_address_, other->condition_address_);
-  swap(uncovered_address_, other->uncovered_address_);
-  swap(number_arrive_basicblocks_, other->number_arrive_basicblocks_);
-  swap(kind_, other->kind_);
-  swap(number_dominator_instructions_, other->number_dominator_instructions_);
-  swap(count_, other->count_);
+  input_.InternalSwap(&other->input_);
+  write_address_.InternalSwap(&other->write_address_);
+  input_status_.InternalSwap(&other->input_status_);
+  write_address_status_.InternalSwap(&other->write_address_status_);
+  tasks_count_.InternalSwap(&other->tasks_count_);
+  write_count_.InternalSwap(&other->write_count_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(UncoveredAddress, count_)
+      + sizeof(UncoveredAddress::count_)
+      - PROTOBUF_FIELD_OFFSET(UncoveredAddress, run_time_date_)>(
+          reinterpret_cast<char*>(&run_time_date_),
+          reinterpret_cast<char*>(&other->run_time_date_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata UncoveredAddress::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[13]);
 }
-
 
 // ===================================================================
 
-void Dependency::InitAsDefaultInstance() {
-  ::dra::_Dependency_default_instance_._instance.get_mutable()->input_ = const_cast< ::dra::Input*>(
-      ::dra::Input::internal_default_instance());
-  ::dra::_Dependency_default_instance_._instance.get_mutable()->uncovered_address_ = const_cast< ::dra::UncoveredAddress*>(
-      ::dra::UncoveredAddress::internal_default_instance());
-}
 class Dependency::_Internal {
  public:
   static const ::dra::Input& input(const Dependency* msg);
@@ -2787,21 +2620,25 @@ Dependency::_Internal::uncovered_address(const Dependency* msg) {
   return *msg->uncovered_address_;
 }
 void Dependency::clear_input() {
-  if (GetArenaNoVirtual() == nullptr && input_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && input_ != nullptr) {
     delete input_;
   }
   input_ = nullptr;
 }
-Dependency::Dependency()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Dependency::Dependency(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  write_address_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.Dependency)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.Dependency)
 }
 Dependency::Dependency(const Dependency& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       write_address_(from.write_address_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_input()) {
     input_ = new ::dra::Input(*from.input_);
   } else {
@@ -2816,30 +2653,34 @@ Dependency::Dependency(const Dependency& from)
 }
 
 void Dependency::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Dependency_Dependency_2eproto.base);
-  ::memset(&input_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&uncovered_address_) -
-      reinterpret_cast<char*>(&input_)) + sizeof(uncovered_address_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&input_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&uncovered_address_) -
+    reinterpret_cast<char*>(&input_)) + sizeof(uncovered_address_));
 }
 
 Dependency::~Dependency() {
   // @@protoc_insertion_point(destructor:dra.Dependency)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void Dependency::SharedDtor() {
+inline void Dependency::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete input_;
   if (this != internal_default_instance()) delete uncovered_address_;
 }
 
+void Dependency::ArenaDtor(void* object) {
+  Dependency* _this = reinterpret_cast< Dependency* >(object);
+  (void)_this;
+}
+void Dependency::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Dependency::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Dependency& Dependency::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Dependency_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Dependency::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.Dependency)
@@ -2848,15 +2689,15 @@ void Dependency::Clear() {
   (void) cached_has_bits;
 
   write_address_.Clear();
-  if (GetArenaNoVirtual() == nullptr && input_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && input_ != nullptr) {
     delete input_;
   }
   input_ = nullptr;
-  if (GetArenaNoVirtual() == nullptr && uncovered_address_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && uncovered_address_ != nullptr) {
     delete uncovered_address_;
   }
   uncovered_address_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Dependency::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -2864,21 +2705,22 @@ const char* Dependency::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // .dra.Input input = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_input(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .dra.UncoveredAddress uncovered_address = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_uncovered_address(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .dra.WriteAddress write_address = 3;
       case 3:
@@ -2890,25 +2732,29 @@ const char* Dependency::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -2919,7 +2765,7 @@ failure:
   (void) cached_has_bits;
 
   // .dra.Input input = 1;
-  if (this->has_input()) {
+  if (this->_internal_has_input()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -2927,7 +2773,7 @@ failure:
   }
 
   // .dra.UncoveredAddress uncovered_address = 2;
-  if (this->has_uncovered_address()) {
+  if (this->_internal_has_uncovered_address()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -2944,7 +2790,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.Dependency)
   return target;
@@ -2966,64 +2812,49 @@ size_t Dependency::ByteSizeLong() const {
   }
 
   // .dra.Input input = 1;
-  if (this->has_input()) {
+  if (this->_internal_has_input()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *input_);
   }
 
   // .dra.UncoveredAddress uncovered_address = 2;
-  if (this->has_uncovered_address()) {
+  if (this->_internal_has_uncovered_address()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *uncovered_address_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void Dependency::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.Dependency)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Dependency* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Dependency>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Dependency)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Dependency)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Dependency::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    Dependency::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Dependency::GetClassData() const { return &_class_data_; }
+
+void Dependency::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Dependency *>(to)->MergeFrom(
+      static_cast<const Dependency &>(from));
 }
+
 
 void Dependency::MergeFrom(const Dependency& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.Dependency)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   write_address_.MergeFrom(from.write_address_);
-  if (from.has_input()) {
+  if (from._internal_has_input()) {
     _internal_mutable_input()->::dra::Input::MergeFrom(from._internal_input());
   }
-  if (from.has_uncovered_address()) {
+  if (from._internal_has_uncovered_address()) {
     _internal_mutable_uncovered_address()->::dra::UncoveredAddress::MergeFrom(from._internal_uncovered_address());
   }
-}
-
-void Dependency::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.Dependency)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Dependency::CopyFrom(const Dependency& from) {
@@ -3039,16 +2870,21 @@ bool Dependency::IsInitialized() const {
 
 void Dependency::InternalSwap(Dependency* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   write_address_.InternalSwap(&other->write_address_);
-  swap(input_, other->input_);
-  swap(uncovered_address_, other->uncovered_address_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Dependency, uncovered_address_)
+      + sizeof(Dependency::uncovered_address_)
+      - PROTOBUF_FIELD_OFFSET(Dependency, input_)>(
+          reinterpret_cast<char*>(&input_),
+          reinterpret_cast<char*>(&other->input_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Dependency::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[14]);
 }
-
 
 // ===================================================================
 
@@ -3059,20 +2895,13 @@ void FileOperationsFunction_WriteAddressEntry_DoNotUse::MergeFrom(const FileOper
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata FileOperationsFunction_WriteAddressEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[15]);
 }
-void FileOperationsFunction_WriteAddressEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
-void FileOperationsFunction::InitAsDefaultInstance() {
-  ::dra::_FileOperationsFunction_default_instance_._instance.get_mutable()->run_time_date_ = const_cast< ::dra::runTimeData*>(
-      ::dra::runTimeData::internal_default_instance());
-}
 class FileOperationsFunction::_Internal {
  public:
   static const ::dra::runTimeData& run_time_date(const FileOperationsFunction* msg);
@@ -3083,28 +2912,34 @@ FileOperationsFunction::_Internal::run_time_date(const FileOperationsFunction* m
   return *msg->run_time_date_;
 }
 void FileOperationsFunction::clear_run_time_date() {
-  if (GetArenaNoVirtual() == nullptr && run_time_date_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && run_time_date_ != nullptr) {
     delete run_time_date_;
   }
   run_time_date_ = nullptr;
 }
-FileOperationsFunction::FileOperationsFunction()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+FileOperationsFunction::FileOperationsFunction(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  write_address_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.FileOperationsFunction)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.FileOperationsFunction)
 }
 FileOperationsFunction::FileOperationsFunction(const FileOperationsFunction& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   write_address_.MergeFrom(from.write_address_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_name().empty()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
+      GetArenaForAllocation());
   }
   file_operations_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_file_operations_name().empty()) {
-    file_operations_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.file_operations_name_);
+    file_operations_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_file_operations_name(), 
+      GetArenaForAllocation());
   }
   if (from._internal_has_run_time_date()) {
     run_time_date_ = new ::dra::runTimeData(*from.run_time_date_);
@@ -3118,33 +2953,41 @@ FileOperationsFunction::FileOperationsFunction(const FileOperationsFunction& fro
 }
 
 void FileOperationsFunction::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_FileOperationsFunction_Dependency_2eproto.base);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  file_operations_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&run_time_date_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&kind_) -
-      reinterpret_cast<char*>(&run_time_date_)) + sizeof(kind_));
+name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+file_operations_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&run_time_date_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&kind_) -
+    reinterpret_cast<char*>(&run_time_date_)) + sizeof(kind_));
 }
 
 FileOperationsFunction::~FileOperationsFunction() {
   // @@protoc_insertion_point(destructor:dra.FileOperationsFunction)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void FileOperationsFunction::SharedDtor() {
+inline void FileOperationsFunction::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   file_operations_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete run_time_date_;
 }
 
+void FileOperationsFunction::ArenaDtor(void* object) {
+  FileOperationsFunction* _this = reinterpret_cast< FileOperationsFunction* >(object);
+  (void)_this;
+  _this->write_address_. ~MapField();
+}
+inline void FileOperationsFunction::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena) {
+  if (arena != nullptr) {
+    arena->OwnCustomDestructor(this, &FileOperationsFunction::ArenaDtor);
+  }
+}
 void FileOperationsFunction::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const FileOperationsFunction& FileOperationsFunction::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_FileOperationsFunction_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void FileOperationsFunction::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.FileOperationsFunction)
@@ -3153,16 +2996,16 @@ void FileOperationsFunction::Clear() {
   (void) cached_has_bits;
 
   write_address_.Clear();
-  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  file_operations_name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (GetArenaNoVirtual() == nullptr && run_time_date_ != nullptr) {
+  name_.ClearToEmpty();
+  file_operations_name_.ClearToEmpty();
+  if (GetArenaForAllocation() == nullptr && run_time_date_ != nullptr) {
     delete run_time_date_;
   }
   run_time_date_ = nullptr;
   ::memset(&cmd_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&kind_) -
       reinterpret_cast<char*>(&cmd_)) + sizeof(kind_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* FileOperationsFunction::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -3170,7 +3013,6 @@ const char* FileOperationsFunction::_InternalParse(const char* ptr, ::PROTOBUF_N
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
@@ -3179,7 +3021,8 @@ const char* FileOperationsFunction::_InternalParse(const char* ptr, ::PROTOBUF_N
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.FileOperationsFunction.name"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // string file_operations_name = 2;
       case 2:
@@ -3188,29 +3031,33 @@ const char* FileOperationsFunction::_InternalParse(const char* ptr, ::PROTOBUF_N
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.FileOperationsFunction.file_operations_name"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .dra.file_operations_kind kind = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_kind(static_cast<::dra::file_operations_kind>(val));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint64 cmd = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          cmd_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          cmd_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // .dra.runTimeData run_time_date = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           ptr = ctx->ParseMessage(_internal_mutable_run_time_date(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<uint32, uint32> write_address = 11;
       case 11:
@@ -3222,25 +3069,29 @@ const char* FileOperationsFunction::_InternalParse(const char* ptr, ::PROTOBUF_N
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<90>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -3251,7 +3102,7 @@ failure:
   (void) cached_has_bits;
 
   // string name = 1;
-  if (this->name().size() > 0) {
+  if (!this->_internal_name().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -3261,7 +3112,7 @@ failure:
   }
 
   // string file_operations_name = 2;
-  if (this->file_operations_name().size() > 0) {
+  if (!this->_internal_file_operations_name().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_file_operations_name().data(), static_cast<int>(this->_internal_file_operations_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -3271,20 +3122,20 @@ failure:
   }
 
   // .dra.file_operations_kind kind = 3;
-  if (this->kind() != 0) {
+  if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       3, this->_internal_kind(), target);
   }
 
   // uint64 cmd = 4;
-  if (this->cmd() != 0) {
+  if (this->_internal_cmd() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->_internal_cmd(), target);
   }
 
   // .dra.runTimeData run_time_date = 5;
-  if (this->has_run_time_date()) {
+  if (this->_internal_has_run_time_date()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -3324,7 +3175,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.FileOperationsFunction)
   return target;
@@ -3348,95 +3199,76 @@ size_t FileOperationsFunction::ByteSizeLong() const {
   }
 
   // string name = 1;
-  if (this->name().size() > 0) {
+  if (!this->_internal_name().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_name());
   }
 
   // string file_operations_name = 2;
-  if (this->file_operations_name().size() > 0) {
+  if (!this->_internal_file_operations_name().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_file_operations_name());
   }
 
   // .dra.runTimeData run_time_date = 5;
-  if (this->has_run_time_date()) {
+  if (this->_internal_has_run_time_date()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *run_time_date_);
   }
 
   // uint64 cmd = 4;
-  if (this->cmd() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_cmd());
+  if (this->_internal_cmd() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_cmd());
   }
 
   // .dra.file_operations_kind kind = 3;
-  if (this->kind() != 0) {
+  if (this->_internal_kind() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void FileOperationsFunction::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.FileOperationsFunction)
-  GOOGLE_DCHECK_NE(&from, this);
-  const FileOperationsFunction* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<FileOperationsFunction>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.FileOperationsFunction)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.FileOperationsFunction)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FileOperationsFunction::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    FileOperationsFunction::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FileOperationsFunction::GetClassData() const { return &_class_data_; }
+
+void FileOperationsFunction::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<FileOperationsFunction *>(to)->MergeFrom(
+      static_cast<const FileOperationsFunction &>(from));
 }
+
 
 void FileOperationsFunction::MergeFrom(const FileOperationsFunction& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.FileOperationsFunction)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   write_address_.MergeFrom(from.write_address_);
-  if (from.name().size() > 0) {
-
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+  if (!from._internal_name().empty()) {
+    _internal_set_name(from._internal_name());
   }
-  if (from.file_operations_name().size() > 0) {
-
-    file_operations_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.file_operations_name_);
+  if (!from._internal_file_operations_name().empty()) {
+    _internal_set_file_operations_name(from._internal_file_operations_name());
   }
-  if (from.has_run_time_date()) {
+  if (from._internal_has_run_time_date()) {
     _internal_mutable_run_time_date()->::dra::runTimeData::MergeFrom(from._internal_run_time_date());
   }
-  if (from.cmd() != 0) {
+  if (from._internal_cmd() != 0) {
     _internal_set_cmd(from._internal_cmd());
   }
-  if (from.kind() != 0) {
+  if (from._internal_kind() != 0) {
     _internal_set_kind(from._internal_kind());
   }
-}
-
-void FileOperationsFunction::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.FileOperationsFunction)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void FileOperationsFunction::CopyFrom(const FileOperationsFunction& from) {
@@ -3452,21 +3284,33 @@ bool FileOperationsFunction::IsInitialized() const {
 
 void FileOperationsFunction::InternalSwap(FileOperationsFunction* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  write_address_.Swap(&other->write_address_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  file_operations_name_.Swap(&other->file_operations_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(run_time_date_, other->run_time_date_);
-  swap(cmd_, other->cmd_);
-  swap(kind_, other->kind_);
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  write_address_.InternalSwap(&other->write_address_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, lhs_arena,
+      &other->name_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &file_operations_name_, lhs_arena,
+      &other->file_operations_name_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(FileOperationsFunction, kind_)
+      + sizeof(FileOperationsFunction::kind_)
+      - PROTOBUF_FIELD_OFFSET(FileOperationsFunction, run_time_date_)>(
+          reinterpret_cast<char*>(&run_time_date_),
+          reinterpret_cast<char*>(&other->run_time_date_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata FileOperationsFunction::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[16]);
 }
-
 
 // ===================================================================
 
@@ -3477,61 +3321,68 @@ void FileOperations_FileOperationsFunctionEntry_DoNotUse::MergeFrom(const FileOp
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata FileOperations_FileOperationsFunctionEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[17]);
 }
-void FileOperations_FileOperationsFunctionEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
-void FileOperations::InitAsDefaultInstance() {
-}
 class FileOperations::_Internal {
  public:
 };
 
-FileOperations::FileOperations()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+FileOperations::FileOperations(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  file_operations_function_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.FileOperations)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.FileOperations)
 }
 FileOperations::FileOperations(const FileOperations& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   file_operations_function_.MergeFrom(from.file_operations_function_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_name().empty()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
+      GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:dra.FileOperations)
 }
 
 void FileOperations::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_FileOperations_Dependency_2eproto.base);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 FileOperations::~FileOperations() {
   // @@protoc_insertion_point(destructor:dra.FileOperations)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void FileOperations::SharedDtor() {
+inline void FileOperations::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void FileOperations::ArenaDtor(void* object) {
+  FileOperations* _this = reinterpret_cast< FileOperations* >(object);
+  (void)_this;
+  _this->file_operations_function_. ~MapField();
+}
+inline void FileOperations::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena) {
+  if (arena != nullptr) {
+    arena->OwnCustomDestructor(this, &FileOperations::ArenaDtor);
+  }
+}
 void FileOperations::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const FileOperations& FileOperations::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_FileOperations_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void FileOperations::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.FileOperations)
@@ -3540,8 +3391,8 @@ void FileOperations::Clear() {
   (void) cached_has_bits;
 
   file_operations_function_.Clear();
-  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  _internal_metadata_.Clear();
+  name_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* FileOperations::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -3549,7 +3400,6 @@ const char* FileOperations::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
@@ -3558,7 +3408,8 @@ const char* FileOperations::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.FileOperations.name"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<int64, .dra.FileOperationsFunction> file_operations_function = 3;
       case 3:
@@ -3570,25 +3421,29 @@ const char* FileOperations::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -3599,7 +3454,7 @@ failure:
   (void) cached_has_bits;
 
   // string name = 1;
-  if (this->name().size() > 0) {
+  if (!this->_internal_name().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -3641,7 +3496,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.FileOperations)
   return target;
@@ -3665,55 +3520,39 @@ size_t FileOperations::ByteSizeLong() const {
   }
 
   // string name = 1;
-  if (this->name().size() > 0) {
+  if (!this->_internal_name().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_name());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void FileOperations::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.FileOperations)
-  GOOGLE_DCHECK_NE(&from, this);
-  const FileOperations* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<FileOperations>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.FileOperations)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.FileOperations)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FileOperations::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    FileOperations::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FileOperations::GetClassData() const { return &_class_data_; }
+
+void FileOperations::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<FileOperations *>(to)->MergeFrom(
+      static_cast<const FileOperations &>(from));
 }
+
 
 void FileOperations::MergeFrom(const FileOperations& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.FileOperations)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   file_operations_function_.MergeFrom(from.file_operations_function_);
-  if (from.name().size() > 0) {
-
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+  if (!from._internal_name().empty()) {
+    _internal_set_name(from._internal_name());
   }
-}
-
-void FileOperations::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.FileOperations)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void FileOperations::CopyFrom(const FileOperations& from) {
@@ -3729,16 +3568,22 @@ bool FileOperations::IsInitialized() const {
 
 void FileOperations::InternalSwap(FileOperations* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  file_operations_function_.Swap(&other->file_operations_function_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  file_operations_function_.InternalSwap(&other->file_operations_function_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, lhs_arena,
+      &other->name_, rhs_arena
+  );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata FileOperations::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[18]);
 }
-
 
 // ===================================================================
 
@@ -3749,61 +3594,68 @@ void address_AddrEntry_DoNotUse::MergeFrom(const address_AddrEntry_DoNotUse& oth
   MergeFromInternal(other);
 }
 ::PROTOBUF_NAMESPACE_ID::Metadata address_AddrEntry_DoNotUse::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[19]);
 }
-void address_AddrEntry_DoNotUse::MergeFrom(
-    const ::PROTOBUF_NAMESPACE_ID::Message& other) {
-  ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom(other);
-}
-
 
 // ===================================================================
 
-void address::InitAsDefaultInstance() {
-}
 class address::_Internal {
  public:
 };
 
-address::address()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+address::address(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  addr_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.address)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.address)
 }
 address::address(const address& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   addr_.MergeFrom(from.addr_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_name().empty()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
+      GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:dra.address)
 }
 
 void address::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_address_Dependency_2eproto.base);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 address::~address() {
   // @@protoc_insertion_point(destructor:dra.address)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void address::SharedDtor() {
+inline void address::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void address::ArenaDtor(void* object) {
+  address* _this = reinterpret_cast< address* >(object);
+  (void)_this;
+  _this->addr_. ~MapField();
+}
+inline void address::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena) {
+  if (arena != nullptr) {
+    arena->OwnCustomDestructor(this, &address::ArenaDtor);
+  }
+}
 void address::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const address& address::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_address_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void address::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.address)
@@ -3812,8 +3664,8 @@ void address::Clear() {
   (void) cached_has_bits;
 
   addr_.Clear();
-  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  _internal_metadata_.Clear();
+  name_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* address::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -3821,7 +3673,6 @@ const char* address::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
@@ -3830,7 +3681,8 @@ const char* address::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "dra.address.name"));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // map<string, string> addr = 2;
       case 2:
@@ -3842,25 +3694,29 @@ const char* address::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -3871,7 +3727,7 @@ failure:
   (void) cached_has_bits;
 
   // string name = 1;
-  if (this->name().size() > 0) {
+  if (!this->_internal_name().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -3888,6 +3744,7 @@ failure:
     typedef ::PROTOBUF_NAMESPACE_ID::internal::CompareByDerefFirst<SortItem> Less;
     struct Utf8Check {
       static void Check(ConstPtr p) {
+        (void)p;
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
           p->first.data(), static_cast<int>(p->first.length()),
           ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
@@ -3927,7 +3784,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.address)
   return target;
@@ -3951,55 +3808,39 @@ size_t address::ByteSizeLong() const {
   }
 
   // string name = 1;
-  if (this->name().size() > 0) {
+  if (!this->_internal_name().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_name());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void address::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.address)
-  GOOGLE_DCHECK_NE(&from, this);
-  const address* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<address>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.address)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.address)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData address::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    address::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*address::GetClassData() const { return &_class_data_; }
+
+void address::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<address *>(to)->MergeFrom(
+      static_cast<const address &>(from));
 }
+
 
 void address::MergeFrom(const address& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.address)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   addr_.MergeFrom(from.addr_);
-  if (from.name().size() > 0) {
-
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+  if (!from._internal_name().empty()) {
+    _internal_set_name(from._internal_name());
   }
-}
-
-void address::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.address)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void address::CopyFrom(const address& from) {
@@ -4015,36 +3856,45 @@ bool address::IsInitialized() const {
 
 void address::InternalSwap(address* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  addr_.Swap(&other->addr_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  addr_.InternalSwap(&other->addr_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &name_, lhs_arena,
+      &other->name_, rhs_arena
+  );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata address::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[20]);
 }
-
 
 // ===================================================================
 
-void Condition::InitAsDefaultInstance() {
-}
 class Condition::_Internal {
  public:
 };
 
-Condition::Condition()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Condition::Condition(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  right_branch_address_(arena),
+  syzkaller_right_branch_address_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.Condition)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.Condition)
 }
 Condition::Condition(const Condition& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       right_branch_address_(from.right_branch_address_),
       syzkaller_right_branch_address_(from.syzkaller_right_branch_address_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&condition_address_, &from.condition_address_,
     static_cast<size_t>(reinterpret_cast<char*>(&idx_) -
     reinterpret_cast<char*>(&condition_address_)) + sizeof(idx_));
@@ -4052,27 +3902,32 @@ Condition::Condition(const Condition& from)
 }
 
 void Condition::SharedCtor() {
-  ::memset(&condition_address_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&idx_) -
-      reinterpret_cast<char*>(&condition_address_)) + sizeof(idx_));
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&condition_address_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&idx_) -
+    reinterpret_cast<char*>(&condition_address_)) + sizeof(idx_));
 }
 
 Condition::~Condition() {
   // @@protoc_insertion_point(destructor:dra.Condition)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void Condition::SharedDtor() {
+inline void Condition::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
+void Condition::ArenaDtor(void* object) {
+  Condition* _this = reinterpret_cast< Condition* >(object);
+  (void)_this;
+}
+void Condition::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Condition::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Condition& Condition::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Condition_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Condition::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.Condition)
@@ -4085,7 +3940,7 @@ void Condition::Clear() {
   ::memset(&condition_address_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&idx_) -
       reinterpret_cast<char*>(&condition_address_)) + sizeof(idx_));
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Condition::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -4093,49 +3948,54 @@ const char* Condition::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // uint64 condition_address = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 syzkaller_condition_address = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          syzkaller_condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          syzkaller_condition_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint64 uncovered_address = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          uncovered_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          uncovered_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 syzkaller_uncovered_address = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          syzkaller_uncovered_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          syzkaller_uncovered_address_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint32 idx = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
-          idx_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          idx_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // uint64 successor = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
-          successor_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          successor_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated uint64 right_branch_address = 7;
       case 7:
@@ -4143,9 +4003,10 @@ const char* Condition::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt64Parser(_internal_mutable_right_branch_address(), ptr, ctx);
           CHK_(ptr);
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56) {
-          _internal_add_right_branch_address(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr));
+          _internal_add_right_branch_address(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated uint32 syzkaller_right_branch_address = 8;
       case 8:
@@ -4153,27 +4014,31 @@ const char* Condition::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt32Parser(_internal_mutable_syzkaller_right_branch_address(), ptr, ctx);
           CHK_(ptr);
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64) {
-          _internal_add_syzkaller_right_branch_address(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr));
+          _internal_add_syzkaller_right_branch_address(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr));
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -4184,37 +4049,37 @@ failure:
   (void) cached_has_bits;
 
   // uint64 condition_address = 1;
-  if (this->condition_address() != 0) {
+  if (this->_internal_condition_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_condition_address(), target);
   }
 
   // uint32 syzkaller_condition_address = 2;
-  if (this->syzkaller_condition_address() != 0) {
+  if (this->_internal_syzkaller_condition_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_syzkaller_condition_address(), target);
   }
 
   // uint64 uncovered_address = 3;
-  if (this->uncovered_address() != 0) {
+  if (this->_internal_uncovered_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_uncovered_address(), target);
   }
 
   // uint32 syzkaller_uncovered_address = 4;
-  if (this->syzkaller_uncovered_address() != 0) {
+  if (this->_internal_syzkaller_uncovered_address() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->_internal_syzkaller_uncovered_address(), target);
   }
 
   // uint32 idx = 5;
-  if (this->idx() != 0) {
+  if (this->_internal_idx() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->_internal_idx(), target);
   }
 
   // uint64 successor = 6;
-  if (this->successor() != 0) {
+  if (this->_internal_successor() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(6, this->_internal_successor(), target);
   }
@@ -4239,7 +4104,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.Condition)
   return target;
@@ -4284,105 +4149,78 @@ size_t Condition::ByteSizeLong() const {
   }
 
   // uint64 condition_address = 1;
-  if (this->condition_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_condition_address());
+  if (this->_internal_condition_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_condition_address());
   }
 
   // uint64 uncovered_address = 3;
-  if (this->uncovered_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_uncovered_address());
+  if (this->_internal_uncovered_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_uncovered_address());
   }
 
   // uint32 syzkaller_condition_address = 2;
-  if (this->syzkaller_condition_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_syzkaller_condition_address());
+  if (this->_internal_syzkaller_condition_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_syzkaller_condition_address());
   }
 
   // uint32 syzkaller_uncovered_address = 4;
-  if (this->syzkaller_uncovered_address() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_syzkaller_uncovered_address());
+  if (this->_internal_syzkaller_uncovered_address() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_syzkaller_uncovered_address());
   }
 
   // uint64 successor = 6;
-  if (this->successor() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_successor());
+  if (this->_internal_successor() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64SizePlusOne(this->_internal_successor());
   }
 
   // uint32 idx = 5;
-  if (this->idx() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
-        this->_internal_idx());
+  if (this->_internal_idx() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32SizePlusOne(this->_internal_idx());
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void Condition::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.Condition)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Condition* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Condition>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Condition)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Condition)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Condition::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    Condition::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Condition::GetClassData() const { return &_class_data_; }
+
+void Condition::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Condition *>(to)->MergeFrom(
+      static_cast<const Condition &>(from));
 }
+
 
 void Condition::MergeFrom(const Condition& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.Condition)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   right_branch_address_.MergeFrom(from.right_branch_address_);
   syzkaller_right_branch_address_.MergeFrom(from.syzkaller_right_branch_address_);
-  if (from.condition_address() != 0) {
+  if (from._internal_condition_address() != 0) {
     _internal_set_condition_address(from._internal_condition_address());
   }
-  if (from.uncovered_address() != 0) {
+  if (from._internal_uncovered_address() != 0) {
     _internal_set_uncovered_address(from._internal_uncovered_address());
   }
-  if (from.syzkaller_condition_address() != 0) {
+  if (from._internal_syzkaller_condition_address() != 0) {
     _internal_set_syzkaller_condition_address(from._internal_syzkaller_condition_address());
   }
-  if (from.syzkaller_uncovered_address() != 0) {
+  if (from._internal_syzkaller_uncovered_address() != 0) {
     _internal_set_syzkaller_uncovered_address(from._internal_syzkaller_uncovered_address());
   }
-  if (from.successor() != 0) {
+  if (from._internal_successor() != 0) {
     _internal_set_successor(from._internal_successor());
   }
-  if (from.idx() != 0) {
+  if (from._internal_idx() != 0) {
     _internal_set_idx(from._internal_idx());
   }
-}
-
-void Condition::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.Condition)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Condition::CopyFrom(const Condition& from) {
@@ -4398,63 +4236,69 @@ bool Condition::IsInitialized() const {
 
 void Condition::InternalSwap(Condition* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   right_branch_address_.InternalSwap(&other->right_branch_address_);
   syzkaller_right_branch_address_.InternalSwap(&other->syzkaller_right_branch_address_);
-  swap(condition_address_, other->condition_address_);
-  swap(uncovered_address_, other->uncovered_address_);
-  swap(syzkaller_condition_address_, other->syzkaller_condition_address_);
-  swap(syzkaller_uncovered_address_, other->syzkaller_uncovered_address_);
-  swap(successor_, other->successor_);
-  swap(idx_, other->idx_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Condition, idx_)
+      + sizeof(Condition::idx_)
+      - PROTOBUF_FIELD_OFFSET(Condition, condition_address_)>(
+          reinterpret_cast<char*>(&condition_address_),
+          reinterpret_cast<char*>(&other->condition_address_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Condition::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[21]);
 }
-
 
 // ===================================================================
 
-void Conditions::InitAsDefaultInstance() {
-}
 class Conditions::_Internal {
  public:
 };
 
-Conditions::Conditions()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Conditions::Conditions(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  condition_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.Conditions)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.Conditions)
 }
 Conditions::Conditions(const Conditions& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       condition_(from.condition_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:dra.Conditions)
 }
 
 void Conditions::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Conditions_Dependency_2eproto.base);
 }
 
 Conditions::~Conditions() {
   // @@protoc_insertion_point(destructor:dra.Conditions)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void Conditions::SharedDtor() {
+inline void Conditions::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
+void Conditions::ArenaDtor(void* object) {
+  Conditions* _this = reinterpret_cast< Conditions* >(object);
+  (void)_this;
+}
+void Conditions::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Conditions::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Conditions& Conditions::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Conditions_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Conditions::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.Conditions)
@@ -4463,7 +4307,7 @@ void Conditions::Clear() {
   (void) cached_has_bits;
 
   condition_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Conditions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -4471,7 +4315,6 @@ const char* Conditions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // repeated .dra.Condition condition = 10;
       case 10:
@@ -4483,25 +4326,29 @@ const char* Conditions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -4521,7 +4368,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.Conditions)
   return target;
@@ -4542,45 +4389,30 @@ size_t Conditions::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void Conditions::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.Conditions)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Conditions* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Conditions>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.Conditions)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.Conditions)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Conditions::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    Conditions::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Conditions::GetClassData() const { return &_class_data_; }
+
+void Conditions::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<Conditions *>(to)->MergeFrom(
+      static_cast<const Conditions &>(from));
 }
+
 
 void Conditions::MergeFrom(const Conditions& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.Conditions)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   condition_.MergeFrom(from.condition_);
-}
-
-void Conditions::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.Conditions)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Conditions::CopyFrom(const Conditions& from) {
@@ -4596,21 +4428,18 @@ bool Conditions::IsInitialized() const {
 
 void Conditions::InternalSwap(Conditions* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   condition_.InternalSwap(&other->condition_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Conditions::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[22]);
 }
-
 
 // ===================================================================
 
-void WriteAddresses::InitAsDefaultInstance() {
-  ::dra::_WriteAddresses_default_instance_._instance.get_mutable()->condition_ = const_cast< ::dra::Condition*>(
-      ::dra::Condition::internal_default_instance());
-}
 class WriteAddresses::_Internal {
  public:
   static const ::dra::Condition& condition(const WriteAddresses* msg);
@@ -4620,16 +4449,20 @@ const ::dra::Condition&
 WriteAddresses::_Internal::condition(const WriteAddresses* msg) {
   return *msg->condition_;
 }
-WriteAddresses::WriteAddresses()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+WriteAddresses::WriteAddresses(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  write_address_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:dra.WriteAddresses)
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:dra.WriteAddresses)
 }
 WriteAddresses::WriteAddresses(const WriteAddresses& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       write_address_(from.write_address_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_condition()) {
     condition_ = new ::dra::Condition(*from.condition_);
   } else {
@@ -4639,27 +4472,30 @@ WriteAddresses::WriteAddresses(const WriteAddresses& from)
 }
 
 void WriteAddresses::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_WriteAddresses_Dependency_2eproto.base);
-  condition_ = nullptr;
+condition_ = nullptr;
 }
 
 WriteAddresses::~WriteAddresses() {
   // @@protoc_insertion_point(destructor:dra.WriteAddresses)
+  if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void WriteAddresses::SharedDtor() {
+inline void WriteAddresses::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete condition_;
 }
 
+void WriteAddresses::ArenaDtor(void* object) {
+  WriteAddresses* _this = reinterpret_cast< WriteAddresses* >(object);
+  (void)_this;
+}
+void WriteAddresses::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void WriteAddresses::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const WriteAddresses& WriteAddresses::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_WriteAddresses_Dependency_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void WriteAddresses::Clear() {
 // @@protoc_insertion_point(message_clear_start:dra.WriteAddresses)
@@ -4668,11 +4504,11 @@ void WriteAddresses::Clear() {
   (void) cached_has_bits;
 
   write_address_.Clear();
-  if (GetArenaNoVirtual() == nullptr && condition_ != nullptr) {
+  if (GetArenaForAllocation() == nullptr && condition_ != nullptr) {
     delete condition_;
   }
   condition_ = nullptr;
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* WriteAddresses::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
@@ -4680,14 +4516,14 @@ const char* WriteAddresses::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
     switch (tag >> 3) {
       // .dra.Condition condition = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_condition(), ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // repeated .dra.WriteAddress write_address = 4;
       case 4:
@@ -4699,25 +4535,29 @@ const char* WriteAddresses::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
+message_done:
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
@@ -4728,7 +4568,7 @@ failure:
   (void) cached_has_bits;
 
   // .dra.Condition condition = 1;
-  if (this->has_condition()) {
+  if (this->_internal_has_condition()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
@@ -4745,7 +4585,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:dra.WriteAddresses)
   return target;
@@ -4767,54 +4607,39 @@ size_t WriteAddresses::ByteSizeLong() const {
   }
 
   // .dra.Condition condition = 1;
-  if (this->has_condition()) {
+  if (this->_internal_has_condition()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *condition_);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
-void WriteAddresses::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:dra.WriteAddresses)
-  GOOGLE_DCHECK_NE(&from, this);
-  const WriteAddresses* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<WriteAddresses>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dra.WriteAddresses)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:dra.WriteAddresses)
-    MergeFrom(*source);
-  }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData WriteAddresses::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    WriteAddresses::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*WriteAddresses::GetClassData() const { return &_class_data_; }
+
+void WriteAddresses::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<WriteAddresses *>(to)->MergeFrom(
+      static_cast<const WriteAddresses &>(from));
 }
+
 
 void WriteAddresses::MergeFrom(const WriteAddresses& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:dra.WriteAddresses)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   write_address_.MergeFrom(from.write_address_);
-  if (from.has_condition()) {
+  if (from._internal_has_condition()) {
     _internal_mutable_condition()->::dra::Condition::MergeFrom(from._internal_condition());
   }
-}
-
-void WriteAddresses::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:dra.WriteAddresses)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void WriteAddresses::CopyFrom(const WriteAddresses& from) {
@@ -4830,90 +4655,91 @@ bool WriteAddresses::IsInitialized() const {
 
 void WriteAddresses::InternalSwap(WriteAddresses* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   write_address_.InternalSwap(&other->write_address_);
   swap(condition_, other->condition_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata WriteAddresses::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_Dependency_2eproto_getter, &descriptor_table_Dependency_2eproto_once,
+      file_level_metadata_Dependency_2eproto[23]);
 }
-
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace dra
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::dra::WriteAddress_UncoveredAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::WriteAddress_UncoveredAddressEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::WriteAddress_UncoveredAddressEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::WriteAddress_UncoveredAddressEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::WriteAddress_FileOperationsFunctionEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::WriteAddress_InputEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::WriteAddress_InputEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::WriteAddress_InputEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::WriteAddress_InputEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::WriteAddress* Arena::CreateMaybeMessage< ::dra::WriteAddress >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::WriteAddress >(arena);
+  return Arena::CreateMessageInternal< ::dra::WriteAddress >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::writeAddressAttributes* Arena::CreateMaybeMessage< ::dra::writeAddressAttributes >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::writeAddressAttributes >(arena);
+  return Arena::CreateMessageInternal< ::dra::writeAddressAttributes >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::Status_StatusEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::Status_StatusEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Status_StatusEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::Status_StatusEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::Status* Arena::CreateMaybeMessage< ::dra::Status >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Status >(arena);
+  return Arena::CreateMessageInternal< ::dra::Status >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UncoveredAddress_InputEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UncoveredAddress_InputEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UncoveredAddress_InputEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::UncoveredAddress_InputEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::UncoveredAddress_WriteAddressEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UncoveredAddress_InputStatusEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UncoveredAddress_InputStatusEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UncoveredAddress_InputStatusEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::UncoveredAddress_InputStatusEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::UncoveredAddress_WriteAddressStatusEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UncoveredAddress_TasksCountEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UncoveredAddress_TasksCountEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UncoveredAddress_TasksCountEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::UncoveredAddress_TasksCountEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UncoveredAddress_WriteCountEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::UncoveredAddress_WriteCountEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UncoveredAddress_WriteCountEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::UncoveredAddress_WriteCountEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::UncoveredAddress* Arena::CreateMaybeMessage< ::dra::UncoveredAddress >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::UncoveredAddress >(arena);
+  return Arena::CreateMessageInternal< ::dra::UncoveredAddress >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::Dependency* Arena::CreateMaybeMessage< ::dra::Dependency >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Dependency >(arena);
+  return Arena::CreateMessageInternal< ::dra::Dependency >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::FileOperationsFunction_WriteAddressEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::FileOperationsFunction* Arena::CreateMaybeMessage< ::dra::FileOperationsFunction >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::FileOperationsFunction >(arena);
+  return Arena::CreateMessageInternal< ::dra::FileOperationsFunction >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::FileOperations_FileOperationsFunctionEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::FileOperations* Arena::CreateMaybeMessage< ::dra::FileOperations >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::FileOperations >(arena);
+  return Arena::CreateMessageInternal< ::dra::FileOperations >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::address_AddrEntry_DoNotUse* Arena::CreateMaybeMessage< ::dra::address_AddrEntry_DoNotUse >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::address_AddrEntry_DoNotUse >(arena);
+  return Arena::CreateMessageInternal< ::dra::address_AddrEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::address* Arena::CreateMaybeMessage< ::dra::address >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::address >(arena);
+  return Arena::CreateMessageInternal< ::dra::address >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::Condition* Arena::CreateMaybeMessage< ::dra::Condition >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Condition >(arena);
+  return Arena::CreateMessageInternal< ::dra::Condition >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::Conditions* Arena::CreateMaybeMessage< ::dra::Conditions >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::Conditions >(arena);
+  return Arena::CreateMessageInternal< ::dra::Conditions >(arena);
 }
 template<> PROTOBUF_NOINLINE ::dra::WriteAddresses* Arena::CreateMaybeMessage< ::dra::WriteAddresses >(Arena* arena) {
-  return Arena::CreateInternal< ::dra::WriteAddresses >(arena);
+  return Arena::CreateMessageInternal< ::dra::WriteAddresses >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
