@@ -13,3 +13,8 @@ set(SOURCES
         DependencyRPCClient.cpp)
 
 add_library(RPC ${SOURCES})
+target_link_libraries(RPC PUBLIC
+        ${_REFLECTION}
+        ${_GRPC_GRPCPP}
+        ${_PROTOBUF_LIBPROTOBUF}
+        )

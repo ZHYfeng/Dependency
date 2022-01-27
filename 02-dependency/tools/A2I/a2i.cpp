@@ -22,7 +22,7 @@ llvm::cl::opt<std::string> config(llvm::cl::Positional, llvm::cl::desc("The dra 
                                   llvm::cl::init("dra.json"));
 llvm::cl::opt<std::string> union_coverage("union_coverage", llvm::cl::desc("The file of union coverage."),
                                           llvm::cl::init("./union_coverage.txt"));
-llvm::cl::opt<std::string> write("write", llvm::cl::desc("The file of write address."),
+llvm::cl::opt<std::string> write_address("write_address", llvm::cl::desc("The file of write address."),
                                  llvm::cl::init("./write.txt"));
 llvm::cl::opt<std::string> uncovered("uncovered", llvm::cl::desc("The file of uncovered address."),
                                      llvm::cl::init("./uncovered.txt"));
