@@ -13,5 +13,5 @@ else
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME/install ..
 fi
 
-# make -j
-# make install
+make -j
+make install
