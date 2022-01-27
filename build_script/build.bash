@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-export PATH_PROJECT=$PWD/Project_Dependency
+export PATH_PROJECT=$PWD
 
 # apt install
 sudo apt install -y llvm-7 clang-7
@@ -15,12 +14,16 @@ sudo usermod -a -G kvm `whoami`
 ## install: INSTALL_PREFIX of grpc and https://github.com/ZHYfeng/Dependency.git
 PATH_BUILD=$PATH_PROJECT/build
 PATH_INSTALL=$PATH_PROJECT/install
-if [ -d $PATH_PROJECT ]
+if [ -d $PATH_BUILD ]
 then
-    echo "[*] $PATH_PROJECT exist, please remove it" && exit
+    echo "[*] $PATH_BUILD exist"
 else 
-    mkdir $PATH_PROJECT
     mkdir $PATH_BUILD
+fi
+if [ -d $PATH_INSTALL ]
+then
+    echo "[*] $PATH_INSTALL exist"
+else 
     mkdir $PATH_INSTALL
 fi
 
@@ -53,21 +56,16 @@ export PKG_CONFIG_PATH=$PATH_INSTALL/lib/pkgconfig:$PKG_CONFIG_PATH
 go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
 
-# git clone Dpenendency code
-cd $PATH_PROJECT
-git clone https://github.com/ZHYfeng/Dependency.git
-PATH_DEPENDENCY=$PATH_PROJECT/Dependency
-
 # update proto code
-cd $PATH_DEPENDENCY/05-proto
+cd $PATH_PROJECT/05-proto
 bash ./build.bash
 
 # build DRA
-cd $PATH_DEPENDENCY/02-dependency
+cd $PATH_PROJECT/02-dependency
 bash ./build.bash
 
 # build syzkaller
-cd $PATH_DEPENDENCY/03-syzkaller
+cd $PATH_PROJECT/03-syzkaller
 bash ./build.bash
 
 # generate environment.sh

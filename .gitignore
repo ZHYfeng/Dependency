@@ -49,6 +49,9 @@ ld.so.cache
 built-in*
 *img*
 *workdir*
+*/build
+*/install
+*/work
 
 # Latex
 *.synctex.gz
