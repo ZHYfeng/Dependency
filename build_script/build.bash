@@ -14,6 +14,7 @@ sudo usermod -a -G kvm `whoami`
 ## install: INSTALL_PREFIX of grpc and https://github.com/ZHYfeng/Dependency.git
 PATH_BUILD=$PATH_PROJECT/build
 PATH_INSTALL=$PATH_PROJECT/install
+PATH_WORKDIE=$PATH_PROJECT/workdir
 if [ -d $PATH_BUILD ]
 then
     echo "[*] $PATH_BUILD exist"
@@ -26,6 +27,12 @@ then
 else 
     mkdir $PATH_INSTALL
 fi
+if [ -d $PATH_WORKDIE ]
+then
+    echo "[*] $PATH_WORKDIE exist"
+else 
+    mkdir $PATH_WORKDIE
+fi
 
 # get golang
 cd $PATH_BUILD
@@ -37,6 +44,23 @@ export GOROOT=$PATH_BUILD/goroot
 export PATH=$GOROOT/bin:$PATH
 export GOPATH=$PATH_BUILD/gopath
 export PATH=$GOPATH/bin:$PATH
+
+# # build llvm
+# cd $PATH_BUILD
+# wget http://releases.llvm.org/7.0.0/llvm-7.0.0.src.tar.xz
+# tar -xf llvm-7.0.0.src.tar.xz
+# wget http://releases.llvm.org/7.0.0/cfe-7.0.0.src.tar.xz
+# tar -xf cfe-7.0.0.src.tar.xz
+# mv cfe-7.0.0.src llvm-7.0.0.src/tools/clang
+# mkdir llvm
+# cd llvm
+# cmake -G "Unix Makefiles" \
+#     -DLLVM_ENABLE_RTTI=ON \
+#     -DCMAKE_BUILD_TYPE=Release \
+#     -DCMAKE_INSTALL_PREFIX=$PATH_INSTALL \
+#     ../llvm-7.0.0.src/
+# make -j
+# make install
 
 # build grpc
 cd $PATH_BUILD
