@@ -10,10 +10,8 @@ sudo apt install -y git cmake build-essential autoconf libtool pkg-config
 sudo usermod -a -G kvm `whoami`
 
 # make dir for project
-## source: https://github.com/ZHYfeng/Dependency.git
 ## build: goroot, gopath and grpc
 ## install: INSTALL_PREFIX of grpc and https://github.com/ZHYfeng/Dependency.git
-PATH_SOURCE=$PATH_PROJECT/source
 PATH_BUILD=$PATH_PROJECT/build
 PATH_INSTALL=$PATH_PROJECT/install
 if [ -d $PATH_PROJECT ]
@@ -21,7 +19,6 @@ then
     echo "[*] $PATH_PROJECT exist, please remove it" && exit
 else 
     mkdir $PATH_PROJECT
-    mkdir $PATH_SOURCE
     mkdir $PATH_BUILD
     mkdir $PATH_INSTALL
 fi
@@ -56,9 +53,9 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
 
 # git clone Dpenendency code
-cd $PATH_SOURCE
+cd $PATH_PROJECT
 git clone https://github.com/ZHYfeng/Dependency.git
-PATH_DEPENDENCY=$PATH_SOURCE/Dependency
+PATH_DEPENDENCY=$PATH_PROJECT/Dependency
 
 # update proto code
 cd $PATH_DEPENDENCY/05-proto
@@ -71,3 +68,12 @@ bash ./build.bash
 # build syzkaller
 cd $PATH_DEPENDENCY/03-syzkaller
 bash ./build.bash
+
+# generate environment.sh
+cd $PATH_PROJECT
+echo "export GOROOT=`$PATH_BUILD`/goroot" >> environment.sh
+echo "export PATH=$GOROOT/bin:$PATH" >> environment.sh
+echo "export GOPATH=`$PATH_BUILD`/gopath" >> environment.sh
+echo "export PATH=$GOPATH/bin:$PATH" >> environment.sh
+echo "export PATH=`$PATH_INSTALL`/bin:$PATH" >> environment.sh
+echo "export PKG_CONFIG_PATH=`$PATH_INSTALL`/lib/pkgconfig:$PKG_CONFIG_PATH" >> environment.sh
