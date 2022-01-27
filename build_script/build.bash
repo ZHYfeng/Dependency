@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH_PROJECT=$HOME/Dependency_project
+PATH_PROJECT=$PWD/Project_Dependency
 
 # apt install
 sudo apt install -y llvm-7 clang-7
@@ -36,7 +36,6 @@ export GOROOT=$PATH_BUILD/goroot
 export PATH=$GOROOT/bin:$PATH
 export GOPATH=$PATH_BUILD/gopath
 export PATH=$GOPATH/bin:$PATH
-export PATH=$PATH_BUILD/install/bin:$PATH
 
 # build grpc
 cd $PATH_BUILD
@@ -51,7 +50,8 @@ make -j
 make install
 popd
 sudo ldconfig
-export PKG_CONFIG_PATH=$PATH_BUILD/install/lib/pkgconfig:$PKG_CONFIG_PATH
+export PATH=$PATH_INSTALL/bin:$PATH
+export PKG_CONFIG_PATH=$PATH_INSTALL/lib/pkgconfig:$PKG_CONFIG_PATH
 go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
 
