@@ -81,6 +81,10 @@ type Server struct {
 	unstableInputsData *UnstableInputs
 }
 
+func (ss Server) mustEmbedUnimplementedDependencyRPCServer() {
+	
+}
+
 func (ss Server) SendNumberBasicBlock(ctx context.Context, empty *Empty) (*Empty, error) {
 	ss.stat.NumberBasicBlockReal = empty.Address
 	reply := &Empty{}
