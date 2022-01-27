@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PATH_PROJECT=$PWD/Project_Dependency
+
+export PATH_PROJECT=$PWD/Project_Dependency
 
 # apt install
 sudo apt install -y llvm-7 clang-7
