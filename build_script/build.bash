@@ -71,9 +71,9 @@ bash ./build.bash
 
 # generate environment.sh
 cd $PATH_PROJECT
-echo "export GOROOT=`$PATH_BUILD`/goroot" >> environment.sh
-echo "export PATH=$GOROOT/bin:$PATH" >> environment.sh
-echo "export GOPATH=`$PATH_BUILD`/gopath" >> environment.sh
-echo "export PATH=$GOPATH/bin:$PATH" >> environment.sh
-echo "export PATH=`$PATH_INSTALL`/bin:$PATH" >> environment.sh
-echo "export PKG_CONFIG_PATH=`$PATH_INSTALL`/lib/pkgconfig:$PKG_CONFIG_PATH" >> environment.sh
+echo "export GOROOT=$PATH_BUILD/goroot" >> environment.sh
+echo "export PATH=\$GOROOT/bin:\$PATH" >> environment.sh
+echo "export GOPATH=$PATH_BUILD/gopath" >> environment.sh
+echo "export PATH=\$GOPATH/bin:\$PATH" >> environment.sh
+echo "export PATH=$PATH_INSTALL/bin:\$PATH" >> environment.sh
+echo "export PKG_CONFIG_PATH=$PATH_INSTALL/lib/pkgconfig:\$PKG_CONFIG_PATH" >> environment.sh
