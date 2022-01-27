@@ -3,7 +3,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo $SCRIPT_DIR
 
-PATH_PROJECT=$SCRIPT_DIR/../..
+PATH_PROJECT=$SCRIPT_DIR/..
 PATH_BUILD=$PATH_PROJECT/build
 PATH_INSTALL=$PATH_PROJECT/install
 export GOROOT=$PATH_BUILD/goroot

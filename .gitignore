@@ -48,10 +48,9 @@ ld.so.cache
 */.idea/*
 built-in*
 *img*
-*workdir*
-*/build
-*/install
-*/work
+build/*
+install/*
+workdir/*
 
 # Latex
 *.synctex.gz
