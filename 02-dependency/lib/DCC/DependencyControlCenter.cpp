@@ -59,7 +59,7 @@ namespace dra {
 
     void DependencyControlCenter::run() {
         for (;;) {
-#if DEBUG
+#if !DEBUG
             dra::outputTime("wait for get newInput");
 #endif
             Inputs *newInput = client->GetNewInput();
@@ -67,7 +67,7 @@ namespace dra {
                 for (auto &input : *newInput->mutable_input()) {
 //                    std::cout << "new input : " << input.sig() << std::endl;
 //                    std::cout << input.program() << std::endl;
-#if DEBUG
+#if !DEBUG
                     dra::outputTime("new input : " + input.sig());
                     dra::outputTime(input.program());
 #endif
@@ -76,7 +76,7 @@ namespace dra {
                 }
                 newInput->Clear();
                 delete newInput;
-#if DEBUG
+#if !DEBUG
                 dra::outputTime("sleep_for 10s");
 #endif
                 std::this_thread::sleep_for(std::chrono::seconds(10));
