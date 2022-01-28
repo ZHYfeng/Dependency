@@ -5,11 +5,11 @@
   "dependency_task": false,
   "dependency_priority": false,
   "drpc": "127.0.0.1:22223",
-  "workdir": "~/data/git/work/result/result-with-dra/workdir",
-  "kernel_obj": "~/data/benchmark/linux/13-linux-clang-np",
-  "image": "~/data/benchmark/linux/img/stretch.img",
-  "sshkey": "~/data/benchmark/linux/img/stretch.id_rsa",
-  "syzkaller": "~/data/git/gopath/src/github.com/google/syzkaller",
+  "workdir": "/home/icse22ae/Dependency/workdir",
+  "kernel_obj": "/home/icse22ae/Dependency/workdir/13-linux-clang-np",
+  "image": "/home/icse22ae/Dependency/workdir/image/stretch.img",
+  "sshkey": "/home/icse22ae/Dependency/workdir/image/stretch.id_rsa",
+  "syzkaller": "/home/icse22ae/Dependency/03-syzkaller",
   "procs": 1,
   "sandbox": "none",
   "cover": true,
@@ -29,6 +29,6 @@
     "count": 32,
     "cpu": 1,
     "mem": 4096,
-    "kernel": "~/data/benchmark/linux/13-linux-clang-np/arch/x86/boot/bzImage"
+    "kernel": "/home/icse22ae/Dependency/workdir/13-linux-clang-np/arch/x86/boot/bzImage"
   }
 }
