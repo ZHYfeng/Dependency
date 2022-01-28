@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 import json
-import os.path
+import os
 import signal
 import socket
 import subprocess
@@ -12,9 +12,10 @@ time_run = 2 * 24 * 60 * 60  # second
 number_execute = 1
 number_vm_count = 2
 
-path_syzkaller = "/home/icse22ae/Dependency/03-syzkaller"
-path_image = "/home/icse22ae/Dependency/workdir/image"
-path_linux = "/home/icse22ae/Dependency/workdir/13-linux-clang-np"
+path_project = os.environ.get('PATH_PROJECT')
+path_syzkaller = os.path.join(path_project, "03-syzkaller")
+path_image = os.path.join(path_project, "workdir/image")
+path_linux = os.path.join(path_project, "workdir/13-linux-clang-np")
 path_kernel = os.path.join(path_linux, "arch/x86/boot/bzImage")
 path_vmlinux_objdump = os.path.join(path_linux, "vmlinux.objdump")
 
