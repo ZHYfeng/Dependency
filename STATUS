@@ -1,0 +1,9 @@
+We want to claim Reusable and Available badges.
+
+For Reusable badge, as we mentioned in our paper, we only picked four kernel modules because of limited human resource.
+However, our tool can help researchers to analyze the uncovered code in other kernel modules or newer version of the kernel modules.
+We have already provided evaluation environment for other kernel modules besides the four in our paper (more detail in README).
+So after resolving the root causes mentioned in the paper,  we may still need to another round of deep analysis of kernel modules.
+
+For Available badge, we have already made our code and results available in \url{https://www.doi.org/10.5281/zenodo.5348989} and \url{https://www.doi.org/10.5281/zenodo.5441138}.
+And we also open source the source code of our tool in Github \url{https://github.com/ZHYfeng/Dependency} with Apache-2.0 License.
