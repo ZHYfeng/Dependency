@@ -45,7 +45,7 @@ func (d *device) read(path string, a2i bool) {
 	}
 
 	d.resultsWithDra = &results{}
-	d.resultsWithDra.read(filepath.Join(d.path, pb.NameWithDra))
+	d.resultsWithDra.read(d.path)
 	d.resultsWithoutDra = &results{}
 	d.resultsWithoutDra.read(filepath.Join(d.path, pb.NameWithoutDra))
 
@@ -441,6 +441,7 @@ func (d *device) checkUncoveredAddress() {
 		}
 
 		_ = os.Chdir(d.path)
+		fmt.Printf("Chdir: %s\n", d.path)
 		err = filepath.Walk(d.path,
 			func(path string, info os.FileInfo, err error) error {
 				if err != nil {
@@ -454,7 +455,7 @@ func (d *device) checkUncoveredAddress() {
 		if err != nil {
 			log.Println(err)
 		}
-		cmd := exec.Command(pb.PathA2i, "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-bc="+pb.FileBc, pb.FileDRAConfig)
+		cmd := exec.Command("a2i", "-asm="+pb.FileAsm, "-objdump="+pb.FileVmlinuxObjdump, "-bc="+pb.FileBc, ""+pb.FileDRAConfig)
 
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr

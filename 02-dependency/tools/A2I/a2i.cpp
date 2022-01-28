@@ -43,8 +43,8 @@ int main(int argc, char **argv) {
 
     dcc->init(obj_dump, assembly, bit_code, config);
     dcc->check_coverage(union_coverage);
-//    dcc->check_write_addresses_dependency(write);
-//    dcc->check_uncovered_addresses_dependnency(uncovered);
+    dcc->check_write_addresses_dependency(write_address);
+    dcc->check_uncovered_addresses_dependnency(uncovered);
     dcc->check_control_dependency(not_dependency);
 
 

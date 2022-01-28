@@ -23,6 +23,7 @@ func main() {
 }
 
 func read(path string, a2i bool) {
+	path, _ = filepath.Abs(path)
 	baseName := filepath.Base(path)
 	if strings.HasPrefix(baseName, pb.NameDevice) {
 		fmt.Printf("nameDevice\n")

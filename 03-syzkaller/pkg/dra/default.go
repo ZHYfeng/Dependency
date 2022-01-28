@@ -38,15 +38,11 @@ const (
 	CheckCondition = true
 )
 
-var pathHome = os.Getenv("HOME")
-var pathRoot = filepath.Join(pathHome, "data")
+var pathProject = os.Getenv("PATH_PROJECT")
+var pathWorkdir = filepath.Join(pathProject, "workdir")
 
-var pathLinux = filepath.Join(pathRoot, "benchmark/linux/13-linux-clang-np")
+var pathLinux = filepath.Join(pathWorkdir, "13-linux-clang-np")
 var FileVmlinuxObjdump = filepath.Join(pathLinux, "vmlinux.objdump")
-
-var pathGit = filepath.Join(pathRoot, "git")
-var pathRepo = filepath.Join(pathGit, "gopath/src/github.com/ZHYfeng/2018-Dependency")
-var PathA2i = filepath.Join(pathRepo, "02-dependency/cmake-build-debug/tools/A2I/a2i")
 
 const (
 	NameDevice         = "dev_"
