@@ -51,6 +51,7 @@ built-in*
 build/*
 install/*
 workdir/*
+encironment.sh
 
 # Latex
 *.synctex.gz

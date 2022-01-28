@@ -100,3 +100,4 @@ echo "export GOPATH=$PATH_BUILD/gopath" >> environment.sh
 echo "export PATH=\$GOPATH/bin:\$PATH" >> environment.sh
 echo "export PATH=$PATH_INSTALL/bin:\$PATH" >> environment.sh
 echo "export PKG_CONFIG_PATH=$PATH_INSTALL/lib/pkgconfig:\$PKG_CONFIG_PATH" >> environment.sh
+echo "export PATH_PROJECT=$PATH_PROJECT" >> environment.sh
