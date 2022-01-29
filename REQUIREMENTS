@@ -6,4 +6,4 @@ All of those based on the configuration, and the more the better.
 
 Software requirement:
     VirtualBox 6.1: the VM we released has been tested in VirtualBox 6.1
-    or Ubuntu 20.04: the instructions for the project has been tested in Ubuntu 20.04
+    or Ubuntu 20.04: the build instructions for the project has been tested in Ubuntu 20.04
