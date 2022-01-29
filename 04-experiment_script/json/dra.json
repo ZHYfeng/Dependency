@@ -1,0 +1,74 @@
+{
+    "dev_cdrom": {
+        "enable_syscalls": [
+            "syz_open_dev$CDROM_DEV_LINK",
+            "ioctl$CDROMPAUSE",
+            "ioctl$CDROMRESUME",
+            "ioctl$CDROMPLAYMSF",
+            "ioctl$CDROMPLAYTRKIND",
+            "ioctl$CDROMREADTOCHDR",
+            "ioctl$CDROMREADTOCENTRY",
+            "ioctl$CDROMSTOP",
+            "ioctl$CDROMSTART",
+            "ioctl$CDROMEJECT",
+            "ioctl$CDROMVOLCTRL",
+            "ioctl$CDROMSUBCHNL",
+            "ioctl$CDROMREADMODE2",
+            "ioctl$CDROMREADMODE1",
+            "ioctl$CDROMREADAUDIO",
+            "ioctl$CDROMEJECT_SW",
+            "ioctl$CDROMMULTISESSION",
+            "ioctl$CDROM_GET_MCN",
+            "ioctl$CDROMRESET",
+            "ioctl$CDROMVOLREAD",
+            "ioctl$CDROMREADRAW",
+            "ioctl$CDROMREADCOOKED",
+            "ioctl$CDROMSEEK",
+            "ioctl$CDROMPLAYBLK",
+            "ioctl$CDROMREADALL",
+            "ioctl$CDROMGETSPINDOWN",
+            "ioctl$CDROMSETSPINDOWN",
+            "ioctl$CDROMCLOSETRAY",
+            "ioctl$CDROM_SET_OPTIONS",
+            "ioctl$CDROM_CLEAR_OPTIONS",
+            "ioctl$CDROM_SELECT_SPEED",
+            "ioctl$CDROM_SELECT_DISK",
+            "ioctl$CDROM_MEDIA_CHANGED",
+            "ioctl$CDROM_DISC_STATUS",
+            "ioctl$CDROM_CHANGER_NSLOTS",
+            "ioctl$CDROM_LOCKDOOR",
+            "ioctl$CDROM_DEBUG",
+            "ioctl$CDROM_GET_CAPABILITY",
+            "ioctl$CDROMAUDIOBUFSIZ",
+            "ioctl$DVD_READ_STRUCT",
+            "ioctl$DVD_WRITE_STRUCT",
+            "ioctl$DVD_AUTH",
+            "ioctl$CDROM_SEND_PACKET",
+            "ioctl$CDROM_NEXT_WRITABLE",
+            "ioctl$CDROM_LAST_WRITTEN"
+        ],
+        "file_taint": "taint_info_conf_cdrom_serialize",
+        "function": {
+            "cdrom_device_ops": {
+                "unlocked_ioctl": {
+                    "argument": {
+                        "1": "const",
+                        "2": "user",
+                        "0": "file"
+                    },
+                    "name": "cdrom_ioctl"
+                }
+            },
+            "init": {
+                "init": {
+                    "argument": {},
+                    "name": "cdrom_init"
+                }
+            }
+        },
+        "file_bc": "drivers/cdrom/built-in.bc",
+        "path_s": [
+            "drivers/cdrom"
+        ]
+    }
+}

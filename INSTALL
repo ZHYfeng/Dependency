@@ -7,9 +7,9 @@ cd /home/icse22ae/Dependency/workdir/workdir/dev_cdrom
 python3 run.py
 ```
 It would run one fuzzing on kernel module cdrom and analysis for 5 mins in  
-`/home/icse22ae/Dependency/workdir/workdir/dev_cdrom/1`.  
+`/home/icse22ae/Dependency/workdir/workdir/dev_cdrom/0`.  
 
-Inside `/home/icse22ae/Dependency/workdir/workdir/dev_cdrom/1`, there will be:
+Inside `/home/icse22ae/Dependency/workdir/workdir/dev_cdrom/0`, there will be:
 - log_dra.log: log for our analysis program, there will be one line  
     `#time : GetVmOffsets`.
 - log_syzkaller.log: log for fuzzing program(syzkaller), there will be lines like  
