@@ -14,6 +14,6 @@ Inside `/home/icse22ae/Dependency/workdir/workdir/dev_cdrom/0`, there will be:
     `#time : GetVmOffsets`.
 - log_syzkaller.log: log for fuzzing program(syzkaller), there will be lines like  
     `VMs 32, executed 0, cover 0, crashes 0, repro 0`.
-- dataDependency.bin, dataResult.bin, dataRunTime.bin, statistics.bin: the results in protobuf format
+- `dataDependency.bin`, `dataResult.bin`, `dataRunTime.bin`, `statistics.bin`: the results in protobuf format
 
 Once find those ourput, it means that our tools work well.
