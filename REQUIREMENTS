@@ -1,0 +1,9 @@
+Hardware requirement:
+    1) CPU: at least 4 cores
+    2) Menory: at least 16 GB
+    3) Disk: at least 100 GB
+All of those based on the configuration, and the more the better.
+
+Software requirement:
+    VirtualBox 6.1: the VM we released has been tested in VirtualBox 6.1
+    or Ubuntu 20.04: the instructions for the project has been tested in Ubuntu 20.04

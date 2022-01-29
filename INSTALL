@@ -1,0 +1,19 @@
+## test the installation
+
+In the virtual machine we provided, open a terminal.
+```
+source /home/icse22ae/Dependency/environment.sh
+cd /home/icse22ae/Dependency/workdir/workdir/dev_cdrom
+python3 run.py
+```
+It would run one fuzzing on kernel module cdrom and analysis for 5 mins in  
+`/home/icse22ae/Dependency/workdir/workdir/dev_cdrom/1`.  
+
+Inside `/home/icse22ae/Dependency/workdir/workdir/dev_cdrom/1`, there will be:
+- log_dra.log: log for our analysis program, there will be one line  
+    `#time : GetVmOffsets`.
+- log_syzkaller.log: log for fuzzing program(syzkaller), there will be lines like  
+    `VMs 32, executed 0, cover 0, crashes 0, repro 0`.
+- dataDependency.bin, dataResult.bin, dataRunTime.bin, statistics.bin: the results in protobuf format
+
+Once find those ourput, it means that our tools work well.
