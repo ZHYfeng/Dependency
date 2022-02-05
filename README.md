@@ -70,11 +70,13 @@ bash build_script/build.bash
     In our paper, `time_run` is at least 48 hours, `number_execute` is 3 and `number_vm_count` is 32.  
     For artifact evaluation, `number_execute` and `number_vm_count` could be 1.  
     `time_run` should be at least 5 mins(20 mins for device driver kvm)
-4. run our tool using script, it will automatically stop after `time_run`
+4. run our tool using script
+    It will automatically stop after `time_run`.
     ```
     python3 run.py
     ```
-5. read the results
+5. read the results  
+    still in the same environment in step 1 and the same path in step 2.
     ```
     go run /home/icse22ae/Dependency/03-syzkaller/tools/read_result/ -a2i
     ```
@@ -83,8 +85,10 @@ bash build_script/build.bash
 
 ## understand the results
 You can find the results used in our paper in `/home/icse22ae/Dependency/workdir/data`.  
+### results after step 4 run our tool using script
 1. The `dataDependency.bin`, `dataResult.bin`, `dataRunTime.bin`, `statistics.bin` in `./0` or `./1` or `./2` are the resutls in protobuf format.
     > The protobuf files are in `/home/icse22ae/Dependency/05-proto`
+### results after step 5 read the results
 2. `0_coverage.txt` is the coverage of the fuzzing in `./0`. `coverage.txt` is the average coverage of all runs.Each line is `time@number-of-edge`.
 3. `conditionD.txt` lists all unresolved condition related to dependency.
 4. `conditionND.txt` lists all unresolved condition not related to dependency.
