@@ -10,10 +10,19 @@ We undertake a substantial measurement study to systematically understand the re
 In one word, the artifact is to help researchers to understand the dependency challenge in kernel fuzzing.
 
 # 2. where it can be obtained
-We have made everything ready in the virtual machine (username & password: icse22ae):  
-Ubuntu 20.04 64 ICSE22AE 1.ova in `https://drive.google.com/drive/folders/1Ts4P4iC2PHihtBviSXMUkn3My0PLkowN?usp=sharing`
 
-You can also get the source code: `https://github.com/ZHYfeng/Dependency`
+## Virtual Machine and other files ready for Artifact Evaluation
+- username & password: icse22ae
+- zenodo archive: `https://doi.org/10.5281/zenodo.6029158`
+- also available in Google driver: `https://drive.google.com/drive/folders/1Ts4P4iC2PHihtBviSXMUkn3My0PLkowN?usp=sharing`
+
+## Source Code
+- zenodo archive: `https://doi.org/10.5281/zenodo.6029520`
+- github and update: `https://github.com/ZHYfeng/Dependency`
+
+## Evaluation Data
+- zenodo archive: `https://doi.org/10.5281/zenodo.5441138`
+- also available in Google driver: `data.tar.gz` in `https://drive.google.com/drive/folders/1Ts4P4iC2PHihtBviSXMUkn3My0PLkowN?usp=sharing`
 
 # 3. how to repeat/replicate/reproduce the results presented in the paper
 
@@ -85,10 +94,10 @@ bash build_script/build.bash
 
 ## understand the results
 You can find the results used in our paper in `/home/icse22ae/Dependency/workdir/data`.  
-### results after step 4 run our tool using script
+### Results after step 4 run our tool using script
 1. The `dataDependency.bin`, `dataResult.bin`, `dataRunTime.bin`, `statistics.bin` in `./0` or `./1` or `./2` are the resutls in protobuf format.
     > The protobuf files are in `/home/icse22ae/Dependency/05-proto`
-### results after step 5 read the results
+### Results after step 5 read the results
 2. `0_coverage.txt` is the coverage of the fuzzing in `./0`. `coverage.txt` is the average coverage of all runs.Each line is `time@number-of-edge`.
 3. `conditionD.txt` lists all unresolved condition related to dependency.
 4. `conditionND.txt` lists all unresolved condition not related to dependency.
@@ -97,3 +106,36 @@ You can find the results used in our paper in `/home/icse22ae/Dependency/workdir
 7. `OutsideFunctions.txt` is the `Unreachable Functions Elimination` mentioned in our paper.
 8. `statistic.txt` is the statistic used in our paper.
 9. `uncovered.txt` lists all uncovered edge and its unresovled conditions, and `uncovered_more.txt` lists more details about them.
+
+### Example for one unresolved dependency
+Still use `dev_cdrom` as example and the results can be found in `data.tar.gz` as mentioned in Section Evaluation Data  
+
+All unresolved condition related to dependency in `conditionD.txt`, for example:
+```
+0xffffffff8579b9b7@https://elixir.bootlin.com/linux/v4.16/source/drivers/cdrom/cdrom.c#L2279@0xffffffff8579b960@https://elixir.bootlin.com/linux/v4.16/source/drivers/cdrom/cdrom.c#L2279@mmc_ioctl_cdrom_read_audio@if.end11.i@
+ @ @0xffffffff857a3eaa@https://elixir.bootlin.com/linux/v4.16/source/drivers/cdrom/cdrom.c#L2124@1@
+ @ @0xffffffff8579b421@https://elixir.bootlin.com/linux/v4.16/source/drivers/cdrom/cdrom.c#L2228@0@
+ @ @0xffffffff8579b05a@https://elixir.bootlin.com/linux/v4.16/source/drivers/cdrom/cdrom.c#L2187@1@
+
+```
+`0xffffffff8579b9b7` is the assembly address of unresovled branch in binary and `https://elixir.bootlin.com/linux/v4.16/source/drivers/cdrom/cdrom.c#L2279` is the source code of the unresolved dependency. `0xffffffff8579b960` is the assembly address of condition of the unresovled branch and also `https://elixir.bootlin.com/linux/v4.16/source/drivers/cdrom/cdrom.c#L2279` is the source code. `if.end11.i` is the name of basic block in LLVM bitcode.  
+Next lines are the write addresses for the unresolved dependency.
+
+Then we can find a file `0xffffffff8579b9b7.txt`, which is named by the assembly address of unresovled branch.
+Inside this file, we can find the number of dominator instructions of this unresolved dpendnecy, 
+the inputs (test cases) from syzkaller which can arrive unresolved dpendnecy, the inputs which can arrive the write address.
+We can also find the call chain of write address starting from entry function.
+
+
+
+# 4. the structure and function of the source code
+
+- `02-dependency`
+  - `02-dependency/lib/DMM/`: mapping between assembly address in binary and basic block in LLVM bitcode
+  - `02-dependency/lib/RPC/`: work with fuzzing componeent (syzkaller) using Protobuf and gRPC
+  - `02-dependency/lib/STA/`: work with static analyisis compontent using JSON
+  - `02-dependency/lib/DCC/`: output human readable infomation and statistic for unresolved conditions
+- `03-syzkaller`
+  - `03-syzkaller/syz-fuzzer/`: modification for collecting more complete coverage and other related useful information from fuzzing
+  - `03-syzkaller/pkg/dra/`: work with mapping compontent and output results using Protobuf and gRPC
+- `05-proto`: all Protobuf files
