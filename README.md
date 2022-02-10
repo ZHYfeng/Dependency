@@ -131,11 +131,11 @@ We can also find the call chain of write address starting from entry function.
 # 4. the structure and function of the source code
 
 - `02-dependency`
-  - `02-dependency/lib/DMM/`: mapping between assembly address in binary and basic block in LLVM bitcode
-  - `02-dependency/lib/RPC/`: work with fuzzing componeent (syzkaller) using Protobuf and gRPC
-  - `02-dependency/lib/STA/`: work with static analyisis compontent using JSON
-  - `02-dependency/lib/DCC/`: output human readable infomation and statistic for unresolved conditions
+  - `02-dependency/lib/DMM/`: mapping between assembly address in the binary and basic block in LLVM bitcode
+  - `02-dependency/lib/RPC/`: work with fuzzing component (syzkaller) using Protobuf and gRPC
+  - `02-dependency/lib/STA/`: work with static analysis component using JSON
+  - `02-dependency/lib/DCC/`: output human-readable information and statistics for unresolved conditions
 - `03-syzkaller`
   - `03-syzkaller/syz-fuzzer/`: modification for collecting more complete coverage and other related useful information from fuzzing
-  - `03-syzkaller/pkg/dra/`: work with mapping compontent and output results using Protobuf and gRPC
+  - `03-syzkaller/pkg/dra/`: work with mapping component and output results using Protobuf and gRPC
 - `05-proto`: all Protobuf files
