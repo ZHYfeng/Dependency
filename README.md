@@ -42,7 +42,7 @@ bash build_script/build.bash
 3. build kernel using clang and mv it to `path-of-Dependency/workdir/13-linux-clang-np`
    > the kernel we build: linux-clang-np.tar.gz in `https://drive.google.com/drive/folders/1Ts4P4iC2PHihtBviSXMUkn3My0PLkowN?usp=sharing`
 4. copy the kernel and generate bitcode of kernel using `-fembed-bitcode -save-temps=obj`
-    > https://github.com/ZHYfeng/Build_Linux_Kernel_Into_LLVM_Bitcode/tree/master/01-change_makefile  
+    > https://github.com/ZHYfeng/Generate_Linux_Kernel_Bitcode/tree/master/Achieve/01-change-makefile  
     > the bitcode we build:  linux-clang-np-bc-f.tar.gz in `https://drive.google.com/drive/folders/1Ts4P4iC2PHihtBviSXMUkn3My0PLkowN?usp=sharing`
 5. preprocess kernel in order to save time
    ```
