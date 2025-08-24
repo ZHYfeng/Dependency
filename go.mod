@@ -1,6 +1,6 @@
 module github.com/ZHYfeng/Dependency
 
-go 1.17
+go 1.23.0
 
 require (
 	cloud.google.com/go/storage v1.28.1
@@ -8,7 +8,7 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639
 	golang.org/x/net v0.23.0
-	golang.org/x/oauth2 v0.7.0
+	golang.org/x/oauth2 v0.27.0
 	golang.org/x/sys v0.18.0
 	google.golang.org/api v0.114.0
 	google.golang.org/appengine v1.6.7
@@ -18,8 +18,7 @@ require (
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
-	cloud.google.com/go/compute v1.19.1 // indirect
-	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	cloud.google.com/go/iam v0.13.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/google/uuid v1.3.0 // indirect
